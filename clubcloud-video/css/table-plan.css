@@ -1,0 +1,123 @@
+@keyframes pulsate {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+    45% {
+        transform: translate(-50%, -50%) scale(1.75);
+        opacity: 0;
+    }
+}
+
+/* Hotspot */
+
+#ccTablePlan {
+    background-size: contain;
+    background-position: center center;
+    position: relative;
+}
+
+
+#ccTablePlan .hot-spot {
+    width: 35px;
+    height: 35px;
+
+    color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background-color: transparent;
+    background-size: contain;
+    border-radius: 100%;
+    cursor: pointer;
+    transition: all .2s ease;
+    transform: translate(-50%, -50%);
+}
+
+#ccTablePlan .img-responsive {
+    max-width: 100%;
+    position: relative;
+    left: 0;
+    top: 0
+}
+
+#ccTablePlan .hot-spot .circle {
+    border: 2px solid #c6adb7;
+
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2em;
+    height: 2em;
+    margin: -1em auto auto -1em;
+    -webkit-transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    border-radius: 50%;
+    opacity: 0;
+    animation: pulsate 3s ease-in-out infinite;
+}
+
+
+#ccTablePlan .hot-spot .tooltip {
+    background-color: rgba(58, 95, 150, 0.7);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: #fff;
+    display: none;
+    font-size: 14px;
+    opacity: 1.0;
+    left: 0;
+    padding: 15px 5px;
+    position: absolute;
+    text-align: left;
+    top: 30px;
+    width: 280px;
+    z-index: 999;
+}
+
+#ccTablePlan .hot-spot:hover > .tooltip {
+    display: block;
+
+}
+
+#ccTablePlan .hot-spot .tooltip .img-row {
+    padding: 10px;
+    text-align: center;
+}
+
+#ccTablePlan .hot-spot .tooltip .text-row {
+    padding: 15px;
+}
+
+#ccTablePlan .hot-spot .tooltip h4 {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ffffff;
+    font-size: 16px;
+}
+
+#ccTablePlan .hot-spot .tooltip p {
+    font-size: 14px;
+    line-height: 1.4em;
+    margin-bottom: 10px;
+}
+
+#ccTablePlan .hot-spot .tooltip p:last-child {
+    margin-bottom: 0;
+}
+
+#ccTablePlan .avatar-container {
+    list-style: none;
+    padding-left: 0;
+}
+
+#ccTablePlan .avatar-container .avatar {
+    vertical-align: middle;
+    align-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-width: 10px;
+}
