@@ -205,8 +205,8 @@ function cc_enqueue_ui_scripts() {
 // This runs id the shortcde is loaded on the page.
 
 function clubcloud_init() {
+	wp_register_script( 'cc-ui-script', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js', [ 'jquery' ], null, true );
 	wp_register_script( 'join-script', plugins_url( 'js/clubcloud-video.js', __FILE__ ), [ 'jquery' ], null, true );
-	wp_register_script( 'cc-ui-script', plugins_url( 'js/jquery-confirm.js', __FILE__ ), [ 'jquery' ], null, true );
 	wp_register_script( 'cc_lightbox', plugins_url( 'js/videoLightning.js', __FILE__ ), [ 'jquery' ], null, true );
 	wp_register_script( 'cc_reception', plugins_url( 'js/clubcloud-reception.js', __FILE__ ), [ 'jquery' ], null, true );
 	add_action( 'wp_enqueue_scripts', 'enqueue_scripts_front_end' );
@@ -219,7 +219,7 @@ function clubcloud_init() {
 			wp_schedule_event( time(), 'sixty_seconds', 'bl_clubcloud_dbmaint' );
 		}
 
-	};
+	}
 }
 
 
@@ -246,11 +246,7 @@ function clubcloud_shortcode( $atts ) {
 		wp_enqueue_script( 'cc_lightbox' );
 	}
 
-	if ( $atts['cc_enable_cart'] == true ) {
-		$cc_cartenable = 'yes';
-	} else {
-		$cc_cartenable = 'no';
-	}
+	$cc_cartenable = $atts['cc_enable_cart'];
 
 	if ( is_user_logged_in() == true && $atts['auth'] == true ) {             // 1 Auth = true is set in the shortcode and the user is logged in
 		$enabledrag = true;
@@ -293,7 +289,7 @@ function clubcloud_shortcode( $atts ) {
 	wp_enqueue_script( 'cc-ui-script' );
 
 	wp_enqueue_style( "cc-table-plan", plugins_url( 'css/table-plan.css', __FILE__ ) );
-	wp_enqueue_style( "cc-ui-style", plugins_url( 'css/jquery-confirm.css', __FILE__ ) );
+	wp_enqueue_style( "cc-ui-style", 'https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css' );
 
 	wp_enqueue_script( 'connect-js', esc_url( trailingslashit( get_option( 'clubcloud_url' ) ) ) . 'external_api.js', false );
 	wp_localize_script( 'join-script', 'wpApiSettings', [                                  // this sets wpApiSettings.variable in the browser client for later use
@@ -312,76 +308,106 @@ function clubcloud_shortcode( $atts ) {
 		$atts['cc_event_id'] = $user_info->user_login;                                         // sets the event id = the logged in user when 'username' is used in the short code
 	}
 
-	return '<div id="clubcloud_shortcode"  auth="' . $atts['auth'] . '" cc_is_reception="' . $atts['cc_is_reception'] . '" cc_receptionimage="' . $atts['cc_receptionimage'] . '" cc_enable_lobby="' . $atts['cc_enable_lobby'] . '" cc_plan_id="' . $atts['cc_plan_id'] . '" cc_event_id="' . $atts['cc_event_id'] . '" width="' . $atts['width'] . '" height="' . $atts['height'] . '" ></div>';
+	$hashArguments = [
+		'secret'       => get_option( 'clubcloud_web_token_key' ),
+		'lobbyEnabled' => $atts['cc_enable_lobby'],
+		'planId'       => $atts['cc_plan_id'],
+		'eventId'      => $atts['cc_event_id']
+	];
+	$password      = hash( 'sha256', json_encode( $hashArguments ) );
+
+	if ( $atts['cc_enable_lobby'] ) {
+		$atts['cc_event_id'] .= '-' . $password;
+	}
+
+	return '
+        <div 
+            id="clubcloud_shortcode"  
+            data-auth="' . $atts['auth'] . '" 
+            data-cc_is_reception="' . $atts['cc_is_reception'] . '" 
+            data-cc_receptionimage="' . $atts['cc_receptionimage'] . '" 
+            data-cc_enable_lobby="' . $atts['cc_enable_lobby'] . '" 
+            data-cc_plan_id="' . $atts['cc_plan_id'] . '" 
+            data-cc_event_id="' . $atts['cc_event_id'] . '" 
+            data-password="' . $password . '"
+            width="' . $atts['width'] . '" 
+            height="' . $atts['height'] . '" 
+        ></div>';
 } // above returnes the shortcode for the page with all the correct variable set in both the browser as well, as the server
+
+function getAvatar( $user ) {
+	if ( function_exists( bp_core_fetch_avatar ) ) {
+		$url = bp_core_fetch_avatar( [
+			'item_id' => $user->Id,
+			'html'    => false,
+			'type'    => 'full'
+		] );
+	} else {
+		$url = 'https://www.gravatar.com/avatar/' . md5( strtolower( trim( $user->user_email ) ) );
+	}
+
+	return $url;
+}
 
 // the following code is called by the browser to connect the user to a video conf
 function set_connectdata() {
-    try {
-	    $cc_room_id      = $_POST['table_id'];                                               // the actual id of the conf either set by 'username', manually, or set by code eexcuted on freds switch
-	    $cc_auth         = $_POST['auth'];                                                      // whther the Auth switch on the shortcode is set or not
-	    $cc_token        = $_POST['temptoken'];                                                // If a user is being moved from one user conf to another this is passed as security and validated later in the code (used if a guest is to be made a moderator)
-	    $cc_jid_coll     = $_POST['currentjid'];                                            // this is the conferance id of the user as a hash generated by the video platform for the user and the conferance id formatted id@confid
-	    $cc_userlogin    = cc_encidenc( $_POST['envelope'], 'dec', 86400 );                    // this is the decrypted profile token of the user to get username cc_encidenc is described in detail below
-	    $cc_video_domain = parse_url( esc_url( trailingslashit( get_option( 'clubcloud_url' ) ) ) );     //parces the video server url from the settings admin page
-	    if ( is_object( $cc_userlogin ) == true ) {                                                         //validates the decrypted login information if returned false the toke is stale or failed decryption
-		    $cc_userdata = $cc_userlogin;
-		    $cc_username = $cc_userdata->username;
-		    $cc_usertype = $cc_userdata->usertype;
-		    if ( $cc_usertype == 'Owner' ) {                                                                    // processing starts for the meeting owners
-			    $user           = get_user_by( 'login', $cc_username );                                                // as we got the username from the token we get the wp user by using the login
-			    $connect_data[] = [                                                                    // sets up the connection data for the browser to connect to the conf
-				    'displayname' => $cc_username,
-				    'jwt'         => cc_get_jwt( $cc_room_id, $cc_username ),
-				    'videodomain' => $cc_video_domain['host'],
-				    'mailaddy'    => $user->user_email,
-//				    'myavatar'    => bp_core_fetch_avatar( [
-//					    'item_id' => $user->ID,
-//					    'html'    => false,
-//					    'type'    => 'full'
-//				    ] )
-			    ];
-			    $cc_flag        = 'Owner';
-		    } else {
-			    if ( $cc_username == 'GuestUser' ) {                                                              // sets the connection data for a guest
-				    $connect_data[] = [
-					    'displayname' => 'GuestUser',
-					    'jwt'         => null,
-					    'videodomain' => $cc_video_domain['host']
-				    ];
-			    } else {
-				    $user           = get_user_by( 'login', $cc_username );                                            // sets the connection data for guest user that is logged in.
-				    $connect_data[] = [
-					    'displayname' => $cc_username,
-					    'videodomain' => $cc_video_domain['host'],
-					    'jwt'         => null,
-					    'mailaddy'    => $user->user_email,
-					    'myavatar'    => bp_core_fetch_avatar( [
-						    'item_id' => $user->ID,
-						    'html'    => false,
-						    'type'    => 'full'
-					    ] )
-				    ];
-			    }
-		    }
-		    if ( $cc_token == 'empty' ) {                                         // this gets a place holder set in the client where it is the first connection made
-			    wp_send_json( $connect_data );                                                                // sends the user connectin data
-		    } elseif ( cc_encidenc( $cc_token, 'dec', 600 ) == $cc_jid_coll ) {                                    // this validates  the temporary key issued below if the user is being moved with moderator rights
-			    $connect_data[0]['jwt'] = cc_get_jwt( $cc_room_id, $cc_username );                         // this issues a java web token for the guest user if they are to be a moderator
-			    wp_send_json( $connect_data );
-		    } elseif ( cc_encidenc( $cc_token, 'dec', 600 ) == $cc_room_id ) {
-			    $connect_data[0]['jwt'] = cc_get_jwt( $cc_room_id, $cc_username );
-			    wp_send_json( $connect_data );
-		    } else {
-			    wp_send_json( $connect_data );
-		    }
+	try {
+		$cc_room_id      = $_POST['table_id'];                                               // the actual id of the conf either set by 'username', manually, or set by code eexcuted on freds switch
+		$cc_auth         = $_POST['auth'];                                                      // whther the Auth switch on the shortcode is set or not
+		$cc_token        = $_POST['temptoken'];                                                // If a user is being moved from one user conf to another this is passed as security and validated later in the code (used if a guest is to be made a moderator)
+		$cc_jid_coll     = $_POST['currentjid'];                                            // this is the conferance id of the user as a hash generated by the video platform for the user and the conferance id formatted id@confid
+		$cc_userlogin    = cc_encidenc( $_POST['envelope'], 'dec', 86400 );                    // this is the decrypted profile token of the user to get username cc_encidenc is described in detail below
+		$cc_video_domain = parse_url( esc_url( trailingslashit( get_option( 'clubcloud_url' ) ) ) );     //parces the video server url from the settings admin page
+		if ( is_object( $cc_userlogin ) == true ) {                                                         //validates the decrypted login information if returned false the toke is stale or failed decryption
+			$cc_userdata = $cc_userlogin;
+			$cc_username = $cc_userdata->username;
+			$cc_usertype = $cc_userdata->usertype;
+			if ( $cc_usertype == 'Owner' ) {                                                                    // processing starts for the meeting owners
+				$user           = get_user_by( 'login', $cc_username );                                                // as we got the username from the token we get the wp user by using the login
+				$connect_data[] = [                                                                    // sets up the connection data for the browser to connect to the conf
+					'displayname' => $cc_username,
+					'jwt'         => cc_get_jwt( $cc_room_id, $cc_username ),
+					'videodomain' => $cc_video_domain['host'],
+					'mailaddy'    => $user->user_email,
+					'myavatar'    => getAvatar( $user )
+				];
+				$cc_flag        = 'Owner';
+			} else {
+				if ( $cc_username == 'GuestUser' ) {                                                              // sets the connection data for a guest
+					$connect_data[] = [
+						'displayname' => 'GuestUser',
+						'jwt'         => null,
+						'videodomain' => $cc_video_domain['host']
+					];
+				} else {
+					$user           = get_user_by( 'login', $cc_username );                                            // sets the connection data for guest user that is logged in.
+					$connect_data[] = [
+						'displayname' => $cc_username,
+						'videodomain' => $cc_video_domain['host'],
+						'jwt'         => null,
+						'mailaddy'    => $user->user_email,
+						'myavatar'    => getAvatar( $user )
+					];
+				}
+			}
+			if ( $cc_token == 'empty' ) {                                         // this gets a place holder set in the client where it is the first connection made
+				wp_send_json( $connect_data );                                                                // sends the user connectin data
+			} elseif ( cc_encidenc( $cc_token, 'dec', 600 ) == $cc_jid_coll ) {                                    // this validates  the temporary key issued below if the user is being moved with moderator rights
+				$connect_data[0]['jwt'] = cc_get_jwt( $cc_room_id, $cc_username );                         // this issues a java web token for the guest user if they are to be a moderator
+				wp_send_json( $connect_data );
+			} elseif ( cc_encidenc( $cc_token, 'dec', 600 ) == $cc_room_id ) {
+				$connect_data[0]['jwt'] = cc_get_jwt( $cc_room_id, $cc_username );
+				wp_send_json( $connect_data );
+			} else {
+				wp_send_json( $connect_data );
+			}
 
 
-	    }
+		}
 
-    } catch (\Exception $e) {
-        var_dump($e);
-    }
+	} catch ( Exception $e ) {
+		var_dump( $e );
+	}
 
 	wp_die();
 
@@ -424,60 +450,58 @@ function cc_get_jwt( $cc_roomname, $cc_user ) {
 // the following function is called on the heartbeat of the client -- it collects the information from the video platform and delivers any data required by the client to the client
 function cc_get_connectiondata() {
 
-    try {
-	    $cc_received_data  = $_POST['table_list'];                                           //collects the information from the client (list of tables on the age and if the client is connected to a conf the id as above)
-	    $cc_connection_id  = $_POST['connection_id'];
-	    $cc_envelope_cover = cc_encidenc( $_POST['envelope'], 'dec', 86000 );                   // decrypts the user envelope/ profile data
+	try {
+		$cc_received_data  = $_POST['table_list'];                                           //collects the information from the client (list of tables on the age and if the client is connected to a conf the id as above)
+		$cc_connection_id  = $_POST['connection_id'];
+		$cc_envelope_cover = cc_encidenc( $_POST['envelope'], 'dec', 86000 );                   // decrypts the user envelope/ profile data
 
-	    if ( $cc_envelope_cover !== false ) {                                                   // validaes the user profile before continueing
+		if ( $cc_envelope_cover !== false ) {                                                   // validaes the user profile before continueing
 
-		    if ( $cc_connection_id != 'Starting' ) {                                                         // checks to see if this is the first connection from the user on the page
-			    $cc_moveto = cc_route( $cc_connection_id );                                                // this checks to see if the call has been queued for routing
-			    if ( $cc_moveto != false ) {                                                                 // routes/moves the call if required
-				    wp_send_json( $cc_moveto );
-			    }
-		    }
-		    $clubcloud_url = parse_url( get_option( 'clubcloud_url' ) );
+			if ( $cc_connection_id != 'Starting' ) {                                                         // checks to see if this is the first connection from the user on the page
+				$cc_moveto = cc_route( $cc_connection_id );                                                // this checks to see if the call has been queued for routing
+				if ( $cc_moveto != false ) {                                                                 // routes/moves the call if required
+					wp_send_json( $cc_moveto );
+				}
+			}
+			$clubcloud_url = parse_url( get_option( 'clubcloud_url' ) );
 
-		    // If we didn't receive our data, don't send any back.
-		    if ( isset( $cc_received_data ) ) {
-			    //this gets the current ---live--- call data from the video platform -- the code is stored i the /usr/share/jitsi-meet/prosody-plugins/mod_muc_status.lua -- this file is also stored in development folder on sharepoint
-			    foreach ( $cc_received_data as $table_i ) {
-				    $allparticipants = [];
-				    $json            = file_get_contents( 'http://' . $clubcloud_url['host'] . ':5280/roomdata?room=' . $table_i . '@conference.' . $clubcloud_url['host'] );   // builds the json data to be sent to the client
-				    $table_data_i    = json_decode( $json );
-				    foreach ( $table_data_i as $participant ) {
-					    $user     = get_user_by( 'login', $participant->display_name );
-					    $basicjid = explode( '/', $participant->jid )[1] . '@' . $table_i;
+			// If we didn't receive our data, don't send any back.
+			if ( isset( $cc_received_data ) ) {
+				//this gets the current ---live--- call data from the video platform -- the code is stored i the /usr/share/jitsi-meet/prosody-plugins/mod_muc_status.lua -- this file is also stored in development folder on sharepoint
+				foreach ( $cc_received_data as $table_i ) {
+					$allparticipants = [];
+					$json            = file_get_contents( 'http://prosody.jitsi-meet.svc.cluster.local:5280/roomdata?room=' . $table_i . '@conference.' . $clubcloud_url['host'] );   // builds the json data to be sent to the client
+					$table_data_i    = json_decode( $json );
 
-					    $allparticipants[] = [
-						    'RoomName'    => $table_i,
-						    'JiD'         => $basicjid,
-						    'DisplayName' => $participant->display_name,
-						    'Role'        => $participant->role,
-						    'AvatarUrl'   => bp_core_fetch_avatar( [
-							    'item_id' => $user->id,
-							    'html'    => false
-						    ] )
-					    ];
-				    }
-				    $myrooms[] = [
-					    'currentuser'  => $cc_connection_id,
-					    'RoomName'     => $table_i,
-					    'Participants' => $allparticipants
-				    ];
-			    }
-			    $response = $myrooms;
-		    } else {
-			    $response = 'Failed';
-		    }
-		    wp_send_json( $myrooms );                                 //sends the current live data for the map to the client
-	    }
-	    echo 'Failed';
-	    wp_die();
-    } catch (\Exception $e) {
-        var_dump($e);
-    }
+					foreach ( $table_data_i as $participant ) {
+						$user     = get_user_by( 'login', $participant->display_name );
+						$basicjid = explode( '/', $participant->jid )[1] . '@' . $table_i;
+
+						$allparticipants[] = [
+							'RoomName'    => $table_i,
+							'JiD'         => $basicjid,
+							'DisplayName' => $participant->display_name,
+							'Role'        => $participant->role,
+							'AvatarUrl'   => getAvatar( $user )
+						];
+					}
+					$myrooms[] = [
+						'currentuser'  => $cc_connection_id,
+						'RoomName'     => $table_i,
+						'Participants' => $allparticipants
+					];
+				}
+				$response = $myrooms;
+			} else {
+				$response = 'Failed';
+			}
+			wp_send_json( $myrooms );                                 //sends the current live data for the map to the client
+		}
+		echo 'Failed';
+		wp_die();
+	} catch ( Exception $e ) {
+		var_dump( $e );
+	}
 }
 
 // this disables the lobby for a moderator before they join a call the code is in the same file as above
@@ -487,8 +511,6 @@ function cc_lobbycheck( $room_id ) {
 
 	return;
 }
-
-;
 
 
 //this is called from the client it lists all the users conected to the platform and where required sends the move user to a new conferance commands
@@ -530,7 +552,7 @@ function cc_route( $cc_current_call_id ) {
 			'activemeeting' => $room_id
 		];
 		$wpdb->insert( $cc_table_name, $cc_insert_call_data, [ '%s', '%d', '%s' ] );
-	};
+	}
 
 	return false;
 }
@@ -549,7 +571,7 @@ function cc_set_route() {
 	];
 	$wpdb->update( $cc_table_name, $move_update, [ 'username_jid' => $cc_move_user ] );
 	echo 'Success';
-	wp_die();;
+	wp_die();
 }
 
 // this sets up a data cleanup cron for 60 seconds
@@ -587,7 +609,7 @@ function bl_clubcloud_dbmaint_exec() {
 	$cc_table_name = $wpdb->prefix . 'cc_live_call_data';
 	$timedel       = time() - 300;
 	$lastactive    = time() - 300;
-	$query         = $wpdb->prepare( "SELECT * FROM ".$cc_table_name." WHERE lastactive < %s", [$lastactive] );
+	$query         = $wpdb->prepare( "SELECT * FROM " . $cc_table_name . " WHERE lastactive < %s", [ $lastactive ] );
 	$result        = $wpdb->get_results( $query, ARRAY_A );
 	foreach ( $result as $li ) {
 		$cc_del_line = [
@@ -599,7 +621,7 @@ function bl_clubcloud_dbmaint_exec() {
 	$wpdb->delete( $cc_table_name, $cc_del_line, [ '%d' ] );
 	$cc_table_name = $wpdb->prefix . 'cc_live_queue';
 	$lastactive    = time() - 30;
-	$query         = $wpdb->prepare( "SELECT * FROM ".$cc_table_name." WHERE lastactive < %s", [$lastactive] );
+	$query         = $wpdb->prepare( "SELECT * FROM " . $cc_table_name . " WHERE lastactive < %s", [ $lastactive ] );
 	$result        = $wpdb->get_results( $query, ARRAY_A );
 	foreach ( $result as $li ) {
 		$cc_del_line = [
@@ -712,14 +734,14 @@ function cc_call_queue() {
 	$cc_guest_name = $_POST['cc_guest_name'];
 	global $wpdb;
 	$cc_table_name = $wpdb->prefix . 'cc_live_queue';
-	$qdata         = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ".$cc_table_name." WHERE id = %s", [$dbid] ) );
+	$qdata         = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . $cc_table_name . " WHERE id = %s", [ $dbid ] ) );
 	if ( $qdata != null ) {
 		if ( $qdata->moved === null ) {                              // check if the user is to me moved and then execute otherwise just update the timestamp
 			$cc_dt_update = [
 				'lastactive' => time()
 			];
 			$wpdb->update( $cc_table_name, $cc_dt_update, [ 'id' => $qdata->id ] );       //if the user is to be moved then queue to the database
-			$query      = $wpdb->prepare( "SELECT * FROM ".$cc_table_name." WHERE callkey = %s ORDER BY id ASC", [$cc_callkey] );
+			$query      = $wpdb->prepare( "SELECT * FROM " . $cc_table_name . " WHERE callkey = %s ORDER BY id ASC", [ $cc_callkey ] );
 			$result     = $wpdb->get_results( $query, ARRAY_A );
 			$key        = array_search( $dbid, array_column( $result, 'id' ) );
 			$returndata = [
@@ -760,13 +782,13 @@ function cc_call_queue() {
 			'guestname'  => $cc_guest_name
 		];
 		$wpdb->insert( $cc_table_name, $cc_insert_call_data, [ '%s', '%d', '%s' ] );
-		$returndata       = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ".$cc_table_name." WHERE lastactive = %s", [$lastactive] ) );
+		$returndata       = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . $cc_table_name . " WHERE lastactive = %s", [ $lastactive ] ) );
 		$cc_return_update = [
 			'action' => 'insert',
 			'dbid'   => $returndata->id,
 		];
 		wp_send_json( $cc_return_update );
-	};
+	}
 
 	wp_die();
 }
@@ -782,7 +804,7 @@ function cc_get_call_queue() {
 	$cc_call_q = $_POST['callkey'];
 	global $wpdb;
 	$cc_table_name = $wpdb->prefix . 'cc_live_queue';
-	$query         = $wpdb->prepare( "SELECT id,guestname FROM ".$cc_table_name." WHERE callkey = '%s'", [$cc_call_q] );
+	$query         = $wpdb->prepare( "SELECT id,guestname FROM " . $cc_table_name . " WHERE callkey = '%s'", [ $cc_call_q ] );
 	$qdata         = $wpdb->get_results( $query, ARRAY_A );
 	$returndata    = [];
 	foreach ( $qdata as $ccitem ) {

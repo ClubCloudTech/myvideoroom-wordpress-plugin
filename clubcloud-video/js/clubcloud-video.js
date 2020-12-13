@@ -1,3 +1,5 @@
+/*global jQuery, wpApiSettings, JitsiMeetExternalAPI*/
+
 var $ = jQuery.noConflict();
 
 $(document).ready(function () {
@@ -5,14 +7,15 @@ $(document).ready(function () {
         $clubCloudReceptionShortCode = $('#club_reception_shortcode'),
         $body = $('body'),
 
-        ccIsReception = $clubCloudShortCode.attr('cc_is_reception'),
-        eventPrefix = $clubCloudShortCode.attr('cc_event_id') + '-',
-        ccAuth = $clubCloudShortCode.attr('auth'),
-        ytUrl = $clubCloudShortCode.attr('yt_url'),
+        ccIsReception = $clubCloudShortCode.data('cc_is_reception'),
+        eventPrefix = $clubCloudShortCode.data('cc_event_id') + '-',
+        ccAuth = $clubCloudShortCode.data('auth'),
+        ytUrl = $clubCloudShortCode.data('yt_url'),
+        planId = $clubCloudShortCode.data('cc_plan_id'),
 
-        floorPlanFile = wpApiSettings.floorplan + $clubCloudShortCode.attr('cc_plan_id') + '.gif',
-        tableDataMap = wpApiSettings.floorplan + $clubCloudShortCode.attr('cc_plan_id') + '.json',
-        cartcCnnect = wpApiSettings.enablecart,
+        floorPlanFile = wpApiSettings.floorplan + planId + '.gif',
+        tableDataMap = wpApiSettings.floorplan + planId + '.json',
+        cartEnabled = wpApiSettings.enablecart,
 
         ccQueueId = null,
         ccQueuePosition = null,
@@ -30,7 +33,7 @@ $(document).ready(function () {
 
     $body.delegate(".launchtable", "click", function () {
         var connectTableNumber = $(this).attr('id');
-        connectmeeting(connectTableNumber.toLowerCase(), connectTableNumber, 'empty')
+        connectmeeting(connectTableNumber, 'empty')
 
     });
 
@@ -40,15 +43,15 @@ $(document).ready(function () {
 
     });
 
-    buildpage()
+    buildPage()
 
     jconfirm.defaults = {
         boxWidth: '500px',
         useBootstrap: false,
-        draggable: true,
+        draggable: true
     }
 
-    function connectmeeting(room, subject, cc_token) {
+    function connectmeeting(room, cc_token) {
         //alert(connection_id_var)
         if (currentRoom !== room) {
             if (isRunning && typeof (api) !== 'undefined') {
@@ -65,74 +68,66 @@ $(document).ready(function () {
                     auth: ccAuth,
                     envelope: wpApiSettings.envelope,
                     temptoken: cc_token,
-                    currentjid: connectionIDVar,
+                    currentjid: connectionIDVar
                 },
                 success: function (response) {
                     //alert(response)
-                    startvideo(room, subject, response[0])
+                    startvideo(room, response[0])
                 }
             });
         }
     }
 
 
-    function startvideo($roomname, $subject, $connection) {
+    function startvideo($roomname, $connection) {
         ccUsername = $connection.displayname;
-        userName = $connection.displayname;
-        userEmail = $connection.mailaddy ?? null;
-        domain = $connection.videodomain;
-        roomName = $roomname;
-        jwt = $connection.jwt;
-        myAvatar = $connection.myavatar ?? null;
-        lobby = $clubCloudShortCode.attr('cc_enable_lobby');
-        height = $clubCloudShortCode.attr('height');
-        width = $clubCloudShortCode.attr('width');
-        var options = {};
+        var userName = $connection.displayname,
+            userEmail = $connection.mailaddy ?? null,
+            domain = $connection.videodomain,
+            password = $clubCloudShortCode.data('password'),
+            roomName = $roomname.toLowerCase(),
+            jwt = $connection.jwt,
+            myAvatar = $connection.myavatar ?? null,
+            lobby = $clubCloudShortCode.data('cc_enable_lobby'),
+            height = $clubCloudShortCode.attr('height'),
+            width = $clubCloudShortCode.attr('width'),
+            options = {};
+
+        if (lobby) {
+            // this logic is all backwards!
+            $roomname = roomName.replace('-' + password, '');
+        }
 
         roomName ? options.roomName = roomName : null;
         jwt ? options.jwt = jwt : null;
         userName || userEmail ? options.userInfo = {} : null;
         userName ? options.userInfo.displayName = userName : null;
         userEmail ? options.userInfo.email = userEmail : null;
-        options.parentNode = document.getElementById('TableVideo')
+        options.parentNode = $('#TableVideo')[0]
         height ? options.height = height : null;
         width ? options.width = width : null;
         var api = new JitsiMeetExternalAPI(domain, options);
         currentRoom = roomName
-        api.addEventListener('videoConferenceJoined', function (connectiondata) {
-            connectionIDVar = connectiondata.id + '@' + connectiondata.roomName
+        api.addEventListener('videoConferenceJoined', function (connectionData) {
+            connectionIDVar = connectionData.id + '@' + connectionData.roomName
         })
 
         userName ? api.executeCommand('displayName', userName) : null;
+
         api.executeCommand("avatarUrl", myAvatar);
-        api.executeCommand("subject", $subject);
+        api.executeCommand("subject", $roomname);
+
+        api.on('passwordRequired', function () {
+            api.executeCommand('password', password);
+        });
+
         api.addEventListener("participantRoleChanged", function (event) {
-
-            var password = 'password';
-
             if (event.role === 'moderator') {
-                // api.executeCommand('password', password);
-
-                if (lobby === "true") {
+                if (lobby) {
                     api.executeCommand("toggleLobby", true);
+                } else {
+                    api.executeCommand('password', password);
                 }
-            } else {
-                // setTimeout(function () {
-                //     // why timeout: I got some trouble calling event listeners without setting a timeout :)
-                //
-                //     // when local user is trying to enter in a locked room
-                //     api.addEventListener('passwordRequired', function () {
-                //         api.executeCommand('password', password);
-                //     });
-                //
-                //     // when local user has joined the video conference
-                //     api.addEventListener('videoConferenceJoined', function () {
-                //         setTimeout(function () {
-                //             api.executeCommand('password', password);
-                //         }, 0);
-                //     });
-                //
-                // }, 0);
             }
         });
 
@@ -151,13 +146,11 @@ $(document).ready(function () {
     }
 
 
-    function buildpage() {
-        $clubCloudShortCode.append('<div id="MainColumns" style="width:100%"></div>')
-        mainwidth = ($('#MainColumns').width() / 2) - 1;
-        $('#MainColumns').append('<div id="TableVideo"></div>')
+    function buildPage() {
+        $clubCloudShortCode.append('<div id="MainColumns" style="width:100%"><div id="TableVideo"></div></div>')
         $clubCloudShortCode.append('<div id="ccTablePlan" class="responsive-hotspot-wrap" ></div>')
-        if (ccIsReception == 'true') {
-            $('#ccTablePlan').append('<div class="video-link" data-video-id="y-9Auq9mYxFEE"><img id ="ReceptionImage" src="' + wpApiSettings.floorplan + $clubCloudShortCode.attr('cc_receptionimage') + '" class="img-responsive"></img></div>')
+        if (ccIsReception) {
+            $('#ccTablePlan').append('<div class="video-link" data-video-id="y-9Auq9mYxFEE"><img alt="" id ="ReceptionImage" src="' + wpApiSettings.floorplan + $clubCloudShortCode.data('cc_receptionimage') + '" class="img-responsive" /></div>')
             videoLightning({
                 elements: [
                     {
@@ -190,17 +183,17 @@ $(document).ready(function () {
                             }
                             $.alert({
                                 title: 'Hi there ' + ccQueueName,
-                                content: 'You are in the queue please enjoy some tv while you wait just click the screen',
+                                content: 'You are in the queue please enjoy some tv while you wait just click the screen'
                             });
                             if (normInterval == null) {
-                                setInterval(cc_queue, 7500)
+                                setInterval(ccQueue, 7500)
                             }
 
                         }
                     },
                     cancel: function () {
                         //close
-                    },
+                    }
                 },
                 onContentReady: function () {
                     // bind to events
@@ -214,19 +207,19 @@ $(document).ready(function () {
             });
 
         } else {
-            $('#ccTablePlan').append('<img id ="FloorPlanImage" src="' + floorPlanFile + '" class="img-responsive"></img>')
+            $('#ccTablePlan').append('<img alt="" id ="FloorPlanImage" src="' + floorPlanFile + '" class="img-responsive" />')
             if (ytUrl != null) {
-                $('#KeynoteVideo').append('<iframe src="' + ytUrl + '" frameborder="0" allowfullscreen ></iframe>')
+                $('#KeynoteVideo').append('<iframe src="' + ytUrl + '" allowfullscreen ></iframe>')
             }
             $.getJSON(tableDataMap, function (results) {
                 $.each(results, function (i, table) {
                     $('#ccTablePlan').append('<div id="' + eventPrefixLower + table.TableName.toLowerCase() + '" class="launchtable"></div>')
-                    currtable = '#' + eventPrefixLower + table.TableName.toLowerCase()
-                    ccTableArray.push(currtable.replace('#', ''))
+                    var currentTable = '#' + eventPrefixLower + table.TableName.toLowerCase()
+                    ccTableArray.push(currentTable.replace('#', ''))
                     $.each(table.Seating, function (b, seats) {
-                        $(currtable).append('<div id="' + eventPrefixLower + table.TableName.toLowerCase() + seats.Seat.toLowerCase() + '" class="hot-spot" Style="top:' + seats.ypc + ';left:' + seats.xpc + '"><div class="circle"></div><div id="' + eventPrefixLower + table.TableName.toLowerCase() + seats.Seat.toLowerCase() + 'tip" class="tooltip">' + seats.Seat + '</div>')
+                        $(currentTable).append('<div id="' + eventPrefixLower + table.TableName.toLowerCase() + seats.Seat.toLowerCase() + '" class="hot-spot" Style="top:' + seats.ypc + ';left:' + seats.xpc + '"><div class="circle"></div><div id="' + eventPrefixLower + table.TableName.toLowerCase() + seats.Seat.toLowerCase() + 'tip" class="tooltip">' + seats.Seat + '</div>')
 
-                        dropseat = '#' + eventPrefixLower + table.TableName.toLowerCase() + seats.Seat.toLowerCase()
+                        var dropseat = '#' + eventPrefixLower + table.TableName.toLowerCase() + seats.Seat.toLowerCase()
                         $(dropseat).droppable({
                             drop: personmoved
                         });
@@ -235,28 +228,25 @@ $(document).ready(function () {
             });
 
             if (normInterval == null) {
-                setInterval(cc_queue, 7500)
+                setInterval(ccQueue, 7500)
             }
         }
 
     }
 
-    function cc_queue_display() {
+    function ccQueueDisplay() {
         $.confirm({
             title: 'Queue Status',
             content: 'You are number ' + ccQueuePosition + ' in the queue',
             autoClose: 'Close|5000',
             buttons: {
-                Close: function () {
-                }
-            },
+                close: function () {}
+            }
         })
     }
 
-    function cc_queue() {
-        if (ccIsReception == 'true') {
-
-            //alert(ccQueueName)
+    function ccQueue() {
+        if (ccIsReception) {
             $.ajax({
                 url: wpApiSettings.ajax_url,
                 type: 'post',
@@ -265,13 +255,13 @@ $(document).ready(function () {
                     event_id: eventPrefixLower,
                     cc_guest_name: ccQueueName,
                     qid: ccQueueId,
-                    envelope: wpApiSettings.envelope,
+                    envelope: wpApiSettings.envelope
                 },
                 success: function (response) {
                     switch (response.action) {
                         case 'insert':
                             ccQueueId = response.dbid
-                            qDisplayInetValid = setInterval(cc_queue_display, 45000)
+                            qDisplayInetValid = setInterval(ccQueueDisplay, 45000)
                             break;
                         case 'update':
                             ccQueuePosition = response.qpos + 1
@@ -280,8 +270,8 @@ $(document).ready(function () {
                             ccIsReception = 'false'
                             $('#ccTablePlan').empty()
                             clearInterval(qDisplayInetValid);
-                            buildpage()
-                            connectmeeting(response.move, response.move, response.temptoken)
+                            buildPage()
+                            connectmeeting(response.move, response.temptoken)
                             break;
 
                     }
@@ -297,12 +287,12 @@ $(document).ready(function () {
                     action: 'cc_get_connectiondata',
                     table_list: ccTableArray,
                     connection_id: connectionIDVar,
-                    envelope: wpApiSettings.envelope,
+                    envelope: wpApiSettings.envelope
                 },
                 success: function (response) {
                     if (response.move) {
 
-                        connectmeeting(response.move, response.move, response.temptoken)
+                        connectmeeting(response.move, response.temptoken)
 
 
                     }
@@ -313,33 +303,41 @@ $(document).ready(function () {
 
                     $.each(response, (function (h, tableentry) {
                         // if(tableentry.currentuser != 1 ){alert(tableentry.currentuser)}
-                        currtable = tableentry.RoomName
-                        $.each(tableentry.Participants, (function (j, seatentry) {
-                            seatno = j + 1
-                            currentseat = '#' + tableentry.RoomName + 'seat' + seatno
-                            if (seatentry.AvatarUrl) {
-                                partyavatarurl = seatentry.AvatarUrl
-                                currentdisplayname = seatentry.DisplayName
+                        var currentTable = tableentry.RoomName
+                        $.each(tableentry.Participants, (function (j, seatEntry) {
+                            var seatNumber = j + 1,
+                                currentSeat = '#' + tableentry.RoomName + 'seat' + seatNumber,
+                                currentSeatTip = currentSeat + 'tip',
+                                partyAvatarURL,
+                                currentDisplayName;
 
+                            if (seatEntry.AvatarUrl) {
+                                partyAvatarURL = seatEntry.AvatarUrl
+                                currentDisplayName = seatEntry.DisplayName
                             } else {
-                                partyavatarurl = wpApiSettings.floorplan + 'guest.jpg'
-                                currentdisplayname = "GuestUser"
+                                partyAvatarURL = wpApiSettings.floorplan + 'guest.jpg'
+                                currentDisplayName = "GuestUser"
                             }
 
-                            currentseattip = currentseat + 'tip'
-                            $(currentseat).css('background-image', 'url("' + partyavatarurl + '")')
-                            $(currentseat).attr('jid', seatentry.JiD)
+                            $(currentSeat).css('background-image', 'url("' + partyAvatarURL + '")')
+                            $(currentSeat).data('jid', seatEntry.JiD)
                             if (wpApiSettings.dragenabled) {
-                                $(currentseat).draggable({
+                                $(currentSeat).draggable({
                                     containment: '#ccTablePlan',
                                     cursor: 'move',
-                                    helper: 'clone',
+                                    helper: 'clone'
                                 });
 
                             }
-                            $(currentseattip).html('<span class="avatar-container"><img src="' + partyavatarurl + '" class="avatar"/><p>' + currentdisplayname + '</p></span>')
-                            if (cartcCnnect == 'yes' && wpApiSettings.dragenabled && connectionIDVar != seatentry.JiD && currtable == connectionIDVar.split('@')[1]) {
-                                $(currentseattip).append('<p>Request Control of this users cart</p><button id="' + seatentry.JiD + '" class="accessreq" type="button">Access Cart</button>')
+                            $(currentSeatTip).html('<span class="avatar-container"><img alt="" src="' + partyAvatarURL + '" class="avatar"/><p>' + currentDisplayName + '</p></span>')
+
+                            if (
+                                cartEnabled &&
+                                wpApiSettings.dragenabled &&
+                                connectionIDVar !== seatEntry.JiD &&
+                                currentTable === connectionIDVar.split('@')[1]
+                            ) {
+                                $(currentSeatTip).append('<p>Request Control of this users cart</p><button id="' + seatEntry.JiD + '" class="accessreq" type="button">Access Cart</button>')
 
                             }
                         }))
@@ -347,41 +345,23 @@ $(document).ready(function () {
 
                 }
             })
-            if (ccHasReceptionSC == true) {
+            if (ccHasReceptionSC === true) {
                 get_q_data()
             }
         }
-
-
     }
 
-    function cc_route_connected(jid, room_id) {
-        $.ajax({
-            url: wpApiSettings.ajax_url,
-            type: 'post',
-            data: {
-                action: 'cc_callroute',
-                table_id: room_id,
-                jidnumber: jid,
-                envelope: wpApiSettings.envelope,
-            },
-            success: function (response) {
-                wpApiSettings.jid = jid
-            }
-        });
-
-    }
 
     function personmoved(event, ui) {
         if (ui.draggable.attr('id').startsWith('userid-')) {
-            cc_draggableid = '#' + ui.draggable.attr('id')
-            cc_dragged_user_qid = ui.draggable.attr('id').split('-')
+            var cc_draggableid = '#' + ui.draggable.attr('id')
+            var cc_dragged_user_qid = ui.draggable.attr('id').split('-')
             //alert(cc_dragged_user_qid)
-            cc_move_to_child = '#' + event.target.id;
-            cc_move_room = $(cc_move_to_child).parent().attr('id')
+            ccMoveToChild = '#' + event.target.id;
+            ccMoveRoom = $(ccMoveToChild).parent().attr('id')
             //alert(cc_move_room)
             $.confirm({
-                title: 'You are moving a user to ' + cc_move_room,
+                title: 'You are moving a user to ' + ccMoveRoom,
                 content: '' +
                     '<form action="" class="formName">' +
                     '<div class="form-group">' +
@@ -402,23 +382,20 @@ $(document).ready(function () {
                                 type: 'post',
                                 data: {
                                     action: 'cc_set_route_in',
-                                    table_id: cc_move_room,
+                                    table_id: ccMoveRoom,
                                     qidnumber: cc_dragged_user_qid[1],
                                     moderator_mv: moderator,
-                                    envelope: wpApiSettings.envelope,
+                                    envelope: wpApiSettings.envelope
                                 },
-                                success: function (response) {
+                                success: function () {
                                     $(cc_draggableid).remove()
-                                    //alert(response)
                                 }
-
                             });
                         }
                     },
                     cancel: function () {
                         //close
-
-                    },
+                    }
                 },
                 onContentReady: function () {
                     // bind to events
@@ -432,12 +409,12 @@ $(document).ready(function () {
             });
 
         } else {
-            cc_dragged_person = ui.draggable.attr('jid');
-            cc_move_to_child = '#' + event.target.id;
-            cc_move_room = $(cc_move_to_child).parent().attr('id')
+            var ccDraggedPerson = ui.draggable.data('jid'),
+                ccMoveToChild = '#' + event.target.id,
+                ccMoveRoom = $(ccMoveToChild).parent().attr('id');
 
             $.confirm({
-                title: 'You are moving a user to ' + cc_move_room,
+                title: 'You are moving a user to ' + ccMoveRoom,
                 content: '' +
                     '<form action="" class="formName">' +
                     '<div class="form-group">' +
@@ -458,10 +435,10 @@ $(document).ready(function () {
                                 type: 'post',
                                 data: {
                                     action: 'cc_set_route',
-                                    table_id: cc_move_room,
-                                    jidnumber: cc_dragged_person,
+                                    table_id: ccMoveRoom,
+                                    jidnumber: ccDraggedPerson,
                                     moderator_mv: moderator,
-                                    envelope: wpApiSettings.envelope,
+                                    envelope: wpApiSettings.envelope
                                 },
                                 success: function (response) {
                                     //alert('Data Parsed')
@@ -473,7 +450,7 @@ $(document).ready(function () {
                     cancel: function () {
                         //close
 
-                    },
+                    }
                 },
                 onContentReady: function () {
                     // bind to events
@@ -485,10 +462,7 @@ $(document).ready(function () {
                     });
                 }
             });
-
         }
-
-        //alert( 'The square with ID "' + cc_dragged_person + '" was dropped onto ' + cc_move_room);
     }
 
     function requestCartAccess(user) {
@@ -499,7 +473,6 @@ $(document).ready(function () {
         messagedata['message'] = 'RequestCartAccess'
         api.executeCommand('sendEndpointTextMessage', jid[0], messagedata);
     }
-
 
     function messagehandler(message) {
         //$userdata = $.parseJSON(message)
@@ -579,9 +552,9 @@ $(document).ready(function () {
             type: 'post',
             data: {
                 action: 'cc_clearcart',
-                data: 'clear',
+                data: 'clear'
             },
-            success: function (response) {
+            success: function () {
                 $(document.body).trigger('wc_fragment_refresh');
             }
 
@@ -595,7 +568,7 @@ $(document).ready(function () {
             type: 'post',
             data: {
                 action: 'cc_getcart',
-                data: 'data',
+                data: 'data'
             },
             success: function (response) {
                 messagedata = {}
@@ -611,29 +584,21 @@ $(document).ready(function () {
             }
 
         });
-
-
     }
 
     function cart_updates_set(cartdata) {
-        //alert(cartdata)
         $.ajax({
             url: wpApiSettings.ajax_url,
             type: 'post',
             data: {
                 action: 'cc_setcart',
-                data: cartdata,
+                data: cartdata
             },
-            success: function (response) {
-
+            success: function () {
                 $(document.body).trigger('wc_fragment_refresh');
-
-                //alert(bla)
             }
 
         });
-
-
     }
 
     function get_q_data() {
@@ -642,18 +607,18 @@ $(document).ready(function () {
             type: 'post',
             data: {
                 action: 'cc_get_call_queue',
-                callkey: eventPrefixLower,
+                callkey: eventPrefixLower
             },
             success: function (response) {
                 $.each(response, function (k, queueduser) {
                     userqid = '#userid-' + queueduser.guestqid
                     if ($(userqid).length) {
                     } else {
-                        $('#club_reception_shortcode').append('<div id=userid-' + queueduser.guestqid + ' style="z-index:10"><p><img src="' + wpApiSettings.floorplan + 'guest.jpg" style="border-radius: 50%;width:30px" />' + queueduser.guestname + '</p></div>');
+                        $('#club_reception_shortcode').append('<div id=userid-' + queueduser.guestqid + ' style="z-index:10"><p><img alt="" src="' + wpApiSettings.floorplan + 'guest.jpg" style="border-radius: 50%;width:30px" />' + queueduser.guestname + '</p></div>');
                         $(userqid).draggable({
                             containment: 'document',
                             cursor: 'move',
-                            helper: 'clone',
+                            helper: 'clone'
                         });
                     }
                 });
@@ -662,6 +627,4 @@ $(document).ready(function () {
 
         })
     }
-
-
 });
