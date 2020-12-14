@@ -106,6 +106,7 @@ $(document).ready(function () {
         options.parentNode = $('#TableVideo')[0]
         height ? options.height = height : null;
         width ? options.width = width : null;
+
         var api = new JitsiMeetExternalAPI(domain, options);
         currentRoom = roomName
         api.addEventListener('videoConferenceJoined', function (connectionData) {
@@ -211,16 +212,24 @@ $(document).ready(function () {
             if (ytUrl != null) {
                 $('#KeynoteVideo').append('<iframe src="' + ytUrl + '" allowfullscreen ></iframe>')
             }
-            $.getJSON(tableDataMap, function (results) {
-                $.each(results, function (i, table) {
-                    $('#ccTablePlan').append('<div id="' + eventPrefixLower + table.TableName.toLowerCase() + '" class="launchtable"></div>')
-                    var currentTable = '#' + eventPrefixLower + table.TableName.toLowerCase()
-                    ccTableArray.push(currentTable.replace('#', ''))
-                    $.each(table.Seating, function (b, seats) {
-                        $(currentTable).append('<div id="' + eventPrefixLower + table.TableName.toLowerCase() + seats.Seat.toLowerCase() + '" class="hot-spot" Style="top:' + seats.ypc + ';left:' + seats.xpc + '"><div class="circle"></div><div id="' + eventPrefixLower + table.TableName.toLowerCase() + seats.Seat.toLowerCase() + 'tip" class="tooltip">' + seats.Seat + '</div>')
+            $.getJSON(tableDataMap, function (result) {
+                $.each(result.tables, function (i, table) {
+                    var tableId = eventPrefixLower + table.name.toLowerCase()
+                    $currentTable = $('<div id="' + tableId + '" class="launchtable"></div>');
+                    $('#ccTablePlan').append($currentTable)
+                    ccTableArray.push(tableId)
+                    $.each(table.seats, function (b, seat) {
+                        var seatId = tableId + "-" + seat.name.toLowerCase();
+                        var $seat = $('' +
+                            '<div id="' + seatId + '" class="hot-spot" Style="top:' + seat.y + '%;left:' + seat.x + '%">' +
+                                '<div class="circle"></div>' +
+                                '<div id="' + seatId + '-tip" class="tooltip">' +
+                                    seat.name +
+                                '</div>' +
+                            '</div>');
 
-                        var dropseat = '#' + eventPrefixLower + table.TableName.toLowerCase() + seats.Seat.toLowerCase()
-                        $(dropseat).droppable({
+                        $currentTable.append($seat);
+                        $seat.droppable({
                             drop: personmoved
                         });
                     })
@@ -306,8 +315,8 @@ $(document).ready(function () {
                         var currentTable = tableentry.RoomName
                         $.each(tableentry.Participants, (function (j, seatEntry) {
                             var seatNumber = j + 1,
-                                currentSeat = '#' + tableentry.RoomName + 'seat' + seatNumber,
-                                currentSeatTip = currentSeat + 'tip',
+                                currentSeat = '#' + tableentry.RoomName + '-seat' + seatNumber,
+                                currentSeatTip = currentSeat + '-tip',
                                 partyAvatarURL,
                                 currentDisplayName;
 

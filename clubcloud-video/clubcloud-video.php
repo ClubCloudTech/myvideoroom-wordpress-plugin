@@ -176,15 +176,15 @@ function clubcloud_install() {
 		activemeeting text NOT NULL,
         moveto text,
         cartdata text,
-        carriermessage text, 
+        carriermessage text,
         PRIMARY KEY  (id));
         CREATE TABLE $table_name_q (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
-        callkey text NOT NULL,    
+        callkey text NOT NULL,
         lastactive int NOT NULL,
         guestname text NOT NULL,
         moved text,
-        PRIMARY KEY  (id)); 
+        PRIMARY KEY  (id));
         ";
 
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -321,17 +321,17 @@ function clubcloud_shortcode( $atts ) {
 	}
 
 	return '
-        <div 
-            id="clubcloud_shortcode"  
-            data-auth="' . $atts['auth'] . '" 
-            data-cc_is_reception="' . $atts['cc_is_reception'] . '" 
-            data-cc_receptionimage="' . $atts['cc_receptionimage'] . '" 
-            data-cc_enable_lobby="' . $atts['cc_enable_lobby'] . '" 
-            data-cc_plan_id="' . $atts['cc_plan_id'] . '" 
-            data-cc_event_id="' . $atts['cc_event_id'] . '" 
+        <div
+            id="clubcloud_shortcode"
+            data-auth="' . $atts['auth'] . '"
+            data-cc_is_reception="' . $atts['cc_is_reception'] . '"
+            data-cc_receptionimage="' . $atts['cc_receptionimage'] . '"
+            data-cc_enable_lobby="' . $atts['cc_enable_lobby'] . '"
+            data-cc_plan_id="' . $atts['cc_plan_id'] . '"
+            data-cc_event_id="' . $atts['cc_event_id'] . '"
             data-password="' . $password . '"
-            width="' . $atts['width'] . '" 
-            height="' . $atts['height'] . '" 
+            width="' . $atts['width'] . '"
+            height="' . $atts['height'] . '"
         ></div>';
 } // above returnes the shortcode for the page with all the correct variable set in both the browser as well, as the server
 
@@ -482,7 +482,8 @@ function cc_get_connectiondata() {
 							'JiD'         => $basicjid,
 							'DisplayName' => $participant->display_name,
 							'Role'        => $participant->role,
-							'AvatarUrl'   => getAvatar( $user )
+							'AvatarUrl'   => getAvatar( $user ),
+							'Participant' => $participant
 						];
 					}
 					$myrooms[] = [
