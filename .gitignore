@@ -1,3 +1,5 @@
 /.idea
 /clubcloud-video.zip
 .DS_Store
+
+/vendor/
