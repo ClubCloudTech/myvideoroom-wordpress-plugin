@@ -3,10 +3,10 @@
 class ClubCloudVideoPlugin_Shortcode {
 	const SHORTCODE_TAG = 'clubvideo';
 
-	private string $sharedSecret;
+	private string $privateKey;
 
-	public function __construct( string $sharedSecret ) {
-		$this->sharedSecret = $sharedSecret;
+	public function __construct( string $privateKey ) {
+		$this->privateKey = $privateKey;
 
 		add_shortcode( self::SHORTCODE_TAG, [ $this, 'createShortcode' ] );
 
@@ -20,6 +20,7 @@ class ClubCloudVideoPlugin_Shortcode {
 		$roomName    = $params['name'] ?: $params['cc_event_id'];
 		$mapId       = $params['map'] ?: $params['cc_plan_id'];
 		$enableLobby = ! ! ( $params['lobby'] ?: $params['cc_enable_lobby'] );
+		$enableReception = ! ! ($params['reception']);
 
 		$admin = ! ! ( $params['admin'] ?: $params['auth'] );
 
@@ -38,7 +39,7 @@ class ClubCloudVideoPlugin_Shortcode {
 			'roomName'            => $roomName,
 			'mapId'               => $mapId,
 			'videoServerEndpoint' => $videoServerEndpoint,
-			'sharedSecret'        => $this->sharedSecret
+			'host'                => $_SERVER['host']
 		] ) );
 
 		$password = hash( 'sha256', json_encode( [
@@ -46,15 +47,21 @@ class ClubCloudVideoPlugin_Shortcode {
 			'roomName'            => $roomName,
 			'mapId'               => $mapId,
 			'videoServerEndpoint' => $videoServerEndpoint,
-			'sharedSecret'        => $this->sharedSecret
+			'host'                => $_SERVER['host'],
+			'privateKey'          => $this->privateKey
 		] ) );
 
-		$securityToken = hash( 'sha256', json_encode( [
+		$message = json_encode( [
 			'videoServerEndpoint' => $videoServerEndpoint,
 			'roomName'            => $roomName,
-			'admin'               => $admin,
-			'sharedSecret'        => $this->sharedSecret
-		] ) );
+			'admin'               => true
+		] );
+
+		if (!openssl_sign($message, $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {
+			throw new Exception("Unable to sign data.");
+		}
+
+		$securityToken = urlencode(base64_encode($signature));
 
 		$jwtEndpoint = get_site_url() . '/wp-json/clubcloud/jwt';
 
@@ -87,6 +94,7 @@ class ClubCloudVideoPlugin_Shortcode {
                     data-server-endpoint="${server}"
                     data-admin="${admin}"
                     data-enable-lobby="${enableLobby}"
+                    data-enable-reception="${enableReception}"
                     data-room-hash="${roomHash}"
                     data-password="${password}"
                     data-security-token="${securityToken}"

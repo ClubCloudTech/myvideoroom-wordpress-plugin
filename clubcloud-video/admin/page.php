@@ -40,15 +40,11 @@
 						'title'       => 'ClubCloud App URL',
 						'placeholder' => 'e.g. https://app.domain.tld/'
 					],
-					ClubCloudVideoPlugin::SETTING_WEB_TOKEN_KEY    => [
-						'enabled'     => ! getenv( 'CLUBCLOUD_WEB_TOKEN_KEY' ),
-						'title'       => 'ClubCloud Moderator Token Key',
-						'placeholder' => '(Provided by ClubCloud)'
-					],
-					ClubCloudVideoPlugin::SETTING_SHARED_SECRET    => [
-						'enabled'     => ! getenv( 'CLUBCLOUD_SHARED_SECRET' ),
-						'title'       => 'ClubCloud Shared Secret',
-						'placeholder' => '(Provided by ClubCloud)'
+					ClubCloudVideoPlugin::SETTING_PRIVATE_KEY    => [
+						'enabled'     => true,
+						'title'       => 'ClubCloud Private Key',
+						'placeholder' => '(Provided by ClubCloud)',
+                        'type'        => 'textarea'
 					],
 
 				];
@@ -58,18 +54,37 @@
 						?>
                         <tr>
                             <th scope="row">
-                                <label for="<?= $value; ?>"><?php echo $setting['title']; ?>
-                                    <br/>[<?php echo $value; ?>]</label>
+                                <label for="<?= $value; ?>"><?= $setting['title']; ?>
+                                    <br/>[<?= $value; ?>]</label>
                             </th>
                             <td>
-                                <input
-                                        type="text"
-                                        name="<?php echo $value; ?>"
-                                        value="<?php echo get_option( $value ); ?>"
-                                        placeholder="<?php echo $setting['placeholder']; ?>"
-                                        id="<?php echo $value; ?>"
-                                        size="100"
-                                />
+                                <?php
+
+                                switch($setting['type']) {
+                                    case 'textarea':
+                                        ?>
+                                            <textarea
+                                                name="<?= $value; ?>"
+                                                id="<?= $value; ?>"
+                                                placeholder="<?= $setting['placeholder']; ?>"
+                                            ><?= get_option( $value ) ?></textarea>
+                                        <?php
+                                        break;
+                                    default:
+                                        ?>
+                                        <input
+                                                type="text"
+                                                name="<?= $value; ?>"
+                                                value="<?= get_option( $value ); ?>"
+                                                placeholder="<?= $setting['placeholder']; ?>"
+                                                id="<?= $value; ?>"
+                                                size="100"
+                                        />
+                                        <?php
+                                }
+
+                                ?>
+
                             </td>
                         </tr>
 						<?php

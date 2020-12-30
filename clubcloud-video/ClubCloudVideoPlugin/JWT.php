@@ -1,12 +1,10 @@
 <?php
 
 class ClubCloudVideoPlugin_JWT {
-	private string $sharedSecret;
-	private string $webTokenKey;
+	private string $privateKey;
 
-	public function __construct( string $sharedSecret, string $webTokenKey ) {
-		$this->sharedSecret = $sharedSecret;
-		$this->webTokenKey  = $webTokenKey;
+	public function __construct( string $privateKey ) {
+		$this->privateKey   = $privateKey;
 
 		add_action( 'init', function () {
 			header( "Access-Control-Allow-Origin: *" );
@@ -28,15 +26,18 @@ class ClubCloudVideoPlugin_JWT {
 				$token               = $data->get_param( 'token' );
 				$videoServerEndpoint = ( parse_url( get_option( 'cc_video_server_url' ), PHP_URL_HOST ) );
 
-				$securityToken = hash( 'sha256', json_encode( [
+				$message = json_encode( [
 					'videoServerEndpoint' => $videoServerEndpoint,
 					'roomName'            => $roomName,
-					'admin'               => true,
-					'sharedSecret'        => $this->sharedSecret
-				] ) );
+					'admin'               => true
+				] );
 
-				if ( $securityToken !== $token ) {
-					return wp_send_json_error( 'Incorrect token', 403 );
+				if (!openssl_sign($message, $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {
+					throw new Exception("Unable to sign data.");
+				}
+
+				if ( base64_encode($signature) !== $token ) {
+					return wp_send_json_error( 'Incorrect signature', 403 );
 				}
 
 				return rest_ensure_response( [
@@ -46,11 +47,12 @@ class ClubCloudVideoPlugin_JWT {
 		) );
 	}
 
-	private function createJWT( string $roomId ) {
+	private function createJWT( string $roomId )
+	{
 		$domain       = ( parse_url( get_option( 'cc_video_server_url' ), PHP_URL_HOST ) );
-		$client_token = $this->webTokenKey;                          // this collects the toke string in the admin settings used for all encryption and decryption
 
-		$header             = json_encode( [ 'typ' => 'JWT', 'alg' => 'HS256', 'kid' => $domain ] );
+		$host = $_SERVER['HTTP_HOST'];
+		$header             = json_encode( [ 'typ' => 'JWT', 'alg' => 'RS256', 'kid' => $host ] );
 		$payload            = json_encode( [
 			'iss'  => $domain,
 			'iat'  => idate( 'U' ),
@@ -63,13 +65,17 @@ class ClubCloudVideoPlugin_JWT {
 			'-',
 			'_',
 			''
-		], base64_encode( $header ) );  // above is the setup to generate the jwt this sets the heder information
+		], base64_encode( $header ) );  // above is the setup to generate the jwt this sets the header information
 		$base64UrlPayload   = str_replace( [ '+', '/', '=' ], [
 			'-',
 			'_',
 			''
 		], base64_encode( $payload ) );       // sets the payload for the video platform
-		$signature          = hash_hmac( 'sha256', $base64UrlHeader . "." . $base64UrlPayload, $client_token, true );      // base 64 hashes the payload and then encrypts the header and payload with the client key stored in the admin settings
+
+		if (!openssl_sign($base64UrlHeader . "." . $base64UrlPayload, $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {
+			throw new Exception("Unable to sign data.");
+		}
+
 		$base64UrlSignature = str_replace( [ '+', '/', '=' ], [ '-', '_', '' ], base64_encode( $signature ) );
 		$jwt                = "{$base64UrlHeader}.{$base64UrlPayload}.{$base64UrlSignature}";  // concatenates the encrypted string and returns the jwt
 
