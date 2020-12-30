@@ -54,7 +54,7 @@ class ClubCloudVideoPlugin_Shortcode {
 		$message = json_encode( [
 			'videoServerEndpoint' => $videoServerEndpoint,
 			'roomName'            => $roomName,
-			'admin'               => true
+			'admin'               => $admin
 		] );
 
 		if (!openssl_sign($message, $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {
