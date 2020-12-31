@@ -14,7 +14,9 @@ class ClubCloudVideoPlugin_Shortcode {
 		add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_script( 'jquery' ) );
 	}
 
-	public function createShortcode( array $params = [] ) {
+	public function createShortcode( $params ) {
+		$params = $params ?: [];
+
 		$devMode = ( get_query_var( 'dev', false ) === 'true' );
 
 		$roomName    = $params['name'] ?: $params['cc_event_id'];
@@ -24,14 +26,14 @@ class ClubCloudVideoPlugin_Shortcode {
 
 		$admin = ! ! ( $params['admin'] ?: $params['auth'] );
 
-		$videoServerEndpoint = ( parse_url( get_option( 'cc_video_server_url' ), PHP_URL_HOST ) );
+		$videoServerEndpoint = 'meet.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );
 
 		if ( $devMode ) {
 			$server      = 'http://localhost:4001';
 			$appEndpoint = 'http://localhost:3000';
 		} else {
-			$server      = get_option( 'cc_room_server_url' );
-			$appEndpoint = get_option( 'cc_app_url' );
+			$server      = 'https://state.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );;
+			$appEndpoint = 'https://app.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );;
 		}
 
 		$roomHash = md5( json_encode( [
@@ -71,13 +73,13 @@ class ClubCloudVideoPlugin_Shortcode {
 
 		return <<<EOT
             <script>
-                var $ = jQuery.noConflict();
-                $.get("${appEndpoint}/asset-manifest.json").then(function (data) {
+                var ccJq = jQuery.noConflict();
+                ccJq.get("${appEndpoint}/asset-manifest.json").then(function (data) {
                     data.entrypoints.map(function (entrypoint) {
                         if (entrypoint.endsWith(".js")) {
-                            $.getScript("${appEndpoint}/"+ entrypoint);
+                            ccJq.getScript("${appEndpoint}/"+ entrypoint);
                         } else {
-                            $('<link rel="stylesheet" href="${appEndpoint}/' + entrypoint + '" type="text/css" />').appendTo('head');
+                            ccJq('<link rel="stylesheet" href="${appEndpoint}/' + entrypoint + '" type="text/css" />').appendTo('head');
                         }
                     });
                 })
@@ -85,7 +87,7 @@ class ClubCloudVideoPlugin_Shortcode {
             
             <div
                     style="width: 100%; border: 1px solid black"
-                    id="clubcloud-video-react-app"
+                    class="clubcloud-video-react-app"
                     data-embedded="true"
                     data-room-name="${roomName}"
                     data-map-id="${mapId}"

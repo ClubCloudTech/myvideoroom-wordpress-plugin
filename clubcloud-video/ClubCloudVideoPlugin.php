@@ -3,15 +3,11 @@
 class ClubCloudVideoPlugin {
 	public const PLUGIN_NAMESPACE = 'cc';
 
-	public const SETTING_VIDEO_SERVER_URL = self::PLUGIN_NAMESPACE . '_video_server_url';
-	public const SETTING_ROOM_SERVER_URL = self::PLUGIN_NAMESPACE . '_room_server_url';
-	public const SETTING_APP_SERVER_URL = self::PLUGIN_NAMESPACE . '_app_url';
+	public const SETTING_VIDEO_SERVER = self::PLUGIN_NAMESPACE . '_video_server_url';
 	public const SETTING_PRIVATE_KEY = self::PLUGIN_NAMESPACE . '_private_key';
 
 	public const SETTINGS = [
-		self::SETTING_VIDEO_SERVER_URL,
-		self::SETTING_ROOM_SERVER_URL,
-		self::SETTING_APP_SERVER_URL,
+		self::SETTING_VIDEO_SERVER,
 		self::SETTING_PRIVATE_KEY,
 	];
 

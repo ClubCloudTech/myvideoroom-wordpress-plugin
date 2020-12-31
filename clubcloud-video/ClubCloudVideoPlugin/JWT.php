@@ -24,7 +24,7 @@ class ClubCloudVideoPlugin_JWT {
 				$roomName            = $data->get_param( 'room' );
 				$roomId              = $data->get_param( 'rid' );
 				$token               = $data->get_param( 'token' );
-				$videoServerEndpoint = ( parse_url( get_option( 'cc_video_server_url' ), PHP_URL_HOST ) );
+				$videoServerEndpoint = 'meet.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );
 
 				$message = json_encode( [
 					'videoServerEndpoint' => $videoServerEndpoint,
@@ -49,7 +49,7 @@ class ClubCloudVideoPlugin_JWT {
 
 	private function createJWT( string $roomId )
 	{
-		$domain       = ( parse_url( get_option( 'cc_video_server_url' ), PHP_URL_HOST ) );
+		$domain = 'meet.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );
 
 		$host = $_SERVER['HTTP_HOST'];
 		$header             = json_encode( [ 'typ' => 'JWT', 'alg' => 'RS256', 'kid' => $host ] );
