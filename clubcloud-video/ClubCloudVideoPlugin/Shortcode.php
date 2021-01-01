@@ -29,11 +29,13 @@ class ClubCloudVideoPlugin_Shortcode {
 		$videoServerEndpoint = 'meet.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );
 
 		if ( $devMode ) {
-			$server      = 'http://localhost:4001';
+			$stateServer      = 'http://localhost:4001';
 			$appEndpoint = 'http://localhost:3000';
+			$roomsEndpoint = 'http://localhost:4002';
 		} else {
-			$server      = 'https://state.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );;
+			$stateServer      = 'https://state.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );;
 			$appEndpoint = 'https://app.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );;
+			$roomsEndpoint = 'https://rooms.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );;
 		}
 
 		$roomHash = md5( json_encode( [
@@ -93,7 +95,7 @@ class ClubCloudVideoPlugin_Shortcode {
                     data-map-id="${mapId}"
                     data-video-server-endpoint="${videoServerEndpoint}"
                     data-jwt-endpoint="${jwtEndpoint}"
-                    data-server-endpoint="${server}"
+                    data-server-endpoint="${stateServer}"
                     data-admin="${admin}"
                     data-enable-lobby="${enableLobby}"
                     data-enable-reception="${enableReception}"
@@ -102,7 +104,7 @@ class ClubCloudVideoPlugin_Shortcode {
                     data-security-token="${securityToken}"
                     data-name="${userName}"
                     data-avatar="${avatarUrl}"
-                    data-rooms-endpoint="${appEndpoint}"
+                    data-rooms-endpoint="${roomsEndpoint}"
             ></div>
     EOT;
 	}
