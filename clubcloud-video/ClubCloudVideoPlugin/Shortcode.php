@@ -77,11 +77,11 @@ class ClubCloudVideoPlugin_Shortcode {
             <script>
                 var ccJq = jQuery.noConflict();
                 ccJq.get("${appEndpoint}/asset-manifest.json").then(function (data) {
-                    data.entrypoints.map(function (entrypoint) {
-                        if (entrypoint.endsWith(".js")) {
-                            ccJq.getScript("${appEndpoint}/"+ entrypoint);
-                        } else {
-                            ccJq('<link rel="stylesheet" href="${appEndpoint}/' + entrypoint + '" type="text/css" />').appendTo('head');
+                    Object.values(data.files).map(function (file) {
+                        if (file.endsWith(".js")) {
+                            ccJq.getScript("${appEndpoint}/"+ file);
+                        } else if (file.endsWith(".css")) {
+                            ccJq('<link rel="stylesheet" href="${appEndpoint}/' + file + '" type="text/css" />').appendTo('head');
                         }
                     });
                 })

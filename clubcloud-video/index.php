@@ -4,7 +4,7 @@
  * Plugin Name:     ClubCloud Video
  * Plugin URI:      https://clubcloud.tech
  * Description:     Allows embedding of the ClubCloud Video App into Wordpress
- * Version:         0.3-alpha
+ * Version:         0.3.1-alpha
  * Requires         PHP: 7.4
  * Author:          Alec Sammon, Craig Jones
  * Author URI:      https://clubcloud.tech/
