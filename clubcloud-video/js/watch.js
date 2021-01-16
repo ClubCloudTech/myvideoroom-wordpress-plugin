@@ -49,7 +49,9 @@ jQuery('document').ready(function () {
         for (var endpoint in watch) {
             if (watch.hasOwnProperty(endpoint)) {
                 (function (endpoint) {
-                    var socket = io(endpoint);
+                    var socket = io(endpoint, {
+                        withCredentials: true
+                    });
 
                     socket.on("connect", function () {
                         socket.emit('watch', watch[endpoint], function () {});
