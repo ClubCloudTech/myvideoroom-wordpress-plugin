@@ -17,6 +17,6 @@ class ClubCloudVideoPlugin_Admin {
 	}
 
 	public function createAdminPage() {
-		require( __DIR__ . '/../admin/page.php' );
+		require( __DIR__ . '/../pages/admin.php' );
 	}
 }

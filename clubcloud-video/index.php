@@ -1,15 +1,16 @@
 <?php
 
 /**
- * Plugin Name:     ClubCloud Video
- * Plugin URI:      https://clubcloud.tech
- * Description:     Allows embedding of the ClubCloud Video App into Wordpress
- * Version:         0.3.1-alpha
- * Requires         PHP: 7.4
- * Author:          Alec Sammon, Craig Jones
- * Author URI:      https://clubcloud.tech/
- * License:         GPLv2 or later
- * License URI:     https://www.gnu.org/licenses/gpl-2.0.html
+ * Plugin Name:         ClubCloud Video
+ * Plugin URI:          https://clubcloud.tech
+ * Description:         Allows embedding of the ClubCloud Video App into Wordpress
+ * Version:             0.4.1-beta
+ * Requires PHP:        7.4
+ * Requires at least:   5.6
+ * Author:              Alec Sammon, Craig Jones
+ * Author URI:          https://clubcloud.tech/
+ * License:             GPLv2 or later
+ * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
 
 if ( ! defined( 'WPINC' ) ) {
@@ -23,9 +24,10 @@ if ( ! class_exists( 'ClubCloudVideo_Plugin' ) ) {
 			$srcLocation = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
 
 			$fileName = str_replace( '_', DIRECTORY_SEPARATOR, $className ) . '.php';
-			require_once($srcLocation . $fileName);
+			require_once( $srcLocation . $fileName );
 		}
 	}
+
 	spl_autoload_register( 'clubCloudVideo_autoloader' );
 
 	add_action( 'plugins_loaded', [ 'ClubCloudVideoPlugin', 'init' ] );

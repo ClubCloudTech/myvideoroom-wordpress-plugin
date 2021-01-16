@@ -17,7 +17,8 @@ class ClubCloudVideoPlugin {
 		add_action( 'admin_init', [ $this, 'registerSettings' ] );
 
 		new ClubCloudVideoPlugin_Admin();
-		new ClubCloudVideoPlugin_Shortcode( $privateKey );
+		new ClubCloudVideoPlugin_AppShortcode( $privateKey,  );
+		new ClubCloudVideoPlugin_WatchShortcode( $privateKey );
 		new ClubCloudVideoPlugin_JWT( $privateKey);
 	}
 

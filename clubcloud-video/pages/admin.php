@@ -1,0 +1,150 @@
+<div class="wrap">
+    <h1>ClubCloud Video Short Code Settings</h1>
+
+    <br/><br/>
+
+    <h2>App ShortCode</h2>
+    <p>You can use the following
+        <a href="https://support.wordpress.com/shortcodes/" target="_blank">ShortCodes</a> to add the ClubCloud video app to a page.
+    </p>
+    <p><code>[<?= ClubCloudVideoPlugin_AppShortcode::SHORTCODE_TAG; ?>]</code></p>
+    <p><strong>Examples</strong>..</p>
+
+    <code>
+        [
+            <?= ClubCloudVideoPlugin_AppShortcode::SHORTCODE_TAG; ?>
+            name="ClubCloud.tech"
+            map="clubcloud"
+            lobby=true
+            admin=true
+        ]
+    </code><br />
+    <table>
+        <thead>
+            <tr>
+                <th>Param</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>name</th>
+                <td>The name of the room</td>
+                <td>Required</td>
+            </tr>
+            <tr>
+                <th>map</th>
+                <td>The id of the map to display</td>
+                <td>Required</td>
+            </tr>
+            <tr>
+                <th>lobby</th>
+                <td>Whether the lobby inside the video app should be enabled</td>
+                <td>Optional: default=false</td>
+            </tr>
+            <tr>
+                <th>reception</th>
+                <td>Whether the reception before entering the app should be enabled</td>
+                <td>Optional: default=false</td>
+            </tr>
+            <tr>
+                <th>admin</th>
+                <td>Whether the user should be an admin</td>
+                <td>Optional: default=false</td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+
+    <code>
+        [
+            <?= ClubCloudVideoPlugin_WatchShortcode::SHORTCODE_TAG; ?>
+            name="ClubCloud.tech"
+            text-empty="Nobody is currently waiting"
+            text-single="One person is waiting in reception"
+            text-plural="{{count}} people are waiting in reception"
+        ]
+    </code><br/>
+    <table>
+        <thead>
+        <tr>
+            <th>Param</th>
+            <th>Details</th>
+            <th>Required</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>name</th>
+            <td>The name of the room</td>
+            <td>Required</td>
+        </tr>
+        <tr>
+            <th>text-empty</th>
+            <td>The text to show when nobody is waiting</td>
+            <td>Optional: default="Nobody is currently waiting"</td>
+        </tr>
+        <tr>
+            <th>text-single</th>
+            <td>The text to show when a single person is waiting</td>
+            <td>Optional: default="One person is waiting in reception"</td>
+        </tr>
+        <tr>
+            <th>text-plural</th>
+            <td>The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count</td>
+            <td>Optional: default="{{count}} people are waiting in reception"</td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+
+
+    <h2>Settings</h2>
+    <form method="post" action="options.php">
+		<?php settings_fields( ClubCloudVideoPlugin::PLUGIN_NAMESPACE ); ?>
+
+        <fieldset>
+            <table class="form-table" role="presentation">
+                <tbody>
+                <tr>
+                    <th scope="row">
+                        <label for="<?= ClubCloudVideoPlugin::SETTING_VIDEO_SERVER; ?>">
+                            ClubCloud Video URL<br/>
+                            [<?= ClubCloudVideoPlugin::SETTING_VIDEO_SERVER; ?>]
+                        </label>
+                    </th>
+                    <td>
+                        <input
+                                type="text"
+                                name="<?= ClubCloudVideoPlugin::SETTING_VIDEO_SERVER; ?>"
+                                value="<?= get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER ); ?>"
+                                placeholder="e.g. abada.clubcloud.tech"
+                                id="<?= ClubCloudVideoPlugin::SETTING_VIDEO_SERVER; ?>"
+                                size="100"
+                        />
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        <label for="<?= ClubCloudVideoPlugin::SETTING_PRIVATE_KEY; ?>">
+                            ClubCloud Private Key<br/>
+                            [<?= ClubCloudVideoPlugin::SETTING_PRIVATE_KEY; ?>]
+                        </label>
+                    </th>
+                    <td>
+                            <textarea
+                                    name="<?= ClubCloudVideoPlugin::SETTING_PRIVATE_KEY; ?>"
+                                    id="<?= ClubCloudVideoPlugin::SETTING_PRIVATE_KEY; ?>"
+                                    placeholder="(Provided by ClubCloud)"
+                            ><?= get_option( ClubCloudVideoPlugin::SETTING_PRIVATE_KEY ) ?></textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+		<?php submit_button(); ?>
+    </form>
+
+</div>
