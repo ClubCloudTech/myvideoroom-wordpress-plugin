@@ -1,7 +1,10 @@
 <?php
 
-class ClubCloudVideoPlugin_WatchShortcode {
-	const SHORTCODE_TAG = 'clubwatch';
+class ClubCloudVideoPlugin_ReceptionWidgetShortcode {
+	const SHORTCODE_TAGS = [
+		'clubcloud_reception_widget',
+		'clubwatch'
+	];
 
 	private string $privateKey;
 	private ClubCloudVideoPlugin_Endpoints $endpoints;
@@ -10,7 +13,9 @@ class ClubCloudVideoPlugin_WatchShortcode {
 		$this->privateKey = $privateKey;
 		$this->endpoints = new ClubCloudVideoPlugin_Endpoints();
 
-		add_shortcode( self::SHORTCODE_TAG, [ $this, 'createShortcode' ] );
+		foreach(self::SHORTCODE_TAGS as $shortcodeTag) {
+			add_shortcode( $shortcodeTag, [ $this, 'createShortcode' ] );
+		}
 
 		add_filter( 'query_vars', fn( $queryVars ) => array_merge( $queryVars, [ 'dev' ] ) );
 		add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_script( 'jquery' ) );
@@ -46,6 +51,7 @@ class ClubCloudVideoPlugin_WatchShortcode {
 		$textEmpty = $params['text-empty'] ?: null;
 		$textSingle = $params['text-single'] ?: null;
 		$textPlural = $params['text-plural'] ?: null;
+		$loadingText = $params['text-loading'] ?: "Loading...";
 
 		$videoServerEndpoint = $this->endpoints->getVideoEndpoint();
 		$stateServer = $this->endpoints->getStateEndpoint();
@@ -72,7 +78,7 @@ class ClubCloudVideoPlugin_WatchShortcode {
                 data-text-empty="${textEmpty}"
                 data-text-single="${textSingle}"
                 data-text-plural="${textPlural}"
-            >Loading...</div>
+            >${loadingText}</div>
         EOT;
 	}
 

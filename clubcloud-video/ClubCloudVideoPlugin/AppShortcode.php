@@ -1,7 +1,10 @@
 <?php
 
 class ClubCloudVideoPlugin_AppShortcode {
-	const SHORTCODE_TAG = 'clubvideo';
+	const SHORTCODE_TAGS = [
+		'clubcloud_app',
+		'clubvideo'
+	];
 
 	private string $privateKey;
 	private ClubCloudVideoPlugin_Endpoints $endpoints;
@@ -10,7 +13,9 @@ class ClubCloudVideoPlugin_AppShortcode {
 		$this->privateKey = $privateKey;
 		$this->endpoints = new ClubCloudVideoPlugin_Endpoints();
 
-		add_shortcode( self::SHORTCODE_TAG, [ $this, 'createShortcode' ] );
+		foreach(self::SHORTCODE_TAGS as $shortcodeTag) {
+			add_shortcode( $shortcodeTag, [ $this, 'createShortcode' ] );
+		}
 
 		add_filter( 'query_vars', fn( $queryVars ) => array_merge( $queryVars, [ 'dev' ] ) );
 		add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_script( 'jquery' ) );
@@ -39,6 +44,7 @@ class ClubCloudVideoPlugin_AppShortcode {
 		$enableLobby = ! ! ( $params['lobby']);
 		$enableReception = ! ! ($params['reception']);
 		$admin = ! ! ( $params['admin']);
+		$loadingText = $params['text-loading'] ?: "Loading...";
 
 		$videoServerEndpoint = $this->endpoints->getVideoEndpoint();
 		$stateServer = $this->endpoints->getStateEndpoint();
@@ -97,7 +103,7 @@ class ClubCloudVideoPlugin_AppShortcode {
                 data-name="${userName}"
                 data-avatar="${avatarUrl}"
                 data-rooms-endpoint="${roomsEndpoint}"
-            ></div>
+            >${loadingText}</div>
         EOT;
 	}
 

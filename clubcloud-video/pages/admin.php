@@ -7,12 +7,12 @@
     <p>You can use the following
         <a href="https://support.wordpress.com/shortcodes/" target="_blank">ShortCodes</a> to add the ClubCloud video app to a page.
     </p>
-    <p><code>[<?= ClubCloudVideoPlugin_AppShortcode::SHORTCODE_TAG; ?>]</code></p>
-    <p><strong>Examples</strong>..</p>
 
+    <h3>ClubCloud App</h3>
+    <p>This shows the video app</p>
     <code>
         [
-            <?= ClubCloudVideoPlugin_AppShortcode::SHORTCODE_TAG; ?>
+            <?= ClubCloudVideoPlugin_AppShortcode::SHORTCODE_TAGS[0]; ?>
             name="ClubCloud.tech"
             map="clubcloud"
             lobby=true
@@ -52,13 +52,20 @@
                 <td>Whether the user should be an admin</td>
                 <td>Optional: default=false</td>
             </tr>
+            <tr>
+                <th>loading-text</th>
+                <td>Test to show while the app is loading</td>
+                <td>Optional: default="Loading..."</td>
+            </tr>
         </tbody>
     </table>
     <br />
 
+    <h3>ClubCloud Reception Widget</h3>
+    <p>This shows the number of people currently waiting in a room</p>
     <code>
         [
-            <?= ClubCloudVideoPlugin_WatchShortcode::SHORTCODE_TAG; ?>
+            <?= ClubCloudVideoPlugin_ReceptionWidgetShortcode::SHORTCODE_TAGS[0]; ?>
             name="ClubCloud.tech"
             text-empty="Nobody is currently waiting"
             text-single="One person is waiting in reception"
@@ -93,6 +100,11 @@
             <th>text-plural</th>
             <td>The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count</td>
             <td>Optional: default="{{count}} people are waiting in reception"</td>
+        </tr>
+        <tr>
+            <th>loading-text</th>
+            <td>Test to show while the widget is loading</td>
+            <td>Optional: default="Loading..."</td>
         </tr>
         </tbody>
     </table>

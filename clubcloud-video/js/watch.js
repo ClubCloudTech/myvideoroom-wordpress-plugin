@@ -10,21 +10,35 @@ jQuery('document').ready(function () {
     var textSingle = 'One person is waiting in reception';
     var textPlural = '{{count}} people are waiting in reception';
 
+    if (Notification.permission !== "denied") {
+        Notification.requestPermission();
+    }
+
     var updateEndpoints = function (tableData) {
         var $element = $indexedElements[tableData.clientId];
 
-        if ($element) {
-            var receptionCount = tableData.users.filter(function (item) {
-                return item.inReception === true
-            }).length;
+        var receptionCount = tableData.users.filter(function (item) {
+            return item.inReception === true
+        }).length;
 
+        var text;
+
+        if (receptionCount) {
             if (receptionCount > 1) {
-                $element.html(($element.data('textPlural') || textPlural).replace('{{count}}', receptionCount));
-            } else if (receptionCount === 1) {
-                $element.html(($element.data('textSingle') || textSingle).replace('{{count}}', receptionCount));
+                text = ($element.data('textPlural') || textPlural).replace('{{count}}', receptionCount);
             } else {
-                $element.html($element.data('textEmpty') || textEmpty);
+                text = ($element.data('textSingle') || textSingle).replace('{{count}}', receptionCount);
             }
+
+            if (Notification.permission === "granted") {
+                new Notification(text);
+            }
+        } else {
+            text = ($element.data('textEmpty') || textEmpty);
+        }
+
+        if ($element) {
+            $element.html(text);
         }
     }
 
