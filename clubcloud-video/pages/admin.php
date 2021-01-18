@@ -103,8 +103,26 @@
         </tr>
         <tr>
             <th>loading-text</th>
-            <td>Test to show while the widget is loading</td>
+            <td>The text to show while the widget is loading</td>
             <td>Optional: default="Loading..."</td>
+        </tr>
+        <tr>
+            <th>type</th>
+            <td>
+                The type of count to show:
+                <dl>
+                    <dt>reception</dt>
+                    <dd>The number of people waiting in reception</dd>
+
+                    <dt>seated</dt>
+                    <dd>The number of people currently seated</dd>
+
+                    <dt>all</dt>
+                    <dd>The total number of people, including reception, seated and non-seated admins</dd>
+                </dl>
+
+            </td>
+            <td>Optional: default="reception"</td>
         </tr>
         </tbody>
     </table>

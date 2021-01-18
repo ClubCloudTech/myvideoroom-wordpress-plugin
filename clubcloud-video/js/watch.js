@@ -6,9 +6,23 @@ jQuery('document').ready(function () {
     var watch = {};
     var $indexedElements = {};
 
-    var textEmpty = 'Nobody is currently waiting';
-    var textSingle = 'One person is waiting in reception';
-    var textPlural = '{{count}} people are waiting in reception';
+    var texts = {
+        reception: {
+            textEmpty: 'Nobody is currently waiting',
+            textSingle: 'One person is waiting in reception',
+            textPlural: '{{count}} people are waiting in reception'
+        },
+        seated: {
+            textEmpty: 'Nobody is currently seated',
+            textSingle: 'One person is seated',
+            textPlural: '{{count}} people are seated'
+        },
+        all: {
+            textEmpty: 'Nobody is currently in this room',
+            textSingle: 'One person is currently in this room',
+            textPlural: '{{count}} people are currently in this room'
+        }
+    }
 
     if (Notification.permission !== "denied") {
         Notification.requestPermission();
@@ -16,29 +30,45 @@ jQuery('document').ready(function () {
 
     var updateEndpoints = function (tableData) {
         var $element = $indexedElements[tableData.clientId];
-
-        var receptionCount = tableData.users.filter(function (item) {
-            return item.inReception === true
-        }).length;
+        var roomName = $element.data('roomName');
 
         var text;
+        var count;
+        var outputText;
 
-        if (receptionCount) {
-            if (receptionCount > 1) {
-                text = ($element.data('textPlural') || textPlural).replace('{{count}}', receptionCount);
+        switch ($element.data('type')) {
+            case 'seated':
+                count = tableData.seatedCount;
+                text = texts.seated;
+                break;
+            case 'all':
+                count = tableData.userCount;
+                text = texts.all;
+                break;
+            case 'reception':
+            default:
+                count = tableData.receptionCount;
+                text = texts.reception;
+                break;
+        }
+
+
+        if (count) {
+            if (count > 1) {
+                outputText = ($element.data('textPlural') || text.textPlural).replace('{{count}}', count).replace('{{name}}', roomName);
             } else {
-                text = ($element.data('textSingle') || textSingle).replace('{{count}}', receptionCount);
+                outputText = ($element.data('textSingle') || text.textSingle).replace('{{count}}', count).replace('{{name}}', roomName);
             }
 
-            if (Notification.permission === "granted") {
-                new Notification(text);
+            if ($element.data('type') === "reception" && Notification.permission === "granted") {
+                new Notification(outputText);
             }
         } else {
-            text = ($element.data('textEmpty') || textEmpty);
+            outputText = ($element.data('textEmpty') || text.textEmpty);
         }
 
         if ($element) {
-            $element.html(text);
+            $element.html(outputText);
         }
     }
 

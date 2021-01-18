@@ -53,6 +53,8 @@ class ClubCloudVideoPlugin_ReceptionWidgetShortcode {
 		$textPlural = $params['text-plural'] ?: null;
 		$loadingText = $params['text-loading'] ?: "Loading...";
 
+		$type = $params['type'];
+
 		$videoServerEndpoint = $this->endpoints->getVideoEndpoint();
 		$stateServer = $this->endpoints->getStateEndpoint();
 
@@ -78,6 +80,7 @@ class ClubCloudVideoPlugin_ReceptionWidgetShortcode {
                 data-text-empty="${textEmpty}"
                 data-text-single="${textSingle}"
                 data-text-plural="${textPlural}"
+                data-type="${type}"
             >${loadingText}</div>
         EOT;
 	}
