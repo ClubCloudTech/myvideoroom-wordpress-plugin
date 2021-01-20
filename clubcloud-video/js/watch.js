@@ -28,6 +28,14 @@ jQuery('document').ready(function () {
         Notification.requestPermission();
     }
 
+    var getText = function ($element, texts, name) {
+        if ($element.data(name) ) {
+            return atob($element.data(name));
+        } else {
+            return texts[name];
+        }
+    }
+
     var updateEndpoints = function (tableData) {
         var $element = $indexedElements[tableData.clientId];
         var roomName = $element.data('roomName');
@@ -55,16 +63,16 @@ jQuery('document').ready(function () {
 
         if (count) {
             if (count > 1) {
-                outputText = ($element.data('textPlural') || text.textPlural).replace('{{count}}', count).replace('{{name}}', roomName);
+                outputText = getText($element, text, 'textPlural').replace('{{count}}', count).replace('{{name}}', roomName);
             } else {
-                outputText = ($element.data('textSingle') || text.textSingle).replace('{{count}}', count).replace('{{name}}', roomName);
+                outputText = getText($element, text, 'textSingle').replace('{{count}}', count).replace('{{name}}', roomName);
             }
 
             if ($element.data('type') === "reception" && Notification.permission === "granted") {
                 new Notification(outputText);
             }
         } else {
-            outputText = ($element.data('textEmpty') || text.textEmpty);
+            outputText = getText($element, text, 'textEmpty');
         }
 
         if ($element) {

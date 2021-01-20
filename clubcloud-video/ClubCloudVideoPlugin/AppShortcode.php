@@ -1,6 +1,6 @@
 <?php
 
-class ClubCloudVideoPlugin_AppShortcode {
+class ClubCloudVideoPlugin_AppShortcode extends ClubCloudVideoPlugin_Shortcode  {
 	const SHORTCODE_TAGS = [
 		'clubcloud_app',
 		'clubvideo'
@@ -17,7 +17,6 @@ class ClubCloudVideoPlugin_AppShortcode {
 			add_shortcode( $shortcodeTag, [ $this, 'createShortcode' ] );
 		}
 
-		add_filter( 'query_vars', fn( $queryVars ) => array_merge( $queryVars, [ 'dev' ] ) );
 		add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_script( 'jquery' ) );
 
 
@@ -44,6 +43,7 @@ class ClubCloudVideoPlugin_AppShortcode {
 		$enableLobby = ! ! ( $params['lobby']);
 		$enableReception = ! ! ($params['reception']);
 		$admin = ! ! ( $params['admin']);
+		$enableFloorplan = ! ! ( $params['floorplan']);
 		$loadingText = $params['text-loading'] ?: "Loading...";
 
 		$videoServerEndpoint = $this->endpoints->getVideoEndpoint();
@@ -70,7 +70,8 @@ class ClubCloudVideoPlugin_AppShortcode {
 		$message = json_encode( [
 			'videoServerEndpoint' => $videoServerEndpoint,
 			'roomName'            => $roomName,
-			'admin'               => $admin
+			'admin'               => $admin,
+			'enableFloorplan'     => $enableFloorplan
 		] );
 
 		if (!openssl_sign($message, $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {
@@ -97,6 +98,7 @@ class ClubCloudVideoPlugin_AppShortcode {
                 data-admin="${admin}"
                 data-enable-lobby="${enableLobby}"
                 data-enable-reception="${enableReception}"
+                data-enable-floorplan="${enableFloorplan}"
                 data-room-hash="${roomHash}"
                 data-password="${password}"
                 data-security-token="${securityToken}"

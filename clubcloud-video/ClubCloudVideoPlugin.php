@@ -18,7 +18,8 @@ class ClubCloudVideoPlugin {
 
 		new ClubCloudVideoPlugin_Admin();
 		new ClubCloudVideoPlugin_AppShortcode( $privateKey,  );
-		new ClubCloudVideoPlugin_ReceptionWidgetShortcode( $privateKey );
+		new ClubCloudVideoPlugin_MonitorShortcode( $privateKey );
+		new ClubCloudVideoPlugin_TextOptionShortcode( );
 		new ClubCloudVideoPlugin_JWT( $privateKey);
 	}
 

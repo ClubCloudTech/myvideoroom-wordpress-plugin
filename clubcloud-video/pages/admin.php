@@ -38,16 +38,6 @@
                 <td>Required</td>
             </tr>
             <tr>
-                <th>lobby</th>
-                <td>Whether the lobby inside the video app should be enabled</td>
-                <td>Optional: default=false</td>
-            </tr>
-            <tr>
-                <th>reception</th>
-                <td>Whether the reception before entering the app should be enabled</td>
-                <td>Optional: default=false</td>
-            </tr>
-            <tr>
                 <th>admin</th>
                 <td>Whether the user should be an admin</td>
                 <td>Optional: default=false</td>
@@ -56,6 +46,31 @@
                 <th>loading-text</th>
                 <td>Test to show while the app is loading</td>
                 <td>Optional: default="Loading..."</td>
+            </tr>
+        </tbody>
+
+        <tbody>
+            <tr><th colspan="3">Non-admin settings</th></tr>
+
+            <tr>
+                <th>lobby</th>
+                <td>Whether the lobby inside the video app should be enabled for non admin users</td>
+                <td>Optional: default=false</td>
+            </tr>
+        </tbody>
+
+        <tbody>
+            <tr><th colspan="3">Non-admin settings</th></tr>
+
+            <tr>
+                <th>reception</th>
+                <td>Whether the reception before entering the app should be enabled</td>
+                <td>Optional: default=false</td>
+            </tr>
+            <tr>
+                <th>floorplan</th>
+                <td>Whether the floorplan should be shown</td>
+                <td>Optional: default=false</td>
             </tr>
         </tbody>
     </table>

@@ -1,7 +1,8 @@
 <?php
 
-class ClubCloudVideoPlugin_ReceptionWidgetShortcode {
+class ClubCloudVideoPlugin_MonitorShortcode extends ClubCloudVideoPlugin_Shortcode {
 	const SHORTCODE_TAGS = [
+		'clubcloud_monitor',
 		'clubcloud_reception_widget',
 		'clubwatch'
 	];
@@ -17,7 +18,6 @@ class ClubCloudVideoPlugin_ReceptionWidgetShortcode {
 			add_shortcode( $shortcodeTag, [ $this, 'createShortcode' ] );
 		}
 
-		add_filter( 'query_vars', fn( $queryVars ) => array_merge( $queryVars, [ 'dev' ] ) );
 		add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_script( 'jquery' ) );
 
 		add_action(
@@ -44,13 +44,21 @@ class ClubCloudVideoPlugin_ReceptionWidgetShortcode {
 		);
 	}
 
-	public function createShortcode( $params ): string {
+	public function createShortcode( array $params = null, $contents ): string {
+
 		$params = $params ?: [];
 
+		preg_match_all( '/\[clubcloud_text_option.*type="(?<type>.*)"](?<data>.*)\[\/clubcloud_text_option]/msU', $contents, $matches, PREG_SET_ORDER );
+
+		foreach( $matches as $match ) {
+			$params['text-' . $match['type']] = $match['data'];
+		}
+
 		$roomName = $params['name'];
-		$textEmpty = $params['text-empty'] ?: null;
-		$textSingle = $params['text-single'] ?: null;
-		$textPlural = $params['text-plural'] ?: null;
+
+		$textEmpty = $this->formatText($params['text-empty'] ?: null);
+		$textSingle = $this->formatText($params['text-single'] ?: null);
+		$textPlural = $this->formatText($params['text-plural'] ?: null);
 		$loadingText = $params['text-loading'] ?: "Loading...";
 
 		$type = $params['type'];
