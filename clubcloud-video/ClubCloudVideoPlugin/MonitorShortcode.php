@@ -69,7 +69,8 @@ class ClubCloudVideoPlugin_MonitorShortcode extends ClubCloudVideoPlugin_Shortco
 		$message = json_encode( [
 			'videoServerEndpoint' => $videoServerEndpoint,
 			'roomName'            => $roomName,
-			'admin'               => true
+			'admin'               => true,
+			'enableFloorplan'    => false
 		] );
 
 		if (!openssl_sign($message, $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {

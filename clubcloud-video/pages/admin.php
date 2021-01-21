@@ -80,7 +80,7 @@
     <p>This shows the number of people currently waiting in a room</p>
     <code>
         [
-            <?= ClubCloudVideoPlugin_ReceptionWidgetShortcode::SHORTCODE_TAGS[0]; ?>
+            <?= ClubCloudVideoPlugin_MonitorShortcode::SHORTCODE_TAGS[0]; ?>
             name="ClubCloud.tech"
             text-empty="Nobody is currently waiting"
             text-single="One person is waiting in reception"

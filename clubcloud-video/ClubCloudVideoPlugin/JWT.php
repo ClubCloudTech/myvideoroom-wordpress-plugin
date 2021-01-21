@@ -23,13 +23,15 @@ class ClubCloudVideoPlugin_JWT {
 			'callback' => function ( $data ) {
 				$roomName            = $data->get_param( 'room' );
 				$roomId              = $data->get_param( 'rid' );
+				$enableFloorplan     = !!$data->get_param( 'fp' );
 				$token               = $data->get_param( 'token' );
 				$videoServerEndpoint = 'meet.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );
 
 				$message = json_encode( [
 					'videoServerEndpoint' => $videoServerEndpoint,
 					'roomName'            => $roomName,
-					'admin'               => true
+					'admin'               => true,
+					'enableFloorplan'     => $enableFloorplan
 				] );
 
 				if (!openssl_sign($message, $signature, $this->privateKey, OPENSSL_ALGO_SHA256)) {
