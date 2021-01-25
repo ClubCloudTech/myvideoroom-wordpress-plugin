@@ -53,7 +53,6 @@ class ClubCloudVideoPlugin_AppShortcode extends ClubCloudVideoPlugin_Shortcode  
 		$roomHash = md5( json_encode( [
 			'type'                => 'roomHash',
 			'roomName'            => $roomName,
-			'mapId'               => $mapId,
 			'videoServerEndpoint' => $videoServerEndpoint,
 			'host'                => $_SERVER['host']
 		] ) );

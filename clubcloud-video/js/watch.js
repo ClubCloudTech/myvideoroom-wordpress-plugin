@@ -92,7 +92,7 @@ jQuery('document').ready(function () {
             watch[endpoint].push({
                 videoServerEndpoint: $this.data('videoServerEndpoint'),
                 domain: window.location.hostname,
-                roomName: $this.data('roomName'),
+                roomHash: $this.data('roomHash'),
                 securityToken: $this.data('securityToken'),
                 clientId: index
             });

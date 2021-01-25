@@ -66,6 +66,13 @@ class ClubCloudVideoPlugin_MonitorShortcode extends ClubCloudVideoPlugin_Shortco
 		$videoServerEndpoint = $this->endpoints->getVideoEndpoint();
 		$stateServer = $this->endpoints->getStateEndpoint();
 
+		$roomHash = md5( json_encode( [
+			'type'                => 'roomHash',
+			'roomName'            => $roomName,
+			'videoServerEndpoint' => $videoServerEndpoint,
+			'host'                => $_SERVER['host']
+		] ) );
+
 		$message = json_encode( [
 			'videoServerEndpoint' => $videoServerEndpoint,
 			'roomName'            => $roomName,
@@ -83,6 +90,7 @@ class ClubCloudVideoPlugin_MonitorShortcode extends ClubCloudVideoPlugin_Shortco
             <div
                 class="clubcloud-video-waiting"
                 data-room-name="${roomName}"
+                data-room-hash="${roomHash}"
                 data-video-server-endpoint="${videoServerEndpoint}"
                 data-server-endpoint="${stateServer}"
                 data-security-token="${securityToken}"
