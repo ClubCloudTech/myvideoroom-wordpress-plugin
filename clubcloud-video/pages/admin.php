@@ -68,6 +68,16 @@
                 <td>Optional: default=false</td>
             </tr>
             <tr>
+                <th>reception-id</th>
+                <td>The id of the reception to use</td>
+                <td>Optional: default="default"</td>
+            </tr>
+            <tr>
+                <th>reception-video</th>
+                <td>A link to a video to play in the reception. Will only work if the selected reception supports video</td>
+                <td>Optional: default=(Use reception setting)</td>
+            </tr>
+            <tr>
                 <th>floorplan</th>
                 <td>Whether the floorplan should be shown</td>
                 <td>Optional: default=false</td>

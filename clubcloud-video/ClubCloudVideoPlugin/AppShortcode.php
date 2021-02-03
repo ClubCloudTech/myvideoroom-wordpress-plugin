@@ -82,6 +82,8 @@ class ClubCloudVideoPlugin_AppShortcode extends ClubCloudVideoPlugin_Shortcode  
 
 		$roomName    = $params['name'];
 		$mapId       = $params['map'];
+		$receptionId = $params['reception-id'];
+		$receptionVideo = $params['reception-video'];
 		$enableLobby = ! ! ( $params['lobby']);
 		$enableReception = ! ! ($params['reception']);
 		$admin = ! ! ( $params['admin']);
@@ -140,6 +142,8 @@ class ClubCloudVideoPlugin_AppShortcode extends ClubCloudVideoPlugin_Shortcode  
                 data-admin="${admin}"
                 data-enable-lobby="${enableLobby}"
                 data-enable-reception="${enableReception}"
+                data-reception-id="${receptionId}"
+                data-reception-video="${receptionVideo}"
                 data-enable-floorplan="${enableFloorplan}"
                 data-room-hash="${roomHash}"
                 data-password="${password}"
