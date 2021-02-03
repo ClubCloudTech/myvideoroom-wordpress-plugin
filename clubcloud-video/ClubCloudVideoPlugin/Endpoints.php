@@ -2,6 +2,8 @@
 
 class ClubCloudVideoPlugin_Endpoints {
 
+	const CLUBCLOUD_DOMAIN = 'clubcloud.tech';
+
 	private string $videoEndpoint;
 	private string $appEndpoint;
 	private string $stateEndpoint;
@@ -18,9 +20,9 @@ class ClubCloudVideoPlugin_Endpoints {
 			$this->roomsEndpoint =  'http://localhost:4002';
 		} else {
 
-			$this->appEndpoint =  'https://app.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );
-			$this->stateEndpoint =  'https://state.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );
-			$this->roomsEndpoint =  'https://rooms.' . get_option( ClubCloudVideoPlugin::SETTING_VIDEO_SERVER );
+			$this->appEndpoint =  'https://app.' . self::CLUBCLOUD_DOMAIN;
+			$this->stateEndpoint =  'https://state.' . self::CLUBCLOUD_DOMAIN;
+			$this->roomsEndpoint =  'https://rooms.' . self::CLUBCLOUD_DOMAIN;
 		}
 	}
 
@@ -38,6 +40,10 @@ class ClubCloudVideoPlugin_Endpoints {
 
 	public function getRoomsEndpoint(): string {
 		return $this->roomsEndpoint;
+	}
+
+	public function getSubscribedVideoEndpoint(): string {
+		return 'meet.' . self::CLUBCLOUD_DOMAIN;
 	}
 
 

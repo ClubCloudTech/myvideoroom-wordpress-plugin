@@ -35,8 +35,50 @@ class ClubCloudVideoPlugin_AppShortcode extends ClubCloudVideoPlugin_Shortcode  
 		} );
 	}
 
+	/**
+	 * @deprecated
+	 * @param array $params
+	 *
+	 * @return array
+	 */
+	private function processLegacy( $params )
+	{
+		if (!$params['name'] && $params['cc_event_id']) {
+			$params['name'] = $params['cc_event_id'];
+		}
+
+		if (!$params['reception'] && $params['cc_is_reception']) {
+			$params['reception'] = !!$params['cc_is_reception'];
+		}
+
+		if (!$params['map'] && $params['cc_plan_id']) {
+			$params['map'] = $params['cc_plan_id'];
+		}
+
+		if (!$params['lobby'] && $params['cc_enable_lobby']) {
+			$params['lobby'] = !!$params['cc_enable_lobby'];
+		}
+
+		if (!$params['admin'] && $params['auth']) {
+			$params['admin'] = !!$params['auth'];
+		}
+
+		// process legacy rooms
+
+		if ($params['map'] === 'Innovateoffice') {
+			$params['map'] = 'innovate-office';
+		}
+
+		if ($params['map'] === 'boardroom1') {
+			$params['map'] = 'boardroom';
+		}
+
+		return $params;
+	}
+
 	public function createShortcode( $params ) {
 		$params = $params ?: [];
+		$params = $this->processLegacy($params);
 
 		$roomName    = $params['name'];
 		$mapId       = $params['map'];
@@ -84,6 +126,7 @@ class ClubCloudVideoPlugin_AppShortcode extends ClubCloudVideoPlugin_Shortcode  
 		$currentUser = wp_get_current_user();
 		$userName    = $currentUser ? $currentUser->display_name : null;
 		$avatarUrl   = $this->getAvatar( $currentUser );
+		$hasSubscription = $videoServerEndpoint === $this->endpoints->getSubscribedVideoEndpoint();
 
 		return <<<EOT
             <div
@@ -104,6 +147,7 @@ class ClubCloudVideoPlugin_AppShortcode extends ClubCloudVideoPlugin_Shortcode  
                 data-name="${userName}"
                 data-avatar="${avatarUrl}"
                 data-rooms-endpoint="${roomsEndpoint}"
+                data-has-subscription="${hasSubscription}"
             >${loadingText}</div>
         EOT;
 	}
