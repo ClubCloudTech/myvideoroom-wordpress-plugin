@@ -70,7 +70,7 @@
             <tr>
                 <th>reception-id</th>
                 <td>The id of the reception to use</td>
-                <td>Optional: default="default"</td>
+                <td>Optional: default="office"</td>
             </tr>
             <tr>
                 <th>reception-video</th>

@@ -82,7 +82,7 @@ class ClubCloudVideoPlugin_AppShortcode extends ClubCloudVideoPlugin_Shortcode  
 
 		$roomName    = $params['name'];
 		$mapId       = $params['map'];
-		$receptionId = $params['reception-id'];
+		$receptionId = $params['reception-id'] ?: 'office';
 		$receptionVideo = $params['reception-video'];
 		$enableLobby = ! ! ( $params['lobby']);
 		$enableReception = ! ! ($params['reception']);
