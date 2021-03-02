@@ -133,7 +133,7 @@ class MonitorShortcode extends Shortcode {
 					'videoServerEndpoint' => $video_server_endpoint,
 
 					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
-					'host'                => $_SERVER['host'] ?? null,
+					'host'                => $_SERVER['HTTP_HOST'] ?? null,
 				)
 			)
 		);

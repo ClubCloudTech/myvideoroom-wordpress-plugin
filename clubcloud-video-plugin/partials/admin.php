@@ -16,7 +16,14 @@ use ClubCloudVideoPlugin\Plugin;
 <div class="wrap">
 	<h1>ClubCloud Video Short Code Settings</h1>
 
-	<br/><br/>
+	<ul>
+	<?php
+	foreach ( $messages as $message ) {
+		echo '<li class="notice ' . esc_attr( $message['type'] ) . '"><p>' . esc_html( $message['message'] ) . '</p></li>';
+
+	}
+	?>
+	</ul>
 
 	<h2>App ShortCode</h2>
 	<p>You can use the following
@@ -27,77 +34,102 @@ use ClubCloudVideoPlugin\Plugin;
 	<p>This shows the video app</p>
 	<code>
 		[
-			<?php
-			echo esc_html( AppShortcode::SHORTCODE_TAGS[0] );
-			?>
+			<?php echo esc_html( AppShortcode::SHORTCODE_TAGS[0] ); ?>
 			name="ClubCloud.tech"
 			map="clubcloud"
 			lobby=true
 			admin=true
 		]
 	</code><br />
-	<table>
+	<br />
+
+	<table class="wp-list-table widefat plugins">
 		<thead>
 			<tr>
-				<th>Param</th>
-				<th>Details</th>
+				<th class="manage-column column-name column-primary">Param</th>
+				<th class="manage-column column-name column-primary">Details</th>
+				<th class="manage-column column-name column-primary">Required</th>
+				<th class="manage-column column-name column-primary">Default</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<th>name</th>
-				<td>The name of the room</td>
-				<td>Required</td>
+			<tr class="active">
+				<th class="manage-column column-name column-primary" colspan="4">
+					<strong>Main settings:</strong>
+				</th>
 			</tr>
-			<tr>
-				<th>map</th>
-				<td>The id of the map to display</td>
-				<td>Required</td>
+
+			<tr class="inactive">
+				<th class="column-primary"><em>name</em></th>
+				<td class="column-description">The name of the room</td>
+				<td>required</td>
+				<td></td>
 			</tr>
-			<tr>
-				<th>admin</th>
-				<td>Whether the user should be an admin</td>
-				<td>Optional: default=false</td>
+			<tr class="inactive">
+				<th class="column-primary"><em>map</em></th>
+				<td class="column-description">The id of the map to display</td>
+				<td>required</td>
+				<td></td>
 			</tr>
-			<tr>
-				<th>loading-text</th>
-				<td>Test to show while the app is loading</td>
-				<td>Optional: default="Loading..."</td>
+			<tr class="inactive">
+				<th class="column-primary"><em>admin</em></th>
+				<td class="column-description">Whether the user should be an admin</td>
+				<td>optional</td>
+				<td>false</td>
+			</tr>
+			<tr class="inactive">
+				<th class="column-primary"><em>loading-text</em></th>
+				<td class="column-description">Test to show while the app is loading</td>
+				<td>optional</td>
+				<td>"Loading..."</td>
 			</tr>
 		</tbody>
 
 		<tbody>
-			<tr><th colspan="3">Non-admin settings</th></tr>
+			<tr class="active">
+				<th class="manage-column column-name column-primary" colspan="4">
+					<strong>Admin settings:</strong>
+				</th>
+			</tr>
 
-			<tr>
-				<th>lobby</th>
-				<td>Whether the lobby inside the video app should be enabled for non admin users</td>
-				<td>Optional: default=false</td>
+			<tr class="inactive">
+				<th class="column-primary"><em>lobby</em></th>
+				<td class="column-description">Whether the lobby inside the video app should be enabled for non admin users</td>
+				<td>optional</td>
+				<td>false</td>
 			</tr>
 		</tbody>
 
 		<tbody>
-			<tr><th colspan="3">Non-admin settings</th></tr>
+			<tr class="active">
+				<th class="manage-column column-name column-primary" colspan="4">
+					<strong>Non-admin settings:</strong>
+				</th>
+			</tr>
 
-			<tr>
-				<th>reception</th>
-				<td>Whether the reception before entering the app should be enabled</td>
-				<td>Optional: default=false</td>
+			<tr class="inactive">
+				<th class="column-primary"><em>reception</em></th>
+				<td class="column-description">Whether the reception before entering the app should be enabled</td>
+				<td>optional</td>
+				<td>false</td>
 			</tr>
-			<tr>
-				<th>reception-id</th>
-				<td>The id of the reception to use</td>
-				<td>Optional: default="office"</td>
+			<tr class="inactive">
+				<th class="column-primary"><em>reception-id</em></th>
+				<td class="column-description">The id of the reception to use</td>
+				<td>optional</td>
+				<td>"office"</td>
 			</tr>
-			<tr>
-				<th>reception-video</th>
-				<td>A link to a video to play in the reception. Will only work if the selected reception supports video</td>
-				<td>Optional: default=(Use reception setting)</td>
+			<tr class="inactive">
+				<th class="column-primary"><em>reception-video</em></th>
+				<td class="column-description">A link to a video to play in the reception. Will only work if the selected reception supports video</td>
+				<td>optional</td>
+				<td>(Use reception setting)</td>
 			</tr>
-			<tr>
-				<th>floorplan</th>
-				<td>Whether the floorplan should be shown</td>
-				<td>Optional: default=false</td>
+			<tr class="inactive">
+				<th class="column-primary"><em>floorplan</em></th>
+				<td class="column-description">Whether the floorplan should be shown</td>
+				<td>optional</td>
+				<td>false</td>
 			</tr>
 		</tbody>
 	</table>
@@ -114,58 +146,73 @@ use ClubCloudVideoPlugin\Plugin;
 			text-plural="{{count}} people are waiting in reception"
 		]
 	</code><br/>
-	<table>
+	<br />
+
+	<table class="wp-list-table widefat plugins">
 		<thead>
-		<tr>
-			<th>Param</th>
-			<th>Details</th>
-			<th>Required</th>
-		</tr>
+			<tr>
+				<th class="manage-column column-name column-primary">Param</th>
+				<th class="manage-column column-name column-primary">Details</th>
+				<th class="manage-column column-name column-primary">Required</th>
+				<th class="manage-column column-name column-primary">Default</th>
+			</tr>
 		</thead>
+
 		<tbody>
-		<tr>
-			<th>name</th>
-			<td>The name of the room</td>
-			<td>Required</td>
-		</tr>
-		<tr>
-			<th>text-empty</th>
-			<td>The text to show when nobody is waiting</td>
-			<td>Optional: default="Nobody is currently waiting"</td>
-		</tr>
-		<tr>
-			<th>text-single</th>
-			<td>The text to show when a single person is waiting</td>
-			<td>Optional: default="One person is waiting in reception"</td>
-		</tr>
-		<tr>
-			<th>text-plural</th>
-			<td>The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count</td>
-			<td>Optional: default="{{count}} people are waiting in reception"</td>
-		</tr>
-		<tr>
-			<th>loading-text</th>
-			<td>The text to show while the widget is loading</td>
-			<td>Optional: default="Loading..."</td>
-		</tr>
-		<tr>
-			<th>type</th>
-			<td>
-				The type of count to show:
-				<dl>
-					<dt>reception</dt>
-					<dd>The number of people waiting in reception</dd>
+			<tr class="inactive">
+				<th class="column-primary"><em>name</em></th>
+				<td class="column-description">The name of the room</td>
+				<td>required</td>
+				<td></td>
+			</tr>
 
-					<dt>seated</dt>
-					<dd>The number of people currently seated</dd>
+			<tr class="inactive">
+				<th class="column-primary"><em>text-empty</em></th>
+				<td class="column-description">The text to show when nobody is waiting</td>
+				<td>optional</td>
+				<td>"Nobody is currently waiting"</td>
+			</tr>
 
-					<dt>all</dt>
-					<dd>The total number of people, including reception, seated and non-seated admins</dd>
-				</dl>
+			<tr class="inactive">
+				<th class="column-primary"><em>text-single</em></th>
+				<td class="column-description">The text to show when a single person is waiting</td>
+				<td>optional</td>
+				<td>"One person is waiting in reception"</td>
+			</tr>
 
-			</td>
-			<td>Optional: default="reception"</td>
-		</tr>
+			<tr class="inactive">
+				<th class="column-primary"><em>text-plural</em></th>
+				<td class="column-description">The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count</td>
+				<td>optional</td>
+				<td>"{{count}} people are waiting in reception"</td>
+			</tr>
+
+			<tr class="inactive">
+				<th class="column-primary"><em>loading-text</em></th>
+				<td class="column-description">The text to show while the widget is loading</td>
+				<td>optional</td>
+				<td>"Loading..."</td>
+			</tr>
+
+			<tr class="inactive">
+				<th class="column-primary"><em>type</em></th>
+				<td class="column-description">
+					The type of count to show:
+					<dl>
+						<dt>"reception":</dt>
+						<dd>The number of people waiting in reception</dd>
+
+						<dt>"seated":</dt>
+						<dd>The number of people currently seated</dd>
+
+						<dt>"all":</dt>
+						<dd>The total number of people, including reception, seated and non-seated admins</dd>
+					</dl>
+
+				</td>
+				<td>optional</td>
+				<td>"reception"</td>
+			</tr>
 		</tbody>
 	</table>
 	<br/>
@@ -173,7 +220,7 @@ use ClubCloudVideoPlugin\Plugin;
 
 	<h2>Settings</h2>
 	<form method="post" action="options.php">
-		<?php settings_fields( Plugin::PLUGIN_NAMESPACE ); ?>
+		<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
 		<fieldset>
 			<table class="form-table" role="presentation">
@@ -181,8 +228,7 @@ use ClubCloudVideoPlugin\Plugin;
 				<tr>
 					<th scope="row">
 						<label for="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>">
-							ClubCloud Video URL<br/>
-							[<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>]
+							ClubCloud Video URL
 						</label>
 					</th>
 					<td>
@@ -199,17 +245,19 @@ use ClubCloudVideoPlugin\Plugin;
 
 				<tr>
 					<th scope="row">
-						<label for="<?php echo esc_attr( Plugin::SETTING_PRIVATE_KEY ); ?>">
-							ClubCloud Private Key<br/>
-							[<?php echo esc_html( Plugin::SETTING_PRIVATE_KEY ); ?>]
+						<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
+							ClubCloud Activation Key
 						</label>
 					</th>
 					<td>
-							<textarea
-									name="<?php echo esc_attr( Plugin::SETTING_PRIVATE_KEY ); ?>"
-									id="<?php echo esc_attr( Plugin::SETTING_PRIVATE_KEY ); ?>"
-									placeholder="(Provided by ClubCloud)"
-							><?php echo esc_html( get_option( Plugin::SETTING_PRIVATE_KEY ) ); ?></textarea>
+						<input
+								type="text"
+								name="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+								value="<?php echo esc_attr( get_option( Plugin::SETTING_ACTIVATION_KEY ) ); ?>"
+								placeholder="(Provided by ClubCloud)"
+								id="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+								size="100"
+						/>
 					</td>
 				</tr>
 				</tbody>
