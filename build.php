@@ -1,35 +1,42 @@
 #!/usr/bin/env php
 <?php
+/**
+ * Build the WordPress plugin as a zip
+ *
+ * @package ClubCloudVideoPlugin
+ */
 
-// Get real path for our folder
-$rootPath = realpath('clubcloud-video');
+/* Get real path for our folder */
+$root_path = realpath( 'clubcloud-video-plugin' );
 
-// Initialize archive object
+/* Initialize archive object */
 $zip = new ZipArchive();
-$zip->open('clubcloud-video.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE);
+$zip->open( 'clubcloud-video.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE );
 
-// Create recursive directory iterator
-/** @var SplFileInfo[] $files */
+/**
+ * Recurse over the root directory and get all the required files
+ *
+ * @var SplFileInfo[] $files
+ */
 $files = new RecursiveIteratorIterator(
-	new RecursiveDirectoryIterator($rootPath),
+	new RecursiveDirectoryIterator( $root_path ),
 	RecursiveIteratorIterator::LEAVES_ONLY
 );
 
-foreach ($files as $name => $file)
-{
-	// Skip directories (they would be added automatically)
-	if (!$file->isDir())
-	{
-		// Get real and relative path for current file
-		$filePath = $file->getRealPath();
-		$relativePath = substr($filePath, strlen($rootPath) + 1);
+foreach ( $files as $name => $file ) {
+	$file_path     = $file->getRealPath();
+	$relative_path = substr( $file_path, strlen( $root_path ) + 1 );
 
-		// Add current file to archive
-		$zip->addFile($filePath, $relativePath);
+	if ( strpos( $relative_path, 'Test/' ) === 0 ) {
+		continue;
+	}
+
+	if ( ! $file->isDir() ) {
+		$zip->addFile( $file_path, $relative_path );
 	}
 }
 
-// Zip archive will be created only after closing object
+/* Zip archive will be created only after closing object */
 $zip->close();
 
 echo "Done!\n";
