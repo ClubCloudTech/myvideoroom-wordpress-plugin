@@ -34,10 +34,11 @@ class Plugin {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
 		Factory::get_instance( Admin::class )->init();
-		Factory::get_instance( TextOptionShortcode::class )->install();
-		Factory::get_instance( AppShortcode::class, array( $private_key ) )->install();
-		Factory::get_instance( MonitorShortcode::class, array( $private_key ) )->install();
-		Factory::get_instance( JWT::class, array( $private_key ) )->install();
+		Factory::get_instance( JWT::class, array( $private_key ) )->init();
+
+		Factory::get_instance( TextOptionShortcode::class )->init();
+		Factory::get_instance( AppShortcode::class, array( $private_key ) )->init();
+		Factory::get_instance( MonitorShortcode::class, array( $private_key ) )->init();
 	}
 
 	/**

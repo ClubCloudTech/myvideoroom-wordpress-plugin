@@ -9,6 +9,17 @@
 /* Get real path for our folder */
 $root_path = realpath( 'clubcloud-video-plugin' );
 
+require_once __DIR__ . '/vendor/squizlabs/php_codesniffer/autoload.php';
+
+$runner = new \PHP_CodeSniffer\Runner();
+
+$_SERVER['argv'] = array( 'vendor/bin/phpcs', '-s', '--standard=WordPress', 'build.php', 'clubcloud-video-plugin/' );
+$exit_code       = $runner->runPHPCS();
+
+if ( $exit_code ) {
+	throw new \Exception( 'PHP Checkstyle failed - cannot build' );
+}
+
 /* Initialize archive object */
 $zip = new ZipArchive();
 $zip->open( 'clubcloud-video.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE );

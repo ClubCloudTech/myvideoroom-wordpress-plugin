@@ -36,7 +36,8 @@ class Factory {
 			return self::$objects[ $class_name ];
 		}
 
-		return new $class_name( ...$arguments );
+		$class = new \ReflectionClass( $class_name );
+		return $class->newInstanceArgs( $arguments );
 	}
 
 	/**

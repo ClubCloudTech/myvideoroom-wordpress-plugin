@@ -20,7 +20,7 @@ class TextOptionShortcode extends Shortcode {
 	/**
 	 * Install the shortcode
 	 */
-	public function install() {
+	public function init() {
 		foreach ( self::SHORTCODE_TAGS as $shortcode_tag ) {
 			add_shortcode( $shortcode_tag, array( $this, 'output_shortcode' ) );
 		}

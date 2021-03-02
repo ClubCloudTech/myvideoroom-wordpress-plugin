@@ -31,6 +31,12 @@ class JWT {
 	public function __construct( string $private_key ) {
 		$this->private_key = $private_key;
 
+	}
+
+	/**
+	 * Initialise this
+	 */
+	public function init() {
 		add_action(
 			'init',
 			function () {

@@ -18,7 +18,6 @@ use WP_User;
 class AppShortcode extends Shortcode {
 	const SHORTCODE_TAGS = array(
 		'clubcloud_app',
-		'clubvideo',
 	);
 
 	/**
@@ -48,7 +47,7 @@ class AppShortcode extends Shortcode {
 	/**
 	 * Install the shortcode
 	 */
-	public function install() {
+	public function init() {
 		foreach ( self::SHORTCODE_TAGS as $shortcode_tag ) {
 			add_shortcode( $shortcode_tag, array( $this, 'output_shortcode' ) );
 		}
