@@ -25,6 +25,55 @@ use ClubCloudVideoPlugin\Plugin;
 	?>
 	</ul>
 
+    <h2>Settings</h2>
+    <form method="post" action="options.php">
+		<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
+
+        <fieldset>
+            <table class="form-table" role="presentation">
+                <tbody>
+                <tr>
+                    <th scope="row">
+                        <label for="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>">
+                            ClubCloud Video URL
+                        </label>
+                    </th>
+                    <td>
+                        <input
+                                type="text"
+                                name="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
+                                value="<?php echo esc_attr( get_option( Plugin::SETTING_VIDEO_SERVER ) ); ?>"
+                                placeholder="e.g. abada.clubcloud.tech"
+                                id="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
+                                size="100"
+                        />
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        <label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
+                            ClubCloud Activation Key
+                        </label>
+                    </th>
+                    <td>
+                        <input
+                                type="text"
+                                name="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+                                value="<?php echo esc_attr( get_option( Plugin::SETTING_ACTIVATION_KEY ) ); ?>"
+                                placeholder="(Provided by ClubCloud)"
+                                id="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+                                size="100"
+                        />
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+		<?php submit_button(); ?>
+    </form>
+
 	<h2>App ShortCode</h2>
 	<p>You can use the following
 		<a href="https://support.wordpress.com/shortcodes/" target="_blank">ShortCodes</a> to add the ClubCloud video app to a page.
@@ -215,56 +264,4 @@ use ClubCloudVideoPlugin\Plugin;
 			</tr>
 		</tbody>
 	</table>
-	<br/>
-
-
-	<h2>Settings</h2>
-	<form method="post" action="options.php">
-		<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
-
-		<fieldset>
-			<table class="form-table" role="presentation">
-				<tbody>
-				<tr>
-					<th scope="row">
-						<label for="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>">
-							ClubCloud Video URL
-						</label>
-					</th>
-					<td>
-						<input
-								type="text"
-								name="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
-								value="<?php echo esc_attr( get_option( Plugin::SETTING_VIDEO_SERVER ) ); ?>"
-								placeholder="e.g. abada.clubcloud.tech"
-								id="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
-								size="100"
-						/>
-					</td>
-				</tr>
-
-				<tr>
-					<th scope="row">
-						<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
-							ClubCloud Activation Key
-						</label>
-					</th>
-					<td>
-						<input
-								type="text"
-								name="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
-								value="<?php echo esc_attr( get_option( Plugin::SETTING_ACTIVATION_KEY ) ); ?>"
-								placeholder="(Provided by ClubCloud)"
-								id="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
-								size="100"
-						/>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-		</fieldset>
-
-		<?php submit_button(); ?>
-	</form>
-
 </div>
