@@ -26,10 +26,10 @@ class Admin {
 	 */
 	public function add_admin_menu() {
 		add_menu_page(
-			'ClubCloud Video Settings',
-			'ClubCloud Video Settings',
+			'ClubCloud Video',
+			'ClubCloud Video',
 			'manage_options',
-			'clubcloud-video-settings',
+			'clubcloud-video',
 			array( $this, 'create_admin_page' ),
 			'dashicons-format-chat'
 		);

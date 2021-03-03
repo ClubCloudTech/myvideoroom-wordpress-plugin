@@ -25,54 +25,61 @@ use ClubCloudVideoPlugin\Plugin;
 	?>
 	</ul>
 
-    <h2>Settings</h2>
-    <form method="post" action="options.php">
+	<h2>Settings</h2>
+	<form method="post" action="options.php">
 		<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
-        <fieldset>
-            <table class="form-table" role="presentation">
-                <tbody>
-                <tr>
-                    <th scope="row">
-                        <label for="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>">
-                            ClubCloud Video URL
-                        </label>
-                    </th>
-                    <td>
-                        <input
-                                type="text"
-                                name="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
-                                value="<?php echo esc_attr( get_option( Plugin::SETTING_VIDEO_SERVER ) ); ?>"
-                                placeholder="e.g. abada.clubcloud.tech"
-                                id="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
-                                size="100"
-                        />
-                    </td>
-                </tr>
+		<fieldset>
+			<table class="form-table" role="presentation">
+				<tbody>
+				<tr>
+					<th scope="row">
+						<label for="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>">
+							ClubCloud Video URL
+						</label>
+					</th>
+					<td>
+						<input
+								type="text"
+								name="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
+								value="<?php echo esc_attr( get_option( Plugin::SETTING_VIDEO_SERVER ) ); ?>"
+								placeholder="e.g. abada.clubcloud.tech"
+								id="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
+								size="100"
+						/>
+					</td>
+				</tr>
 
-                <tr>
-                    <th scope="row">
-                        <label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
-                            ClubCloud Activation Key
-                        </label>
-                    </th>
-                    <td>
-                        <input
-                                type="text"
-                                name="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
-                                value="<?php echo esc_attr( get_option( Plugin::SETTING_ACTIVATION_KEY ) ); ?>"
-                                placeholder="(Provided by ClubCloud)"
-                                id="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
-                                size="100"
-                        />
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </fieldset>
+				<tr>
+					<th scope="row">
+						<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
+							ClubCloud Activation Key
+						</label>
+					</th>
+					<td>
+						<input
+								type="text"
+								name="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+								value="<?php echo esc_attr( get_option( Plugin::SETTING_ACTIVATION_KEY ) ); ?>"
+								placeholder="
+								<?php
+								if ( get_option( Plugin::SETTING_PRIVATE_KEY ) ) {
+									echo '(hidden)';
+								} else {
+									echo '(Provided by ClubCloud)'; }
+								?>
+								"
+								id="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+								size="100"
+						/>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</fieldset>
 
 		<?php submit_button(); ?>
-    </form>
+	</form>
 
 	<h2>App ShortCode</h2>
 	<p>You can use the following
@@ -110,19 +117,50 @@ use ClubCloudVideoPlugin\Plugin;
 
 			<tr class="inactive">
 				<th class="column-primary"><em>name</em></th>
-				<td class="column-description">The name of the room</td>
+				<td class="column-description">
+					The name of the room
+
+					<p>
+						All shortcodes on the same domain that share a room name will put users into the same video group.
+						This allows you to have different entry points for admins and non admins.
+					</p>
+
+					<p>
+						The room name will be visible to users inside the video.
+					</p>
+				</td>
 				<td>required</td>
 				<td></td>
 			</tr>
 			<tr class="inactive">
 				<th class="column-primary"><em>map</em></th>
-				<td class="column-description">The id of the map to display</td>
+				<td class="column-description">
+					The id of the map to display
+
+					<p>
+						A list of available maps are available here: <a href="https://rooms.clubcloud.tech/maps.html">https://rooms.clubcloud.tech/maps.html</a>
+					</p>
+
+					<p>
+						The map list is also available in a JSON format: <a href="https://rooms.clubcloud.tech/maps">https://rooms.clubcloud.tech/maps</a>
+					</p>
+				</td>
 				<td>required</td>
 				<td></td>
 			</tr>
 			<tr class="inactive">
 				<th class="column-primary"><em>admin</em></th>
-				<td class="column-description">Whether the user should be an admin</td>
+				<td class="column-description">
+					Whether the user should be an admin
+
+					<p>
+						Admins have the ability to add users to rooms, and move users between rooms.
+					</p>
+
+					<p>
+						You need at least one admin to start a video session.
+					</p>
+				</td>
 				<td>optional</td>
 				<td>false</td>
 			</tr>
@@ -164,7 +202,18 @@ use ClubCloudVideoPlugin\Plugin;
 			</tr>
 			<tr class="inactive">
 				<th class="column-primary"><em>reception-id</em></th>
-				<td class="column-description">The id of the reception to use</td>
+				<td class="column-description">
+					The id of the reception image to use
+
+
+					<p>
+						A list of available reception images are available here: <a href="https://rooms.clubcloud.tech/receptions.html">https://rooms.clubcloud.tech/receptions.html</a>
+					</p>
+
+					<p>
+						The reception image list is also available in a JSON format: <a href="https://rooms.clubcloud.tech/receptions">https://rooms.clubcloud.tech/receptions</a>
+					</p>
+				</td>
 				<td>optional</td>
 				<td>"office"</td>
 			</tr>
