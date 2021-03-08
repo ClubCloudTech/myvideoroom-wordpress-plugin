@@ -22,6 +22,12 @@ use ClubCloudVideoPlugin\Plugin;
 		echo '<li class="notice ' . esc_attr( $message['type'] ) . '"><p>' . esc_html( $message['message'] ) . '</p></li>';
 
 	}
+
+	if ( esc_attr( get_option( Plugin::SETTING_VIDEO_SERVER ) ) ) {
+		$video_server = esc_attr( get_option( Plugin::SETTING_VIDEO_SERVER ) );
+	} else {
+		$video_server = 'clubcloud.tech';
+	};
 	?>
 	</ul>
 
@@ -42,8 +48,7 @@ use ClubCloudVideoPlugin\Plugin;
 						<input
 								type="text"
 								name="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
-								value="<?php echo esc_attr( get_option( Plugin::SETTING_VIDEO_SERVER ) ); ?>"
-								placeholder="e.g. abada.clubcloud.tech"
+								value="<?php echo esc_attr( $video_server ); ?>"
 								id="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
 								size="100"
 						/>

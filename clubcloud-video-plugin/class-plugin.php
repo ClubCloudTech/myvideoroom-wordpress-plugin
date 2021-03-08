@@ -31,7 +31,6 @@ class Plugin {
 	 * Plugin constructor.
 	 */
 	public function __construct() {
-
 		$private_key = get_option( self::SETTING_PRIVATE_KEY );
 
 		add_action( 'admin_init', array( $this, 'register_settings' ) );

@@ -87,19 +87,31 @@ class AppShortcode extends Shortcode {
 			$params['name'] = $params['cc_event_id'];
 		}
 
-		if ( ! $params['reception'] && $params['cc_is_reception'] ) {
+		if (
+			( ! isset( $param['reception'] ) || ! $params['reception'] ) &&
+			( isset( $param['cc_is_reception'] ) && $params['cc_is_reception'] )
+		) {
 			$params['reception'] = ! ! $params['cc_is_reception'];
 		}
 
-		if ( ! $params['map'] && $params['cc_plan_id'] ) {
-			$params['map'] = $params['cc_plan_id'];
+		if (
+			( ! isset( $param['map'] ) || ! $params['map'] ) &&
+			( isset( $param['cc_plan_id'] ) && $params['cc_plan_id'] )
+		) {
+			$params['map'] = ! ! $params['cc_plan_id'];
 		}
 
-		if ( ! $params['lobby'] && $params['cc_enable_lobby'] ) {
+		if (
+			( ! isset( $param['lobby'] ) || ! $params['lobby'] ) &&
+			( isset( $param['cc_enable_lobby'] ) && $params['cc_enable_lobby'] )
+		) {
 			$params['lobby'] = ! ! $params['cc_enable_lobby'];
 		}
 
-		if ( ! $params['admin'] && $params['auth'] ) {
+		if (
+			( ! isset( $param['admin'] ) || ! $params['admin'] ) &&
+			( isset( $param['auth'] ) && $params['auth'] )
+		) {
 			$params['admin'] = ! ! $params['auth'];
 		}
 
@@ -125,6 +137,18 @@ class AppShortcode extends Shortcode {
 	 * @throws Exception When unable to sign the request.
 	 */
 	public function output_shortcode( $params = array() ) {
+
+		if ( ! $this->private_key ) {
+			if (
+				defined( 'WP_DEBUG' ) &&
+				WP_DEBUG
+			) {
+				return '<div>ClubCloud Video is not currently licenced</div>';
+			} else {
+				return '';
+			}
+		}
+
 		if ( ! $params ) {
 			$params = array();
 		}
@@ -135,18 +159,18 @@ class AppShortcode extends Shortcode {
 		$map_id    = $params['map'];
 
 		$reception_id = 'office';
-		if ( $params['reception-id'] ) {
+		if ( $params['reception-id'] ?? false ) {
 			$reception_id = $params['reception-id'];
 		}
 
-		$reception_video  = $params['reception-video'];
-		$enable_lobby     = ! ! ( $params['lobby'] );
-		$enable_reception = ! ! ( $params['reception'] );
-		$admin            = ! ! ( $params['admin'] );
-		$enable_floorplan = ! ! ( $params['floorplan'] );
+		$reception_video  = $params['reception-video'] ?? null;
+		$enable_lobby     = ! ! ( $params['lobby'] ?? false );
+		$enable_reception = ! ! ( $params['reception'] ?? false );
+		$admin            = ! ! ( $params['admin'] ?? false );
+		$enable_floorplan = ! ! ( $params['floorplan'] ?? false );
 
 		$loading_text = 'Loading...';
-		if ( $params['text-loading'] ) {
+		if ( $params['text-loading'] ?? false ) {
 			$loading_text = $params['text-loading'];
 		}
 

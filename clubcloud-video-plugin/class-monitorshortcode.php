@@ -18,6 +18,7 @@ class MonitorShortcode extends Shortcode {
 
 	const SHORTCODE_TAGS = array(
 		'clubcloud_monitor',
+		'clubwatch',
 	);
 
 	/**
@@ -87,6 +88,16 @@ class MonitorShortcode extends Shortcode {
 	 * @throws Exception When unable to sign the request.
 	 */
 	public function output_shortcode( array $params = null, $contents = '' ): string {
+		if ( ! $this->private_key ) {
+			if (
+				defined( 'WP_DEBUG' ) &&
+				WP_DEBUG
+			) {
+				return '<div>ClubCloud Video is not currently licenced</div>';
+			} else {
+				return '';
+			}
+		}
 
 		if ( ! $params ) {
 			$params = array();
@@ -101,26 +112,26 @@ class MonitorShortcode extends Shortcode {
 		$room_name = $params['name'];
 
 		$text_empty = null;
-		if ( $params['text-empty'] ) {
+		if ( $params['text-empty'] ?? false ) {
 			$text_empty = $this->format_data_attribute_text( $params['text-empty'] );
 		}
 
 		$text_single = null;
-		if ( $params['text-single'] ) {
+		if ( $params['text-single'] ?? false ) {
 			$text_single = $this->format_data_attribute_text( $params['text-single'] );
 		}
 
 		$text_plural = null;
-		if ( $params['text-plural'] ) {
+		if ( $params['text-plural'] ?? false ) {
 			$text_plural = $this->format_data_attribute_text( $params['text-plural'] );
 		}
 
 		$loading_text = 'Loading...';
-		if ( $params['text-loading'] ) {
+		if ( $params['text-loading'] ?? false ) {
 			$loading_text = $params['text-loading'];
 		}
 
-		$type = $params['type'];
+		$type = $params['type'] ?? 'reception';
 
 		$video_server_endpoint = $this->endpoints->get_video_endpoint();
 		$state_server_endpoint = $this->endpoints->get_state_endpoint();
