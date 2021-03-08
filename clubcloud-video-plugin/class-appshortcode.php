@@ -18,6 +18,7 @@ use WP_User;
 class AppShortcode extends Shortcode {
 	const SHORTCODE_TAGS = array(
 		'clubcloud_app',
+		'clubvideo',
 	);
 
 	/**
@@ -58,7 +59,7 @@ class AppShortcode extends Shortcode {
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
 				'clubcloudvideo-app-js',
-				plugins_url( '/../js/app.js', __FILE__ ),
+				plugins_url( '/js/app.js', __FILE__ ),
 				array( 'jquery' ),
 				$this->get_plugin_version(),
 				true
@@ -152,6 +153,7 @@ class AppShortcode extends Shortcode {
 		$video_server_endpoint = $this->endpoints->get_video_endpoint();
 		$state_server          = $this->endpoints->get_state_endpoint();
 		$rooms_endpoint        = $this->endpoints->get_rooms_endpoint();
+		$app_endpoint          = $this->endpoints->get_app_endpoint();
 
 		$room_hash = md5(
 			wp_json_encode(
@@ -212,6 +214,7 @@ class AppShortcode extends Shortcode {
                 data-room-name="${room_name}"
                 data-map-id="${map_id}"
                 data-video-server-endpoint="${video_server_endpoint}"
+                data-app-endpoint="${app_endpoint}"
                 data-jwt-endpoint="${jwt_endpoint}"
                 data-server-endpoint="${state_server}"
                 data-admin="${admin}"

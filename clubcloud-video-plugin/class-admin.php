@@ -47,9 +47,8 @@ class Admin {
 
 		if ( $activation_key ) {
 			$opts = array(
-				'http' => array(
-					'method' => 'GET',
-					'header' => 'Authorization: Bearer ' . $activation_key,
+				'headers' => array(
+					'Authorization' => 'Bearer ' . $activation_key,
 				),
 			);
 
@@ -57,9 +56,15 @@ class Admin {
 			$host = $_SERVER['HTTP_HOST'] ?? null;
 			$url  = 'https://licence.' . $video_server_endpoint . '/' . $host;
 
-			$licence = wp_remote_get( $url, $opts );
+			$licence_data = wp_remote_get( $url, $opts );
 
 			$private_key = null;
+			$licence     = null;
+
+			if ( $licence_data ) {
+				$licence = wp_remote_retrieve_body( $licence_data );
+			}
+
 			if ( $licence ) {
 				$json = json_decode( $licence, true );
 

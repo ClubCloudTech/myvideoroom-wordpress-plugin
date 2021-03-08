@@ -11,7 +11,7 @@ declare(strict_types=1);
  * Plugin Name:         ClubCloud Video
  * Plugin URI:          https://clubcloud.tech
  * Description:         Allows embedding of the ClubCloud Video App into WordPress
- * Version:             0.9.1-beta
+ * Version:             0.9.2-beta
  * Requires PHP:        7.4
  * Requires at least:   5.6
  * Author:              Alec Sammon, Craig Jones
