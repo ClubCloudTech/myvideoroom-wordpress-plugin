@@ -41,9 +41,9 @@ class Admin {
 	public function create_admin_page() {
 		$messages = array();
 
-		$activation_key        = get_option( Plugin::SETTING_ACTIVATION_KEY );
-		$private_key           = get_option( Plugin::SETTING_PRIVATE_KEY );
-		$video_server_endpoint = get_option( Plugin::SETTING_VIDEO_SERVER );
+		$activation_key  = get_option( Plugin::SETTING_ACTIVATION_KEY );
+		$private_key     = get_option( Plugin::SETTING_PRIVATE_KEY );
+		$server_endpoint = get_option( Plugin::SETTING_SERVER_DOMAIN );
 
 		if ( $activation_key ) {
 			$opts = array(
@@ -54,7 +54,7 @@ class Admin {
 
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
 			$host = $_SERVER['HTTP_HOST'] ?? null;
-			$url  = 'https://licence.' . $video_server_endpoint . '/' . $host;
+			$url  = 'https://licence.' . $server_endpoint . '/' . $host;
 
 			$licence_data = wp_remote_get( $url, $opts );
 
@@ -89,7 +89,7 @@ class Admin {
 		} elseif ( $private_key ) {
 			$messages[] = array(
 				'type'    => 'notice-info',
-				'message' => 'ClubCloud video is currently activate.',
+				'message' => 'ClubCloud video is currently active.',
 			);
 		} else {
 			$messages[] = array(

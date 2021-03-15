@@ -58,14 +58,14 @@ class JWT {
 			'/jwt',
 			array(
 				// By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.
-				'methods'  => \WP_REST_Server::READABLE,
+				'methods'             => \WP_REST_Server::READABLE,
 				// Here we register our callback. The callback is fired when this endpoint is matched by the WP_REST_Server class.
-				'callback' => function ( $data ) {
+				'callback'            => function ( $data ) {
 					$room_name            = $data->get_param( 'room' );
 					$room_id              = $data->get_param( 'rid' );
 					$enable_floorplan     = ! ! $data->get_param( 'fp' );
 					$token               = $data->get_param( 'token' );
-					$video_server_endpoint = 'meet.' . get_option( Plugin::SETTING_VIDEO_SERVER );
+					$video_server_endpoint = 'meet.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
 
 					$message = wp_json_encode(
 						array(
@@ -91,6 +91,7 @@ class JWT {
 						)
 					);
 				},
+				'permission_callback' => '__return_true',
 			)
 		);
 	}
@@ -104,7 +105,7 @@ class JWT {
 	 * @throws Exception When unable to sign.
 	 */
 	private function create_jwt( string $room_id ): string {
-		$domain = 'meet.' . get_option( Plugin::SETTING_VIDEO_SERVER );
+		$domain = 'meet.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Validation not required.
 		$host   = $_SERVER['HTTP_HOST'] ?? null;

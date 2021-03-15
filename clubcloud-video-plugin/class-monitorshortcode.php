@@ -58,7 +58,7 @@ class MonitorShortcode extends Shortcode {
 		add_action(
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
-				'clubcloud-socket-io-3.1.0',
+				'socket-io-3.1.0',
 				'https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.0/socket.io.js',
 				array(),
 				'3.1.0',
@@ -69,9 +69,9 @@ class MonitorShortcode extends Shortcode {
 		add_action(
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
-				'clubcloudvideo-watch-js',
+				'clubcloud-video-watch-js',
 				plugins_url( '/js/watch.js', __FILE__ ),
-				array( 'jquery', 'clubcloud-socket-io-3.1.0' ),
+				array( 'jquery', 'socket-io-3.1.0' ),
 				$this->get_plugin_version(),
 				true
 			)

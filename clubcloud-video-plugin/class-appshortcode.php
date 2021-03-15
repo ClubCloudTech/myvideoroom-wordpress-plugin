@@ -58,7 +58,7 @@ class AppShortcode extends Shortcode {
 		add_action(
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
-				'clubcloudvideo-app-js',
+				'clubcloud-video-app-js',
 				plugins_url( '/js/app.js', __FILE__ ),
 				array( 'jquery' ),
 				$this->get_plugin_version(),
@@ -226,10 +226,10 @@ class AppShortcode extends Shortcode {
 
 		$jwt_endpoint = get_site_url() . '/wp-json/clubcloud/jwt';
 
-		$current_user     = wp_get_current_user();
-		$user_name        = $current_user ? $current_user->display_name : null;
-		$avatar_url       = $this->getAvatar( $current_user );
-		$has_subscription = $video_server_endpoint === $this->endpoints->get_subscribed_video_endpoint();
+		$current_user        = wp_get_current_user();
+		$user_name           = $current_user ? $current_user->display_name : null;
+		$avatar_url          = $this->getAvatar( $current_user );
+		$custom_jitsi_server = true;
 
 		return <<<EOT
             <div
@@ -253,7 +253,7 @@ class AppShortcode extends Shortcode {
                 data-name="${user_name}"
                 data-avatar="${avatar_url}"
                 data-rooms-endpoint="${rooms_endpoint}"
-                data-has-subscription="${has_subscription}"
+                data-has-subscription="${custom_jitsi_server}"
             >${loading_text}</div>
         EOT;
 	}

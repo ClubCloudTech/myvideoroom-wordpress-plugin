@@ -6,9 +6,9 @@
 
 jQuery.noConflict()(
 	function () {
-		var cc$ = jQuery.noConflict();
+		var $ = jQuery.noConflict();
 
-		var $elements = cc$( '.clubcloud-video-waiting' );
+		var $elements = $( '.clubcloud-video-waiting' );
 
 		var watch            = {};
 		var $indexedElements = {};
@@ -89,7 +89,7 @@ jQuery.noConflict()(
 		if ($elements.length) {
 			$elements.each(
 				function (index) {
-					var $this    = cc$( this );
+					var $this    = $( this );
 					var endpoint = $this.data( 'serverEndpoint' );
 
 					$indexedElements[index] = $this;

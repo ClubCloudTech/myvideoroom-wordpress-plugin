@@ -13,12 +13,6 @@ namespace ClubCloudVideoPlugin;
  * Class Endpoints
  */
 class Endpoints {
-
-	/**
-	 * The domain that clubcloud runs on.
-	 */
-	const CLUBCLOUD_DOMAIN = 'clubcloud.tech';
-
 	/**
 	 * The endpoint for the video controller.
 	 *
@@ -54,7 +48,7 @@ class Endpoints {
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Simple check for dev mode, does not need extra security checks.
 		$dev_node = ( $_GET['dev'] ?? false ) === 'true';
 
-		$this->video_endpoint = 'meet.' . get_option( Plugin::SETTING_VIDEO_SERVER );
+		$this->video_endpoint = 'meet.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
 
 		if ( $dev_node ) {
 			$this->app_endpoint   = 'http://localhost:3000';
@@ -62,9 +56,9 @@ class Endpoints {
 			$this->rooms_endpoint = 'http://localhost:4002';
 		} else {
 
-			$this->app_endpoint   = 'https://app.' . self::CLUBCLOUD_DOMAIN;
-			$this->state_endpoint = 'https://state.' . self::CLUBCLOUD_DOMAIN;
-			$this->rooms_endpoint = 'https://rooms.' . self::CLUBCLOUD_DOMAIN;
+			$this->app_endpoint   = 'https://app.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+			$this->state_endpoint = 'https://state.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+			$this->rooms_endpoint = 'https://rooms.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
 		}
 	}
 
@@ -102,15 +96,6 @@ class Endpoints {
 	 */
 	public function get_rooms_endpoint(): string {
 		return $this->rooms_endpoint;
-	}
-
-	/**
-	 * Get the video endpoint for subscribed users
-	 *
-	 * @return string
-	 */
-	public function get_subscribed_video_endpoint(): string {
-		return 'meet.' . self::CLUBCLOUD_DOMAIN;
 	}
 
 }

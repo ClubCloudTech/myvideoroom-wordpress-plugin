@@ -6,14 +6,14 @@
 
 jQuery.noConflict()(
 	function () {
-		var cc$ = jQuery.noConflict();
+		var $ = jQuery.noConflict();
 
-		if (cc$( '.clubcloud-video-app' ).length) {
-			if (cc$.ajaxSettings && cc$.ajaxSettings.headers) {
-				delete cc$.ajaxSettings.headers;
+		if ($( '.clubcloud-video-app' ).length) {
+			if ($.ajaxSettings && $.ajaxSettings.headers) {
+				delete $.ajaxSettings.headers;
 			}
 
-			cc$.ajax(
+			$.ajax(
 				{
 					url: clubCloudAppEndpoint + "/asset-manifest.json",
 					dataType: 'json'
@@ -23,7 +23,7 @@ jQuery.noConflict()(
 					Object.values( data.files ).map(
 						function (file) {
 							if (file.endsWith( ".js" )) {
-								cc$.ajax(
+								$.ajax(
 									{
 										beforeSend: function() {},
 										url: clubCloudAppEndpoint + "/" + file,
@@ -31,7 +31,7 @@ jQuery.noConflict()(
 									}
 								);
 							} else if (file.endsWith( ".css" )) {
-								cc$( '<link rel="stylesheet" href="' + clubCloudAppEndpoint + '/' + file + '" type="text/css" />' ).appendTo( 'head' );
+								$( '<link rel="stylesheet" href="' + clubCloudAppEndpoint + '/' + file + '" type="text/css" />' ).appendTo( 'head' );
 							}
 						}
 					);

@@ -16,6 +16,11 @@ use ClubCloudVideoPlugin\Plugin;
 <div class="wrap">
 	<h1>ClubCloud Video Short Code Settings</h1>
 
+	<h2 class="nav-tab-wrapper">
+		<a class="nav-tab nav-tab-active" href="?page=clubcloud-video&amp;tab=getting_started">Getting Started</a>
+		<a class="nav-tab" href="?page=clubcloud-video&amp;tab=reference">Reference</a>
+	</h2>
+
 	<ul>
 	<?php
 	foreach ( $messages as $message ) {
@@ -23,8 +28,8 @@ use ClubCloudVideoPlugin\Plugin;
 
 	}
 
-	if ( esc_attr( get_option( Plugin::SETTING_VIDEO_SERVER ) ) ) {
-		$video_server = esc_attr( get_option( Plugin::SETTING_VIDEO_SERVER ) );
+	if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
+		$video_server = esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
 	} else {
 		$video_server = 'clubcloud.tech';
 	};
@@ -40,16 +45,16 @@ use ClubCloudVideoPlugin\Plugin;
 				<tbody>
 				<tr>
 					<th scope="row">
-						<label for="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>">
-							ClubCloud Video URL
+						<label for="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>">
+							ClubCloud Server Domain
 						</label>
 					</th>
 					<td>
 						<input
 								type="text"
-								name="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
+								name="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
 								value="<?php echo esc_attr( $video_server ); ?>"
-								id="<?php echo esc_attr( Plugin::SETTING_VIDEO_SERVER ); ?>"
+								id="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
 								size="100"
 						/>
 					</td>
@@ -94,15 +99,18 @@ use ClubCloudVideoPlugin\Plugin;
 	<h3>ClubCloud App</h3>
 	<p>This shows the video app</p>
 	<code>
-		[
-			<?php echo esc_html( AppShortcode::SHORTCODE_TAGS[0] ); ?>
-			name="ClubCloud.tech"
+		[<?php echo esc_html( AppShortcode::SHORTCODE_TAGS[0] ); ?>
+			name="The Meeting Room"
 			map="clubcloud"
 			lobby=true
 			admin=true
 		]
 	</code><br />
 	<br />
+	<p>
+		This will show the video with a room name of "The Meeting Room", using the default "clubcloud" map.
+		The lobby will be enabled, but the user viewing this page will be an admin of the video.
+	</p>
 
 	<table class="wp-list-table widefat plugins">
 		<thead>
@@ -123,7 +131,7 @@ use ClubCloudVideoPlugin\Plugin;
 			<tr class="inactive">
 				<th class="column-primary"><em>name</em></th>
 				<td class="column-description">
-					The name of the room
+					<p>The name of the room</p>
 
 					<p>
 						All shortcodes on the same domain that share a room name will put users into the same video group.
@@ -140,7 +148,7 @@ use ClubCloudVideoPlugin\Plugin;
 			<tr class="inactive">
 				<th class="column-primary"><em>map</em></th>
 				<td class="column-description">
-					The id of the map to display
+					<p>The id of the map to display</p>
 
 					<p>
 						A list of available maps are available here: <a href="https://rooms.clubcloud.tech/maps.html">https://rooms.clubcloud.tech/maps.html</a>
@@ -156,7 +164,7 @@ use ClubCloudVideoPlugin\Plugin;
 			<tr class="inactive">
 				<th class="column-primary"><em>admin</em></th>
 				<td class="column-description">
-					Whether the user should be an admin
+					<p>Whether the user should be an admin</p>
 
 					<p>
 						Admins have the ability to add users to rooms, and move users between rooms.
@@ -171,7 +179,7 @@ use ClubCloudVideoPlugin\Plugin;
 			</tr>
 			<tr class="inactive">
 				<th class="column-primary"><em>loading-text</em></th>
-				<td class="column-description">Test to show while the app is loading</td>
+				<td class="column-description"><p>Text to show while the app is loading</p></td>
 				<td>optional</td>
 				<td>"Loading..."</td>
 			</tr>
@@ -186,7 +194,7 @@ use ClubCloudVideoPlugin\Plugin;
 
 			<tr class="inactive">
 				<th class="column-primary"><em>lobby</em></th>
-				<td class="column-description">Whether the lobby inside the video app should be enabled for non admin users</td>
+				<td class="column-description"><p>Whether the lobby inside the video app should be enabled for non admin users</p></td>
 				<td>optional</td>
 				<td>false</td>
 			</tr>
@@ -201,14 +209,14 @@ use ClubCloudVideoPlugin\Plugin;
 
 			<tr class="inactive">
 				<th class="column-primary"><em>reception</em></th>
-				<td class="column-description">Whether the reception before entering the app should be enabled</td>
+				<td class="column-description"><p>Whether the reception before entering the app should be enabled</p></td>
 				<td>optional</td>
 				<td>false</td>
 			</tr>
 			<tr class="inactive">
 				<th class="column-primary"><em>reception-id</em></th>
 				<td class="column-description">
-					The id of the reception image to use
+					<p>The id of the reception image to use</p>
 
 
 					<p>
@@ -224,13 +232,17 @@ use ClubCloudVideoPlugin\Plugin;
 			</tr>
 			<tr class="inactive">
 				<th class="column-primary"><em>reception-video</em></th>
-				<td class="column-description">A link to a video to play in the reception. Will only work if the selected reception supports video</td>
+				<td class="column-description">
+					<p>A link to a video to play in the reception. Will only work if the selected reception supports video</p>
+				</td>
 				<td>optional</td>
 				<td>(Use reception setting)</td>
 			</tr>
 			<tr class="inactive">
 				<th class="column-primary"><em>floorplan</em></th>
-				<td class="column-description">Whether the floorplan should be shown</td>
+				<td class="column-description">
+					<p>Whether the floorplan should be shown</p>
+				</td>
 				<td>optional</td>
 				<td>false</td>
 			</tr>
@@ -241,8 +253,7 @@ use ClubCloudVideoPlugin\Plugin;
 	<h3>ClubCloud Reception Widget</h3>
 	<p>This shows the number of people currently waiting in a room</p>
 	<code>
-		[
-			<?php echo esc_html( MonitorShortcode::SHORTCODE_TAGS[0] ); ?>
+		[<?php echo esc_html( MonitorShortcode::SHORTCODE_TAGS[0] ); ?>
 			name="ClubCloud.tech"
 			text-empty="Nobody is currently waiting"
 			text-single="One person is waiting in reception"
@@ -264,35 +275,35 @@ use ClubCloudVideoPlugin\Plugin;
 		<tbody>
 			<tr class="inactive">
 				<th class="column-primary"><em>name</em></th>
-				<td class="column-description">The name of the room</td>
+				<td class="column-description"><p>The name of the room</p></td>
 				<td>required</td>
 				<td></td>
 			</tr>
 
 			<tr class="inactive">
 				<th class="column-primary"><em>text-empty</em></th>
-				<td class="column-description">The text to show when nobody is waiting</td>
+				<td class="column-description"><p>The text to show when nobody is waiting</p></td>
 				<td>optional</td>
 				<td>"Nobody is currently waiting"</td>
 			</tr>
 
 			<tr class="inactive">
 				<th class="column-primary"><em>text-single</em></th>
-				<td class="column-description">The text to show when a single person is waiting</td>
+				<td class="column-description"><p>The text to show when a single person is waiting</p></td>
 				<td>optional</td>
 				<td>"One person is waiting in reception"</td>
 			</tr>
 
 			<tr class="inactive">
 				<th class="column-primary"><em>text-plural</em></th>
-				<td class="column-description">The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count</td>
+				<td class="column-description"><p>The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count</p></td>
 				<td>optional</td>
 				<td>"{{count}} people are waiting in reception"</td>
 			</tr>
 
 			<tr class="inactive">
 				<th class="column-primary"><em>loading-text</em></th>
-				<td class="column-description">The text to show while the widget is loading</td>
+				<td class="column-description"><p>The text to show while the widget is loading</p</td>
 				<td>optional</td>
 				<td>"Loading..."</td>
 			</tr>
@@ -300,7 +311,8 @@ use ClubCloudVideoPlugin\Plugin;
 			<tr class="inactive">
 				<th class="column-primary"><em>type</em></th>
 				<td class="column-description">
-					The type of count to show:
+					<p>The type of count to show:</p>
+
 					<dl>
 						<dt>"reception":</dt>
 						<dd>The number of people waiting in reception</dd>

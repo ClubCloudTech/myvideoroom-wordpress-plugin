@@ -17,13 +17,13 @@ class Plugin {
 	public const PLUGIN_NAMESPACE   = 'clubcloud_video';
 	public const SETTINGS_NAMESPACE = 'settings';
 
-	public const SETTING_VIDEO_SERVER   = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_video_server_url';
+	public const SETTING_SERVER_DOMAIN  = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
 	public const SETTING_ACTIVATION_KEY = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
 
 	public const SETTING_PRIVATE_KEY = self::PLUGIN_NAMESPACE . '_private_key';
 
 	public const SETTINGS = array(
-		self::SETTING_VIDEO_SERVER,
+		self::SETTING_SERVER_DOMAIN,
 		self::SETTING_ACTIVATION_KEY,
 	);
 
