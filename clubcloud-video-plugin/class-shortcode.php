@@ -20,7 +20,7 @@ abstract class Shortcode {
 	 * @return string
 	 */
 	protected function get_plugin_version(): string {
-		$plugin_data = get_plugin_data( __DIR__ . '/../index.php' );
+		$plugin_data = get_plugin_data( __DIR__ . '/index.php' );
 
 		return $plugin_data['Version'];
 	}
