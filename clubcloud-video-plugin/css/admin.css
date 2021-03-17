@@ -1,0 +1,7 @@
+code.clubcloud-admin-code {
+	white-space: nowrap;
+	overflow: scroll;
+	display: block;
+	padding: 16px 8px;
+	user-select: all;
+}

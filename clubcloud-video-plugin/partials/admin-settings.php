@@ -45,7 +45,7 @@ use ClubCloudVideoPlugin\Plugin;
 
 						echo '<tr>';
 						echo '<th scope="row"><label for="role_' . esc_attr( $key ) . '">' . esc_html( $single_role['name'] ) . '</label></th>';
-						echo '<td><input name="role_' . esc_attr( $key ) . '" type="checkbox" ' . ( $has_admin_cap ? 'checked="checked" ' : '' ) . '/></td>';
+						echo '<td><input id="role_' . esc_attr( $key ) . '" name="role_' . esc_attr( $key ) . '" type="checkbox" ' . ( $has_admin_cap ? 'checked="checked" ' : '' ) . '/></td>';
 						echo '</tr>';
 					}
 					?>

@@ -100,6 +100,7 @@ jQuery.noConflict()(
 						{
 							videoServerEndpoint: $this.data( 'videoServerEndpoint' ),
 							domain: window.location.hostname,
+							roomName: $this.data( 'roomName' ),
 							roomHash: $this.data( 'roomHash' ),
 							securityToken: $this.data( 'securityToken' ),
 							clientId: index
@@ -122,6 +123,13 @@ jQuery.noConflict()(
 							"connect",
 							function () {
 								socket.emit( 'watch', watch[endpoint], function () {} );
+							}
+						);
+
+						socket.on(
+							"error",
+							function (e) {
+								console && console.log && console.log( e );
 							}
 						);
 

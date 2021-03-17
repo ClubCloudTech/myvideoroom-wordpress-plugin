@@ -51,8 +51,6 @@ class JWT {
 	 * Register the rest route with WordPress
 	 */
 	public function register_rest_route() {
-
-		// register_rest_route() handles more arguments but we are going to stick to the basics for now.
 		register_rest_route(
 			'clubcloud',
 			'/jwt',

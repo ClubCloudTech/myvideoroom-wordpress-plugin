@@ -17,13 +17,12 @@ class Plugin {
 	public const PLUGIN_NAMESPACE   = 'clubcloud_video';
 	public const SETTINGS_NAMESPACE = 'settings';
 
-	public const SETTING_SERVER_DOMAIN         = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
-	public const SETTING_ACTIVATION_KEY        = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
-	public const SETTING_WORDPRESS_PERMISSIONS = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_wordpress_permissions';
+	public const SETTING_SERVER_DOMAIN  = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
+	public const SETTING_ACTIVATION_KEY = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
 
 	public const SETTING_PRIVATE_KEY = self::PLUGIN_NAMESPACE . '_private_key';
 
-	public const CAP_GLOBAL_ADMIN = 'global-video-admin';
+	public const CAP_GLOBAL_ADMIN = 'clubcloud-video-global-admin';
 
 	public const SETTINGS = array(
 		self::SETTING_SERVER_DOMAIN,
@@ -37,6 +36,7 @@ class Plugin {
 		$private_key = get_option( self::SETTING_PRIVATE_KEY );
 
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( __DIR__ . '/index.php' ), array( $this, 'add_action_links' ) );
 
 		Factory::get_instance( Admin::class )->init();
 		Factory::get_instance( JWT::class, array( $private_key ) )->init();
@@ -64,5 +64,26 @@ class Plugin {
 		}
 
 		register_setting( self::PLUGIN_NAMESPACE, self::SETTING_PRIVATE_KEY );
+	}
+
+	/**
+	 * Add custom action links to the plugin page
+	 *
+	 * @param array $actions The array of plugin action links.
+	 *
+	 * @return array
+	 */
+	public function add_action_links( array $actions ): array {
+		$links = array(
+			'Settings'  => admin_url( 'admin.php?page=clubcloud-settings' ),
+			'Reference' => admin_url( 'admin.php?page=clubcloud-video' ),
+			'Support'   => 'https://clubcloud.tech',
+		);
+
+		foreach ( $links as $link_name => $link_address ) {
+			$actions[] = "<a href=\"{$link_address}\">{$link_name}</a>";
+		}
+
+		return $actions;
 	}
 }

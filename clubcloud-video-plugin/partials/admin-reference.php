@@ -27,7 +27,7 @@ use ClubCloudVideoPlugin\MonitorShortcode;
 
 	<h3>ClubCloud App</h3>
 	<p>This shows the video app</p>
-	<code>
+	<code class="clubcloud-admin-code">
 		[<?php echo esc_html( AppShortcode::SHORTCODE_TAGS[0] ); ?>
 			name="The Meeting Room"
 			layout="clubcloud"
@@ -171,7 +171,7 @@ use ClubCloudVideoPlugin\MonitorShortcode;
 
 	<h3>ClubCloud Reception Widget</h3>
 	<p>This shows the number of people currently waiting in a room</p>
-	<code>
+	<code class="clubcloud-admin-code">
 		[<?php echo esc_html( MonitorShortcode::SHORTCODE_TAGS[0] ); ?>
 			name="ClubCloud.tech"
 			text-empty="Nobody is currently waiting"

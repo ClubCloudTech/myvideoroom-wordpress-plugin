@@ -237,7 +237,11 @@ class AppShortcode extends Shortcode {
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript
 		$security_token = rawurlencode( base64_encode( $signature ) );
 
-		$jwt_endpoint = get_site_url() . '/wp-json/clubcloud/jwt';
+		if ( get_option( 'permalink_structure' ) ) {
+			$jwt_endpoint = get_site_url() . '/wp-json/clubcloud/jwt?';
+		} else {
+			$jwt_endpoint = get_site_url() . '/?rest_route=/clubcloud/jwt&';
+		}
 
 		$current_user        = wp_get_current_user();
 		$user_name           = $current_user ? $current_user->display_name : null;

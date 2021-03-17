@@ -82,4 +82,103 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 
 		<?php submit_button(); ?>
 	</form>
+
+	<h3>The ClubCloud WordPress Suite</h3>
+	<table class="widefat fixed">
+		<thead>
+			<tr>
+				<th>Plugin Name</th>
+				<th>Installed</th>
+				<th>Activated</th>
+				<th>Settings</th>
+			</tr>
+		</thead>
+
+		<tbody>
+		<?php
+			$available_clubcloud_plugins = array(
+				'clubcloud-video'                       => array(
+					'name'    => 'ClubCloud Video',
+					'visible' => true,
+				),
+				'clubcloud-woocommerce-assisted-buying' => array(
+					'name'    => 'ClubCloud Woocommerce Assisted Buying',
+					'visible' => false,
+				),
+				'clubcloud-games'                       => array(
+					'name'    => 'ClubCloud Games',
+					'visible' => false,
+				),
+			);
+
+			/**
+			 * Get the plugin id from the path
+			 *
+			 * @param string $path The plugin path.
+			 *
+			 * @return string
+			 */
+			function get_plugin_id( string $path ) : string {
+				return preg_replace( '/(-[0-9]+|)\/.*$/', '', $path );
+			}
+
+			$installed_clubcloud_plugins = array_filter(
+				array_map(
+					'get_plugin_id',
+					array_keys( get_plugins() )
+				),
+				fn( $id) => strpos( $id, 'clubcloud-' ) === 0
+			);
+
+			$active_clubcloud_plugins = array_filter(
+				array_map(
+					'get_plugin_id',
+					get_option( 'active_plugins' ),
+				),
+				fn( $id) => strpos( $id, 'clubcloud-' ) === 0
+			);
+
+			foreach ( $available_clubcloud_plugins as $available_clubcloud_plugin_id => $available_clubcloud_plugin_details ) {
+				if ( ! $available_clubcloud_plugin_details['visible'] ) {
+					continue;
+				}
+
+				?>
+				<tr>
+					<th scope="row"><?php echo esc_html( $available_clubcloud_plugin_details['name'] ); ?></th>
+					<td>
+						<?php
+						if ( in_array( $available_clubcloud_plugin_id, $installed_clubcloud_plugins, true ) ) {
+							echo '<span class="dashicons dashicons-yes"></span>';
+						} else {
+							echo '<span class="dashicons dashicons-no"></span>';
+						}
+						?>
+					</td>
+					<td>
+						<?php
+						if ( in_array( $available_clubcloud_plugin_id, $active_clubcloud_plugins, true ) ) {
+							echo '<span class="dashicons dashicons-yes"></span>';
+						} else {
+							echo '<span class="dashicons dashicons-no"></span>';
+						}
+						?>
+					</td>
+					<td>
+						<?php
+						if ( in_array( $available_clubcloud_plugin_id, $active_clubcloud_plugins, true ) ) {
+							?>
+							<a href="?page=<?php echo esc_attr( $available_clubcloud_plugin_id ); ?>">
+								<span class="dashicons dashicons-admin-generic"></span>
+							</a>
+							<?php
+						}
+						?>
+					</td>
+				</tr>
+				<?php
+			}
+			?>
+		</tbody>
+	</table>
 </div>

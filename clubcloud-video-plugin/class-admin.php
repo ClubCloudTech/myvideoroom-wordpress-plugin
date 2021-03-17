@@ -12,13 +12,23 @@ namespace ClubCloudVideoPlugin;
 /**
  * Class Admin
  */
-class Admin {
+class Admin extends Shortcode {
 
 	/**
 	 * Initialise the menu item.
 	 */
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+
+		add_action(
+			'admin_enqueue_scripts',
+			fn() => wp_enqueue_style(
+				'clubcloud-video-admin-css',
+				plugins_url( '/css/admin.css', __FILE__ ),
+				false,
+				$this->get_plugin_version(),
+			)
+		);
 	}
 
 	/**
@@ -72,17 +82,24 @@ class Admin {
 		$server_endpoint = get_option( Plugin::SETTING_SERVER_DOMAIN );
 
 		if ( $activation_key ) {
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
+			$host = $_SERVER['HTTP_HOST'] ?? null;
+
+			$url = 'https://licence.' . $server_endpoint;
+
 			$opts = array(
 				'headers' => array(
 					'Authorization' => 'Bearer ' . $activation_key,
+					'content-type'  => 'application/json',
+				),
+				'body'    => wp_json_encode(
+					array(
+						'host' => $host,
+					)
 				),
 			);
 
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
-			$host = $_SERVER['HTTP_HOST'] ?? null;
-			$url  = 'https://licence.' . $server_endpoint . '/' . $host;
-
-			$licence_data = wp_remote_get( $url, $opts );
+			$licence_data = wp_remote_post( $url, $opts );
 
 			$private_key = null;
 			$licence     = null;
