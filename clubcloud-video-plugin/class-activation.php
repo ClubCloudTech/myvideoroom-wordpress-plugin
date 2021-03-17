@@ -26,6 +26,13 @@ class Activation {
 			__( 'Video Admin', 'clubcloud-video-admin-role' ),
 			array( Plugin::CAP_GLOBAL_ADMIN => true )
 		);
+
+		global $wp_roles;
+		$default_admins = array( 'administrator' );
+
+		foreach ( $default_admins as $role ) {
+			$wp_roles->add_cap( $role, Plugin::CAP_GLOBAL_ADMIN );
+		}
 	}
 
 	/**

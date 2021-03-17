@@ -174,7 +174,11 @@ class AppShortcode extends Shortcode {
 		$enable_lobby     = ! ! ( $params['lobby'] ?? false );
 		$enable_reception = ! ! ( $params['reception'] ?? false );
 
-		$admin = ! ! ( $params['admin'] ?? current_user_can( Plugin::CAP_GLOBAL_ADMIN ) );
+		if ( ! isset( $params['admin '] ) ) {
+			$admin = current_user_can( Plugin::CAP_GLOBAL_ADMIN );
+		} else {
+			$admin = ! ! $params['admin'];
+		}
 
 		$enable_floorplan = ! ! ( $params['floorplan'] ?? false );
 

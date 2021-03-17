@@ -109,7 +109,7 @@ class MonitorShortcode extends Shortcode {
 			$params[ 'text-' . $match['type'] ] = $match['data'];
 		}
 
-		$room_name = $params['name'];
+		$room_name = $params['name'] ?? get_bloginfo( 'name' );
 
 		$text_empty = null;
 		if ( $params['text-empty'] ?? false ) {

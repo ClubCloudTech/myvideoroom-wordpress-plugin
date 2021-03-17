@@ -25,13 +25,35 @@ class Admin {
 	 * Add the admin menu page.
 	 */
 	public function add_admin_menu() {
-		add_menu_page(
-			'ClubCloud Video',
-			'ClubCloud Video',
+		global $admin_page_hooks;
+
+		if ( empty( $admin_page_hooks['clubcloud-settings'] ) ) {
+			add_menu_page(
+				'ClubCloud Settings',
+				'ClubCloud Settings',
+				'manage_options',
+				'clubcloud-settings',
+				array( $this, 'create_admin_page' ),
+				'dashicons-format-chat'
+			);
+
+			add_submenu_page(
+				'clubcloud-settings',
+				'ClubCloud Settings',
+				'General Settings',
+				'manage_options',
+				'clubcloud-settings',
+				array( $this, 'create_admin_page' )
+			);
+		}
+
+		add_submenu_page(
+			'clubcloud-settings',
+			'Video Reference',
+			'Video Reference',
 			'manage_options',
 			'clubcloud-video',
-			array( $this, 'create_admin_page' ),
-			'dashicons-format-chat'
+			array( $this, 'create_video_admin_page' )
 		);
 	}
 
@@ -39,6 +61,10 @@ class Admin {
 	 * Create the admin page contents.
 	 */
 	public function create_admin_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		$messages = array();
 
 		$activation_key  = get_option( Plugin::SETTING_ACTIVATION_KEY );
@@ -78,28 +104,78 @@ class Admin {
 
 				$messages[] = array(
 					'type'    => 'notice-success',
-					'message' => 'ClubCloud video has been activated.',
+					'message' => 'ClubCloud has been activated.',
 				);
 			} else {
 				$messages[] = array(
 					'type'    => 'notice-error',
-					'message' => 'Failed to activate ClubCloud video, please check your activation key and try again.',
+					'message' => 'Failed to activate ClubCloud licence, please check your activation key and try again.',
 				);
 			}
 		} elseif ( $private_key ) {
 			$messages[] = array(
 				'type'    => 'notice-info',
-				'message' => 'ClubCloud video is currently active.',
+				'message' => 'ClubCloud is currently active.',
 			);
 		} else {
 			$messages[] = array(
 				'type'    => 'notice-warning',
-				'message' => 'ClubCloud video is not currently activated. Please enter your activation key to get started.',
+				'message' => 'ClubCloud is not currently activated. Please enter your activation key to get started.',
 			);
 		}
 
 		delete_option( Plugin::SETTING_ACTIVATION_KEY );
 
 		require __DIR__ . '/partials/admin.php';
+	}
+
+	/**
+	 * Create the admin page contents.
+	 */
+	public function create_video_admin_page() {
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.NonceVerification.Recommended -- Not required
+		$tab = $_GET['tab'] ?? null;
+
+		switch ( $tab ) {
+			case 'settings':
+				$this->create_settings_admin_page();
+				break;
+			default:
+				require __DIR__ . '/partials/admin-reference.php';
+		}
+	}
+
+	/**
+	 * Create the settings page for the video
+	 */
+	private function create_settings_admin_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$messages = array();
+
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
+			check_admin_referer( 'update_caps', 'nonce' );
+
+			global $wp_roles;
+			$all_roles = $wp_roles->roles;
+			foreach ( $all_roles as $key => $single_role ) {
+				$role_object = get_role( $key );
+
+				if ( isset( $_POST[ 'role_' . $key ] ) ) {
+					$role_object->add_cap( Plugin::CAP_GLOBAL_ADMIN );
+				} else {
+					$role_object->remove_cap( Plugin::CAP_GLOBAL_ADMIN );
+				}
+			}
+
+			$messages[] = array(
+				'type'    => 'notice-success',
+				'message' => 'Roles updated.',
+			);
+		}
+
+		require __DIR__ . '/partials/admin-settings.php';
 	}
 }
