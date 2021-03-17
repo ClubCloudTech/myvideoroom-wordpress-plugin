@@ -88,36 +88,36 @@ class AppShortcode extends Shortcode {
 		}
 
 		if (
-			( ! isset( $param['reception'] ) || ! $params['reception'] ) &&
-			( isset( $param['cc_is_reception'] ) && $params['cc_is_reception'] )
+			( ! isset( $params['reception'] ) || ! $params['reception'] ) &&
+			( isset( $params['cc_is_reception'] ) && $params['cc_is_reception'] )
 		) {
 			$params['reception'] = ! ! $params['cc_is_reception'];
 		}
 
 		if (
-			( ! isset( $param['layout'] ) || ! $params['layout'] ) &&
-			( isset( $param['map'] ) && $params['map'] )
+			( ! isset( $params['layout'] ) || ! $params['layout'] ) &&
+			( isset( $params['map'] ) && $params['map'] )
 		) {
 			$params['layout'] = $params['map'];
 		}
 
 		if (
-			( ! isset( $param['layout'] ) || ! $params['layout'] ) &&
-			( isset( $param['cc_plan_id'] ) && $params['cc_plan_id'] )
+			( ! isset( $params['layout'] ) || ! $params['layout'] ) &&
+			( isset( $params['cc_plan_id'] ) && $params['cc_plan_id'] )
 		) {
 			$params['layout'] = $params['cc_plan_id'];
 		}
 
 		if (
-			( ! isset( $param['lobby'] ) || ! $params['lobby'] ) &&
-			( isset( $param['cc_enable_lobby'] ) && $params['cc_enable_lobby'] )
+			( ! isset( $params['lobby'] ) || ! $params['lobby'] ) &&
+			( isset( $params['cc_enable_lobby'] ) && $params['cc_enable_lobby'] )
 		) {
 			$params['lobby'] = ! ! $params['cc_enable_lobby'];
 		}
 
 		if (
-			( ! isset( $param['admin'] ) || ! $params['admin'] ) &&
-			( isset( $param['auth'] ) && $params['auth'] )
+			( ! isset( $params['admin'] ) || ! $params['admin'] ) &&
+			( isset( $params['auth'] ) && $params['auth'] )
 		) {
 			$params['admin'] = ! ! $params['auth'];
 		}
