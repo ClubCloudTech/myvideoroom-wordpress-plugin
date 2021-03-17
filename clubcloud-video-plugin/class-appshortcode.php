@@ -95,10 +95,17 @@ class AppShortcode extends Shortcode {
 		}
 
 		if (
-			( ! isset( $param['map'] ) || ! $params['map'] ) &&
+			( ! isset( $param['layout'] ) || ! $params['layout'] ) &&
+			( isset( $param['map'] ) && $params['map'] )
+		) {
+			$params['layout'] = $params['map'];
+		}
+
+		if (
+			( ! isset( $param['layout'] ) || ! $params['layout'] ) &&
 			( isset( $param['cc_plan_id'] ) && $params['cc_plan_id'] )
 		) {
-			$params['map'] = ! ! $params['cc_plan_id'];
+			$params['layout'] = $params['cc_plan_id'];
 		}
 
 		if (
@@ -117,12 +124,12 @@ class AppShortcode extends Shortcode {
 
 		// process legacy rooms.
 
-		if ( 'Innovateoffice' === $params['map'] ) {
-			$params['map'] = 'innovate-office';
+		if ( isset( $params['layout'] ) && 'Innovateoffice' === $params['layout'] ) {
+			$params['layout'] = 'innovate-office';
 		}
 
-		if ( 'boardroom1' === $params['map'] ) {
-			$params['map'] = 'boardroom';
+		if ( isset( $params['layout'] ) && 'boardroom1' === $params['layout'] ) {
+			$params['layout'] = 'boardroom';
 		}
 
 		return $params;
@@ -155,10 +162,8 @@ class AppShortcode extends Shortcode {
 
 		$params = $this->process_legacy_params( $params );
 
-		$wordpress_permissions = get_option( Plugin::SETTING_WORDPRESS_PERMISSIONS );
-
 		$room_name = $params['name'] ?? get_bloginfo( 'name' );
-		$map_id    = $params['map'] ?? 'boardroom';
+		$layout_id = $params['layout'] ?? 'boardroom';
 
 		$reception_id = 'office';
 		if ( $params['reception-id'] ?? false ) {
@@ -169,11 +174,7 @@ class AppShortcode extends Shortcode {
 		$enable_lobby     = ! ! ( $params['lobby'] ?? false );
 		$enable_reception = ! ! ( $params['reception'] ?? false );
 
-		if ( $wordpress_permissions ) {
-			$admin = ! ! ( $params['admin'] ?? false );
-		} else {
-			$admin = ! ! ( $params['admin'] ?? false );
-		}
+		$admin = ! ! ( $params['admin'] ?? current_user_can( Plugin::CAP_GLOBAL_ADMIN ) );
 
 		$enable_floorplan = ! ! ( $params['floorplan'] ?? false );
 
@@ -206,7 +207,7 @@ class AppShortcode extends Shortcode {
 				array(
 					'type'                => 'password',
 					'roomName'            => $room_name,
-					'mapId'               => $map_id,
+					'layoutId'            => $layout_id,
 					'videoServerEndpoint' => $video_server_endpoint,
 
 					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
@@ -244,7 +245,7 @@ class AppShortcode extends Shortcode {
                 class="clubcloud-video-app"
                 data-embedded="true"
                 data-room-name="${room_name}"
-                data-map-id="${map_id}"
+                data-layout-id="${layout_id}"
                 data-video-server-endpoint="${video_server_endpoint}"
                 data-app-endpoint="${app_endpoint}"
                 data-jwt-endpoint="${jwt_endpoint}"

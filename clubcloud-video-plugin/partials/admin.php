@@ -101,14 +101,14 @@ use ClubCloudVideoPlugin\Plugin;
 	<code>
 		[<?php echo esc_html( AppShortcode::SHORTCODE_TAGS[0] ); ?>
 			name="The Meeting Room"
-			map="clubcloud"
+			layout="clubcloud"
 			lobby=true
 			admin=true
 		]
 	</code><br />
 	<br />
 	<p>
-		This will show the video with a room name of "The Meeting Room", using the default "clubcloud" map.
+		This will show the video with a room name of "The Meeting Room", using the default "clubcloud" layout.
 		The lobby will be enabled, but the user viewing this page will be an admin of the video.
 	</p>
 
@@ -146,16 +146,16 @@ use ClubCloudVideoPlugin\Plugin;
 				<td></td>
 			</tr>
 			<tr class="inactive">
-				<th class="column-primary"><em>map</em></th>
+				<th class="column-primary"><em>layout</em></th>
 				<td class="column-description">
-					<p>The id of the map to display</p>
+					<p>The id of the layout to display</p>
 
 					<p>
-						A list of available maps are available here: <a href="https://rooms.clubcloud.tech/maps.html">https://rooms.clubcloud.tech/maps.html</a>
+						A list of available layouts are available here: <a href="https://rooms.clubcloud.tech/layouts.html">https://rooms.clubcloud.tech/layouts.html</a>
 					</p>
 
 					<p>
-						The map list is also available in a JSON format: <a href="https://rooms.clubcloud.tech/maps">https://rooms.clubcloud.tech/maps</a>
+						The layout list is also available in a JSON format: <a href="https://rooms.clubcloud.tech/layouts">https://rooms.clubcloud.tech/layouts</a>
 					</p>
 				</td>
 				<td>required</td>

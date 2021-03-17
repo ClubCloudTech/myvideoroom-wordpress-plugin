@@ -23,6 +23,8 @@ class Plugin {
 
 	public const SETTING_PRIVATE_KEY = self::PLUGIN_NAMESPACE . '_private_key';
 
+	public const CAP_GLOBAL_ADMIN = 'global-video-admin';
+
 	public const SETTINGS = array(
 		self::SETTING_SERVER_DOMAIN,
 		self::SETTING_ACTIVATION_KEY,
