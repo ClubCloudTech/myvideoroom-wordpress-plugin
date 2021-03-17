@@ -155,8 +155,10 @@ class AppShortcode extends Shortcode {
 
 		$params = $this->process_legacy_params( $params );
 
-		$room_name = $params['name'];
-		$map_id    = $params['map'];
+		$wordpress_permissions = get_option( Plugin::SETTING_WORDPRESS_PERMISSIONS );
+
+		$room_name = $params['name'] ?? get_bloginfo( 'name' );
+		$map_id    = $params['map'] ?? 'boardroom';
 
 		$reception_id = 'office';
 		if ( $params['reception-id'] ?? false ) {
@@ -166,7 +168,13 @@ class AppShortcode extends Shortcode {
 		$reception_video  = $params['reception-video'] ?? null;
 		$enable_lobby     = ! ! ( $params['lobby'] ?? false );
 		$enable_reception = ! ! ( $params['reception'] ?? false );
-		$admin            = ! ! ( $params['admin'] ?? false );
+
+		if ( $wordpress_permissions ) {
+			$admin = ! ! ( $params['admin'] ?? false );
+		} else {
+			$admin = ! ! ( $params['admin'] ?? false );
+		}
+
 		$enable_floorplan = ! ! ( $params['floorplan'] ?? false );
 
 		$loading_text = 'Loading...';

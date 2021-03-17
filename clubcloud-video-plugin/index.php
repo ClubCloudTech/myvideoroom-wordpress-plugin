@@ -66,4 +66,7 @@ if ( ! class_exists( Plugin::class ) ) {
 	spl_autoload_register( 'ClubCloudVideoPlugin\autoloader' );
 
 	add_action( 'plugins_loaded', array( Plugin::class, 'init' ) );
+
+	register_activation_hook( __FILE__, array( Activation::class, 'activate' ) );
+	register_deactivation_hook( __FILE__, array( Activation::class, 'deactivate' ) );
 }

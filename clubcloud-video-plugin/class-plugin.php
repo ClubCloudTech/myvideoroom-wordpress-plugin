@@ -17,8 +17,9 @@ class Plugin {
 	public const PLUGIN_NAMESPACE   = 'clubcloud_video';
 	public const SETTINGS_NAMESPACE = 'settings';
 
-	public const SETTING_SERVER_DOMAIN  = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
-	public const SETTING_ACTIVATION_KEY = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
+	public const SETTING_SERVER_DOMAIN         = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
+	public const SETTING_ACTIVATION_KEY        = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
+	public const SETTING_WORDPRESS_PERMISSIONS = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_wordpress_permissions';
 
 	public const SETTING_PRIVATE_KEY = self::PLUGIN_NAMESPACE . '_private_key';
 
