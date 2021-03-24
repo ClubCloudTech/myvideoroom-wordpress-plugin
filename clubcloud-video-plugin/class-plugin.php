@@ -20,7 +20,8 @@ class Plugin {
 	public const SETTING_SERVER_DOMAIN  = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
 	public const SETTING_ACTIVATION_KEY = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
 
-	public const SETTING_PRIVATE_KEY = self::PLUGIN_NAMESPACE . '_private_key';
+	public const SETTING_ACCESS_TOKEN = self::PLUGIN_NAMESPACE . '_access_token';
+	public const SETTING_PRIVATE_KEY  = self::PLUGIN_NAMESPACE . '_private_key';
 
 	public const CAP_GLOBAL_ADMIN = 'clubcloud-video-global-admin';
 
@@ -64,6 +65,7 @@ class Plugin {
 		}
 
 		register_setting( self::PLUGIN_NAMESPACE, self::SETTING_PRIVATE_KEY );
+		register_setting( self::PLUGIN_NAMESPACE, self::SETTING_ACCESS_TOKEN );
 	}
 
 	/**

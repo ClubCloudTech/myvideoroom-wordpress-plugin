@@ -78,12 +78,12 @@ class Admin extends Shortcode {
 		$messages = array();
 
 		$activation_key  = get_option( Plugin::SETTING_ACTIVATION_KEY );
-		$private_key     = get_option( Plugin::SETTING_PRIVATE_KEY );
 		$server_endpoint = get_option( Plugin::SETTING_SERVER_DOMAIN );
 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
+		$host = $_SERVER['HTTP_HOST'] ?? null;
+
 		if ( $activation_key ) {
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
-			$host = $_SERVER['HTTP_HOST'] ?? null;
 
 			$url = 'https://licence.' . $server_endpoint;
 
@@ -101,8 +101,8 @@ class Admin extends Shortcode {
 
 			$licence_data = wp_remote_post( $url, $opts );
 
-			$private_key = null;
-			$licence     = null;
+			$json    = null;
+			$licence = null;
 
 			if ( $licence_data ) {
 				$licence = wp_remote_retrieve_body( $licence_data );
@@ -110,30 +110,92 @@ class Admin extends Shortcode {
 
 			if ( $licence ) {
 				$json = json_decode( $licence, true );
-
-				if ( $json && $json['privateKey'] ) {
-					$private_key = $json['privateKey'];
-				}
 			}
 
-			if ( $private_key ) {
-				update_option( Plugin::SETTING_PRIVATE_KEY, $private_key );
+			if ( $json['privateKey'] ?? false && $json['password'] ?? false ) {
+				update_option( Plugin::SETTING_PRIVATE_KEY, $json['privateKey'] );
+				update_option( Plugin::SETTING_ACCESS_TOKEN, $json['accessToken'] );
+
+				if ( $json['maxConcurrentUsers'] ) {
+					$max_concurrent_users = $json['maxConcurrentUsers'];
+				} else {
+					$max_concurrent_users = 'unlimited';
+				}
+
+				if ( $json['maxConcurrentRooms'] ) {
+					$max_concurrent_rooms = $json['maxConcurrentRooms'];
+				} else {
+					$max_concurrent_rooms = 'unlimited';
+				}
 
 				$messages[] = array(
 					'type'    => 'notice-success',
-					'message' => 'ClubCloud has been activated.',
+					'message' => "ClubCloud has been activated. Your current licence allows for a maximum of ${max_concurrent_users} concurrent users and ${max_concurrent_rooms} concurrent rooms",
 				);
+
 			} else {
 				$messages[] = array(
 					'type'    => 'notice-error',
 					'message' => 'Failed to activate ClubCloud licence, please check your activation key and try again.',
 				);
 			}
-		} elseif ( $private_key ) {
-			$messages[] = array(
-				'type'    => 'notice-info',
-				'message' => 'ClubCloud is currently active.',
+		} elseif ( get_option( Plugin::SETTING_PRIVATE_KEY ) && get_option( Plugin::SETTING_ACCESS_TOKEN ) ) {
+
+			$access_token = get_option( Plugin::SETTING_ACCESS_TOKEN );
+
+			$url = 'https://licence.' . $server_endpoint . '/' . $host;
+
+			$opts = array(
+				'headers' => array(
+					//phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+					'Authorization' => 'Basic ' . base64_encode( $host . ':' . $access_token ),
+					'content-type'  => 'application/json',
+				),
 			);
+
+			$licence_data = wp_remote_get( $url, $opts );
+
+			$json    = null;
+			$licence = null;
+
+			if ( $licence_data ) {
+				$licence = wp_remote_retrieve_body( $licence_data );
+			}
+
+			if ( $licence ) {
+				$json = json_decode( $licence, true );
+			}
+
+			if ( $json ) {
+				if ( null !== $json['maxConcurrentUsers'] ) {
+					$max_concurrent_users = (int) $json['maxConcurrentUsers'];
+				} else {
+					$max_concurrent_users = 'unlimited';
+				}
+
+				if ( null !== $json['maxConcurrentRooms'] ) {
+					$max_concurrent_rooms = (int) $json['maxConcurrentRooms'];
+				} else {
+					$max_concurrent_rooms = 'unlimited';
+				}
+
+				if ( 0 === $max_concurrent_users || 0 === $max_concurrent_rooms ) {
+					$messages[] = array(
+						'type'    => 'notice-warning',
+						'message' => 'ClubCloud is currently unlicensed.',
+					);
+				} else {
+					$messages[] = array(
+						'type'    => 'notice-success',
+						'message' => "ClubCloud is currently active. Your current licence allows for a maximum of ${max_concurrent_users} concurrent users and ${max_concurrent_rooms} concurrent rooms.",
+					);
+				}
+			} else {
+				$messages[] = array(
+					'type'    => 'notice-error',
+					'message' => 'Failed to validate your ClubCloud licence, please check try reloading this page, if this message remains please re-activate your subscription.',
+				);
+			}
 		} else {
 			$messages[] = array(
 				'type'    => 'notice-warning',
