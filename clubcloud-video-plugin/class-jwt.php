@@ -63,13 +63,14 @@ class JWT {
 					$room_id              = $data->get_param( 'rid' );
 					$enable_floorplan     = ! ! $data->get_param( 'fp' );
 					$token               = $data->get_param( 'token' );
+					$admin               = ! ! $data->get_param( 'admin' );
 					$video_server_endpoint = 'meet.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
 
 					$message = wp_json_encode(
 						array(
 							'videoServerEndpoint' => $video_server_endpoint,
 							'roomName'            => $room_name,
-							'admin'               => true,
+							'admin'               => $admin,
 							'enableFloorplan'     => $enable_floorplan,
 						)
 					);
