@@ -204,15 +204,42 @@ use ClubCloudVideoPlugin\MonitorShortcode;
 			</tr>
 
 			<tr class="inactive">
+				<th class="column-primary"><em>text-empty-plain</em></th>
+				<td class="column-description">
+					<p>The plain text to show when nobody is waiting</p>
+					<p>To be used in notifications where `text-empty` contains HTML</p>
+				</td>
+				<td>(text-empty)</td>
+			</tr>
+
+			<tr class="inactive">
 				<th class="column-primary"><em>text-single</em></th>
 				<td class="column-description"><p>The text to show when a single person is waiting</p></td>
 				<td>"One person is waiting in reception"</td>
 			</tr>
 
 			<tr class="inactive">
+				<th class="column-primary"><em>text-single-plain</em></th>
+				<td class="column-description">
+					<p>The plain text to show a single person is waiting</p>
+					<p>To be used in notifications where `text-single` contains HTML</p>
+				</td>
+				<td>(text-single)</td>
+			</tr>
+
+			<tr class="inactive">
 				<th class="column-primary"><em>text-plural</em></th>
 				<td class="column-description"><p>The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count</p></td>
 				<td>"{{count}} people are waiting in reception"</td>
+			</tr>
+
+			<tr class="inactive">
+				<th class="column-primary"><em>text-plural-plain</em></th>
+				<td class="column-description">
+					<p>The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count</p>
+					<p>To be used in notifications where `text-plural` contains HTML</p>
+				</td>
+				<td>(text-plural)</td>
 			</tr>
 
 			<tr class="inactive">

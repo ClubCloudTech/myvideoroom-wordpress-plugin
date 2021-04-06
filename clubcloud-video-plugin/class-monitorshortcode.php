@@ -116,14 +116,29 @@ class MonitorShortcode extends Shortcode {
 			$text_empty = $this->format_data_attribute_text( $params['text-empty'] );
 		}
 
+		$text_empty_plain = null;
+		if ( $params['text-empty-plain'] ?? false ) {
+			$text_empty_plain = $this->format_data_attribute_text( $params['text-empty-plain'] );
+		}
+
 		$text_single = null;
 		if ( $params['text-single'] ?? false ) {
 			$text_single = $this->format_data_attribute_text( $params['text-single'] );
 		}
 
+		$text_single_plain = null;
+		if ( $params['text-single-plain'] ?? false ) {
+			$text_single_plain = $this->format_data_attribute_text( $params['text-single-plain'] );
+		}
+
 		$text_plural = null;
 		if ( $params['text-plural'] ?? false ) {
 			$text_plural = $this->format_data_attribute_text( $params['text-plural'] );
+		}
+
+		$text_plural_plain = null;
+		if ( $params['text-plural-plain'] ?? false ) {
+			$text_plural_plain = $this->format_data_attribute_text( $params['text-plural-plain'] );
 		}
 
 		$loading_text = 'Loading...';
@@ -174,8 +189,11 @@ class MonitorShortcode extends Shortcode {
                 data-server-endpoint="${state_server_endpoint}"
                 data-security-token="${security_token}"
                 data-text-empty="${text_empty}"
+                data-text-empty-plain="${$text_empty_plain}"
                 data-text-single="${text_single}"
+                data-text-single-plain="${text_single_plain}"
                 data-text-plural="${text_plural}"
+                data-text-plural-plain="${text_plural_plain}"
                 data-type="${type}"
             >${loading_text}</div>
         EOT;

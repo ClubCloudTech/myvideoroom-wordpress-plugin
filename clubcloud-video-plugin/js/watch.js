@@ -39,7 +39,7 @@ jQuery.noConflict()(
 			if ($element.data( name ) ) {
 				return atob( $element.data( name ) );
 			} else {
-				return texts[name];
+				return texts[name] || '';
 			}
 		}
 
@@ -50,6 +50,7 @@ jQuery.noConflict()(
 			var text;
 			var count;
 			var outputText;
+			var outputTextPlain;
 
 			switch ($element.data( 'type' )) {
 				case 'seated':
@@ -69,13 +70,15 @@ jQuery.noConflict()(
 
 			if (count) {
 				if (count > 1) {
-					outputText = getText( $element, text, 'textPlural' ).replace( '{{count}}', count ).replace( '{{name}}', roomName );
+					outputText      = getText( $element, text, 'textPlural' ).replace( /{{count}}/g, count ).replace( /{{name}}/g, roomName );
+					outputTextPlain = (getText( $element, text, 'textPluralPlain' ) || outputText).replace( /{{count}}/g, count ).replace( /{{name}}/g, roomName );
 				} else {
-					outputText = getText( $element, text, 'textSingle' ).replace( '{{count}}', count ).replace( '{{name}}', roomName );
+					outputText      = getText( $element, text, 'textSingle' ).replace( /{{count}}/g, count ).replace( /{{name}}/g, roomName );
+					outputTextPlain = (getText( $element, text, 'textSinglePlain' ) || outputText).replace( /{{count}}/g, count ).replace( /{{name}}/g, roomName );
 				}
 
 				if ($element.data( 'type' ) === "reception" && Notification.permission === "granted") {
-					new Notification( outputText );
+					new Notification( outputTextPlain );
 				}
 			} else {
 				outputText = getText( $element, text, 'textEmpty' );

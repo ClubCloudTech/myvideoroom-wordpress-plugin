@@ -85,6 +85,7 @@ class Admin extends Shortcode {
 
 		if ( $activation_key ) {
 
+
 			$url = 'https://licence.' . $server_endpoint;
 
 			$opts = array(
