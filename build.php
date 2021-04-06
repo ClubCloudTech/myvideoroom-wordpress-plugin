@@ -20,15 +20,23 @@ if ( $exit_code ) {
 	throw new \Exception( 'PHP Checkstyle failed - cannot build' );
 }
 
+// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+$index = file_get_contents( __DIR__ . '/clubcloud-video-plugin/index.php' );
+
+preg_match( '/Version: (.*)/', $index, $matches );
+
+$version   = trim( $matches[1] );
+$file_name = 'clubcloud-video-' . $version . '.zip';
+
 /* Initialize archive object */
 $zip = new ZipArchive();
-$zip->open( 'clubcloud-video.zip', ZipArchive::CREATE | ZipArchive::OVERWRITE );
+$zip->open( __DIR__ . '/' . $file_name, ZipArchive::CREATE | ZipArchive::OVERWRITE );
 
 /**
- * Recurse over the root directory and get all the required files
- *
- * @var SplFileInfo[] $files
- */
+/* Recurse over the root directory and get all the required files
+/*
+/* @var SplFileInfo[] $files
+*/
 $files = new RecursiveIteratorIterator(
 	new RecursiveDirectoryIterator( $root_path ),
 	RecursiveIteratorIterator::LEAVES_ONLY
@@ -49,5 +57,7 @@ foreach ( $files as $name => $file ) {
 
 /* Zip archive will be created only after closing object */
 $zip->close();
+
+copy( $file_name, __DIR__ . '/clubcloud-video.zip' );
 
 echo "Done!\n";
