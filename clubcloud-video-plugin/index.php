@@ -10,11 +10,11 @@ declare(strict_types=1);
 /**
  * Plugin Name:         ClubCloud Video
  * Plugin URI:          https://clubcloud.tech
- * Description:         Allows embedding of the ClubCloud Video App into WordPress
- * Version:             0.11.7-beta
+ * Description:         Integrates the ClubCloud Video Service into WordPress
+ * Version:             1.0.1
  * Requires PHP:        7.4
  * Requires at least:   5.6
- * Author:              Alec Sammon, Craig Jones
+ * Author:              Alec Sammon
  * Author URI:          https://clubcloud.tech/
  * License:             GPLv2 or later
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html

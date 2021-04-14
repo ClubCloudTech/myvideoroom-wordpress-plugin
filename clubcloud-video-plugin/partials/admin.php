@@ -101,6 +101,10 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 					'name'    => 'ClubCloud Video',
 					'visible' => true,
 				),
+				'clubcloud-extras'                      => array(
+					'name'    => 'ClubCloud Extras',
+					'visible' => true,
+				),
 				'clubcloud-woocommerce-assisted-buying' => array(
 					'name'    => 'ClubCloud Woocommerce Assisted Buying',
 					'visible' => false,

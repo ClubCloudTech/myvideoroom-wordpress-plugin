@@ -65,6 +65,8 @@ class Admin extends Shortcode {
 			'clubcloud-video',
 			array( $this, 'create_video_admin_page' )
 		);
+
+		do_action( 'clubcloud_admin_menu', 'clubcloud-settings' );
 	}
 
 	/**
