@@ -138,12 +138,7 @@ class Admin extends Shortcode {
 			} else {
 				$messages[] = array(
 					'type'    => 'notice-error',
-					//phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
-					'message' => 'Failed to activate ClubCloud licence, please check your activation key and try again. <pre>
-					' . var_export( $json, true ) . '
-					' . $activation_key . '
-					' . $host . '
-					</pre>',
+					'message' => 'Failed to activate ClubCloud licence, please check your activation key and try again.',
 				);
 			}
 		} elseif ( get_option( Plugin::SETTING_PRIVATE_KEY ) && get_option( Plugin::SETTING_ACCESS_TOKEN ) ) {
@@ -158,6 +153,11 @@ class Admin extends Shortcode {
 					'Authorization' => 'Basic ' . base64_encode( $host . ':' . $access_token ),
 					'content-type'  => 'application/json',
 				),
+			);
+
+			$messages[] = array(
+				'type'    => 'notice-warning',
+				'message' => $host . ':' . $access_token,
 			);
 
 			$licence_data = wp_remote_get( $url, $opts );
