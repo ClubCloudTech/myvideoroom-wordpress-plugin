@@ -138,7 +138,8 @@ class Admin extends Shortcode {
 			} else {
 				$messages[] = array(
 					'type'    => 'notice-error',
-					'message' => 'Failed to activate ClubCloud licence, please check your activation key and try again.',
+					//phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
+					'message' => 'Failed to activate ClubCloud licence, please check your activation key and try again. <pre>' . var_export( $json, true ) . '</pre>',
 				);
 			}
 		} elseif ( get_option( Plugin::SETTING_PRIVATE_KEY ) && get_option( Plugin::SETTING_ACCESS_TOKEN ) ) {
