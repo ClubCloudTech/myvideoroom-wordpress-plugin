@@ -2,12 +2,12 @@
 /**
  * Short code for creating the video widget
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 use Exception;
 use WP_User;
@@ -17,8 +17,8 @@ use WP_User;
  */
 class AppShortcode extends Shortcode {
 	const SHORTCODE_TAGS = array(
-		'clubcloud_app',
-		'clubvideo',
+		'myvideoroom',
+		'clubcloud_app', // @TODO - remove me - legacy
 	);
 
 	/**
@@ -58,7 +58,7 @@ class AppShortcode extends Shortcode {
 		add_action(
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
-				'clubcloud-video-app-js',
+				'myvideoroom-app-js',
 				plugins_url( '/js/app.js', __FILE__ ),
 				array( 'jquery' ),
 				$this->get_plugin_version(),
@@ -69,7 +69,7 @@ class AppShortcode extends Shortcode {
 		add_action(
 			'wp_head',
 			function () {
-				echo '<script>var clubCloudAppEndpoint = "' . esc_url( $this->endpoints->get_app_endpoint() ) . '"</script>';
+				echo '<script>var myVideoRoomAppEndpoint = "' . esc_url( $this->endpoints->get_app_endpoint() ) . '"</script>';
 			}
 		);
 	}
@@ -150,7 +150,7 @@ class AppShortcode extends Shortcode {
 				defined( 'WP_DEBUG' ) &&
 				WP_DEBUG
 			) {
-				return '<div>ClubCloud Video is not currently licenced</div>';
+				return '<div>My Video Room is not currently licenced</div>';
 			} else {
 				return '';
 			}
@@ -238,9 +238,9 @@ class AppShortcode extends Shortcode {
 		$security_token = rawurlencode( base64_encode( $signature ) );
 
 		if ( get_option( 'permalink_structure' ) ) {
-			$jwt_endpoint = get_site_url() . '/wp-json/clubcloud/jwt?';
+			$jwt_endpoint = get_site_url() . '/wp-json/myvideoroom-api/jwt?';
 		} else {
-			$jwt_endpoint = get_site_url() . '/?rest_route=/clubcloud/jwt&';
+			$jwt_endpoint = get_site_url() . '/?rest_route=/myvideoroom-api/jwt&';
 		}
 
 		$current_user        = wp_get_current_user();
@@ -250,7 +250,7 @@ class AppShortcode extends Shortcode {
 
 		return <<<EOT
             <div
-                class="clubcloud-video-app"
+                class="myvideoroom-app"
                 data-embedded="true"
                 data-room-name="${room_name}"
                 data-layout-id="${layout_id}"

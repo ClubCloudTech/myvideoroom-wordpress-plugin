@@ -2,22 +2,22 @@
 /**
  * Outputs the configuration settings for the video plugin
  *
- * @package ClubCloudVideoPlugin\Admin
+ * @package MyVideoRoomPlugin\Admin
  */
 
 declare(strict_types=1);
 global $wp_roles;
 
-use ClubCloudVideoPlugin\Plugin;
+use MyVideoRoomPlugin\Plugin;
 
 ?>
 
 <div class="wrap">
-	<h1>ClubCloud Video Short Code Settings</h1>
+	<h1>My Video Room Short Code Settings</h1>
 
 	<h2 class="nav-tab-wrapper">
-		<a class="nav-tab" href="?page=clubcloud-video&amp">Reference</a>
-		<a class="nav-tab nav-tab-active" href="?page=clubcloud-video&amp;tab=settings">Advanced Settings</a>
+		<a class="nav-tab" href="?page=myvideoroom&amp">Reference</a>
+		<a class="nav-tab nav-tab-active" href="?page=myvideoroom&amp;tab=settings">Advanced Settings</a>
 	</h2>
 
 	<ul>

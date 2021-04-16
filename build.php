@@ -3,17 +3,17 @@
 /**
  * Build the WordPress plugin as a zip
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 /* Get real path for our folder */
-$root_path = realpath( 'clubcloud-video-plugin' );
+$root_path = realpath( 'myvideoroom-plugin' );
 
 require_once __DIR__ . '/vendor/squizlabs/php_codesniffer/autoload.php';
 
 $runner = new \PHP_CodeSniffer\Runner();
 
-$_SERVER['argv'] = array( 'vendor/bin/phpcs', '-s', '--standard=WordPress', 'build.php', 'clubcloud-video-plugin/' );
+$_SERVER['argv'] = array( 'vendor/bin/phpcs', '-s', '--standard=WordPress', 'build.php', 'myvideoroom-plugin/' );
 $exit_code       = $runner->runPHPCS();
 
 if ( $exit_code ) {
@@ -21,16 +21,16 @@ if ( $exit_code ) {
 }
 
 // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-$index = file_get_contents( __DIR__ . '/clubcloud-video-plugin/index.php' );
+$index = file_get_contents( __DIR__ . '/myvideoroom-plugin/index.php' );
 
 preg_match( '/Version: (.*)/', $index, $matches );
 
 $version   = trim( $matches[1] );
-$file_name = 'clubcloud-video-' . $version . '.zip';
+$file_name = 'myvideoroom-' . $version . '.zip';
 
 /* Initialize archive object */
 $zip = new ZipArchive();
-$zip->open( __DIR__ . '/' . $file_name, ZipArchive::CREATE | ZipArchive::OVERWRITE );
+$zip->open( __DIR__ . '/builds/' . $file_name, ZipArchive::CREATE | ZipArchive::OVERWRITE );
 
 /**
 /* Recurse over the root directory and get all the required files
@@ -58,6 +58,6 @@ foreach ( $files as $name => $file ) {
 /* Zip archive will be created only after closing object */
 $zip->close();
 
-copy( $file_name, __DIR__ . '/clubcloud-video.zip' );
+symlink( __DIR__ . '/builds/' . $file_name, __DIR__ . '/myvideoroom.zip' );
 
 echo "Done!\n";

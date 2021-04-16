@@ -2,12 +2,12 @@
 /**
  * Short code for monitoring a room
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 use Exception;
 
@@ -17,8 +17,9 @@ use Exception;
 class MonitorShortcode extends Shortcode {
 
 	const SHORTCODE_TAGS = array(
-		'clubcloud_monitor',
-		'clubwatch',
+		'myvideoroom_monitor',
+		'clubcloud_monitor', // @TODO - remove me - legacy
+		'clubwatch', // @TODO - remove me - legacy
 	);
 
 	/**
@@ -69,8 +70,8 @@ class MonitorShortcode extends Shortcode {
 		add_action(
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
-				'clubcloud-video-watch-js',
-				plugins_url( '/js/watch.js', __FILE__ ),
+				'myvideoroom-monitor-js',
+				plugins_url( '/js/monitor.js', __FILE__ ),
 				array( 'jquery', 'socket-io-3.1.0' ),
 				$this->get_plugin_version(),
 				true
@@ -93,7 +94,7 @@ class MonitorShortcode extends Shortcode {
 				defined( 'WP_DEBUG' ) &&
 				WP_DEBUG
 			) {
-				return '<div>ClubCloud Video is not currently licenced</div>';
+				return '<div>My Video Room is not currently licenced</div>';
 			} else {
 				return '';
 			}
@@ -103,7 +104,7 @@ class MonitorShortcode extends Shortcode {
 			$params = array();
 		}
 
-		preg_match_all( '/\[clubcloud_text_option.*type="(?<type>.*)"](?<data>.*)\[\/clubcloud_text_option]/msU', $contents, $matches, PREG_SET_ORDER );
+		preg_match_all( '/\[myvideoroom_text_option.*type="(?<type>.*)"](?<data>.*)\[\/myvideoroom_text_option]/msU', $contents, $matches, PREG_SET_ORDER );
 
 		foreach ( $matches as $match ) {
 			$params[ 'text-' . $match['type'] ] = $match['data'];
@@ -182,7 +183,7 @@ class MonitorShortcode extends Shortcode {
 
 		return <<<EOT
             <div
-                class="clubcloud-video-waiting"
+                class="myvideoroom-monitor"
                 data-room-name="${room_name}"
                 data-room-hash="${room_hash}"
                 data-video-server-endpoint="${video_server_endpoint}"

@@ -3,12 +3,12 @@
  * A factory method to create new objects
  * Allows for easy mocking in tests
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 /**
  * Class Factory

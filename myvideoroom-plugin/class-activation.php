@@ -2,19 +2,19 @@
 /**
  * Installs and uninstalls the plugin
  *
- * @package ClubCloudVideoPlugin\Admin
+ * @package MyVideoRoomPlugin\Admin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 /**
  * Class Activation
  */
 class Activation {
 
-	const ROLE_GLOBAL_ADMIN = 'clubcloud_video_admin';
+	const ROLE_GLOBAL_ADMIN = 'myvideoroom_video_admin';
 
 	/**
 	 * Activate the plugin
@@ -23,7 +23,7 @@ class Activation {
 	public static function activate() {
 		add_role(
 			self::ROLE_GLOBAL_ADMIN,
-			__( 'Video Admin', 'clubcloud-video-admin-role' ),
+			__( 'Video Admin', 'myvideoroom-video-admin-role' ),
 			array( Plugin::CAP_GLOBAL_ADMIN => true )
 		);
 

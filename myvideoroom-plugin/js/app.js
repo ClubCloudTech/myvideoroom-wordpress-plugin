@@ -1,21 +1,21 @@
 /**
  * Main JavaScript file the video plugin
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 jQuery.noConflict()(
 	function () {
 		var $ = jQuery.noConflict();
 
-		if ($( '.clubcloud-video-app' ).length) {
+		if ($( '.myvideoroom-video-app' ).length) {
 			if ($.ajaxSettings && $.ajaxSettings.headers) {
 				delete $.ajaxSettings.headers;
 			}
 
 			$.ajax(
 				{
-					url: clubCloudAppEndpoint + "/asset-manifest.json",
+					url: myVideoRoomAppEndpoint + "/asset-manifest.json",
 					dataType: 'json'
 				}
 			).then(
@@ -26,12 +26,12 @@ jQuery.noConflict()(
 								$.ajax(
 									{
 										beforeSend: function() {},
-										url: clubCloudAppEndpoint + "/" + file,
+										url: myVideoRoomAppEndpoint + "/" + file,
 										dataType: "script"
 									}
 								);
 							} else if (file.endsWith( ".css" )) {
-								$( '<link rel="stylesheet" href="' + clubCloudAppEndpoint + '/' + file + '" type="text/css" />' ).appendTo( 'head' );
+								$( '<link rel="stylesheet" href="' + myVideoRoomAppEndpoint + '/' + file + '" type="text/css" />' ).appendTo( 'head' );
 							}
 						}
 					);

@@ -2,34 +2,34 @@
 /**
  * Outputs the configuration settings for the video plugin
  *
- * @package ClubCloudVideoPlugin\Admin
+ * @package MyVideoRoomPlugin\Admin
  */
 
 declare(strict_types=1);
 
-use ClubCloudVideoPlugin\AppShortcode;
-use ClubCloudVideoPlugin\MonitorShortcode;
+use MyVideoRoomPlugin\AppShortcode;
+use MyVideoRoomPlugin\MonitorShortcode;
 
 ?>
 
 <div class="wrap">
-	<h1>ClubCloud Video Short Code Reference</h1>
+	<h1>My Video Room Short Code Reference</h1>
 
 	<h2 class="nav-tab-wrapper">
-		<a class="nav-tab nav-tab-active" href="?page=clubcloud-video&amp">Reference</a>
-		<a class="nav-tab" href="?page=clubcloud-video&amp;tab=settings">Advanced Settings</a>
+		<a class="nav-tab nav-tab-active" href="?page=myvideoroom&amp">Reference</a>
+		<a class="nav-tab" href="?page=myvideoroom&amp;tab=settings">Advanced Settings</a>
 	</h2>
 
 	<h2>App ShortCode</h2>
 	<p>You can use the following
-		<a href="https://support.wordpress.com/shortcodes/" target="_blank">ShortCodes</a> to add the ClubCloud video app to a page.
+		<a href="https://support.wordpress.com/shortcodes/" target="_blank">ShortCodes</a> to add the My Video Room app to a page.
 	</p>
 
-	<h3>ClubCloud App</h3>
+	<h3>My Video Room App</h3>
 	<p>This shows the video app</p>
-	<code class="clubcloud-admin-code">
+	<code class="myvideoroom-admin-code">
 		[<?php echo esc_html( AppShortcode::SHORTCODE_TAGS[0] ); ?>
-			name="The Meeting Room"
+			name="My Video Room"
 			layout="clubcloud"
 			lobby=true
 			admin=true
@@ -169,11 +169,11 @@ use ClubCloudVideoPlugin\MonitorShortcode;
 	</table>
 	<br />
 
-	<h3>ClubCloud Reception Widget</h3>
+	<h3>My Video Room Reception Widget</h3>
 	<p>This shows the number of people currently waiting in a room</p>
-	<code class="clubcloud-admin-code">
+	<code class="myvideoroom-admin-code">
 		[<?php echo esc_html( MonitorShortcode::SHORTCODE_TAGS[0] ); ?>
-			name="ClubCloud.tech"
+			name="My Video Room"
 			text-empty="Nobody is currently waiting"
 			text-single="One person is waiting in reception"
 			text-plural="{{count}} people are waiting in reception"

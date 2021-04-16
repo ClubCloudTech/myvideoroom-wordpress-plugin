@@ -2,12 +2,12 @@
 /**
  * Manages endpoints for external services
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 /**
  * Class Endpoints

@@ -1,14 +1,14 @@
 /**
  * Main JavaScript file the watcher of the video plugin
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 jQuery.noConflict()(
 	function () {
 		var $ = jQuery.noConflict();
 
-		var $elements = $( '.clubcloud-video-waiting' );
+		var $elements = $( '.myvideoroom-monitor' );
 
 		var watch            = {};
 		var $indexedElements = {};

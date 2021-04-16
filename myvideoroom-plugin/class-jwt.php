@@ -2,12 +2,12 @@
 /**
  * Creates JSON Web Tokens for authentication with Jitsi.
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 use Exception;
 
@@ -52,7 +52,7 @@ class JWT {
 	 */
 	public function register_rest_route() {
 		register_rest_route(
-			'clubcloud',
+			'myvideoroom-api',
 			'/jwt',
 			array(
 				// By using this constant we ensure that when the WP_REST_Server changes our readable endpoints will work as intended.

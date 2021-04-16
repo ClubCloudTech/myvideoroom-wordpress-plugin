@@ -2,19 +2,19 @@
 /**
  * Allows passing in more complex text options
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 /**
  * Class TextOptionShortcode
  */
 class TextOptionShortcode extends Shortcode {
 	const SHORTCODE_TAGS = array(
-		'clubcloud_text_option',
+		'myvideoroom_text_option',
 	);
 
 	/**
@@ -32,7 +32,7 @@ class TextOptionShortcode extends Shortcode {
 	 * @return string
 	 */
 	public function output_shortcode(): string {
-		$error = 'The clubcloud_text_option should be called from within the clubcloud_monitor shortcode';
+		$error = 'The myvideoroom_text_option should be called from within the clubcloud_monitor shortcode';
 
 		if (
 			defined( WP_DEBUG ) &&

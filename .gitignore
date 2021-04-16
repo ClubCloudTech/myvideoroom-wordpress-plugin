@@ -1,7 +1,6 @@
 /.idea
-/clubcloud-video.zip
-/clubcloud-video*.zip
-/clubcloud-utils.zip
+/myvideoroom.zip
+/builds
 .DS_Store
 
 /vendor/

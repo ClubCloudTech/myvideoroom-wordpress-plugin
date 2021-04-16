@@ -1,19 +1,19 @@
-=== ClubCloud Video ===
-Contributors: clubcloud
-Tags: video
+=== MyVideoRoom  ===
+Stable tag: 1.1.0
+Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 5.7
-Requires PHP: 7.4
-Stable tag: 1.0.1
+Contributors: clubcloud
+Tags: video, conferencing
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Integrates the ClubCloud Video Service into WordPress
+Integrates the MyVideoRoom Service into WordPress
 
 == Description ==
 
 Integrate Video with E-Commerce, Social Networking and Bookings ClubCloud brings to market a novel video conferencing plugin that allows for diverse integration with, otherwise quite separated, website functionality.
-The ClubCloud Video Plugin enables you to not just add video chat or meeting functionality to a website but to fully embed it into the wider functions of any platform.
+The My Video Room Plugin enables you to not just add video chat or meeting functionality to a website but to fully embed it into the wider functions of any platform.
 
 Features include:
 * 1-to-1 or multiway meetings
@@ -30,7 +30,7 @@ Full functionality is FREE with a basic licence!
 
 That’s right!! We are giving you the full capabilities of ClubCloud to use on a site in the basic licence option.
 
-Beyond that there is no need for any further plugin downloads. Simply upgrade your licence to allow for more simultaneous users and concurrent video sessions. We charge on a per user per month basis for any platforms you deploy ClubCloud Video on.
+Beyond that there is no need for any further plugin downloads. Simply upgrade your licence to allow for more simultaneous users and concurrent video sessions. We charge on a per user per month basis for any platforms you deploy My Video Room on.
 
 Organising a video meeting made easy with an active reception option for participants. Video rooms can be configured with a waiting area to avoid un-expected visitors.
 
@@ -43,7 +43,7 @@ Privacy Policy: https://clubcloud.tech/privacy
 Acceptable Use Policy: https://clubcloud.tech/acceptable-use/
 
 ONE-TO-ONE VIDEO CALLS
-Dramatically increase user engagement with ClubCloud Video calling by delivering high quality, low-latency, one-to-one video call capabilities directly into your own applications.
+Dramatically increase user engagement with My Video Room calling by delivering high quality, low-latency, one-to-one video call capabilities directly into your own applications.
 
 GROUP CHAT VIDEO CALLING
 Group chat calls scales to include up to 17 participants – ensuring that you can handle all the use-cases you will ever need.
@@ -77,7 +77,7 @@ https://clubcloud.tech/how-to-use/
 == Upgrade Notice ==
 
 = 1.0.0 =
-This is the initial public release of the ClubCloud Video Plugin.
+This is the initial public release of the My Video Room Plugin.
 
 == Arbitrary section ==
 

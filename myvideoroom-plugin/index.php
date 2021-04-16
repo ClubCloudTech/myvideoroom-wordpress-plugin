@@ -1,17 +1,17 @@
 <?php
 /**
- * ClubCloud Video Plugin Initializer. Will be auto-called by WordPress
+ * MyVideoRoomPlugin Plugin Initializer. Will be auto-called by WordPress
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 declare(strict_types=1);
 
 /**
- * Plugin Name:         ClubCloud Video
+ * Plugin Name:         MyVideoRoom
  * Plugin URI:          https://clubcloud.tech
- * Description:         Integrates the ClubCloud Video Service into WordPress
- * Version:             1.0.1
+ * Description:         Integrates the MyVideoRoom Service into WordPress
+ * Version:             1.1.0
  * Requires PHP:        7.4
  * Requires at least:   5.6
  * Author:              Alec Sammon
@@ -21,7 +21,7 @@ declare(strict_types=1);
  */
 
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -33,7 +33,7 @@ if ( ! function_exists( 'get_plugin_data' ) ) {
 
 if ( ! class_exists( Plugin::class ) ) {
 	/**
-	 * Autoloader for classes in the ClubCloud Video Plugin
+	 * Autoloader for classes in the My Video Room Plugin
 	 *
 	 * @param string $class_name The name of the class to autoload.
 	 *
@@ -42,10 +42,10 @@ if ( ! class_exists( Plugin::class ) ) {
 	 * @return boolean
 	 */
 	function autoloader( string $class_name ): bool {
-		if ( strpos( $class_name, 'ClubCloudVideoPlugin' ) === 0 ) {
+		if ( strpos( $class_name, 'MyVideoRoomPlugin' ) === 0 ) {
 			$src_location = realpath( plugin_dir_path( __FILE__ ) ) . DIRECTORY_SEPARATOR;
 
-			$file_name = str_replace( 'ClubCloudVideoPlugin\\', '', $class_name );
+			$file_name = str_replace( 'MyVideoRoomPlugin\\', '', $class_name );
 			$file_name = strtolower( $file_name );
 
 			$file_name = str_replace( '\\', DIRECTORY_SEPARATOR, $file_name ) . '.php';
@@ -63,7 +63,7 @@ if ( ! class_exists( Plugin::class ) ) {
 		return false;
 	}
 
-	spl_autoload_register( 'ClubCloudVideoPlugin\autoloader' );
+	spl_autoload_register( 'MyVideoRoomPlugin\autoloader' );
 
 	add_action( 'plugins_loaded', array( Plugin::class, 'init' ) );
 

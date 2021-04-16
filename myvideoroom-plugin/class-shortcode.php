@@ -2,12 +2,12 @@
 /**
  * Abstract class for all shortcodes
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 /**
  * Abstract Shortcode

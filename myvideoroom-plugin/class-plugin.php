@@ -2,19 +2,19 @@
 /**
  * The entry point for the plugin
  *
- * @package ClubCloudVideoPlugin
+ * @package MyVideoRoomPlugin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 /**
  * Class Plugin
  */
 class Plugin {
 
-	public const PLUGIN_NAMESPACE   = 'clubcloud_video';
+	public const PLUGIN_NAMESPACE   = 'myvideoroom';
 	public const SETTINGS_NAMESPACE = 'settings';
 
 	public const SETTING_SERVER_DOMAIN  = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
@@ -23,7 +23,7 @@ class Plugin {
 	public const SETTING_ACCESS_TOKEN = self::PLUGIN_NAMESPACE . '_access_token';
 	public const SETTING_PRIVATE_KEY  = self::PLUGIN_NAMESPACE . '_private_key';
 
-	public const CAP_GLOBAL_ADMIN = 'clubcloud-video-global-admin';
+	public const CAP_GLOBAL_ADMIN = 'myvideoroom-global-admin';
 
 	public const SETTINGS = array(
 		self::SETTING_SERVER_DOMAIN,
@@ -77,8 +77,8 @@ class Plugin {
 	 */
 	public function add_action_links( array $actions ): array {
 		$links = array(
-			'Settings'  => admin_url( 'admin.php?page=clubcloud-settings' ),
-			'Reference' => admin_url( 'admin.php?page=clubcloud-video' ),
+			'Settings'  => admin_url( 'admin.php?page=myvideoroom-settings' ),
+			'Reference' => admin_url( 'admin.php?page=myvideoroom' ),
 			'Support'   => 'https://clubcloud.tech',
 		);
 

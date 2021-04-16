@@ -2,12 +2,12 @@
 /**
  * Manages the configuration settings for the video plugin
  *
- * @package ClubCloudVideoPlugin\Admin
+ * @package MyVideoRoomPlugin\Admin
  */
 
 declare(strict_types=1);
 
-namespace ClubCloudVideoPlugin;
+namespace MyVideoRoomPlugin;
 
 /**
  * Class Admin
@@ -23,7 +23,7 @@ class Admin extends Shortcode {
 		add_action(
 			'admin_enqueue_scripts',
 			fn() => wp_enqueue_style(
-				'clubcloud-video-admin-css',
+				'myvideoroom-admin-css',
 				plugins_url( '/css/admin.css', __FILE__ ),
 				false,
 				$this->get_plugin_version(),
@@ -37,36 +37,36 @@ class Admin extends Shortcode {
 	public function add_admin_menu() {
 		global $admin_page_hooks;
 
-		if ( empty( $admin_page_hooks['clubcloud-settings'] ) ) {
+		if ( empty( $admin_page_hooks['myvideoroom-settings'] ) ) {
 			add_menu_page(
-				'ClubCloud Settings',
-				'ClubCloud Settings',
+				'My Video Room Settings',
+				'My Video Room Settings',
 				'manage_options',
-				'clubcloud-settings',
+				'myvideoroom-settings',
 				array( $this, 'create_admin_page' ),
 				'dashicons-format-chat'
 			);
 
 			add_submenu_page(
-				'clubcloud-settings',
-				'ClubCloud Settings',
+				'myvideoroom-settings',
+				'My Video Room Settings',
 				'General Settings',
 				'manage_options',
-				'clubcloud-settings',
+				'myvideoroom-settings',
 				array( $this, 'create_admin_page' )
 			);
 		}
 
 		add_submenu_page(
-			'clubcloud-settings',
+			'myvideoroom-settings',
 			'Video Reference',
 			'Video Reference',
 			'manage_options',
-			'clubcloud-video',
+			'myvideoroom',
 			array( $this, 'create_video_admin_page' )
 		);
 
-		do_action( 'clubcloud_admin_menu', 'clubcloud-settings' );
+		do_action( 'myvideoroom_admin_menu', 'myvideoroom-settings' );
 	}
 
 	/**
@@ -132,13 +132,13 @@ class Admin extends Shortcode {
 
 				$messages[] = array(
 					'type'    => 'notice-success',
-					'message' => "ClubCloud has been activated. Your current licence allows for a maximum of ${max_concurrent_users} concurrent users and ${max_concurrent_rooms} concurrent rooms",
+					'message' => "My Video Room has been activated. Your current licence allows for a maximum of ${max_concurrent_users} concurrent users and ${max_concurrent_rooms} concurrent rooms",
 				);
 
 			} else {
 				$messages[] = array(
 					'type'    => 'notice-error',
-					'message' => 'Failed to activate ClubCloud licence, please check your activation key and try again.',
+					'message' => 'Failed to activate the My Video Room licence, please check your activation key and try again.',
 				);
 			}
 		} elseif ( get_option( Plugin::SETTING_PRIVATE_KEY ) && get_option( Plugin::SETTING_ACCESS_TOKEN ) ) {
@@ -184,24 +184,24 @@ class Admin extends Shortcode {
 				if ( 0 === $max_concurrent_users || 0 === $max_concurrent_rooms ) {
 					$messages[] = array(
 						'type'    => 'notice-warning',
-						'message' => 'ClubCloud is currently unlicensed.',
+						'message' => 'My Video Room is currently unlicensed.',
 					);
 				} else {
 					$messages[] = array(
 						'type'    => 'notice-success',
-						'message' => "ClubCloud is currently active. Your current licence allows for a maximum of ${max_concurrent_users} concurrent users and ${max_concurrent_rooms} concurrent rooms.",
+						'message' => "My Video Room is currently active. Your current licence allows for a maximum of ${max_concurrent_users} concurrent users and ${max_concurrent_rooms} concurrent rooms.",
 					);
 				}
 			} else {
 				$messages[] = array(
 					'type'    => 'notice-error',
-					'message' => 'Failed to validate your ClubCloud licence, please check try reloading this page, if this message remains please re-activate your subscription.',
+					'message' => 'Failed to validate your My Video Room licence, please check try reloading this page, if this message remains please re-activate your subscription.',
 				);
 			}
 		} else {
 			$messages[] = array(
 				'type'    => 'notice-warning',
-				'message' => 'ClubCloud is not currently activated. Please enter your activation key to get started.',
+				'message' => 'My Video Room is not currently activated. Please enter your activation key to get started.',
 			);
 		}
 

@@ -2,12 +2,12 @@
 /**
  * Outputs the configuration settings for the video plugin
  *
- * @package ClubCloudVideoPlugin\Admin
+ * @package MyVideoRoomPlugin\Admin
  */
 
 declare(strict_types=1);
 
-use ClubCloudVideoPlugin\Plugin;
+use MyVideoRoomPlugin\Plugin;
 
 if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 	$video_server = esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
@@ -18,7 +18,7 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 ?>
 
 <div class="wrap">
-	<h1>ClubCloud Settings</h1>
+	<h1>My Video Room Settings</h1>
 
 	<ul>
 	<?php
@@ -35,27 +35,11 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 		<fieldset>
 			<table class="form-table" role="presentation">
 				<tbody>
-				<tr>
-					<th scope="row">
-						<label for="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>">
-							ClubCloud Server Domain
-						</label>
-					</th>
-					<td>
-						<input
-								type="text"
-								name="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
-								value="<?php echo esc_attr( $video_server ); ?>"
-								id="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
-								size="100"
-						/>
-					</td>
-				</tr>
 
 				<tr>
 					<th scope="row">
 						<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
-							ClubCloud Activation Key
+							MY Video Room Activation Key
 						</label>
 					</th>
 					<td>
@@ -76,6 +60,24 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 						/>
 					</td>
 				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>">
+							ClubCloud Server Domain<br />
+							<em>for advanced usage only</em>
+						</label>
+					</th>
+					<td>
+						<input
+								type="text"
+								name="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
+								value="<?php echo esc_attr( $video_server ); ?>"
+								id="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
+								size="100"
+						/>
+					</td>
+				</tr>
 				</tbody>
 			</table>
 		</fieldset>
@@ -83,7 +85,7 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 		<?php submit_button(); ?>
 	</form>
 
-	<h3>The ClubCloud WordPress Suite</h3>
+	<h3>The My Video Room WordPress Suite</h3>
 	<table class="widefat fixed">
 		<thead>
 			<tr>
@@ -96,21 +98,21 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 
 		<tbody>
 		<?php
-			$available_clubcloud_plugins = array(
-				'clubcloud-video'                       => array(
-					'name'    => 'ClubCloud Video',
+			$available_myvideoroom_plugins = array(
+				'myvideoroom'                             => array(
+					'name'    => 'My Video Room',
 					'visible' => true,
 				),
-				'clubcloud-extras'                      => array(
-					'name'    => 'ClubCloud Extras',
+				'myvideoroom-extras'                      => array(
+					'name'    => 'My Video Room Extras',
 					'visible' => true,
 				),
-				'clubcloud-woocommerce-assisted-buying' => array(
-					'name'    => 'ClubCloud Woocommerce Assisted Buying',
+				'myvideoroom-woocommerce-assisted-buying' => array(
+					'name'    => 'My Video Room Woocommerce Assisted Buying',
 					'visible' => false,
 				),
-				'clubcloud-games'                       => array(
-					'name'    => 'ClubCloud Games',
+				'myvideoroom-games'                       => array(
+					'name'    => 'My Video Room Games',
 					'visible' => false,
 				),
 			);
@@ -126,33 +128,33 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 				return preg_replace( '/(-[0-9]+|)\/.*$/', '', $path );
 			}
 
-			$installed_clubcloud_plugins = array_filter(
+			$installed_myvideoroom_plugins = array_filter(
 				array_map(
 					'get_plugin_id',
 					array_keys( get_plugins() )
 				),
-				fn( $id) => strpos( $id, 'clubcloud-' ) === 0
+				fn( $id) => strpos( $id, 'myvideoroom-' ) === 0
 			);
 
-			$active_clubcloud_plugins = array_filter(
+			$active_myvideoroom_plugins = array_filter(
 				array_map(
 					'get_plugin_id',
 					get_option( 'active_plugins' ),
 				),
-				fn( $id) => strpos( $id, 'clubcloud-' ) === 0
+				fn( $id) => strpos( $id, 'myvideoroom-' ) === 0
 			);
 
-			foreach ( $available_clubcloud_plugins as $available_clubcloud_plugin_id => $available_clubcloud_plugin_details ) {
-				if ( ! $available_clubcloud_plugin_details['visible'] ) {
+			foreach ( $available_myvideoroom_plugins as $available_myvideoroom_plugin_id => $available_myvideoroom_plugin_details ) {
+				if ( ! $available_myvideoroom_plugin_details['visible'] ) {
 					continue;
 				}
 
 				?>
 				<tr>
-					<th scope="row"><?php echo esc_html( $available_clubcloud_plugin_details['name'] ); ?></th>
+					<th scope="row"><?php echo esc_html( $available_myvideoroom_plugin_details['name'] ); ?></th>
 					<td>
 						<?php
-						if ( in_array( $available_clubcloud_plugin_id, $installed_clubcloud_plugins, true ) ) {
+						if ( in_array( $available_myvideoroom_plugin_id, $installed_myvideoroom_plugins, true ) ) {
 							echo '<span class="dashicons dashicons-yes"></span>';
 						} else {
 							echo '<span class="dashicons dashicons-no"></span>';
@@ -161,7 +163,7 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 					</td>
 					<td>
 						<?php
-						if ( in_array( $available_clubcloud_plugin_id, $active_clubcloud_plugins, true ) ) {
+						if ( in_array( $available_myvideoroom_plugin_id, $active_myvideoroom_plugins, true ) ) {
 							echo '<span class="dashicons dashicons-yes"></span>';
 						} else {
 							echo '<span class="dashicons dashicons-no"></span>';
@@ -170,9 +172,9 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 					</td>
 					<td>
 						<?php
-						if ( in_array( $available_clubcloud_plugin_id, $active_clubcloud_plugins, true ) ) {
+						if ( in_array( $available_myvideoroom_plugin_id, $active_myvideoroom_plugins, true ) ) {
 							?>
-							<a href="?page=<?php echo esc_attr( $available_clubcloud_plugin_id ); ?>">
+							<a href="?page=<?php echo esc_attr( $available_myvideoroom_plugin_id ); ?>">
 								<span class="dashicons dashicons-admin-generic"></span>
 							</a>
 							<?php
