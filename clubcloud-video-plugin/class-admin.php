@@ -155,11 +155,6 @@ class Admin extends Shortcode {
 				),
 			);
 
-			$messages[] = array(
-				'type'    => 'notice-warning',
-				'message' => $host . ':' . $access_token,
-			);
-
 			$licence_data = wp_remote_get( $url, $opts );
 
 			$json    = null;
@@ -174,13 +169,13 @@ class Admin extends Shortcode {
 			}
 
 			if ( $json ) {
-				if ( null !== $json['maxConcurrentUsers'] ) {
+				if ( null !== $json['maxConcurrentUsers'] ?? 0 ) {
 					$max_concurrent_users = (int) $json['maxConcurrentUsers'];
 				} else {
 					$max_concurrent_users = 'unlimited';
 				}
 
-				if ( null !== $json['maxConcurrentRooms'] ) {
+				if ( null !== $json['maxConcurrentRooms'] ?? 0 ) {
 					$max_concurrent_rooms = (int) $json['maxConcurrentRooms'];
 				} else {
 					$max_concurrent_rooms = 'unlimited';
