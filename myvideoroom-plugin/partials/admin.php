@@ -133,7 +133,7 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 					'get_plugin_id',
 					array_keys( get_plugins() )
 				),
-				fn( $id) => strpos( $id, 'myvideoroom-' ) === 0
+				fn( $id) => strpos( $id, 'myvideoroom' ) === 0
 			);
 
 			$active_myvideoroom_plugins = array_filter(
@@ -141,7 +141,7 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 					'get_plugin_id',
 					get_option( 'active_plugins' ),
 				),
-				fn( $id) => strpos( $id, 'myvideoroom-' ) === 0
+				fn( $id) => strpos( $id, 'myvideoroom' ) === 0
 			);
 
 			foreach ( $available_myvideoroom_plugins as $available_myvideoroom_plugin_id => $available_myvideoroom_plugin_details ) {

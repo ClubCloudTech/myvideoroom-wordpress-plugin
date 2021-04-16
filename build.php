@@ -30,7 +30,11 @@ $file_name = 'myvideoroom.zip';
 
 /* Initialize archive object */
 $zip = new ZipArchive();
-mkdir( __DIR__ . '/builds/' . $version, 0777, true );
+
+if ( ! file_exists( __DIR__ . '/builds/' . $version ) ) {
+	mkdir( __DIR__ . '/builds/' . $version, 0777, true );
+}
+
 $zip->open( __DIR__ . '/builds/' . $version . '/' . $file_name, ZipArchive::CREATE | ZipArchive::OVERWRITE );
 
 /**
