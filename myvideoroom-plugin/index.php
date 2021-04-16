@@ -8,7 +8,7 @@
 declare(strict_types=1);
 
 /**
- * Plugin Name:         MyVideoRoom
+ * Plugin Name:         My Video Room
  * Plugin URI:          https://clubcloud.tech
  * Description:         Integrates the MyVideoRoom Service into WordPress
  * Version:             1.1.0

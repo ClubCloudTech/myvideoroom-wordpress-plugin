@@ -26,11 +26,12 @@ $index = file_get_contents( __DIR__ . '/myvideoroom-plugin/index.php' );
 preg_match( '/Version: (.*)/', $index, $matches );
 
 $version   = trim( $matches[1] );
-$file_name = 'myvideoroom-' . $version . '.zip';
+$file_name = 'myvideoroom.zip';
 
 /* Initialize archive object */
 $zip = new ZipArchive();
-$zip->open( __DIR__ . '/builds/' . $file_name, ZipArchive::CREATE | ZipArchive::OVERWRITE );
+mkdir( __DIR__ . '/builds/' . $version, 0777, true );
+$zip->open( __DIR__ . '/builds/' . $version . '/' . $file_name, ZipArchive::CREATE | ZipArchive::OVERWRITE );
 
 /**
 /* Recurse over the root directory and get all the required files
@@ -58,6 +59,7 @@ foreach ( $files as $name => $file ) {
 /* Zip archive will be created only after closing object */
 $zip->close();
 
-symlink( __DIR__ . '/builds/' . $file_name, __DIR__ . '/myvideoroom.zip' );
+unlink( __DIR__ . '/myvideoroom.zip' );
+symlink( __DIR__ . '/builds/' . $version . '/' . $file_name, __DIR__ . '/myvideoroom.zip' );
 
 echo "Done!\n";

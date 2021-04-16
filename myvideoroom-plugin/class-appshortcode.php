@@ -83,7 +83,7 @@ class AppShortcode extends Shortcode {
 	 * @deprecated
 	 */
 	private function process_legacy_params( array $params ): array {
-		if ( ! $params['name'] && $params['cc_event_id'] ) {
+		if ( ! ( $params['name'] ?? null ) && ( $params['cc_event_id'] ?? null ) ) {
 			$params['name'] = $params['cc_event_id'];
 		}
 

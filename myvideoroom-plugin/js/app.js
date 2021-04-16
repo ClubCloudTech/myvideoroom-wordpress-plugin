@@ -8,7 +8,7 @@ jQuery.noConflict()(
 	function () {
 		var $ = jQuery.noConflict();
 
-		if ($( '.myvideoroom-video-app' ).length) {
+		if ($( '.myvideoroom-app' ).length) {
 			if ($.ajaxSettings && $.ajaxSettings.headers) {
 				delete $.ajaxSettings.headers;
 			}
