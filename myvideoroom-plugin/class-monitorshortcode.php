@@ -60,7 +60,7 @@ class MonitorShortcode extends Shortcode {
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
 				'socket-io-3.1.0',
-				'https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.0/socket.io.js',
+				plugins_url( '/third-party/socket.io.js', __FILE__ ),
 				array(),
 				'3.1.0',
 				true

@@ -215,8 +215,13 @@ class Admin extends Shortcode {
 	 * Create the admin page contents.
 	 */
 	public function create_video_admin_page() {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.NonceVerification.Recommended -- Not required
-		$tab = $_GET['tab'] ?? null;
+		$tab = null;
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
+		if ( isset( $_GET['tab'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
+			$tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
+		}
 
 		switch ( $tab ) {
 			case 'settings':

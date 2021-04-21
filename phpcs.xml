@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ruleset name="MyVideoRoom Wordpress Plugin Standards">
+    <description>MyVideoRoom Wordpress Plugin Standards</description>
+
+    <file>myvideoroom-plugin</file>
+    <file>build.php</file>
+
+    <exclude-pattern>myvideoroom-plugin/third-party</exclude-pattern>
+
+    <rule ref="WordPress" />
+</ruleset>

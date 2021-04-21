@@ -52,23 +52,18 @@ class Endpoints {
 	 * Endpoints constructor.
 	 */
 	public function __construct() {
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.NonceVerification.Recommended,WordPress.Security.ValidatedSanitizedInput.InputNotValidated,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Simple check for dev mode, does not need extra security checks.
-		$dev_node = ( $_GET['dev'] ?? false ) === 'true';
 
-		$this->video_endpoint = 'meet.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-
-		if ( $dev_node ) {
-			$this->app_endpoint     = 'http://localhost:3000';
-			$this->state_endpoint   = 'http://localhost:4001';
-			$this->rooms_endpoint   = 'http://localhost:4002';
-			$this->licence_endpoint = 'http://localhost:4003';
+		if ( defined( 'MYVIDEOROOM_CUSTOM_ENDPOINTS' ) ) {
+			$custom_endpoints = MYVIDEOROOM_CUSTOM_ENDPOINTS;
 		} else {
-
-			$this->app_endpoint     = 'https://app.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-			$this->state_endpoint   = 'https://state.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-			$this->rooms_endpoint   = 'https://rooms.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-			$this->licence_endpoint = 'https://licence.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+			$custom_endpoints = array();
 		}
+
+		$this->video_endpoint   = $custom_endpoints['video'] ?? 'meet.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+		$this->app_endpoint     = $custom_endpoints['app'] ?? 'https://app.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+		$this->state_endpoint   = $custom_endpoints['state'] ?? 'https://state.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+		$this->rooms_endpoint   = $custom_endpoints['rooms'] ?? 'https://rooms.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+		$this->licence_endpoint = $custom_endpoints['licence'] ?? 'https://licence.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
 	}
 
 	/**

@@ -13,7 +13,7 @@ require_once __DIR__ . '/vendor/squizlabs/php_codesniffer/autoload.php';
 
 $runner = new \PHP_CodeSniffer\Runner();
 
-$_SERVER['argv'] = array( 'vendor/bin/phpcs', '-s', '--standard=WordPress', 'build.php', 'myvideoroom-plugin/' );
+$_SERVER['argv'] = array( 'vendor/bin/phpcs' );
 $exit_code       = $runner->runPHPCS();
 
 if ( $exit_code ) {
