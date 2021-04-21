@@ -39,7 +39,7 @@ if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
 				<tr>
 					<th scope="row">
 						<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
-							MY Video Room Activation Key
+							My Video Room Activation Key
 						</label>
 					</th>
 					<td>

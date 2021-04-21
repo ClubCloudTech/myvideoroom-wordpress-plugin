@@ -11,7 +11,7 @@ declare(strict_types=1);
  * Plugin Name:         My Video Room
  * Plugin URI:          https://clubcloud.tech
  * Description:         Integrates the MyVideoRoom Service into WordPress
- * Version:             1.1.0
+ * Version:             1.1.2
  * Requires PHP:        7.4
  * Requires at least:   5.6
  * Author:              Alec Sammon

@@ -78,7 +78,7 @@ use MyVideoRoomPlugin\MonitorShortcode;
 					<p>The id of the layout to display</p>
 
 					<p>
-						A list of available layouts are available here: <a href="https://rooms.clubcloud.tech/layouts.html">https://rooms.clubcloud.tech/layouts.html</a>
+						A list of available layouts are available here: <a href="https://rooms.clubcloud.tech/views/layouts">https://rooms.clubcloud.tech/views/layouts</a>
 					</p>
 
 					<p>

@@ -63,7 +63,9 @@ foreach ( $files as $name => $file ) {
 /* Zip archive will be created only after closing object */
 $zip->close();
 
-unlink( __DIR__ . '/myvideoroom.zip' );
-symlink( __DIR__ . '/builds/' . $version . '/' . $file_name, __DIR__ . '/myvideoroom.zip' );
+if ( file_exists( __DIR__ . '/' . $file_name ) ) {
+	unlink( __DIR__ . '/' . $file_name );
+}
+symlink( __DIR__ . '/builds/' . $version . '/' . $file_name, __DIR__ . '/' . $file_name );
 
 echo "Done!\n";

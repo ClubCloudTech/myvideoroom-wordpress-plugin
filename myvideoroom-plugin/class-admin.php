@@ -79,15 +79,15 @@ class Admin extends Shortcode {
 
 		$messages = array();
 
-		$activation_key  = get_option( Plugin::SETTING_ACTIVATION_KEY );
-		$server_endpoint = get_option( Plugin::SETTING_SERVER_DOMAIN );
+		$activation_key = get_option( Plugin::SETTING_ACTIVATION_KEY );
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
 		$host = $_SERVER['HTTP_HOST'] ?? null;
 
 		if ( $activation_key ) {
 
-			$url = 'https://licence.' . $server_endpoint;
+			$endpoints = new Endpoints();
+			$url       = $endpoints->get_licence_endpoint();
 
 			$opts = array(
 				'headers' => array(
@@ -145,7 +145,8 @@ class Admin extends Shortcode {
 
 			$access_token = get_option( Plugin::SETTING_ACCESS_TOKEN );
 
-			$url = 'https://licence.' . $server_endpoint . '/' . $host;
+			$endpoints = new Endpoints();
+			$url       = $endpoints->get_licence_endpoint() . '/' . $host;
 
 			$opts = array(
 				'headers' => array(

@@ -42,6 +42,13 @@ class Endpoints {
 	private string $rooms_endpoint;
 
 	/**
+	 * The endpoint for the licence server
+	 *
+	 * @var string
+	 */
+	private string $licence_endpoint;
+
+	/**
 	 * Endpoints constructor.
 	 */
 	public function __construct() {
@@ -51,14 +58,16 @@ class Endpoints {
 		$this->video_endpoint = 'meet.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
 
 		if ( $dev_node ) {
-			$this->app_endpoint   = 'http://localhost:3000';
-			$this->state_endpoint = 'http://localhost:4001';
-			$this->rooms_endpoint = 'http://localhost:4002';
+			$this->app_endpoint     = 'http://localhost:3000';
+			$this->state_endpoint   = 'http://localhost:4001';
+			$this->rooms_endpoint   = 'http://localhost:4002';
+			$this->licence_endpoint = 'http://localhost:4003';
 		} else {
 
-			$this->app_endpoint   = 'https://app.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-			$this->state_endpoint = 'https://state.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-			$this->rooms_endpoint = 'https://rooms.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+			$this->app_endpoint     = 'https://app.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+			$this->state_endpoint   = 'https://state.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+			$this->rooms_endpoint   = 'https://rooms.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+			$this->licence_endpoint = 'https://licence.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
 		}
 	}
 
@@ -96,6 +105,15 @@ class Endpoints {
 	 */
 	public function get_rooms_endpoint(): string {
 		return $this->rooms_endpoint;
+	}
+
+	/**
+	 * Get the endpoint for the licence server
+	 *
+	 * @return string
+	 */
+	public function get_licence_endpoint(): string {
+		return $this->licence_endpoint;
 	}
 
 }
