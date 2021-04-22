@@ -55,6 +55,10 @@ foreach ( $files as $name => $file ) {
 		continue;
 	}
 
+	if ( strpos( $relative_path, '.DS_Store' ) === 0 ) {
+		continue;
+	}
+
 	if ( ! $file->isDir() ) {
 		$zip->addFile( $file_path, $relative_path );
 	}

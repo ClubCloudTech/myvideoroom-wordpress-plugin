@@ -150,7 +150,21 @@ class AppShortcode extends Shortcode {
 				defined( 'WP_DEBUG' ) &&
 				WP_DEBUG
 			) {
-				return '<div>My Video Room is not currently licenced</div>';
+				return '<div>My Video Room is not currently licenced.</div>';
+			} else {
+				return '';
+			}
+		}
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
+		$host = $_SERVER['HTTP_HOST'] ?? null;
+
+		if ( ! $host ) {
+			if (
+				defined( 'WP_DEBUG' ) &&
+				WP_DEBUG
+			) {
+				return '<div>My Video Room cannot find the host that it is running on.</div>';
 			} else {
 				return '';
 			}
@@ -191,6 +205,7 @@ class AppShortcode extends Shortcode {
 		$state_server          = $this->endpoints->get_state_endpoint();
 		$rooms_endpoint        = $this->endpoints->get_rooms_endpoint();
 		$app_endpoint          = $this->endpoints->get_app_endpoint();
+		$licence_endpoint      = $this->endpoints->get_licence_endpoint();
 
 		$room_hash = md5(
 			wp_json_encode(
@@ -198,9 +213,7 @@ class AppShortcode extends Shortcode {
 					'type'                => 'roomHash',
 					'roomName'            => $room_name,
 					'videoServerEndpoint' => $video_server_endpoint,
-
-					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
-					'host'                => $_SERVER['HTTP_HOST'] ?? null,
+					'host'                => $host,
 				)
 			)
 		);
@@ -213,9 +226,7 @@ class AppShortcode extends Shortcode {
 					'roomName'            => $room_name,
 					'layoutId'            => $layout_id,
 					'videoServerEndpoint' => $video_server_endpoint,
-
-					// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
-					'host'                => $_SERVER['HTTP_HOST'] ?? null,
+					'host'                => $host,
 					'privateKey'          => $this->private_key,
 				)
 			)
@@ -237,11 +248,7 @@ class AppShortcode extends Shortcode {
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript
 		$security_token = rawurlencode( base64_encode( $signature ) );
 
-		if ( get_option( 'permalink_structure' ) ) {
-			$jwt_endpoint = get_site_url() . '/wp-json/myvideoroom-api/jwt?';
-		} else {
-			$jwt_endpoint = get_site_url() . '/?rest_route=/myvideoroom-api/jwt&';
-		}
+		$jwt_endpoint = $licence_endpoint . '/' . $host . '.jwt?';
 
 		$current_user        = wp_get_current_user();
 		$user_name           = $current_user ? $current_user->display_name : null;
