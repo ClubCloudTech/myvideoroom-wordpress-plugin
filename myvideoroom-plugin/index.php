@@ -10,8 +10,9 @@ declare(strict_types=1);
 /**
  * Plugin Name:         My Video Room
  * Plugin URI:          https://clubcloud.tech
+ * Text Domain:         myvideoroom
  * Description:         Integrates the MyVideoRoom Service into WordPress
- * Version:             1.2.0
+ * Version:             1.3.0
  * Requires PHP:        7.4
  * Requires at least:   5.6
  * Author:              Alec Sammon
@@ -36,8 +37,6 @@ if ( ! class_exists( Plugin::class ) ) {
 	 * Autoloader for classes in the My Video Room Plugin
 	 *
 	 * @param string $class_name The name of the class to autoload.
-	 *
-	 * @throws \Exception When file is not found.
 	 *
 	 * @return boolean
 	 */

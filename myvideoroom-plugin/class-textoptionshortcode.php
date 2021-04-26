@@ -32,12 +32,12 @@ class TextOptionShortcode extends Shortcode {
 	 * @return string
 	 */
 	public function output_shortcode(): string {
-		$error = 'The myvideoroom_text_option should be called from within the clubcloud_monitor shortcode';
+		$error = esc_html__( 'The myvideoroom_text_option should be called from within the clubcloud_monitor shortcode', 'myvideoroom' );
 
 		if (
-			defined( WP_DEBUG ) &&
+			defined( 'WP_DEBUG' ) &&
 			WP_DEBUG &&
-			defined( WP_DEBUG_LOG ) &&
+			defined( 'WP_DEBUG_LOG' ) &&
 			WP_DEBUG_LOG
 		) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- This is only in debug mode
@@ -45,9 +45,9 @@ class TextOptionShortcode extends Shortcode {
 		}
 
 		if (
-			defined( WP_DEBUG ) &&
+			defined( 'WP_DEBUG' ) &&
 			WP_DEBUG &&
-			defined( WP_DEBUG_DISPLAY ) &&
+			defined( 'WP_DEBUG_DISPLAY' ) &&
 			WP_DEBUG_DISPLAY
 		) {
 			return '<span style="color: red;">' . $error . '</span>';

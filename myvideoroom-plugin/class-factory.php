@@ -27,7 +27,7 @@ class Factory {
 	 * Get an instance of the required object
 	 *
 	 * @param string $class_name The class you want to get.
-	 * @param array  $arguments  List of optional arguments.
+	 * @param array  $arguments List of optional arguments.
 	 *
 	 * @return object
 	 */

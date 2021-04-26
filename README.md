@@ -11,6 +11,6 @@ vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs
 
 Before submitting pull request:
 ```bash
-vendor/bin/phpcbf 
-vendor/bin/phpcs
+vendor/bin/phpcbf -s
+vendor/bin/phpcs -s
 ```

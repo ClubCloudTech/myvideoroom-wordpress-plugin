@@ -13,33 +13,15 @@ jQuery.noConflict()(
 		var watch            = {};
 		var $indexedElements = {};
 
-		var texts = {
-			reception: {
-				textEmpty: 'Nobody is currently waiting',
-				textSingle: 'One person is waiting in reception',
-				textPlural: '{{count}} people are waiting in reception'
-			},
-			seated: {
-				textEmpty: 'Nobody is currently seated',
-				textSingle: 'One person is seated',
-				textPlural: '{{count}} people are seated'
-			},
-			all: {
-				textEmpty: 'Nobody is currently in this room',
-				textSingle: 'One person is currently in this room',
-				textPlural: '{{count}} people are currently in this room'
-			}
-		}
-
 		if (Notification.permission !== "denied") {
 			Notification.requestPermission();
 		}
 
-		var getText = function ($element, texts, name) {
+		var getText = function ($element, myvideoroom_monitor_texts, name) {
 			if ($element.data( name ) ) {
-				return atob( $element.data( name ) );
+				return $element.data( name );
 			} else {
-				return texts[name] || '';
+				return myvideoroom_monitor_texts[name] || '';
 			}
 		}
 
@@ -55,16 +37,16 @@ jQuery.noConflict()(
 			switch ($element.data( 'type' )) {
 				case 'seated':
 					count = tableData.seatedCount;
-					text  = texts.seated;
+					text  = myvideoroom_monitor_texts.seated;
 					break;
 				case 'all':
 					count = tableData.userCount;
-					text  = texts.all;
+					text  = myvideoroom_monitor_texts.all;
 					break;
 				case 'reception':
 				default:
 					count = tableData.receptionCount;
-					text  = texts.reception;
+					text  = myvideoroom_monitor_texts.reception;
 					break;
 			}
 

@@ -16,10 +16,7 @@ use WP_User;
  * Class AppShortcode
  */
 class AppShortcode extends Shortcode {
-	const SHORTCODE_TAGS = array(
-		'myvideoroom',
-		'clubcloud_app', // @TODO - remove me - legacy
-	);
+	const SHORTCODE_TAG = 'myvideoroom';
 
 	/**
 	 * The private key to authorise this install.
@@ -49,16 +46,14 @@ class AppShortcode extends Shortcode {
 	 * Install the shortcode
 	 */
 	public function init() {
-		foreach ( self::SHORTCODE_TAGS as $shortcode_tag ) {
-			add_shortcode( $shortcode_tag, array( $this, 'output_shortcode' ) );
-		}
+		add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 
 		add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_script( 'jquery' ) );
 
 		add_action(
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
-				'myvideoroom-app-js',
+				'myvideoroom-app',
 				plugins_url( '/js/app.js', __FILE__ ),
 				array( 'jquery' ),
 				$this->get_plugin_version(),
@@ -75,106 +70,27 @@ class AppShortcode extends Shortcode {
 	}
 
 	/**
-	 * Convert legacy params to new format
-	 *
-	 * @param array $params List of params to convert to new format.
-	 *
-	 * @return array
-	 * @deprecated
-	 */
-	private function process_legacy_params( array $params ): array {
-		if ( ! ( $params['name'] ?? null ) && ( $params['cc_event_id'] ?? null ) ) {
-			$params['name'] = $params['cc_event_id'];
-		}
-
-		if (
-			( ! isset( $params['reception'] ) || ! $params['reception'] ) &&
-			( isset( $params['cc_is_reception'] ) && $params['cc_is_reception'] )
-		) {
-			$params['reception'] = ! ! $params['cc_is_reception'];
-		}
-
-		if (
-			( ! isset( $params['layout'] ) || ! $params['layout'] ) &&
-			( isset( $params['map'] ) && $params['map'] )
-		) {
-			$params['layout'] = $params['map'];
-		}
-
-		if (
-			( ! isset( $params['layout'] ) || ! $params['layout'] ) &&
-			( isset( $params['cc_plan_id'] ) && $params['cc_plan_id'] )
-		) {
-			$params['layout'] = $params['cc_plan_id'];
-		}
-
-		if (
-			( ! isset( $params['lobby'] ) || ! $params['lobby'] ) &&
-			( isset( $params['cc_enable_lobby'] ) && $params['cc_enable_lobby'] )
-		) {
-			$params['lobby'] = ! ! $params['cc_enable_lobby'];
-		}
-
-		if (
-			( ! isset( $params['admin'] ) || ! $params['admin'] ) &&
-			( isset( $params['auth'] ) && $params['auth'] )
-		) {
-			$params['admin'] = ! ! $params['auth'];
-		}
-
-		// process legacy rooms.
-
-		if ( isset( $params['layout'] ) && 'Innovateoffice' === $params['layout'] ) {
-			$params['layout'] = 'innovate-office';
-		}
-
-		if ( isset( $params['layout'] ) && 'boardroom1' === $params['layout'] ) {
-			$params['layout'] = 'boardroom';
-		}
-
-		return $params;
-	}
-
-	/**
 	 * Create the video widget
 	 *
 	 * @param array $params List of params to pass to the shortcode.
 	 *
 	 * @return string
-	 * @throws Exception When unable to sign the request.
 	 */
 	public function output_shortcode( $params = array() ) {
-
-		if ( ! $this->private_key ) {
-			if (
-				defined( 'WP_DEBUG' ) &&
-				WP_DEBUG
-			) {
-				return '<div>My Video Room is not currently licenced.</div>';
-			} else {
-				return '';
-			}
-		}
-
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- Not required
-		$host = $_SERVER['HTTP_HOST'] ?? null;
+		$host = $this->get_host();
 
 		if ( ! $host ) {
-			if (
-				defined( 'WP_DEBUG' ) &&
-				WP_DEBUG
-			) {
-				return '<div>My Video Room cannot find the host that it is running on.</div>';
-			} else {
-				return '';
-			}
+			$this->return_error(
+				'<div>' . esc_html__(
+					'>My Video Room cannot find the host that it is currentlyrunning on.',
+					'myvideoroom'
+				) . '</div>'
+			);
 		}
 
 		if ( ! $params ) {
 			$params = array();
 		}
-
-		$params = $this->process_legacy_params( $params );
 
 		$room_name = $params['name'] ?? get_bloginfo( 'name' );
 		$layout_id = $params['layout'] ?? 'boardroom';
@@ -196,7 +112,7 @@ class AppShortcode extends Shortcode {
 
 		$enable_floorplan = ! ! ( $params['floorplan'] ?? false );
 
-		$loading_text = 'Loading...';
+		$loading_text = esc_html__( 'Loading...', 'myvideoroom' );
 		if ( $params['text-loading'] ?? false ) {
 			$loading_text = $params['text-loading'];
 		}
@@ -242,7 +158,7 @@ class AppShortcode extends Shortcode {
 		);
 
 		if ( ! openssl_sign( $message, $signature, $this->private_key, OPENSSL_ALGO_SHA256 ) ) {
-			throw new Exception( 'Unable to sign data.' );
+			return $this->return_error( esc_html__( 'My Video Room was unable to sign the data.', 'myvideoroom' ) );
 		}
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript

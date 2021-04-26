@@ -23,7 +23,7 @@ class Activation {
 	public static function activate() {
 		add_role(
 			self::ROLE_GLOBAL_ADMIN,
-			__( 'Video Admin', 'myvideoroom-video-admin-role' ),
+			esc_html__( 'Video Admin', 'myvideoroom' ),
 			array( Plugin::CAP_GLOBAL_ADMIN => true )
 		);
 
