@@ -15,7 +15,7 @@ declare(strict_types=1);
  * Version:             1.3.1
  * Requires PHP:        7.4
  * Requires at least:   5.6
- * Author:              Alec Sammon
+ * Author:              ClubCloud
  * Author URI:          https://clubcloud.tech/
  * License:             GPLv2 or later
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
