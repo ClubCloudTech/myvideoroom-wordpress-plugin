@@ -14,6 +14,7 @@ Integrates the MyVideoRoom Video Service into WordPress and provides instant sec
 Integrate Video with E-Commerce, Social Networking and Bookings. ClubCloud brings to market a novel video conferencing plugin that allows for diverse integration with, otherwise quite separated, website functionality. The MyVideoRoom Plugin enables you to not just add video chat or meeting functionality to a website but to fully embed it into the wider functions of any platform.
 
 Features include:
+
 * 1-to-1 or multiway meetings
 * Up to 30 participants per meeting (more can be catered for on request)
 * Advanced security features including role level control.
