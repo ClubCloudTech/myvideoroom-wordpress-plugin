@@ -35,9 +35,9 @@ As ClubCloud built the MyVideoRoom plug-in with simplicity in mind, there is no 
 
 MyVideoRoom makes organising a video meeting very simple with an active reception option for participants. Video rooms can be configured with a waiting area to avoid un-expected visitors. A variety of settings are configurable at multiple levels, making the MyVideoRoom plug-in simple to use in your site in thousands of different ways. As an example, the Video Reception function is included as a parameter in the shortcode [reception=true] and the associated welcome message is configurable to be instance appropriate, this is the message that explains to users that they are waiting for their host to let them into the meeting.
 
-Terms of Service: https://clubcloud.tech/terms
-Privacy Policy: https://clubcloud.tech/privacy
-Acceptable Use Policy: https://clubcloud.tech/acceptable-use/
+Terms of Service: [https://clubcloud.tech/terms](https://clubcloud.tech/terms)
+Privacy Policy: [https://clubcloud.tech/privacy](https://clubcloud.tech/privacy)
+Acceptable Use Policy: [https://clubcloud.tech/acceptable-use](https://clubcloud.tech/acceptable-use)
 
 = Features =
 
@@ -57,9 +57,9 @@ Acceptable Use Policy: https://clubcloud.tech/acceptable-use/
 Let users experience video calls like they are there, with themed rooms provided by MyVideoRoom video services or design your own scene for an authentic, unique video experience.
 
 = Lobby/Reception functionality =
-Virtual Lobby/Reception features, allow for both additional security and enhance the overall video experience for users. This realistic feature can be set at a group or individual level and includes various themes for common scenarios. A list of available reception images are available here: https://rooms.clubcloud.tech/views/receptions
+Virtual Lobby/Reception features, allow for both additional security and enhance the overall video experience for users. This realistic feature can be set at a group or individual level and includes various themes for common scenarios. A list of available reception images are available here: [https://rooms.clubcloud.tech/views/receptions](https://rooms.clubcloud.tech/views/receptions)
 
-The reception image list is also available in a JSON format: https://rooms.clubcloud.tech/receptions
+The reception image list is also available in a JSON format: [https://rooms.clubcloud.tech/receptions](https://rooms.clubcloud.tech/receptions)
 
 = High Quality Video Calls =
 Dramatically increase user engagement with MyVideoRoom calling by delivering high quality, low-latency, one-to-one or multi-user video call capabilities directly into your own web applications.
@@ -75,7 +75,7 @@ ClubCloud recommends the download of MyVideoRoom Premium Extras plug-in to unloc
 
 = My Video Room Pricing =
 Pricing information can be found here:
-https://clubcloud.tech/pricing/
+[https://clubcloud.tech/pricing](https://clubcloud.tech/pricing)
 
 == Installation ==
 
@@ -106,7 +106,7 @@ https://clubcloud.tech/pricing/
 
 = Activation of MyVideoRoom =
 
-1. Go to https://clubcloud.tech and login, or create a new account
+1. Go to [https://clubcloud.tech](https://clubcloud.tech) and login, or create a new account
 2. Purchase a subscription to the MyVideoRoom service
 3. You will receive an email with your Activation Key - take a note of this.
 4. Log into your Wordpress Admin Dashboard and navigate to the MyVideoRoom Settings using the right hand menu.
@@ -136,17 +136,17 @@ This plugin does not add any new database tables to your WordPress installation.
 This plugin creates a new role to WordPress called **Video Admin** *(myvideoroom-video-admin-role)*. This role will be automatically removed when the plugin is removed.
 
 = What are the technical requirements for this plugin? =
-This plugin is supported on WordPress 5.6 or greater, and PHP 7.4 or greater. It requires the PHP OpenSSL module to be enabled (https://www.php.net/manual/en/book.openssl.php). It has no dependencies on other plugins.
+This plugin is supported on WordPress 5.6 or greater, and PHP 7.4 or greater. It requires the PHP OpenSSL module to be enabled ([https://www.php.net/manual/en/book.openssl.php](https://www.php.net/manual/en/book.openssl.php)). It has no dependencies on other plugins.
 
 The My Video Room service uses both WebSockets and WebRTC. It requires to be run a modern browser that supports both of these technologies. It requires ports 443 and 10000 to be open on the network to allow communication.
 
 = How do I get support for this plugin? =
-Please check in the Wordpress Support page for this plugin first - https://wordpress.org/support/plugin/myvideoroom/.
+Please check in the Wordpress Support page for this plugin first - [https://wordpress.org/support/plugin/myvideoroom](https://wordpress.org/support/plugin/myvideoroom).
 Or you can contact the maintainers of this plugin at support@clubcloud.tech
 
 = Where can find out more about the technical features of MyVideoRoom Video Services? =
 
-Please visit https://myvideoroom.net/support-control-center/help-support/ to learn more about the video service offering.
+Please visit [https://myvideoroom.net/support-control-center/help-support/](https://myvideoroom.net/support-control-center/help-support/) to learn more about the video service offering.
 
 == Screenshots ==
 
