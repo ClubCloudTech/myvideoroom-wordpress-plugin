@@ -104,7 +104,7 @@ class AppShortcode extends Shortcode {
 		$enable_lobby     = 'true' === ( $params['lobby'] ?? 'false' );
 		$enable_reception = 'true' === ( $params['reception'] ?? 'false' );
 
-		if ( ! isset( $params['admin '] ) ) {
+		if ( ! isset( $params['admin'] ) ) {
 			$admin = current_user_can( Plugin::CAP_GLOBAL_ADMIN );
 		} else {
 			$admin = 'true' === $params['admin'];
