@@ -142,7 +142,7 @@ The My Video Room service uses both WebSockets and WebRTC. It requires to be run
 
 = How do I get support for this plugin? =
 Please check in the Wordpress Support page for this plugin first - [https://wordpress.org/support/plugin/myvideoroom](https://wordpress.org/support/plugin/myvideoroom).
-Or you can contact the maintainers of this plugin at support@clubcloud.tech
+Or you can contact the maintainers of this plugin at [support@clubcloud.tech](mailto:support@clubcloud.tech)
 
 = Where can find out more about the technical features of MyVideoRoom Video Services? =
 
