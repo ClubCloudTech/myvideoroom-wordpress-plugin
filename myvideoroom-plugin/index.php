@@ -12,7 +12,7 @@ declare(strict_types=1);
  * Plugin URI:          https://clubcloud.tech
  * Text Domain:         myvideoroom
  * Description:         Integrates the MyVideoRoom Service into WordPress
- * Version:             1.3.0
+ * Version:             1.3.1
  * Requires PHP:        7.4
  * Requires at least:   5.6
  * Author:              Alec Sammon
@@ -20,7 +20,6 @@ declare(strict_types=1);
  * License:             GPLv2 or later
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
-
 
 namespace MyVideoRoomPlugin;
 
@@ -69,3 +68,4 @@ if ( ! class_exists( Plugin::class ) ) {
 	register_activation_hook( __FILE__, array( Activation::class, 'activate' ) );
 	register_deactivation_hook( __FILE__, array( Activation::class, 'deactivate' ) );
 }
+

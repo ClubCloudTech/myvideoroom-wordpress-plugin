@@ -1,10 +1,10 @@
 === MyVideoRoom  ===
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 5.7
 Contributors: clubcloud
-Tags: video, conferencing
+Tags: video chat, video conference, video call, web conferencing, video meeting, web conferencing, video
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -159,6 +159,13 @@ Please visit https://myvideoroom.net/support-control-center/help-support/ to lea
 
 == Changelog ==
 
+= 1.3.0 =
+* Add translation layer
+* Fix security vulnerabilities
+
+= 1.2.0 =
+* Remove JSON Web Token creation
+
 = 1.1.0 =
 * Updates to Readmes, and endpoints.
 
@@ -166,6 +173,12 @@ Please visit https://myvideoroom.net/support-control-center/help-support/ to lea
 * Initial public release.
 
 == Upgrade Notice ==
+
+= 1.3.* =
+When passing custom options to the monitor shortcode certain elements may now be removed. Please validate that your monitors still work as expected.
+
+= 1.2.* =
+No manual changes are needed for these changes
 
 = 1.1.* =
 No manual changes are needed for these changes

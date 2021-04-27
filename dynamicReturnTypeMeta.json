@@ -1,0 +1,17 @@
+{
+    "methodCalls": [
+        {
+            "class"   : "\\MyVideoRoomPlugin\\Factory",
+            "method"  : "get_instance",
+            "position": 0,
+            "mask"    : "\\%s"
+        },
+
+        {
+            "class"   : "\\MyVideoRoomPlugin\\Shortcode",
+            "method"  : "get_instance",
+            "position": 0,
+            "mask"    : "\\%s"
+        }
+    ]
+}
