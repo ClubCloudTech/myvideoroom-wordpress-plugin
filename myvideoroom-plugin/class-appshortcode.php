@@ -101,16 +101,16 @@ class AppShortcode extends Shortcode {
 		}
 
 		$reception_video  = $params['reception-video'] ?? null;
-		$enable_lobby     = ! ! ( $params['lobby'] ?? false );
-		$enable_reception = ! ! ( $params['reception'] ?? false );
+		$enable_lobby     = 'true' === ( $params['lobby'] ?? 'false' );
+		$enable_reception = 'true' === ( $params['reception'] ?? 'false' );
 
 		if ( ! isset( $params['admin '] ) ) {
 			$admin = current_user_can( Plugin::CAP_GLOBAL_ADMIN );
 		} else {
-			$admin = ! ! $params['admin'];
+			$admin = 'true' === $params['admin'];
 		}
 
-		$enable_floorplan = ! ! ( $params['floorplan'] ?? false );
+		$enable_floorplan = 'true' === ( $params['floorplan'] ?? 'false' );
 
 		$loading_text = esc_html__( 'Loading...', 'myvideoroom' );
 		if ( $params['text-loading'] ?? false ) {
