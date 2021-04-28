@@ -15,13 +15,9 @@
  * @return string
  */
 
-
-
-use MyVideoRoomPlugin\ShortcodeVisualiser;
-use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Setup\RoomAdmin;
-
+use MyVideoRoomPlugin\Visualiser\MyVideoRoomApp;
+use MyVideoRoomPlugin\Visualiser\ShortcodeVisualiser as VisualiserShortcodeVisualiser;
 
 return function (
 	string $active_tab,
@@ -148,7 +144,7 @@ return function (
 
 					<?php
 					// phpcs:ignore -- Visualiser worker generates content and is output safely at its level. 
-					echo Factory::get_instance( ShortcodeVisualiser::class )->visualiser_worker( SiteDefaults::USER_ID_SITE_DEFAULTS, 'Your Room' );
+					echo Factory::get_instance( VisualiserShortcodeVisualiser::class )->visualiser_worker( MyVideoRoomApp::USER_ID_SITE_DEFAULTS, 'Your Room' );
 					?>
 
 				</div>

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace MyVideoRoomPlugin;
 
+use MyVideoRoomPlugin\Visualiser\ShortcodeVisualiser;
+
 /**
  * Class Plugin
  */
@@ -40,10 +42,10 @@ class Plugin {
 		add_filter( 'plugin_action_links_' . plugin_basename( __DIR__ . '/index.php' ), array( $this, 'add_action_links' ) );
 
 		Factory::get_instance( Admin::class )->init();
-
 		Factory::get_instance( TextOptionShortcode::class )->init();
 		Factory::get_instance( AppShortcode::class, array( $private_key ) )->init();
 		Factory::get_instance( MonitorShortcode::class, array( $private_key ) )->init();
+		Factory::get_instance( ShortcodeVisualiser::class )->init();
 	}
 
 	/**

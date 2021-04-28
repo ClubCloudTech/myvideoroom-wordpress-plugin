@@ -39,8 +39,8 @@ class Admin extends Shortcode {
 
 		if ( empty( $admin_page_hooks['my-video-room-global'] ) ) {
 			add_menu_page(
-				esc_html__( 'My Video Room Settings', 'myvideoroom' ),
-				esc_html__( 'My Video Room Settings', 'myvideoroom' ),
+				esc_html__( 'My Video Room ', 'myvideoroom' ),
+				esc_html__( 'My Video Room ', 'myvideoroom' ),
 				'manage_options',
 				'my-video-room-global',
 				array( $this, 'create_admin_page' ),
@@ -64,6 +64,15 @@ class Admin extends Shortcode {
 			'manage_options',
 			'my-video-room',
 			array( $this, 'create_video_admin_page' )
+		);
+
+		add_submenu_page(
+			'my-video-room-global',
+			esc_html__( 'Room Builder', 'myvideoroom' ),
+			esc_html__( 'Room Builder', 'myvideoroom' ),
+			'manage_options',
+			'my-video-room',
+			array( $this, 'create_room_builder_page' )
 		);
 
 		do_action( 'myvideoroom_admin_menu', 'my-video-room-global' );
@@ -129,6 +138,9 @@ class Admin extends Shortcode {
 			case 'settings':
 				$this->create_settings_admin_page();
 				break;
+			case 'settings':
+				$this->create_settings_admin_page();
+				break;
 			default:
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We want to display the html from the render function to the browser.
 				echo ( require __DIR__ . '/views/admin-reference.php' )();
@@ -170,6 +182,16 @@ class Admin extends Shortcode {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We want to display the html from the render function to the browser.
 		echo ( require __DIR__ . '/views/admin-settings.php' )( $messages, $all_roles );
 	}
+
+	/**
+	 * Create_room_builder_page and send it to Visualiser Function.
+	 *
+	 * @return string - sends admin page.
+	 */
+	private function create_room_builder_page() {
+		echo require __DIR__ . '/visualiser/admin-settings-roombuilder.php';
+	}
+
 
 	/**
 	 * Attempt to activate using an activation key

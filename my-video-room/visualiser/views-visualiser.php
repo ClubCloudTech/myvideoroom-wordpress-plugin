@@ -5,11 +5,11 @@
  * @param string|null $current_user_setting
  * @param array $available_layouts
  *
- * @package MyVideoRoomExtrasPlugin\Views
+ * @package MyVideoRoomPlugin\Views
  */
 
-use MyVideoRoomExtrasPlugin\Entity\UserVideoPreference;
-use MyVideoRoomExtrasPlugin\Factory;
+use MyVideoRoomPlugin\Visualiser\UserVideoPreference;
+use MyVideoRoomPlugin\Factory;
 
 
 

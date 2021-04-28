@@ -2,21 +2,18 @@
 /**
  * Allow user to Visualise Shortcodes with specific video preferences
  *
- * @package MyVideoRoomExtrasPlugin\BuddyPress
+ * @package MyVideoRoomPlugin\ShortcodeVisualiser
  */
 
-namespace MyVideoRoomExtrasPlugin\Shortcode;
+namespace MyVideoRoomPlugin\Visualiser;
 
-use MyVideoRoomExtrasPlugin\Core\SiteDefaults;
-use MyVideoRoomExtrasPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
-use MyVideoRoomExtrasPlugin\Shortcode as Shortcode;
-use MyVideoRoomExtrasPlugin\Factory;
+use MyVideoRoomPlugin\Visualiser\UserVideoPreference as UserVideoPreferenceEntity;
 
 /**
  * Class UserVideoPreference
  * Allows the user to select their room display (note NOT Security) display parameters.
  */
-class ShortcodeVisualiser extends Shortcode {
+class ShortcodeVisualiser {
 	/**
 	 * A increment in case the same element is placed on the page twice
 	 *
@@ -27,10 +24,12 @@ class ShortcodeVisualiser extends Shortcode {
 	/**
 	 * Install the shortcode
 	 */
-	public function install() {
-		$this->add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
+	public function init() {
+		// \add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
 
+		
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
+		
 	}
 
 	/**
@@ -47,7 +46,7 @@ class ShortcodeVisualiser extends Shortcode {
 		$allowed_tags = array_map( 'trim', explode( ',', $params['tags'] ?? '' ) );
 		// Not strictly needed as its a demo render- but preserving consistent structure with main Video Function.
 
-			$user_id = SiteDefaults::USER_ID_SITE_DEFAULTS;
+			$user_id = MyVideoRoomApp::USER_ID_SITE_DEFAULTS;
 
 		return $this->visualiser_worker( $user_id, $room_name, $allowed_tags );
 	}
@@ -71,7 +70,7 @@ class ShortcodeVisualiser extends Shortcode {
 
 		*/
 
-		$user_id        = SiteDefaults::USER_ID_SITE_DEFAULTS;
+		$user_id        = MyVideoRoomApp::USER_ID_SITE_DEFAULTS;
 		$show_floorplan = false;
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'myvideoroom_extras_update_user_video_preference', 'nonce' );
@@ -102,10 +101,10 @@ class ShortcodeVisualiser extends Shortcode {
 					$show_floorplan
 				);
 
-		$available_layouts    = Factory::get_instance( UserVideoPreference::class )->get_available_layouts( array( 'basic', 'premium' ) );
-		$available_receptions = Factory::get_instance( UserVideoPreference::class )->get_available_receptions( array( 'basic', 'premium' ) );
+		$available_layouts    = $this->get_available_layouts( array( 'basic', 'premium' ) );
+		$available_receptions = $this->get_available_receptions( array( 'basic', 'premium' ) );
 
-		$render = require __DIR__ . '/../views/shortcode-visualiser.php';
+		$render = require __DIR__ . '/shortcode-visualiser.php';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
 		echo $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $user_id, $video_reception_url );
 
@@ -196,6 +195,64 @@ class ShortcodeVisualiser extends Shortcode {
 		}
 
 		return 'My Video Room by ClubCloud';
+	}
+
+	/**
+	 * Get a list of available layouts from MyVideoRoom
+	 *
+	 * @param array $allowed_tags List of tags to fetch.
+	 *
+	 * @return array
+	 */
+	public function get_available_layouts( array $allowed_tags = array( 'basic' ) ): array {
+		$scenes = $this->get_available_scenes( 'layouts', $allowed_tags );
+		if ( $scenes ) {
+			return $scenes;
+		} else {
+			return array( 'No Layouts Found' );
+		}
+	}
+
+	/**
+	 * Get a list of available receptions from MyVideoRoom
+	 *
+	 * @param array $allowed_tags List of tags to fetch.
+	 *
+	 * @return array
+	 */
+	public function get_available_receptions( array $allowed_tags = array( 'basic' ) ): array {
+		return $this->get_available_scenes( 'receptions', $allowed_tags );
+	}
+
+	/**
+	 * Get a list of available scenes from MyVideoRoom
+	 *
+	 * @param string         $uri The type of scene (layouts/receptions).
+	 * @param array|string[] $allowed_tags List of tags to fetch.
+	 *
+	 * @return array
+	 */
+	public function get_available_scenes( string $uri, array $allowed_tags = array( 'basic' ) ): array {
+		$url     = 'https://rooms.clubcloud.tech/' . $uri;
+		$tag_uri = array();
+
+		foreach ( $allowed_tags as $allowed_tag ) {
+			$tag_uri[] = 'tag[]=' . $allowed_tag;
+		}
+
+		if ( $tag_uri ) {
+			$url .= '?' . implode( '&', $tag_uri );
+		}
+
+		$request = \wp_remote_get( $url );
+
+		if ( \is_wp_error( $request ) ) {
+			return array();
+		}
+
+		$body = \wp_remote_retrieve_body( $request );
+
+		return \json_decode( $body );
 	}
 
 }
