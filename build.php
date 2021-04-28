@@ -7,7 +7,8 @@
  */
 
 /* Get real path for our folder */
-$root_path = realpath( 'myvideoroom-plugin' );
+$root_path = realpath( 'my-video-room' );
+$file_name = 'my-video-room.zip';
 
 require_once __DIR__ . '/vendor/squizlabs/php_codesniffer/autoload.php';
 
@@ -21,12 +22,11 @@ if ( $exit_code ) {
 }
 
 // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-$index = file_get_contents( __DIR__ . '/myvideoroom-plugin/index.php' );
+$index = file_get_contents( $root_path . '/index.php' );
 
 preg_match( '/Version: (.*)/', $index, $matches );
 
-$version   = trim( $matches[1] );
-$file_name = 'my-video-room.zip';
+$version = trim( $matches[1] );
 
 /* Initialize archive object */
 $zip = new ZipArchive();

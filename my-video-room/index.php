@@ -12,7 +12,7 @@ declare(strict_types=1);
  * Plugin URI:          https://clubcloud.tech
  * Text Domain:         myvideoroom
  * Description:         Integrates the MyVideoRoom Service into WordPress
- * Version:             1.3.3
+ * Version:             1.4.0
  * Requires PHP:        7.4
  * Requires at least:   5.6
  * Author:              ClubCloud

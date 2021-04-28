@@ -66,7 +66,7 @@ class Admin extends Shortcode {
 			array( $this, 'create_video_admin_page' )
 		);
 
-		do_action( 'myvideoroom_admin_menu', 'my-video-room' );
+		do_action( 'myvideoroom_admin_menu', 'my-video-room-global' );
 	}
 
 	/**
@@ -388,11 +388,11 @@ class Admin extends Shortcode {
 	 */
 	private function get_available_myvideoroom_plugins(): array {
 		return array(
-			'my-video-room'      => array(
+			'my-video-room'        => array(
 				'name'    => esc_html__( 'My Video Room', 'myvideoroom' ),
 				'visible' => true,
 			),
-			'myvideoroom-extras' => array(
+			'my-video-room-extras' => array(
 				'name'    => esc_html__( 'My Video Room Extras', 'myvideoroom' ),
 				'visible' => true,
 			),

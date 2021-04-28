@@ -2,10 +2,10 @@
 <ruleset name="MyVideoRoom Wordpress Plugin Standards">
     <description>MyVideoRoom Wordpress Plugin Standards</description>
 
-    <file>myvideoroom-plugin</file>
+    <file>my-video-room</file>
     <file>build.php</file>
 
-    <exclude-pattern>myvideoroom-plugin/third-party</exclude-pattern>
+    <exclude-pattern>my-video-room/third-party</exclude-pattern>
 
     <rule ref="WordPress" />
 </ruleset>
