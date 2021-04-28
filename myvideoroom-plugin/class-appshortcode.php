@@ -166,9 +166,18 @@ class AppShortcode extends Shortcode {
 
 		$jwt_endpoint = $licence_endpoint . '/' . $host . '.jwt?';
 
-		$current_user        = wp_get_current_user();
-		$user_name           = $current_user ? $current_user->display_name : null;
-		$avatar_url          = $this->getAvatar( $current_user );
+		$current_user = wp_get_current_user();
+
+		$user_name  = null;
+		$avatar_url = null;
+
+		if ( isset( $params['user-name'] ) ) {
+			$user_name = esc_attr( $params['user-name'] );
+		} elseif ( $current_user ) {
+			$user_name  = $current_user->display_name;
+			$avatar_url = $this->getAvatar( $current_user );
+		}
+
 		$custom_jitsi_server = true;
 
 		return <<<EOT

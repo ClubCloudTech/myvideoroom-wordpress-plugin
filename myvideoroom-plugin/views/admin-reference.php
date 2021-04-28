@@ -138,6 +138,12 @@ return function (): string {
 				</tr>
 
 				<tr class="inactive">
+					<th class="column-primary"><em>user-name</em></th>
+					<td class="column-description"><p><?php esc_html_e( 'Allows override of the displayed user\'s name in the video participant list.', 'myvideoroom' ); ?></p></td>
+					<td>(<?php esc_html_e( 'For logged in users will display their "Display Name". For guests will prompt for a name.', 'myvideoroom' ); ?>)</td>
+				</tr>
+
+				<tr class="inactive">
 					<th class="column-primary"><em>loading-text</em></th>
 					<td class="column-description"><p><?php esc_html_e( 'Text to show while the app is loading', 'myvideoroom' ); ?></p></td>
 					<td>"<?php esc_html_e( 'Loading...', 'myvideoroom' ); ?>"</td>

@@ -160,6 +160,10 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 
 == Changelog ==
 
+= 1.4.0 =
+* Allows setting the user's name as a shortcode parameter
+* Fixes the installation summary on admin page
+
 = 1.3.3 =
 * Fix admin check
 
