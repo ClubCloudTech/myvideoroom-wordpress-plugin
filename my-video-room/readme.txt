@@ -186,6 +186,9 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 
 == Upgrade Notice ==
 
+= 1.4.* =
+You can now set the user's name via a shortcode param
+
 = 1.3.* =
 When passing custom options to the monitor shortcode certain elements may now be removed. Please validate that your monitors still work as expected.
 
