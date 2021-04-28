@@ -48,25 +48,45 @@ class AppShortcode extends Shortcode {
 	public function init() {
 		add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 
-		add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_script( 'jquery' ) );
-
-		add_action(
-			'wp_enqueue_scripts',
-			fn() => wp_enqueue_script(
-				'myvideoroom-app',
-				plugins_url( '/js/app.js', __FILE__ ),
-				array( 'jquery' ),
-				$this->get_plugin_version(),
-				true
-			)
-		);
-
+		add_action( 'wp_enqueue_scripts', fn() => $this->enqueue_scripts() );
 		add_action(
 			'wp_head',
 			function () {
-				echo '<script>var myVideoRoomAppEndpoint = "' . esc_url( $this->endpoints->get_app_endpoint() ) . '"</script>';
+				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, - Output already escaped.
+				echo $this->get_app_endpoint_head_script();
 			}
 		);
+
+		add_action( 'myvideoroom_enqueue_scripts', fn() => $this->enqueue_scripts() );
+		add_action(
+			'myvideoroom_head',
+			function () {
+				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, - Output already escaped.
+				echo $this->get_app_endpoint_head_script();
+			}
+		);
+	}
+
+	/**
+	 * Enqueue the required javascript libraries
+	 */
+	public function enqueue_scripts() {
+		wp_enqueue_script( 'jquery' );
+
+		wp_enqueue_script(
+			'myvideoroom-app',
+			plugins_url( '/js/app.js', __FILE__ ),
+			array( 'jquery' ),
+			$this->get_plugin_version(),
+			true
+		);
+	}
+
+	/**
+	 * Get script to insert into head for JavaScript to be able to fetch the correct endpoint
+	 */
+	public function get_app_endpoint_head_script(): string {
+		return '<script>var myVideoRoomAppEndpoint = "' . esc_url( $this->endpoints->get_app_endpoint() ) . '"</script>';
 	}
 
 	/**

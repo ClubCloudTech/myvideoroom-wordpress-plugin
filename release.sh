@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PLUGIN_REMOTE_NAME='my-video-room'
-PLUGIN_DIR='myvideoroom-plugin'
+PLUGIN_DIR='my-video-room'
 SCRIPT_PATH=$(readlink -f "$0")
 SCRIPT_DIR=$(dirname "${SCRIPT_PATH}")
 

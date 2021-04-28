@@ -1,5 +1,5 @@
 === MyVideoRoom  ===
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 5.7
@@ -160,6 +160,9 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 
 == Changelog ==
 
+= 1.5.0 =
+* Allows using the video plugin on an admin page
+
 = 1.4.0 =
 * Allows setting the user's name as a shortcode parameter
 * Fixes the installation summary on admin page
@@ -186,8 +189,11 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 
 == Upgrade Notice ==
 
+= 1.5.* =
+No manual changes are needed for these changes
+
 = 1.4.* =
-You can now set the user's name via a shortcode param
+No manual changes are needed for these changes
 
 = 1.3.* =
 When passing custom options to the monitor shortcode certain elements may now be removed. Please validate that your monitors still work as expected.
