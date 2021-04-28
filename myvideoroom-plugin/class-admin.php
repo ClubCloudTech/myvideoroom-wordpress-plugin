@@ -37,36 +37,36 @@ class Admin extends Shortcode {
 	public function add_admin_menu() {
 		global $admin_page_hooks;
 
-		if ( empty( $admin_page_hooks['myvideoroom-settings'] ) ) {
+		if ( empty( $admin_page_hooks['my-video-room-global'] ) ) {
 			add_menu_page(
 				esc_html__( 'My Video Room Settings', 'myvideoroom' ),
 				esc_html__( 'My Video Room Settings', 'myvideoroom' ),
 				'manage_options',
-				'myvideoroom-settings',
+				'my-video-room-global',
 				array( $this, 'create_admin_page' ),
 				'dashicons-format-chat'
 			);
 
 			add_submenu_page(
-				'myvideoroom-settings',
+				'my-video-room-global',
 				esc_html__( 'My Video Room Settings', 'myvideoroom' ),
 				esc_html__( 'General Settings', 'myvideoroom' ),
 				'manage_options',
-				'myvideoroom-settings',
+				'my-video-room-global',
 				array( $this, 'create_admin_page' )
 			);
 		}
 
 		add_submenu_page(
-			'myvideoroom-settings',
+			'my-video-room-global',
 			esc_html__( 'Video Reference', 'myvideoroom' ),
 			esc_html__( 'Video Reference', 'myvideoroom' ),
 			'manage_options',
-			'myvideoroom',
+			'my-video-room',
 			array( $this, 'create_video_admin_page' )
 		);
 
-		do_action( 'myvideoroom_admin_menu', 'myvideoroom-settings' );
+		do_action( 'myvideoroom_admin_menu', 'my-video-room' );
 	}
 
 	/**
@@ -362,7 +362,7 @@ class Admin extends Shortcode {
 				fn ( string $path) => preg_replace( '/(-[0-9]+|)\/.*$/', '', $path ),
 				array_keys( get_plugins() )
 			),
-			fn( $id) => strpos( $id, 'myvideoroom' ) === 0
+			fn( $id) => strpos( $id, 'my-video-room' ) === 0 || strpos( $id, 'myvideoroom' ) === 0
 		);
 	}
 
@@ -377,7 +377,7 @@ class Admin extends Shortcode {
 				fn ( string $path) => preg_replace( '/(-[0-9]+|)\/.*$/', '', $path ),
 				get_option( 'active_plugins' ),
 			),
-			fn( $id) => strpos( $id, 'myvideoroom' ) === 0
+			fn( $id) => strpos( $id, 'my-video-room' ) === 0 || strpos( $id, 'myvideoroom' ) === 0
 		);
 	}
 
@@ -388,7 +388,7 @@ class Admin extends Shortcode {
 	 */
 	private function get_available_myvideoroom_plugins(): array {
 		return array(
-			'myvideoroom'        => array(
+			'my-video-room'      => array(
 				'name'    => esc_html__( 'My Video Room', 'myvideoroom' ),
 				'visible' => true,
 			),

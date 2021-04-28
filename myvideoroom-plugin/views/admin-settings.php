@@ -27,8 +27,8 @@ return function (
 		<h1><?php esc_html_e( 'My Video Room Short Code Settings', 'myvideoroom' ); ?></h1>
 
 		<h2 class="nav-tab-wrapper">
-			<a class="nav-tab" href="?page=myvideoroom&amp">Reference</a>
-			<a class="nav-tab nav-tab-active" href="?page=myvideoroom&amp;tab=settings">Advanced Settings</a>
+			<a class="nav-tab" href="?page=my-video-room&amp">Reference</a>
+			<a class="nav-tab nav-tab-active" href="?page=my-video-room&amp;tab=settings">Advanced Settings</a>
 		</h2>
 
 		<ul>

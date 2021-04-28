@@ -76,8 +76,8 @@ class Plugin {
 	 */
 	public function add_action_links( array $actions ): array {
 		$links = array(
-			'Settings'  => admin_url( 'admin.php?page=myvideoroom-settings' ),
-			'Reference' => admin_url( 'admin.php?page=myvideoroom' ),
+			'Settings'  => admin_url( 'admin.php?page=my-video-room-global' ),
+			'Reference' => admin_url( 'admin.php?page=my-video-room' ),
 			'Support'   => 'https://clubcloud.tech',
 		);
 

@@ -26,7 +26,7 @@ $index = file_get_contents( __DIR__ . '/myvideoroom-plugin/index.php' );
 preg_match( '/Version: (.*)/', $index, $matches );
 
 $version   = trim( $matches[1] );
-$file_name = 'myvideoroom.zip';
+$file_name = 'my-video-room.zip';
 
 /* Initialize archive object */
 $zip = new ZipArchive();

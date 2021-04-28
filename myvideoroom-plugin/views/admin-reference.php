@@ -17,8 +17,8 @@ return function (): string {
 		<h1><?php esc_html_e( 'My Video Room Short Code Reference', 'myvideoroom' ); ?></h1>
 
 		<h2 class="nav-tab-wrapper">
-			<a class="nav-tab nav-tab-active" href="?page=myvideoroom&amp"><?php esc_html_e( 'Reference', 'myvideoroom' ); ?></a>
-			<a class="nav-tab" href="?page=myvideoroom&amp;tab=settings"><?php esc_html_e( 'Advanced Settings', 'myvideoroom' ); ?></a>
+			<a class="nav-tab nav-tab-active" href="?page=my-video-room&amp"><?php esc_html_e( 'Reference', 'myvideoroom' ); ?></a>
+			<a class="nav-tab" href="?page=my-video-room&amp;tab=settings"><?php esc_html_e( 'Advanced Settings', 'myvideoroom' ); ?></a>
 		</h2>
 
 		<h2><?php esc_html_e( 'App ShortCode', 'myvideoroom' ); ?></h2>
