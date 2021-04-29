@@ -199,6 +199,11 @@ return function (
 					text-decoration: none;
 					">
 
+					<?php
+					// phpcs:ignore -- Visualiser worker generates content and is output safely at its level. 
+					echo Factory::get_instance( VisualiserShortcodeRoomVisualiser::class )->display_room_template_browser();
+					?>
+
 			</div>
 
 
