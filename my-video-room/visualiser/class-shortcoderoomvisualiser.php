@@ -2,7 +2,7 @@
 /**
  * Allow user to Visualise Shortcodes with specific video preferences
  *
- * @package MyVideoRoomPlugin\ShortcodeVisualiser
+ * @package MyVideoRoomPlugin\ShortcodeRoomVisualiser
  */
 
 namespace MyVideoRoomPlugin\Visualiser;
@@ -13,7 +13,7 @@ use MyVideoRoomPlugin\Visualiser\UserVideoPreference as UserVideoPreferenceEntit
  * Class UserVideoPreference
  * Allows the user to select their room display (note NOT Security) display parameters.
  */
-class ShortcodeVisualiser {
+class ShortcodeRoomVisualiser {
 	/**
 	 * A increment in case the same element is placed on the page twice
 	 *
@@ -27,9 +27,8 @@ class ShortcodeVisualiser {
 	public function init() {
 		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
 
-		
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
-		
+
 	}
 
 	/**
@@ -104,7 +103,7 @@ class ShortcodeVisualiser {
 		$available_layouts    = $this->get_available_layouts( array( 'basic', 'premium' ) );
 		$available_receptions = $this->get_available_receptions( array( 'basic', 'premium' ) );
 
-		$render = require __DIR__ . '/shortcode-visualiser.php';
+		$render = require __DIR__ . '/views-visualiser.php';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
 		echo $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $user_id, $video_reception_url );
 

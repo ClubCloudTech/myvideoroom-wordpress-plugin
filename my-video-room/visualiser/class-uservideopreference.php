@@ -2,10 +2,10 @@
 /**
  * A User Video Preference
  *
- * @package MyVideoRoomExtrasPlugin\Visualiser
+ * @package MyVideoRoomPlugin\Visualiser
  */
 
-namespace MyVideoRoomExtrasPlugin\Visualiser;
+namespace MyVideoRoomPlugin\Visualiser;
 
 /**
  * Class UserVideoPreference

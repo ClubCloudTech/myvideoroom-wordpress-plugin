@@ -17,14 +17,17 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Visualiser\MyVideoRoomApp;
-use MyVideoRoomPlugin\Visualiser\ShortcodeVisualiser as VisualiserShortcodeVisualiser;
+use MyVideoRoomPlugin\Visualiser\ShortcodeRoomVisualiser as VisualiserShortcodeRoomVisualiser;
 
 return function (
-	
+	string $active_tab,
+	array $tabs,
+	array $messages = array()
 ): string {
 
-	 $render = require __DIR__ . '/header.php';
-	 echo $render;
+	$render = require __DIR__ . '/header.php';
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped. 
+	echo $render( $active_tab, $tabs, $messages );
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped. 
 	ob_start();
 
@@ -137,12 +140,10 @@ return function (
 					background: #e5e5e5;
 					color: #555;
 					text-decoration: none;">
-					<h2>Room Builder Information</h2>
-
 
 					<?php
 					// phpcs:ignore -- Visualiser worker generates content and is output safely at its level. 
-					echo Factory::get_instance( VisualiserShortcodeVisualiser::class )->visualiser_worker( MyVideoRoomApp::USER_ID_SITE_DEFAULTS, 'Your Room' );
+					echo Factory::get_instance( VisualiserShortcodeRoomVisualiser::class )->visualiser_worker( MyVideoRoomApp::USER_ID_SITE_DEFAULTS, 'Your Room' );
 					?>
 
 				</div>

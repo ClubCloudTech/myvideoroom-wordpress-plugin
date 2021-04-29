@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace MyVideoRoomPlugin;
 
-use MyVideoRoomPlugin\Visualiser\ShortcodeVisualiser;
+use MyVideoRoomPlugin\Visualiser\ShortcodeRoomVisualiser;
 
 /**
  * Class Plugin
@@ -45,7 +45,7 @@ class Plugin {
 		Factory::get_instance( TextOptionShortcode::class )->init();
 		Factory::get_instance( AppShortcode::class, array( $private_key ) )->init();
 		Factory::get_instance( MonitorShortcode::class, array( $private_key ) )->init();
-		Factory::get_instance( ShortcodeVisualiser::class )->init();
+		Factory::get_instance( ShortcodeRoomVisualiser::class )->init();
 	}
 
 	/**

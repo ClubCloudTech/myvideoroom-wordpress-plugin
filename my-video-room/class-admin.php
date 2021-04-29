@@ -138,9 +138,6 @@ class Admin extends Shortcode {
 			case 'settings':
 				$this->create_settings_admin_page();
 				break;
-			case 'settings':
-				$this->create_settings_admin_page();
-				break;
 			default:
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We want to display the html from the render function to the browser.
 				echo ( require __DIR__ . '/views/admin-reference.php' )();
@@ -186,18 +183,26 @@ class Admin extends Shortcode {
 	/**
 	 * Create_room_builder_page and send it to Visualiser Function.
 	 *
-	 * @return string - sends admin page.
+	 * @return void - sends admin page.
 	 */
 	public function create_room_builder_page() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-		global $wp_roles;
 
-		// phpcs:ignore -- Don't need to sanitise, as its done in every function of the template. 
-		echo require __DIR__ . '/views/admin-settings-roombuilder.php';
-		//echo ( require __DIR__ . '/views/admin-reference.php' )();
-		//echo ( require __DIR__ . '/views/admin-settings.php' )( $messages, $all_roles );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.NonceVerification.Recommended -- Not required
+		$active_tab = $_GET['tab'] ?? null;
+
+		$tabs = array(
+			'admin-settings-roombuilder' => 'Room Builder',
+
+		);
+
+		if ( ! $active_tab || ! isset( $tabs[ $active_tab ] ) ) {
+			$active_tab = array_key_first( $tabs );
+		}
+
+		$messages = array();
+		$render   = require __DIR__ . '/views/visualiser/' . $active_tab . '.php';
+		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
+		echo $render( $active_tab, $tabs, $messages );
 
 	}
 
