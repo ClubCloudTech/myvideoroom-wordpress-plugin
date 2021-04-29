@@ -28,7 +28,7 @@ class ShortcodeRoomVisualiser {
 		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
 
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
-		wp_register_script( 'frametab', plugins_url( '../js/frametab.js' , __FILE__ ) );
+		wp_register_script( 'frametab', plugins_url( '../js/frametab.js', __FILE__), array(), '7' );
 		add_action(
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
@@ -39,6 +39,8 @@ class ShortcodeRoomVisualiser {
 				true
 			)
 		);
+
+		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2', 'all' );
 
 	}
 
