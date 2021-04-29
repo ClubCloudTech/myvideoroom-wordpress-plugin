@@ -16,7 +16,7 @@ return function (
 			<tr>
 					<th style="width:30%" >
 						<img
-								src="<?php echo esc_url( plugins_url( '/mvr-imagelogo.png', realpath( __DIR__ . '/../' ) ) ); ?>"
+								src="<?php echo esc_url( plugins_url( '../img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
 								alt="My Video Room Extras"
 								width="120"
 								height="120"

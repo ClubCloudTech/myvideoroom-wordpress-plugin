@@ -9,9 +9,6 @@
  */
 
 use MyVideoRoomPlugin\Visualiser\UserVideoPreference;
-use MyVideoRoomPlugin\Factory;
-
-
 
 return function (
 	array $available_layouts,
@@ -21,32 +18,28 @@ return function (
 	int $id_index = 0,
 	string $video_reception_url = null
 ): string {
+	wp_enqueue_script( 'frametab' );
+	wp_enqueue_style( 'visualiser' );
 	ob_start();
 
 	?>
-	<div id="video-host-wrap" style="border: 3px solid #969696;
-				background: #ebedf1;
-				padding: 12px;
-				margin: 5px;">
+	<div id="video-host-wrap" class="outer-box-wrap">
 				<table style="width:100%">
 				<tr>
-					<th style="width:80%" ><h1 style="    text-align-last: center;">Shortcode Visualizer for Room:
+					<th style="width:80%" ><h1 class ="cc-heading-head-top">Visual Room Builder for :
 			<?php
 				$output = str_replace( '-', ' ', $room_name );
 				echo esc_html( ucwords( $output ) );
 			?>
 			</h1></th>
-					<th style="width:20%" >
-						<img
-								src="<?php echo esc_url( plugins_url( '/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
-								alt="My Video Room Extras"
-								width="120"
-								height="120"
+					<th class="cc-visualiser-image"style="width:20%" >
+						<img src="<?php echo esc_url( plugins_url( './img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
+						alt="My Video Room Extras" width="90"	height="90"
 						/>
 					</th>
 				</tr>
 				</table>
-				<p>Please select your preferred configuration of Room name - Reception and other settings, to see your Room layouts and Shortcode Design.</p>
+				<p style = "cc-explainer-text">To get started - Please select your preferred configuration of Room name - Reception and other settings, to see your Room layouts and Shortcode Design.</p>
 				<hr>
 				<table style="width:100%">
 				<form method="post" action="">
@@ -57,7 +50,7 @@ return function (
 			</tr>
 			<tr>
 
-					<td>
+					<td class="cc-td-head-top">
 						<label for="myvideoroom_visualiser_room_name">Room Name</label>
 						<input	type="text"
 								id="myvideoroom_visualiser_room_name"
@@ -65,7 +58,7 @@ return function (
 								style= "    width: 65%;    background: #e3e7e8; "
 								value="<?php echo esc_html( $room_name ); ?>">
 					</td>
-					<td>
+					<td class="cc-td-head-top">
 							<select
 								class="myvideoroom_visualiser_layout_id_preference"
 								name="myvideoroom_visualiser_layout_id_preference"
@@ -94,20 +87,21 @@ return function (
 
 						<input
 						type="checkbox"
-						class="myvideoroom_visualiser_show_floorplan_preference"
+						class="cc-option-box"
 						name="myvideoroom_visualiser_show_floorplan_preference"
 						id="myvideoroom_visualiser_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
 						<?php echo $current_user_setting && $current_user_setting->get_show_floorplan_setting() ? 'checked' : ''; ?>
 					/>
+					<br>
 					(Automatically turns on Reception)
 					</td>
-					<td>
+					<td class="cc-td-head-top">
 					<label for="myvideoroom_visualiser_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
 					<p style ="display: inline"><b>Enable Reception ?</b></p>
 					</label>
 						<input
 							type="checkbox"
-							class="myvideoroom_visualiser_reception_enabled_preference"
+							class="cc-option-box"
 							name="myvideoroom_visualiser_reception_enabled_preference"
 							id="myvideoroom_visualiser_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 							<?php echo $current_user_setting && $current_user_setting->is_reception_enabled() ? 'checked' : ''; ?>
@@ -147,7 +141,7 @@ return function (
 					<br>
 					<input
 						type="checkbox"
-						class="myvideoroom_visualiser_reception_video_enabled_preference"
+						class="cc-option-box"
 						name="myvideoroom_visualiser_reception_video_enabled_preference"
 						id="myvideoroom_visualiser_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 						<?php echo $current_user_setting && $current_user_setting->get_reception_video_enabled_setting() ? 'checked' : ''; ?>
@@ -168,13 +162,14 @@ return function (
 
 
 								<?php wp_nonce_field( 'myvideoroom_extras_update_user_video_preference', 'nonce' ); ?>
-					<input type="submit" name="submit" id="submit" class="button button-primary" value="Generate Room and Shortcode"  />
-					</form>
+
 					</td>
-
-
 			</tr>
-
+			<tr>
+				<td><input type="submit" name="submit" id="submit" class="button button-primary" value="Generate Room and Shortcode"  />
+					</form>
+				</td>
+			</tr>
 		</table>
 
 	</div>

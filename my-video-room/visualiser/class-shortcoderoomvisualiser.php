@@ -28,19 +28,19 @@ class ShortcodeRoomVisualiser {
 		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
 
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
-		wp_register_script( 'frametab', plugins_url( '../js/frametab.js', __FILE__), array(), '7' );
+		wp_register_script( 'frametab', plugins_url( '../js/frametab.js', __FILE__ ), array(), '6.1', true );
 		add_action(
 			'wp_enqueue_scripts',
 			fn() => wp_enqueue_script(
 				'frametab',
 				plugins_url( '../js/frametab.js', __FILE__ ),
 				array(),
-				'6.0',
+				'6.1.0',
 				true
 			)
 		);
 
-		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2', 'all' );
+		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2.1.5', 'all' );
 
 	}
 
@@ -160,45 +160,9 @@ class ShortcodeRoomVisualiser {
 				Third Section - Render Result Post Submit
 
 			*/
-
-			?>
-
-			<table class ="cc-table" style=" width:100% ;border: 3px solid #969696;	background: #ebedf1; padding: 12px;	margin: 5px;">
-
-			<tr>
-				<th style="width:50%" ><h3>Host View</h3>
-				<th style="width:50%" ><h3>Guest View</h3></th>
-			</tr>
-			<tr>
-				<td>
-				<?php
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-				echo $shortcode_host;
-				?>
-				</td>
-
-				<td>
-				<?php
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-				echo $shortcode_guest;
-				?>
-				</td>
-			</tr>
-
-			<tr>
-					<td>
-						<strong>Shortcode</strong><br>
-						<code style="user-select: all">[<?php echo esc_html( $text_shortcode_host ); ?>]</code>
-					</td>
-					<td>
-						<strong>Shortcode</strong><br>
-						<code style="user-select: all">[<?php echo esc_html( $text_shortcode_guest ); ?>]</code>
-					</td>
-			</tr>
-
-			</table>
-
-			<?php
+			$render = require __DIR__ . '/../views/visualiser/view-visualiser-output.php';
+			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself. 
+			echo $render( $shortcode_host, $shortcode_guest, $text_shortcode_host, $text_shortcode_guest );
 		}
 
 		return 'My Video Room by ClubCloud';
@@ -261,46 +225,6 @@ class ShortcodeRoomVisualiser {
 
 		return \json_decode( $body );
 	}
-
-
-	/**
-	 * Display_room_template_browser
-	 *
-	 * @return void
-	 */
-	public function display_room_template_browser() {
-
-		?>
-
-	<div class="wrap">
-
-
-		<h1>Room Template Browser</h1>
-		<p> Use the Template Browser tab to view room selection templates<br>    </p>
-
-
-	<ul class="menu" style="display: flex;    justify-content: space-between;    width: 50%;">
-		<a class="cc-menu-header" href="javascript:activateTab2( 'page1' )" style="text-align: justify ;color: #000000;    font-family: Montserrat, Sans-serif; font-size: 20px;     font-weight: 200;    text-transform: capitalize;">Video Room Templates</a>
-		<a class="cc-menu-header" href="javascript:activateTab2( 'page2' )" style="text-align: justify ;color: #000000;    font-family: Montserrat, Sans-serif; font-size: 20px;     font-weight: 200;    text-transform: capitalize;">Reception Templates</a>
-		<a class="cc-menu-header" href="javascript:activateTab2( 'page3' )" style="text-align: justify ;color: #000000;    font-family: Montserrat, Sans-serif; font-size: 20px;     font-weight: 200;    text-transform: capitalize;">Using Templates</a>
-	</ul>
-		<div id="tabCtrl2">
-			<div id="page1" style="display: block; "><iframe src="https://rooms.clubcloud.tech/views/layout?tag[]=basic&tag[]=premium&embed=tru" width="100%" height="1600px" frameborder="0" scrolling="yes" align="left"> </iframe>
-			</div>
-			<div id="page2" style="display: none;"><iframe src="https://rooms.clubcloud.tech/views/reception?tag[]=basic&tag[]=premium&embed=true" width="100%" height="1600px" frameborder="0" scrolling="yes" align="left"> </iframe>
-			</div>
-			<div id="page3" style="display: none;">
-				<h1>How to Use Templates</h1>
-				<p> Templates can be used as arguments into any shortcode you build manually with [clubvideo], or in drop down boxes of Menus of Club Cloud Video Extras</p>
-			</div>
-		</div>
-	</div>
-
-	</div>
-		<?php
-
-	}
-
 
 
 }

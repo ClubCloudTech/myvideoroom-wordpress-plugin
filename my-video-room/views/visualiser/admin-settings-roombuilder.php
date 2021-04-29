@@ -36,9 +36,9 @@ return function (
 <hr>
 	<ul class="menu" >
 		<a class="cc-menu-header" href="javascript:activateTab( 'page21' )">Visual Room Builder</a>
-		<a class="cc-menu-header" href="javascript:activateTab( 'page24' )">Available Templates</a>
-		<a class="cc-menu-header" href="javascript:activateTab( 'page22' )">Installed Shortcodes</a>
-		<a class="cc-menu-header" href="javascript:activateTab( 'page23' )">All Shortcodes</a>
+		<a class="cc-menu-header" href="javascript:activateTab( 'page22' )">Video Security Level</a>
+		<a class="cc-menu-header" href="javascript:activateTab( 'page24' )">Explore Available Templates</a>
+		<a class="cc-menu-header" href="javascript:activateTab( 'page23' )">Detailed Shortcode Reference</a>
 	</ul>
 <br>
 			<div id="tabCtrl" class="tabCtrl-header">
@@ -50,8 +50,12 @@ return function (
 					</div>
 
 					<div id="page22" class="cc-tab-items-none">
-						<h2>Installed Shortcodes</h2>
-						<p>This section shows only available shortcodes that are installed in active modules. To view all shortcodes please click on the View All Tab</p>
+						<div class="outer-box-wrap">
+						<h2>Default Security Level</h2>
+						<p>By default you have two shortcodes generated for your pages. One for host, and one for guest. This setting configures, who we will treat as a 
+							host if you do not provide an instruction via a specific host shortcode. 
+						</p>
+						</div>
 					</div>
 
 					<div id="page23" class="cc-tab-items-none">
@@ -61,8 +65,9 @@ return function (
 
 					<div id="page24" class="cc-tab-items-none">
 					<?php
-					// phpcs:ignore -- Visualiser worker generates content and is output safely at its level. 
-					echo Factory::get_instance( VisualiserShortcodeRoomVisualiser::class )->display_room_template_browser();
+					$render = require __DIR__ . '/view-template-browser.php';
+					// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself. 
+					echo $render();
 					?>
 					</div>
 			</div> 

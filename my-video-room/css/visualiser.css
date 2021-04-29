@@ -63,3 +63,28 @@
 	color: #555;
 	text-decoration: none;
 }
+
+.cc-td-head-top {
+
+	vertical-align: baseline;
+}
+.outer-box-wrap {
+
+	border: 3px solid #969696;
+	background: #ebedf1;
+	padding: 12px;
+	margin: 5px;
+}
+.cc-heading-head-top {
+	text-align: start;
+	vertical-align: baseline;
+}
+
+.cc-visualiser-image {
+	
+	text-align: end;
+	width:20%;
+}
+.cc-explainer-text	{
+	margin: initial;
+}
