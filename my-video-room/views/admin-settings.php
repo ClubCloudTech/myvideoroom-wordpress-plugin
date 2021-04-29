@@ -39,23 +39,26 @@ return function (
 			?>
 		</ul>
 
-		<h3><?php esc_html_e( 'Default Admins', 'myvideoroom' ); ?></h3>
+		<h3><?php esc_html_e( 'Default Video Room Hosts', 'myvideoroom' ); ?></h3>
 		<p>
-			<?php esc_html_e( 'If the "admin" flag is not passed to the shortcode then it will fall back to use this table based on the current user\'s role.', 'myvideoroom' ); ?>
+			<?php esc_html_e( 'Unless directly instructed by using an Admin flag into a Shortcode the following Roles will be considered Room Administrators', 'myvideoroom' ); ?>
 		</p>
 		<form method="post" action="">
 			<fieldset>
 				<table class="form-table" role="presentation">
 					<tbody>
 						<?php
+						// Wrapping every 3 role returns.
+
 						foreach ( $all_wp_roles as $key => $single_role ) {
 							$role_object   = get_role( $key );
 							$has_admin_cap = $role_object->has_cap( Plugin::CAP_GLOBAL_ADMIN );
+							if ( 3 === $index ) {
+								echo '<tr>';
+							}
+							echo '<th scope="row" class="tabCtrl-header"><label for="role_' . esc_attr( $key ) . '">' . esc_html( $single_role['name'] ) . '</label>';
+							echo '<input class="tabCtrl-header" id="role_' . esc_attr( $key ) . '" name="role_' . esc_attr( $key ) . '" type="checkbox" ' . ( $has_admin_cap ? 'checked="checked" ' : '' ) . '/></th>';
 
-							echo '<tr>';
-							echo '<th scope="row"><label for="role_' . esc_attr( $key ) . '">' . esc_html( $single_role['name'] ) . '</label></th>';
-							echo '<td><input id="role_' . esc_attr( $key ) . '" name="role_' . esc_attr( $key ) . '" type="checkbox" ' . ( $has_admin_cap ? 'checked="checked" ' : '' ) . '/></td>';
-							echo '</tr>';
 						}
 						?>
 					</tbody>

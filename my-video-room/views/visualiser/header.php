@@ -14,7 +14,7 @@ return function (
 	?>
 	<table style="width:100%">
 			<tr>
-					<th style="width:30%" >
+					<th class="cc-visualiser-image-left" >
 						<img
 								src="<?php echo esc_url( plugins_url( '../img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
 								alt="My Video Room Extras"
@@ -23,7 +23,7 @@ return function (
 						/>
 					</th>
 
-					<th style="width:70%">
+					<th class="cc-visualiser-image">
 						<h1>My Video Room Settings and Configuration</h1>
 					</th>
 			</tr>

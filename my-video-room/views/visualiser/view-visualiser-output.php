@@ -27,7 +27,8 @@ return function (
 	<table class ="cc-table" style=" width:100% ;border: 3px solid #969696;	background: #ebedf1; padding: 12px;	margin: 5px;">
 
 			<tr>
-				<th style="width:50%" ><h3>Host View</h3>
+				<th style="width:50%" ><h3>Host View</h3></th>
+				Your
 				<th style="width:50%" ><h3>Guest View</h3></th>
 			</tr>
 			<tr>

@@ -32,7 +32,7 @@ return function (
 				echo esc_html( ucwords( $output ) );
 			?>
 			</h1></th>
-					<th class="cc-visualiser-image"style="width:20%" >
+					<th class="cc-visualiser-image" >
 						<img src="<?php echo esc_url( plugins_url( './img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
 						alt="My Video Room Extras" width="90"	height="90"
 						/>

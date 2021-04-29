@@ -40,7 +40,7 @@ class ShortcodeRoomVisualiser {
 			)
 		);
 
-		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2.1.5', 'all' );
+		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2.1.12', 'all' );
 
 	}
 
@@ -111,7 +111,7 @@ class ShortcodeRoomVisualiser {
 		$available_layouts    = $this->get_available_layouts( array( 'basic', 'premium' ) );
 		$available_receptions = $this->get_available_receptions( array( 'basic', 'premium' ) );
 
-		$render = require __DIR__ . '/views-visualiser.php';
+		$render = require __DIR__ . '/../views/visualiser/views-visualiser.php';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
 		echo $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $video_reception_url );
 

@@ -16,6 +16,22 @@
 	
 }
 
+.cc-sub-menu-header {
+	
+	display: block; 
+	float: left;
+	border: 1px solid #ccc;
+	margin-left: .5em;
+	padding: 5px 10px;
+	font-size: 14px;
+	line-height: 1.71428571;
+	font-weight: 600;
+	background: #e5e5e5;
+	color: #555;
+	text-decoration: none;
+	
+}
+
 .tabCtrl-header{
 
 	background: #e0e0e0;  
@@ -29,7 +45,7 @@
 	font-weight: 600;
 	background: #e5e5e5;
 	color: #555;
-	text-decoration: none;"
+	text-decoration: none;
 }
 
 .cc-tab-items-block {
@@ -85,6 +101,28 @@
 	text-align: end;
 	width:20%;
 }
+
+.cc-visualiser-text-header {
+	
+	text-align: end;
+	width:70%;
+}
+
+.cc-visualiser-image-left {
+	
+	text-align: -webkit-match-parent;
+	width:20%;
+}
+
 .cc-explainer-text	{
 	margin: initial;
+}
+
+.cc-header-table {
+width:80%;
+
+}
+
+.nav-tab-wrapper{
+display:none
 }
