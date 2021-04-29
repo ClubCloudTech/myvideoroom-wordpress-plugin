@@ -19,7 +19,6 @@ return function (
 	UserVideoPreference $current_user_setting = null,
 	string $room_name,
 	int $id_index = 0,
-	int $user_id = null,
 	string $video_reception_url = null
 ): string {
 	ob_start();
@@ -167,11 +166,12 @@ return function (
 								style= "    width: 75%;    background: #e3e7e8; display: inline;"
 								value="<?php echo esc_url( $video_reception_url ); ?>">
 
+
+								<?php wp_nonce_field( 'myvideoroom_extras_update_user_video_preference', 'nonce' ); ?>
+					<input type="submit" name="submit" id="submit" class="button button-primary" value="Generate Room and Shortcode"  />
+					</form>
 					</td>
 
-					<?php wp_nonce_field( 'myvideoroom_extras_update_user_video_preference', 'nonce' ); ?>
-					<tr><input type="submit" name="submit" id="submit" class="button button-primary" value="Generate Room and Shortcode"  /></tr>
-				</form>
 
 			</tr>
 

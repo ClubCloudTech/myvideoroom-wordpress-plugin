@@ -12,7 +12,6 @@ namespace MyVideoRoomPlugin\Visualiser;
  */
 class UserVideoPreference {
 
-	private int $user_id;
 	private string $room_name;
 	private ?string $layout_id;
 	private ?string $reception_id;
@@ -24,14 +23,13 @@ class UserVideoPreference {
 	/**
 	 * UserVideoPreference constructor.
 	 *
-	 * @param int         $user_id. reserved, not needed as there is no DB operations.
 	 * @param string      $room_name - for use.
 	 * @param string|null $layout_id - room template.
 	 * @param string|null $reception_id - reception template.
 	 * @param bool        $reception_enabled .
 	 */
 	public function __construct(
-		int $user_id,
+		
 		string $room_name,
 		string $layout_id = null,
 		string $reception_id = null,
@@ -41,7 +39,6 @@ class UserVideoPreference {
 		bool $show_floorplan = false
 
 	) {
-		$this->user_id                 = $user_id;
 		$this->room_name               = $room_name;
 		$this->layout_id               = $layout_id;
 		$this->reception_id            = $reception_id;
@@ -51,12 +48,6 @@ class UserVideoPreference {
 		$this->show_floorplan          = $show_floorplan;
 	}
 
-	/**
-	 * @return int
-	 */
-	public function get_user_id(): int {
-		return $this->user_id;
-	}
 
 	/**
 	 * @return string

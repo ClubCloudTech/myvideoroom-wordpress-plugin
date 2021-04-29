@@ -24,7 +24,8 @@ return function (
 	array $tabs,
 	array $messages = array()
 ): string {
-
+	
+	wp_enqueue_script('frametab');
 	$render = require __DIR__ . '/header.php';
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped. 
 	echo $render( $active_tab, $tabs, $messages );
@@ -32,24 +33,11 @@ return function (
 	ob_start();
 
 	?>
-	<script type="text/javascript">
-	function activateTab(pageId) {
-		var tabCtrl = document.getElementById( 'tabCtrl' );
-		var pageToActivate = document.getElementById(pageId);
-	for (var i = 0; i < tabCtrl.childNodes.length; i++) {
-			var node = tabCtrl.childNodes[i];
-			if (node.nodeType == 1) { /* Element */
-				node.style.display = (node == pageToActivate) ? 'block' : 'none';
-			}
-		}
-	}
-
-	</script>
 
 <hr>
 		<ul class="menu" >
 
-				<a class="cc-menu-header" href="javascript:activateTab( 'page1' )" style=" 
+				<a class="cc-menu-header" href="javascript:activateTab( 'page21' )" style=" 
 					display: block; 
 					float: left;
 					border: 1px solid #ccc;
@@ -65,7 +53,7 @@ return function (
 					">Visual Room Builder</a>
 
 
-		<a class="cc-menu-header" href="javascript:activateTab( 'page4' )" style="
+		<a class="cc-menu-header" href="javascript:activateTab( 'page24' )" style="
 					display: block; 
 					float: left;
 					border: 1px solid #ccc;
@@ -80,7 +68,7 @@ return function (
 					text-decoration: none;
 					">Available Templates</a>
 
-				<a class="cc-menu-header" href="javascript:activateTab( 'page2' )" style="
+				<a class="cc-menu-header" href="javascript:activateTab( 'page22' )" style="
 					display: block; 
 					float: left;
 					border: 1px solid #ccc;
@@ -96,7 +84,7 @@ return function (
 
 					">Installed Shortcodes</a>
 
-				<a class="cc-menu-header" href="javascript:activateTab( 'page3' )" style="
+				<a class="cc-menu-header" href="javascript:activateTab( 'page23' )" style="
 					display: block; 
 					float: left;
 					border: 1px solid #ccc;
@@ -127,7 +115,7 @@ return function (
 				color: #555;
 				text-decoration: none;">
 
-				<div id="page1" style="
+				<div id="page21" style="
 					display: block; 
 					float: left;
 					border: 1px solid #ccc;
@@ -143,12 +131,12 @@ return function (
 
 					<?php
 					// phpcs:ignore -- Visualiser worker generates content and is output safely at its level. 
-					echo Factory::get_instance( VisualiserShortcodeRoomVisualiser::class )->visualiser_worker( MyVideoRoomApp::USER_ID_SITE_DEFAULTS, 'Your Room' );
+					echo Factory::get_instance( VisualiserShortcodeRoomVisualiser::class )->visualiser_worker( 'Your Room' );
 					?>
 
 				</div>
 
-				<div id="page2" style="
+				<div id="page22" style="
 					display: none; 
 					float: left;
 					border: 1px solid #ccc;
@@ -167,7 +155,7 @@ return function (
 
 				</div>
 
-				<div id="page3" style="
+				<div id="page23" style="
 					display: none; 
 					float: left;
 					border: 1px solid #ccc;
@@ -185,7 +173,7 @@ return function (
 
 			</div>
 
-			<div id="page4" style="
+			<div id="page24" style="
 					display: none; 
 					float: left;
 					width: inherit;

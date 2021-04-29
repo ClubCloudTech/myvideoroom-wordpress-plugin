@@ -28,6 +28,17 @@ class ShortcodeRoomVisualiser {
 		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
 
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
+		wp_register_script( 'frametab', plugins_url( '../js/frametab.js' , __FILE__ ) );
+		add_action(
+			'wp_enqueue_scripts',
+			fn() => wp_enqueue_script(
+				'frametab',
+				plugins_url( '../js/frametab.js', __FILE__ ),
+				array(),
+				'6.0',
+				true
+			)
+		);
 
 	}
 
@@ -45,22 +56,19 @@ class ShortcodeRoomVisualiser {
 		$allowed_tags = array_map( 'trim', explode( ',', $params['tags'] ?? '' ) );
 		// Not strictly needed as its a demo render- but preserving consistent structure with main Video Function.
 
-			$user_id = MyVideoRoomApp::USER_ID_SITE_DEFAULTS;
-
-		return $this->visualiser_worker( $user_id, $room_name, $allowed_tags );
+		return $this->visualiser_worker( $room_name, $allowed_tags );
 	}
 
 	/**
 	 * Show drop down for user to change their settings
 	 *
-	 * @param int    $user_id The user id to fetch.
 	 * @param string $room_name The room name to fetch.
 	 * @param array  $allowed_tags List of tags to allow.
 	 *
 	 * @return string
 	 * @throws \Exception When the update fails.
 	 */
-	public function visualiser_worker( int $user_id, string $room_name, array $allowed_tags = array() ) {
+	public function visualiser_worker( string $room_name, array $allowed_tags = array() ) {
 		// we only enqueue the scripts if the shortcode is called to prevent it being added to all admin pages.
 		do_action( 'myvideoroom_enqueue_scripts' );
 
@@ -69,7 +77,6 @@ class ShortcodeRoomVisualiser {
 
 		*/
 
-		$user_id        = MyVideoRoomApp::USER_ID_SITE_DEFAULTS;
 		$show_floorplan = false;
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'myvideoroom_extras_update_user_video_preference', 'nonce' );
@@ -90,7 +97,6 @@ class ShortcodeRoomVisualiser {
 		}
 
 				$current_user_setting = new UserVideoPreferenceEntity(
-					$user_id,
 					$room_name,
 					$video_template,
 					$reception_template,
@@ -105,7 +111,7 @@ class ShortcodeRoomVisualiser {
 
 		$render = require __DIR__ . '/views-visualiser.php';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
-		echo $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $user_id, $video_reception_url );
+		echo $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $video_reception_url );
 
 		/*
 			Second Section - Handle Rendering of Inbound Shortcodes for correct construction.
@@ -167,7 +173,7 @@ class ShortcodeRoomVisualiser {
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
 				echo $shortcode_host;
 				?>
-				</td>myvideoroom-extras-plugin/views/shortcode-visualiser.php
+				</td>
 
 				<td>
 				<?php
@@ -270,24 +276,13 @@ class ShortcodeRoomVisualiser {
 		<h1>Room Template Browser</h1>
 		<p> Use the Template Browser tab to view room selection templates<br>    </p>
 
-		<script type="text/javascript">
-	function activateTab(pageId) {
-		var tabCtrl = document.getElementById( 'tabCtrl' );
-		var pageToActivate = document.getElementById(pageId);
-		for (var i = 0; i < tabCtrl.childNodes.length; i++) {
-			var node = tabCtrl.childNodes[i];
-			if (node.nodeType == 1) { /* Element */
-				node.style.display = (node == pageToActivate) ? 'block' : 'none';
-			}
-		}
-	}
-	</script>
+
 	<ul class="menu" style="display: flex;    justify-content: space-between;    width: 50%;">
-		<a class="cc-menu-header" href="javascript:activateTab( 'page1' )" style="text-align: justify ;color: #000000;    font-family: Montserrat, Sans-serif; font-size: 20px;     font-weight: 200;    text-transform: capitalize;">Video Room Templates</a>
-		<a class="cc-menu-header" href="javascript:activateTab( 'page2' )" style="text-align: justify ;color: #000000;    font-family: Montserrat, Sans-serif; font-size: 20px;     font-weight: 200;    text-transform: capitalize;">Reception Templates</a>
-		<a class="cc-menu-header" href="javascript:activateTab( 'page3' )" style="text-align: justify ;color: #000000;    font-family: Montserrat, Sans-serif; font-size: 20px;     font-weight: 200;    text-transform: capitalize;">Using Templates</a>
+		<a class="cc-menu-header" href="javascript:activateTab2( 'page1' )" style="text-align: justify ;color: #000000;    font-family: Montserrat, Sans-serif; font-size: 20px;     font-weight: 200;    text-transform: capitalize;">Video Room Templates</a>
+		<a class="cc-menu-header" href="javascript:activateTab2( 'page2' )" style="text-align: justify ;color: #000000;    font-family: Montserrat, Sans-serif; font-size: 20px;     font-weight: 200;    text-transform: capitalize;">Reception Templates</a>
+		<a class="cc-menu-header" href="javascript:activateTab2( 'page3' )" style="text-align: justify ;color: #000000;    font-family: Montserrat, Sans-serif; font-size: 20px;     font-weight: 200;    text-transform: capitalize;">Using Templates</a>
 	</ul>
-		<div id="tabCtrl">
+		<div id="tabCtrl2">
 			<div id="page1" style="display: block; "><iframe src="https://rooms.clubcloud.tech/views/layout?tag[]=basic&tag[]=premium&embed=tru" width="100%" height="1600px" frameborder="0" scrolling="yes" align="left"> </iframe>
 			</div>
 			<div id="page2" style="display: none;"><iframe src="https://rooms.clubcloud.tech/views/reception?tag[]=basic&tag[]=premium&embed=true" width="100%" height="1600px" frameborder="0" scrolling="yes" align="left"> </iframe>

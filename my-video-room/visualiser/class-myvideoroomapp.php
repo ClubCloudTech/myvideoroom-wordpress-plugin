@@ -13,7 +13,6 @@ namespace MyVideoRoomPlugin\Visualiser;
 class MyVideoRoomApp {
 
 	public const MYVIDEOROOM_APP_SHORTCODE = 'myvideoroom';
-	public const USER_ID_SITE_DEFAULTS     = 1;
 
 	/**
 	 * The name of the room

@@ -47,7 +47,7 @@ class AppShortcode extends Shortcode {
 	 */
 	public function init() {
 		add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
-
+		add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_script( 'filetab' ) );
 		add_action( 'wp_enqueue_scripts', fn() => $this->enqueue_scripts() );
 		add_action(
 			'wp_head',
