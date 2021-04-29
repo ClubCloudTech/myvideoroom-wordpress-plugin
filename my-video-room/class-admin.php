@@ -71,7 +71,7 @@ class Admin extends Shortcode {
 			esc_html__( 'Room Builder', 'myvideoroom' ),
 			esc_html__( 'Room Builder', 'myvideoroom' ),
 			'manage_options',
-			'my-video-room',
+			'my-video-room-roombuilder',
 			array( $this, 'create_room_builder_page' )
 		);
 
@@ -188,8 +188,17 @@ class Admin extends Shortcode {
 	 *
 	 * @return string - sends admin page.
 	 */
-	private function create_room_builder_page() {
-		echo require __DIR__ . '/visualiser/admin-settings-roombuilder.php';
+	public function create_room_builder_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		global $wp_roles;
+
+		// phpcs:ignore -- Don't need to sanitise, as its done in every function of the template. 
+		echo require __DIR__ . '/views/admin-settings-roombuilder.php';
+		//echo ( require __DIR__ . '/views/admin-reference.php' )();
+		//echo ( require __DIR__ . '/views/admin-settings.php' )( $messages, $all_roles );
+
 	}
 
 

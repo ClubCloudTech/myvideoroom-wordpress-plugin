@@ -25,7 +25,7 @@ class ShortcodeVisualiser {
 	 * Install the shortcode
 	 */
 	public function init() {
-		// \add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
+		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
 
 		
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );

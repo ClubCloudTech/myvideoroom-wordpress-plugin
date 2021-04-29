@@ -20,14 +20,12 @@ use MyVideoRoomPlugin\Visualiser\MyVideoRoomApp;
 use MyVideoRoomPlugin\Visualiser\ShortcodeVisualiser as VisualiserShortcodeVisualiser;
 
 return function (
-	string $active_tab,
-	array $tabs,
-	array $messages = array()
+	
 ): string {
 
-	$render = require __DIR__ . '/header.php';
+	 $render = require __DIR__ . '/header.php';
+	 echo $render;
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped. 
-	echo $render( $active_tab, $tabs, $messages );
 	ob_start();
 
 	?>
