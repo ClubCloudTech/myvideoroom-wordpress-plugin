@@ -7,7 +7,6 @@
 
 namespace MyVideoRoomPlugin\Visualiser;
 
-use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Shortcode;
 use MyVideoRoomPlugin\Visualiser\UserVideoPreference as UserVideoPreferenceEntity;
 
@@ -15,7 +14,7 @@ use MyVideoRoomPlugin\Visualiser\UserVideoPreference as UserVideoPreferenceEntit
  * Class UserVideoPreference
  * Allows the user to select their room display (note NOT Security) display parameters.
  */
-class ShortcodeRoomVisualiser {
+class ShortcodeRoomVisualiser extends Shortcode {
 	/**
 	 * A increment in case the same element is placed on the page twice
 	 *
@@ -23,14 +22,16 @@ class ShortcodeRoomVisualiser {
 	 */
 	private static int $id_index = 0;
 
+	const DEFAULT_ROOM_NAME = 'Your Room Name';
+
 	/**
 	 * Install the shortcode
 	 */
 	public function init() {
 		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
-		wp_register_script( 'mvr-frametab', plugins_url( '../js/mvr-frametab.js', __FILE__ ), array(), Factory::get_instance( Shortcode::class )->get_plugin_version(), true );
-		wp_register_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), Factory::get_instance( Shortcode::class )->get_plugin_version(), 'all' );
+		wp_register_script( 'mvr-frametab', plugins_url( '../js/mvr-frametab.js', __FILE__ ), array(), $this->get_plugin_version(), true );
+		wp_register_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), $this->get_plugin_version() . '28', 'all' );
 	}
 
 	/**
@@ -71,7 +72,7 @@ class ShortcodeRoomVisualiser {
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'myvideoroom_extras_update_user_video_preference', 'nonce' );
 		}
-			$room_name             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? 'Your Room Name' ) );
+			$room_name             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? self::DEFAULT_ROOM_NAME ) );
 			$video_template        = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_layout_id_preference'] ?? null ) );
 			$reception_template    = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_id_preference'] ?? null ) );
 			$reception_setting     = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_enabled_preference'] ?? '' ) ) === 'on';
@@ -96,7 +97,7 @@ class ShortcodeRoomVisualiser {
 
 		$available_layouts    = $this->get_available_layouts( array( 'basic', 'premium' ) );
 		$available_receptions = $this->get_available_receptions( array( 'basic', 'premium' ) );
-		$render               = require __DIR__ . '/../views/visualiser/views-visualiser.php';
+		$render               = require __DIR__ . '/../views/visualiser/view-visualiser.php';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
 		echo $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $video_reception_url );
 
@@ -150,7 +151,7 @@ class ShortcodeRoomVisualiser {
 			echo $render( $shortcode_host, $shortcode_guest, $text_shortcode_host, $text_shortcode_guest );
 		}
 
-		return 'My Video Room by ClubCloud';
+		return null;
 	}
 
 	/**
@@ -165,7 +166,7 @@ class ShortcodeRoomVisualiser {
 		if ( $scenes ) {
 			return $scenes;
 		} else {
-			return array( 'No Layouts Found' );
+			return array( esc_html_e( 'No Layouts Found', 'myvideoroom' ) );
 		}
 	}
 

@@ -5,6 +5,12 @@
  * @package MyVideoRoomPlugin
  *  */
 
+/**
+ * Click Based Tab Block:Hide Script
+ *
+ * @file mvr-mvr-frametab.js
+ * @package MyVideoRoomPlugin
+ *  */
 function activateTab(pageId) {
 	var tabCtrl        = document.getElementById( 'tabCtrl' );
 	var pageToActivate = document.getElementById( pageId );
@@ -16,7 +22,12 @@ function activateTab(pageId) {
 		}
 	}
 }
-
+/**
+ * Click Based Tab Block:Hide Script - Variation to Handle two scripts on same page
+ *
+ * @file mvr-mvr-frametab.js
+ * @package MyVideoRoomPlugin
+ *  */
 function activateTab2(pageId) {
 	var tabCtrl2        = document.getElementById( 'tabCtrl2' );
 	var pageToActivate2 = document.getElementById( pageId );

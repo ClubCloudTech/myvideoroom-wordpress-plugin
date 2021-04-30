@@ -59,15 +59,6 @@ class Admin extends Shortcode {
 
 		add_submenu_page(
 			'my-video-room-global',
-			esc_html__( 'Video Reference', 'myvideoroom' ),
-			esc_html__( 'Video Reference', 'myvideoroom' ),
-			'manage_options',
-			'my-video-room',
-			array( $this, 'create_video_admin_page' )
-		);
-
-		add_submenu_page(
-			'my-video-room-global',
 			esc_html__( 'Room Builder', 'myvideoroom' ),
 			esc_html__( 'Room Builder', 'myvideoroom' ),
 			'manage_options',
@@ -75,16 +66,55 @@ class Admin extends Shortcode {
 			array( $this, 'create_room_builder_page' )
 		);
 
+		add_submenu_page(
+			'my-video-room-global',
+			esc_html__( 'Room Templates', 'myvideoroom' ),
+			esc_html__( 'Room Templates', 'myvideoroom' ),
+			'manage_options',
+			'my-video-room-templates',
+			array( $this, 'create_template_page' )
+		);
+
+		add_submenu_page(
+			'my-video-room-global',
+			esc_html__( 'Shortcode Reference', 'myvideoroom' ),
+			esc_html__( 'Shortcode Reference', 'myvideoroom' ),
+			'manage_options',
+			'my-video-room',
+			array( $this, 'create_video_admin_page' )
+		);
+
+		add_submenu_page(
+			'my-video-room-global',
+			esc_html__( 'Video Security', 'myvideoroom' ),
+			esc_html__( 'Video Security', 'myvideoroom' ),
+			'manage_options',
+			'my-video-room-security',
+			array( $this, 'create_settings_admin_page' )
+		);
+
+		add_submenu_page(
+			'my-video-room-global',
+			esc_html__( 'Help & Getting Started', 'myvideoroom' ),
+			esc_html__( 'Help & Getting Started', 'myvideoroom' ),
+			'manage_options',
+			'my-video-room-helpgs',
+			array( $this, 'create_helpgs_page' )
+		);
+
 		do_action( 'myvideoroom_admin_menu', 'my-video-room-global' );
 	}
 
 	/**
-	 * Create the admin page contents.
+	 * Create the admin main page contents.
 	 */
 	public function create_admin_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
+		$render_header = require __DIR__ . '/views/visualiser/header.php';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
+		echo $render_header();
 
 		$messages = array();
 
@@ -123,9 +153,15 @@ class Admin extends Shortcode {
 	}
 
 	/**
-	 * Create the admin page contents.
+	 * Create the Shortcode Reference page contents.
 	 */
 	public function create_video_admin_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$render_header = require __DIR__ . '/views/visualiser/header.php';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
+		echo $render_header();
 		$tab = null;
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
@@ -151,7 +187,9 @@ class Admin extends Shortcode {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-
+		$render_header = require __DIR__ . '/views/visualiser/header.php';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
+		echo $render_header();
 		$messages = array();
 
 		global $wp_roles;
@@ -186,23 +224,50 @@ class Admin extends Shortcode {
 	 * @return void - sends admin page.
 	 */
 	public function create_room_builder_page() {
-
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.NonceVerification.Recommended -- Not required
-		$active_tab = $_GET['tab'] ?? null;
-
-		$tabs = array(
-			'admin-settings-roombuilder' => 'Room Builder',
-
-		);
-
-		if ( ! $active_tab || ! isset( $tabs[ $active_tab ] ) ) {
-			$active_tab = array_key_first( $tabs );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
 		}
-
-		$messages = array();
-		$render   = require __DIR__ . '/views/visualiser/' . $active_tab . '.php';
+		$render_header = require __DIR__ . '/views/visualiser/header.php';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
+		echo $render_header();
+		$render_main = require __DIR__ . '/views/visualiser/view-roombuilder.php';
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
-		echo $render( $active_tab, $tabs, $messages );
+		echo $render_main();
+	}
+
+	/**
+	 * Create_Help and Geting Started Page
+	 *
+	 * @return void - sends Help page.
+	 */
+	public function create_helpgs_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$render_header = require __DIR__ . '/views/visualiser/header.php';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
+		echo $render_header();
+		$render_main = require __DIR__ . '/views/visualiser/view-helpgs.php';
+		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
+		echo $render_main();
+
+	}
+
+	/**
+	 * Create Template Reference Page
+	 *
+	 * @return void - sends Template page.
+	 */
+	public function create_template_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$render_header = require __DIR__ . '/views/visualiser/header.php';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
+		echo $render_header();
+		$render_main = require __DIR__ . '/views/visualiser/view-template-browser.php';
+		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
+		echo $render_main();
 
 	}
 

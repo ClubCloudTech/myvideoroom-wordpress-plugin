@@ -26,9 +26,21 @@ return function (
 	ob_start();
 
 	?>
-
-	<div class="wrap">
-		<h1><?php esc_html_e( 'My Video Room Settings', 'myvideoroom' ); ?></h1>
+	<br>
+<div class="outer-box-wrap">
+	<table style="width:100%">
+		<tr>
+			<th class="mvr-header-table">
+				<h1 class="mvr-heading-head-top"><?php esc_html_e( 'General Settings', 'myvideoroom' ); ?></h1>
+			</th>
+			<th class="mvr-visualiser-image">
+				<img src="<?php echo esc_url( plugins_url( '/img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
+					alt="My Video Room Extras" width="90" height="90" />
+			</th>
+		</tr>
+	</table>
+	<div class="mvr-tab-align">
+		<h3><?php esc_html_e( 'Licensing Status', 'myvideoroom' ); ?></h3>
 
 		<ul>
 		<?php
@@ -38,7 +50,7 @@ return function (
 		?>
 		</ul>
 
-		<h2><?php esc_html_e( 'Settings', 'myvideoroom' ); ?></h2>
+		<h2><?php esc_html_e( 'Activation Settings', 'myvideoroom' ); ?></h2>
 		<form method="post" action="options.php">
 			<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
@@ -96,7 +108,7 @@ return function (
 			<?php submit_button(); ?>
 		</form>
 
-		<h3><?php esc_html_e( 'The My Video Room WordPress Suite', 'myvideoroom' ); ?></h3>
+		<h3><?php esc_html_e( 'The MyVideoRoom WordPress Suite', 'myvideoroom' ); ?></h3>
 		<table class="widefat fixed">
 			<thead>
 				<tr>
@@ -154,7 +166,7 @@ return function (
 			</tbody>
 		</table>
 	</div>
-
+</div>
 	<?php
 	return ob_get_clean();
 };
