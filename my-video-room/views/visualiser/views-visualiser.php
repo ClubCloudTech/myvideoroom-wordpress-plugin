@@ -33,22 +33,23 @@ return function (
 			?>
 			</h1></th>
 					<th class="cc-visualiser-image" >
-						<img src="<?php echo esc_url( plugins_url( './img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
+						<img src="<?php echo esc_url( plugins_url( './../img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
 						alt="My Video Room Extras" width="90"	height="90"
 						/>
 					</th>
 				</tr>
 				</table>
-				<p style = "cc-explainer-text">To get started - Please select your preferred configuration of Room name - Reception and other settings, to see your Room layouts and Shortcode Design.</p>
+				<p class="cc-explainer-text">To get started you can select your room design. Use this tool to explore and select your preferred configuration of Room name - Reception and other settings.
+				The tool is interactive and you can drag users into and out of Reception to to see your Room layouts and Shortcode Design.</p>
 				<hr>
-				<table style="width:100%">
+				<table style="width:100%" >
 				<form method="post" action="">
-			<tr>
-				<th style="width:27%" >Naming</th>
-				<th style="width:25%" >Room Layout</th>
-				<th style="width:47%">Guest Settings</th>
-			</tr>
-			<tr>
+						<tr>
+							<th style="width:27%" >Naming</th>
+							<th style="width:25%" >Room Layout</th>
+							<th style="width:47%" >Guest Settings</th>
+						</tr>
+						<tr>
 
 					<td class="cc-td-head-top">
 						<label for="myvideoroom_visualiser_room_name">Room Name</label>

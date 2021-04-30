@@ -147,7 +147,7 @@ class Admin extends Shortcode {
 	/**
 	 * Create the settings page for the video
 	 */
-	private function create_settings_admin_page() {
+	public function create_settings_admin_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}

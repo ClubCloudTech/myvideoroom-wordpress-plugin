@@ -16,7 +16,24 @@
 	
 }
 
+
 .cc-sub-menu-header {
+	
+	display: none; 
+	float: left;
+	border: 1px solid #ccc;
+	margin-left: .5em;
+	padding: 5px 10px;
+	font-size: 14px;
+	line-height: 1.71428571;
+	font-weight: 600;
+	background: #e5e5e5;
+	color: #555;
+	text-decoration: none;
+	
+}
+
+.cc-sub-menu-header-block {
 	
 	display: block; 
 	float: left;
@@ -82,7 +99,7 @@
 
 .cc-td-head-top {
 
-	vertical-align: baseline;
+	    vertical-align: baseline;
 }
 .outer-box-wrap {
 
@@ -126,3 +143,9 @@ width:80%;
 .nav-tab-wrapper{
 display:none
 }
+
+.cc-header-table-3 {
+	width:33%;
+	
+	}
+

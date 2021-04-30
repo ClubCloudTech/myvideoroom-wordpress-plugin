@@ -48,17 +48,12 @@ return function (
 				<table class="form-table" role="presentation">
 					<tbody>
 						<?php
-						// Wrapping every 3 role returns.
-
 						foreach ( $all_wp_roles as $key => $single_role ) {
 							$role_object   = get_role( $key );
 							$has_admin_cap = $role_object->has_cap( Plugin::CAP_GLOBAL_ADMIN );
-							if ( 3 === $index ) {
-								echo '<tr>';
-							}
+
 							echo '<th scope="row" class="tabCtrl-header"><label for="role_' . esc_attr( $key ) . '">' . esc_html( $single_role['name'] ) . '</label>';
 							echo '<input class="tabCtrl-header" id="role_' . esc_attr( $key ) . '" name="role_' . esc_attr( $key ) . '" type="checkbox" ' . ( $has_admin_cap ? 'checked="checked" ' : '' ) . '/></th>';
-
 						}
 						?>
 					</tbody>

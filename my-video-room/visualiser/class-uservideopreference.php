@@ -12,6 +12,17 @@ namespace MyVideoRoomPlugin\Visualiser;
  */
 class UserVideoPreference {
 
+	/**
+	 *  Room Name - private string $room_name.
+	 *
+	 * @var string $room_name - room name.
+	 *  string $layout_id - Reception Template string $layout_id.
+	 *  ?string $reception_id;
+	 *  bool $reception_enabled;
+	 *  $reception_video_enabled - reception state.
+	 *  ?string $reception_video_url;
+	 *  bool $show_floorplan;
+	 */
 	private string $room_name;
 	private ?string $layout_id;
 	private ?string $reception_id;
@@ -29,7 +40,7 @@ class UserVideoPreference {
 	 * @param bool        $reception_enabled .
 	 */
 	public function __construct(
-		
+
 		string $room_name,
 		string $layout_id = null,
 		string $reception_id = null,
@@ -50,23 +61,27 @@ class UserVideoPreference {
 
 
 	/**
-	 * @return string
+	 * Returns Room Name from Object
+	 *
+	 * @return string - the room name.
 	 */
 	public function get_room_name(): string {
 		return $this->room_name;
 	}
 
 	/**
-	 * @return string
+	 * Returns Layout Template Name from Object
+	 *
+	 * @return string - the Template (layout-ID).
 	 */
 	public function get_layout_id(): ?string {
 		return $this->layout_id;
 	}
 
 	/**
-	 * @param string|null $layout_id
+	 * Sets the Layout Template Name to Object
 	 *
-	 * @return UserVideoPreference
+	 * @param string $layout_id - the id of the object to return.
 	 */
 	public function set_layout_id( string $layout_id = null ): UserVideoPreference {
 		$this->layout_id = $layout_id;
@@ -74,16 +89,18 @@ class UserVideoPreference {
 	}
 
 	/**
-	 * @return string
+	 * Returns Reception Template Name from Object
+	 *
+	 * @return string - the Reception Template.
 	 */
 	public function get_reception_id(): ?string {
 		return $this->reception_id;
 	}
 
 	/**
-	 * @param string|null $reception_id
+	 * Sets the Layout Template Name to Object
 	 *
-	 * @return UserVideoPreference
+	 * @param string $reception_id - the template to return.
 	 */
 	public function set_reception_id( string $reception_id = null ): UserVideoPreference {
 		$this->reception_id = $reception_id;
@@ -91,14 +108,18 @@ class UserVideoPreference {
 	}
 
 	/**
-	 * @return bool
+	 * Checks on/off status of Reception from Object.
+	 *
+	 * @return UserVideoPreference
 	 */
 	public function is_reception_enabled(): bool {
 		return $this->reception_enabled;
 	}
 
 	/**
-	 * @param bool $reception_enabled
+	 * Checks on/off status of Reception from Object.
+	 *
+	 * @param bool $reception_enabled - checks on/off status of Reception from Object.
 	 *
 	 * @return UserVideoPreference
 	 */
@@ -108,6 +129,8 @@ class UserVideoPreference {
 	}
 
 	/**
+	 * Returns whether or not Custom Video is enabled.
+	 *
 	 * @return bool
 	 */
 	public function get_reception_video_enabled_setting(): bool {
@@ -115,7 +138,9 @@ class UserVideoPreference {
 	}
 
 	/**
-	 * @param bool $reception_enabled
+	 * Checks on/off status of Reception from Object.
+	 *
+	 * @param bool $reception_video_enabled - checks on/off status of Reception Video from Object.
 	 *
 	 * @return UserVideoPreference
 	 */
@@ -126,33 +151,39 @@ class UserVideoPreference {
 
 
 	/**
-	 * @param string|null $layout_id
+	 * Sets the Custom Video status in object.
 	 *
+	 * @param string $reception_video_url - checks on/off status of Reception Video is on from Object.
 	 * @return UserVideoPreference
-	 */
+	 * */
 	public function set_reception_video_url_setting( string $reception_video_url = null ): UserVideoPreference {
 		$this->reception_video_url = $reception_video_url;
 		return $this;
 	}
 
 	/**
-	 * @return string
-	 */
+	 * Checks on/off status of Reception from Object.
+	 *
+	 * @return bool $reception_video_enabled - checks on/off status of Reception Video from Object.
+	 **/
 	public function get_reception_video_url_setting() {
 		return $this->reception_video_url;
 	}
 
 
-		/**
-		 * @return bool
-		 */
+	/**
+	 * Checks on/off status of FloorPlan from Object.
+	 *
+	 * @return bool $reception_video_enabled - checks on/off status of Reception Video from Object.
+	 **/
 	public function get_show_floorplan_setting(): bool {
 		return $this->show_floorplan;
 	}
 
 	/**
-	 * @param bool $reception_enabled
+	 * Checks the Status of the FloorPlan Setting.
 	 *
+	 * @param bool $show_floorplan - the disable guest layout setting - from the object.
 	 * @return UserVideoPreference
 	 */
 	public function set_show_floorplan_setting( bool $show_floorplan ): UserVideoPreference {

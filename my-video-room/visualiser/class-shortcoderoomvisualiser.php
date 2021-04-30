@@ -40,7 +40,7 @@ class ShortcodeRoomVisualiser {
 			)
 		);
 
-		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2.1.12', 'all' );
+		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2.1.17', 'all' );
 
 	}
 

@@ -18,6 +18,7 @@
 use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Visualiser\ShortcodeRoomVisualiser as VisualiserShortcodeRoomVisualiser;
+use MyVideoRoomPlugin\Visualiser\VisualiserHelpers;
 
 return function (
 	string $active_tab,
@@ -57,8 +58,8 @@ return function (
 						<h1>Default Security Level</h1>
 						<p>By default you have two shortcodes generated for your pages by the room builder. One is for the Host, and one for guest.
 							This setting configures, who the Video Engine will treat as a Host in case you haven't provided a Host Shortcode. 
-							By default, the Application will take <?php echo esc_html( get_bloginfo( 'name' ) ); ?>'s Administrators Group as its default host. You 
-							can override that section below, and add additional WordPress roles to your Host permissions Matrix. </p>
+							By default, the Application will take <?php echo esc_html( Factory::get_instance( VisualiserHelpers::class )->name_format( get_bloginfo( 'name' ) ) ); ?>
+							Administrators Group as its default host. You can override that section below, and add additional WordPress roles to your Host permissions Matrix. </p>
 
 							<p>More advanced Security is Available from the MyVideoRoom Extras plugin.</p>
 
@@ -71,8 +72,16 @@ return function (
 					</div>
 
 					<div id="page23" class="cc-tab-items-none">
-						<h2>All Shortcodes</h2>
-						<p>This section shows all available shortcodes that are possible with the plugin in all modules. To view just installed shortcodes please click on the Installed Tab</p>
+						<h2>Complete Information about Shortcodes for Advanced Users</h2>
+						<p>The MyVideoRoom platform works entirely on the generation of Host or Guest Shortcodes, (or sometimes combined for both cases). The following 
+							section allows you to see the parameters in Shortcode design to plan your custom and advanced Video deployments.
+						</p>
+						<?php
+						$render = require __DIR__ . '/../admin-reference.php';
+					// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself. 
+							echo $render();
+						?>
+
 					</div>
 
 					<div id="page24" class="cc-tab-items-block">
@@ -83,10 +92,19 @@ return function (
 					?>
 					</div>
 					<div id="page25" class="cc-tab-items-none">
-					<?php
-					// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself. 
-					echo Factory::get_instance(Admin::class)->create_admin_page();
-					?>
+					<a id="license"></a>
+					<div class="outer-box-wrap">	
+					<h1>Licensing and Activation</h1>
+						<p>The MyVideoRoom plugin requires an active account on the MyVideoRoom service to enable the video functionality. You can get your license
+							key <a href="https://myvideoroom.net/join-us/"> Here </a>. The service is a reliable, dedicated encrypted platform that never shares 
+							any data with anyone. The service allows for unlimited users to share the Video platform on one account, and is limited only by how
+							many users you want online at a time (concurrently).
+						</p>
+						<?php
+						// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself. 
+						echo Factory::get_instance(Admin::class)->create_admin_page();
+						?>
+						</div>
 					</div>
 			</div> 
 	<?php
