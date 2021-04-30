@@ -18,7 +18,7 @@ return function (
 	int $id_index = 0,
 	string $video_reception_url = null
 ): string {
-	wp_enqueue_script( 'frametab' );
+	wp_enqueue_script( 'mvr-frametab' );
 	wp_enqueue_style( 'visualiser' );
 	ob_start();
 

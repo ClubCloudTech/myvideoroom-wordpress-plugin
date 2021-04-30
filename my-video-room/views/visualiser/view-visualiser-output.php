@@ -19,7 +19,7 @@ return function (
 	string $text_shortcode_guest
 ): string {
 
-	wp_enqueue_script( 'frametab' );
+	wp_enqueue_script( 'mvr-frametab' );
 	wp_enqueue_style( 'visualiser' );
 
 	ob_start();

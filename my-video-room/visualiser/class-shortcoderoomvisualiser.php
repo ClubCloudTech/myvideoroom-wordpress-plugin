@@ -7,6 +7,8 @@
 
 namespace MyVideoRoomPlugin\Visualiser;
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Shortcode;
 use MyVideoRoomPlugin\Visualiser\UserVideoPreference as UserVideoPreferenceEntity;
 
 /**
@@ -26,11 +28,9 @@ class ShortcodeRoomVisualiser {
 	 */
 	public function init() {
 		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
-
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
-		wp_register_script( 'frametab', plugins_url( '../js/frametab.js', __FILE__ ), array(), '6.1', true );
-		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2.1.18', 'all' );
-
+		wp_register_script( 'mvr-frametab', plugins_url( '../js/mvr-frametab.js', __FILE__ ), array(), Factory::get_instance( Shortcode::class )->get_plugin_version(), true );
+		wp_register_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), Factory::get_instance( Shortcode::class )->get_plugin_version(), 'all' );
 	}
 
 	/**

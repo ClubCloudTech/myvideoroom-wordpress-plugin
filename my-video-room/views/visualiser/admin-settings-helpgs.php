@@ -26,8 +26,6 @@ return function (
 	array $messages = array()
 ): string {
 
-	wp_enqueue_script( 'frametab' );
-	wp_enqueue_style( 'visualiser' );
 	$render = require __DIR__ . '/header.php';
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped. 
 	echo $render( $active_tab, $tabs );

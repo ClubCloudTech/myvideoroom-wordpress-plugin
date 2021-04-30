@@ -11,6 +11,8 @@ return function (
 	array $messages = array()
 ): string {
 	ob_start();
+	wp_enqueue_script( 'mvr-frametab' );
+	wp_enqueue_style( 'visualiser' );
 	?>
 	<table style="width:100%">
 			<tr>
@@ -28,7 +30,6 @@ return function (
 					</th>
 			</tr>
 	</table>
-
 
 	<h2 class="nav-tab-wrapper">
 		<?php

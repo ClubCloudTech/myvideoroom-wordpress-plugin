@@ -1,7 +1,6 @@
-
 .cc-menu-header {
-	
-	display: block; 
+
+	display: block;
 	float: left;
 	border: 1px solid #ccc;
 	border-bottom: none;
@@ -13,13 +12,13 @@
 	background: #e5e5e5;
 	color: #555;
 	text-decoration: none;
-	
+
 }
 
 
 .cc-sub-menu-header {
-	
-	display: none; 
+
+	display: none;
 	float: left;
 	border: 1px solid #ccc;
 	margin-left: .5em;
@@ -30,12 +29,12 @@
 	background: #e5e5e5;
 	color: #555;
 	text-decoration: none;
-	
+
 }
 
 .cc-sub-menu-header-block {
-	
-	display: block; 
+
+	display: block;
 	float: left;
 	border: 1px solid #ccc;
 	margin-left: .5em;
@@ -46,12 +45,12 @@
 	background: #e5e5e5;
 	color: #555;
 	text-decoration: none;
-	
+
 }
 
 .tabCtrl-header{
 
-	background: #e0e0e0;  
+	background: #e0e0e0;
 	display: block;
 	float: left;
 	width: 95%;
@@ -67,7 +66,7 @@
 
 .cc-tab-items-block {
 
-	display: block; 
+	display: block;
 	float: left;
 	border: 1px solid #ccc;
 	width: 90%;
@@ -83,7 +82,7 @@
 
 .cc-tab-items-none {
 
-	display: none; 
+	display: none;
 	float: left;
 	border: 1px solid #ccc;
 	width: 90%;
@@ -99,7 +98,7 @@
 
 .cc-td-head-top {
 
-	    vertical-align: baseline;
+		vertical-align: baseline;
 }
 .outer-box-wrap {
 
@@ -114,19 +113,19 @@
 }
 
 .cc-visualiser-image {
-	
+
 	text-align: end;
 	width:20%;
 }
 
 .cc-visualiser-text-header {
-	
+
 	text-align: end;
 	width:70%;
 }
 
 .cc-visualiser-image-left {
-	
+
 	text-align: -webkit-match-parent;
 	width:20%;
 }
@@ -144,6 +143,5 @@ width:80%;
 
 .cc-header-table-3 {
 	width:33%;
-	
-	}
 
+	}

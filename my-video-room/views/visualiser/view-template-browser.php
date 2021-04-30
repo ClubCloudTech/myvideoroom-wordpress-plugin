@@ -7,7 +7,7 @@
 
 return function (): string {
 	ob_start();
-	wp_enqueue_script( 'frametab' );
+	wp_enqueue_script( 'mvr-frametab' );
 	wp_enqueue_style( 'visualiser' );
 	wp_enqueue_style( 'visualiser-override', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2.1.11', 'all' );
 	?>
