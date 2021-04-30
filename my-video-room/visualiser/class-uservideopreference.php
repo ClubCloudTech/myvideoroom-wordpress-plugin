@@ -13,22 +13,52 @@ namespace MyVideoRoomPlugin\Visualiser;
 class UserVideoPreference {
 
 	/**
-	 *  Room Name - private string $room_name.
+	 *  Room Name.
 	 *
-	 * @var string $room_name - room name.
-	 *  string $layout_id - Reception Template string $layout_id.
-	 *  ?string $reception_id;
-	 *  bool $reception_enabled;
-	 *  $reception_video_enabled - reception state.
-	 *  ?string $reception_video_url;
-	 *  bool $show_floorplan;
+	 * @var string $room_name - The room name.
 	 */
 	private string $room_name;
+
+	/**
+	 *  Layout ID
+	 *
+	 * @var string $layout_id - The Room Template.
+	 */
 	private ?string $layout_id;
+
+	/**
+	 *  Reception ID
+	 *
+	 * @var string $reception_id - The Reception Template.
+	 */
 	private ?string $reception_id;
+
+	/**
+	 *  Reception Enabled
+	 *
+	 * @var bool $reception_enabled - The State of the Reception.
+	 */
 	private bool $reception_enabled;
+
+	/**
+	 *  Reception Video Enabled.
+	 *
+	 * @var bool $reception_video_enabled - The Custom Reception Video Override State.
+	 */
 	private bool $reception_video_enabled;
+
+	/**
+	 *  Reception Video URL.
+	 *
+	 * @var string $reception_video_url - The Custom Reception Video URL to Display.
+	 */
 	private ?string $reception_video_url;
+
+	/**
+	 *  Show Floorplan.
+	 *
+	 * @var bool show_floorplan - The Floorplan (show Room Layout for visitors) setting
+	 */
 	private bool $show_floorplan;
 
 	/**
@@ -37,7 +67,10 @@ class UserVideoPreference {
 	 * @param string      $room_name - for use.
 	 * @param string|null $layout_id - room template.
 	 * @param string|null $reception_id - reception template.
-	 * @param bool        $reception_enabled .
+	 * @param bool        $reception_enabled - status of Reception.
+	 * @param bool        $reception_video_enabled - status of Reception Video State.
+	 * @param string      $reception_video_url - URL of the Custom Reception Video.
+	 * @param bool        $show_floorplan - status of Show Floorplan (disable guest room layout) State.
 	 */
 	public function __construct(
 
@@ -58,7 +91,6 @@ class UserVideoPreference {
 		$this->reception_video_url     = $reception_video_url;
 		$this->show_floorplan          = $show_floorplan;
 	}
-
 
 	/**
 	 * Returns Room Name from Object
@@ -149,7 +181,6 @@ class UserVideoPreference {
 		return $this;
 	}
 
-
 	/**
 	 * Sets the Custom Video status in object.
 	 *
@@ -170,7 +201,6 @@ class UserVideoPreference {
 		return $this->reception_video_url;
 	}
 
-
 	/**
 	 * Checks on/off status of FloorPlan from Object.
 	 *
@@ -190,16 +220,5 @@ class UserVideoPreference {
 		$this->show_floorplan = $show_floorplan;
 		return $this;
 	}
-
-
-
-
-
-
-
-
-
-
-
 
 }

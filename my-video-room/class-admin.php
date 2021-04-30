@@ -39,8 +39,8 @@ class Admin extends Shortcode {
 
 		if ( empty( $admin_page_hooks['my-video-room-global'] ) ) {
 			add_menu_page(
-				esc_html__( 'My Video Room ', 'myvideoroom' ),
-				esc_html__( 'My Video Room ', 'myvideoroom' ),
+				esc_html__( 'My Video Room', 'myvideoroom' ),
+				esc_html__( 'My Video Room', 'myvideoroom' ),
 				'manage_options',
 				'my-video-room-global',
 				array( $this, 'create_admin_page' ),

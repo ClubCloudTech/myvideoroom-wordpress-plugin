@@ -31,9 +31,5 @@ class VisualiserHelpers {
 		} else {
 			return $name . '\'s';
 		}
-
 	}
-
-
-
-} // End Class.
+}

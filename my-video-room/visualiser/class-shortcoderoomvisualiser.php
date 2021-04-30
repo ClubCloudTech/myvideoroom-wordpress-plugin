@@ -29,18 +29,7 @@ class ShortcodeRoomVisualiser {
 
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
 		wp_register_script( 'frametab', plugins_url( '../js/frametab.js', __FILE__ ), array(), '6.1', true );
-		add_action(
-			'wp_enqueue_scripts',
-			fn() => wp_enqueue_script(
-				'frametab',
-				plugins_url( '../js/frametab.js', __FILE__ ),
-				array(),
-				'6.1.0',
-				true
-			)
-		);
-
-		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2.1.17', 'all' );
+		wp_enqueue_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), '2.1.18', 'all' );
 
 	}
 
@@ -78,12 +67,10 @@ class ShortcodeRoomVisualiser {
 			First Section - Handle Data from Inbound Form, and process it.
 
 		*/
-
 		$show_floorplan = false;
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'myvideoroom_extras_update_user_video_preference', 'nonce' );
 		}
-
 			$room_name             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? 'Your Room Name' ) );
 			$video_template        = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_layout_id_preference'] ?? null ) );
 			$reception_template    = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_id_preference'] ?? null ) );
@@ -97,7 +84,6 @@ class ShortcodeRoomVisualiser {
 				$show_floorplan    = true;
 				$reception_setting = true;
 		}
-
 				$current_user_setting = new UserVideoPreferenceEntity(
 					$room_name,
 					$video_template,
@@ -110,8 +96,7 @@ class ShortcodeRoomVisualiser {
 
 		$available_layouts    = $this->get_available_layouts( array( 'basic', 'premium' ) );
 		$available_receptions = $this->get_available_receptions( array( 'basic', 'premium' ) );
-
-		$render = require __DIR__ . '/../views/visualiser/views-visualiser.php';
+		$render               = require __DIR__ . '/../views/visualiser/views-visualiser.php';
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
 		echo $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $video_reception_url );
 
@@ -201,7 +186,7 @@ class ShortcodeRoomVisualiser {
 	 * @param string         $uri The type of scene (layouts/receptions).
 	 * @param array|string[] $allowed_tags List of tags to fetch.
 	 *
-	 * @return array
+	 * @return array The Available Scenes.
 	 */
 	public function get_available_scenes( string $uri, array $allowed_tags = array( 'basic' ) ): array {
 		$url     = 'https://rooms.clubcloud.tech/' . $uri;
@@ -225,6 +210,4 @@ class ShortcodeRoomVisualiser {
 
 		return \json_decode( $body );
 	}
-
-
 }

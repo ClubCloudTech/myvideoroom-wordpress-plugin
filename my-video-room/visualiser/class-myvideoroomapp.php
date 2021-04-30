@@ -42,15 +42,12 @@ class MyVideoRoomApp {
 	 */
 	private bool $reception = false;
 
-
 	/**
 	 * Is the Disable Floorplan Setting enabled
 	 *
 	 * @var bool
 	 */
 	private bool $floorplan = false;
-
-
 
 	/**
 	 * The layout of the reception
@@ -65,7 +62,6 @@ class MyVideoRoomApp {
 	 * @var string
 	 */
 	private string $reception_video = '';
-
 
 	/**
 	 * Is the lobby enabled
@@ -132,8 +128,6 @@ class MyVideoRoomApp {
 		return $this;
 	}
 
-
-
 	/**
 	 * Set_reception_video_url.
 	 *
@@ -164,8 +158,6 @@ class MyVideoRoomApp {
 		$this->admin = false;
 		return $this;
 	}
-
-
 	/**
 	 * Set Disable Floorplan Flag
 	 *
@@ -175,7 +167,6 @@ class MyVideoRoomApp {
 		$this->floorplan = false;
 		return $this;
 	}
-
 	/**
 	 * Disable_floorplan -Removes Floorplan setting from object.
 	 *
@@ -195,8 +186,6 @@ class MyVideoRoomApp {
 		$this->lobby = true;
 		return $this;
 	}
-
-
 	/**
 	 * Assembles and constructs shortcode parameters from object array
 	 * Returns the array of processed deduplicated options
@@ -238,8 +227,6 @@ class MyVideoRoomApp {
 			}
 			return $this->render_shortcode( self::MYVIDEOROOM_APP_SHORTCODE, $shortcode_array, $text_safe );
 	}
-
-
 	/**
 	 * Render_shortcode for Visualiser.
 	 *
@@ -272,12 +259,5 @@ class MyVideoRoomApp {
 
 		$return = \do_shortcode( $output );
 		return $return;
-
 	}
-
-
-
-
-
-
-} //end class.
+}
