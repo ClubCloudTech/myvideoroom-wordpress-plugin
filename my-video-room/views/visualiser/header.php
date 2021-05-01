@@ -5,6 +5,9 @@
  * @package MyVideoRoomPlugin\Header
  */
 
+use MyVideoRoomPlugin\Admin;
+use MyVideoRoomPlugin\Factory;
+
 return function (
 	array $messages = array()
 ): string {
@@ -20,7 +23,8 @@ return function (
 					alt="My Video Room Extras" width="120" height="120" />
 			</th>
 			<th class="mvr-visualiser-image">
-				<h1 class="mvr-header-config-title"><?php echo esc_html__( 'My Video Room Settings and Configuration', 'myvideoroom' ); ?></h1>
+				<h1 class="mvr-header-config-title">
+					<?php echo esc_html__( 'My Video Room Settings and Configuration', 'myvideoroom' ); ?></h1>
 			</th>
 		</tr>
 		<tr>
@@ -48,9 +52,17 @@ return function (
 			href="/wp-admin/admin.php?page=my-video-room"><?php echo esc_html__( 'Shortcode Reference', 'myvideoroom' ); ?></a>
 		<a class="mvr-menu-header-item"
 			href="/wp-admin/admin.php?page=my-video-room-helpgs"><?php echo esc_html__( 'Help and Getting Started', 'myvideoroom' ); ?></a>
-				</nav>
-				</div>
+		<?php
+		$extras_activated = Factory::get_instance( Admin::class )->active_myvideoroom_plugin();
+		if ( strpos( $extras_activated, 'room-extras' ) !== false ) {
+			echo '<a class="mvr-menu-header-item"
+			href="/wp-admin/admin.php?page=my-video-room-extras">' . esc_html__( 'Premium Extras', 'myvideoroom' ) . '</a>';
+		}
 
-	<?php
+		?>
+	</nav>
+</div>
+
+<?php
 	return ob_get_clean();
 };
