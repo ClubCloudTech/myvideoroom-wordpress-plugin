@@ -145,8 +145,7 @@ class Admin extends Shortcode {
 		$available_myvideoroom_plugins = $this->get_available_myvideoroom_plugins();
 		$installed_myvideoroom_plugins = $this->installed_myvideoroom_plugin();
 		$active_myvideoroom_plugins    = $this->active_myvideoroom_plugin();
-
-		$view = require __DIR__ . '/views/admin.php';
+		$view                          = require __DIR__ . '/views/admin.php';
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We want to display the html from the render function to the browser.
 		echo $view( $video_server, $available_myvideoroom_plugins, $installed_myvideoroom_plugins, $active_myvideoroom_plugins, $messages );
@@ -219,7 +218,7 @@ class Admin extends Shortcode {
 	}
 
 	/**
-	 * Create_room_builder_page and send it to Visualiser Function.
+	 * Create_room_builder_page and send it to Visualiser Control Panel.
 	 *
 	 * @return void - sends admin page.
 	 */

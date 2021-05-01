@@ -127,7 +127,7 @@ return function (
 						<th scope="row"><?php echo esc_html( $available_myvideoroom_plugin_details['name'] ); ?></th>
 						<td>
 						<?php
-						if ( in_array( $available_myvideoroom_plugin_id, $installed_myvideoroom_plugins, true ) ) {
+						if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $installed_myvideoroom_plugins ), true ) ) {
 							echo '<span class="dashicons dashicons-yes"></span>';
 						} else {
 							echo '<span class="dashicons dashicons-no"></span>';
@@ -136,7 +136,7 @@ return function (
 						</td>
 						<td>
 						<?php
-						if ( in_array( $available_myvideoroom_plugin_id, $active_myvideoroom_plugins, true ) ) {
+						if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $active_myvideoroom_plugins ), true ) ) {
 							echo '<span class="dashicons dashicons-yes"></span>';
 						} else {
 							echo '<span class="dashicons dashicons-no"></span>';
@@ -145,7 +145,7 @@ return function (
 						</td>
 						<td>
 						<?php
-						if ( in_array( $available_myvideoroom_plugin_id, $active_myvideoroom_plugins, true ) ) {
+						if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $active_myvideoroom_plugins ), true ) ) {
 							?>
 								<a href="?page=<?php echo esc_attr( $available_myvideoroom_plugin_id ); ?>">
 									<span class="dashicons dashicons-admin-generic"></span>
