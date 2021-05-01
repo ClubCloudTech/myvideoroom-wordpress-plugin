@@ -31,7 +31,7 @@ return function (): string {
 	</ul>
 	<div id="tabCtrl2">
 
-		<div id="page1" class="mvr-tab-align">
+		<div id="page1" class="mvr-sub-menu-header">
 			<h2><?php echo esc_html__( 'Video Room Templates', 'myvideoroom' ); ?></h2>
 			<p>
 			<?php
