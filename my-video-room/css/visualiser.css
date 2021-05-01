@@ -1,18 +1,4 @@
-.mvr-menu-header {
 
-	display: block;
-	float: left;
-	border: 1px solid #ccc;
-	border-bottom: none;
-	margin-left: .5em;
-	padding: 5px 10px;
-	font-size: 14px;
-	line-height: 1.71428571;
-	font-weight: 600;
-	background: #e5e5e5;
-	color: #555;
-	text-decoration: none;
-}
 
 .mvr-sub-menu-header {
 
@@ -129,6 +115,38 @@
 	text-decoration: none;
 }
 
+
+.mvr-header-menu {
+
+	display: block;
+	float: left;
+	border: 1px solid #ccc;
+	margin-left: 10px;
+	margin-top: -10px;
+	padding: 5px 10px;
+	font-size: 14px;
+	line-height: 1.71428571;
+	font-weight: 600;
+	background: #e5e5e5;
+	color: #555;
+	text-decoration: none;
+}
+
+.mvr-menu-header-item {
+
+	display: block;
+	float: left;
+	border: 1px solid #ccc;
+	margin-left: .5em;
+	padding: 5px 10px;
+	font-size: 14px;
+	line-height: 1.71428571;
+	font-weight: 600;
+	background: #e5e5e5;
+	color: #555;
+	text-decoration: none;
+}
+
 #visualiser-tab {
 	margin-top: -20px;
 	margin-left: 20px;
@@ -139,16 +157,18 @@
 
 	vertical-align: baseline;
 }
-.outer-box-wrap {
+.mvr-outer-box-wrap {
 
-	border: 3px solid #969696;
-	background: #ebedf1;
+	border: 3px solid #d2d2d2;
+	background: #e7e7e7;
 	padding: 12px;
 	margin: 5px;
 }
 .mvr-heading-head-top {
 	text-align: start;
 	vertical-align: baseline;
+	margin-top: 30px;
+	margin-bottom: 30px;
 }
 
 .mvr-visualiser-image {
@@ -175,15 +195,17 @@
 
 .mvr-header-table {
 	width:80%;
-
 }
 
 .mvr-menu-ul {
 	display: flex;
-
 }
 
 .mvr-header-table-3 {
 	width:33%;
-
 }
+
+.mvr-header-config-title {
+	line-height: initial;
+}
+

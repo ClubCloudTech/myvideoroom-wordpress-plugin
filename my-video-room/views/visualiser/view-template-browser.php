@@ -10,16 +10,11 @@ return function (): string {
 	wp_enqueue_script( 'mvr-frametab' );
 	wp_enqueue_style( 'visualiser' );
 	?>
-<br>
-<div class="outer-box-wrap">
+<div class="mvr-outer-box-wrap">
 	<table style="width:100%">
 		<tr>
 			<th class="mvr-header-table">
 				<h1 class="mvr-heading-head-top"><?php echo esc_html__( 'Room Template Library', 'myvideoroom' ); ?></h1>
-			</th>
-			<th class="mvr-visualiser-image">
-				<img src="<?php echo esc_url( plugins_url( '../img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
-					alt="My Video Room Extras" width="90" height="90" />
 			</th>
 		</tr>
 	</table>

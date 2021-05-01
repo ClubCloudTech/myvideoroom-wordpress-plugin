@@ -31,7 +31,7 @@ class ShortcodeRoomVisualiser extends Shortcode {
 		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
 		wp_register_script( 'mvr-frametab', plugins_url( '../js/mvr-frametab.js', __FILE__ ), array(), $this->get_plugin_version(), true );
-		wp_register_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), $this->get_plugin_version() . '28', 'all' );
+		wp_register_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), $this->get_plugin_version() . '41', 'all' );
 	}
 
 	/**
