@@ -30,6 +30,13 @@ class Admin extends Shortcode {
 				);
 
 				wp_enqueue_style(
+					'myvideoroom-tabbed-css',
+					plugins_url( '/css/tabbed.css', __FILE__ ),
+					false,
+					$this->get_plugin_version(),
+				);
+
+				wp_enqueue_style(
 					'myvideoroom-visualiser-css',
 					plugins_url( '/css/visualiser.css', __FILE__ ),
 					false,

@@ -10,62 +10,50 @@ return function (
 ): string {
 	ob_start();
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
+	$current_page = sanitize_text_field( wp_unslash( $_GET['page'] ?? 'my-video-room-global' ) );
+
+	$pages = array(
+		'my-video-room-global'      => __( 'General Settings', 'myvideoroom' ),
+		'my-video-room-roombuilder' => __( 'Visual Room Builder', 'myvideoroom' ),
+		'my-video-room-security'    => __( 'Video Security', 'myvideoroom' ),
+		'my-video-room-templates'   => __( 'Room Templates', 'myvideoroom' ),
+		'my-video-room'             => __( 'Shortcode Reference', 'myvideoroom' ),
+		'my-video-room-helpgs'      => __( 'Help and Getting Started', 'myvideoroom' ),
+	);
+
 	?>
+	<header>
+		<h1 class="myvideoroom-header-config-title">
+			<?php esc_html_e( 'My Video Room Settings and Configuration', 'myvideoroom' ); ?>
+		</h1>
+		<img src="<?php echo esc_url( plugins_url( '../img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room" />
 
-	<div class="myvideoroom-outer-box-wrap">
-		<table style="width:100%">
-			<tr>
-				<th class="myvideoroom-visualiser-image-left">
-					<img src="<?php echo esc_url( plugins_url( '../img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
-						alt="My Video Room Extras" width="120" height="120" />
-				</th>
-				<th class="myvideoroom-visualiser-image">
-					<h1 class="myvideoroom-header-config-title"><?php echo esc_html__( 'My Video Room Settings and Configuration', 'myvideoroom' ); ?></h1>
-				</th>
-			</tr>
-			<tr>
-				<td>
-					<ul>
-						<?php
-						foreach ( $messages as $message ) {
-							echo '<li class="notice ' . esc_attr( $message['type'] ) . '"><p>' . esc_html( $message['message'] ) . '</p></li>';
-						}
-						?>
-					</ul>
-				</td>
-			</tr>
-		</table>
-
-		<nav class="myvideoroom-header-menu">
-			<a class="myvideoroom-menu-header-item" href="/<?php echo esc_url( get_admin_url() ); ?>admin.php?page=my-video-room-global">
-				<?php echo esc_html__( 'General Settings', 'myvideoroom' ); ?>
-			</a>
-
-			<a class="myvideoroom-menu-header-item" href="/<?php echo esc_url( get_admin_url() ); ?>admin.php?page=my-video-room-roombuilder">
-				<?php echo esc_html__( 'Visual Room Builder', 'myvideoroom' ); ?>
-			</a>
-
-			<a class="myvideoroom-menu-header-item" href="/<?php echo esc_url( get_admin_url() ); ?>admin.php?page=my-video-room-security">
-				<?php echo esc_html__( 'Video Security', 'myvideoroom' ); ?>
-			</a>
-
-			<a class="myvideoroom-menu-header-item" href="/<?php echo esc_url( get_admin_url() ); ?>admin.php?page=my-video-room-templates">
-				<?php echo esc_html__( 'Room Templates', 'myvideoroom' ); ?>
-			</a>
-
-			<a class="myvideoroom-menu-header-item" href="/<?php echo esc_url( get_admin_url() ); ?>admin.php?page=my-video-room">
-				<?php echo esc_html__( 'Shortcode Reference', 'myvideoroom' ); ?>
-			</a>
-
-			<a class="myvideoroom-menu-header-item" href="/<?php echo esc_url( get_admin_url() ); ?>admin.php?page=my-video-room-helpgs">
-				<?php echo esc_html__( 'Help and Getting Started', 'myvideoroom' ); ?>
-			</a>
-            
+		<ul>
 			<?php
-			do_action( 'mvr_admin_menu_tab' );
+			foreach ( $messages as $message ) {
+				echo '<li class="notice ' . esc_attr( $message['type'] ) . '"><p>' . esc_html( $message['message'] ) . '</p></li>';
+			}
 			?>
-		</nav>
-	</div>
+		</ul>
+	</header>
+
+	<nav class="nav-tab-wrapper">
+		<?php
+		foreach ( $pages as $page_slug => $page_title ) {
+			$class = 'nav-tab';
+
+			if ( $current_page === $page_slug ) {
+				$class .= ' nav-tab-active'; }
+
+			?>
+				<a class="<?php echo esc_attr( $class ); ?>" href="/wp-admin/admin.php?page=<?php echo esc_attr( $page_slug ); ?>">
+				<?php echo esc_html( $page_title ); ?>
+				</a>
+			<?php
+		}
+		?>
+	</nav>
 
 	<?php
 	return ob_get_clean();

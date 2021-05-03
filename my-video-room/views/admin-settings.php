@@ -22,56 +22,48 @@ return function (
 ): string {
 	ob_start();
 	?>
-	<div class="myvideoroom-outer-box-wrap">
-		<table style="width:100%">
-			<tr>
-				<th class="myvideoroom-header-table">
-					<h1 class="myvideoroom-heading-head-top"><?php esc_html_e( 'Video Security', 'myvideoroom' ); ?></h1>
-				</th>
-			</tr>
-		</table>
-		<div class="myvideoroom-tab-align">
-			<ul>
-				<?php
-				foreach ( $messages as $message ) {
-					echo '<li class="notice ' . esc_attr( $message['type'] ) . '"><p>' . esc_html( $message['message'] ) . '</p></li>';
-				}
-				?>
-			</ul>
+    <h1 class="myvideoroom-heading-head-top"><?php esc_html_e( 'Video Security', 'myvideoroom' ); ?></h1>
+    <div class="myvideoroom-tab-align">
+        <ul>
+            <?php
+            foreach ( $messages as $message ) {
+                echo '<li class="notice ' . esc_attr( $message['type'] ) . '"><p>' . esc_html( $message['message'] ) . '</p></li>';
+            }
+            ?>
+        </ul>
 
-			<h3><?php esc_html_e( 'Default Video Room Hosts', 'myvideoroom' ); ?></h3>
-			<p>
-				<?php
-				esc_html_e(
-					'By default you have two shortcodes generated for your pages by the room builder. One is for the Host, and one for guest.
-                    This setting configures, who the Video Engine will treat as a Host in case you haven\'t provided a Host Shortcode. 
-                    By default, the Application will take your Site Administrators Group as its default host. You can override that section below, and add additional WordPress roles to your Host permissions Matrix. ',
-					'myvideoroom'
-				);
-				?>
-			</p>
-			<form method="post" action="">
-				<fieldset>
-					<table class="form-table" id="myvideoroom-role-display-table"role="presentation">
-						<tbody>
-							<?php
-							foreach ( $all_wp_roles as $key => $single_role ) {
-								$role_object   = get_role( $key );
-								$has_admin_cap = $role_object->has_cap( Plugin::CAP_GLOBAL_ADMIN );
+        <h3><?php esc_html_e( 'Default Video Room Hosts', 'myvideoroom' ); ?></h3>
+        <p>
+            <?php
+            esc_html_e(
+                'By default you have two shortcodes generated for your pages by the room builder. One is for the Host, and one for guest.
+                This setting configures, who the Video Engine will treat as a Host in case you haven\'t provided a Host Shortcode. 
+                By default, the Application will take your Site Administrators Group as its default host. You can override that section below, and add additional WordPress roles to your Host permissions Matrix. ',
+                'myvideoroom'
+            );
+            ?>
+        </p>
+        <form method="post" action="">
+            <fieldset>
+                <table class="form-table" id="myvideoroom-role-display-table"role="presentation">
+                    <tbody>
+                        <?php
+                        foreach ( $all_wp_roles as $key => $single_role ) {
+                            $role_object   = get_role( $key );
+                            $has_admin_cap = $role_object->has_cap( Plugin::CAP_GLOBAL_ADMIN );
 
-								echo '<th scope="row" class="tabCtrl-header"><label for="role_' . esc_attr( $key ) . '">' . esc_html( $single_role['name'] ) . '</label>';
-								echo '<input class="myvideoroom-admin-table-format" id="role_' . esc_attr( $key ) . '" name="role_' . esc_attr( $key ) . '" type="checkbox" ' . ( $has_admin_cap ? 'checked="checked" ' : '' ) . '/></th>';
-							}
-							?>
-						</tbody>
-					</table>
-				</fieldset>
+                            echo '<th scope="row" class="tabCtrl-header"><label for="role_' . esc_attr( $key ) . '">' . esc_html( $single_role['name'] ) . '</label>';
+                            echo '<input class="myvideoroom-admin-table-format" id="role_' . esc_attr( $key ) . '" name="role_' . esc_attr( $key ) . '" type="checkbox" ' . ( $has_admin_cap ? 'checked="checked" ' : '' ) . '/></th>';
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </fieldset>
 
-				<?php wp_nonce_field( 'update_caps', 'nonce' ); ?>
-				<?php submit_button(); ?>
-			</form>
-		</div>
-	</div>
+            <?php wp_nonce_field( 'update_caps', 'nonce' ); ?>
+            <?php submit_button(); ?>
+        </form>
+    </div>
 
 	<?php
 	return ob_get_clean();
