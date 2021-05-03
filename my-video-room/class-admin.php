@@ -19,7 +19,6 @@ class Admin extends Shortcode {
 	 */
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
-
 		add_action(
 			'admin_enqueue_scripts',
 			fn() => wp_enqueue_style(

@@ -5,9 +5,6 @@
  * @package MyVideoRoomPlugin\Header
  */
 
-use MyVideoRoomPlugin\Admin;
-use MyVideoRoomPlugin\Factory;
-
 return function (
 	array $messages = array()
 ): string {
@@ -41,28 +38,24 @@ return function (
 	</table>
 	<nav class="mvr-header-menu">
 		<a class="mvr-menu-header-item"
-			href="/wp-admin/admin.php?page=my-video-room-global"><?php echo esc_html__( 'General Settings', 'myvideoroom' ); ?></a>
+			href="<?php echo esc_url( get_admin_url() ); ?>/admin.php?page=my-video-room-global"><?php echo esc_html__( 'General Settings', 'myvideoroom' ); ?></a>
 		<a class="mvr-menu-header-item"
-			href="/wp-admin/admin.php?page=my-video-room-roombuilder"><?php echo esc_html__( 'Visual Room Builder', 'myvideoroom' ); ?></a>
+			href="<?php echo esc_url( get_admin_url() ); ?>/admin.php?page=my-video-room-roombuilder"><?php echo esc_html__( 'Visual Room Builder', 'myvideoroom' ); ?></a>
 		<a class="mvr-menu-header-item"
-			href="/wp-admin/admin.php?page=my-video-room-security"><?php echo esc_html__( 'Video Security', 'myvideoroom' ); ?></a>
+			href="<?php echo esc_url( get_admin_url() ); ?>/admin.php?page=my-video-room-security"><?php echo esc_html__( 'Video Security', 'myvideoroom' ); ?></a>
 		<a class="mvr-menu-header-item"
-			href="/wp-admin/admin.php?page=my-video-room-templates"><?php echo esc_html__( 'Room Templates', 'myvideoroom' ); ?></a>
+			href="<?php echo esc_url( get_admin_url() ); ?>/admin.php?page=my-video-room-templates"><?php echo esc_html__( 'Room Templates', 'myvideoroom' ); ?></a>
 		<a class="mvr-menu-header-item"
-			href="/wp-admin/admin.php?page=my-video-room"><?php echo esc_html__( 'Shortcode Reference', 'myvideoroom' ); ?></a>
+			href="<?php echo esc_url( get_admin_url() ); ?>/admin.php?page=my-video-room"><?php echo esc_html__( 'Shortcode Reference', 'myvideoroom' ); ?></a>
 		<a class="mvr-menu-header-item"
-			href="/wp-admin/admin.php?page=my-video-room-helpgs"><?php echo esc_html__( 'Help and Getting Started', 'myvideoroom' ); ?></a>
+			href="<?php echo esc_url( get_admin_url() ); ?>/admin.php?page=my-video-room-helpgs"><?php echo esc_html__( 'Help and Getting Started', 'myvideoroom' ); ?></a>
 		<?php
-		$extras_activated = Factory::get_instance( Admin::class )->active_myvideoroom_plugin();
-		if ( strpos( $extras_activated, 'room-extras' ) !== false ) {
-			echo '<a class="mvr-menu-header-item"
-			href="/wp-admin/admin.php?page=my-video-room-extras">' . esc_html__( 'Premium Extras', 'myvideoroom' ) . '</a>';
-		}
-
+		do_action( 'mvr_admin_menu_tab' );
 		?>
 	</nav>
 </div>
 
-<?php
+	<?php
 	return ob_get_clean();
+
 };

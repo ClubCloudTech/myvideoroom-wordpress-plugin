@@ -64,7 +64,7 @@ return function (): string {
 						<?php
 						printf(   /* translators: %s is the text "Visual Room Builder" and links to the Room Builder Section */
 							esc_html__( 'Visit MyVideoRoom by ClubCloud to Get Your License Key %s.', 'myvideoroom' ),
-							'<a href="https://clubcloud.tech/pricing/">' .
+							'<a href="https://clubcloud.tech/pricing/" target="_none">' .
 							esc_html__( 'Here', 'myvideoroom' ) . '</a>'
 						);
 						?>
@@ -72,7 +72,7 @@ return function (): string {
 						<?php
 						printf(   /* translators: %s is the text "Visual Room Builder" and links to the Room Builder Section */
 							esc_html__( 'Activate Your License Key %s.', 'myvideoroom' ),
-							'<a href="/wp-admin/admin.php?page=my-video-room-global">' .
+							'<a href="/wp-admin/admin.php?page=my-video-room-global" target="_none">' .
 							esc_html__( 'Here', 'myvideoroom' ) . '</a>'
 						);
 						?>
