@@ -12,22 +12,22 @@ return function (): string {
 			<?php esc_html_e( 'Room Template Library', 'myvideoroom' ); ?>
 		</h1>
 
-		<nav class="myvideoroom-tabbed-nav">
+		<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 			<ul>
 				<li>
-					<a href="#myvideoroom-how-to-use-templates">
+					<a class="nav-tab nav-tab-active" href="#myvideoroom-how-to-use-templates">
 						<?php esc_html_e( 'Using Templates', 'myvideoroom' ); ?>
 					</a>
 				</li>
 
 				<li>
-					<a href="#myvideoroom-layouts">
+					<a class="nav-tab" href="#myvideoroom-layouts">
 						<?php esc_html_e( 'Video Room Templates', 'myvideoroom' ); ?>
 					</a>
 				</li>
 
 				<li>
-					<a href="#myvideoroom-receptions">
+					<a class="nav-tab" href="#myvideoroom-receptions">
 						<?php esc_html_e( 'Reception Templates', 'myvideoroom' ); ?>
 					</a>
 				</li>
@@ -71,7 +71,7 @@ return function (): string {
 			?>
 			</p>
 
-			<iframe src="https://rooms.clubcloud.tech/views/layout?embed=true"></iframe>
+			<iframe class="myvideoroom-admin-template-browser" src="https://rooms.clubcloud.tech/views/layout?embed=true"></iframe>
 		</article>
 
 		<article id="myvideoroom-receptions">
@@ -88,7 +88,7 @@ return function (): string {
 			?>
 			</p>
 
-			<iframe src="https://rooms.clubcloud.tech/views/reception?embed=true"></iframe>
+			<iframe class="myvideoroom-admin-template-browser" src="https://rooms.clubcloud.tech/views/reception?embed=true"></iframe>
 		</article>
 	<?php
 

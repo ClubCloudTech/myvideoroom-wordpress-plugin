@@ -5,6 +5,11 @@
  * @package MyVideoRoomPlugin\Header
  */
 
+/**
+ * Render the admin header
+ *
+ * @param array $messages An list of messages to show. Takes the form [type=:string, message=:message][]
+ */
 return function (
 	array $messages = array()
 ): string {
@@ -19,26 +24,28 @@ return function (
 		'my-video-room-security'    => __( 'Video Security', 'myvideoroom' ),
 		'my-video-room-templates'   => __( 'Room Templates', 'myvideoroom' ),
 		'my-video-room'             => __( 'Shortcode Reference', 'myvideoroom' ),
-		'my-video-room-helpgs'      => __( 'Help and Getting Started', 'myvideoroom' ),
+		'my-video-room-getting-started'      => __( 'Help and Getting Started', 'myvideoroom' ),
 	);
 
 	?>
+
+	<ul>
+		<?php
+		foreach ( $messages as $message ) {
+			echo '<li class="notice ' . esc_attr( $message['type'] ) . ' is-dismissible"><p>' . esc_html( $message['message'] ) . '</p></li>';
+		}
+		?>
+	</ul>
+
 	<header>
 		<h1 class="myvideoroom-header-config-title">
 			<?php esc_html_e( 'My Video Room Settings and Configuration', 'myvideoroom' ); ?>
 		</h1>
-		<img src="<?php echo esc_url( plugins_url( '../img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room" />
-
-		<ul>
-			<?php
-			foreach ( $messages as $message ) {
-				echo '<li class="notice ' . esc_attr( $message['type'] ) . '"><p>' . esc_html( $message['message'] ) . '</p></li>';
-			}
-			?>
-		</ul>
+		<img src="<?php echo esc_url( plugins_url( '/img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room" />
 	</header>
 
 	<nav class="nav-tab-wrapper">
+		<ul>
 		<?php
 		foreach ( $pages as $page_slug => $page_title ) {
 			$class = 'nav-tab';
@@ -47,12 +54,15 @@ return function (
 				$class .= ' nav-tab-active'; }
 
 			?>
-				<a class="<?php echo esc_attr( $class ); ?>" href="/wp-admin/admin.php?page=<?php echo esc_attr( $page_slug ); ?>">
-				<?php echo esc_html( $page_title ); ?>
-				</a>
+				<li>
+					<a class="<?php echo esc_attr( $class ); ?>" href="/wp-admin/admin.php?page=<?php echo esc_attr( $page_slug ); ?>">
+					<?php echo esc_html( $page_title ); ?>
+					</a>
+				</li>
 			<?php
 		}
 		?>
+		</ul>
 	</nav>
 
 	<?php

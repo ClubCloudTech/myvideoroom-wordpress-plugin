@@ -13,7 +13,6 @@ use MyVideoRoomPlugin\Plugin;
  * Render the admin page
  *
  * @param string $video_server The host of the video server
- * @param array $messages An list of messages to show. Takes the form [type=:string, message=:message][]
  */
 return function (
 	string $video_server,

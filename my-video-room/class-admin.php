@@ -45,7 +45,7 @@ class Admin extends Shortcode {
 
 				wp_enqueue_script(
 					'myvideoroom-admin-tabs',
-					plugins_url( '/js/mvr-frametab.js', __FILE__ ),
+					plugins_url( '/js/tabbed.js', __FILE__ ),
 					array( 'jquery' ),
 					$this->get_plugin_version(),
 					true
@@ -102,7 +102,7 @@ class Admin extends Shortcode {
 
 			$this->add_submenu_link(
 				esc_html__( 'Help & Getting Started', 'myvideoroom' ),
-				'my-video-room-helpgs',
+				'my-video-room-getting-started',
 				array( $this, 'create_helpgs_page' )
 			);
 		}
@@ -129,18 +129,12 @@ class Admin extends Shortcode {
 	}
 
 	/**
-	 * Create the admin main page contents.
+	 * Render the admin header
+	 *
+	 * @param string $page     The contents of the page.
+	 * @param array  $messages List of message to display in the header.
 	 */
-	public function create_admin_page() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-		$render_header = require __DIR__ . '/views/visualiser/header.php';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo $render_header();
-
-		$messages = array();
-
+	private function render_admin_page( string $page, array $messages = array() ) {
 		$activation_key = get_option( Plugin::SETTING_ACTIVATION_KEY );
 
 		if ( $activation_key ) {
@@ -157,6 +151,25 @@ class Admin extends Shortcode {
 			);
 		}
 
+		echo '<div class="myvideoroom-admin">';
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
+		echo ( require __DIR__ . '/views/admin-header.php' )( $messages );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
+		echo $page;
+
+		echo '</div>';
+	}
+
+	/**
+	 * Create the admin main page contents.
+	 */
+	public function create_admin_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		delete_option( Plugin::SETTING_ACTIVATION_KEY );
 
 		if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
@@ -170,8 +183,9 @@ class Admin extends Shortcode {
 		$active_myvideoroom_plugins    = $this->active_myvideoroom_plugin();
 		$view                          = require __DIR__ . '/views/admin.php';
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We want to display the html from the render function to the browser.
-		echo $view( $video_server, $available_myvideoroom_plugins, $installed_myvideoroom_plugins, $active_myvideoroom_plugins, $messages );
+		$this->render_admin_page(
+			$view( $video_server, $available_myvideoroom_plugins, $installed_myvideoroom_plugins, $active_myvideoroom_plugins )
+		);
 	}
 
 	/**
@@ -181,25 +195,8 @@ class Admin extends Shortcode {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		$render_header = require __DIR__ . '/views/visualiser/header.php';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo $render_header();
-		$tab = null;
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
-		if ( isset( $_GET['tab'] ) ) {
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
-			$tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
-		}
-
-		switch ( $tab ) {
-			case 'settings':
-				$this->create_settings_admin_page();
-				break;
-			default:
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We want to display the html from the render function to the browser.
-				echo ( require __DIR__ . '/views/admin-reference.php' )();
-		}
+		$this->render_admin_page( ( require __DIR__ . '/views/admin-reference.php' )() );
 	}
 
 	/**
@@ -209,13 +206,10 @@ class Admin extends Shortcode {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		$render_header = require __DIR__ . '/views/visualiser/header.php';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo $render_header();
-		$messages = array();
 
 		global $wp_roles;
 		$all_roles = $wp_roles->roles;
+		$messages  = array();
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'update_caps', 'nonce' );
@@ -236,8 +230,7 @@ class Admin extends Shortcode {
 			);
 		}
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- We want to display the html from the render function to the browser.
-		echo ( require __DIR__ . '/views/admin-settings.php' )( $messages, $all_roles );
+		$this->render_admin_page( ( require __DIR__ . '/views/admin-settings.php' )( $all_roles ), $messages );
 	}
 
 	/**
@@ -250,11 +243,7 @@ class Admin extends Shortcode {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo ( require __DIR__ . '/views/visualiser/header.php' )();
-
-		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
-		echo ( require __DIR__ . '/views/visualiser/view-roombuilder.php' )();
+		$this->render_admin_page( ( require __DIR__ . '/views/visualiser/view-roombuilder.php' )() );
 	}
 
 	/**
@@ -267,12 +256,7 @@ class Admin extends Shortcode {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo ( require __DIR__ . '/views/visualiser/header.php' )();
-
-		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
-		echo ( require __DIR__ . '/views/visualiser/view-helpgs.php')();
-
+		$this->render_admin_page( ( require __DIR__ . '/views/visualiser/admin-getting-started.php' )() );
 	}
 
 	/**
@@ -285,14 +269,8 @@ class Admin extends Shortcode {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo ( require __DIR__ . '/views/visualiser/header.php' )();
-
-		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
-		echo ( require __DIR__ . '/views/visualiser/view-template-browser.php' )();
-
+		$this->render_admin_page( ( require __DIR__ . '/views/visualiser/admin-template-browser.php' )() );
 	}
-
 
 	/**
 	 * Attempt to activate using an activation key

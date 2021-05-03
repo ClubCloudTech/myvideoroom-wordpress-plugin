@@ -1,7 +1,83 @@
-code.myvideoroom-admin-code {
+.myvideoroom-admin .nav-tab-wrapper li {
+	margin-bottom: -1px	;
+}
+
+.myvideoroom-admin .nav-tab-wrapper a {
+	text-decoration: none;
+	color: #000000;
+}
+
+.myvideoroom-admin .nav-tab-wrapper a:hover {
+	background: none;
+}
+
+.myvideoroom-admin code {
 	white-space: nowrap;
 	overflow: scroll;
 	display: block;
 	padding: 16px 8px;
 	user-select: all;
+}
+
+.myvideoroom-admin header h1 {
+	float: right;
+	margin-right: 16px;
+	max-width: 50%;
+	text-align: right;
+}
+
+.myvideoroom-admin header img {
+	float: left;
+	width: 120px;
+	height: 120px;
+	display: block;
+}
+
+.myvideoroom-admin header:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+
+/* Three Step Getting Started */
+
+.myvideoroom-admin ol.three-step-getting-started {
+	margin: 0;
+	padding: 0;
+	counter-reset: item;
+}
+
+.myvideoroom-admin ol.three-step-getting-started li {
+	counter-increment: item;
+	display: block;
+	width: 33%;
+	float: left;
+	padding: 16px;
+	box-sizing: border-box;
+}
+
+.myvideoroom-admin ol.three-step-getting-started li:before {
+	content: counter(item);
+	background: #327EAC;
+	border-radius: 100%;
+	color: white;
+	width: 72px;
+	line-height: 72px;
+	font-size: 40px;
+	font-weight: bold;
+	text-align: center;
+	float: left;
+	margin: 0 8px 8px 0;
+}
+
+.myvideoroom-admin ol.three-step-getting-started li h4 {
+	font-size: 24px;
+	margin: 0;
+	line-height: 1.1em;
+	min-height: 80px;
+}
+
+iframe.myvideoroom-admin-template-browser {
+	width: 100%;
+	height: 80vh;
 }
