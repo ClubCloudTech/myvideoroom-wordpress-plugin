@@ -1,7 +1,4 @@
-
-
-.mvr-sub-menu-header {
-
+.myvideoroom-sub-menu-header {
 	display: none;
 	float: left;
 	border: 1px solid #ccc;
@@ -15,8 +12,7 @@
 	text-decoration: none;
 }
 
-.mvr-sub-menu-header-block {
-
+.myvideoroom-sub-menu-header-block {
 	display: block;
 	float: left;
 	border: 1px solid #ccc;
@@ -30,9 +26,7 @@
 	text-decoration: none;
 }
 
-.tabCtrl-header{
-
-	background: #f5f5f5;
+.tabCtrl-header {
 	display: block;
 	float: left;
 	width: 95%;
@@ -46,8 +40,7 @@
 	text-decoration: none;
 }
 
-.mvr-tab-items-block {
-
+.myvideoroom-tab-items-block {
 	display: block;
 	float: left;
 	border: 1px solid #ccc;
@@ -62,8 +55,7 @@
 	text-decoration: none;
 }
 
-.mvr-tab-items-none {
-
+.myvideoroom-tab-items-none {
 	display: none;
 	float: left;
 	border: 1px solid #ccc;
@@ -78,8 +70,7 @@
 	text-decoration: none;
 }
 
-#mvr-role-display-table {
-
+#myvideoroom-role-display-table {
 	display: block;
 	float: left;
 	width: 90%;
@@ -93,15 +84,15 @@
 	text-decoration: none;
 }
 
-#mvr-role-display-table th{
-
+#myvideoroom-role-display-table th {
 	display: block;
 	float: left;
 	color: #555;
 	text-decoration: none;
 
 }
-.mvr-tab-align {
+
+.myvideoroom-tab-align {
 	display: block;
 	float: left;
 	border: 2px solid #ccc;
@@ -116,8 +107,7 @@
 }
 
 
-.mvr-header-menu {
-
+.myvideoroom-header-menu {
 	display: block;
 	float: left;
 	border: 1px solid #ccc;
@@ -132,8 +122,7 @@
 	text-decoration: none;
 }
 
-.mvr-menu-header-item {
-
+.myvideoroom-menu-header-item {
 	display: block;
 	float: left;
 	border: 1px solid #ccc;
@@ -166,59 +155,55 @@
 	margin-right: 20px;
 }
 
-.mvr-td-head-top {
-
+.myvideoroom-td-head-top {
 	vertical-align: baseline;
 }
-.mvr-outer-box-wrap {
 
+.myvideoroom-outer-box-wrap {
 	border: 3px solid #d2d2d2;
 	background: #e7e7e7;
 	padding: 12px;
 	margin: 5px;
 }
-.mvr-heading-head-top {
+
+.myvideoroom-heading-head-top {
 	text-align: start;
 	vertical-align: baseline;
 	margin-top: 30px;
 	margin-bottom: 30px;
 }
 
-.mvr-visualiser-image {
-
+.myvideoroom-visualiser-image {
 	text-align: end;
-	width:20%;
+	width: 20%;
 }
 
-.mvr-visualiser-text-header {
-
+.myvideoroom-visualiser-text-header {
 	text-align: end;
-	width:70%;
+	width: 70%;
 }
 
-.mvr-visualiser-image-left {
-
+.myvideoroom-visualiser-image-left {
 	text-align: -webkit-match-parent;
-	width:20%;
+	width: 20%;
 }
 
-.mvr-explainer-text	{
+.myvideoroom-explainer-text {
 	margin: initial;
 }
 
-.mvr-header-table {
-	width:80%;
+.myvideoroom-header-table {
+	width: 80%;
 }
 
-.mvr-menu-ul {
+.myvideoroom-menu-ul {
 	display: flex;
 }
 
-.mvr-header-table-3 {
-	width:33%;
+.myvideoroom-header-table-3 {
+	width: 33%;
 }
 
-.mvr-header-config-title {
+.myvideoroom-header-config-title {
 	line-height: initial;
 }
-

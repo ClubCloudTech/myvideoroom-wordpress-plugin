@@ -5,7 +5,7 @@
  * @package MyVideoRoomPlugin\Admin
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
@@ -21,12 +21,29 @@ class Admin extends Shortcode {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		add_action(
 			'admin_enqueue_scripts',
-			fn() => wp_enqueue_style(
-				'myvideoroom-admin-css',
-				plugins_url( '/css/admin.css', __FILE__ ),
-				false,
-				$this->get_plugin_version(),
-			)
+			function () {
+				wp_enqueue_style(
+					'myvideoroom-admin-css',
+					plugins_url( '/css/admin.css', __FILE__ ),
+					false,
+					$this->get_plugin_version(),
+				);
+
+				wp_enqueue_style(
+					'myvideoroom-visualiser-css',
+					plugins_url( '/css/visualiser.css', __FILE__ ),
+					false,
+					$this->get_plugin_version(),
+				);
+
+				wp_enqueue_script(
+					'myvideoroom-admin-tabs',
+					plugins_url( '/js/mvr-frametab.js', __FILE__ ),
+					array( 'jquery' ),
+					$this->get_plugin_version(),
+					true
+				);
+			}
 		);
 	}
 
@@ -46,62 +63,62 @@ class Admin extends Shortcode {
 				'dashicons-format-chat'
 			);
 
-			add_submenu_page(
-				'my-video-room-global',
+			$this->add_submenu_link(
 				esc_html__( 'My Video Room Settings', 'myvideoroom' ),
-				esc_html__( 'General Settings', 'myvideoroom' ),
-				'manage_options',
 				'my-video-room-global',
 				array( $this, 'create_admin_page' )
 			);
+
+			$this->add_submenu_link(
+				esc_html__( 'Room Builder', 'myvideoroom' ),
+				'my-video-room-roombuilder',
+				array( $this, 'create_room_builder_page' )
+			);
+
+			$this->add_submenu_link(
+				esc_html__( 'Room Templates', 'myvideoroom' ),
+				'my-video-room-templates',
+				array( $this, 'create_template_page' )
+			);
+
+			$this->add_submenu_link(
+				esc_html__( 'Shortcode Reference', 'myvideoroom' ),
+				'my-video-room',
+				array( $this, 'create_video_admin_page' )
+			);
+
+			$this->add_submenu_link(
+				esc_html__( 'Video Security', 'myvideoroom' ),
+				'my-video-room-security',
+				array( $this, 'create_settings_admin_page' )
+			);
+
+			$this->add_submenu_link(
+				esc_html__( 'Help & Getting Started', 'myvideoroom' ),
+				'my-video-room-helpgs',
+				array( $this, 'create_helpgs_page' )
+			);
 		}
 
-		add_submenu_page(
-			'my-video-room-global',
-			esc_html__( 'Room Builder', 'myvideoroom' ),
-			esc_html__( 'Room Builder', 'myvideoroom' ),
-			'manage_options',
-			'my-video-room-roombuilder',
-			array( $this, 'create_room_builder_page' )
-		);
-
-		add_submenu_page(
-			'my-video-room-global',
-			esc_html__( 'Room Templates', 'myvideoroom' ),
-			esc_html__( 'Room Templates', 'myvideoroom' ),
-			'manage_options',
-			'my-video-room-templates',
-			array( $this, 'create_template_page' )
-		);
-
-		add_submenu_page(
-			'my-video-room-global',
-			esc_html__( 'Shortcode Reference', 'myvideoroom' ),
-			esc_html__( 'Shortcode Reference', 'myvideoroom' ),
-			'manage_options',
-			'my-video-room',
-			array( $this, 'create_video_admin_page' )
-		);
-
-		add_submenu_page(
-			'my-video-room-global',
-			esc_html__( 'Video Security', 'myvideoroom' ),
-			esc_html__( 'Video Security', 'myvideoroom' ),
-			'manage_options',
-			'my-video-room-security',
-			array( $this, 'create_settings_admin_page' )
-		);
-
-		add_submenu_page(
-			'my-video-room-global',
-			esc_html__( 'Help & Getting Started', 'myvideoroom' ),
-			esc_html__( 'Help & Getting Started', 'myvideoroom' ),
-			'manage_options',
-			'my-video-room-helpgs',
-			array( $this, 'create_helpgs_page' )
-		);
-
 		do_action( 'myvideoroom_admin_menu', 'my-video-room-global' );
+	}
+
+	/**
+	 * Add a submenu link
+	 *
+	 * @param string   $title    The title of the page.
+	 * @param string   $slug     The slug of the page.
+	 * @param callable $callback The callback to render the page.
+	 */
+	private function add_submenu_link( string $title, string $slug, callable $callback ) {
+		add_submenu_page(
+			'my-video-room-global',
+			$title,
+			$title,
+			'manage_options',
+			$slug,
+			$callback
+		);
 	}
 
 	/**
@@ -225,12 +242,12 @@ class Admin extends Shortcode {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		$render_header = require __DIR__ . '/views/visualiser/header.php';
+
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo $render_header();
-		$render_main = require __DIR__ . '/views/visualiser/view-roombuilder.php';
+		echo ( require __DIR__ . '/views/visualiser/header.php' )();
+
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
-		echo $render_main();
+		echo ( require __DIR__ . '/views/visualiser/view-roombuilder.php' )();
 	}
 
 	/**
@@ -242,12 +259,12 @@ class Admin extends Shortcode {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		$render_header = require __DIR__ . '/views/visualiser/header.php';
+
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo $render_header();
-		$render_main = require __DIR__ . '/views/visualiser/view-helpgs.php';
+		echo ( require __DIR__ . '/views/visualiser/header.php' )();
+
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
-		echo $render_main();
+		echo ( require __DIR__ . '/views/visualiser/view-helpgs.php')();
 
 	}
 
@@ -260,12 +277,12 @@ class Admin extends Shortcode {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		$render_header = require __DIR__ . '/views/visualiser/header.php';
+
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo $render_header();
-		$render_main = require __DIR__ . '/views/visualiser/view-template-browser.php';
+		echo ( require __DIR__ . '/views/visualiser/header.php' )();
+
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required as function has escaping within it.
-		echo $render_main();
+		echo ( require __DIR__ . '/views/visualiser/view-template-browser.php' )();
 
 	}
 

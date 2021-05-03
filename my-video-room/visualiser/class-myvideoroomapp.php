@@ -158,6 +158,7 @@ class MyVideoRoomApp {
 		$this->admin = false;
 		return $this;
 	}
+
 	/**
 	 * Set Disable Floorplan Flag
 	 *
@@ -167,6 +168,7 @@ class MyVideoRoomApp {
 		$this->floorplan = false;
 		return $this;
 	}
+
 	/**
 	 * Disable_floorplan -Removes Floorplan setting from object.
 	 *
@@ -186,53 +188,57 @@ class MyVideoRoomApp {
 		$this->lobby = true;
 		return $this;
 	}
+
 	/**
 	 * Assembles and constructs shortcode parameters from object array
 	 * Returns the array of processed deduplicated options
 	 *
-	 * @param  string $text_safe - passes to main constructor a variable that instructs it to not render the shortcode and instead returns the string only (used for visualiser).
+	 * @param  ?string $text_safe - passes to main constructor a variable that instructs it to not render the shortcode and instead returns the string only (used for visualiser).
 	 * @return string
 	 */
 	public function output_shortcode( string $text_safe = null ): string {
+		$shortcode_array = array(
+			'name'   => $this->name,
+			'layout' => $this->layout,
+		);
 
-			$shortcode_array = array(
-				'name'   => $this->name,
-				'layout' => $this->layout,
-			);
+		if ( true === $this->admin ) {
+			$shortcode_array['admin'] = true;
+		} elseif ( false === $this->admin ) {
+			$shortcode_array['admin'] = false;
+		}
 
-			if ( true === $this->admin ) {
-				$shortcode_array['admin'] = true;
-			} elseif ( false === $this->admin ) {
-				$shortcode_array['admin'] = false;
-			}
-			// Reception Setting. Note it can be modified by other parameters like Floorplan which require Reception to be on.
-			if ( $this->reception ) {
-				$shortcode_array['reception']    = true;
-				$shortcode_array['reception-id'] = $this->reception_id;
-			}
-			// Floorplan setting.
-			if ( true === $this->floorplan ) {
-				$shortcode_array['floorplan'] = true;
-				$shortcode_array['reception'] = true;
-			} elseif ( false === $this->floorplan ) {
-				$shortcode_array['floorplan'] = false;
-			}
-			// Lobby setting.
-			if ( $this->lobby ) {
-				$shortcode_array['lobby'] = true;
-			}
+		// Reception Setting. Note it can be modified by other parameters like Floorplan which require Reception to be on.
+		if ( $this->reception ) {
+			$shortcode_array['reception']    = true;
+			$shortcode_array['reception-id'] = $this->reception_id;
+		}
 
-			if ( $this->reception_video_url ?? false ) {
-				$shortcode_array['reception-video'] = $this->reception_video_url;
-			}
-			return $this->render_shortcode( self::MYVIDEOROOM_APP_SHORTCODE, $shortcode_array, $text_safe );
+		// Floorplan setting.
+		if ( true === $this->floorplan ) {
+			$shortcode_array['floorplan'] = true;
+			$shortcode_array['reception'] = true;
+		} elseif ( false === $this->floorplan ) {
+			$shortcode_array['floorplan'] = false;
+		}
+
+		// Lobby setting.
+		if ( $this->lobby ) {
+			$shortcode_array['lobby'] = true;
+		}
+
+		if ( $this->reception_video_url ?? false ) {
+			$shortcode_array['reception-video'] = $this->reception_video_url;
+		}
+
+		return $this->render_shortcode( self::MYVIDEOROOM_APP_SHORTCODE, $shortcode_array, $text_safe );
 	}
 	/**
 	 * Render_shortcode for Visualiser.
 	 *
-	 * @param  string $shortcode input from array assembler.
-	 * @param  array  $params - status array.
-	 * @param  string $text_safe - flag to indicate text only and non rendered return - used for diplaying shortcode text.
+	 * @param  string  $shortcode input from array assembler.
+	 * @param  array   $params    status array.
+	 * @param  ?string $text_safe flag to indicate text only and non rendered return - used for diplaying shortcode text.
 	 * @return string
 	 */
 	protected function render_shortcode( string $shortcode, array $params, string $text_safe = null ): string {
@@ -257,7 +263,6 @@ class MyVideoRoomApp {
 
 		$output = '[' . $output . ']';
 
-		$return = \do_shortcode( $output );
-		return $return;
+		return \do_shortcode( $output );
 	}
 }

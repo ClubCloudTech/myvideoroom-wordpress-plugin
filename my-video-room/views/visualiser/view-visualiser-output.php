@@ -19,53 +19,53 @@ return function (
 	string $text_shortcode_guest
 ): string {
 
-	wp_enqueue_script( 'mvr-frametab' );
-	wp_enqueue_style( 'visualiser' );
-
 	ob_start();
 	?>
-<table class="mvr-sub-menu-header-block"
-	style=" width:100% ;border: 3px solid #969696;	background: #ebedf1; padding: 12px;	margin: 5px;">
+	<table class="myvideoroom-sub-menu-header-block"
+		   style="width:100%;
+		   border: 3px solid #969696;
+		   background: #ebedf1;
+		   padding: 12px;
+		   margin: 5px;"
+	>
+		<tr>
+			<th style="width:50%">
+				<h2><?php echo esc_html__( 'Host View', 'myvideoroom' ); ?></h2>
+			</th>
 
-	<tr>
-		<th style="width:50%">
-			<h2><?php echo esc_html__( 'Host View', 'myvideoroom' ); ?></h2>
-		</th>
+			<th style="width:50%">
+				<h2><?php echo esc_html__( 'Guest View', 'myvideoroom' ); ?></h2>
+			</th>
+		</tr>
+		<tr>
+			<td>
+				<?php
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
+					echo $shortcode_host;
+				?>
+			</td>
 
-		<th style="width:50%">
-			<h2><?php echo esc_html__( 'Guest View', 'myvideoroom' ); ?></h2>
-		</th>
-	</tr>
-	<tr>
-		<td>
-			<?php
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-				echo $shortcode_host;
-			?>
-		</td>
+			<td>
+				<?php
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
+					echo $shortcode_guest;
+				?>
+			</td>
+		</tr>
 
-		<td>
-			<?php
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-				echo $shortcode_guest;
-			?>
-		</td>
-	</tr>
-
-	<tr>
-		<td>
-			<strong><?php echo esc_html__( 'Shortcode', 'myvideoroom' ); ?></strong><br>
-			<code style="user-select: all">[<?php echo esc_html( $text_shortcode_host ); ?>]</code>
-		</td>
-		<td>
-			<strong><?php echo esc_html__( 'Shortcode', 'myvideoroom' ); ?></strong><br>
-			<code style="user-select: all">[<?php echo esc_html( $text_shortcode_guest ); ?>]</code>
-		</td>
-	</tr>
-
-</table>
+		<tr>
+			<td>
+				<strong><?php echo esc_html__( 'Shortcode', 'myvideoroom' ); ?></strong><br>
+				<code style="user-select: all">[<?php echo esc_html( $text_shortcode_host ); ?>]</code>
+			</td>
+			<td>
+				<strong><?php echo esc_html__( 'Shortcode', 'myvideoroom' ); ?></strong><br>
+				<code style="user-select: all">[<?php echo esc_html( $text_shortcode_guest ); ?>]</code>
+			</td>
+		</tr>
+	</table>
 
 	<?php
 
-			return ob_get_clean();
+    return ob_get_clean();
 };

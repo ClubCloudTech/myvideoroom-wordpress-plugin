@@ -29,7 +29,9 @@ class ShortcodeRoomVisualiser extends Shortcode {
 	 */
 	public function init() {
 		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
+
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
+
 		wp_register_script( 'mvr-frametab', plugins_url( '../js/mvr-frametab.js', __FILE__ ), array(), $this->get_plugin_version(), true );
 		wp_register_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), $this->get_plugin_version() . '43', 'all' );
 	}
@@ -60,62 +62,63 @@ class ShortcodeRoomVisualiser extends Shortcode {
 	 * @return string
 	 * @throws \Exception When the update fails.
 	 */
-	public function visualiser_worker( string $room_name, array $allowed_tags = array() ) {
+	public function visualiser_worker( string $room_name, array $allowed_tags = array() ): string {
 		// we only enqueue the scripts if the shortcode is called to prevent it being added to all admin pages.
 		do_action( 'myvideoroom_enqueue_scripts' );
 
-		/*
-			First Section - Handle Data from Inbound Form, and process it.
+		// --
+		// First Section - Handle Data from Inbound Form, and process it.
 
-		*/
-		$show_floorplan = false;
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 			check_admin_referer( 'myvideoroom_extras_update_user_video_preference', 'nonce' );
 		}
-			$room_name             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? self::DEFAULT_ROOM_NAME ) );
-			$video_template        = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_layout_id_preference'] ?? null ) );
-			$reception_template    = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_id_preference'] ?? null ) );
-			$reception_setting     = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_enabled_preference'] ?? '' ) ) === 'on';
-			$video_reception_state = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_video_enabled_preference'] ?? '' ) ) === 'on';
-			$show_floorplan        = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_show_floorplan_preference'] ?? '' ) ) === 'on';
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, - esc_url raw does the appropriate sanitisation.
-			$video_reception_url = esc_url_raw( $_POST['myvideoroom_visualiser_reception_waiting_video_url'] ?? '' );
+
+		$room_name             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? self::DEFAULT_ROOM_NAME ) );
+		$video_template        = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_layout_id_preference'] ?? null ) );
+		$reception_template    = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_id_preference'] ?? null ) );
+		$reception_setting     = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_enabled_preference'] ?? '' ) ) === 'on';
+		$video_reception_state = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_video_enabled_preference'] ?? '' ) ) === 'on';
+		$show_floorplan        = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_show_floorplan_preference'] ?? '' ) ) === 'on';
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, - esc_url raw does the appropriate sanitisation.
+		$video_reception_url = esc_url_raw( $_POST['myvideoroom_visualiser_reception_waiting_video_url'] ?? '' );
 
 		if ( $show_floorplan ) {
 				$show_floorplan    = true;
 				$reception_setting = true;
 		}
-				$current_user_setting = new UserVideoPreferenceEntity(
-					$room_name,
-					$video_template,
-					$reception_template,
-					$reception_setting,
-					$video_reception_state,
-					$video_reception_url,
-					$show_floorplan
-				);
+
+		$current_user_setting = new UserVideoPreferenceEntity(
+			$room_name,
+			$video_template,
+			$reception_template,
+			$reception_setting,
+			$video_reception_state,
+			$video_reception_url,
+			$show_floorplan
+		);
 
 		$available_layouts    = $this->get_available_layouts( array( 'basic', 'premium' ) );
 		$available_receptions = $this->get_available_receptions( array( 'basic', 'premium' ) );
 		$render               = require __DIR__ . '/../views/visualiser/view-visualiser.php';
+
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
 		echo $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $video_reception_url );
 
-		/*
-			Second Section - Handle Rendering of Inbound Shortcodes for correct construction.
-
-			Use Entered Form Data to Build a Host and Guest Shortcode Pair
-		*/
+		// --
+		// Second Section - Handle Rendering of Inbound Shortcodes for correct construction.
+		// Use Entered Form Data to Build a Host and Guest Shortcode Pair.
 
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) &&
 			'POST' === $_SERVER['REQUEST_METHOD']
 		) {
 			// Guest Section.
-				$myvideoroom_guest = MyVideoRoomApp::create_instance(
-					$room_name,
-					$video_template,
-				);
+			$myvideoroom_guest = MyVideoRoomApp::create_instance(
+				$room_name,
+				$video_template,
+			);
+
 			// Reception Handling.
 			if ( $reception_setting && $reception_template ) {
 				$myvideoroom_guest->enable_reception()->set_reception_id( $reception_template );
@@ -124,6 +127,7 @@ class ShortcodeRoomVisualiser extends Shortcode {
 					$myvideoroom_guest->set_reception_video_url( $video_reception_url );
 				}
 			}
+
 			// Guest Floorplan option.
 			if ( $show_floorplan ) {
 				$myvideoroom_guest->enable_floorplan();
@@ -142,16 +146,15 @@ class ShortcodeRoomVisualiser extends Shortcode {
 			$text_shortcode_host  = $myvideoroom_host->output_shortcode( 'shortcode-view-only' );
 			$text_shortcode_guest = $myvideoroom_guest->output_shortcode( 'shortcode-view-only' );
 
-			/*
-				Third Section - Render Result Post Submit
+			// --
+			// Third Section - Render Result Post Submit
 
-			*/
 			$render = require __DIR__ . '/../views/visualiser/view-visualiser-output.php';
-			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself. 
+			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.
 			echo $render( $shortcode_host, $shortcode_guest, $text_shortcode_host, $text_shortcode_guest );
 		}
 
-		return null;
+		return '';
 	}
 
 	/**
