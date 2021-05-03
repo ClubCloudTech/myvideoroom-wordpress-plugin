@@ -19,150 +19,128 @@ return function (
 	string $video_server,
 	$available_myvideoroom_plugins,
 	$installed_myvideoroom_plugins,
-	$active_myvideoroom_plugins,
-	array $messages = array()
+	$active_myvideoroom_plugins
 ): string {
 
 	ob_start();
 
 	?>
 
-	<div class="myvideoroom-outer-box-wrap">
-		<table style="width:100%">
-			<tr>
-				<th class="myvideoroom-header-table">
-					<h1 class="myvideoroom-heading-head-top"><?php esc_html_e( 'General Settings', 'myvideoroom' ); ?></h1>
-				</th>
-			</tr>
-		</table>
-		<div class="myvideoroom-tab-align">
-			<h3><?php esc_html_e( 'Licensing Status', 'myvideoroom' ); ?></h3>
+	<h2><?php esc_html_e( 'Activation Settings', 'myvideoroom' ); ?></h2>
+	<form method="post" action="options.php">
+		<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
-			<ul>
-			<?php
-			foreach ( $messages as $message ) {
-				echo '<li class="notice ' . esc_attr( $message['type'] ) . '"><p>' . esc_html( $message['message'] ) . '</p></li>';
-			}
-			?>
-			</ul>
-
-			<h2><?php esc_html_e( 'Activation Settings', 'myvideoroom' ); ?></h2>
-			<form method="post" action="options.php">
-				<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
-
-				<fieldset>
-					<table class="form-table" role="presentation">
-						<tbody>
-
-						<tr>
-							<th scope="row">
-								<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
-									<?php esc_html_e( 'My Video Room Activation Key', 'myvideoroom' ); ?>
-								</label>
-							</th>
-							<td>
-								<input
-										type="text"
-										name="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
-										value="<?php echo esc_attr( get_option( Plugin::SETTING_ACTIVATION_KEY ) ); ?>"
-										placeholder="
-										<?php
-										if ( get_option( Plugin::SETTING_PRIVATE_KEY ) ) {
-											esc_html_e( '(hidden)', 'myvideoroom' );
-										} else {
-											esc_html_e( '(Provided by ClubCloud)', 'myvideoroom' );
-										}
-										?>
-										"
-										id="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
-										size="100"
-								/>
-							</td>
-						</tr>
-
-						<tr>
-							<th scope="row">
-								<label for="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>">
-									<?php esc_html_e( 'ClubCloud Server Domain', 'myvideoroom' ); ?><br />
-									<em><?php esc_html_e( 'for advanced usage only', 'myvideoroom' ); ?></em>
-								</label>
-							</th>
-							<td>
-								<input
-										type="text"
-										name="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
-										value="<?php echo esc_attr( $video_server ); ?>"
-										id="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
-										size="100"
-								/>
-							</td>
-						</tr>
-						</tbody>
-					</table>
-				</fieldset>
-
-				<?php submit_button(); ?>
-			</form>
-
-			<h3><?php esc_html_e( 'The MyVideoRoom WordPress Suite', 'myvideoroom' ); ?></h3>
-			<table class="widefat fixed">
-				<thead>
-					<tr>
-						<th><?php esc_html_e( 'Plugin Name', 'myvideoroom' ); ?></th>
-						<th><?php esc_html_e( 'Installed', 'myvideoroom' ); ?></th>
-						<th><?php esc_html_e( 'Activated', 'myvideoroom' ); ?></th>
-						<th><?php esc_html_e( 'Settings', 'myvideoroom' ); ?></th>
-					</tr>
-				</thead>
-
+		<fieldset>
+			<table class="form-table" role="presentation">
 				<tbody>
-				<?php
 
-				foreach ( $available_myvideoroom_plugins as $available_myvideoroom_plugin_id => $available_myvideoroom_plugin_details ) {
-					if ( ! $available_myvideoroom_plugin_details['visible'] ) {
-						continue;
-					}
-
-					?>
-						<tr>
-							<th scope="row"><?php echo esc_html( $available_myvideoroom_plugin_details['name'] ); ?></th>
-							<td>
-							<?php
-							if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $installed_myvideoroom_plugins ), true ) ) {
-								echo '<span class="dashicons dashicons-yes"></span>';
-							} else {
-								echo '<span class="dashicons dashicons-no"></span>';
-							}
-							?>
-							</td>
-							<td>
-							<?php
-							if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $active_myvideoroom_plugins ), true ) ) {
-								echo '<span class="dashicons dashicons-yes"></span>';
-							} else {
-								echo '<span class="dashicons dashicons-no"></span>';
-							}
-							?>
-							</td>
-							<td>
-							<?php
-							if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $active_myvideoroom_plugins ), true ) ) {
+				<tr>
+					<th scope="row">
+						<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
+							<?php esc_html_e( 'My Video Room Activation Key', 'myvideoroom' ); ?>
+						</label>
+					</th>
+					<td>
+						<input
+								type="text"
+								name="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+								value="<?php echo esc_attr( get_option( Plugin::SETTING_ACTIVATION_KEY ) ); ?>"
+								placeholder="
+								<?php
+								if ( get_option( Plugin::SETTING_PRIVATE_KEY ) ) {
+									esc_html_e( '(hidden)', 'myvideoroom' );
+								} else {
+									esc_html_e( '(Provided by ClubCloud)', 'myvideoroom' );
+								}
 								?>
-									<a href="?page=<?php echo esc_attr( $available_myvideoroom_plugin_id ); ?>">
-										<span class="dashicons dashicons-admin-generic"></span>
-									</a>
-									<?php
-							}
-							?>
-							</td>
-						</tr>
-						<?php
-				}
-				?>
+								"
+								id="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+								size="100"
+						/>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>">
+							<?php esc_html_e( 'ClubCloud Server Domain', 'myvideoroom' ); ?><br />
+							<em><?php esc_html_e( 'for advanced usage only', 'myvideoroom' ); ?></em>
+						</label>
+					</th>
+					<td>
+						<input
+								type="text"
+								name="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
+								value="<?php echo esc_attr( $video_server ); ?>"
+								id="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
+								size="100"
+						/>
+					</td>
+				</tr>
 				</tbody>
 			</table>
-		</div>
-	</div>
+		</fieldset>
+
+		<?php submit_button(); ?>
+	</form>
+
+	<h2><?php esc_html_e( 'The MyVideoRoom WordPress Suite', 'myvideoroom' ); ?></h2>
+	<table class="widefat fixed">
+		<thead>
+			<tr>
+				<th><?php esc_html_e( 'Plugin Name', 'myvideoroom' ); ?></th>
+				<th><?php esc_html_e( 'Installed', 'myvideoroom' ); ?></th>
+				<th><?php esc_html_e( 'Activated', 'myvideoroom' ); ?></th>
+				<th><?php esc_html_e( 'Settings', 'myvideoroom' ); ?></th>
+			</tr>
+		</thead>
+
+		<tbody>
+		<?php
+
+		foreach ( $available_myvideoroom_plugins as $available_myvideoroom_plugin_id => $available_myvideoroom_plugin_details ) {
+			if ( ! $available_myvideoroom_plugin_details['visible'] ) {
+				continue;
+			}
+
+			?>
+				<tr>
+					<th scope="row"><?php echo esc_html( $available_myvideoroom_plugin_details['name'] ); ?></th>
+					<td>
+					<?php
+					if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $installed_myvideoroom_plugins ), true ) ) {
+						echo '<span class="dashicons dashicons-yes"></span>';
+					} else {
+						echo '<span class="dashicons dashicons-no"></span>';
+					}
+					?>
+					</td>
+					<td>
+					<?php
+					if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $active_myvideoroom_plugins ), true ) ) {
+						echo '<span class="dashicons dashicons-yes"></span>';
+					} else {
+						echo '<span class="dashicons dashicons-no"></span>';
+					}
+					?>
+					</td>
+					<td>
+					<?php
+					if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $active_myvideoroom_plugins ), true ) ) {
+						?>
+							<a href="?page=<?php echo esc_attr( $available_myvideoroom_plugin_id ); ?>">
+								<span class="dashicons dashicons-admin-generic"></span>
+							</a>
+							<?php
+					}
+					?>
+					</td>
+				</tr>
+				<?php
+		}
+		?>
+		</tbody>
+	</table>
 
 	<?php
 	return ob_get_clean();
