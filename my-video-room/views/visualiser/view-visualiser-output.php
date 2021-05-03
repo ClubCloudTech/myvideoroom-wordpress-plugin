@@ -21,13 +21,7 @@ return function (
 
 	ob_start();
 	?>
-	<table class="myvideoroom-sub-menu-header-block"
-		   style="width:100%;
-		   border: 3px solid #969696;
-		   background: #ebedf1;
-		   padding: 12px;
-		   margin: 5px;"
-	>
+	<table>
 		<tr>
 			<th style="width:50%">
 				<h2><?php echo esc_html__( 'Host View', 'myvideoroom' ); ?></h2>
@@ -67,5 +61,5 @@ return function (
 
 	<?php
 
-    return ob_get_clean();
+	return ob_get_clean();
 };

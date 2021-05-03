@@ -22,7 +22,7 @@ return function (
 	ob_start();
 
 	?>
-	<h3 class="myvideoroom-heading-head-top">
+	<h3>
 		<?php
 		if ( ShortcodeRoomVisualiser::DEFAULT_ROOM_NAME !== $room_name ) {
 			$output = str_replace( '-', ' ', $room_name );

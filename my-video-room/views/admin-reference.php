@@ -14,7 +14,7 @@ return function (): string {
 	ob_start();
 
 	?>
-	<h2 class="myvideoroom-heading-head-top"><?php esc_html_e( 'Shortcode Reference', 'myvideoroom' ); ?></h2>
+	<h2><?php esc_html_e( 'Shortcode Reference', 'myvideoroom' ); ?></h2>
 
 	<h2><?php esc_html_e( 'App Shortcode', 'myvideoroom' ); ?></h2>
 	<p>

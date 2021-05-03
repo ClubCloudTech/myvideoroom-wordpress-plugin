@@ -23,22 +23,12 @@ return function (): string {
 
 	ob_start();
 	?>
-	<div class="myvideoroom-outer-box-wrap">
-		<table style="width:100%">
-			<tr>
-				<th class="myvideoroom-header-table">
-					<h1 class="myvideoroom-heading-head-top"><?php esc_html_e( 'Visual Room Builder', 'myvideoroom' ); ?></h1>
-				</th>
-			</tr>
-		</table>
-	</div>
+	<h2><?php esc_html_e( 'Visual Room Builder', 'myvideoroom' ); ?></h2>
 
-	<div id="visualiser-tab" class="myvideoroom-tab-align">
-		<?php
-        // phpcs:ignore -- Visualiser worker generates content and is output safely at its level.
-        echo Factory::get_instance( VisualiserShortcodeRoomVisualiser::class )->visualiser_worker( 'Your Room' );
-		?>
-	</div>
+	<?php
+    // phpcs:ignore -- Visualiser worker generates content and is output safely at its level.
+    echo Factory::get_instance( VisualiserShortcodeRoomVisualiser::class )->visualiser_worker( 'Your Room' );
+	?>
 	<?php
 
 	return ob_get_clean();

@@ -20,7 +20,7 @@ return function (
 ): string {
 	ob_start();
 	?>
-	<h1 class="myvideoroom-heading-head-top"><?php esc_html_e( 'Video Security', 'myvideoroom' ); ?></h1>
+	<h2><?php esc_html_e( 'Video Security', 'myvideoroom' ); ?></h2>
 
 	<h3><?php esc_html_e( 'Default Video Room Hosts', 'myvideoroom' ); ?></h3>
 	<p>
@@ -35,28 +35,32 @@ return function (
 	</p>
 	<form method="post" action="">
 		<fieldset>
-			<ul>
+            <table class="form-table" role="presentation">
 			<?php
 			foreach ( $all_wp_roles as $key => $single_role ) {
 				$role_object   = get_role( $key );
 				$has_admin_cap = $role_object->has_cap( Plugin::CAP_GLOBAL_ADMIN );
 
 				?>
-					<li>
-						<label for="role_<?php echo esc_attr( $key ); ?>">
-							<?php echo esc_html( $single_role['name'] ); ?>
-						</label>
+					<tr>
+						<th scope="row">
+							<label for="role_<?php echo esc_attr( $key ); ?>">
+								<?php echo esc_html( $single_role['name'] ); ?>
+							</label>
+						</th>
 
-						<input class="myvideoroom-admin-table-format"
-							   id="role_<?php echo esc_attr( $key ); ?>"
-							   name="role_<?php echo esc_attr( $key ); ?>"
-							   type="checkbox"<?php echo $has_admin_cap ? ' checked="checked" ' : ''; ?>"
-						/>
-					</li>
+						<td>
+							<input class="myvideoroom-admin-table-format"
+								   id="role_<?php echo esc_attr( $key ); ?>"
+								   name="role_<?php echo esc_attr( $key ); ?>"
+								   type="checkbox"<?php echo $has_admin_cap ? ' checked="checked" ' : ''; ?>"
+							/>
+						</td>
+					</tr>
 				<?php
 			}
 			?>
-			</ul>
+			</table>
 		</fieldset>
 
 		<?php wp_nonce_field( 'update_caps', 'nonce' ); ?>

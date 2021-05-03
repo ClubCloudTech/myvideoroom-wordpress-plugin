@@ -8,9 +8,7 @@
 return function (): string {
 	ob_start();
 	?>
-		<h1 class="myvideoroom-heading-head-top">
-			<?php esc_html_e( 'Room Template Library', 'myvideoroom' ); ?>
-		</h1>
+		<h2><?php esc_html_e( 'Room Template Library', 'myvideoroom' ); ?></h2>
 
 		<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 			<ul>
