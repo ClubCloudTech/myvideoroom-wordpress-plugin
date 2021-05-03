@@ -21,42 +21,46 @@ return function (
 
 	ob_start();
 	?>
-	<table>
-		<tr>
-			<th style="width:50%">
-				<h2><?php echo esc_html__( 'Host View', 'myvideoroom' ); ?></h2>
-			</th>
+	<table style="width: 100%">
+        <thead>
+            <tr>
+                <th style="width:50%">
+                    <h3><?php echo esc_html__( 'Host View', 'myvideoroom' ); ?></h3>
+                </th>
 
-			<th style="width:50%">
-				<h2><?php echo esc_html__( 'Guest View', 'myvideoroom' ); ?></h2>
-			</th>
-		</tr>
-		<tr>
-			<td>
-				<?php
-                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-					echo $shortcode_host;
-				?>
-			</td>
+                <th style="width:50%">
+                    <h2><?php echo esc_html__( 'Guest View', 'myvideoroom' ); ?></h2>
+                </th>
+            </tr>
+        </thead>
 
-			<td>
-				<?php
-                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-					echo $shortcode_guest;
-				?>
-			</td>
-		</tr>
+        <tbody>
+            <tr>
+                <td>
+                    <?php
+                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
+                        echo $shortcode_host;
+                    ?>
+                </td>
 
-		<tr>
-			<td>
-				<strong><?php echo esc_html__( 'Shortcode', 'myvideoroom' ); ?></strong><br>
-				<code style="user-select: all">[<?php echo esc_html( $text_shortcode_host ); ?>]</code>
-			</td>
-			<td>
-				<strong><?php echo esc_html__( 'Shortcode', 'myvideoroom' ); ?></strong><br>
-				<code style="user-select: all">[<?php echo esc_html( $text_shortcode_guest ); ?>]</code>
-			</td>
-		</tr>
+                <td>
+                    <?php
+                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
+                        echo $shortcode_guest;
+                    ?>
+                </td>
+            </tr>
+
+            <tr>
+                <th><?php echo esc_html__( 'Host shortcode', 'myvideoroom' ); ?></th>
+                <th><?php echo esc_html__( 'Guest shortcode', 'myvideoroom' ); ?></th>
+            </tr>
+
+            <tr>
+                <td><code>[<?php echo esc_html( $text_shortcode_host ); ?>]</code></td>
+                <td><code>[<?php echo esc_html( $text_shortcode_guest ); ?>]</code></td>
+            </tr>
+        </tbody>
 	</table>
 
 	<?php

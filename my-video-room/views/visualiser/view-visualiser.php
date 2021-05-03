@@ -22,16 +22,18 @@ return function (
 	ob_start();
 
 	?>
-	<h3>
-		<?php
-		if ( ShortcodeRoomVisualiser::DEFAULT_ROOM_NAME !== $room_name ) {
-			$output = str_replace( '-', ' ', $room_name );
-			$output = 'Room ' . $output . ' created';
 
-			echo esc_html( ucwords( $output ) );
-		}
-		?>
-	</h3>
+	<?php
+	if ( $room_name ) {
+		echo '<strong>';
+		printf(
+			/* translators: %s is the text user supplied room name */
+			esc_html__( 'Room %s created.', 'myvideoroom' ),
+			esc_html( str_replace( '-', ' ', $room_name ) )
+		);
+		echo '</strong>';
+	}
+	?>
 
 	<p class="myvideoroom-explainer-text">
 		<?php
@@ -42,7 +44,9 @@ return function (
 		)
 		?>
 	</p>
-	<hr>
+
+	<hr />
+
 	<form method="post" action="">
 		<table style="width:100%">
 			<tr>
@@ -50,11 +54,12 @@ return function (
 				<th style="width:25%"><?php echo esc_html__( 'Room Layout', 'myvideoroom' ); ?></th>
 				<th style="width:47%"><?php echo esc_html__( 'Guest Settings', 'myvideoroom' ); ?></th>
 			</tr>
-			<tr>
 
+			<tr>
 				<td class="myvideoroom-td-head-top">
 					<label for="myvideoroom_visualiser_room_name"><?php echo esc_html__( 'Room Name', 'myvideoroom' ); ?></label>
 					<input type="text"
+						   placeholder="<?php esc_html_e( 'Your Room Name', 'myvideoroom' ); ?>"
 						   id="myvideoroom_visualiser_room_name"
 						   name="myvideoroom_visualiser_room_name"
 						   style="width: 65%; background: #e3e7e8;"

@@ -53,6 +53,5 @@ jQuery.noConflict()(
 				)
 			}
 		)
-
 	}
 );

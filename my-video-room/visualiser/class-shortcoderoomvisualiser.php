@@ -22,8 +22,6 @@ class ShortcodeRoomVisualiser extends Shortcode {
 	 */
 	private static int $id_index = 0;
 
-	const DEFAULT_ROOM_NAME = 'Your Room Name';
-
 	/**
 	 * Install the shortcode
 	 */
@@ -73,7 +71,7 @@ class ShortcodeRoomVisualiser extends Shortcode {
 			check_admin_referer( 'myvideoroom_extras_update_user_video_preference', 'nonce' );
 		}
 
-		$room_name             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? self::DEFAULT_ROOM_NAME ) );
+		$room_name             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? '' ) );
 		$video_template        = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_layout_id_preference'] ?? null ) );
 		$reception_template    = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_id_preference'] ?? null ) );
 		$reception_setting     = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_enabled_preference'] ?? '' ) ) === 'on';
