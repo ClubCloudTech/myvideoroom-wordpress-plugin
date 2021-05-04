@@ -22,45 +22,45 @@ return function (
 	ob_start();
 	?>
 	<table style="width: 100%">
-        <thead>
-            <tr>
-                <th style="width:50%">
-                    <h3><?php echo esc_html__( 'Host View', 'myvideoroom' ); ?></h3>
-                </th>
+		<thead>
+			<tr>
+				<th style="width:50%">
+					<h3><?php echo esc_html__( 'Host View', 'myvideoroom' ); ?></h3>
+				</th>
 
-                <th style="width:50%">
-                    <h2><?php echo esc_html__( 'Guest View', 'myvideoroom' ); ?></h2>
-                </th>
-            </tr>
-        </thead>
+				<th style="width:50%">
+					<h2><?php echo esc_html__( 'Guest View', 'myvideoroom' ); ?></h2>
+				</th>
+			</tr>
+		</thead>
 
-        <tbody>
-            <tr>
-                <td>
-                    <?php
+		<tbody>
+			<tr>
+				<td>
+					<?php
                         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-                        echo $shortcode_host;
-                    ?>
-                </td>
+						echo $shortcode_host;
+					?>
+				</td>
 
-                <td>
-                    <?php
+				<td>
+					<?php
                         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-                        echo $shortcode_guest;
-                    ?>
-                </td>
-            </tr>
+						echo $shortcode_guest;
+					?>
+				</td>
+			</tr>
 
-            <tr>
-                <th><?php echo esc_html__( 'Host shortcode', 'myvideoroom' ); ?></th>
-                <th><?php echo esc_html__( 'Guest shortcode', 'myvideoroom' ); ?></th>
-            </tr>
+			<tr>
+				<th><?php echo esc_html__( 'Host shortcode', 'myvideoroom' ); ?></th>
+				<th><?php echo esc_html__( 'Guest shortcode', 'myvideoroom' ); ?></th>
+			</tr>
 
-            <tr>
-                <td><code>[<?php echo esc_html( $text_shortcode_host ); ?>]</code></td>
-                <td><code>[<?php echo esc_html( $text_shortcode_guest ); ?>]</code></td>
-            </tr>
-        </tbody>
+			<tr>
+				<td><code>[<?php echo esc_html( $text_shortcode_host ); ?>]</code></td>
+				<td><code>[<?php echo esc_html( $text_shortcode_guest ); ?>]</code></td>
+			</tr>
+		</tbody>
 	</table>
 
 	<?php

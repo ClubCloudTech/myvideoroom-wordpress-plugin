@@ -54,10 +54,10 @@ return function (
 					<?php echo esc_html__( 'Room Name', 'myvideoroom' ); ?>
 			</label>
 			<input type="text"
-				   placeholder="<?php esc_html_e( 'Your Room Name', 'myvideoroom' ); ?>"
-				   id="myvideoroom_visualiser_room_namee_<?php echo esc_attr( $id_index ); ?>"
-				   name="myvideoroom_visualiser_room_name"
-				   value="<?php echo esc_html( $room_name ); ?>"
+				placeholder="<?php esc_html_e( 'Your Room Name', 'myvideoroom' ); ?>"
+				id="myvideoroom_visualiser_room_namee_<?php echo esc_attr( $id_index ); ?>"
+				name="myvideoroom_visualiser_room_name"
+				value="<?php echo esc_html( $room_name ); ?>"
 			/>
 		</fieldset>
 
@@ -67,8 +67,8 @@ return function (
 				<?php echo esc_html__( 'Layout', 'myvideoroom' ); ?>
 			</label>
 			<select class="myvideoroom_visualiser_layout_id_preference"
-					name="myvideoroom_visualiser_layout_id_preference"
-					id="myvideoroom_visualiser_layout_id_preference_<?php echo esc_attr( $id_index ); ?>"
+				name="myvideoroom_visualiser_layout_id_preference"
+				id="myvideoroom_visualiser_layout_id_preference_<?php echo esc_attr( $id_index ); ?>"
 			>
 				<?php
 				foreach ( $available_layouts as $available_layout ) {
@@ -92,8 +92,8 @@ return function (
 				<?php echo esc_html__( 'Disable guest floorplan', 'myvideoroom' ); ?>
 			</label>
 			<input type="checkbox"
-				   name="myvideoroom_visualiser_show_floorplan_preference"
-				   id="myvideoroom_visualiser_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
+				name="myvideoroom_visualiser_show_floorplan_preference"
+				id="myvideoroom_visualiser_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->get_show_floorplan_setting() ? 'checked' : ''; ?>
 			/>
 			<em><?php echo esc_html__( '(automatically turns on reception)', 'myvideoroom' ); ?></em>
@@ -105,9 +105,9 @@ return function (
 				<?php echo esc_html__( 'Enable guest reception?', 'myvideoroom' ); ?>
 			</label>
 			<input type="checkbox"
-				   name="myvideoroom_visualiser_reception_enabled_preference"
-				   id="myvideoroom_visualiser_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				   <?php echo $current_user_setting && $current_user_setting->is_reception_enabled() ? 'checked' : ''; ?>
+				name="myvideoroom_visualiser_reception_enabled_preference"
+				id="myvideoroom_visualiser_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
+				<?php echo $current_user_setting && $current_user_setting->is_reception_enabled() ? 'checked' : ''; ?>
 			/>
 			<br />
 
@@ -117,7 +117,7 @@ return function (
 			<select class="myvideoroom_visualiser_reception_id_preference"
 				name="myvideoroom_visualiser_reception_id_preference"
 				id="myvideoroom_visualiser_reception_id_preference_<?php echo esc_attr( $id_index ); ?>"
-            >
+			>
 				<?php
 				if ( ! $current_user_setting || ! $current_user_setting->get_reception_id() ) {
 					echo '<option value="" selected disabled> --- </option>';
@@ -146,9 +146,9 @@ return function (
 				<?php echo esc_html__( 'Customize Reception Waiting Room Video', 'myvideoroom' ); ?>
 			</label>
 			<input type="checkbox"
-				   name="myvideoroom_visualiser_reception_video_enabled_preference"
-				   id="myvideoroom_visualiser_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				   <?php echo $current_user_setting && $current_user_setting->get_reception_video_enabled_setting() ? 'checked' : ''; ?>
+				name="myvideoroom_visualiser_reception_video_enabled_preference"
+				id="myvideoroom_visualiser_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
+				<?php echo $current_user_setting && $current_user_setting->get_reception_video_enabled_setting() ? 'checked' : ''; ?>
 			/>
 			<br />
 
@@ -156,18 +156,18 @@ return function (
 				<?php echo esc_html__( 'Video URL', 'myvideoroom' ); ?>:
 			</label>
 			<input type="text"
-				   id="myvideoroom_visualiser_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
-				   name="myvideoroom_visualiser_reception_waiting_video_url"
-				   value="<?php echo esc_url( $video_reception_url ); ?>"
+				id="myvideoroom_visualiser_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
+				name="myvideoroom_visualiser_reception_waiting_video_url"
+				value="<?php echo esc_url( $video_reception_url ); ?>"
 			/>
 		</fieldset>
 
 		<?php wp_nonce_field( 'myvideoroom_visualiser_nonce', 'nonce' ); ?>
 		<input type="submit"
-			   name="submit"
-			   id="submit"
-			   class="button button-primary"
-			   value="<?php echo esc_html__( 'Generate Room and Shortcode', 'myvideoroom' ); ?>"
+			name="submit"
+			id="submit"
+			class="button button-primary"
+			value="<?php echo esc_html__( 'Generate Room and Shortcode', 'myvideoroom' ); ?>"
 		/>
 	</form>
 

@@ -42,7 +42,7 @@ return function (): string {
 	<p>
 		<?php
 		esc_html_e(
-			'This will show the video with a room name of "The Meeting Room", using the default "clubcloud" layout.The lobby will be enabled, but the user viewing this page will be an admin of the video.',
+			'This will show the video with a room name of "The Meeting Room", using the default "clubcloud" layout. The lobby will be enabled, but the user viewing this page will be an admin of the video.',
 			'myvideoroom'
 		);
 		?>

@@ -35,7 +35,7 @@ return function (
 	</p>
 	<form method="post" action="">
 		<fieldset>
-            <table class="form-table" role="presentation">
+			<table class="form-table" role="presentation">
 			<?php
 			foreach ( $all_wp_roles as $key => $single_role ) {
 				$role_object   = get_role( $key );
@@ -51,9 +51,9 @@ return function (
 
 						<td>
 							<input class="myvideoroom-admin-table-format"
-								   id="role_<?php echo esc_attr( $key ); ?>"
-								   name="role_<?php echo esc_attr( $key ); ?>"
-								   type="checkbox"<?php echo $has_admin_cap ? ' checked="checked" ' : ''; ?>"
+								id="role_<?php echo esc_attr( $key ); ?>"
+								name="role_<?php echo esc_attr( $key ); ?>"
+								type="checkbox"<?php echo $has_admin_cap ? ' checked="checked" ' : ''; ?>"
 							/>
 						</td>
 					</tr>
