@@ -9,6 +9,8 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
+use MyVideoRoomPlugin\Visualiser\ShortcodeRoomVisualiser;
+
 /**
  * Class Admin
  */
@@ -229,7 +231,12 @@ class Admin extends Shortcode {
 			return;
 		}
 
-		$this->render_admin_page( ( require __DIR__ . '/views/visualiser/view-roombuilder.php' )() );
+		// we only enqueue the scripts if the shortcode is called to prevent it being added to all admin pages.
+		do_action( 'myvideoroom_enqueue_scripts' );
+
+		$this->render_admin_page(
+			Factory::get_instance( ShortcodeRoomVisualiser::class )->output_shortcode(),
+		);
 	}
 
 	/**

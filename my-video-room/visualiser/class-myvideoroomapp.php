@@ -42,7 +42,7 @@ class MyVideoRoomApp {
 	/**
 	 * @return bool
 	 */
-	public function is_floorplanEnabled(): bool {
+	public function is_floorplan_enabled(): bool {
 		return $this->floorplan_enabled;
 	}
 
@@ -190,7 +190,7 @@ class MyVideoRoomApp {
 	 * @return self - the URL object
 	 */
 	public function set_reception_video_url( string $reception_video_url ): self {
-		$this->reception_video_url = $reception_video_url;
+		$this->reception_video = $reception_video_url;
 		return $this;
 	}
 
@@ -282,8 +282,8 @@ class MyVideoRoomApp {
 			$shortcode_array['lobby'] = true;
 		}
 
-		if ( $this->reception_video_url ?? false ) {
-			$shortcode_array['reception-video'] = $this->reception_video_url;
+		if ( $this->reception_video ?? false ) {
+			$shortcode_array['reception-video'] = $this->reception_video;
 		}
 
 		return $this->render_shortcode( self::MYVIDEOROOM_APP_SHORTCODE, $shortcode_array, $text_safe );

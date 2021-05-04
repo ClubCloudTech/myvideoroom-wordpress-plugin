@@ -20,6 +20,7 @@ return function (
 	ob_start();
 
 	?>
+	<h2><?php esc_html_e( 'Visual Room Builder', 'myvideoroom' ); ?></h2>
 
 	<p class="myvideoroom-explainer-text">
 		<?php
@@ -104,7 +105,7 @@ return function (
 			<input type="checkbox"
 				name="myvideoroom_visualiser_disable_floorplan_preference"
 				id="myvideoroom_visualiser_disable_floorplan_preference<?php echo esc_attr( $id_index ); ?>"
-				<?php echo $app_config && ! $app_config->is_floorplanEnabled() ? 'checked' : ''; ?>
+				<?php echo ! $app_config || ! $app_config->is_floorplan_enabled() ? 'checked' : ''; ?>
 			/>
 			<em><?php echo esc_html__( '(automatically turns on reception)', 'myvideoroom' ); ?></em>
 		</fieldset>
@@ -117,7 +118,7 @@ return function (
 			<input type="checkbox"
 				name="myvideoroom_visualiser_reception_enabled_preference"
 				id="myvideoroom_visualiser_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo $app_config && $app_config->is_reception() ? 'checked' : ''; ?>
+				<?php echo ! $app_config || $app_config->is_reception() ? 'checked' : ''; ?>
 			/>
 			<br />
 
@@ -167,7 +168,10 @@ return function (
 			<input type="text"
 				id="myvideoroom_visualiser_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
 				name="myvideoroom_visualiser_reception_waiting_video_url"
-				value="<?php echo esc_url( $app_config && $app_config->get_reception_video() ); ?>"
+				<?php
+				if ( $app_config ) {
+					echo 'value="' . esc_attr( $app_config->get_reception_video() ) . '"'; }
+				?>
 			/>
 		</fieldset>
 
