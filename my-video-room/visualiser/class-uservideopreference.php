@@ -22,14 +22,14 @@ class UserVideoPreference {
 	/**
 	 *  Layout ID
 	 *
-	 * @var string $layout_id - The Room Template.
+	 * @var ?string $layout_id - The Room Template.
 	 */
 	private ?string $layout_id;
 
 	/**
 	 *  Reception ID
 	 *
-	 * @var string $reception_id - The Reception Template.
+	 * @var ?string $reception_id - The Reception Template.
 	 */
 	private ?string $reception_id;
 
@@ -50,7 +50,7 @@ class UserVideoPreference {
 	/**
 	 *  Reception Video URL.
 	 *
-	 * @var string $reception_video_url - The Custom Reception Video URL to Display.
+	 * @var ?string $reception_video_url - The Custom Reception Video URL to Display.
 	 */
 	private ?string $reception_video_url;
 
