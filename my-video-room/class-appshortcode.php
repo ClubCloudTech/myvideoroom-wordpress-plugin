@@ -113,6 +113,7 @@ class AppShortcode extends Shortcode {
 		}
 
 		$room_name = $params['name'] ?? get_bloginfo( 'name' );
+		$seed      = $params['seed'] ?? null;
 		$layout_id = $params['layout'] ?? 'boardroom';
 
 		$reception_id = 'office';
@@ -150,6 +151,7 @@ class AppShortcode extends Shortcode {
 					'roomName'            => $room_name,
 					'videoServerEndpoint' => $video_server_endpoint,
 					'host'                => $host,
+					'seed'                => $seed,
 				)
 			)
 		);

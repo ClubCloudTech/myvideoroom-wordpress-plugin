@@ -12,11 +12,13 @@
  * @return string
  */
 
+use MyVideoRoomPlugin\Visualiser\AppShortcodeConstructor;
+
 return function (
-	string $shortcode_host,
-	string $shortcode_guest,
-	string $text_shortcode_host,
-	string $text_shortcode_guest
+	AppShortcodeConstructor $shortcode_host,
+	AppShortcodeConstructor $shortcode_guest,
+	AppShortcodeConstructor $text_shortcode_host,
+	AppShortcodeConstructor $text_shortcode_guest
 ): string {
 
 	ob_start();
@@ -39,14 +41,14 @@ return function (
 				<td>
 					<?php
                         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-						echo $shortcode_host;
+						echo $shortcode_host->output_shortcode();
 					?>
 				</td>
 
 				<td>
 					<?php
                         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Shortcode function already sanitised by its constructor function.
-						echo $shortcode_guest;
+						echo $shortcode_guest->output_shortcode();
 					?>
 				</td>
 			</tr>
@@ -57,8 +59,8 @@ return function (
 			</tr>
 
 			<tr>
-				<td><code>[<?php echo esc_html( $text_shortcode_host ); ?>]</code></td>
-				<td><code>[<?php echo esc_html( $text_shortcode_guest ); ?>]</code></td>
+				<td><code>[<?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?>]</code></td>
+				<td><code>[<?php echo esc_html( $text_shortcode_guest->output_shortcode( true ) ); ?>]</code></td>
 			</tr>
 		</tbody>
 	</table>

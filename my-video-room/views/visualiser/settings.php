@@ -8,13 +8,12 @@
  * @package MyVideoRoomPlugin\Views
  */
 
-use MyVideoRoomPlugin\Visualiser\ShortcodeRoomVisualiser;
-use MyVideoRoomPlugin\Visualiser\UserVideoPreference;
+use MyVideoRoomPlugin\Visualiser\AppShortcodeConstructor;
 
 return function (
 	array $available_layouts,
 	array $available_receptions,
-	\MyVideoRoomPlugin\Visualiser\MyVideoRoomApp $app_config = null,
+	AppShortcodeConstructor $app_config = null,
 	int $id_index = 0
 ): string {
 	ob_start();
@@ -118,7 +117,7 @@ return function (
 			<input type="checkbox"
 				name="myvideoroom_visualiser_reception_enabled_preference"
 				id="myvideoroom_visualiser_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo ! $app_config || $app_config->is_reception() ? 'checked' : ''; ?>
+				<?php echo ! $app_config || $app_config->is_reception_enabled() ? 'checked' : ''; ?>
 			/>
 			<br />
 
