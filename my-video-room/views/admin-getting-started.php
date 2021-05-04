@@ -23,7 +23,7 @@ return function (): string {
 	?>
 	</p>
 
-	<aside class="tag-line">
+	<aside class="card tag-line">
 		<img src="<?php echo esc_url( plugins_url( '/img/screen-1.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="" />
 
 		<p>

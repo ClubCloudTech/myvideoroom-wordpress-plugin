@@ -15,10 +15,7 @@ use MyVideoRoomPlugin\Plugin;
  * @param string $video_server The host of the video server
  */
 return function (
-	string $video_server,
-	$available_myvideoroom_plugins,
-	$installed_myvideoroom_plugins,
-	$active_myvideoroom_plugins
+	string $video_server
 ): string {
 
 	ob_start();
@@ -82,64 +79,6 @@ return function (
 
 		<?php submit_button(); ?>
 	</form>
-
-	<h2><?php esc_html_e( 'The MyVideoRoom WordPress Suite', 'myvideoroom' ); ?></h2>
-	<table class="widefat fixed">
-		<thead>
-			<tr>
-				<th><?php esc_html_e( 'Plugin Name', 'myvideoroom' ); ?></th>
-				<th><?php esc_html_e( 'Installed', 'myvideoroom' ); ?></th>
-				<th><?php esc_html_e( 'Activated', 'myvideoroom' ); ?></th>
-				<th><?php esc_html_e( 'Settings', 'myvideoroom' ); ?></th>
-			</tr>
-		</thead>
-
-		<tbody>
-		<?php
-
-		foreach ( $available_myvideoroom_plugins as $available_myvideoroom_plugin_id => $available_myvideoroom_plugin_details ) {
-			if ( ! $available_myvideoroom_plugin_details['visible'] ) {
-				continue;
-			}
-
-			?>
-				<tr>
-					<th scope="row"><?php echo esc_html( $available_myvideoroom_plugin_details['name'] ); ?></th>
-					<td>
-					<?php
-					if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $installed_myvideoroom_plugins ), true ) ) {
-						echo '<span class="dashicons dashicons-yes"></span>';
-					} else {
-						echo '<span class="dashicons dashicons-no"></span>';
-					}
-					?>
-					</td>
-					<td>
-					<?php
-					if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $active_myvideoroom_plugins ), true ) ) {
-						echo '<span class="dashicons dashicons-yes"></span>';
-					} else {
-						echo '<span class="dashicons dashicons-no"></span>';
-					}
-					?>
-					</td>
-					<td>
-					<?php
-					if ( in_array( $available_myvideoroom_plugin_id, str_replace( 'myvideoroom-extras', 'my-video-room-extras', $active_myvideoroom_plugins ), true ) ) {
-						?>
-							<a href="?page=<?php echo esc_attr( $available_myvideoroom_plugin_id ); ?>">
-								<span class="dashicons dashicons-admin-generic"></span>
-							</a>
-							<?php
-					}
-					?>
-					</td>
-				</tr>
-				<?php
-		}
-		?>
-		</tbody>
-	</table>
 
 	<?php
 	return ob_get_clean();
