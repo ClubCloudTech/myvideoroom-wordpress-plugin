@@ -68,7 +68,7 @@ class ShortcodeRoomVisualiser extends Shortcode {
 		// First Section - Handle Data from Inbound Form, and process it.
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) && 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-			check_admin_referer( 'myvideoroom_extras_update_user_video_preference', 'nonce' );
+			check_admin_referer( 'myvideoroom_visualiser_nonce', 'nonce' );
 		}
 
 		$room_name             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? '' ) );
