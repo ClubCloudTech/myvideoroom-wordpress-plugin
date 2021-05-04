@@ -6,6 +6,9 @@
 
 jQuery.noConflict()(
 	function () {
+		var $     = jQuery.noConflict();
+		var $tabs = $( '.myvideoroom-nav-tab-wrapper a' );
+
 		/**
 		 * Hide all non active pages
 		 */
@@ -21,11 +24,7 @@ jQuery.noConflict()(
 			)
 		}
 
-		var $ = jQuery.noConflict();
-
 		hideAll();
-
-		var $tabs = $( '.myvideoroom-nav-tab-wrapper a' );
 
 		$tabs.each(
 			function () {

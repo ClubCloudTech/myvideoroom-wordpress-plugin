@@ -6,6 +6,15 @@
 	margin-right: 0;
 }
 
+.myvideoroom-admin code {
+	overflow: scroll;
+	display: block;
+	padding: 16px 8px 16px calc(1.5em + 8px);
+	text-indent: -1.5em;
+	user-select: all;
+}
+
+/*region Nav Tab */
 .myvideoroom-admin .nav-tab-wrapper li {
 	margin-bottom: -1px	;
 }
@@ -18,15 +27,9 @@
 .myvideoroom-admin .nav-tab-wrapper a:hover {
 	background: none;
 }
+/*endregion*/
 
-.myvideoroom-admin code {
-	overflow: scroll;
-	display: block;
-	padding: 16px 8px 16px calc(1.5em + 8px);
-	text-indent: -1.5em;
-	user-select: all;
-}
-
+/*region Header */
 .myvideoroom-admin header h1 {
 	float: right;
 	max-width: 50%;
@@ -46,9 +49,9 @@
 	content: "";
 	clear: both;
 }
+/*endregion*/
 
-/* Three Step Getting Started */
-
+/*region Three Step Getting Started */
 .myvideoroom-admin ol.three-step-getting-started {
 	margin: 0;
 	padding: 0;
@@ -84,6 +87,7 @@
 	line-height: 1.1em;
 	min-height: 80px;
 }
+/*endregion */
 
 iframe.myvideoroom-admin-template-browser {
 	width: 100%;

@@ -17,14 +17,27 @@ jQuery.noConflict()(
 			Notification.requestPermission();
 		}
 
-		var getText = function ($element, myvideoroom_monitor_texts, name) {
+		/**
+		 * Get the text for an element
+		 *
+		 * @param {jQuery}   $element
+		 * @param {string[]} defaults
+		 * @param {string}   name
+		 * @return {string}
+		 */
+		var getText = function ($element, defaults, name) {
 			if ($element.data( name ) ) {
 				return $element.data( name );
 			} else {
-				return myvideoroom_monitor_texts[name] || '';
+				return defaults[name] || '';
 			}
 		}
 
+		/**
+		 * Update all the monitors with text indicating number of people
+		 *
+		 * @param {{seatedCount: number, receptionCount:number, clientId: number}} tableData
+		 */
 		var updateEndpoints = function (tableData) {
 			var $element = $indexedElements[tableData.clientId];
 			var roomName = $element.data( 'roomName' );

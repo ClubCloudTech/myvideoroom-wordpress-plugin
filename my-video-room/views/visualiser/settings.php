@@ -14,25 +14,11 @@ use MyVideoRoomPlugin\Visualiser\UserVideoPreference;
 return function (
 	array $available_layouts,
 	array $available_receptions,
-	UserVideoPreference $current_user_setting = null,
-	string $room_name,
-	int $id_index = 0,
-	string $video_reception_url = null
+	\MyVideoRoomPlugin\Visualiser\MyVideoRoomApp $app_config = null,
+	int $id_index = 0
 ): string {
 	ob_start();
 
-	?>
-
-	<?php
-	if ( $room_name ) {
-		echo '<strong>';
-		printf(
-			/* translators: %s is the text user supplied room name */
-			esc_html__( 'Room %s created.', 'myvideoroom' ),
-			esc_html( str_replace( '-', ' ', $room_name ) )
-		);
-		echo '</strong>';
-	}
 	?>
 
 	<p class="myvideoroom-explainer-text">
@@ -47,6 +33,30 @@ return function (
 
 	<hr />
 
+	<?php
+	if ( $app_config ) {
+		?>
+		<ul>
+			<?php
+			echo '<li class="notice notice-success is-dismissible"><p>';
+
+			if ( $app_config->get_name() ) {
+				printf(
+				/* translators: %s is the text user supplied room name */
+					esc_html__( 'Configuration for room %s created.', 'myvideoroom' ),
+					esc_html( str_replace( '-', ' ', $app_config->get_name() ) )
+				);
+			} else {
+				esc_html_e( 'Configuration for room created.', 'myvideoroom' );
+			}
+
+			echo '</p></li>';
+			?>
+		</ul>
+		<?php
+	}
+	?>
+
 	<form method="post" action="">
 		<fieldset>
 			<legend><?php echo esc_html__( 'Naming', 'myvideoroom' ); ?></legend>
@@ -57,7 +67,7 @@ return function (
 				placeholder="<?php esc_html_e( 'Your Room Name', 'myvideoroom' ); ?>"
 				id="myvideoroom_visualiser_room_namee_<?php echo esc_attr( $id_index ); ?>"
 				name="myvideoroom_visualiser_room_name"
-				value="<?php echo esc_html( $room_name ); ?>"
+				value="<?php echo esc_html( $app_config && $app_config->get_name() ); ?>"
 			/>
 		</fieldset>
 
@@ -78,7 +88,7 @@ return function (
 						$slug = $available_layout->id;
 					}
 
-					if ( $current_user_setting && $current_user_setting->get_layout_id() === $slug ) {
+					if ( $app_config && $app_config->get_layout() === $slug ) {
 						echo '<option value="' . esc_attr( $slug ) . '" selected>' . esc_html( $available_layout->name ) . '</option>';
 					} else {
 						echo '<option value="' . esc_attr( $slug ) . '">' . esc_html( $available_layout->name ) . '</option>';
@@ -88,13 +98,13 @@ return function (
 			</select>
 			<br />
 
-			<label for="myvideoroom_visualiser_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>">
+			<label for="myvideoroom_visualiser_disable_floorplan_preference<?php echo esc_attr( $id_index ); ?>">
 				<?php echo esc_html__( 'Disable guest floorplan', 'myvideoroom' ); ?>
 			</label>
 			<input type="checkbox"
-				name="myvideoroom_visualiser_show_floorplan_preference"
-				id="myvideoroom_visualiser_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo $current_user_setting && $current_user_setting->get_show_floorplan_setting() ? 'checked' : ''; ?>
+				name="myvideoroom_visualiser_disable_floorplan_preference"
+				id="myvideoroom_visualiser_disable_floorplan_preference<?php echo esc_attr( $id_index ); ?>"
+				<?php echo $app_config && ! $app_config->is_floorplanEnabled() ? 'checked' : ''; ?>
 			/>
 			<em><?php echo esc_html__( '(automatically turns on reception)', 'myvideoroom' ); ?></em>
 		</fieldset>
@@ -107,7 +117,7 @@ return function (
 			<input type="checkbox"
 				name="myvideoroom_visualiser_reception_enabled_preference"
 				id="myvideoroom_visualiser_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo $current_user_setting && $current_user_setting->is_reception_enabled() ? 'checked' : ''; ?>
+				<?php echo $app_config && $app_config->is_reception() ? 'checked' : ''; ?>
 			/>
 			<br />
 
@@ -119,8 +129,8 @@ return function (
 				id="myvideoroom_visualiser_reception_id_preference_<?php echo esc_attr( $id_index ); ?>"
 			>
 				<?php
-				if ( ! $current_user_setting || ! $current_user_setting->get_reception_id() ) {
-					echo '<option value="" selected disabled> --- </option>';
+				if ( ! $app_config || ! $app_config->get_reception_id() ) {
+					echo '<option value="" selected disabled>— Select —</option>';
 				}
 
 				foreach ( $available_receptions as $available_reception ) {
@@ -130,8 +140,7 @@ return function (
 						$slug = $available_reception->id;
 					}
 
-					if ( $current_user_setting
-						&& $current_user_setting->get_reception_id() === $slug
+					if ( $app_config && $app_config->get_reception_id() === $slug
 					) {
 						echo '<option value="' . esc_attr( $slug ) . '" selected>' . esc_html( $available_reception->name ) . '</option>';
 					} else {
@@ -148,7 +157,7 @@ return function (
 			<input type="checkbox"
 				name="myvideoroom_visualiser_reception_video_enabled_preference"
 				id="myvideoroom_visualiser_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo $current_user_setting && $current_user_setting->get_reception_video_enabled_setting() ? 'checked' : ''; ?>
+				<?php echo $app_config && $app_config->get_reception_video() ? 'checked' : ''; ?>
 			/>
 			<br />
 
@@ -158,7 +167,7 @@ return function (
 			<input type="text"
 				id="myvideoroom_visualiser_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
 				name="myvideoroom_visualiser_reception_waiting_video_url"
-				value="<?php echo esc_url( $video_reception_url ); ?>"
+				value="<?php echo esc_url( $app_config && $app_config->get_reception_video() ); ?>"
 			/>
 		</fieldset>
 

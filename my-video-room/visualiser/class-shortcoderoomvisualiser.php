@@ -7,6 +7,9 @@
 
 namespace MyVideoRoomPlugin\Visualiser;
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\AvailableScenes;
+use MyVideoRoomPlugin\Library\Host;
 use MyVideoRoomPlugin\Shortcode;
 use MyVideoRoomPlugin\Visualiser\UserVideoPreference as UserVideoPreferenceEntity;
 
@@ -15,6 +18,9 @@ use MyVideoRoomPlugin\Visualiser\UserVideoPreference as UserVideoPreferenceEntit
  * Allows the user to select their room display (note NOT Security) display parameters.
  */
 class ShortcodeRoomVisualiser extends Shortcode {
+
+	const SHORTCODE_TAG = 'myvideoroom_visualizer';
+
 	/**
 	 * A increment in case the same element is placed on the page twice
 	 *
@@ -26,8 +32,7 @@ class ShortcodeRoomVisualiser extends Shortcode {
 	 * Install the shortcode
 	 */
 	public function init() {
-		add_shortcode( 'visualizer', array( $this, 'visualiser_shortcode' ) );
-
+		add_shortcode( self::SHORTCODE_TAG, array( $this, 'visualiser_shortcode' ) );
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
 
 		wp_register_script( 'mvr-frametab', plugins_url( '../js/mvr-frametab.js', __FILE__ ), array(), $this->get_plugin_version(), true );
@@ -40,14 +45,12 @@ class ShortcodeRoomVisualiser extends Shortcode {
 	 * @param array $params List of shortcode params.
 	 *
 	 * @return string
-	 * @throws \Exception When the update fails.
 	 */
 	public function visualiser_shortcode( $params = array() ): string {
-
 		$room_name    = $params['room'] ?? 'default';
 		$allowed_tags = array_map( 'trim', explode( ',', $params['tags'] ?? '' ) );
-		// Not strictly needed as its a demo render- but preserving consistent structure with main Video Function.
 
+		// Not strictly needed as its a demo render- but preserving consistent structure with main Video Function.
 		return $this->visualiser_worker( $room_name, $allowed_tags );
 	}
 
@@ -58,7 +61,6 @@ class ShortcodeRoomVisualiser extends Shortcode {
 	 * @param array  $allowed_tags List of tags to allow.
 	 *
 	 * @return string
-	 * @throws \Exception When the update fails.
 	 */
 	public function visualiser_worker( string $room_name, array $allowed_tags = array() ): string {
 		// we only enqueue the scripts if the shortcode is called to prevent it being added to all admin pages.
@@ -71,37 +73,60 @@ class ShortcodeRoomVisualiser extends Shortcode {
 			check_admin_referer( 'myvideoroom_visualiser_nonce', 'nonce' );
 		}
 
-		$room_name             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? '' ) );
-		$video_template        = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_layout_id_preference'] ?? null ) );
-		$reception_template    = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_id_preference'] ?? null ) );
-		$reception_setting     = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_enabled_preference'] ?? '' ) ) === 'on';
-		$video_reception_state = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_video_enabled_preference'] ?? '' ) ) === 'on';
-		$show_floorplan        = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_show_floorplan_preference'] ?? '' ) ) === 'on';
+		$room_name      = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_name'] ?? '' ) );
+		$video_template = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_layout_id_preference'] ?? null ) );
+		$disable_floorplan = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_disable_floorplan_preference'] ?? '' ) ) === 'on';
+
+		$reception_setting  = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_enabled_preference'] ?? '' ) ) === 'on';
+		$reception_template = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_id_preference'] ?? null ) );
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, - esc_url raw does the appropriate sanitisation.
 		$video_reception_url = esc_url_raw( $_POST['myvideoroom_visualiser_reception_waiting_video_url'] ?? '' );
 
-		if ( $show_floorplan ) {
-				$show_floorplan    = true;
-				$reception_setting = true;
+		if ( $disable_floorplan ) {
+			$reception_setting = true;
 		}
 
-		$current_user_setting = new UserVideoPreferenceEntity(
-			$room_name,
-			$video_template,
-			$reception_template,
-			$reception_setting,
-			$video_reception_state,
-			$video_reception_url,
-			$show_floorplan
-		);
+		$rendered_room_name = $room_name;
 
-		$available_layouts    = $this->get_available_layouts( array( 'basic', 'premium' ) );
-		$available_receptions = $this->get_available_receptions( array( 'basic', 'premium' ) );
-		$render               = require __DIR__ . '/../views/visualiser/view-visualiser.php';
+		if ( ! $rendered_room_name ) {
+			$rendered_room_name = Factory::get_instance( Host::class )->get_host();
+		}
+
+		$app_config = null;
+
+		if (
+			isset( $_SERVER['REQUEST_METHOD'] ) &&
+			'POST' === $_SERVER['REQUEST_METHOD']
+		) {
+			$app_config = MyVideoRoomApp::create_instance(
+				$room_name,
+				$video_template,
+			);
+
+			if ( $reception_setting ) {
+				$app_config->enable_reception();
+				$app_config->set_reception_id( $reception_template );
+
+				if ( $app_config ) {
+					$app_config->set_reception_video_url( $video_reception_url );
+				}
+			}
+
+			if ( $disable_floorplan ) {
+				$app_config->disable_floorplan();
+			}
+		}
+
+		$available_layouts = Factory::get_instance( AvailableScenes::class )->get_available_layouts();
+		if ( ! $available_layouts ) {
+			return esc_html__( 'No Layouts Found', 'myvideoroom' );
+		}
+
+		$available_receptions = Factory::get_instance( AvailableScenes::class )->get_available_receptions();
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
-		echo $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $video_reception_url );
+		echo ( require __DIR__ . '/../views/visualiser/settings.php' )( $available_layouts, $available_receptions, $app_config, self::$id_index++ );
 
 		// --
 		// Second Section - Handle Rendering of Inbound Shortcodes for correct construction.
@@ -113,27 +138,31 @@ class ShortcodeRoomVisualiser extends Shortcode {
 		) {
 			// Guest Section.
 			$myvideoroom_guest = MyVideoRoomApp::create_instance(
-				$room_name,
+				$rendered_room_name,
 				$video_template,
 			);
 
 			// Reception Handling.
-			if ( $reception_setting && $reception_template ) {
-				$myvideoroom_guest->enable_reception()->set_reception_id( $reception_template );
+			if ( $reception_setting ) {
+				$myvideoroom_guest->enable_reception();
 
-				if ( $video_reception_state && $video_reception_url ) {
+				if ( $reception_template ) {
+					$myvideoroom_guest->set_reception_id( $reception_template );
+				}
+
+				if ( $video_reception_url ) {
 					$myvideoroom_guest->set_reception_video_url( $video_reception_url );
 				}
 			}
 
 			// Guest Floorplan option.
-			if ( $show_floorplan ) {
-				$myvideoroom_guest->enable_floorplan();
+			if ( $disable_floorplan ) {
+				$myvideoroom_guest->disable_floorplan();
 			}
 
 			// Host Section Shortcode.
 			$myvideoroom_host = MyVideoRoomApp::create_instance(
-				$room_name,
+				$rendered_room_name,
 				$video_template,
 			)->enable_admin();
 
@@ -153,63 +182,5 @@ class ShortcodeRoomVisualiser extends Shortcode {
 		}
 
 		return '';
-	}
-
-	/**
-	 * Get a list of available layouts from MyVideoRoom
-	 *
-	 * @param array $allowed_tags List of tags to fetch.
-	 *
-	 * @return array
-	 */
-	public function get_available_layouts( array $allowed_tags = array( 'basic' ) ): array {
-		$scenes = $this->get_available_scenes( 'layouts', $allowed_tags );
-		if ( $scenes ) {
-			return $scenes;
-		} else {
-			return array( esc_html_e( 'No Layouts Found', 'myvideoroom' ) );
-		}
-	}
-
-	/**
-	 * Get a list of available receptions from MyVideoRoom
-	 *
-	 * @param array $allowed_tags List of tags to fetch.
-	 *
-	 * @return array
-	 */
-	public function get_available_receptions( array $allowed_tags = array( 'basic' ) ): array {
-		return $this->get_available_scenes( 'receptions', $allowed_tags );
-	}
-
-	/**
-	 * Get a list of available scenes from MyVideoRoom
-	 *
-	 * @param string         $uri The type of scene (layouts/receptions).
-	 * @param array|string[] $allowed_tags List of tags to fetch.
-	 *
-	 * @return array The Available Scenes.
-	 */
-	public function get_available_scenes( string $uri, array $allowed_tags = array( 'basic' ) ): array {
-		$url     = 'https://rooms.clubcloud.tech/' . $uri;
-		$tag_uri = array();
-
-		foreach ( $allowed_tags as $allowed_tag ) {
-			$tag_uri[] = 'tag[]=' . $allowed_tag;
-		}
-
-		if ( $tag_uri ) {
-			$url .= '?' . implode( '&', $tag_uri );
-		}
-
-		$request = \wp_remote_get( $url );
-
-		if ( \is_wp_error( $request ) ) {
-			return array();
-		}
-
-		$body = \wp_remote_retrieve_body( $request );
-
-		return \json_decode( $body );
 	}
 }

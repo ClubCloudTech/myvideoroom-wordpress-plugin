@@ -11,6 +11,61 @@ namespace MyVideoRoomPlugin\Visualiser;
  * Class MyVideoRoomApp
  */
 class MyVideoRoomApp {
+	/**
+	 * @return string
+	 */
+	public function get_name(): string {
+		return $this->name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_layout(): string {
+		return $this->layout;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_admin(): bool {
+		return $this->admin;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_reception(): bool {
+		return $this->reception;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_floorplanEnabled(): bool {
+		return $this->floorplan_enabled;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_reception_id(): string {
+		return $this->reception_id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_reception_video(): string {
+		return $this->reception_video;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function is_lobby(): bool {
+		return $this->lobby;
+	}
 
 	public const MYVIDEOROOM_APP_SHORTCODE = 'myvideoroom';
 
@@ -47,7 +102,7 @@ class MyVideoRoomApp {
 	 *
 	 * @var bool
 	 */
-	private bool $floorplan = false;
+	private bool $floorplan_enabled = true;
 
 	/**
 	 * The layout of the reception
@@ -165,7 +220,7 @@ class MyVideoRoomApp {
 	 * @return $this
 	 */
 	public function enable_floorplan(): self {
-		$this->floorplan = false;
+		$this->floorplan_enabled = true;
 		return $this;
 	}
 
@@ -175,7 +230,7 @@ class MyVideoRoomApp {
 	 * @return self
 	 */
 	public function disable_floorplan(): self {
-		$this->floorplan = true;
+		$this->floorplan_enabled = false;
 		return $this;
 	}
 
@@ -210,16 +265,16 @@ class MyVideoRoomApp {
 
 		// Reception Setting. Note it can be modified by other parameters like Floorplan which require Reception to be on.
 		if ( $this->reception ) {
-			$shortcode_array['reception']    = true;
-			$shortcode_array['reception-id'] = $this->reception_id;
+			$shortcode_array['reception'] = true;
+
+			if ( $this->reception_id ) {
+				$shortcode_array['reception-id'] = $this->reception_id;
+			}
 		}
 
 		// Floorplan setting.
-		if ( true === $this->floorplan ) {
+		if ( true !== $this->admin && $this->floorplan_enabled ) {
 			$shortcode_array['floorplan'] = true;
-			$shortcode_array['reception'] = true;
-		} elseif ( false === $this->floorplan ) {
-			$shortcode_array['floorplan'] = false;
 		}
 
 		// Lobby setting.
