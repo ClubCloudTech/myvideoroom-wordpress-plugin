@@ -119,59 +119,62 @@ return function (
 				id="myvideoroom_visualiser_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo ! $app_config || $app_config->is_reception_enabled() ? 'checked' : ''; ?>
 			/>
-			<br />
 
-			<label for="myvideoroom_visualiser_reception_id_preference_<?php echo esc_attr( $id_index ); ?>">
-				<?php echo esc_html__( 'Reception Appearance', 'myvideoroom' ); ?>
-			</label>
-			<select class="myvideoroom_visualiser_reception_id_preference"
-				name="myvideoroom_visualiser_reception_id_preference"
-				id="myvideoroom_visualiser_reception_id_preference_<?php echo esc_attr( $id_index ); ?>"
-			>
-				<?php
-				if ( ! $app_config || ! $app_config->get_reception_id() ) {
-					echo '<option value="" selected disabled>— Select —</option>';
-				}
-
-				foreach ( $available_receptions as $available_reception ) {
-					$slug = $available_reception->slug;
-
-					if ( ! $slug ) {
-						$slug = $available_reception->id;
+			<div class="reception-settings">
+				<label for="myvideoroom_visualiser_reception_id_preference_<?php echo esc_attr( $id_index ); ?>">
+					<?php echo esc_html__( 'Reception Appearance', 'myvideoroom' ); ?>
+				</label>
+				<select class="myvideoroom_visualiser_reception_id_preference"
+					name="myvideoroom_visualiser_reception_id_preference"
+					id="myvideoroom_visualiser_reception_id_preference_<?php echo esc_attr( $id_index ); ?>"
+				>
+					<?php
+					if ( ! $app_config || ! $app_config->get_reception_id() ) {
+						echo '<option value="" selected disabled>— Select —</option>';
 					}
 
-					if ( $app_config && $app_config->get_reception_id() === $slug
-					) {
-						echo '<option value="' . esc_attr( $slug ) . '" selected>' . esc_html( $available_reception->name ) . '</option>';
-					} else {
-						echo '<option value="' . esc_attr( $slug ) . '">' . esc_html( $available_reception->name ) . '</option>';
+					foreach ( $available_receptions as $available_reception ) {
+						$slug = $available_reception->slug;
+
+						if ( ! $slug ) {
+							$slug = $available_reception->id;
+						}
+
+						if ( $app_config && $app_config->get_reception_id() === $slug
+						) {
+							echo '<option value="' . esc_attr( $slug ) . '" selected>' . esc_html( $available_reception->name ) . '</option>';
+						} else {
+							echo '<option value="' . esc_attr( $slug ) . '">' . esc_html( $available_reception->name ) . '</option>';
+						}
 					}
-				}
-				?>
-			</select>
-			<br />
+					?>
+				</select>
+				<br />
 
-			<label for="myvideoroom_visualiser_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-				<?php echo esc_html__( 'Customize Reception Waiting Room Video', 'myvideoroom' ); ?>
-			</label>
-			<input type="checkbox"
-				name="myvideoroom_visualiser_reception_video_enabled_preference"
-				id="myvideoroom_visualiser_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo $app_config && $app_config->get_reception_video() ? 'checked' : ''; ?>
-			/>
-			<br />
+				<label for="myvideoroom_visualiser_reception_custom_video_preference_<?php echo esc_attr( $id_index ); ?>">
+					<?php echo esc_html__( 'Customize Reception Waiting Room Video', 'myvideoroom' ); ?>
+				</label>
+				<input type="checkbox"
+					name="myvideoroom_visualiser_reception_custom_video_preference"
+					id="myvideoroom_visualiser_reception_custom_video_preference_<?php echo esc_attr( $id_index ); ?>"
+					<?php echo $app_config && $app_config->get_reception_video() ? 'checked' : ''; ?>
+				/>
+				<br />
 
-			<label for="myvideoroom_visualiser_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>">
-				<?php echo esc_html__( 'Video URL', 'myvideoroom' ); ?>:
-			</label>
-			<input type="text"
-				id="myvideoroom_visualiser_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
-				name="myvideoroom_visualiser_reception_waiting_video_url"
-				<?php
-				if ( $app_config ) {
-					echo 'value="' . esc_attr( $app_config->get_reception_video() ) . '"'; }
-				?>
-			/>
+				<div class="custom-video-settings">
+					<label for="myvideoroom_visualiser_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>">
+						<?php echo esc_html__( 'Video URL', 'myvideoroom' ); ?>:
+					</label>
+					<input type="text"
+						id="myvideoroom_visualiser_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
+						name="myvideoroom_visualiser_reception_waiting_video_url"
+						<?php
+						if ( $app_config ) {
+							echo 'value="' . esc_attr( $app_config->get_reception_video() ) . '"'; }
+						?>
+					/>
+				</div>
+			</div>
 		</fieldset>
 
 		<?php wp_nonce_field( 'myvideoroom_visualiser_nonce', 'nonce' ); ?>

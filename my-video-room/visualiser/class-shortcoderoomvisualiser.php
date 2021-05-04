@@ -38,48 +38,52 @@ class ShortcodeRoomVisualiser extends Shortcode {
 
 		add_action(
 			'wp_enqueue_scripts',
-			function () {
-				wp_enqueue_style(
-					'myvideoroom-visualiser-css',
-					plugins_url( '/css/visualiser.css', realpath( __DIR__ . '/' ) ),
-					false,
-					$this->get_plugin_version(),
-				);
-
-				wp_enqueue_style(
-					'myvideoroom-shared-css',
-					plugins_url( '/css/shared.css', realpath( __DIR__ . '/' ) ),
-					false,
-					$this->get_plugin_version(),
-				);
-			},
+			fn() => $this->enqueue_scripts_and_styles(),
 		);
 
 		add_action(
 			'admin_enqueue_scripts',
-			function () {
-				wp_enqueue_style(
-					'myvideoroom-visualiser-css',
-					plugins_url( '/css/visualiser.css', realpath( __DIR__ . '/' ) ),
-					false,
-					$this->get_plugin_version(),
-				);
-
-				wp_enqueue_style(
-					'myvideoroom-shared-css',
-					plugins_url( '/css/shared.css', realpath( __DIR__ . '/' ) ),
-					false,
-					$this->get_plugin_version(),
-				);
-
-				wp_enqueue_style(
-					'myvideoroom-visualiser-admin-css',
-					plugins_url( '/css/visualiser-admin.css', realpath( __DIR__ . '/' ) ),
-					false,
-					$this->get_plugin_version(),
-				);
-			}
+			fn() => $this->enqueue_scripts_and_styles( true ),
 		);
+	}
+
+	/**
+	 * Enqueue required scripts and styles
+	 *
+	 * @param bool $admin If this is an admin setting.
+	 */
+	private function enqueue_scripts_and_styles( bool $admin = false ) {
+		wp_enqueue_style(
+			'myvideoroom-visualiser-css',
+			plugins_url( '/css/visualiser.css', realpath( __DIR__ . '/' ) ),
+			false,
+			$this->get_plugin_version(),
+		);
+
+		wp_enqueue_style(
+			'myvideoroom-shared-css',
+			plugins_url( '/css/shared.css', realpath( __DIR__ . '/' ) ),
+			false,
+			$this->get_plugin_version(),
+		);
+
+		wp_enqueue_script(
+			'myvideoroom-visualiser',
+			plugins_url( '/js/visualiser.js', realpath( __DIR__ . '/' ) ),
+			array( 'jquery' ),
+			$this->get_plugin_version(),
+			true
+		);
+
+		if ( $admin ) {
+			wp_enqueue_style(
+				'myvideoroom-visualiser-admin-css',
+				plugins_url( '/css/visualiser-admin.css', realpath( __DIR__ . '/' ) ),
+				false,
+				$this->get_plugin_version(),
+			);
+
+		}
 	}
 
 	/**
