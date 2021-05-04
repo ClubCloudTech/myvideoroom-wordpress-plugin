@@ -30,7 +30,7 @@ return function (): string {
 
 	<h3><?php esc_html_e( 'My Video Room App', 'myvideoroom' ); ?></h3>
 	<p><?php esc_html_e( 'This shows the video app', 'myvideoroom' ); ?></p>
-	<code>
+	<code class="myvideoroom-shortcode-example">
 		[<?php echo esc_html( AppShortcode::SHORTCODE_TAG ); ?>
 			name="<?php esc_html_e( 'My Video Room', 'myvideoroom' ); ?>"
 			layout="clubcloud"
@@ -241,7 +241,7 @@ return function (): string {
 	<br />
 	<h3><?php esc_html_e( 'My Video Room Reception Widget', 'myvideoroom' ); ?></h3>
 	<p><?php esc_html_e( 'This shows the number of people currently waiting in a room', 'myvideoroom' ); ?></p>
-	<code>
+	<code class="myvideoroom-shortcode-example">
 		[<?php echo esc_html( MonitorShortcode::SHORTCODE_TAG ); ?>
 			name="<?php esc_html_e( 'My Video Room', 'myvideoroom' ); ?>"
 			text-empty="<?php esc_html_e( 'Nobody is currently waiting', 'myvideoroom' ); ?>"

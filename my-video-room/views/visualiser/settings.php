@@ -57,7 +57,7 @@ return function (
 	}
 	?>
 
-	<form method="post" action="">
+	<form class="myvideoroom-visualiser-settings" method="post" action="">
 		<fieldset>
 			<legend><?php echo esc_html__( 'Naming', 'myvideoroom' ); ?></legend>
 			<label for="myvideoroom_visualiser_room_namee_<?php echo esc_attr( $id_index ); ?>">

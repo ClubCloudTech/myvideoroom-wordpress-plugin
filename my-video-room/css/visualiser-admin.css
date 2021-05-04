@@ -1,0 +1,23 @@
+table.myvideoroom-visualiser-output th,
+table.myvideoroom-visualiser-output td{
+	border: 1px solid #c3c4c7;
+}
+
+form.myvideoroom-visualiser-settings {
+	margin: 16px 0;
+}
+
+form.myvideoroom-visualiser-settings fieldset {
+	margin: 0 0 16px 0;
+}
+
+form.myvideoroom-visualiser-settings fieldset legend {
+	font-weight: bold;
+	font-size: 1.2em;
+	margin: 0 0 4px 0;
+	padding: 0;
+}
+
+form.myvideoroom-visualiser-settings input[type=text] {
+	width: 400px;
+}

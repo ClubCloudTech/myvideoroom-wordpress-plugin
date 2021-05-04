@@ -23,7 +23,7 @@ return function (
 
 	ob_start();
 	?>
-	<table style="width: 100%">
+	<table class="myvideoroom-visualiser-output" style="width: 100%">
 		<thead>
 			<tr>
 				<th style="width:50%">
@@ -54,13 +54,8 @@ return function (
 			</tr>
 
 			<tr>
-				<th><?php echo esc_html__( 'Host shortcode', 'myvideoroom' ); ?></th>
-				<th><?php echo esc_html__( 'Guest shortcode', 'myvideoroom' ); ?></th>
-			</tr>
-
-			<tr>
-				<td><code>[<?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?>]</code></td>
-				<td><code>[<?php echo esc_html( $text_shortcode_guest->output_shortcode( true ) ); ?>]</code></td>
+				<td><code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?>]</code></td>
+				<td><code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_guest->output_shortcode( true ) ); ?>]</code></td>
 			</tr>
 		</tbody>
 	</table>

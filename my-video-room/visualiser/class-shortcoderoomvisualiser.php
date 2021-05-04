@@ -36,8 +36,50 @@ class ShortcodeRoomVisualiser extends Shortcode {
 		add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
 
-		wp_register_script( 'mvr-frametab', plugins_url( '../js/mvr-frametab.js', __FILE__ ), array(), $this->get_plugin_version(), true );
-		wp_register_style( 'visualiser', plugins_url( '../css/visualiser.css', __FILE__ ), array(), $this->get_plugin_version() . '43', 'all' );
+		add_action(
+			'wp_enqueue_scripts',
+			function () {
+				wp_enqueue_style(
+					'myvideoroom-visualiser-css',
+					plugins_url( '/css/visualiser.css', realpath( __DIR__ . '/' ) ),
+					false,
+					$this->get_plugin_version(),
+				);
+
+				wp_enqueue_style(
+					'myvideoroom-shared-css',
+					plugins_url( '/css/shared.css', realpath( __DIR__ . '/' ) ),
+					false,
+					$this->get_plugin_version(),
+				);
+			},
+		);
+
+		add_action(
+			'admin_enqueue_scripts',
+			function () {
+				wp_enqueue_style(
+					'myvideoroom-visualiser-css',
+					plugins_url( '/css/visualiser.css', realpath( __DIR__ . '/' ) ),
+					false,
+					$this->get_plugin_version(),
+				);
+
+				wp_enqueue_style(
+					'myvideoroom-shared-css',
+					plugins_url( '/css/shared.css', realpath( __DIR__ . '/' ) ),
+					false,
+					$this->get_plugin_version(),
+				);
+
+				wp_enqueue_style(
+					'myvideoroom-visualiser-admin-css',
+					plugins_url( '/css/visualiser-admin.css', realpath( __DIR__ . '/' ) ),
+					false,
+					$this->get_plugin_version(),
+				);
+			}
+		);
 	}
 
 	/**

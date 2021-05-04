@@ -6,13 +6,6 @@
 	margin-right: 0;
 }
 
-.myvideoroom-admin code {
-	overflow: scroll;
-	display: block;
-	padding: 16px 8px 16px calc(1.5em + 8px);
-	text-indent: -1.5em;
-	user-select: all;
-}
 
 /*region Nav Tab */
 .myvideoroom-admin .nav-tab-wrapper li {
