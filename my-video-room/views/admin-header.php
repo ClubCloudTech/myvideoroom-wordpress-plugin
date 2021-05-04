@@ -8,24 +8,17 @@
 /**
  * Render the admin header
  *
- * @param array $messages An list of messages to show. Takes the form [type=:string, message=:message][]
+ * @param array $pages    A list of pages to show in the admin menu. Takes the form: slug => [title=:string, callback=:callback][]
+ * @param array $messages An list of messages to show. Takes the form: [type=:string, message=:string][]
  */
 return function (
+	array $pages,
 	array $messages = array()
 ): string {
 	ob_start();
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
 	$current_page = sanitize_text_field( wp_unslash( $_GET['page'] ?? 'my-video-room-global' ) );
-
-	$pages = array(
-		'my-video-room-global'          => __( 'General Settings', 'myvideoroom' ),
-		'my-video-room-roombuilder'     => __( 'Visual Room Builder', 'myvideoroom' ),
-		'my-video-room-security'        => __( 'Video Security', 'myvideoroom' ),
-		'my-video-room-templates'       => __( 'Room Templates', 'myvideoroom' ),
-		'my-video-room'                 => __( 'Shortcode Reference', 'myvideoroom' ),
-		'my-video-room-getting-started' => __( 'Help/Getting Started', 'myvideoroom' ),
-	);
 
 	?>
 
@@ -47,7 +40,7 @@ return function (
 	<nav class="nav-tab-wrapper">
 		<ul>
 		<?php
-		foreach ( $pages as $page_slug => $page_title ) {
+		foreach ( $pages as $page_slug => $page_settings ) {
 			$class = 'nav-tab';
 
 			if ( $current_page === $page_slug ) {
@@ -56,7 +49,7 @@ return function (
 			?>
 				<li>
 					<a class="<?php echo esc_attr( $class ); ?>" href="/wp-admin/admin.php?page=<?php echo esc_attr( $page_slug ); ?>">
-					<?php echo esc_html( $page_title ); ?>
+					<?php echo esc_html( $page_settings['title'] ); ?>
 					</a>
 				</li>
 			<?php

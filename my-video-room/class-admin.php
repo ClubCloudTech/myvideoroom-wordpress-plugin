@@ -50,6 +50,47 @@ class Admin extends Shortcode {
 	}
 
 	/**
+	 * Get all the menu pages
+	 *
+	 * @return array[]
+	 */
+	private function get_menu_pages(): array {
+		$default = array(
+			'my-video-room-global'          => array(
+				'title'    => esc_html__( 'General Settings', 'myvideoroom' ),
+				'callback' => array( $this, 'create_admin_page' ),
+			),
+
+			'my-video-room-roombuilder'     => array(
+				'title'    => esc_html__( 'Room Builder', 'myvideoroom' ),
+				'callback' => array( $this, 'create_room_builder_page' ),
+			),
+
+			'my-video-room-templates'       => array(
+				'title'    => esc_html__( 'Room Templates', 'myvideoroom' ),
+				'callback' => array( $this, 'create_room_template_page' ),
+			),
+
+			'my-video-room'                 => array(
+				'title'    => esc_html__( 'Shortcode Reference', 'myvideoroom' ),
+				'callback' => array( $this, 'create_video_admin_page' ),
+			),
+
+			'my-video-room-security'        => array(
+				'title'    => esc_html__( 'Video Security', 'myvideoroom' ),
+				'callback' => array( $this, 'create_settings_admin_page' ),
+			),
+
+			'my-video-room-getting-started' => array(
+				'title'    => esc_html__( 'Help/Getting Started', 'myvideoroom' ),
+				'callback' => array( $this, 'create_getting_started_page' ),
+			),
+		);
+
+		return \apply_filters( 'myvideoroom_admin_pages', $default );
+	}
+
+	/**
 	 * Add the admin menu page.
 	 */
 	public function add_admin_menu() {
@@ -65,44 +106,14 @@ class Admin extends Shortcode {
 				'dashicons-format-chat'
 			);
 
-			$this->add_submenu_link(
-				esc_html__( 'My Video Room Settings', 'myvideoroom' ),
-				'my-video-room-global',
-				array( $this, 'create_admin_page' )
-			);
-
-			$this->add_submenu_link(
-				esc_html__( 'Room Builder', 'myvideoroom' ),
-				'my-video-room-roombuilder',
-				array( $this, 'create_room_builder_page' )
-			);
-
-			$this->add_submenu_link(
-				esc_html__( 'Room Templates', 'myvideoroom' ),
-				'my-video-room-templates',
-				array( $this, 'create_template_page' )
-			);
-
-			$this->add_submenu_link(
-				esc_html__( 'Shortcode Reference', 'myvideoroom' ),
-				'my-video-room',
-				array( $this, 'create_video_admin_page' )
-			);
-
-			$this->add_submenu_link(
-				esc_html__( 'Video Security', 'myvideoroom' ),
-				'my-video-room-security',
-				array( $this, 'create_settings_admin_page' )
-			);
-
-			$this->add_submenu_link(
-				esc_html__( 'Help/Getting Started', 'myvideoroom' ),
-				'my-video-room-getting-started',
-				array( $this, 'create_helpgs_page' )
-			);
+			foreach ( $this->get_menu_pages() as $slug => $settings ) {
+				$this->add_submenu_link(
+					$settings['title'],
+					$slug,
+					$settings['callback']
+				);
+			}
 		}
-
-		do_action( 'myvideoroom_admin_menu', 'my-video-room-global' );
 	}
 
 	/**
@@ -149,7 +160,7 @@ class Admin extends Shortcode {
 		echo '<div class="myvideoroom-admin">';
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo ( require __DIR__ . '/views/admin-header.php' )( $messages );
+		echo ( require __DIR__ . '/views/admin-header.php' )( $this->get_menu_pages(), $messages );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
 		echo $page;
@@ -251,7 +262,7 @@ class Admin extends Shortcode {
 	 *
 	 * @return void - sends Help page.
 	 */
-	public function create_helpgs_page() {
+	public function create_getting_started_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
@@ -264,7 +275,7 @@ class Admin extends Shortcode {
 	 *
 	 * @return void - sends Template page.
 	 */
-	public function create_template_page() {
+	public function create_room_template_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
