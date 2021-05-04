@@ -19,12 +19,12 @@ return function (
 	$current_page = sanitize_text_field( wp_unslash( $_GET['page'] ?? 'my-video-room-global' ) );
 
 	$pages = array(
-		'my-video-room-global'      => __( 'General Settings', 'myvideoroom' ),
-		'my-video-room-roombuilder' => __( 'Visual Room Builder', 'myvideoroom' ),
-		'my-video-room-security'    => __( 'Video Security', 'myvideoroom' ),
-		'my-video-room-templates'   => __( 'Room Templates', 'myvideoroom' ),
-		'my-video-room'             => __( 'Shortcode Reference', 'myvideoroom' ),
-		'my-video-room-getting-started'      => __( 'Help and Getting Started', 'myvideoroom' ),
+		'my-video-room-global'          => __( 'General Settings', 'myvideoroom' ),
+		'my-video-room-roombuilder'     => __( 'Visual Room Builder', 'myvideoroom' ),
+		'my-video-room-security'        => __( 'Video Security', 'myvideoroom' ),
+		'my-video-room-templates'       => __( 'Room Templates', 'myvideoroom' ),
+		'my-video-room'                 => __( 'Shortcode Reference', 'myvideoroom' ),
+		'my-video-room-getting-started' => __( 'Help/Getting Started', 'myvideoroom' ),
 	);
 
 	?>
@@ -41,7 +41,7 @@ return function (
 		<h1 class="myvideoroom-header-config-title">
 			<?php esc_html_e( 'My Video Room Settings and Configuration', 'myvideoroom' ); ?>
 		</h1>
-		<img src="<?php echo esc_url( plugins_url( '/img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room" />
+		<img src="<?php echo esc_url( plugins_url( '/img/logo.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room" />
 	</header>
 
 	<nav class="nav-tab-wrapper">

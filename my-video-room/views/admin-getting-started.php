@@ -1,6 +1,6 @@
 <?php
 /**
- * Renders The Help and Getting Started Area.
+ * Renders The Help/Getting Started Area.
  *
  * @package MyVideoRoomPlugin\Views
  */
@@ -24,7 +24,7 @@ return function (): string {
 	</p>
 
 	<main>
-		<img src="<?php echo esc_url( plugins_url( '/img/screen-1.png', realpath( __DIR__ . '/../' ) ) ); ?>" alt="" />
+		<img src="<?php echo esc_url( plugins_url( '/img/screen-1.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="" />
 
 		<p>
 			<strong><?php esc_html_e( 'Video like you are there' ); ?></strong>

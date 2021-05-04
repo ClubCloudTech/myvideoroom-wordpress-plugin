@@ -94,7 +94,7 @@ class Admin extends Shortcode {
 			);
 
 			$this->add_submenu_link(
-				esc_html__( 'Help & Getting Started', 'myvideoroom' ),
+				esc_html__( 'Help/Getting Started', 'myvideoroom' ),
 				'my-video-room-getting-started',
 				array( $this, 'create_helpgs_page' )
 			);
@@ -240,7 +240,7 @@ class Admin extends Shortcode {
 	}
 
 	/**
-	 * Create_Help and Geting Started Page
+	 * Creates Help/Getting Started Page
 	 *
 	 * @return void - sends Help page.
 	 */
@@ -249,7 +249,7 @@ class Admin extends Shortcode {
 			return;
 		}
 
-		$this->render_admin_page( ( require __DIR__ . '/views/visualiser/admin-getting-started.php' )() );
+		$this->render_admin_page( ( require __DIR__ . '/views/admin-getting-started.php' )() );
 	}
 
 	/**
@@ -262,7 +262,7 @@ class Admin extends Shortcode {
 			return;
 		}
 
-		$this->render_admin_page( ( require __DIR__ . '/views/visualiser/admin-template-browser.php' )() );
+		$this->render_admin_page( ( require __DIR__ . '/views/admin-template-browser.php' )() );
 	}
 
 	/**
