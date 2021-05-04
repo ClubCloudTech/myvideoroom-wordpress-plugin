@@ -44,11 +44,54 @@
 }
 /*endregion*/
 
-/*region Three Step Getting Started */
+
+
+iframe.myvideoroom-admin-template-browser {
+	width: 100%;
+	height: 80vh;
+}
+
+/*region Room Templates*/
+.myvideoroom-admin #myvideoroom-how-to-use-templates div.view {
+	display: inline-block;
+	width: calc(50% - 2px);
+	max-width: 500px;
+}
+
+.myvideoroom-admin #myvideoroom-how-to-use-templates div.view img {
+	width: 100%;
+}
+/*endregion*/
+
+/*region Help/Getting Started - Tag Line */
+.myvideoroom-admin aside.tag-line {
+	max-width: 700px;
+	border: 1px solid #c3c4c7;
+	padding: 16px;
+	background-color: #ffffff;
+}
+
+.myvideoroom-admin aside.tag-line p {
+	font-size: 1.4em;
+}
+
+.myvideoroom-admin aside.tag-line img {
+	float: left;
+	margin-right: 16px;
+}
+
+.myvideoroom-admin aside.tag-line:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+/*endregion*/
+
+/*region Help/Getting Started - Three Step Getting Started */
 .myvideoroom-admin ol.three-step-getting-started {
-	margin: 0;
-	padding: 0;
 	counter-reset: item;
+	max-width: 700px;
+	padding: 16px;
 }
 
 .myvideoroom-admin ol.three-step-getting-started li {
@@ -81,8 +124,3 @@
 	min-height: 80px;
 }
 /*endregion */
-
-iframe.myvideoroom-admin-template-browser {
-	width: 100%;
-	height: 80vh;
-}

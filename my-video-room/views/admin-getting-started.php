@@ -23,7 +23,7 @@ return function (): string {
 	?>
 	</p>
 
-	<main>
+	<aside class="tag-line">
 		<img src="<?php echo esc_url( plugins_url( '/img/screen-1.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="" />
 
 		<p>
@@ -33,7 +33,7 @@ return function (): string {
 		<p>
 			<?php esc_html_e( 'Introducing MyVideoRoom by ClubCloud, themed room based video made simple' ); ?>
 		</p>
-	</main>
+	</aside>
 
 	<ol class="three-step-getting-started">
 		<li>

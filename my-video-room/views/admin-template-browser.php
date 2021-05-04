@@ -45,11 +45,15 @@ return function (): string {
 				?>
 			</p>
 
-			<h3>Host View</h3>
-			<img src="<?php echo esc_url( plugins_url( '/img/host-view.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room Host View" />
+			<div class="view">
+				<h3>Host View</h3>
+				<img src="<?php echo esc_url( plugins_url( '/img/host-view.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room Host View" />
+			</div>
 
-			<h3>Guest View</h3>
-			<img src="<?php echo esc_url( plugins_url( '/img/guest-view.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room Guest View" />
+			<div class="view">
+				<h3>Guest View</h3>
+				<img src="<?php echo esc_url( plugins_url( '/img/guest-view.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room Guest View" />
+			</div>
 
 			<p>
 				<?php
