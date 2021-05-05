@@ -91,7 +91,7 @@ class Admin extends Shortcode {
 	private function get_menu_pages(): array {
 		$default = array(
 			'my-video-room'                     => array(
-				'title'    => esc_html__( 'Help/Getting Started', 'myvideoroom' ),
+				'title'    => esc_html__( 'Getting Started', 'myvideoroom' ),
 				'callback' => array( $this, 'create_getting_started_page' ),
 			),
 
@@ -193,7 +193,7 @@ class Admin extends Shortcode {
 	// --
 
 	/**
-	 * Creates Help/Getting Started Page
+	 * Creates Getting Started Page
 	 *
 	 * @return array
 	 */
@@ -264,7 +264,7 @@ class Admin extends Shortcode {
 			);
 		}
 
-		return array( ( require __DIR__ . '/views/admin/settings.php' )( $all_roles ), $messages );
+		return array( ( require __DIR__ . '/views/admin/permissions.php' )( $all_roles ), $messages );
 	}
 
 	/**
@@ -283,6 +283,22 @@ class Admin extends Shortcode {
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
 		$action = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) );
+		$nonce  = sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ?? '' ) );
+
+		if ( $action && ! wp_verify_nonce( $nonce, 'module_' . $action ) ) {
+			$messages[] = array(
+				'type'    => 'notice-error',
+				'message' => esc_html__(
+					'Something went wrong, please reload the page then try again',
+					'myvideoroom'
+				),
+			);
+
+			return array(
+				( require __DIR__ . '/views/admin/modules.php' )( $modules, $activated_modules ),
+				$messages,
+			);
+		}
 
 		if ( $module ) {
 			switch ( $action ) {
@@ -298,7 +314,7 @@ class Admin extends Shortcode {
 					);
 
 					return array(
-						$modules[ $module ]->get_instance()->create_admin_settings(),
+						( require __DIR__ . '/views/admin/module.php' )( $modules[ $module ] ),
 						$messages,
 					);
 				case self::MODULE_ACTION_DEACTIVATE:
@@ -315,7 +331,7 @@ class Admin extends Shortcode {
 					break;
 				default:
 					return array(
-						$modules[ $module ]->get_instance()->create_admin_settings(),
+						( require __DIR__ . '/views/admin/module.php' )( $modules[ $module ] ),
 						$messages,
 					);
 			}

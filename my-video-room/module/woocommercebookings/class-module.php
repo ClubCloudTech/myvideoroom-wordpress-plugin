@@ -58,8 +58,7 @@ class Module implements Plugable {
 		ob_start();
 
 		?>
-		<h2>WooCommerceBookings</h2>
-		<p>This is a settings page for WooCommerceBookings</p>
+		<p>This is a settings page</p>
 		<?php
 
 		return ob_get_clean();

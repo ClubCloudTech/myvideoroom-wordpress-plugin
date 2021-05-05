@@ -16,6 +16,12 @@ use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Modules;
 
+/**
+ * Render the header
+ *
+ * @param array $pages The list of pages.
+ * @param array $messages A list of messages to show.
+ */
 return function (
 	array $pages,
 	array $messages = array()
@@ -45,9 +51,13 @@ return function (
 	</ul>
 
 	<header>
-		<h1 class="myvideoroom-header-config-title">
-			<?php esc_html_e( 'MyVideoRoom Settings and Configuration', 'myvideoroom' ); ?>
-		</h1>
+		<div>
+			<h1 class="myvideoroom-header-config-title">
+				<?php esc_html_e( 'MyVideoRoom Settings and Configuration', 'myvideoroom' ); ?>
+			</h1>
+
+			<strong><?php echo esc_html__( 'Welcome to a world of interactive video', 'myvideoroom' ); ?></strong>
+		</div>
 
 		<aside class="card tag-line">
 			<img src="<?php echo esc_url( plugins_url( '/img/screen-1.png', realpath( __DIR__ . '/../' ) ) ); ?>" alt="" />
@@ -55,7 +65,7 @@ return function (
 			<p>
 				<strong><?php esc_html_e( 'Video like you are there.' ); ?></strong><br />
 				<br />
-				<?php esc_html_e( 'MyVideoRoom by ClubCloud, themed room based video made simple.' ); ?>
+				<?php esc_html_e( 'MyVideoRoom by ClubCloud, video with themed rooms, made simple.' ); ?>
 			</p>
 		</aside>
 	</header>

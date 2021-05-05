@@ -10,26 +10,28 @@ declare( strict_types=1 );
 use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\MonitorShortcode;
 
+/**
+ * Render the shortcode reference page
+ */
 return function (): string {
 	ob_start();
 
 	?>
-	<h2><?php esc_html_e( 'Shortcode Reference', 'myvideoroom' ); ?></h2>
+	<h2><?php esc_html_e( 'Shortcode reference', 'myvideoroom' ); ?></h2>
 
-	<h2><?php esc_html_e( 'App Shortcode', 'myvideoroom' ); ?></h2>
 	<p>
 		<?php
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The translated text will be escaped, but we want to render the link correctly.
 			printf(
 				/* translators: %s is the text "WordPress Shortcodes" and links to the WordPress help page for shortcodes */
 				esc_html__( 'You can use the following %s to add the MyVideoRoom app to a page.', 'myvideoroom' ),
-				'<a href="https://support.wordpress.com/shortcodes/" target="_blank">' . esc_html__( 'WordPress Shortcodes', 'myvideoroom' ) . '</a>'
+				'<a href="https://support.wordpress.com/shortcodes/" target="_blank">' . esc_html__( 'WordPress shortcodes', 'myvideoroom' ) . '</a>'
 			);
 		?>
 	</p>
 
-	<h3><?php esc_html_e( 'MyVideoRoom App', 'myvideoroom' ); ?></h3>
-	<p><?php esc_html_e( 'This shows the video app', 'myvideoroom' ); ?></p>
+	<h3><?php esc_html_e( 'MyVideoRoom main app', 'myvideoroom' ); ?></h3>
+	<p><?php esc_html_e( 'This shortcode will shows the video app on a post or page.', 'myvideoroom' ); ?></p>
 	<code class="myvideoroom-shortcode-example">
 		[<?php echo esc_html( AppShortcode::SHORTCODE_TAG ); ?>
 			name="<?php esc_html_e( 'MyVideoRoom', 'myvideoroom' ); ?>"
@@ -37,12 +39,12 @@ return function (): string {
 			lobby=true
 			admin=true
 		]
-	</code><br />
-	<br />
+	</code>
 	<p>
 		<?php
 		esc_html_e(
-			'This will show the video with a room name of "The Meeting Room", using the default "clubcloud" layout. The lobby will be enabled, but the user viewing this page will be an admin of the video.',
+			'This will show the video with a room name of "The Meeting Room", using the default "clubcloud" layout.
+			 The lobby will be enabled, but the user viewing this page will be an admin of the video.',
 			'myvideoroom'
 		);
 		?>
@@ -76,7 +78,8 @@ return function (): string {
 					<p>
 						<?php
 						esc_html_e(
-							'All shortcodes on the same domain that share a room name will put users into the same video group. This allows you to have different entry points for admins and non admins.',
+							'All shortcodes on the same domain that share a room name will put users into the same 
+							video group. This allows you to have different entry points for admins and non admins.',
 							'myvideoroom'
 						);
 						?>
@@ -91,7 +94,7 @@ return function (): string {
 			<tr class="inactive">
 				<th class="column-primary"><em>layout</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'The id of the layout to display', 'myvideoroom' ); ?></p>
+					<p><?php esc_html_e( 'The ID of the layout to display', 'myvideoroom' ); ?></p>
 
 					<p>
 						<?php
@@ -132,7 +135,13 @@ return function (): string {
 						?>
 					</p>
 
-					<p><?php esc_html_e( 'You need at least one admin to start a video session.', 'myvideoroom' ); ?>
+					<p>
+					<?php
+					esc_html_e(
+						'You need at least one admin to start a video session.',
+						'myvideoroom'
+					);
+					?>
 					</p>
 				</td>
 				<td>false</td>
@@ -141,11 +150,24 @@ return function (): string {
 			<tr class="inactive">
 				<th class="column-primary"><em>user-name</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'Allows override of the displayed user\'s name in the video participant list.', 'myvideoroom' ); ?>
+					<p>
+					<?php
+					esc_html_e(
+						'Allows override of the displayed user\'s name in the video participant list.',
+						'myvideoroom'
+					);
+					?>
 					</p>
 				</td>
-				<td>(<?php esc_html_e( 'For logged in users will display their "Display Name". For guests will prompt for a name.', 'myvideoroom' ); ?>)
-				</td>
+				<td>(
+				<?php
+				esc_html_e(
+					'For logged in users will display their WordPress "Display Name". For guests will prompt for 
+					a name.',
+					'myvideoroom'
+				);
+				?>
+				)</td>
 			</tr>
 
 			<tr class="inactive">
@@ -169,7 +191,12 @@ return function (): string {
 				<th class="column-primary"><em>lobby</em></th>
 				<td class="column-description">
 					<p>
-						<?php esc_html_e( 'Whether the lobby inside the video app should be enabled for non admin users', 'myvideoroom' ); ?>
+						<?php
+						esc_html_e(
+							'Whether the lobby inside the video app should be enabled for non admin users',
+							'myvideoroom'
+						);
+						?>
 					</p>
 				</td>
 				<td>false</td>
@@ -187,7 +214,12 @@ return function (): string {
 				<th class="column-primary"><em>reception</em></th>
 				<td class="column-description">
 					<p>
-						<?php esc_html_e( 'Whether the reception before entering the app should be enabled', 'myvideoroom' ); ?>
+						<?php
+						esc_html_e(
+							'Whether the reception before entering the app should be enabled',
+							'myvideoroom'
+						);
+						?>
 					</p>
 				</td>
 				<td>false</td>
@@ -195,7 +227,14 @@ return function (): string {
 			<tr class="inactive">
 				<th class="column-primary"><em>reception-id</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'The id of the reception image to use', 'myvideoroom' ); ?></p>
+					<p>
+					<?php
+					esc_html_e(
+						'The id of the reception image to use',
+						'myvideoroom'
+					);
+					?>
+						</p>
 
 					<p>
 						<?php
@@ -224,7 +263,14 @@ return function (): string {
 			<tr class="inactive">
 				<th class="column-primary"><em>reception-video</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'A link to a video to play in the reception. Will only work if the selected reception supports video', 'myvideoroom' ); ?>
+					<p>
+					<?php
+					esc_html_e(
+						'A link to a video to play in the reception. Will only work if the selected reception 
+					        supports video',
+						'myvideoroom'
+					);
+					?>
 					</p>
 				</td>
 				<td><?php esc_html_e( '(Use reception setting)', 'myvideoroom' ); ?></td>
@@ -239,7 +285,7 @@ return function (): string {
 		</tbody>
 	</table>
 	<br />
-	<h3><?php esc_html_e( 'MyVideoRoom Reception Widget', 'myvideoroom' ); ?></h3>
+	<h3><?php esc_html_e( 'MyVideoRoom reception widget', 'myvideoroom' ); ?></h3>
 	<p><?php esc_html_e( 'This shows the number of people currently waiting in a room', 'myvideoroom' ); ?></p>
 	<code class="myvideoroom-shortcode-example">
 		[<?php echo esc_html( MonitorShortcode::SHORTCODE_TAG ); ?>
@@ -249,7 +295,6 @@ return function (): string {
 			text-plural="<?php esc_html_e( '{{count}} people are waiting in reception', 'myvideoroom' ); ?>"
 		]
 	</code><br />
-	<br />
 
 	<table class="wp-list-table widefat plugins">
 		<thead>
@@ -286,7 +331,13 @@ return function (): string {
 				<th class="column-primary"><em>text-empty-plain</em></th>
 				<td class="column-description">
 					<p><?php esc_html_e( 'The plain text to show when nobody is waiting', 'myvideoroom' ); ?></p>
-					<p><?php esc_html_e( 'To be used in notifications where `text-empty` contains HTML', 'myvideoroom' ); ?>
+					<p>
+					<?php
+					esc_html_e(
+						'To be used in notifications where `text-empty` contains HTML',
+						'myvideoroom'
+					);
+					?>
 					</p>
 				</td>
 				<td>(text-empty)</td>
@@ -295,7 +346,9 @@ return function (): string {
 			<tr class="inactive">
 				<th class="column-primary"><em>text-single</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'The text to show when a single person is waiting', 'myvideoroom' ); ?></p>
+					<p>
+						<?php esc_html_e( 'The text to show when a single person is waiting', 'myvideoroom' ); ?>
+					</p>
 				</td>
 				<td>"<?php esc_html_e( 'One person is waiting in reception', 'myvideoroom' ); ?>"</td>
 			</tr>
@@ -303,9 +356,11 @@ return function (): string {
 			<tr class="inactive">
 				<th class="column-primary"><em>text-single-plain</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'The plain text to show a single person is waiting', 'myvideoroom' ); ?>
+					<p>
+						<?php esc_html_e( 'The plain text to show a single person is waiting', 'myvideoroom' ); ?>
 					</p>
-					<p><?php esc_html_e( 'To be used in notifications where `text-single` contains HTML', 'myvideoroom' ); ?>
+					<p>
+						<?php esc_html_e( 'To be used in notifications where `text-single` contains HTML', 'myvideoroom' ); ?>
 					</p>
 				</td>
 				<td>(text-single)</td>
@@ -314,7 +369,14 @@ return function (): string {
 			<tr class="inactive">
 				<th class="column-primary"><em>text-plural</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count', 'myvideoroom' ); ?>
+					<p>
+						<?php
+						esc_html_e(
+							'The text to show when a more than one person is waiting. "{{count}}" will be 
+                                substituted with the actual count',
+							'myvideoroom'
+						);
+						?>
 					</p>
 				</td>
 				<td>"<?php esc_html_e( '{{count}} people are waiting in reception', 'myvideoroom' ); ?>"</td>
@@ -323,9 +385,22 @@ return function (): string {
 			<tr class="inactive">
 				<th class="column-primary"><em>text-plural-plain</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count', 'myvideoroom' ); ?>
+					<p>
+						<?php
+						esc_html_e(
+							'The text to show when a more than one person is waiting. "{{count}}" will be 
+							substituted with the actual count',
+							'myvideoroom'
+						);
+						?>
 					</p>
-					<p><?php esc_html_e( 'To be used in notifications where `text-plural` contains HTML', 'myvideoroom' ); ?>
+					<p>
+						<?php
+						esc_html_e(
+							'To be used in notifications where `text-plural` contains HTML',
+							'myvideoroom'
+						);
+						?>
 					</p>
 				</td>
 				<td>(text-plural)</td>
@@ -334,7 +409,9 @@ return function (): string {
 			<tr class="inactive">
 				<th class="column-primary"><em>loading-text</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'The text to show while the widget is loading', 'myvideoroom' ); ?></p>
+					<p>
+						<?php esc_html_e( 'The text to show while the widget is loading', 'myvideoroom' ); ?>
+					</p>
 				</td>
 				<td>"<?php esc_html_e( 'Loading...', 'myvideoroom' ); ?>"</td>
 			</tr>
@@ -352,7 +429,8 @@ return function (): string {
 						<dd><?php esc_html_e( 'The number of people currently seated', 'myvideoroom' ); ?></dd>
 
 						<dt>"all":</dt>
-						<dd><?php esc_html_e( 'The total number of people, including reception, seated and non-seated admins', 'myvideoroom' ); ?>
+						<dd>
+							<?php esc_html_e( 'The total number of people, including reception, seated and non-seated admins', 'myvideoroom' ); ?>
 						</dd>
 					</dl>
 

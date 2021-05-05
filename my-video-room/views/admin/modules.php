@@ -7,13 +7,13 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Plugin;
-use MyVideoRoomPlugin\Module\Plugable;
+use MyVideoRoomPlugin\Admin;
+use MyVideoRoomPlugin\Module\Module;
 
 /**
  * Render the admin page
  *
- * @param \MyVideoRoomPlugin\Module\Module[]  $modules
+ * @param Module[] $modules
  * @param string[] $activated_module_keys
  */
 return function (
@@ -22,7 +22,6 @@ return function (
 ): string {
 
 	ob_start();
-
 	?>
 
 	<h2><?php esc_html_e( 'Additional Modules', 'myvideoroom' ); ?></h2>
@@ -46,10 +45,10 @@ return function (
 
 		<tbody id="the-list">
 		<?php
+
+		$base_url = menu_page_url( 'my-video-room-modules', false );
+
 		foreach ( $modules as $key => $module ) {
-
-			// @TODO add nonces to activate/deactivate;
-
 			if ( in_array( $key, $activated_module_keys, true ) ) {
 				$is_active = true;
 				$row_class = 'active';
@@ -58,7 +57,33 @@ return function (
 				$row_class = 'inactive';
 			}
 
+			$deactivate_url = add_query_arg(
+				array(
+					'module'   => $key,
+					'action'   => Admin::MODULE_ACTION_DEACTIVATE,
+					'_wpnonce' => wp_create_nonce( 'module_' . Admin::MODULE_ACTION_DEACTIVATE ),
+				),
+				$base_url
+			);
+
+			$activate_url = add_query_arg(
+				array(
+					'module'   => $key,
+					'action'   => Admin::MODULE_ACTION_ACTIVATE,
+					'_wpnonce' => wp_create_nonce( 'module_' . Admin::MODULE_ACTION_ACTIVATE ),
+				),
+				$base_url
+			);
+
+			$settings_url = add_query_arg(
+				array(
+					'module' => $key,
+				),
+				$base_url
+			);
+
 			?>
+
 			<tr class="<?php echo esc_attr( $row_class ); ?>">
 				<td class="plugin-title column-primary">
 					<strong><?php echo esc_html( $module->get_name() ); ?></strong>
@@ -67,7 +92,8 @@ return function (
 						<?php if ( $module->is_published() && $module->get_instance()->is_compatible() ) { ?>
 							<?php if ( $is_active ) { ?>
 							<span class="deactivate">
-								<a class="delete" href="<?php menu_page_url( 'my-video-room-modules' ); ?>&module=<?php echo esc_html( $key ); ?>&action=deactivate"
+								<a class="delete"
+									href="<?php echo esc_url( $deactivate_url ); ?>"
 									aria-label="<?php printf( /* translators: %s is the name of the module */ esc_html__( 'Deactivate %s ', 'myvideoroom' ), esc_html( $module->get_name() ) ); ?>"
 								>
 									Deactivate
@@ -75,7 +101,7 @@ return function (
 							</span>
 						<?php } else { ?>
 							<span class="activate">
-								<a href="<?php menu_page_url( 'my-video-room-modules' ); ?>&module=<?php echo esc_html( $key ); ?>&action=activate"
+								<a href="<?php echo esc_url( $activate_url ); ?>"
 									aria-label="<?php printf( /* translators: %s is the name of the module */ esc_html__( 'Activate %s ', 'myvideoroom' ), esc_html( $module->get_name() ) ); ?>"
 								>
 									Activate
@@ -84,7 +110,7 @@ return function (
 						<?php } ?>
 						|
 						<span class="settings">
-							<a href="<?php menu_page_url( 'my-video-room-modules' ); ?>&module=<?php echo esc_html( $key ); ?>"
+							<a href="<?php echo esc_url( $settings_url ); ?>"
 								aria-label="<?php printf( /* translators: %s is the name of the module */ esc_html__( 'Settings for %s ', 'myvideoroom' ), esc_html( $module->get_name() ) ); ?>"
 							>
 								Settings
@@ -106,6 +132,7 @@ return function (
 			<?php
 		}
 		?>
+
 		</tbody>
 
 		<tfoot>

@@ -19,13 +19,15 @@ return function (
 	ob_start();
 
 	?>
-	<h2><?php esc_html_e( 'Visual Room Builder', 'myvideoroom' ); ?></h2>
+	<h2><?php esc_html_e( 'Visual room builder and shortcode generator', 'myvideoroom' ); ?></h2>
 
 	<p class="myvideoroom-explainer-text">
 		<?php
 		echo esc_html__(
-			'To get started you can select your room design. Use this tool to explore and select your preferred configuration of Room name - Reception and other settings. The tool is interactive and you can drag users into and out of 
-            Reception to to see your Room layouts and Shortcode	Design.',
+			' Use this tool to explore and create your preferred configuration of MyVideoRoom, including layouts, 
+			receptions, permissions, and other settings. The preview is interactive and allows you to drag users in and 
+			out of the reception, and to see the output for both hosts and guests. The tool will output the shortcodes 
+			that you can then copy and paste into your page or post',
 			'myvideoroom'
 		)
 		?>
@@ -48,7 +50,13 @@ return function (
 			/>
 			<br />
 			<em id="myvideoroom_visualiser_room_name_<?php echo esc_attr( $id_index ); ?>_description">
-				<?php esc_html_e( 'The name of the room. All video room on the same website that share a name will share the same video group. Defaults to the site name', 'myvideoroom' ); ?>
+				<?php
+				esc_html_e(
+					'The name of the room. All video rooms on the same website that share a name will share the 
+					same video group. Defaults to the site name',
+					'myvideoroom'
+				);
+				?>
 			</em>
 		</fieldset>
 

@@ -1,25 +1,27 @@
 <?php
 /**
- * Renders The Help/Getting Started Area.
+ * Renders The Getting Started Area.
  *
  * @package MyVideoRoomPlugin\Views
  */
 
 use MyVideoRoomPlugin\Plugin;
 
+/**
+ * Render the getting started page
+ */
 return function (): string {
 	ob_start();
 
 	?>
-	<h2><?php echo esc_html__( 'Help / Getting Started ', 'myvideoroom' ); ?></h2>
-	<strong><?php echo esc_html__( 'Welcome to a World of Interactive Video', 'myvideoroom' ); ?></strong>
+	<h2><?php echo esc_html__( 'Getting started with MyVideoRoom', 'myvideoroom' ); ?></h2>
 	<p>
 	<?php
 		esc_html_e(
-			'MyVideoRooms are more than just meetings. There are physical representations of real rooms with breakout
-            areas, layouts and scenarios. The basis of a Video Meeting is to select a room template for your meeting, and use it to
-            drag in guests from receptions you can also remove anyone from the meeting at any time by clicking on their 
-            close meeting X by their picture.'
+			'MyVideoRooms are more than just meetings. There are physical representations of real rooms with 
+			breakout areas, layouts and scenarios. The basis of a MyVideoRoom Meeting is to select a room template for 
+			your meeting, and use it to drag in guests from receptions. You can also remove anyone from the meeting at 
+			any time by clicking on the × symbol next to their picture.'
 		);
 	?>
 	</p>
@@ -30,8 +32,11 @@ return function (): string {
 
 			<?php
 			printf(
-			/* translators: %s is the text "MyVideoRoom by ClubCloud" and links to the MyVideoRoom Website */
-				esc_html__( 'Visit %s to Get Your License Key. Then activate your subscription', 'myvideoroom' ),
+				/* translators: %s is the text "MyVideoRoom by ClubCloud" and links to the MyVideoRoom Website */
+				esc_html__(
+					'Visit %s to Get Your License Key. Then enter your key below to activate your subscription',
+					'myvideoroom'
+				),
 				'<a href="https://clubcloud.tech/pricing/">' .
 				esc_html__( 'MyVideoRoom by ClubCloud', 'myvideoroom' ) . '</a>'
 			);
@@ -43,20 +48,20 @@ return function (): string {
 
 			<?php
 			printf(
-			/* translators: %s is the text "Visual Room Builder" and links to the Room Builder Section */
-				esc_html__( 'Use the %s to plan your room interactively.', 'myvideoroom' ),
+				/* translators: %s is the text "Visual Room Builder" and links to the Room Builder Section */
+				esc_html__( 'Use the visual %s to plan your room interactively.', 'myvideoroom' ),
 				'<a href="' . esc_url( menu_page_url( 'my-video-room-builder', false ) ) . '">' .
-				esc_html__( 'Visual Room Builder', 'myvideoroom' ) .
+				esc_html__( 'room builder', 'myvideoroom' ) .
 				'</a>'
 			);
 			?>
 			<br>
 			<?php
 			printf(
-			/* translators: %s is the text "Templates" and links to the Template Section */
-				esc_html__( 'Learn about using %s for Video Rooms and Receptions to find something you like.', 'myvideoroom' ),
+				/* translators: %s is the text "templates" and links to the Template Section */
+				esc_html__( 'Learn about using %s for video layouts and receptions to find something you like.', 'myvideoroom' ),
 				'<a href="' . esc_url( menu_page_url( 'my-video-room-templates', false ) ) . '">' .
-				esc_html__( 'Templates', 'myvideoroom' ) .
+				esc_html__( 'templates', 'myvideoroom' ) .
 				'</a>'
 			);
 			?>
@@ -67,10 +72,10 @@ return function (): string {
 
 			<?php
 			printf(
-			/* translators: %s is the text "Room Permissions" and links to the Permissions Section */
-				esc_html__( 'Visit the %s area to plan how you want to give access to your rooms.', 'myvideoroom' ),
+				/* translators: %s is the text "Room Permissions" and links to the Permissions Section */
+				esc_html__( 'Visit the %s page to plan how you want to give access to your rooms.', 'myvideoroom' ),
 				'<a href="' . esc_url( menu_page_url( 'my-video-room-permissions', false ) ) . '">' .
-				esc_html__( 'Room Permission', 'myvideoroom' ) . '</a>'
+				esc_html__( 'room permission', 'myvideoroom' ) . '</a>'
 			);
 			?>
 		</li>
@@ -80,9 +85,12 @@ return function (): string {
 		<?php
 		printf(
 			/* translators: %s is the text "MyVideoRoom Pricing" and links to the https://clubcloud.tech/pricing */
-			esc_html__( 'To get started you will need an subscription to the MyVideoRoom service. See %s for more details', 'myvideoroom' ),
+			esc_html__(
+				'Visit %s for more information on purchasing an activation key to use MyVideoRoom.',
+				'myvideoroom'
+			),
 			'<a href="https://clubcloud.tech/pricing">' .
-			esc_html__( 'MyVideoRoom Pricing', 'myvideoroom' ) . '</a>'
+			esc_html__( 'MyVideoRoom pricing', 'myvideoroom' ) . '</a>'
 		);
 		?>
 	</p>
@@ -90,16 +98,18 @@ return function (): string {
 	<form method="post" action="options.php">
 		<?php
 		if ( get_option( Plugin::SETTING_PRIVATE_KEY ) ) {
-			$placeholder = __( '(hidden)', 'myvideoroom' );
+			$submit_text = __( 'Update', 'myvideoroom' );
+			$placeholder = '∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗';
 		} else {
-			$placeholder = __( '(Provided by ClubCloud)', 'myvideoroom' );
+			$submit_text = __( 'Activate', 'myvideoroom' );
+			$placeholder = __( '(enter your activation key here)', 'myvideoroom' );
 		}
 		?>
 
 		<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
 		<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
-			<?php esc_html_e( 'MyVideoRoom Activation Key', 'myvideoroom' ); ?>
+			<?php esc_html_e( 'Your activation key', 'myvideoroom' ); ?>
 		</label>
 		<input
 			class="activation-key"
@@ -112,7 +122,7 @@ return function (): string {
 
 		<?php
 		submit_button(
-			esc_html__( 'Activate', 'myvideoroom' ),
+			esc_html( $submit_text ),
 			'primary',
 			'submit',
 			false

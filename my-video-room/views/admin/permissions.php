@@ -26,13 +26,15 @@ return function (
 	<p>
 		<?php
 		esc_html_e(
-			'By default you have two shortcodes generated for your pages by the room builder. One is for the Host, and one for guest.
-            This setting configures, who the Video Engine will treat as a Host in case you haven\'t provided a Host Shortcode. 
-            By default, the Application will take your Site Administrators Group as its default host. You can override that section below, and add additional WordPress roles to your Host permissions Matrix. ',
+			'The room builder can either generate two shortcodes where one is for the Host, and one for guest. 
+			Alternatively you can generate a single shortcode, and use these setting to configure who the video engine 
+			will treat as a host. This section allows you to add and remove  WordPress roles to your host permissions 
+			matrix.',
 			'myvideoroom'
 		);
 		?>
 	</p>
+
 	<form method="post" action="">
 		<fieldset>
 			<table class="form-table" role="presentation">

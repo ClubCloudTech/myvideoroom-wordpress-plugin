@@ -2,13 +2,18 @@
 	margin-right: 15px;
 }
 
+.myvideoroom-admin p {
+	max-width: 704px;
+}
+
 .myvideoroom-admin .notice {
 	margin-right: 0;
 }
 
 .myvideoroom-admin .activation-key {
 	width: 60%;
-	min-width: 300px;
+	max-width: 400px;
+	min-width: 304px;
 }
 
 .myvideoroom-admin .button-primary.negative{
@@ -46,12 +51,19 @@
 /*endregion*/
 
 /*region Header */
-.myvideoroom-admin header h1 {
+.myvideoroom-admin header div {
 	vertical-align: top;
 	display: inline-block;
 	min-width: 300px;
-	line-height: 1.2em;
 	width: calc(100% - 716px);
+}
+
+.myvideoroom-admin header div strong {
+	font-size: 1.2em;
+}
+
+.myvideoroom-admin header div h1 {
+	line-height: 1.2em;
 }
 
 .myvideoroom-admin header aside {
@@ -93,7 +105,7 @@
 /*endregion*/
 
 
-/*region Help/Getting Started - Three Step Getting Started */
+/*region Getting Started - Three Step Getting Started */
 .myvideoroom-admin ol.three-step-getting-started {
 	counter-reset: item;
 	max-width: 800px;
