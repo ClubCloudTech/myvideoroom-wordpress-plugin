@@ -102,7 +102,7 @@ class AppShortcode extends Shortcode {
 		if ( ! $host ) {
 			$this->return_error(
 				'<div>' . esc_html__(
-					'>My Video Room cannot find the host that it is currentlyrunning on.',
+					'>MyVideoRoom cannot find the host that it is currentlyrunning on.',
 					'myvideoroom'
 				) . '</div>'
 			);
@@ -180,7 +180,7 @@ class AppShortcode extends Shortcode {
 		);
 
 		if ( ! openssl_sign( $message, $signature, $this->private_key, OPENSSL_ALGO_SHA256 ) ) {
-			return $this->return_error( esc_html__( 'My Video Room was unable to sign the data.', 'myvideoroom' ) );
+			return $this->return_error( esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
 		}
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript

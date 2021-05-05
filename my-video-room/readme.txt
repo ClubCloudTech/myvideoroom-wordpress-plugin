@@ -74,7 +74,7 @@ ClubCloud’s MyVideoRoom flexible APIs enable deep integration of high quality,
 = ClubCloud Recommends =
 ClubCloud recommends the download of MyVideoRoom Premium Extras plug-in to unlock all the value of the MyVideoRoom video service offering in your website.
 
-= My Video Room Pricing =
+= MyVideoRoom Pricing =
 Pricing information can be found here:
 [https://clubcloud.tech/pricing](https://clubcloud.tech/pricing)
 
@@ -139,7 +139,7 @@ This plugin creates a new role to WordPress called **Video Admin** *(myvideoroom
 = What are the technical requirements for this plugin? =
 This plugin is supported on WordPress 5.6 or greater, and PHP 7.4 or greater. It requires the PHP OpenSSL module to be enabled ([https://www.php.net/manual/en/book.openssl.php](https://www.php.net/manual/en/book.openssl.php)). It has no dependencies on other plugins.
 
-The My Video Room service uses both WebSockets and WebRTC. It requires to be run a modern browser that supports both of these technologies. It requires ports 443 and 10000 to be open on the network to allow communication.
+The MyVideoRoom service uses both WebSockets and WebRTC. It requires to be run a modern browser that supports both of these technologies. It requires ports 443 and 10000 to be open on the network to allow communication.
 
 = How do I get support for this plugin? =
 Please check in the Wordpress Support page for this plugin first - [https://wordpress.org/support/plugin/myvideoroom](https://wordpress.org/support/plugin/myvideoroom).
@@ -154,7 +154,7 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 1. Collecting details for logged out users.
 2. Selecting which seat to occupy.
 3. The main video screen.
-4. Entering My Video Room licencing information.
+4. Entering MyVideoRoom licencing information.
 5. Full shortcode reference.
 6. Advanced settings to allow automatic allocation of admin users.
 
@@ -205,6 +205,6 @@ No manual changes are needed for these changes
 No manual changes are needed for these changes
 
 = 1.0.* =
-This is the initial public release of the My Video Room Plugin.
+This is the initial public release of the MyVideoRoom Plugin.
 
 

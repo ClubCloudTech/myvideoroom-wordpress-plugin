@@ -46,7 +46,7 @@ return function (
 
 	<header>
 		<h1 class="myvideoroom-header-config-title">
-			<?php esc_html_e( 'My Video Room Settings and Configuration', 'myvideoroom' ); ?>
+			<?php esc_html_e( 'MyVideoRoom Settings and Configuration', 'myvideoroom' ); ?>
 		</h1>
 
 		<aside class="card tag-line">

@@ -18,7 +18,7 @@ class Modules {
 
 
 	/**
-	 * Get all available My Video Room modules
+	 * Get all available MyVideoRoom modules
 	 *
 	 * @return Module[]
 	 */

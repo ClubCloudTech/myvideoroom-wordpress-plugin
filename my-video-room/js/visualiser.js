@@ -6,10 +6,11 @@
 
 jQuery.noConflict()(
 	function () {
-		var $            = jQuery.noConflict();
-		var $visualisers = $( '.myvideoroom-visualiser-settings' );
+		var $                   = jQuery.noConflict();
+		var $visualiserSettings = $( '.myvideoroom-visualiser-settings' );
+		var $visualiserOutputs  = $( '.myvideoroom-visualiser-output' );
 
-		$visualisers.each(
+		$visualiserSettings.each(
 			function () {
 				var $floorplan_checkbox    = $( 'input[name=myvideoroom_visualiser_disable_floorplan_preference]', this );
 				var $reception_checkbox    = $( 'input[name=myvideoroom_visualiser_reception_enabled_preference]', this );
@@ -83,6 +84,34 @@ jQuery.noConflict()(
 						}
 					}
 				)
+			}
+		)
+
+		$visualiserOutputs.each(
+			function () {
+				var $copy_to_clipboard_button = $( 'input.copy-to-clipboard ', this );
+
+				$copy_to_clipboard_button.on(
+					'click',
+					function () {
+						var $button      = $( this );
+						var code         = $button.parent().children( 'code' ).html();
+						var default_text = $button.prop( 'value' );
+
+						navigator.clipboard.writeText( code ).then(
+							function () {
+								$button.prop( 'value', $visualiserOutputs.data( 'copied-text' ) );
+
+								setTimeout(
+									function () {
+										$button.prop( 'value', default_text );
+									},
+									2000
+								)
+							}
+						);
+					}
+				);
 			}
 		)
 	}

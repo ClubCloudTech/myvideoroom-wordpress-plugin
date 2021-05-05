@@ -113,7 +113,7 @@ class MonitorShortcode extends Shortcode {
 				defined( 'WP_DEBUG' ) &&
 				WP_DEBUG
 			) {
-				return '<div>' . esc_html__( 'My Video Room is currently unlicensed', 'myvideoroom' ) . '</div>';
+				return '<div>' . esc_html__( 'MyVideoRoom is currently unlicensed', 'myvideoroom' ) . '</div>';
 			} else {
 				return '';
 			}
@@ -152,7 +152,7 @@ class MonitorShortcode extends Shortcode {
 		);
 
 		if ( ! openssl_sign( $message, $signature, $this->private_key, OPENSSL_ALGO_SHA256 ) ) {
-			return $this->return_error( esc_html__( 'My Video Room was unable to sign the data.', 'myvideoroom' ) );
+			return $this->return_error( esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
 		}
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript

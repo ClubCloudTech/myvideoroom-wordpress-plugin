@@ -8,7 +8,7 @@
 declare( strict_types=1 );
 
 /**
- * Plugin Name:         My Video Room
+ * Plugin Name:         MyVideoRoom
  * Plugin URI:          https://clubcloud.tech
  * Text Domain:         myvideoroom
  * Description:         Integrates the MyVideoRoom Service into WordPress
@@ -33,7 +33,7 @@ if ( ! function_exists( 'get_plugin_data' ) ) {
 
 if ( ! class_exists( Plugin::class ) ) {
 	/**
-	 * Autoloader for classes in the My Video Room Plugin
+	 * Autoloader for classes in the MyVideoRoom Plugin
 	 *
 	 * @param string $class_name The name of the class to autoload.
 	 *

@@ -43,7 +43,7 @@ return function (
 				placeholder="<?php esc_html_e( 'Your Room Name (optional)', 'myvideoroom' ); ?>"
 				id="myvideoroom_visualiser_room_name_<?php echo esc_attr( $id_index ); ?>"
 				name="myvideoroom_visualiser_room_name"
-				value="<?php echo esc_html( $app_config && $app_config->get_name() ); ?>"
+				value="<?php echo esc_html( $app_config ? $app_config->get_name() : '' ); ?>"
 				aria-describedby="myvideoroom_visualiser_room_name_<?php echo esc_attr( $id_index ); ?>_description"
 			/>
 			<br />
@@ -89,7 +89,7 @@ return function (
 						'myvideoroom'
 					),
 					'<a href="' . esc_url( menu_page_url( 'my-video-room-templates', false ) ) . '">' .
-					esc_html__( 'Templates', 'myvideoroom' ) .
+					esc_html__( 'templates', 'myvideoroom' ) .
 					'</a>'
 				);
 				?>
@@ -143,7 +143,7 @@ return function (
 						'myvideoroom'
 					),
 					'<a href="' . esc_url( menu_page_url( 'my-video-room-permissions', false ) ) . '">' .
-					esc_html__( 'Room Permissions', 'myvideoroom' ) .
+					esc_html__( 'room permissions', 'myvideoroom' ) .
 					'</a>'
 				);
 				?>
@@ -228,7 +228,7 @@ return function (
 							'myvideoroom'
 						),
 						'<a href="' . esc_url( menu_page_url( 'my-video-room-templates', false ) ) . '">' .
-						esc_html__( 'Templates', 'myvideoroom' ) .
+						esc_html__( 'templates', 'myvideoroom' ) .
 						'</a>'
 					);
 					?>

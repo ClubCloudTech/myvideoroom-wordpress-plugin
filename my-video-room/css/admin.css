@@ -6,6 +6,29 @@
 	margin-right: 0;
 }
 
+.myvideoroom-admin .activation-key {
+	width: 60%;
+	min-width: 300px;
+}
+
+.myvideoroom-admin .button-primary.negative{
+	background: #d63638;
+	color: #fff;
+	border-color: #d63638;
+}
+
+.myvideoroom-admin .button-primary.negative:hover  {
+	background: #b32d2e;
+	border-color: #b32d2e;
+}
+
+.myvideoroom-admin .nav-separate {
+	background-color: #c5d9ed;
+}
+
+.myvideoroom-admin .plugins .row-actions em {
+	color: #2c3338;
+}
 
 /*region Nav Tab */
 .myvideoroom-admin .nav-tab-wrapper li {
@@ -55,7 +78,6 @@
 	content: "";
 	clear: both;
 }
-
 /*endregion*/
 
 /*region Room Templates*/
@@ -121,33 +143,7 @@
 		float: left;
 	}
 }
-
-.myvideoroom-admin .activation-key {
-	width: 60%;
-	min-width: 300px;
-}
-
 /*endregion */
-
-.myvideoroom-admin .button-primary.negative{
-	background: #d63638;
-	color: #fff;
-	border-color: #d63638;
-}
-
-.myvideoroom-admin .button-primary.negative:hover  {
-	background: #b32d2e;
-	border-color: #b32d2e;
-}
-
-.myvideoroom-admin .nav-separate {
-	background-color: #c5d9ed;
-}
-
-iframe.myvideoroom-admin-template-browser {
-	width: 100%;
-	height: 80vh;
-}
 
 .myvideoroom-admin .reception-card,
 .myvideoroom-admin .layout-card {
@@ -157,6 +153,20 @@ iframe.myvideoroom-admin-template-browser {
 	height: 238px;
 	box-sizing: content-box;
 	text-align: center;
+}
+
+.myvideoroom-admin .reception-card h3,
+.myvideoroom-admin .layout-card h3 {
+	margin: 8px 0;
+}
+
+.myvideoroom-admin .reception-card img,
+.myvideoroom-admin .layout-card img {
+	display: block;
+	border-radius: 4px;
+	max-width: calc(80% - 16px);
+	max-height: 128px;
+	margin: 16px auto 0 auto;
 }
 
 @media only screen and (min-width: 690px) {
@@ -178,23 +188,4 @@ iframe.myvideoroom-admin-template-browser {
 	.myvideoroom-admin .layout-card {
 		width: calc(25% - 77px);
 	}
-}
-
-
-.myvideoroom-admin .reception-card h3,
-.myvideoroom-admin .layout-card h3 {
-	margin: 8px 0;
-}
-
-.myvideoroom-admin .reception-card img,
-.myvideoroom-admin .layout-card img {
-	display: block;
-	border-radius: 4px;
-	max-width: calc(80% - 16px);
-	max-height: 128px;
-	margin: 16px auto 0 auto;
-}
-
-.myvideoroom-admin .plugins .row-actions em {
-	color: #2c3338;
 }

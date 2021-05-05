@@ -14,7 +14,7 @@ use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 
 /**
  * Class UserVideoPreference
- * Allows the user to select their room display (note NOT Security) display parameters.
+ * Allows the user to select their room display (note NOT permission) display parameters.
  */
 class ShortcodeRoomVisualiser extends Shortcode {
 

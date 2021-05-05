@@ -240,7 +240,7 @@ class AppShortcodeConstructor {
 	}
 
 	/**
-	 * Delegate_admin_to_wordpress admins and not do full security.
+	 * Delegate permissions to WordPress roles.
 	 *
 	 * @return self
 	 */
@@ -312,21 +312,24 @@ class AppShortcodeConstructor {
 	 */
 	public function output_shortcode( bool $text_safe = false ): string {
 		$shortcode_array = array(
-			'name'   => $this->name,
-			'layout' => $this->layout,
+			'layout' => $this->get_layout(),
 		);
 
-		if ( true === $this->admin ) {
+		if ( $this->get_name() ) {
+			$shortcode_array['name'] = $this->get_name();
+		}
+
+		if ( true === $this->is_admin() ) {
 			$shortcode_array['admin'] = true;
 		} elseif ( false === $this->admin ) {
 			$shortcode_array['admin'] = false;
 		}
 
-		if ( ! $this->is_admin() && $this->reception ) {
+		if ( ! $this->is_admin() && $this->is_reception_enabled() ) {
 			$shortcode_array['reception'] = true;
 
 			if ( $this->reception_id ) {
-				$shortcode_array['reception-id'] = $this->reception_id;
+				$shortcode_array['reception-id'] = $this->get_reception_id();
 			}
 		}
 

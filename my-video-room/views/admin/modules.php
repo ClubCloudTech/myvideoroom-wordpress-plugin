@@ -48,6 +48,8 @@ return function (
 		<?php
 		foreach ( $modules as $key => $module ) {
 
+			// @TODO add nonces to activate/deactivate;
+
 			if ( in_array( $key, $activated_module_keys, true ) ) {
 				$is_active = true;
 				$row_class = 'active';
@@ -104,6 +106,8 @@ return function (
 			<?php
 		}
 		?>
+		</tbody>
+
 		<tfoot>
 			<tr>
 				<th scope="col" class="manage-column column-name column-primary"><?php esc_html_e( 'Module', 'myvideoroom' ); ?></th>

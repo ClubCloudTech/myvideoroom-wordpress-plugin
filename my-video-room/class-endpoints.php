@@ -59,11 +59,17 @@ class Endpoints {
 			$custom_endpoints = array();
 		}
 
-		$this->video_endpoint   = $custom_endpoints['video'] ?? 'meet.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-		$this->app_endpoint     = $custom_endpoints['app'] ?? 'https://app.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-		$this->state_endpoint   = $custom_endpoints['state'] ?? 'https://state.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-		$this->rooms_endpoint   = $custom_endpoints['rooms'] ?? 'https://rooms.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-		$this->licence_endpoint = $custom_endpoints['licence'] ?? 'https://licence.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+		if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
+			$video_server = esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
+		} else {
+			$video_server = 'clubcloud.dev';
+		}
+
+		$this->video_endpoint   = $custom_endpoints['video'] ?? 'meet.' . $video_server;
+		$this->app_endpoint     = $custom_endpoints['app'] ?? 'https://app.' . $video_server;
+		$this->state_endpoint   = $custom_endpoints['state'] ?? 'https://state.' . $video_server;
+		$this->rooms_endpoint   = $custom_endpoints['rooms'] ?? 'https://rooms.' . $video_server;
+		$this->licence_endpoint = $custom_endpoints['licence'] ?? 'https://licence.' . $video_server;
 	}
 
 	/**

@@ -22,17 +22,17 @@ return function (): string {
             // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The translated text will be escaped, but we want to render the link correctly.
 			printf(
 				/* translators: %s is the text "WordPress Shortcodes" and links to the WordPress help page for shortcodes */
-				esc_html__( 'You can use the following %s to add the My Video Room app to a page.', 'myvideoroom' ),
+				esc_html__( 'You can use the following %s to add the MyVideoRoom app to a page.', 'myvideoroom' ),
 				'<a href="https://support.wordpress.com/shortcodes/" target="_blank">' . esc_html__( 'WordPress Shortcodes', 'myvideoroom' ) . '</a>'
 			);
 		?>
 	</p>
 
-	<h3><?php esc_html_e( 'My Video Room App', 'myvideoroom' ); ?></h3>
+	<h3><?php esc_html_e( 'MyVideoRoom App', 'myvideoroom' ); ?></h3>
 	<p><?php esc_html_e( 'This shows the video app', 'myvideoroom' ); ?></p>
 	<code class="myvideoroom-shortcode-example">
 		[<?php echo esc_html( AppShortcode::SHORTCODE_TAG ); ?>
-			name="<?php esc_html_e( 'My Video Room', 'myvideoroom' ); ?>"
+			name="<?php esc_html_e( 'MyVideoRoom', 'myvideoroom' ); ?>"
 			layout="clubcloud"
 			lobby=true
 			admin=true
@@ -239,11 +239,11 @@ return function (): string {
 		</tbody>
 	</table>
 	<br />
-	<h3><?php esc_html_e( 'My Video Room Reception Widget', 'myvideoroom' ); ?></h3>
+	<h3><?php esc_html_e( 'MyVideoRoom Reception Widget', 'myvideoroom' ); ?></h3>
 	<p><?php esc_html_e( 'This shows the number of people currently waiting in a room', 'myvideoroom' ); ?></p>
 	<code class="myvideoroom-shortcode-example">
 		[<?php echo esc_html( MonitorShortcode::SHORTCODE_TAG ); ?>
-			name="<?php esc_html_e( 'My Video Room', 'myvideoroom' ); ?>"
+			name="<?php esc_html_e( 'MyVideoRoom', 'myvideoroom' ); ?>"
 			text-empty="<?php esc_html_e( 'Nobody is currently waiting', 'myvideoroom' ); ?>"
 			text-single="<?php esc_html_e( 'One person is waiting in reception', 'myvideoroom' ); ?>"
 			text-plural="<?php esc_html_e( '{{count}} people are waiting in reception', 'myvideoroom' ); ?>"

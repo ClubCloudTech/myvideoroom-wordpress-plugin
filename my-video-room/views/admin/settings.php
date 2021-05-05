@@ -12,7 +12,7 @@ use MyVideoRoomPlugin\Plugin;
 
 
 /**
- * Render the Security Permissions Admin page
+ * Render the Room Permissions Admin page
  *
  * @param array $all_wp_roles A list of WordPress roles. @see global $wp_roles->roles.
  */
@@ -21,9 +21,8 @@ return function (
 ): string {
 	ob_start();
 	?>
-	<h2><?php esc_html_e( 'Video Security', 'myvideoroom' ); ?></h2>
+	<h2><?php esc_html_e( 'Default room permissions', 'myvideoroom' ); ?></h2>
 
-	<h3><?php esc_html_e( 'Default Video Room Hosts', 'myvideoroom' ); ?></h3>
 	<p>
 		<?php
 		esc_html_e(

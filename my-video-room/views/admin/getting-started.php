@@ -67,7 +67,7 @@ return function (): string {
 
 			<?php
 			printf(
-			/* translators: %s is the text "Room Permissions" and links to the Security Section */
+			/* translators: %s is the text "Room Permissions" and links to the Permissions Section */
 				esc_html__( 'Visit the %s area to plan how you want to give access to your rooms.', 'myvideoroom' ),
 				'<a href="' . esc_url( menu_page_url( 'my-video-room-permissions', false ) ) . '">' .
 				esc_html__( 'Room Permission', 'myvideoroom' ) . '</a>'
@@ -79,10 +79,10 @@ return function (): string {
 	<p>
 		<?php
 		printf(
-			/* translators: %s is the text "My Video Room Pricing" and links to the https://clubcloud.tech/pricing */
+			/* translators: %s is the text "MyVideoRoom Pricing" and links to the https://clubcloud.tech/pricing */
 			esc_html__( 'To get started you will need an subscription to the MyVideoRoom service. See %s for more details', 'myvideoroom' ),
 			'<a href="https://clubcloud.tech/pricing">' .
-			esc_html__( 'My Video Room Pricing', 'myvideoroom' ) . '</a>'
+			esc_html__( 'MyVideoRoom Pricing', 'myvideoroom' ) . '</a>'
 		);
 		?>
 	</p>
@@ -99,7 +99,7 @@ return function (): string {
 		<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
 		<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
-			<?php esc_html_e( 'My Video Room Activation Key', 'myvideoroom' ); ?>
+			<?php esc_html_e( 'MyVideoRoom Activation Key', 'myvideoroom' ); ?>
 		</label>
 		<input
 			class="activation-key"

@@ -62,8 +62,8 @@ class Admin extends Shortcode {
 
 		if ( empty( $admin_page_hooks['my-video-room-global'] ) ) {
 			add_menu_page(
-				esc_html__( 'My Video Room', 'myvideoroom' ),
-				esc_html__( 'My Video Room', 'myvideoroom' ),
+				esc_html__( 'MyVideoRoom', 'myvideoroom' ),
+				esc_html__( 'MyVideoRoom', 'myvideoroom' ),
 				'manage_options',
 				'my-video-room',
 				array( $this, 'create_getting_started_page' ),
@@ -173,7 +173,7 @@ class Admin extends Shortcode {
 			$messages = array_merge(
 				array(
 					'type'    => 'notice-warning',
-					'message' => esc_html__( 'My Video Room is not currently activated. Please enter your activation key to get started.', 'myvideoroom' ),
+					'message' => esc_html__( 'MyVideoRoom is not currently activated. Please enter your activation key to get started.', 'myvideoroom' ),
 				),
 				$messages
 			);
@@ -397,7 +397,7 @@ class Admin extends Shortcode {
 				'type'    => 'notice-success',
 				'message' => sprintf(
 				/* translators: First %s is text representing allowed number of users, second %s refers to the allowed number of rooms */
-					esc_html__( 'My Video Room has been activated. Your current licence allows for %1$s and %2$s', 'myvideoroom' ),
+					esc_html__( 'MyVideoRoom has been activated. Your current licence allows for %1$s and %2$s', 'myvideoroom' ),
 					$concurrent_strings['maxConcurrentUsers'],
 					$concurrent_strings['maxConcurrentRooms'],
 				),
@@ -406,7 +406,7 @@ class Admin extends Shortcode {
 		} else {
 			$messages[] = array(
 				'type'    => 'notice-error',
-				'message' => esc_html__( 'Failed to activate the My Video Room licence, please check your activation key and try again.', 'myvideoroom' ),
+				'message' => esc_html__( 'Failed to activate the MyVideoRoom licence, please check your activation key and try again.', 'myvideoroom' ),
 			);
 		}
 
@@ -454,7 +454,7 @@ class Admin extends Shortcode {
 			if ( 0 === $json['maxConcurrentUsers'] || 0 === $json['maxConcurrentRooms'] ) {
 				$messages[] = array(
 					'type'    => 'notice-warning',
-					'message' => esc_html__( 'My Video Room is currently unlicensed.', 'myvideoroom' ),
+					'message' => esc_html__( 'MyVideoRoom is currently unlicensed.', 'myvideoroom' ),
 				);
 			} else {
 
@@ -464,7 +464,7 @@ class Admin extends Shortcode {
 					'type'    => 'notice-success',
 					'message' => sprintf(
 					/* translators: First %s is text representing allowed number of users, second %s refers to the allowed number of rooms */
-						esc_html__( 'My Video Room is currently active. Your current licence allows for %1$s and %2$s', 'myvideoroom' ),
+						esc_html__( 'MyVideoRoom is currently active. Your current licence allows for %1$s and %2$s', 'myvideoroom' ),
 						$concurrent_strings['maxConcurrentUsers'],
 						$concurrent_strings['maxConcurrentRooms'],
 					),
@@ -473,7 +473,7 @@ class Admin extends Shortcode {
 		} else {
 			$messages[] = array(
 				'type'    => 'notice-error',
-				'message' => esc_html__( 'Failed to validate your My Video Room licence, please check try reloading this page, if this message remains please re-activate your subscription.', 'myvideroom' ),
+				'message' => esc_html__( 'Failed to validate your MyVideoRoom licence, please check try reloading this page, if this message remains please re-activate your subscription.', 'myvideroom' ),
 			);
 		}
 
