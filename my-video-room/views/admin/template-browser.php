@@ -5,7 +5,10 @@
  * @package MyVideoRoomPlugin\Views
  */
 
-return function (): string {
+return function (
+	array $available_layouts = array(),
+	array $available_receptions = array()
+): string {
 	ob_start();
 	?>
 		<h2><?php esc_html_e( 'Room Template Library', 'myvideoroom' ); ?></h2>
@@ -47,12 +50,12 @@ return function (): string {
 
 			<div class="view">
 				<h3>Host View</h3>
-				<img src="<?php echo esc_url( plugins_url( '/img/host-view.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room Host View" />
+				<img src="<?php echo esc_url( plugins_url( '/img/host-view.png', realpath( __DIR__ . '/../' ) ) ); ?>" alt="My Video Room Host View" />
 			</div>
 
 			<div class="view">
 				<h3>Guest View</h3>
-				<img src="<?php echo esc_url( plugins_url( '/img/guest-view.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room Guest View" />
+				<img src="<?php echo esc_url( plugins_url( '/img/guest-view.png', realpath( __DIR__ . '/../' ) ) ); ?>" alt="My Video Room Guest View" />
 			</div>
 
 			<p>
@@ -79,7 +82,36 @@ return function (): string {
 			?>
 			</p>
 
-			<iframe class="myvideoroom-admin-template-browser" src="https://rooms.clubcloud.tech/views/layout?embed=true"></iframe>
+			<ul>
+			<?php
+			foreach ( $available_layouts as $available_layout ) {
+			    // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase, WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase - data from external source
+				$seat_groups       = $available_layout->seatGroups;
+				$total_seat_groups = count( $seat_groups );
+				$total_seats       = array_sum(
+					array_map(
+						fn( $seat_group ) => count( $seat_group->seats ),
+						$seat_groups
+					)
+				);
+
+				?>
+				<li class="card layout-card">
+					<h3 class="title"><?php echo esc_html( $available_layout->name ); ?></h3>
+					Slug: <em><?php echo esc_html( $available_layout->slug ); ?></em>
+					<br />
+
+					Seat Groups: <?php echo esc_html( $total_seat_groups ); ?>
+					Seats: <?php echo esc_html( $total_seats ); ?>
+					<br />
+
+					<img
+						src="https://rooms.clubcloud.tech/layouts/<?php echo esc_html( $available_layout->id . '/' . str_replace( '.', '.thumb.', $available_layout->image ) ); ?>"
+						alt="<?php echo esc_html( $available_layout->name ); ?>"
+					/>
+				</li>
+			<?php } ?>
+			</ul>
 		</article>
 
 		<article id="myvideoroom-receptions">
@@ -96,7 +128,32 @@ return function (): string {
 			?>
 			</p>
 
-			<iframe class="myvideoroom-admin-template-browser" src="https://rooms.clubcloud.tech/views/reception?embed=true"></iframe>
+
+			<ul>
+				<?php
+				foreach ( $available_receptions as $available_reception ) {
+					$has_video = __( 'yes', 'myvideoroom' );
+
+					if ( $available_reception->video ) {
+						$has_video = __( 'no', 'myvideoroom' );
+					}
+
+					?>
+					<li class="card reception-card">
+						<h3 class="title"><?php echo esc_html( $available_reception->name ); ?></h3>
+						Slug: <em><?php echo esc_html( $available_reception->slug ); ?></em>
+						<br />
+
+						Video: <?php echo esc_html( $has_video ); ?>
+						<br />
+
+						<img src="https://rooms.clubcloud.tech/receptions/<?php echo esc_html( $available_reception->id . '/' . str_replace( '.', '.thumb.', $available_reception->image ) ); ?>"
+							alt="<?php echo esc_html( $available_reception->name ); ?>"
+						/>
+					</li>
+				<?php } ?>
+			</ul>
+
 		</article>
 	<?php
 

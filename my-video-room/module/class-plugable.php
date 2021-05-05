@@ -7,39 +7,18 @@
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Modules;
+namespace MyVideoRoomPlugin\Module;
 
 /**
  * Interface Plugable
  */
 interface Plugable {
 	/**
-	 * Get the plugin name
-	 *
-	 * @return string
-	 */
-	public function get_name(): string;
-
-	/**
-	 * Is the plugin available?
+	 * Is the plugin compatible?
 	 *
 	 * @return bool
 	 */
-	public function is_available(): bool;
-
-	/**
-	 * Is the plugin installed?
-	 *
-	 * @return bool
-	 */
-	public function is_installed(): bool;
-
-	/**
-	 * Is the plugin active?
-	 *
-	 * @return bool
-	 */
-	public function is_active(): bool;
+	public function is_compatible(): bool;
 
 	/**
 	 * Initialise the plugin

@@ -5,7 +5,7 @@
  * @package MyVideoRoomPlugin\Shortcode
  */
 
-namespace MyVideoRoomPlugin\Visualiser;
+namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\AppShortcode;
 use function do_shortcode;
@@ -17,16 +17,16 @@ class AppShortcodeConstructor {
 	/**
 	 * The name of the room
 	 *
-	 * @var string
+	 * @var ?string
 	 */
-	private string $name;
+	private ?string $name = null;
 
 	/**
 	 * The layout of the room
 	 *
-	 * @var string
+	 * @var ?string = null;
 	 */
-	private string $layout;
+	private ?string $layout;
 
 	/**
 	 * Is this user an admin?
@@ -79,36 +79,24 @@ class AppShortcodeConstructor {
 
 	/**
 	 * MyVideoRoomApp constructor.
-	 *
-	 * @param string $name The name of the room.
-	 * @param string $layout The layout.
 	 */
-	public function __construct(
-		string $name,
-		string $layout
-	) {
-		$this->name   = $name;
-		$this->layout = $layout;
-	}
+	public function __construct() {}
 
 	/**
 	 * Create an instance - allows for easier chaining
 	 *
-	 * @param string $name The name of the room.
-	 * @param string $layout The layout.
-	 *
 	 * @return AppShortcodeConstructor
 	 */
-	public static function create_instance( string $name, string $layout ): self {
-		return new self( $name, $layout );
+	public static function create_instance(): self {
+		return new self();
 	}
 
 	/**
 	 * Get the name of the room
 	 *
-	 * @return string
+	 * @return ?string
 	 */
-	public function get_name(): string {
+	public function get_name(): ?string {
 		return $this->name;
 	}
 
@@ -119,7 +107,7 @@ class AppShortcodeConstructor {
 	 *
 	 * @return $this
 	 */
-	public function set_name( string $name ): AppShortcodeConstructor {
+	public function set_name( string $name ): self {
 		$this->name = $name;
 		return $this;
 	}
@@ -127,10 +115,22 @@ class AppShortcodeConstructor {
 	/**
 	 * Get the layout
 	 *
-	 * @return string
+	 * @return ?string
 	 */
-	public function get_layout(): string {
+	public function get_layout(): ?string {
 		return $this->layout;
+	}
+
+	/**
+	 * Set the id of the layout
+	 *
+	 * @param string $layout The id of the layout.
+	 *
+	 * @return $this
+	 */
+	public function set_layout( string $layout ): self {
+		$this->layout = $layout;
+		return $this;
 	}
 
 	/**
@@ -284,11 +284,11 @@ class AppShortcodeConstructor {
 	/**
 	 * Set a random seed to guarantee room uniqueness
 	 *
-	 * @param string $seed A random string
+	 * @param string $seed A random string.
 	 *
 	 * @return $this
 	 */
-	public function set_seed( string $seed): self {
+	public function set_seed( string $seed ): self {
 		$this->seed = $seed;
 		return $this;
 	}

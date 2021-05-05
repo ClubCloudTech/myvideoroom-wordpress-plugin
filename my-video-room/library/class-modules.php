@@ -7,8 +7,9 @@
 
 namespace MyVideoRoomPlugin\Library;
 
-use MyVideoRoomPlugin\Modules\BuddyPress\Plugin as BuddyPress;
-use MyVideoRoomPlugin\Modules\Plugable;
+use MyVideoRoomPlugin\Module\BuddyPress\Plugin as BuddyPress;
+use MyVideoRoomPlugin\Module\Module;
+use MyVideoRoomPlugin\Module\Plugable;
 
 /**
  * Class Modules
@@ -19,13 +20,55 @@ class Modules {
 	/**
 	 * Get all available My Video Room modules
 	 *
-	 * @return Plugable[]
+	 * @return Module[]
 	 */
 	public function get_modules(): array {
-		$modules = array(
-			'buddypress' => new BuddyPress(),
+
+		$modules_dir = new \DirectoryIterator( __DIR__ . '/../module' );
+
+		$modules = array();
+
+		foreach ( $modules_dir as $module ) {
+			$path = __DIR__ . '/../module/' . $module->getFilename() . '/index.php';
+
+			if (
+				! $module->isDir() ||
+				$module->isDot() ||
+				! file_exists( $path )
+			) {
+				continue;
+			}
+
+			$modules[ $module->getFilename() ] = $this->get_module( realpath( $path ) );
+		}
+
+		ksort( $modules );
+
+		return $modules;
+	}
+
+	/**
+	 * Load a module
+	 *
+	 * @param string $path The path to the module.
+	 *
+	 * @return Module
+	 */
+	private function get_module( string $path ): Module {
+		$module_data = \get_file_data(
+			$path,
+			array(
+				'name'        => 'Module Name',
+				'description' => 'Description',
+				'published'   => 'Published',
+			)
 		);
 
-		return array_filter( $modules, fn( Plugable $module) => $module->is_available() );
+		return new Module(
+			$module_data['name'],
+			$module_data['description'],
+			( 'false' !== $module_data['published'] ),
+			( require $path )
+		);
 	}
 }

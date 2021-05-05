@@ -9,8 +9,8 @@ namespace MyVideoRoomPlugin\Visualiser;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AvailableScenes;
-use MyVideoRoomPlugin\Library\Host;
 use MyVideoRoomPlugin\Shortcode;
+use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 
 /**
  * Class UserVideoPreference
@@ -117,6 +117,8 @@ class ShortcodeRoomVisualiser extends Shortcode {
 			$enable_guest_reception = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_enabled_preference'] ?? '' ) ) === 'on';
 			$reception_template     = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_id_preference'] ?? null ) );
 
+			$deligate_permissions_to_wordpress_roles = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_room_permissions_preference'] ?? '' ) ) === 'on';
+
 			$video_reception_url = sanitize_text_field( wp_unslash( $_POST['myvideoroom_visualiser_reception_waiting_video_url'] ?? '' ) );
 
 			/**
@@ -130,10 +132,19 @@ class ShortcodeRoomVisualiser extends Shortcode {
 
 			$video_reception_url = esc_url( $video_reception_url );
 
-			$shortcode_constructor = AppShortcodeConstructor::create_instance(
-				$room_name,
-				$video_template,
-			);
+			$shortcode_constructor = AppShortcodeConstructor::create_instance();
+
+			if ( $room_name ) {
+				$shortcode_constructor->set_name( $room_name );
+			}
+
+			if ( $video_template ) {
+				$shortcode_constructor->set_layout( $video_template );
+			}
+
+			if ( ! $deligate_permissions_to_wordpress_roles ) {
+				$shortcode_constructor->enable_admin();
+			}
 
 			if ( $disable_floorplan || $enable_guest_reception ) {
 				$shortcode_constructor->enable_reception();
@@ -164,25 +175,27 @@ class ShortcodeRoomVisualiser extends Shortcode {
 		// If we have a config, then use it to render out the visualiser.
 
 		if ( $shortcode_constructor ) {
-			if ( ! $shortcode_constructor->get_name() ) {
-				$shortcode_constructor->set_name( Factory::get_instance( Host::class )->get_host() );
-			}
-
 			$seed = \wp_generate_uuid4();
 
-			$host_shortcode_constructor  = ( clone $shortcode_constructor )->enable_admin();
-			$guest_shortcode_constructor = ( clone $shortcode_constructor )->disable_admin();
+			$host_shortcode_constructor  = ( clone $shortcode_constructor );
+			$guest_shortcode_constructor = ( clone $shortcode_constructor );
 
 			$host_shortcode_visual_constructor = ( clone $host_shortcode_constructor )
 				->set_user_name( 'Host' )
+				->enable_admin()
 				->set_seed( $seed );
 
 			$guest_shortcode_visual_text_constructor = ( clone $guest_shortcode_constructor )
 				->set_user_name( 'Guest' )
+				->disable_admin()
 				->set_seed( $seed );
 
 			$host_shortcode_text_constructor  = ( clone $host_shortcode_constructor );
 			$guest_shortcode_text_constructor = ( clone $guest_shortcode_constructor );
+
+			if ( $shortcode_constructor->is_admin() ) {
+				$guest_shortcode_text_constructor->disable_admin();
+			}
 
 			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.
 			$output .= (require __DIR__ . '/../views/visualiser/output.php')(

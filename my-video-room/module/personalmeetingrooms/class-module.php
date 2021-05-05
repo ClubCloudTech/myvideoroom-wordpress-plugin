@@ -7,49 +7,21 @@
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Modules\BuddyPress;
+namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
 
-use MyVideoRoomPlugin\Modules\Plugable;
+use MyVideoRoomPlugin\Module\Plugable;
 
 /**
- * Class Plugin
+ * Class Module
  */
-class Plugin implements Plugable {
-
+class Module implements Plugable {
 	/**
-	 * Get the plugin name
-	 *
-	 * @return string
-	 */
-	public function get_name(): string {
-		return 'BuddyPress';
-	}
-
-	/**
-	 * Is the plugin available
+	 * Is the plugin compatible
 	 *
 	 * @return bool
 	 */
-	public function is_available(): bool {
+	public function is_compatible(): bool {
 		return true;
-	}
-
-	/**
-	 * Is the plugin installed
-	 *
-	 * @return bool
-	 */
-	public function is_installed(): bool {
-		return true;
-	}
-
-	/**
-	 * Is the plugin active
-	 *
-	 * @return bool
-	 */
-	public function is_active(): bool {
-		return false;
 	}
 
 	/**

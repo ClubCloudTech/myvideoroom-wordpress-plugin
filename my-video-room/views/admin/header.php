@@ -12,6 +12,7 @@
  * @param array $messages An list of messages to show. Takes the form: [type=:string, message=:string][]
  */
 
+use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Modules;
 
@@ -24,8 +25,11 @@ return function (
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
 	$current_page = sanitize_text_field( wp_unslash( $_GET['page'] ?? 'my-video-room-global' ) );
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
+	$action = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) );
+
 	$module = '';
-	if ( 'my-video-room-modules' === $current_page ) {
+	if ( 'my-video-room-modules' === $current_page && Admin::MODULE_ACTION_DEACTIVATE !== $action ) {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
 		$module = sanitize_text_field( wp_unslash( $_GET['module'] ?? '' ) );
 	}
@@ -44,7 +48,16 @@ return function (
 		<h1 class="myvideoroom-header-config-title">
 			<?php esc_html_e( 'My Video Room Settings and Configuration', 'myvideoroom' ); ?>
 		</h1>
-		<img src="<?php echo esc_url( plugins_url( '/img/logo.png', realpath( __DIR__ . '/' ) ) ); ?>" alt="My Video Room" />
+
+		<aside class="card tag-line">
+			<img src="<?php echo esc_url( plugins_url( '/img/screen-1.png', realpath( __DIR__ . '/../' ) ) ); ?>" alt="" />
+
+			<p>
+				<strong><?php esc_html_e( 'Video like you are there.' ); ?></strong><br />
+				<br />
+				<?php esc_html_e( 'MyVideoRoom by ClubCloud, themed room based video made simple.' ); ?>
+			</p>
+		</aside>
 	</header>
 
 	<nav class="nav-tab-wrapper">
@@ -59,9 +72,15 @@ return function (
 			?>
 				<li>
 					<a class="<?php echo esc_attr( $class ); ?>"
-						href="<?php menu_page_url( $page_slug ); ?>"
+						href="<?php esc_url( menu_page_url( $page_slug ) ); ?>"
 					>
-					<?php echo esc_html( $page_settings['title'] ); ?>
+					<?php
+					if ( $page_settings['title_icon'] ?? false ) {
+						echo '<span class="dashicons dashicons-' . esc_attr( $page_settings['title_icon'] ) . '"></span>';
+					} else {
+						echo esc_html( $page_settings['title'] );
+					}
+					?>
 					</a>
 				</li>
 			<?php
@@ -75,7 +94,7 @@ return function (
 
 			<li>
 				<a class="nav-tab nav-tab-active nav-separate"
-					href="<?php menu_page_url( 'my-video-room-modules' ); ?>&module=<?php echo esc_html( $module ); ?>"
+					href="<?php esc_url( menu_page_url( 'my-video-room-modules' ) ); ?>&module=<?php echo esc_html( $module ); ?>"
 				>
 					<?php echo esc_html( $modules[ $module ]->get_name() ); ?>
 				</a>

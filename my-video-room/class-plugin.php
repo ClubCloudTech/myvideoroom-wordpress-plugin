@@ -19,8 +19,9 @@ class Plugin {
 	public const PLUGIN_NAMESPACE   = 'myvideoroom';
 	public const SETTINGS_NAMESPACE = 'settings';
 
-	public const SETTING_SERVER_DOMAIN  = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
-	public const SETTING_ACTIVATION_KEY = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
+	public const SETTING_SERVER_DOMAIN     = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
+	public const SETTING_ACTIVATION_KEY    = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
+	public const SETTING_ACTIVATED_MODULES = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activated_modules';
 
 	public const SETTING_ACCESS_TOKEN = self::PLUGIN_NAMESPACE . '_access_token';
 	public const SETTING_PRIVATE_KEY  = self::PLUGIN_NAMESPACE . '_private_key';
@@ -30,6 +31,7 @@ class Plugin {
 	public const SETTINGS = array(
 		self::SETTING_SERVER_DOMAIN,
 		self::SETTING_ACTIVATION_KEY,
+		self::SETTING_ACTIVATED_MODULES,
 	);
 
 	/**
@@ -78,8 +80,8 @@ class Plugin {
 	 */
 	public function add_action_links( array $actions ): array {
 		$links = array(
-			'Settings'  => admin_url( 'admin.php?page=my-video-room-global' ),
-			'Reference' => admin_url( 'admin.php?page=my-video-room' ),
+			'Settings'  => admin_url( 'advanced.php?page=my-video-room-global' ),
+			'Reference' => admin_url( 'advanced.php?page=my-video-room' ),
 			'Support'   => 'https://clubcloud.tech',
 		);
 

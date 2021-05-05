@@ -24,17 +24,30 @@
 
 /*region Header */
 .myvideoroom-admin header h1 {
-	float: right;
-	max-width: 50%;
-	text-align: right;
+	vertical-align: top;
+	display: inline-block;
+	min-width: 300px;
 	line-height: 1.2em;
+	width: calc(100% - 716px);
 }
 
-.myvideoroom-admin header img {
-	float: left;
-	width: 120px;
-	height: 120px;
-	display: block;
+.myvideoroom-admin header aside {
+	display: inline-block;
+	max-width: 700px;
+	background-color: #ffffff;
+}
+
+.myvideoroom-admin header aside p {
+	vertical-align: top;
+	font-size: 1.4em;
+	display: inline-block;
+	width: calc(100% - 494px);
+	min-width: 300px;
+}
+
+.myvideoroom-admin header aside img {
+	margin-right: 2em;
+	display: inline-block;
 }
 
 .myvideoroom-admin header:after {
@@ -42,14 +55,8 @@
 	content: "";
 	clear: both;
 }
+
 /*endregion*/
-
-
-
-iframe.myvideoroom-admin-template-browser {
-	width: 100%;
-	height: 80vh;
-}
 
 /*region Room Templates*/
 .myvideoroom-admin #myvideoroom-how-to-use-templates div.view {
@@ -63,40 +70,25 @@ iframe.myvideoroom-admin-template-browser {
 }
 /*endregion*/
 
-/*region Help/Getting Started - Tag Line */
-.myvideoroom-admin aside.tag-line {
-	max-width: 700px;
-	background-color: #ffffff;
-}
-
-.myvideoroom-admin aside.tag-line p {
-	font-size: 1.4em;
-}
-
-.myvideoroom-admin aside.tag-line img {
-	float: left;
-	margin-right: 16px;
-}
-
-.myvideoroom-admin aside.tag-line:after {
-	content: '';
-	display: block;
-	clear: both;
-}
-/*endregion*/
 
 /*region Help/Getting Started - Three Step Getting Started */
 .myvideoroom-admin ol.three-step-getting-started {
 	counter-reset: item;
-	max-width: 700px;
-	padding: 16px;
+	max-width: 800px;
+	padding: 0;
+	margin: 16px 0;
+	display: block;
+}
+
+.myvideoroom-admin ol.three-step-getting-started:after {
+	display: block;
+	content: "";
+	clear: both;
 }
 
 .myvideoroom-admin ol.three-step-getting-started li {
 	counter-increment: item;
 	display: block;
-	width: 33%;
-	float: left;
 	padding: 16px;
 	box-sizing: border-box;
 }
@@ -120,7 +112,21 @@ iframe.myvideoroom-admin-template-browser {
 	margin: 0;
 	line-height: 1.1em;
 	min-height: 80px;
+	width: 100%;
 }
+
+@media only screen and (min-width: 600px) {
+	.myvideoroom-admin ol.three-step-getting-started li {
+		width: 33%;
+		float: left;
+	}
+}
+
+.myvideoroom-admin .activation-key {
+	width: 60%;
+	min-width: 300px;
+}
+
 /*endregion */
 
 .myvideoroom-admin .button-primary.negative{
@@ -136,4 +142,59 @@ iframe.myvideoroom-admin-template-browser {
 
 .myvideoroom-admin .nav-separate {
 	background-color: #c5d9ed;
+}
+
+iframe.myvideoroom-admin-template-browser {
+	width: 100%;
+	height: 80vh;
+}
+
+.myvideoroom-admin .reception-card,
+.myvideoroom-admin .layout-card {
+	display: inline-block;
+	margin-right: 20px;
+	width: calc(100% - 50px);
+	height: 238px;
+	box-sizing: content-box;
+	text-align: center;
+}
+
+@media only screen and (min-width: 690px) {
+	.myvideoroom-admin .reception-card,
+	.myvideoroom-admin .layout-card {
+		width: calc(50% - 76px);
+	}
+}
+
+@media only screen and (min-width: 1215px) {
+	.myvideoroom-admin .reception-card,
+	.myvideoroom-admin .layout-card {
+		width: calc(33% - 73px);
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	.myvideoroom-admin .reception-card,
+	.myvideoroom-admin .layout-card {
+		width: calc(25% - 77px);
+	}
+}
+
+
+.myvideoroom-admin .reception-card h3,
+.myvideoroom-admin .layout-card h3 {
+	margin: 8px 0;
+}
+
+.myvideoroom-admin .reception-card img,
+.myvideoroom-admin .layout-card img {
+	display: block;
+	border-radius: 4px;
+	max-width: calc(80% - 16px);
+	max-height: 128px;
+	margin: 16px auto 0 auto;
+}
+
+.myvideoroom-admin .plugins .row-actions em {
+	color: #2c3338;
 }

@@ -9,14 +9,17 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
+use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Library\Modules;
-use MyVideoRoomPlugin\Modules\Plugable;
 use MyVideoRoomPlugin\Visualiser\ShortcodeRoomVisualiser;
 
 /**
  * Class Admin
  */
 class Admin extends Shortcode {
+
+	const MODULE_ACTION_ACTIVATE   = 'activate';
+	const MODULE_ACTION_DEACTIVATE = 'deactivate';
 
 	/**
 	 * Initialise the menu item.
@@ -52,54 +55,6 @@ class Admin extends Shortcode {
 	}
 
 	/**
-	 * Get all the menu pages
-	 *
-	 * @return array[]
-	 */
-	private function get_menu_pages(): array {
-		$default = array(
-			'my-video-room-global'          => array(
-				'title'    => esc_html__( 'General Settings', 'myvideoroom' ),
-				'callback' => array( $this, 'create_admin_page' ),
-			),
-
-			'my-video-room-roombuilder'     => array(
-				'title'    => esc_html__( 'Room Builder', 'myvideoroom' ),
-				'callback' => array( $this, 'create_room_builder_page' ),
-			),
-
-			'my-video-room-templates'       => array(
-				'title'    => esc_html__( 'Room Templates', 'myvideoroom' ),
-				'callback' => array( $this, 'create_room_template_page' ),
-			),
-
-			'my-video-room'                 => array(
-				'title'    => esc_html__( 'Shortcode Reference', 'myvideoroom' ),
-				'callback' => array( $this, 'create_video_admin_page' ),
-			),
-
-			'my-video-room-security'        => array(
-				'title'    => esc_html__( 'Video Security', 'myvideoroom' ),
-				'callback' => array( $this, 'create_settings_admin_page' ),
-			),
-
-			'my-video-room-getting-started' => array(
-				'title'    => esc_html__( 'Help/Getting Started', 'myvideoroom' ),
-				'callback' => array( $this, 'create_getting_started_page' ),
-			),
-		);
-
-		if ( Factory::get_instance( Modules::class )->get_modules() ) {
-			$default['my-video-room-modules'] = array(
-				'title'    => esc_html__( 'Additional Modules', 'myvideoroom' ),
-				'callback' => array( $this, 'create_modules_page' ),
-			);
-		}
-
-		return \apply_filters( 'myvideoroom_admin_pages', $default );
-	}
-
-	/**
 	 * Add the admin menu page.
 	 */
 	public function add_admin_menu() {
@@ -110,14 +65,14 @@ class Admin extends Shortcode {
 				esc_html__( 'My Video Room', 'myvideoroom' ),
 				esc_html__( 'My Video Room', 'myvideoroom' ),
 				'manage_options',
-				'my-video-room-global',
-				array( $this, 'create_admin_page' ),
+				'my-video-room',
+				array( $this, 'create_getting_started_page' ),
 				'dashicons-format-chat'
 			);
 
 			foreach ( $this->get_menu_pages() as $slug => $settings ) {
 				$this->add_submenu_link(
-					$settings['title'],
+					$settings['link'] ?? $settings['title'],
 					$slug,
 					function () use ( $settings ) {
 						$page = $settings['callback']();
@@ -129,6 +84,54 @@ class Admin extends Shortcode {
 	}
 
 	/**
+	 * Get all the menu pages
+	 *
+	 * @return array[]
+	 */
+	private function get_menu_pages(): array {
+		$default = array(
+			'my-video-room'                     => array(
+				'title'    => esc_html__( 'Help/Getting Started', 'myvideoroom' ),
+				'callback' => array( $this, 'create_getting_started_page' ),
+			),
+
+			'my-video-room-builder'             => array(
+				'title'    => esc_html__( 'Room Builder', 'myvideoroom' ),
+				'callback' => array( $this, 'create_room_builder_page' ),
+			),
+
+			'my-video-room-templates'           => array(
+				'title'    => esc_html__( 'Room Templates', 'myvideoroom' ),
+				'callback' => array( $this, 'create_templates_page' ),
+			),
+
+			'my-video-room-shortcode-reference' => array(
+				'title'    => esc_html__( 'Shortcode Reference', 'myvideoroom' ),
+				'callback' => array( $this, 'create_shortcode_reference_page' ),
+			),
+
+			'my-video-room-permissions'         => array(
+				'title'    => esc_html__( 'Room Permissions', 'myvideoroom' ),
+				'callback' => array( $this, 'create_permissions_page' ),
+			),
+
+			'my-video-room-modules'             => array(
+				'title'    => esc_html__( 'Modules', 'myvideoroom' ),
+				'callback' => array( $this, 'create_modules_page' ),
+			),
+
+			'my-video-room-advanced'            => array(
+				'title'      => esc_html__( 'Advanced', 'myvideoroom' ),
+				'title_icon' => 'admin-generic',
+				'callback'   => array( $this, 'create_advanced_settings_page' ),
+			),
+
+		);
+
+		return \apply_filters( 'myvideoroom_admin_pages', $default );
+	}
+
+	/**
 	 * Add a submenu link
 	 *
 	 * @param string   $title    The title of the page.
@@ -137,7 +140,7 @@ class Admin extends Shortcode {
 	 */
 	private function add_submenu_link( string $title, string $slug, callable $callback ) {
 		add_submenu_page(
-			'my-video-room-global',
+			'my-video-room',
 			$title,
 			$title,
 			'manage_options',
@@ -160,23 +163,26 @@ class Admin extends Shortcode {
 		$activation_key = get_option( Plugin::SETTING_ACTIVATION_KEY );
 
 		if ( $activation_key ) {
-			$messages = array_merge( $messages, $this->activate( $activation_key ) );
+			$messages = array_merge( $this->activate( $activation_key ), $messages );
 		} elseif (
 			get_option( Plugin::SETTING_PRIVATE_KEY ) &&
 			get_option( Plugin::SETTING_ACCESS_TOKEN )
 		) {
-			$messages = array_merge( $messages, $this->validate() );
+			$messages = array_merge( $this->validate(), $messages );
 		} else {
-			$messages[] = array(
-				'type'    => 'notice-warning',
-				'message' => esc_html__( 'My Video Room is not currently activated. Please enter your activation key to get started.', 'myvideoroom' ),
+			$messages = array_merge(
+				array(
+					'type'    => 'notice-warning',
+					'message' => esc_html__( 'My Video Room is not currently activated. Please enter your activation key to get started.', 'myvideoroom' ),
+				),
+				$messages
 			);
 		}
 
 		echo '<div class="myvideoroom-admin">';
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo ( require __DIR__ . '/views/admin-header.php' )( $this->get_menu_pages(), $messages );
+		echo ( require __DIR__ . '/views/admin/header.php' )( $this->get_menu_pages(), $messages );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
 		echo $page;
@@ -184,23 +190,39 @@ class Admin extends Shortcode {
 		echo '</div>';
 	}
 
+	// --
+
 	/**
-	 * Create the admin main page contents.
+	 * Creates Help/Getting Started Page
 	 *
 	 * @return array
 	 */
-	public function create_admin_page(): array {
-		delete_option( Plugin::SETTING_ACTIVATION_KEY );
+	public function create_getting_started_page(): array {
+		return array( ( require __DIR__ . '/views/admin/getting-started.php' )() );
+	}
 
-		if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
-			$video_server = esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
-		} else {
-			$video_server = 'clubcloud.tech';
-		}
+	/**
+	 * Create_room_builder_page and send it to Visualiser Control Panel.
+	 *
+	 * @return array
+	 */
+	public function create_room_builder_page(): array {
+		// we only enqueue the scripts if the shortcode is called to prevent it being added to all admin pages.
+		do_action( 'myvideoroom_enqueue_scripts' );
 
-		return array(
-			( require __DIR__ . '/views/admin.php' )( $video_server ),
-		);
+		return array( Factory::get_instance( ShortcodeRoomVisualiser::class )->output_shortcode() );
+	}
+
+	/**
+	 * Create Template Reference Page
+	 *
+	 * @return array
+	 */
+	public function create_templates_page(): array {
+		$available_layouts    = Factory::get_instance( AvailableScenes::class )->get_available_layouts();
+		$available_receptions = Factory::get_instance( AvailableScenes::class )->get_available_receptions();
+
+		return array( ( require __DIR__ . '/views/admin/template-browser.php' )( $available_layouts, $available_receptions ) );
 	}
 
 	/**
@@ -208,16 +230,17 @@ class Admin extends Shortcode {
 	 *
 	 * @return array
 	 */
-	public function create_video_admin_page(): array {
-		return array( ( require __DIR__ . '/views/admin-reference.php' )() );
+	public function create_shortcode_reference_page(): array {
+		return array( ( require __DIR__ . '/views/admin/reference.php' )() );
 	}
+
 
 	/**
 	 * Create the settings page for the video
 	 *
 	 * @return array
 	 */
-	public function create_settings_admin_page(): array {
+	public function create_permissions_page(): array {
 		global $wp_roles;
 		$all_roles = $wp_roles->roles;
 		$messages  = array();
@@ -241,63 +264,88 @@ class Admin extends Shortcode {
 			);
 		}
 
-		return array( ( require __DIR__ . '/views/admin-settings.php' )( $all_roles ), $messages );
+		return array( ( require __DIR__ . '/views/admin/settings.php' )( $all_roles ), $messages );
 	}
 
 	/**
-	 * Create_room_builder_page and send it to Visualiser Control Panel.
-	 *
-	 * @return array
-	 */
-	public function create_room_builder_page(): array {
-		// we only enqueue the scripts if the shortcode is called to prevent it being added to all admin pages.
-		do_action( 'myvideoroom_enqueue_scripts' );
-
-		return array( Factory::get_instance( ShortcodeRoomVisualiser::class )->output_shortcode() );
-	}
-
-	/**
-	 * Creates Help/Getting Started Page
-	 *
-	 * @return array
-	 */
-	public function create_getting_started_page(): array {
-		return array( ( require __DIR__ . '/views/admin-getting-started.php' )() );
-	}
-
-	/**
-	 * Create Template Reference Page
-	 *
-	 * @return array
-	 */
-	public function create_room_template_page(): array {
-		return array( ( require __DIR__ . '/views/admin-template-browser.php' )() );
-	}
-
-	/**
-	 * Create modules page
+	 * Create the modules page contents.
 	 *
 	 * @return array
 	 */
 	public function create_modules_page(): array {
+		$modules           = Factory::get_instance( Modules::class )->get_modules();
+		$activated_modules = explode( ',', get_option( Plugin::SETTING_ACTIVATED_MODULES ) ?? '' );
 
-		$modules = Factory::get_instance( Modules::class )->get_modules();
+		$messages = array();
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
 		$module = sanitize_text_field( wp_unslash( $_GET['module'] ?? '' ) );
 
-		if ( $module ) {
-			$modules = Factory::get_instance( Modules::class )->get_modules();
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
+		$action = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) );
 
-			return array(
-				$modules[ $module ]->create_admin_settings(),
-			);
+		if ( $module ) {
+			switch ( $action ) {
+				case self::MODULE_ACTION_ACTIVATE:
+					if ( ! in_array( $module, $activated_modules, true ) ) {
+						$activated_modules[] = $module;
+					}
+					update_option( Plugin::SETTING_ACTIVATED_MODULES, implode( ',', $activated_modules ) );
+
+					$messages[] = array(
+						'type'    => 'notice-success',
+						'message' => esc_html__( 'Module activated', 'myvideoroom' ),
+					);
+
+					return array(
+						$modules[ $module ]->get_instance()->create_admin_settings(),
+						$messages,
+					);
+				case self::MODULE_ACTION_DEACTIVATE:
+					if ( in_array( $module, $activated_modules, true ) ) {
+						$activated_modules = array_diff( $activated_modules, array( $module ) );
+					}
+					update_option( Plugin::SETTING_ACTIVATED_MODULES, implode( ',', $activated_modules ) );
+
+					$messages[] = array(
+						'type'    => 'notice-success',
+						'message' => esc_html__( 'Module deactivated', 'myvideoroom' ),
+					);
+
+					break;
+				default:
+					return array(
+						$modules[ $module ]->get_instance()->create_admin_settings(),
+						$messages,
+					);
+			}
 		}
 
 		return array(
-			( require __DIR__ . '/views/admin-modules.php' )(
-				$modules,
-			),
+			( require __DIR__ . '/views/admin/modules.php' )( $modules, $activated_modules ),
+			$messages,
+		);
+	}
+
+	/**
+	 * Create the admin main page contents.
+	 *
+	 * @return array
+	 */
+	public function create_advanced_settings_page(): array {
+		delete_option( Plugin::SETTING_ACTIVATION_KEY );
+
+		$messages = array();
+
+		if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
+			$video_server = esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
+		} else {
+			$video_server = 'clubcloud.tech';
+		}
+
+		return array(
+			( require __DIR__ . '/views/admin/advanced.php' )( $video_server ),
+			$messages,
 		);
 	}
 

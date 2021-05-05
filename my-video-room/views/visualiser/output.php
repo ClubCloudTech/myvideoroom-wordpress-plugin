@@ -12,7 +12,7 @@
  * @return string
  */
 
-use MyVideoRoomPlugin\Visualiser\AppShortcodeConstructor;
+use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 
 return function (
 	AppShortcodeConstructor $shortcode_host,
@@ -54,8 +54,14 @@ return function (
 			</tr>
 
 			<tr>
-				<td><code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?>]</code></td>
-				<td><code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_guest->output_shortcode( true ) ); ?>]</code></td>
+				<?php if ( $text_shortcode_host->is_admin() ) { ?>
+					<td><code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?>]</code></td>
+					<td><code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_guest->output_shortcode( true ) ); ?>]</code></td>
+				<?php } else { ?>
+					<td colspan="2">
+						<code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?>]</code>
+					</td>
+				<?php } ?>
 			</tr>
 		</tbody>
 	</table>
