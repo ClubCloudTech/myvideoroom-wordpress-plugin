@@ -353,11 +353,7 @@ class Admin extends Shortcode {
 
 		$messages = array();
 
-		if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
-			$video_server = esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
-		} else {
-			$video_server = 'clubcloud.tech';
-		}
+		$video_server = Factory::get_instance( Endpoints::class )->get_server_endpoint();
 
 		return array(
 			( require __DIR__ . '/views/admin/advanced.php' )( $video_server ),

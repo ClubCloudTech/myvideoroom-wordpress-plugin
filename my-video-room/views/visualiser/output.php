@@ -56,19 +56,19 @@ return function (
 			<tr>
 				<?php if ( $text_shortcode_host->is_admin() ) { ?>
 					<td>
-						<code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?>]</code>
+						<code class="myvideoroom-shortcode-example"><?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?></code>
 						<br />
 						<input class="copy-to-clipboard button-secondary" type="button" value="<?php esc_attr_e( 'Copy to clipboard', 'myvideoroom' ); ?>" />
 					</td>
 
 					<td>
-						<code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_guest->output_shortcode( true ) ); ?>]</code>
+						<code class="myvideoroom-shortcode-example"><?php echo esc_html( $text_shortcode_guest->output_shortcode( true ) ); ?></code>
 						<br />
 						<input class="copy-to-clipboard button-secondary" type="button" value="<?php esc_attr_e( 'Copy to clipboard', 'myvideoroom' ); ?>" />
 					</td>
 				<?php } else { ?>
 					<td colspan="2">
-						<code class="myvideoroom-shortcode-example">[<?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?>]</code>
+						<code class="myvideoroom-shortcode-example"><?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?></code>
 						<br />
 						<input class="copy-to-clipboard button-secondary" type="button" value="<?php esc_attr_e( 'Copy to clipboard', 'myvideoroom' ); ?>" />
 					</td>

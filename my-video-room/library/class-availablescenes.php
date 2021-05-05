@@ -7,13 +7,13 @@
 
 namespace MyVideoRoomPlugin\Library;
 
+use MyVideoRoomPlugin\Endpoints;
 use MyVideoRoomPlugin\Factory;
 
 /**
  * Class Available Scenes
  */
 class AvailableScenes {
-
 
 	/**
 	 * Get a list of available layouts from MyVideoRoom
@@ -41,10 +41,13 @@ class AvailableScenes {
 	 * @return array
 	 */
 	public function get_available_scenes( string $uri ): array {
-		$url = 'https://rooms.clubcloud.tech/' . $uri;
+		$url = Factory::get_instance( Endpoints::class )->get_rooms_endpoint() . '/' . $uri;
 
 		$host = Factory::get_instance( Host::class )->get_host();
-		$url .= '?host=' . $host;
+
+		if ( $host ) {
+			$url = add_query_arg( array( 'host' => $host ), $url );
+		}
 
 		$request = \wp_remote_get( $url );
 

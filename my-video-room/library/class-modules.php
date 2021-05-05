@@ -7,9 +7,7 @@
 
 namespace MyVideoRoomPlugin\Library;
 
-use MyVideoRoomPlugin\Module\BuddyPress\Plugin as BuddyPress;
 use MyVideoRoomPlugin\Module\Module;
-use MyVideoRoomPlugin\Module\Plugable;
 
 /**
  * Class Modules

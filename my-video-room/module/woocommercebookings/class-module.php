@@ -58,7 +58,11 @@ class Module implements Plugable {
 		ob_start();
 
 		?>
-		<p>This is a settings page</p>
+
+		<p>
+			<?php esc_html_e( 'The module is not yet ready. Check back soon!', 'myvideoroom' ); ?>
+		</p>
+
 		<?php
 
 		return ob_get_clean();

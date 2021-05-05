@@ -353,14 +353,14 @@ class AppShortcodeConstructor {
 	}
 
 	/**
-	 * Render_shortcode for Visualiser.
+	 * Output the shortcode
 	 *
-	 * @param array $params status array.
-	 * @param bool  $text_safe flag to indicate text only and non rendered return - used for diplaying shortcode text.
+	 * @param array $params    A list of params.
+	 * @param bool  $no_render Prevents rendering of the shortcode and just returns the shortcode string.
 	 *
 	 * @return string
 	 */
-	private function render_shortcode( array $params, bool $text_safe = false ): string {
+	private function render_shortcode( array $params, bool $no_render = false ): string {
 		$output = AppShortcode::SHORTCODE_TAG;
 
 		foreach ( $params as $key => $value ) {
@@ -375,12 +375,12 @@ class AppShortcodeConstructor {
 			}
 		}
 
-		// Function Change to allow just the return of the Shortcode text rather than execution.
-		if ( $text_safe ) {
+		$output = '[' . $output . ']';
+
+		// Allow just the return of the shortcode text rather than execution.
+		if ( $no_render ) {
 			return $output;
 		}
-
-		$output = '[' . $output . ']';
 
 		return do_shortcode( $output );
 	}

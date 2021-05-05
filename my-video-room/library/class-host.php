@@ -15,15 +15,13 @@ class Host {
 	/**
 	 * Get the host name
 	 *
-	 * @return string
+	 * @return ?string
 	 */
-	public function get_host(): string {
+	public function get_host(): ?string {
 		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
-			$host = preg_replace( '#^https?://#', '', esc_url_raw( wp_unslash( $_SERVER['HTTP_HOST'] ) ) );
-		} else {
-			$host = '';
+			return preg_replace( '#^https?://#', '', esc_url_raw( wp_unslash( $_SERVER['HTTP_HOST'] ) ) );
 		}
 
-		return $host;
+		return null;
 	}
 }

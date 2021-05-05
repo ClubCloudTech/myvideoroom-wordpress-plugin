@@ -59,17 +59,26 @@ class Endpoints {
 			$custom_endpoints = array();
 		}
 
-		if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
-			$video_server = esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
-		} else {
-			$video_server = 'clubcloud.dev';
-		}
+		$video_server = $this->get_server_endpoint();
 
 		$this->video_endpoint   = $custom_endpoints['video'] ?? 'meet.' . $video_server;
 		$this->app_endpoint     = $custom_endpoints['app'] ?? 'https://app.' . $video_server;
 		$this->state_endpoint   = $custom_endpoints['state'] ?? 'https://state.' . $video_server;
 		$this->rooms_endpoint   = $custom_endpoints['rooms'] ?? 'https://rooms.' . $video_server;
 		$this->licence_endpoint = $custom_endpoints['licence'] ?? 'https://licence.' . $video_server;
+	}
+
+	/**
+	 * Get the server endpoint
+	 *
+	 * @return string
+	 */
+	public function get_server_endpoint(): string {
+		if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
+			return esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
+		} else {
+			return 'clubcloud.tech';
+		}
 	}
 
 	/**

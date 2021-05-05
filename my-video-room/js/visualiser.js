@@ -1,5 +1,5 @@
 /**
- * Add dynamic tabs to MyVideoRoom admin pages
+ * Enhance the visualiser to hide and show sections, and add copy actions
  *
  * @package MyVideoRoomPlugin
  */
