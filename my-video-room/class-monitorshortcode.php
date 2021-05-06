@@ -14,7 +14,7 @@ namespace MyVideoRoomPlugin;
  */
 class MonitorShortcode extends Shortcode {
 
-	const SHORTCODE_TAG = 'myvideoroom_monitor';
+	const SHORTCODE_TAG = AppShortcode::SHORTCODE_TAG . '_monitor';
 
 	/**
 	 * The private key to authorise this install.

@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Visualiser;
 
+use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Shortcode;
@@ -18,7 +19,7 @@ use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
  */
 class ShortcodeRoomVisualiser extends Shortcode {
 
-	const SHORTCODE_TAG = 'myvideoroom_visualizer';
+	const SHORTCODE_TAG = AppShortcode::SHORTCODE_TAG . '_room_builder';
 
 	private const YOUTUBE_EMBED_URL = 'https://www.youtube-nocookie.com/embed/%s?autoplay=1&modestbranding=1&mute=1&controls=0&cc_load_policy=1';
 
