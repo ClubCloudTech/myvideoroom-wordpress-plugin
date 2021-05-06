@@ -21,6 +21,43 @@ jQuery.noConflict()(
 				var $custom_video_settings = $( 'div.custom-video-settings', this );
 				var $custom_video_url      = $( 'div.custom-video-url', this );
 
+				var fields = $( 'label', this );
+
+				fields.each(
+					function ( ) {
+						var input_id       = $( this ).attr( 'for' );
+						var description_id = $( '#' + input_id ).attr( 'aria-describedby' );
+						var $description   = $( '#' + description_id ).addClass( 'card' ).hide();
+
+						if ( $description.length ) {
+							$( '<span role="button" class="myvideoroom-show-help"><i class="card dashicons dashicons-editor-help"></i></span>' )
+								.appendTo( this )
+								.append( $description )
+								.on(
+									'mouseover',
+									function () {
+										$description.stop().fadeIn();
+
+										if ($description.offset().left + $description.width() > $( window ).width()) {
+											$description.css( 'right', '16px' );
+										}
+									}
+								)
+								.on(
+									'mouseout',
+									function () {
+										$description.stop().fadeOut(
+											function () {
+												$description.css( 'right', '' );
+											}
+										);
+									}
+								);
+
+						}
+					}
+				)
+
 				if ( ! $( 'option[value=' + $reception_dropdown.val(), $reception_dropdown ).data( 'hasVideo' ) ) {
 					$custom_video_settings.hide();
 				}

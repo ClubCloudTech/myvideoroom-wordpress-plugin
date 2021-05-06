@@ -8,7 +8,7 @@
 /**
  * Module Name: BuddyPress
  * Description: Integrates MyVideoRoom and BuddyPress
- * Published:   false
+ * Published:   true
  */
 
 return fn() => new MyVideoRoomPlugin\Module\BuddyPress\Module();

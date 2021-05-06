@@ -9,22 +9,27 @@
 
 .myvideoroom-admin form.myvideoroom-visualiser-settings fieldset {
 	margin: 0 0 16px 0;
+	border: 1px solid #c3c4c7;
+	padding: 16px;
+	max-width: 700px;
 }
 
 .myvideoroom-admin form.myvideoroom-visualiser-settings fieldset legend {
 	font-weight: bold;
 	font-size: 1.2em;
 	margin: 0 0 4px 0;
-	padding: 0;
+	padding: 0 8px;
 }
 
 .myvideoroom-admin form.myvideoroom-visualiser-settings input[type=text] {
 	width: 400px;
 }
 
-.myvideoroom-admin form.myvideoroom-visualiser-settings em {
-	max-width: 600px;
-	margin: 4px 0 8px 0;
-	display: block;
-	font-size: 0.9em;
+.myvideoroom-visualiser-settings .myvideoroom-show-help i {
+	font-size: 1.3em;
+	vertical-align: 3%;
+}
+
+.myvideoroom-visualiser-settings .myvideoroom-show-help em {
+	left: 16px;
 }

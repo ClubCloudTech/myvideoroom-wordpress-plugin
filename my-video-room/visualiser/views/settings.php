@@ -8,6 +8,8 @@
  * @package MyVideoRoomPlugin\Views
  */
 
+use MyVideoRoomPlugin\Endpoints;
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 
 return function (
@@ -89,6 +91,14 @@ return function (
 			<br />
 			<em id="myvideoroom_visualiser_layout_id_preference_<?php echo esc_attr( $id_index ); ?>_description">
 				<?php
+				$layouts_page   = menu_page_url( 'my-video-room-templates', false );
+				$layouts_target = '';
+
+				if ( ! $layouts_page ) {
+					$layouts_page   = Factory::get_instance( Endpoints::class )->get_rooms_endpoint() . '/views/layouts';
+					$layouts_target = ' target="_blank"';
+				}
+
 				printf(
 					/* translators: %s is a link to the templates admin page */
 					esc_html__(
@@ -96,7 +106,7 @@ return function (
 					        seat groups. See the %s page for a list of available room layouts and more details.',
 						'myvideoroom'
 					),
-					'<a href="' . esc_url( menu_page_url( 'my-video-room-templates', false ) ) . '">' .
+					'<a href="' . esc_url( $layouts_page ) . '"' . esc_attr( $layouts_target ) . '>' .
 					esc_html__( 'templates', 'myvideoroom' ) .
 					'</a>'
 				);
@@ -111,7 +121,7 @@ return function (
 				name="myvideoroom_visualiser_disable_floorplan_preference"
 				id="myvideoroom_visualiser_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo ! $app_config || ! $app_config->is_floorplan_enabled() ? 'checked' : ''; ?>
-				aria-describedby="myvideoroom_visualiser_layout_id_preference_<?php echo esc_attr( $id_index ); ?>_description"
+				aria-describedby="myvideoroom_visualiser_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>_description"
 			/>
 			<br />
 			<em id="myvideoroom_visualiser_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>_description">
@@ -140,20 +150,30 @@ return function (
 			<br />
 			<em id="myvideoroom_visualiser_room_permissions_preference_<?php echo esc_attr( $id_index ); ?>_description">
 				<?php
-				printf(
-					/* translators: %s is a link to the room permissions admin page */
-					esc_html__(
-						'When selected the permission of hosts and guests will be determined by the global 
+
+				esc_html_e(
+					'When selected the permission of hosts and guests will be determined by the global 
 					        settings. This means that you only need to only have one page, with a single shortcode. If 
 					        you want a more customised control, then you can disable this option, instead creating two 
-					        seperate pages, each with their own shortcodes. It is your responsibility to then manage 
-					        access to each page. You can customise the global host settings in the %s page',
-						'myvideoroom'
-					),
-					'<a href="' . esc_url( menu_page_url( 'my-video-room-permissions', false ) ) . '">' .
-					esc_html__( 'room permissions', 'myvideoroom' ) .
-					'</a>'
+					        separate pages, each with their own shortcodes. It is your responsibility to then manage 
+					        access to each page. '
 				);
+
+				$permissions_page = menu_page_url( 'my-video-room-permissions', false );
+
+				if ( $permissions_page ) {
+					printf(
+					/* translators: %s is a link to the room permissions admin page */
+						esc_html__(
+							'You can customise the global host settings in the %s page',
+							'myvideoroom'
+						),
+						'<a href="' . esc_url( $permissions_page ) . '">' .
+						esc_html__( 'room permissions', 'myvideoroom' ) .
+						'</a>'
+					);
+
+				}
 				?>
 			</em>
 		</fieldset>
@@ -228,6 +248,15 @@ return function (
 				<br />
 				<em id="myvideoroom_visualiser_reception_id_preference_<?php echo esc_attr( $id_index ); ?>_description">
 					<?php
+
+					$receptions_page   = menu_page_url( 'my-video-room-templates', false );
+					$receptions_target = '';
+
+					if ( ! $receptions_page ) {
+						$receptions_page   = Factory::get_instance( Endpoints::class )->get_rooms_endpoint() . '/views/receptions';
+						$receptions_target = ' target="_blank"';
+					}
+
 					printf(
 					/* translators: %s is a link to the templates admin page */
 						esc_html__(
@@ -235,7 +264,7 @@ return function (
 			                For a full list of available receptions see the %s page',
 							'myvideoroom'
 						),
-						'<a href="' . esc_url( menu_page_url( 'my-video-room-templates', false ) ) . '">' .
+						'<a href="' . esc_url( $receptions_page ) . '"' . esc_attr( $receptions_target ) . '>' .
 						esc_html__( 'templates', 'myvideoroom' ) .
 						'</a>'
 					);

@@ -29,7 +29,7 @@ return function (
 	ob_start();
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
-	$current_page = sanitize_text_field( wp_unslash( $_GET['page'] ?? 'my-video-room-global' ) );
+	$current_page = sanitize_text_field( wp_unslash( $_GET['page'] ?? 'my-video-room' ) );
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
 	$action = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) );

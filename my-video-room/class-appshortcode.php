@@ -97,9 +97,9 @@ class AppShortcode extends Shortcode {
 	 * @return string
 	 */
 	public function output_shortcode( $params = array() ) {
-		$host = $this->get_host();
+		$hostname = $this->get_host();
 
-		if ( ! $host ) {
+		if ( ! $hostname ) {
 			$this->return_error(
 				'<div>' . esc_html__(
 					'>MyVideoRoom cannot find the host that it is currentlyrunning on.',
@@ -124,6 +124,11 @@ class AppShortcode extends Shortcode {
 		$reception_video  = $params['reception-video'] ?? null;
 		$enable_lobby     = 'true' === ( $params['lobby'] ?? 'false' );
 		$enable_reception = 'true' === ( $params['reception'] ?? 'false' );
+
+		// load legacy admin settings.
+		if ( isset( $params['admin'] ) && ! isset( $params['host'] ) ) {
+			$params['host'] = $params['admin'];
+		}
 
 		if ( ! isset( $params['host'] ) ) {
 			$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
@@ -150,7 +155,7 @@ class AppShortcode extends Shortcode {
 					'type'                => 'roomHash',
 					'roomName'            => $room_name,
 					'videoServerEndpoint' => $video_server_endpoint,
-					'host'                => $host,
+					'host'                => $hostname,
 					'seed'                => $seed,
 				)
 			)
@@ -164,7 +169,7 @@ class AppShortcode extends Shortcode {
 					'roomName'            => $room_name,
 					'layoutId'            => $layout_id,
 					'videoServerEndpoint' => $video_server_endpoint,
-					'host'                => $host,
+					'host'                => $hostname,
 					'privateKey'          => $this->private_key,
 				)
 			)
@@ -186,7 +191,7 @@ class AppShortcode extends Shortcode {
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript
 		$security_token = rawurlencode( base64_encode( $signature ) );
 
-		$jwt_endpoint = $licence_endpoint . '/' . $host . '.jwt?';
+		$jwt_endpoint = $licence_endpoint . '/' . $hostname . '.jwt?';
 
 		$current_user = wp_get_current_user();
 

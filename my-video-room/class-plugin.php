@@ -80,8 +80,8 @@ class Plugin {
 	 */
 	public function add_action_links( array $actions ): array {
 		$links = array(
-			'Settings'  => admin_url( 'advanced.php?page=my-video-room-global' ),
-			'Reference' => admin_url( 'advanced.php?page=my-video-room' ),
+			'Settings'  => menu_page_url( 'my-video-room', false ),
+			'Reference' => menu_page_url( 'my-video-room-shortcode-reference', false ),
 			'Support'   => 'https://clubcloud.tech',
 		);
 

@@ -60,7 +60,7 @@ class Admin extends Shortcode {
 	public function add_admin_menu() {
 		global $admin_page_hooks;
 
-		if ( empty( $admin_page_hooks['my-video-room-global'] ) ) {
+		if ( empty( $admin_page_hooks['my-video-room'] ) ) {
 			add_menu_page(
 				esc_html__( 'MyVideoRoom', 'myvideoroom' ),
 				esc_html__( 'MyVideoRoom', 'myvideoroom' ),

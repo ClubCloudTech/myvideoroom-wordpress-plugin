@@ -82,7 +82,13 @@ class ShortcodeRoomVisualiser extends Shortcode {
 				false,
 				$this->get_plugin_version(),
 			);
-
+		} else {
+			wp_enqueue_style(
+				'myvideoroom-visualiser-public-css',
+				plugins_url( '/css/visualiser-public.css', realpath( __DIR__ . '/' ) ),
+				false,
+				$this->get_plugin_version(),
+			);
 		}
 	}
 
@@ -126,7 +132,7 @@ class ShortcodeRoomVisualiser extends Shortcode {
 			 *
 			 * @TODO - Move this into the app to make the shortcode simpler?
 			 */
-			if ( preg_match( '/[A-Za-z0-9_\-]{11}/', $video_reception_url ) ) {
+			if ( preg_match( '/^[A-Za-z0-9_\-]{11}&/', $video_reception_url ) ) {
 				$video_reception_url = sprintf( self::YOUTUBE_EMBED_URL, $video_reception_url );
 			}
 
@@ -164,7 +170,7 @@ class ShortcodeRoomVisualiser extends Shortcode {
 		}
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
-		$output = ( require __DIR__ . '/../views/visualiser/settings.php' )(
+		$output = ( require __DIR__ . '/views/settings.php' )(
 			$available_layouts,
 			$available_receptions,
 			$shortcode_constructor,
@@ -198,7 +204,7 @@ class ShortcodeRoomVisualiser extends Shortcode {
 			}
 
 			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.
-			$output .= (require __DIR__ . '/../views/visualiser/output.php')(
+			$output .= (require __DIR__ . '/views/output.php')(
 				$host_shortcode_visual_constructor,
 				$guest_shortcode_visual_text_constructor,
 				$host_shortcode_text_constructor,

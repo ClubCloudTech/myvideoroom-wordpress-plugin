@@ -21,7 +21,7 @@ class Module implements Plugable {
 	 * @return bool
 	 */
 	public function is_compatible(): bool {
-		return true;
+		return false;
 	}
 
 	/**
