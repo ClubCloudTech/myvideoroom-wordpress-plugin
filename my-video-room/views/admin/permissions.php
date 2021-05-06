@@ -40,8 +40,8 @@ return function (
 			<table class="myvideoroom-permissions widefat" role="presentation">
 				<thead>
 				<tr>
-					<th>WordPress Role</th>
-					<th>Has default host permission</th>
+					<th><?php esc_html_e( 'WordPress Role', 'myvideoroom' ); ?></th>
+					<th><?php esc_html_e( 'Has default host permission', 'myvideoroom' ); ?></th>
 				</tr>
 				</thead>
 				<tbody>
