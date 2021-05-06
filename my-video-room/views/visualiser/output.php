@@ -54,7 +54,7 @@ return function (
 			</tr>
 
 			<tr>
-				<?php if ( $text_shortcode_host->is_admin() ) { ?>
+				<?php if ( $text_shortcode_host->is_host() ) { ?>
 					<td>
 						<code class="myvideoroom-shortcode-example"><?php echo esc_html( $text_shortcode_host->output_shortcode( true ) ); ?></code>
 						<br />

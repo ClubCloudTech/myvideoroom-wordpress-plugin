@@ -37,14 +37,14 @@ return function (): string {
 			name="<?php esc_html_e( 'MyVideoRoom', 'myvideoroom' ); ?>"
 			layout="clubcloud"
 			lobby=true
-			admin=true
+			host=true
 		]
 	</code>
 	<p>
 		<?php
 		esc_html_e(
 			'This will show the video with a room name of "The Meeting Room", using the default "clubcloud" layout.
-			 The lobby will be enabled, but the user viewing this page will be an admin of the video.',
+			 The lobby will be enabled, but the user viewing this page will be an host of the room.',
 			'myvideoroom'
 		);
 		?>
@@ -79,7 +79,7 @@ return function (): string {
 						<?php
 						esc_html_e(
 							'All shortcodes on the same domain that share a room name will put users into the same 
-							video group. This allows you to have different entry points for admins and non admins.',
+							video group. This allows you to have different entry points for hosts and guests.',
 							'myvideoroom'
 						);
 						?>
@@ -122,14 +122,14 @@ return function (): string {
 			</tr>
 
 			<tr class="inactive">
-				<th class="column-primary"><em>admin</em></th>
+				<th class="column-primary"><em>host</em></th>
 				<td class="column-description">
-					<p><?php esc_html_e( 'Whether the user should be an admin', 'myvideoroom' ); ?></p>
+					<p><?php esc_html_e( 'Whether the user should be a host of the room', 'myvideoroom' ); ?></p>
 
 					<p>
 						<?php
 						esc_html_e(
-							'Admins have the ability to add users to rooms, and move users between rooms.',
+							'Hosts have the ability to add users to rooms, and move users between rooms.',
 							'myvideoroom'
 						);
 						?>
@@ -138,7 +138,7 @@ return function (): string {
 					<p>
 					<?php
 					esc_html_e(
-						'You need at least one admin to start a video session.',
+						'You need at least one host to start a video session.',
 						'myvideoroom'
 					);
 					?>
@@ -183,7 +183,7 @@ return function (): string {
 		<tbody>
 			<tr class="active">
 				<th class="manage-column column-name column-primary" colspan="4">
-					<strong><?php esc_html_e( 'Admin settings:', 'myvideoroom' ); ?></strong>
+					<strong><?php esc_html_e( 'Host settings:', 'myvideoroom' ); ?></strong>
 				</th>
 			</tr>
 
@@ -193,7 +193,7 @@ return function (): string {
 					<p>
 						<?php
 						esc_html_e(
-							'Whether the lobby inside the video app should be enabled for non admin users',
+							'Whether the lobby inside the video app should be enabled for guests',
 							'myvideoroom'
 						);
 						?>
@@ -206,7 +206,7 @@ return function (): string {
 		<tbody>
 			<tr class="active">
 				<th class="manage-column column-name column-primary" colspan="4">
-					<strong><?php esc_html_e( 'Non-admin settings:', 'myvideoroom' ); ?></strong>
+					<strong><?php esc_html_e( 'Guest settings:', 'myvideoroom' ); ?></strong>
 				</th>
 			</tr>
 
@@ -430,7 +430,7 @@ return function (): string {
 
 						<dt>"all":</dt>
 						<dd>
-							<?php esc_html_e( 'The total number of people, including reception, seated and non-seated admins', 'myvideoroom' ); ?>
+							<?php esc_html_e( 'The total number of people, including reception, seated and non-seated hosts', 'myvideoroom' ); ?>
 						</dd>
 					</dl>
 

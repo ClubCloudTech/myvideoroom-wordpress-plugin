@@ -26,7 +26,7 @@ class Plugin {
 	public const SETTING_ACCESS_TOKEN = self::PLUGIN_NAMESPACE . '_access_token';
 	public const SETTING_PRIVATE_KEY  = self::PLUGIN_NAMESPACE . '_private_key';
 
-	public const CAP_GLOBAL_ADMIN = 'myvideoroom-global-admin';
+	public const CAP_GLOBAL_HOST = 'myvideoroom-global-host';
 
 	public const SETTINGS = array(
 		self::SETTING_SERVER_DOMAIN,

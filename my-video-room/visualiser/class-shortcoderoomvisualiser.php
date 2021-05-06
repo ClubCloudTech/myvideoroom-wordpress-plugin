@@ -143,7 +143,7 @@ class ShortcodeRoomVisualiser extends Shortcode {
 			}
 
 			if ( ! $deligate_permissions_to_wordpress_roles ) {
-				$shortcode_constructor->enable_admin();
+				$shortcode_constructor->set_as_host();
 			}
 
 			if ( $disable_floorplan || $enable_guest_reception ) {
@@ -182,19 +182,19 @@ class ShortcodeRoomVisualiser extends Shortcode {
 
 			$host_shortcode_visual_constructor = ( clone $host_shortcode_constructor )
 				->set_user_name( 'Host' )
-				->enable_admin()
+				->set_as_host()
 				->set_seed( $seed );
 
 			$guest_shortcode_visual_text_constructor = ( clone $guest_shortcode_constructor )
 				->set_user_name( 'Guest' )
-				->disable_admin()
+				->set_as_guest()
 				->set_seed( $seed );
 
 			$host_shortcode_text_constructor  = ( clone $host_shortcode_constructor );
 			$guest_shortcode_text_constructor = ( clone $guest_shortcode_constructor );
 
-			if ( $shortcode_constructor->is_admin() ) {
-				$guest_shortcode_text_constructor->disable_admin();
+			if ( $shortcode_constructor->is_host() ) {
+				$guest_shortcode_text_constructor->set_as_guest();
 			}
 
 			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.

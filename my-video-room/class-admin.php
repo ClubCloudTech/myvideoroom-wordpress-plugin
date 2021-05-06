@@ -252,9 +252,9 @@ class Admin extends Shortcode {
 				$role_object = get_role( $key );
 
 				if ( isset( $_POST[ 'role_' . $key ] ) ) {
-					$role_object->add_cap( Plugin::CAP_GLOBAL_ADMIN );
+					$role_object->add_cap( Plugin::CAP_GLOBAL_HOST );
 				} else {
-					$role_object->remove_cap( Plugin::CAP_GLOBAL_ADMIN );
+					$role_object->remove_cap( Plugin::CAP_GLOBAL_HOST );
 				}
 			}
 

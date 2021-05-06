@@ -29,11 +29,11 @@ class AppShortcodeConstructor {
 	private ?string $layout;
 
 	/**
-	 * Is this user an admin?
+	 * Is this user a video host?
 	 *
 	 * @var bool
 	 */
-	private ?bool $admin = null;
+	private ?bool $host = null;
 
 	/**
 	 * Is the reception enabled
@@ -134,12 +134,12 @@ class AppShortcodeConstructor {
 	}
 
 	/**
-	 * Should the user be an admin
+	 * Should the user be a video host
 	 *
 	 * @return ?bool
 	 */
-	public function is_admin(): ?bool {
-		return $this->admin;
+	public function is_host(): ?bool {
+		return $this->host;
 	}
 
 	/**
@@ -157,7 +157,7 @@ class AppShortcodeConstructor {
 	 * @return bool
 	 */
 	public function is_floorplan_enabled(): bool {
-		return ! $this->is_admin() && $this->floorplan_enabled;
+		return ! $this->is_host() && $this->floorplan_enabled;
 	}
 
 	/**
@@ -188,7 +188,7 @@ class AppShortcodeConstructor {
 	 * @return ?string
 	 */
 	public function get_reception_video(): ?string {
-		if ( $this->is_admin() ) {
+		if ( $this->is_host() ) {
 			return null;
 		} else {
 			return $this->reception_video;
@@ -220,22 +220,22 @@ class AppShortcodeConstructor {
 	}
 
 	/**
-	 * Set this user as an admin
+	 * Set this user as a video host
 	 *
 	 * @return $this
 	 */
-	public function enable_admin(): self {
-		$this->admin = true;
+	public function set_as_host(): self {
+		$this->host = true;
 		return $this;
 	}
 
 	/**
-	 * Set this user as an non admin
+	 * Set this user as a guest
 	 *
 	 * @return $this
 	 */
-	public function disable_admin(): self {
-		$this->admin = false;
+	public function set_as_guest(): self {
+		$this->host = false;
 		return $this;
 	}
 
@@ -244,8 +244,8 @@ class AppShortcodeConstructor {
 	 *
 	 * @return self
 	 */
-	public function delegate_admin_to_wordpress(): self {
-		$this->admin = null;
+	public function delegate_is_host_to_wordpress(): self {
+		$this->host = null;
 		return $this;
 	}
 
@@ -319,13 +319,13 @@ class AppShortcodeConstructor {
 			$shortcode_array['name'] = $this->get_name();
 		}
 
-		if ( true === $this->is_admin() ) {
-			$shortcode_array['admin'] = true;
-		} elseif ( false === $this->admin ) {
-			$shortcode_array['admin'] = false;
+		if ( true === $this->is_host() ) {
+			$shortcode_array['host'] = true;
+		} elseif ( false === $this->host ) {
+			$shortcode_array['host'] = false;
 		}
 
-		if ( ! $this->is_admin() && $this->is_reception_enabled() ) {
+		if ( ! $this->is_host() && $this->is_reception_enabled() ) {
 			$shortcode_array['reception'] = true;
 
 			if ( $this->reception_id ) {

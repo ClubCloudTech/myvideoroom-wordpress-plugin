@@ -156,7 +156,7 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 3. The main video screen.
 4. Entering MyVideoRoom licencing information.
 5. Full shortcode reference.
-6. Advanced settings to allow automatic allocation of admin users.
+6. Advanced settings to allow automatic allocation of hosts.
 
 == Changelog ==
 

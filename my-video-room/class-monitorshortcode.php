@@ -144,7 +144,7 @@ class MonitorShortcode extends Shortcode {
 			array(
 				'videoServerEndpoint' => $video_server_endpoint,
 				'roomName'            => $room_name,
-				'admin'               => true,
+				'host'                => true,
 				'enableFloorplan'     => false,
 			)
 		);

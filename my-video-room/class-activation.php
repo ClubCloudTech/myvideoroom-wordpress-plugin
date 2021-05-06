@@ -14,7 +14,7 @@ namespace MyVideoRoomPlugin;
  */
 class Activation {
 
-	const ROLE_GLOBAL_ADMIN = 'myvideoroom_video_admin';
+	const ROLE_GLOBAL_HOST = 'myvideoroom_video_host';
 
 	/**
 	 * Activate the plugin
@@ -22,16 +22,16 @@ class Activation {
 	 */
 	public static function activate() {
 		add_role(
-			self::ROLE_GLOBAL_ADMIN,
-			esc_html__( 'Video Admin', 'myvideoroom' ),
-			array( Plugin::CAP_GLOBAL_ADMIN => true )
+			self::ROLE_GLOBAL_HOST,
+			esc_html__( 'Video Default Host', 'myvideoroom' ),
+			array( Plugin::CAP_GLOBAL_HOST => true )
 		);
 
 		global $wp_roles;
 		$default_admins = array( 'administrator' );
 
 		foreach ( $default_admins as $role ) {
-			$wp_roles->add_cap( $role, Plugin::CAP_GLOBAL_ADMIN );
+			$wp_roles->add_cap( $role, Plugin::CAP_GLOBAL_HOST );
 		}
 	}
 
@@ -43,9 +43,9 @@ class Activation {
 		global $wp_roles;
 
 		foreach ( array_keys( $wp_roles->roles ) as $role ) {
-			$wp_roles->remove_cap( $role, Plugin::CAP_GLOBAL_ADMIN );
+			$wp_roles->remove_cap( $role, Plugin::CAP_GLOBAL_HOST );
 		}
 
-		remove_role( self::ROLE_GLOBAL_ADMIN );
+		remove_role( self::ROLE_GLOBAL_HOST );
 	}
 }

@@ -40,8 +40,8 @@ return function (
 			<table class="form-table" role="presentation">
 			<?php
 			foreach ( $all_wp_roles as $key => $single_role ) {
-				$role_object   = get_role( $key );
-				$has_admin_cap = $role_object->has_cap( Plugin::CAP_GLOBAL_ADMIN );
+				$role_object  = get_role( $key );
+				$has_host_cap = $role_object->has_cap( Plugin::CAP_GLOBAL_HOST );
 
 				?>
 					<tr>
@@ -55,7 +55,7 @@ return function (
 							<input class="myvideoroom-admin-table-format"
 								id="role_<?php echo esc_attr( $key ); ?>"
 								name="role_<?php echo esc_attr( $key ); ?>"
-								type="checkbox"<?php echo $has_admin_cap ? ' checked="checked" ' : ''; ?>"
+								type="checkbox"<?php echo $has_host_cap ? ' checked="checked" ' : ''; ?>"
 							/>
 						</td>
 					</tr>

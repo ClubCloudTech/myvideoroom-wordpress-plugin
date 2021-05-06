@@ -134,7 +134,7 @@ return function (
 			<input type="checkbox"
 				name="myvideoroom_visualiser_room_permissions_preference"
 				id="myvideoroom_visualiser_room_permissions_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo ! $app_config || $app_config->is_admin() === null ? 'checked' : ''; ?>
+				<?php echo ! $app_config || $app_config->is_host() === null ? 'checked' : ''; ?>
 				aria-describedby="myvideoroom_visualiser_room_permissions_preference_<?php echo esc_attr( $id_index ); ?>_description"
 			/>
 			<br />
@@ -143,11 +143,11 @@ return function (
 				printf(
 					/* translators: %s is a link to the room permissions admin page */
 					esc_html__(
-						'When selected the permission of admins and guests will be determined by the global 
+						'When selected the permission of hosts and guests will be determined by the global 
 					        settings. This means that you only need to only have one page, with a single shortcode. If 
 					        you want a more customised control, then you can disable this option, instead creating two 
 					        seperate pages, each with their own shortcodes. It is your responsibility to then manage 
-					        access to each page. You can customise the global admin settings in the %s page',
+					        access to each page. You can customise the global host settings in the %s page',
 						'myvideoroom'
 					),
 					'<a href="' . esc_url( menu_page_url( 'my-video-room-permissions', false ) ) . '">' .

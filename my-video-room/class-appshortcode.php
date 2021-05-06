@@ -125,10 +125,10 @@ class AppShortcode extends Shortcode {
 		$enable_lobby     = 'true' === ( $params['lobby'] ?? 'false' );
 		$enable_reception = 'true' === ( $params['reception'] ?? 'false' );
 
-		if ( ! isset( $params['admin'] ) ) {
-			$admin = current_user_can( Plugin::CAP_GLOBAL_ADMIN );
+		if ( ! isset( $params['host'] ) ) {
+			$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
 		} else {
-			$admin = 'true' === $params['admin'];
+			$host = ( 'true' === $params['host'] );
 		}
 
 		$enable_floorplan = 'true' === ( $params['floorplan'] ?? 'false' );
@@ -174,7 +174,7 @@ class AppShortcode extends Shortcode {
 			array(
 				'videoServerEndpoint' => $video_server_endpoint,
 				'roomName'            => $room_name,
-				'admin'               => $admin,
+				'host'                => $host,
 				'enableFloorplan'     => $enable_floorplan,
 			)
 		);
@@ -212,7 +212,7 @@ class AppShortcode extends Shortcode {
                 data-app-endpoint="${app_endpoint}"
                 data-jwt-endpoint="${jwt_endpoint}"
                 data-server-endpoint="${state_server}"
-                data-admin="${admin}"
+                data-host="${host}"
                 data-enable-lobby="${enable_lobby}"
                 data-enable-reception="${enable_reception}"
                 data-reception-id="${reception_id}"
