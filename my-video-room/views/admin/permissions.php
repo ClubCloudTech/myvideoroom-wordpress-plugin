@@ -26,7 +26,7 @@ return function (
 	<p>
 		<?php
 		esc_html_e(
-			'The room builder can either generate two shortcodes where one is for the Host, and one for guest. 
+			'The room builder can either generate two shortcodes where one is for the host, and one for guest. 
 			Alternatively you can generate a single shortcode, and use these setting to configure who the video engine 
 			will treat as a host. This section allows you to add and remove  WordPress roles to your host permissions 
 			matrix.',
@@ -37,14 +37,24 @@ return function (
 
 	<form method="post" action="">
 		<fieldset>
-			<table class="form-table" role="presentation">
+			<table class="myvideoroom-permissions widefat" role="presentation">
+				<thead>
+				<tr>
+					<th>WordPress Role</th>
+					<th>Has default host permission</th>
+				</tr>
+				</thead>
+				<tbody>
 			<?php
+			$index = 0;
 			foreach ( $all_wp_roles as $key => $single_role ) {
+				++$index;
+
 				$role_object  = get_role( $key );
 				$has_host_cap = $role_object->has_cap( Plugin::CAP_GLOBAL_HOST );
 
 				?>
-					<tr>
+					<tr<?php echo $index % 2 ? ' class="alternate"' : ''; ?>>
 						<th scope="row">
 							<label for="role_<?php echo esc_attr( $key ); ?>">
 								<?php echo esc_html( $single_role['name'] ); ?>
@@ -62,6 +72,7 @@ return function (
 				<?php
 			}
 			?>
+				</tbody>
 			</table>
 		</fieldset>
 
