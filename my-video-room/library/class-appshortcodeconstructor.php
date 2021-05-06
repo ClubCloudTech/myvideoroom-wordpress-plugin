@@ -24,9 +24,9 @@ class AppShortcodeConstructor {
 	/**
 	 * The layout of the room
 	 *
-	 * @var ?string = null;
+	 * @var ?string;
 	 */
-	private ?string $layout;
+	private ?string $layout = null;
 
 	/**
 	 * Is this user a video host?
