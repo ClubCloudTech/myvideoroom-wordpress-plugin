@@ -22,6 +22,6 @@ class Version {
 	public function get_plugin_version(): string {
 		$plugin_data = get_plugin_data( __DIR__ . '/../index.php' );
 
-		return $plugin_data['Version'];
+		return $plugin_data['Version'] . time();
 	}
 }

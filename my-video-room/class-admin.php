@@ -240,7 +240,12 @@ class Admin {
 			( new Reference() )->get_shortcode_reference(),
 		);
 
-		$shortcodes = apply_filters( 'myvideoroom_shortcode_reference', $shortcodes );
+		\do_action(
+			'myvideoroom_shortcode_reference',
+			function ( \MyVideoRoomPlugin\Reference\Shortcode $new_shortcode ) use ( &$shortcodes ) {
+				$shortcodes[] = $new_shortcode;
+			}
+		);
 
 		return ( require __DIR__ . '/views/admin/reference.php' )(
 			$shortcodes,

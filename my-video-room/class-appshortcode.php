@@ -59,7 +59,7 @@ class AppShortcode extends Shortcode {
 
 		add_action( 'myvideoroom_enqueue_scripts', fn() => $this->enqueue_scripts() );
 		add_action(
-			'myvideoroom_head',
+			'admin_head',
 			function () {
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, - Output already escaped.
 				echo $this->get_app_endpoint_head_script();

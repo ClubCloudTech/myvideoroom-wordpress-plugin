@@ -33,12 +33,10 @@ class Module extends Shortcode {
 	 * MonitorShortcode constructor.
 	 */
 	public function __construct() {
-		add_filter(
+		add_action(
 			'myvideoroom_shortcode_reference',
-			function ( array $shortcode_reference ) {
-				$shortcode_reference[] = ( new Reference() )->get_shortcode_reference();
-
-				return $shortcode_reference;
+			function ( callable $add_reference ) {
+				$add_reference( ( new Reference() )->get_shortcode_reference() );
 			}
 		);
 

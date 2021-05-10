@@ -37,7 +37,7 @@ class Module {
 	 *
 	 * @return ModuleInstance
 	 */
-	public function register(
+	public static function register(
 		string $slug,
 		string $name,
 		array $description_array,

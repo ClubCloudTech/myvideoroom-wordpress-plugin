@@ -50,8 +50,6 @@ class Module extends Shortcode {
 	 * Add actions and filters for admin area
 	 */
 	private function add_admin_actions_and_filters() {
-		add_action( 'admin_head', fn() => do_action( 'myvideoroom_head' ) );
-
 		add_action(
 			'admin_enqueue_scripts',
 			fn() => $this->enqueue_scripts_and_styles( true ),
@@ -87,11 +85,10 @@ class Module extends Shortcode {
 			}
 		);
 
-		add_filter(
+		add_action(
 			'myvideoroom_shortcode_reference',
-			function ( array $shortcode_reference ) {
-				$shortcode_reference[] = ( new Reference() )->get_shortcode_reference();
-				return $shortcode_reference;
+			function ( callable $add_reference ) {
+				$add_reference( ( new Reference() )->get_shortcode_reference() );
 			}
 		);
 	}

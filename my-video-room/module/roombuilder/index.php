@@ -7,21 +7,22 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
 
 add_action(
 	'myvideoroom_init',
 	function () {
-		Factory::get_instance( Module::class )
-			->register(
-				'roombuilder',
-				'Room Builder',
-				array(
+		Module::register(
+			'roombuilder',
+			'Room Builder',
+			array(
+				esc_html__(
 					'A tool to explore the different options provided by MyVideoRoom, and to generate the correct app shortcode to output the room.',
+					'myvideoroom'
 				),
-				fn() => new MyVideoRoomPlugin\Module\RoomBuilder\Module()
-			);
+			),
+			fn() => new MyVideoRoomPlugin\Module\RoomBuilder\Module()
+		);
 
 		/**
 		 * Example of adding hooks

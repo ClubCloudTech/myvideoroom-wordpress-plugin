@@ -66,7 +66,7 @@ class AdminNavigation {
 
 		\do_action(
 			'myvideoroom_admin_menu',
-			function ( $slug, $title, $callback, $offset = -1, $icon = null ) use ( &$navigation_items ) {
+			function ( string $slug, string $title, callable $callback, int $offset = -1, string $dashicon = null ) use ( &$navigation_items ) {
 				$new_item = array(
 					$slug => array(
 						'title'    => $title,
@@ -74,8 +74,8 @@ class AdminNavigation {
 					),
 				);
 
-				if ( $icon ) {
-					$new_item[ $slug ]['title_icon'] = $icon;
+				if ( $dashicon ) {
+					$new_item[ $slug ]['title_icon'] = $dashicon;
 				}
 
 				$navigation_items = array_merge(
