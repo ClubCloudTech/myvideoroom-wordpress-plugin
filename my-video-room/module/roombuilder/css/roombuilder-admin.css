@@ -1,0 +1,35 @@
+.myvideoroom-admin table.myvideoroom-room-builder-output th,
+.myvideoroom-admin table.myvideoroom-room-builder-output td{
+	border: 1px solid #c3c4c7;
+}
+
+.myvideoroom-admin form.myvideoroom-room-builder-settings {
+	margin: 16px 0;
+}
+
+.myvideoroom-admin form.myvideoroom-room-builder-settings fieldset {
+	margin: 0 0 16px 0;
+	border: 1px solid #c3c4c7;
+	padding: 16px;
+	max-width: 700px;
+}
+
+.myvideoroom-admin form.myvideoroom-room-builder-settings fieldset legend {
+	font-weight: bold;
+	font-size: 1.2em;
+	margin: 0 0 4px 0;
+	padding: 0 8px;
+}
+
+.myvideoroom-admin form.myvideoroom-room-builder-settings input[type=text] {
+	width: 400px;
+}
+
+.myvideoroom-room-builder-settings .myvideoroom-show-help i {
+	font-size: 1.3em;
+	vertical-align: 3%;
+}
+
+.myvideoroom-room-builder-settings .myvideoroom-show-help em {
+	left: 16px;
+}

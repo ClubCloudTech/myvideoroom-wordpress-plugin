@@ -5,9 +5,11 @@
  * @package MyVideoRoomPlugin
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin;
+namespace MyVideoRoomPlugin\Library;
+
+use MyVideoRoomPlugin\Plugin;
 
 /**
  * Class Endpoints
@@ -59,11 +61,26 @@ class Endpoints {
 			$custom_endpoints = array();
 		}
 
-		$this->video_endpoint   = $custom_endpoints['video'] ?? 'meet.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-		$this->app_endpoint     = $custom_endpoints['app'] ?? 'https://app.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-		$this->state_endpoint   = $custom_endpoints['state'] ?? 'https://state.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-		$this->rooms_endpoint   = $custom_endpoints['rooms'] ?? 'https://rooms.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
-		$this->licence_endpoint = $custom_endpoints['licence'] ?? 'https://licence.' . get_option( Plugin::SETTING_SERVER_DOMAIN );
+		$video_server = $this->get_server_endpoint();
+
+		$this->video_endpoint   = $custom_endpoints['video'] ?? 'meet.' . $video_server;
+		$this->app_endpoint     = $custom_endpoints['app'] ?? 'https://app.' . $video_server;
+		$this->state_endpoint   = $custom_endpoints['state'] ?? 'https://state.' . $video_server;
+		$this->rooms_endpoint   = $custom_endpoints['rooms'] ?? 'https://rooms.' . $video_server;
+		$this->licence_endpoint = $custom_endpoints['licence'] ?? 'https://licence.' . $video_server;
+	}
+
+	/**
+	 * Get the server endpoint
+	 *
+	 * @return string
+	 */
+	public function get_server_endpoint(): string {
+		if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
+			return esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
+		} else {
+			return 'clubcloud.tech';
+		}
 	}
 
 	/**

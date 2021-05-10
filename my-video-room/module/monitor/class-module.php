@@ -1,29 +1,26 @@
 <?php
 /**
- * Short code for monitoring a room
+ * The entry point for the Monitor module
  *
- * @package MyVideoRoomPlugin
+ * @package MyVideoRoomPlugin/Module/Monitor
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin;
+namespace MyVideoRoomPlugin\Module\Monitor;
 
-use Exception;
+use MyVideoRoomPlugin\AppShortcode;
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\Endpoints;
+use MyVideoRoomPlugin\Plugin;
+use MyVideoRoomPlugin\Shortcode;
 
 /**
- * Class MonitorShortcode
+ * Class Module
  */
-class MonitorShortcode extends Shortcode {
+class Module extends Shortcode {
 
-	const SHORTCODE_TAG = 'myvideoroom_monitor';
-
-	/**
-	 * The private key to authorise this install.
-	 *
-	 * @var string
-	 */
-	private string $private_key;
+	const SHORTCODE_TAG = AppShortcode::SHORTCODE_TAG . '_monitor';
 
 	/**
 	 * The list of endpoints for services.
@@ -34,36 +31,36 @@ class MonitorShortcode extends Shortcode {
 
 	/**
 	 * MonitorShortcode constructor.
-	 *
-	 * @param string $private_key The private key to authorise this install.
 	 */
-	public function __construct( string $private_key ) {
-		$this->private_key = $private_key;
-		$this->endpoints   = new Endpoints();
-	}
+	public function __construct() {
+		add_filter(
+			'myvideoroom_shortcode_reference',
+			function ( array $shortcode_reference ) {
+				$shortcode_reference[] = ( new Reference() )->get_shortcode_reference();
 
-	/**
-	 * Install the shortcode
-	 */
-	public function init() {
+				return $shortcode_reference;
+			}
+		);
+
+		$this->endpoints = new Endpoints();
+
 		add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
+
+		Factory::get_instance( TextOptionShortcode::class )->init();
 
 		add_action( 'wp_enqueue_scripts', fn() => wp_enqueue_script( 'jquery' ) );
 
 		add_action(
 			'wp_enqueue_scripts',
-			fn() => wp_enqueue_script(
-				'socket-io-3.1.0',
-				plugins_url( '/third-party/socket.io.js', __FILE__ ),
-				array(),
-				'3.1.0',
-				true
-			)
-		);
-
-		add_action(
-			'wp_enqueue_scripts',
 			function () {
+				wp_enqueue_script(
+					'socket-io-3.1.0',
+					plugins_url( '/third-party/socket.io.js', __FILE__ ),
+					array(),
+					'3.1.0',
+					true
+				);
+
 				wp_enqueue_script(
 					'myvideoroom-monitor',
 					plugins_url( '/js/monitor.js', __FILE__ ),
@@ -102,28 +99,30 @@ class MonitorShortcode extends Shortcode {
 	/**
 	 * Output the widget
 	 *
-	 * @param array  $params    Params passed from the shortcode to this function.
-	 * @param string $contents  The text content of the shortcode.
+	 * @param array|string $params    Params passed from the shortcode to this function.
+	 * @param string       $contents  The text content of the shortcode.
 	 *
 	 * @return string
 	 */
-	public function output_shortcode( $params = array(), $contents = '' ): string {
-		if ( ! $this->private_key ) {
+	public function output_shortcode( $params = array(), string $contents = '' ): string {
+		if ( ! $params ) {
+			$params = array();
+		}
+
+		$private_key = get_option( Plugin::SETTING_PRIVATE_KEY, null );
+
+		if ( ! $private_key ) {
 			if (
 				defined( 'WP_DEBUG' ) &&
 				WP_DEBUG
 			) {
-				return '<div>' . esc_html__( 'My Video Room is currently unlicensed', 'myvideoroom' ) . '</div>';
+				return '<div>' . esc_html__( 'MyVideoRoom is currently unlicensed', 'myvideoroom' ) . '</div>';
 			} else {
 				return '';
 			}
 		}
 
 		$host = $this->get_host();
-
-		if ( ! $params ) {
-			$params = array();
-		}
 
 		$room_name = sanitize_text_field( $params['name'] ?? get_bloginfo( 'name' ) );
 		$type      = sanitize_key( $params['type'] ?? 'reception' );
@@ -146,13 +145,13 @@ class MonitorShortcode extends Shortcode {
 			array(
 				'videoServerEndpoint' => $video_server_endpoint,
 				'roomName'            => $room_name,
-				'admin'               => true,
+				'host'                => true,
 				'enableFloorplan'     => false,
 			)
 		);
 
-		if ( ! openssl_sign( $message, $signature, $this->private_key, OPENSSL_ALGO_SHA256 ) ) {
-			return $this->return_error( esc_html__( 'My Video Room was unable to sign the data.', 'myvideoroom' ) );
+		if ( ! openssl_sign( $message, $signature, $private_key, OPENSSL_ALGO_SHA256 ) ) {
+			return $this->return_error( esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
 		}
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript

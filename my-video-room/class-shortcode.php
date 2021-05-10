@@ -5,9 +5,12 @@
  * @package MyVideoRoomPlugin
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
+
+use MyVideoRoomPlugin\Library\Host;
+use MyVideoRoomPlugin\Library\Version;
 
 /**
  * Abstract Shortcode
@@ -20,9 +23,7 @@ abstract class Shortcode {
 	 * @return string
 	 */
 	protected function get_plugin_version(): string {
-		$plugin_data = get_plugin_data( __DIR__ . '/index.php' );
-
-		return $plugin_data['Version'];
+		return Factory::get_instance( Version::class )->get_plugin_version();
 	}
 
 	/**
@@ -31,10 +32,10 @@ abstract class Shortcode {
 	 * @return string
 	 */
 	protected function get_host(): string {
-		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
-			$host = preg_replace( '#^https?://#', '', esc_url_raw( wp_unslash( $_SERVER['HTTP_HOST'] ) ) );
-		} else {
-			$host = '';
+		$host = Factory::get_instance( Host::class )->get_host();
+
+		if ( ! $host ) {
+			return '';
 		}
 
 		return $host;

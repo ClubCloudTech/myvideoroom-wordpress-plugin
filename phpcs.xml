@@ -5,7 +5,7 @@
     <file>my-video-room</file>
     <file>build.php</file>
 
-    <exclude-pattern>my-video-room/third-party</exclude-pattern>
+    <exclude-pattern>my-video-room/module/monitor/third-party</exclude-pattern>
 
     <rule ref="WordPress" />
 </ruleset>

@@ -1,8 +1,10 @@
 /**
- * Main JavaScript file the video plugin
+ * Load the video app for all instances of the app
  *
  * @package MyVideoRoomPlugin
  */
+
+/*global myVideoRoomAppEndpoint*/
 
 jQuery.noConflict()(
 	function () {
@@ -15,23 +17,27 @@ jQuery.noConflict()(
 
 			$.ajax(
 				{
-					url: myVideoRoomAppEndpoint + "/asset-manifest.json",
+					url: myVideoRoomAppEndpoint + '/asset-manifest.json',
 					dataType: 'json'
 				}
 			).then(
 				function (data) {
 					Object.values( data.files ).map(
 						function (file) {
-							if (file.endsWith( ".js" )) {
+							var url = myVideoRoomAppEndpoint + '/' + file;
+
+							if (file.endsWith( '.js' )) {
 								$.ajax(
 									{
 										beforeSend: function() {},
-										url: myVideoRoomAppEndpoint + "/" + file,
+										url: url,
 										dataType: "script"
 									}
 								);
-							} else if (file.endsWith( ".css" )) {
-								$( '<link rel="stylesheet" href="' + myVideoRoomAppEndpoint + '/' + file + '" type="text/css" />' ).appendTo( 'head' );
+							} else if (file.endsWith( '.css' )) {
+								$( '<link rel="stylesheet" type="text/css" />' )
+									.attr( 'href', url )
+									.appendTo( 'head' );
 							}
 						}
 					);

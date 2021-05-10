@@ -6,7 +6,7 @@
  * @package MyVideoRoomPlugin
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
@@ -41,7 +41,7 @@ class Factory {
 	}
 
 	/**
-	 * Inject a instance
+	 * Inject a instance - used for mocking during unit tests
 	 *
 	 * @param string $class_name      The name of the class to inject.
 	 * @param object $injected_object The object to inject.

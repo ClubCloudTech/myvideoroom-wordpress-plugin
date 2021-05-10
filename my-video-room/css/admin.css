@@ -1,7 +1,227 @@
-code.myvideoroom-admin-code {
-	white-space: nowrap;
-	overflow: scroll;
+.myvideoroom-admin {
+	margin-right: 15px;
+}
+
+.myvideoroom-admin main p {
+	max-width: 704px;
+}
+
+.myvideoroom-admin img {
+	max-width: 100%;
+}
+
+.myvideoroom-admin .notice {
+	margin-right: 0;
+}
+
+.myvideoroom-admin .activation-key {
+	width: 60%;
+	max-width: 400px;
+	min-width: 304px;
+}
+
+.myvideoroom-admin .button-primary.negative{
+	background: #d63638;
+	color: #fff;
+	border-color: #d63638;
+}
+
+.myvideoroom-admin .button-primary.negative:hover  {
+	background: #b32d2e;
+	border-color: #b32d2e;
+}
+
+.myvideoroom-admin .nav-separate {
+	background-color: #c5d9ed;
+}
+
+.myvideoroom-admin .plugins .row-actions em {
+	color: #2c3338;
+}
+
+/*region Nav Tab */
+.myvideoroom-admin .nav-tab-wrapper li {
+	margin-bottom: -1px	;
+}
+
+.myvideoroom-admin .nav-tab-wrapper a {
+	text-decoration: none;
+	color: #000000;
+}
+
+.myvideoroom-admin .nav-tab-wrapper a:hover {
+	background: none;
+}
+/*endregion*/
+
+/*region Header */
+.myvideoroom-admin header div.overview {
+	vertical-align: top;
+	display: inline-block;
+}
+
+.myvideoroom-admin header div.overview strong {
+	font-size: 1.2em;
+}
+
+.myvideoroom-admin header div.overview em {
 	display: block;
-	padding: 16px 8px;
-	user-select: all;
+	margin-top: 8px;
+	font-size: 1.1em;
+}
+
+.myvideoroom-admin header div.overview h1 {
+	line-height: 1.2em;
+}
+
+.myvideoroom-admin header p.notice {
+	max-width: 500px;
+	margin: 8px 0 0 0;
+	padding: 8px;
+}
+
+.myvideoroom-admin header img {
+	display: none;
+	max-width: 700px;
+}
+
+.myvideoroom-admin header:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+
+@media only screen and (min-width: 1034px) {
+	.myvideoroom-admin header div.overview  {
+		padding-top: 72px;
+		min-width: 300px;
+		width: calc(100% - 293px);
+	}
+
+	.myvideoroom-admin header img  {
+		display: inline-block;
+		float: right;
+	}
+}
+
+/*endregion*/
+
+/*region Room Templates*/
+.myvideoroom-admin #myvideoroom-how-to-use-templates div.view {
+	display: inline-block;
+	width: calc(50% - 2px);
+	max-width: 500px;
+}
+
+.myvideoroom-admin #myvideoroom-how-to-use-templates div.view img {
+	width: 100%;
+}
+/*endregion*/
+
+
+/*region Getting Started - Three Step Getting Started */
+.myvideoroom-admin ol.getting-started-steps {
+	counter-reset: item;
+	max-width: 800px;
+	padding: 0;
+	margin: 16px 0;
+	display: block;
+}
+
+.myvideoroom-admin ol.getting-started-steps:after {
+	display: block;
+	content: "";
+	clear: both;
+}
+
+.myvideoroom-admin ol.getting-started-steps li {
+	counter-increment: item;
+	display: block;
+	padding: 16px;
+	box-sizing: border-box;
+}
+
+.myvideoroom-admin ol.getting-started-steps li:before {
+	content: counter(item);
+	background: #327EAC;
+	border-radius: 100%;
+	color: white;
+	width: 72px;
+	line-height: 72px;
+	font-size: 40px;
+	font-weight: bold;
+	text-align: center;
+	float: left;
+	margin: 0 8px 8px 0;
+}
+
+.myvideoroom-admin ol.getting-started-steps li h4 {
+	font-size: 24px;
+	margin: 0;
+	line-height: 1.1em;
+	min-height: 80px;
+	width: 100%;
+}
+
+@media only screen and (min-width: 600px) {
+	.myvideoroom-admin ol.getting-started-steps li {
+		width: 33%;
+		float: left;
+	}
+}
+/*endregion */
+
+.myvideoroom-admin .reception-card,
+.myvideoroom-admin .layout-card {
+	display: inline-block;
+	margin-right: 20px;
+	width: calc(100% - 50px);
+	height: 238px;
+	box-sizing: content-box;
+	text-align: center;
+}
+
+.myvideoroom-admin .reception-card h3,
+.myvideoroom-admin .layout-card h3 {
+	margin: 8px 0;
+}
+
+.myvideoroom-admin .reception-card img,
+.myvideoroom-admin .layout-card img {
+	display: block;
+	border-radius: 4px;
+	max-width: calc(80% - 16px);
+	max-height: 128px;
+	margin: 16px auto 0 auto;
+}
+
+@media only screen and (min-width: 690px) {
+	.myvideoroom-admin .reception-card,
+	.myvideoroom-admin .layout-card {
+		width: calc(50% - 76px);
+	}
+}
+
+@media only screen and (min-width: 1215px) {
+	.myvideoroom-admin .reception-card,
+	.myvideoroom-admin .layout-card {
+		width: calc(33% - 73px);
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	.myvideoroom-admin .reception-card,
+	.myvideoroom-admin .layout-card {
+		width: calc(25% - 77px);
+	}
+}
+
+.myvideoroom-admin table.widefat.myvideoroom-permissions  {
+	width: auto;
+}
+
+@media only screen and (min-width: 600px) {
+	.myvideoroom-admin table.widefat.myvideoroom-permissions  {
+		min-width: 400px;
+	}
 }

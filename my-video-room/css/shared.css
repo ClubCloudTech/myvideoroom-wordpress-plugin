@@ -1,0 +1,8 @@
+code.myvideoroom-shortcode-example {
+	display: block;
+	padding: 16px 8px 16px calc(1.5em + 8px);
+	text-indent: -1.5em;
+	user-select: all;
+	overflow: auto;
+	font-family: monospace;
+}

@@ -5,11 +5,11 @@
  * @package MyVideoRoomPlugin
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
-use Exception;
+use MyVideoRoomPlugin\Library\Endpoints;
 use WP_User;
 
 /**
@@ -92,49 +92,64 @@ class AppShortcode extends Shortcode {
 	/**
 	 * Create the video widget
 	 *
-	 * @param array $params List of params to pass to the shortcode.
+	 * @param array|string $attr List of params to pass to the shortcode.
 	 *
 	 * @return string
 	 */
-	public function output_shortcode( $params = array() ) {
-		$host = $this->get_host();
+	public function output_shortcode( $attr = array() ) {
+		if ( ! $attr ) {
+			$attr = array();
+		}
 
-		if ( ! $host ) {
-			$this->return_error(
+		if ( ! $this->private_key ) {
+			return $this->return_error(
 				'<div>' . esc_html__(
-					'>My Video Room cannot find the host that it is currentlyrunning on.',
+					'MyVideoRoom is currently unlicensed.',
 					'myvideoroom'
 				) . '</div>'
 			);
 		}
 
-		if ( ! $params ) {
-			$params = array();
+		$hostname = $this->get_host();
+
+		if ( ! $hostname ) {
+			return $this->return_error(
+				'<div>' . esc_html__(
+					'MyVideoRoom cannot find the host that it is currently running on.',
+					'myvideoroom'
+				) . '</div>'
+			);
 		}
 
-		$room_name = $params['name'] ?? get_bloginfo( 'name' );
-		$layout_id = $params['layout'] ?? 'boardroom';
+		$room_name = $attr['name'] ?? get_bloginfo( 'name' );
+		$seed      = $attr['seed'] ?? null;
+		$layout_id = $attr['layout'] ?? 'boardroom';
 
 		$reception_id = 'office';
-		if ( $params['reception-id'] ?? false ) {
-			$reception_id = $params['reception-id'];
+		if ( $attr['reception-id'] ?? false ) {
+			$reception_id = $attr['reception-id'];
 		}
 
-		$reception_video  = $params['reception-video'] ?? null;
-		$enable_lobby     = 'true' === ( $params['lobby'] ?? 'false' );
-		$enable_reception = 'true' === ( $params['reception'] ?? 'false' );
+		$reception_video  = $attr['reception-video'] ?? null;
+		$enable_lobby     = 'true' === ( $attr['lobby'] ?? 'false' );
+		$enable_reception = 'true' === ( $attr['reception'] ?? 'false' );
 
-		if ( ! isset( $params['admin'] ) ) {
-			$admin = current_user_can( Plugin::CAP_GLOBAL_ADMIN );
+		// load legacy admin settings.
+		if ( isset( $attr['admin'] ) && ! isset( $attr['host'] ) ) {
+			$attr['host'] = $attr['admin'];
+		}
+
+		if ( ! isset( $attr['host'] ) ) {
+			$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
 		} else {
-			$admin = 'true' === $params['admin'];
+			$host = ( 'true' === $attr['host'] );
 		}
 
-		$enable_floorplan = 'true' === ( $params['floorplan'] ?? 'false' );
+		$enable_floorplan = 'true' === ( $attr['floorplan'] ?? 'false' );
 
 		$loading_text = esc_html__( 'Loading...', 'myvideoroom' );
-		if ( $params['text-loading'] ?? false ) {
-			$loading_text = $params['text-loading'];
+		if ( $attr['text-loading'] ?? false ) {
+			$loading_text = $attr['text-loading'];
 		}
 
 		$video_server_endpoint = $this->endpoints->get_video_endpoint();
@@ -149,7 +164,8 @@ class AppShortcode extends Shortcode {
 					'type'                => 'roomHash',
 					'roomName'            => $room_name,
 					'videoServerEndpoint' => $video_server_endpoint,
-					'host'                => $host,
+					'host'                => $hostname,
+					'seed'                => $seed,
 				)
 			)
 		);
@@ -162,7 +178,7 @@ class AppShortcode extends Shortcode {
 					'roomName'            => $room_name,
 					'layoutId'            => $layout_id,
 					'videoServerEndpoint' => $video_server_endpoint,
-					'host'                => $host,
+					'host'                => $hostname,
 					'privateKey'          => $this->private_key,
 				)
 			)
@@ -172,27 +188,27 @@ class AppShortcode extends Shortcode {
 			array(
 				'videoServerEndpoint' => $video_server_endpoint,
 				'roomName'            => $room_name,
-				'admin'               => $admin,
+				'host'                => $host,
 				'enableFloorplan'     => $enable_floorplan,
 			)
 		);
 
 		if ( ! openssl_sign( $message, $signature, $this->private_key, OPENSSL_ALGO_SHA256 ) ) {
-			return $this->return_error( esc_html__( 'My Video Room was unable to sign the data.', 'myvideoroom' ) );
+			return $this->return_error( esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
 		}
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript
 		$security_token = rawurlencode( base64_encode( $signature ) );
 
-		$jwt_endpoint = $licence_endpoint . '/' . $host . '.jwt?';
+		$jwt_endpoint = $licence_endpoint . '/' . $hostname . '.jwt?';
 
 		$current_user = wp_get_current_user();
 
 		$user_name  = null;
 		$avatar_url = null;
 
-		if ( isset( $params['user-name'] ) ) {
-			$user_name = esc_attr( $params['user-name'] );
+		if ( isset( $attr['user-name'] ) ) {
+			$user_name = esc_attr( $attr['user-name'] );
 		} elseif ( $current_user ) {
 			$user_name  = $current_user->display_name;
 			$avatar_url = $this->getAvatar( $current_user );
@@ -210,7 +226,7 @@ class AppShortcode extends Shortcode {
                 data-app-endpoint="${app_endpoint}"
                 data-jwt-endpoint="${jwt_endpoint}"
                 data-server-endpoint="${state_server}"
-                data-admin="${admin}"
+                data-host="${host}"
                 data-enable-lobby="${enable_lobby}"
                 data-enable-reception="${enable_reception}"
                 data-reception-id="${reception_id}"

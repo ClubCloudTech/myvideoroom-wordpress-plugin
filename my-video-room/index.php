@@ -1,18 +1,16 @@
 <?php
 /**
- * MyVideoRoomPlugin Plugin Initializer. Will be auto-called by WordPress
+ * MyVideoRoom WordPress Plugin
  *
- * @package MyVideoRoomPlugin
- */
-
-declare(strict_types=1);
-
-/**
- * Plugin Name:         My Video Room
+ * @package             MyVideoRoomPlugin
+ * @license             GPL-2.0-or-later
+ *
+ * @wordpress-plugin
+ * Plugin Name:         MyVideoRoom
  * Plugin URI:          https://clubcloud.tech
  * Text Domain:         myvideoroom
  * Description:         Integrates the MyVideoRoom Service into WordPress
- * Version:             1.5.0
+ * Version:             2.0.0
  * Requires PHP:        7.4
  * Requires at least:   5.6
  * Author:              ClubCloud
@@ -21,7 +19,11 @@ declare(strict_types=1);
  * License URI:         https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+declare( strict_types=1 );
+
 namespace MyVideoRoomPlugin;
+
+use MyVideoRoomPlugin\Library\Module;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -33,7 +35,7 @@ if ( ! function_exists( 'get_plugin_data' ) ) {
 
 if ( ! class_exists( Plugin::class ) ) {
 	/**
-	 * Autoloader for classes in the My Video Room Plugin
+	 * Autoloader for classes in the MyVideoRoom Plugin
 	 *
 	 * @param string $class_name The name of the class to autoload.
 	 *
@@ -63,7 +65,9 @@ if ( ! class_exists( Plugin::class ) ) {
 
 	spl_autoload_register( 'MyVideoRoomPlugin\autoloader' );
 
-	add_action( 'plugins_loaded', array( Plugin::class, 'init' ) );
+	add_action( 'plugins_loaded', array( Module::class, 'load_built_in_modules' ) );
+
+	add_action( 'init', array( Plugin::class, 'init' ) );
 
 	register_activation_hook( __FILE__, array( Activation::class, 'activate' ) );
 	register_deactivation_hook( __FILE__, array( Activation::class, 'deactivate' ) );

@@ -5,9 +5,12 @@
  * @package MyVideoRoomPlugin
  */
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
+
+use MyVideoRoomPlugin\Library\AdminNavigation;
+use MyVideoRoomPlugin\Library\Module;
 
 /**
  * Class Plugin
@@ -17,33 +20,37 @@ class Plugin {
 	public const PLUGIN_NAMESPACE   = 'myvideoroom';
 	public const SETTINGS_NAMESPACE = 'settings';
 
-	public const SETTING_SERVER_DOMAIN  = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
-	public const SETTING_ACTIVATION_KEY = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
+	public const SETTING_SERVER_DOMAIN     = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_server_domain';
+	public const SETTING_ACTIVATION_KEY    = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activation_key';
+	public const SETTING_ACCESS_TOKEN      = self::PLUGIN_NAMESPACE . '_access_token';
+	public const SETTING_PRIVATE_KEY       = self::PLUGIN_NAMESPACE . '_private_key';
+	public const SETTING_ACTIVATED_MODULES = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activated_modules';
 
-	public const SETTING_ACCESS_TOKEN = self::PLUGIN_NAMESPACE . '_access_token';
-	public const SETTING_PRIVATE_KEY  = self::PLUGIN_NAMESPACE . '_private_key';
+	public const CAP_GLOBAL_HOST = 'myvideoroom-global-host';
 
-	public const CAP_GLOBAL_ADMIN = 'myvideoroom-global-admin';
-
-	public const SETTINGS = array(
-		self::SETTING_SERVER_DOMAIN,
-		self::SETTING_ACTIVATION_KEY,
-	);
 
 	/**
 	 * Plugin constructor.
 	 */
 	public function __construct() {
 		$private_key = get_option( self::SETTING_PRIVATE_KEY );
+		do_action( 'myvideoroom_init' );
 
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_filter( 'plugin_action_links_' . plugin_basename( __DIR__ . '/index.php' ), array( $this, 'add_action_links' ) );
+		add_filter(
+			'plugin_action_links_' . plugin_basename( __DIR__ . '/index.php' ),
+			array( $this, 'add_action_links' )
+		);
 
 		Factory::get_instance( Admin::class )->init();
 
-		Factory::get_instance( TextOptionShortcode::class )->init();
+		$active_modules = Factory::get_instance( Module::class )->get_active_modules();
+
+		foreach ( $active_modules as $module ) {
+			$module->instantiate();
+		}
+
 		Factory::get_instance( AppShortcode::class, array( $private_key ) )->init();
-		Factory::get_instance( MonitorShortcode::class, array( $private_key ) )->init();
 	}
 
 	/**
@@ -59,10 +66,7 @@ class Plugin {
 	 * Register all settings with WordPress.
 	 */
 	public function register_settings() {
-		foreach ( self::SETTINGS as $setting ) {
-			register_setting( self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE, $setting );
-		}
-
+		register_setting( self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE, self::SETTING_ACTIVATION_KEY );
 		register_setting( self::PLUGIN_NAMESPACE, self::SETTING_PRIVATE_KEY );
 		register_setting( self::PLUGIN_NAMESPACE, self::SETTING_ACCESS_TOKEN );
 	}
@@ -76,8 +80,8 @@ class Plugin {
 	 */
 	public function add_action_links( array $actions ): array {
 		$links = array(
-			'Settings'  => admin_url( 'admin.php?page=my-video-room-global' ),
-			'Reference' => admin_url( 'admin.php?page=my-video-room' ),
+			'Settings'  => menu_page_url( AdminNavigation::PAGE_SLUG_GETTING_STARTED, false ),
+			'Reference' => menu_page_url( AdminNavigation::PAGE_SLUG_REFERENCE, false ),
 			'Support'   => 'https://clubcloud.tech',
 		);
 
