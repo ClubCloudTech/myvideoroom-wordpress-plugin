@@ -139,23 +139,15 @@ class AppShortcode extends Shortcode {
 			$attr['host'] = $attr['admin'];
 		}
 
-
-		$attr['host'] = 'users:1,asammon;groups:administrator';
-
 		if ( ! isset( $attr['host'] ) ) {
 			$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
 		} else {
 			$host = apply_filters( 'myvideoroom_is_host', null, $attr['host'] ?? null );
 
-			if ( $host === null ) {
+			if ( null === $host ) {
 				$host = ( 'true' === $attr['host'] );
 			}
 		}
-
-		echo '<pre>';
-		var_dump( $host );
-		echo '</pre>';
-
 
 		$enable_floorplan = 'true' === ( $attr['floorplan'] ?? 'false' );
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * The entry point for the Monitor module
+ * @TODO
  *
- * @package MyVideoRoomPlugin/Module/Monitor
+ * @package MyVideoRoomPlugin/Reference/Main
  */
 
 declare( strict_types=1 );

@@ -9,6 +9,7 @@ use MyVideoRoomPlugin\Library\AdminNavigation;
 use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
+use MyVideoRoomPlugin\Module\RoomBuilder\Settings\RoomPermissions;
 
 /**
  * Output the settings page for the Room Builder
@@ -150,45 +151,31 @@ return function (
 		<fieldset>
 			<legend><?php echo esc_html__( 'Room Permissions', 'myvideoroom' ); ?></legend>
 
-			<label for="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index ); ?>">
-				<?php echo esc_html__( 'Use WordPress roles to determine room permissions', 'myvideoroom' ); ?>
-			</label>
-			<input type="checkbox"
-				name="myvideoroom_room_builder_room_permissions_preference"
-				id="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo ! $app_config || $app_config->is_host() === null ? 'checked' : ''; ?>
-				aria-describedby="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index ); ?>_description"
-			/>
-			<br />
-			<em id="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index ); ?>_description">
-				<?php
+			<?php
+				$room_permissions = ( new RoomPermissions() )->get_room_permission_options( $app_config );
 
-				esc_html_e(
-					'When selected the permission of hosts and guests will be determined by the global 
-					        settings. This means that you only need to only have one page, with a single shortcode. If 
-					        you want a more customised control, then you can disable this option, instead creating two 
-					        separate pages, each with their own shortcodes. It is your responsibility to then manage 
-					        access to each page. '
-				);
-
-				$permissions_page = menu_page_url( AdminNavigation::PAGE_SLUG_PERMISSIONS, false );
-
-				if ( $permissions_page ) {
-					printf(
-					/* translators: %s is a link to the room permissions admin page */
-						esc_html__(
-							'You can customise the global host settings in the %s page',
-							'myvideoroom'
-						),
-						'<a href="' . esc_url( $permissions_page ) . '">' .
-						esc_html__( 'room permissions', 'myvideoroom' ) .
-						'</a>'
-					);
-
-				}
+			foreach ( $room_permissions as $permission ) {
 				?>
-			</em>
+					<input type="radio"
+						   name="myvideoroom_room_builder_room_permissions_preference"
+						   id="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index . '_' . $permission->get_key() ); ?>"
+						   value="<?php echo esc_attr( $permission->get_key() ); ?>"
+					<?php echo $permission->is_checked() ? 'checked' : ''; ?>
+						   aria-describedby="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index . '_' . $permission->get_key() . '_description' ); ?>"
+					/>
+					<label for="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index . '_' . $permission->get_key() ); ?>">
+					<?php echo esc_html( $permission->get_label() ); ?>
+					</label>
+					<em id="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index . '_' . $permission->get_key() . '_description' ); ?>">
+					<?php echo $permission->get_description(); ?>
+					</em>
+					<br />
+					<?php
+			}
+			?>
 		</fieldset>
+
+		<?php do_action('myvideoroom_roombuilder_permission_section', $id_index); ?>
 
 		<fieldset>
 			<legend><?php echo esc_html__( 'Guest Settings', 'myvideoroom' ); ?></legend>

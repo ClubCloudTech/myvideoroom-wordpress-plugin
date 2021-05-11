@@ -78,6 +78,8 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	private ?string $seed = null;
 
+	private array $custom_settings = array();
+
 	// --
 
 	/**
@@ -94,6 +96,10 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public static function create_instance(): self {
 		return new self();
+	}
+
+	public function add_custom_string_param( string $key, string $value ) {
+		$this->custom_settings[ $key ] = $value;
 	}
 
 	/**
@@ -353,6 +359,12 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 		if ( $this->get_seed() ) {
 			$shortcode_array['seed'] = $this->get_seed();
 		}
+
+		foreach ( $this->custom_settings as $key => $custom_setting ) {
+			$shortcode_array[ $key ] = $custom_setting;
+		}
+
+		$shortcode_array = apply_filters( 'myvideoroom_appshortcode_output', $shortcode_array );
 
 		return $this->get_shortcode_text( $shortcode_array );
 	}

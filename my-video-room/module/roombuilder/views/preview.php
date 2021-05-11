@@ -56,8 +56,8 @@ return function (
 
 		<tbody>
 			<tr>
-				<td><?php echo \do_shortcode( $shortcode_host->output_shortcode_text() ); ?></td>
-				<td><?php echo \do_shortcode( $shortcode_guest->output_shortcode_text() ); ?></td>
+				<td><?php echo '' || \do_shortcode( $shortcode_host->output_shortcode_text() ); ?></td>
+				<td><?php echo '' || \do_shortcode( $shortcode_guest->output_shortcode_text() ); ?></td>
 			</tr>
 
 			<tr>

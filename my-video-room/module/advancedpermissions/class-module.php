@@ -18,52 +18,78 @@ class Module {
 	 * MonitorShortcode constructor.
 	 */
 	public function __construct() {
-		add_filter(
-			'myvideoroom_is_host',
-			function ( bool $is_host = null, string $host_string = null ) {
-				if ( $host_string && null === $is_host ) {
-					$host_types = explode( ';', $host_string );
+		add_filter( 'myvideoroom_is_host', array( $this, 'is_host' ), 0, 2 );
 
-					$allowed_users  = array();
-					$allowed_groups = array();
+		new RoomBuilder();
+	}
 
-					foreach ( $host_types as $host_type ) {
-						$type_parts = explode( ':', $host_type );
+	/**
+	 * Is the current user a host, based on the the string passed to the shortcode, and the current users id and groups
+	 *
+	 * @param ?bool   $is_host      If the host already determined.
+	 * @param ?string $host_string  The host string to parse by this function.
+	 *
+	 * @return ?bool
+	 */
+	public function is_host( bool $is_host = null, string $host_string = null ): ?bool {
+		if ( $host_string && null === $is_host ) {
+			$host_types = explode( ';', $host_string );
 
-						switch ( $type_parts[0] ) {
-							case 'users':
-								$allowed_users = explode( ',', $type_parts[1] );
-								break;
-							case 'groups':
-								$allowed_groups = explode( ',', $type_parts[1] );
-								break;
-						}
-					}
+			$host_users  = array();
+			$host_groups = array();
 
-					$current_user = wp_get_current_user();
+			foreach ( $host_types as $host_type ) {
+				$type_parts = explode( ':', $host_type );
 
-					if ( 0 !== $current_user->ID ) {
-						if ( in_array( (string) $current_user->ID, $allowed_users, true ) ) {
-							return true;
-						}
-
-						if ( in_array( $current_user->user_login, $allowed_users, true ) ) {
-							return true;
-						}
-
-						if ( count( array_intersect( $current_user->roles, $allowed_groups ) ) > 0 ) {
-							return true;
-						}
-					}
-
-					return false;
+				switch ( $type_parts[0] ) {
+					case 'users':
+						$host_users = explode( ',', $type_parts[1] );
+						break;
+					case 'roles':
+						$host_groups = explode( ',', $type_parts[1] );
+						break;
 				}
+			}
 
-				return null;
-			},
-			0,
-			2
-		);
+			$current_user = wp_get_current_user();
+
+			if (
+				0 !== $current_user->ID &&
+				( $this->user_is_host( $host_users ) || $this->role_is_host( $host_groups ) )
+			) {
+				return true;
+			}
+
+			return false;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Is the current user a host
+	 *
+	 * @param array $host_users A list of ids or logins that are hosts.
+	 *
+	 * @return bool
+	 */
+	private function user_is_host( array $host_users ): bool {
+		$current_user = wp_get_current_user();
+
+		return in_array( (string) $current_user->ID, $host_users, true ) || in_array( $current_user->user_login, $host_users, true );
+	}
+
+	/**
+	 * Does the current user belong to a group that is a host group
+	 *
+	 * @param array $host_groups A list of groups that are hosts.
+	 *
+	 * @return bool
+	 */
+	private function role_is_host( array $host_groups ): bool {
+		$current_user = wp_get_current_user();
+
+		return count( array_intersect( $current_user->roles, $host_groups ) ) > 0;
 	}
 
 }

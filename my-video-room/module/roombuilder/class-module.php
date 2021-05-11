@@ -160,7 +160,7 @@ class Module extends Shortcode {
 		$shortcode_constructor = null;
 
 		if ( $this->is_initial_preview_enabled( $attributes ) || $this->is_post_request() ) {
-			$shortcode_constructor = $this->create_shortcode_constructor();
+			$shortcode_constructor = apply_filters( 'myvideoroom_roombuilder_create_shortcode', $this->create_shortcode_constructor() );
 		}
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
@@ -215,6 +215,18 @@ class Module extends Shortcode {
 	}
 
 	/**
+	 * Get a value from a $_POST radio field
+	 *
+	 * @param string $name    The name of the field.
+	 *
+	 * @return string
+	 */
+	private function get_radio_post_parameter( string $name ): string {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing --Nonce is verified in parent function
+		return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_room_builder_' . $name ] ?? '' ) );
+	}
+
+	/**
 	 * Create the shortcode constructor
 	 *
 	 * @return AppShortcodeConstructor
@@ -227,7 +239,7 @@ class Module extends Shortcode {
 
 		$disable_floorplan                       = $this->get_checkbox_post_parameter( 'disable_floorplan_preference', true );
 		$enable_guest_reception                  = $this->get_checkbox_post_parameter( 'reception_enabled_preference', true );
-		$delegate_permissions_to_wordpress_roles = $this->get_checkbox_post_parameter( 'room_permissions_preference', true );
+		$delegate_permissions_to_wordpress_roles = $this->get_radio_post_parameter( 'room_permissions_preference' ) === 'delegate_to_wordpress_roles';
 
 		// if the reception url value is not a YouTube ID - then escape it.
 		if ( ! preg_match( '/^[A-Za-z0-9_\-]{11}$/', $video_reception_url ) ) {
