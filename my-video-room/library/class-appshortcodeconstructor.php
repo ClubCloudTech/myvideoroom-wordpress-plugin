@@ -78,6 +78,11 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	private ?string $seed = null;
 
+	/**
+	 * Custom parameters
+	 *
+	 * @var array
+	 */
 	private array $custom_settings = array();
 
 	// --
@@ -98,8 +103,17 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 		return new self();
 	}
 
-	public function add_custom_string_param( string $key, string $value ) {
+	/**
+	 * Add extra custom string params
+	 *
+	 * @param string $key   The key.
+	 * @param string $value The value.
+	 *
+	 * @return AppShortcodeConstructor
+	 */
+	public function add_custom_string_param( string $key, string $value ): self {
 		$this->custom_settings[ $key ] = $value;
+		return $this;
 	}
 
 	/**

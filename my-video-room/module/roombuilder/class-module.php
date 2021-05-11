@@ -12,14 +12,15 @@ namespace MyVideoRoomPlugin\Module\RoomBuilder;
 use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AvailableScenes;
-use MyVideoRoomPlugin\Shortcode;
+use MyVideoRoomPlugin\Library\Post;
+use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\ValueObject\GettingStarted;
 
 /**
  * Class Module
  */
-class Module extends Shortcode {
+class Module {
 
 	const SHORTCODE_TAG = AppShortcode::SHORTCODE_TAG . '_room_builder';
 
@@ -99,25 +100,27 @@ class Module extends Shortcode {
 	 * @param bool $admin If this is an admin setting.
 	 */
 	private function enqueue_scripts_and_styles( bool $admin = false ) {
+		$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
+
 		wp_enqueue_style(
 			'myvideoroom-room-builder-css',
 			plugins_url( '/css/roombuilder.css', realpath( __FILE__ ) ),
 			false,
-			$this->get_plugin_version(),
+			$plugin_version,
 		);
 
 		wp_enqueue_style(
 			'myvideoroom-shared-css',
 			plugins_url( '/css/shared.css', realpath( __DIR__ . '/../' ) ),
 			false,
-			$this->get_plugin_version(),
+			$plugin_version,
 		);
 
 		wp_enqueue_script(
 			'myvideoroom-room-builder',
 			plugins_url( '/js/roombuilder.js', realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			$this->get_plugin_version(),
+			$plugin_version,
 			true
 		);
 
@@ -126,14 +129,14 @@ class Module extends Shortcode {
 				'myvideoroom-room-builder-admin-css',
 				plugins_url( '/css/roombuilder-admin.css', realpath( __FILE__ ) ),
 				false,
-				$this->get_plugin_version(),
+				$plugin_version,
 			);
 		} else {
 			wp_enqueue_style(
 				'myvideoroom-room-builder-public-css',
 				plugins_url( '/css/roombuilder-public.css', realpath( __FILE__ ) ),
 				false,
-				$this->get_plugin_version(),
+				$plugin_version,
 			);
 		}
 	}
@@ -159,11 +162,10 @@ class Module extends Shortcode {
 
 		$shortcode_constructor = null;
 
-		if ( $this->is_initial_preview_enabled( $attributes ) || $this->is_post_request() ) {
+		if ( $this->is_initial_preview_enabled( $attributes ) || Factory::get_instance( Post::class )->is_post_request() ) {
 			$shortcode_constructor = apply_filters( 'myvideoroom_roombuilder_create_shortcode', $this->create_shortcode_constructor() );
 		}
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.
 		$output = ( require __DIR__ . '/views/settings.php' )(
 			$available_layouts,
 			$available_receptions,
@@ -175,7 +177,7 @@ class Module extends Shortcode {
 		// If we have a config, then use it to render out the preview.
 
 		if ( $shortcode_constructor ) {
-			if ( $this->is_post_request() && ! $this->is_nonce_valid() ) {
+			if ( Factory::get_instance( Post::class )->is_post_request() && ! $this->is_nonce_valid() ) {
 				$output .= $this->generate_nonce_error();
 			} else {
 				$output .= $this->generate_preview( $shortcode_constructor );
@@ -186,60 +188,21 @@ class Module extends Shortcode {
 	}
 
 	/**
-	 * Get a string from the $_POST
-	 *
-	 * @param string $name The name of the field.
-	 *
-	 * @return string
-	 */
-	private function get_text_post_parameter( string $name ): string {
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing --Nonce is verified in parent function
-		return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_room_builder_' . $name ] ?? '' ) );
-	}
-
-	/**
-	 * Get a boolean value from a $_POST checkbox
-	 *
-	 * @param string $name    The name of the field.
-	 * @param bool   $default The default value.
-	 *
-	 * @return bool
-	 */
-	private function get_checkbox_post_parameter( string $name, bool $default = false ): bool {
-		if ( $this->is_post_request() ) {
-			// phpcs:ignore WordPress.Security.NonceVerification.Missing --Nonce is verified in parent function
-			return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_room_builder_' . $name ] ?? '' ) ) === 'on';
-		} else {
-			return $default;
-		}
-	}
-
-	/**
-	 * Get a value from a $_POST radio field
-	 *
-	 * @param string $name    The name of the field.
-	 *
-	 * @return string
-	 */
-	private function get_radio_post_parameter( string $name ): string {
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing --Nonce is verified in parent function
-		return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_room_builder_' . $name ] ?? '' ) );
-	}
-
-	/**
 	 * Create the shortcode constructor
 	 *
 	 * @return AppShortcodeConstructor
 	 */
 	private function create_shortcode_constructor(): AppShortcodeConstructor {
-		$room_name           = $this->get_text_post_parameter( 'room_name' );
-		$video_template      = $this->get_text_post_parameter( 'layout_id_preference' );
-		$reception_template  = $this->get_text_post_parameter( 'reception_id_preference' );
-		$video_reception_url = $this->get_text_post_parameter( 'reception_waiting_video_url' );
+		$post_library = Factory::get_instance( Post::class );
 
-		$disable_floorplan                       = $this->get_checkbox_post_parameter( 'disable_floorplan_preference', true );
-		$enable_guest_reception                  = $this->get_checkbox_post_parameter( 'reception_enabled_preference', true );
-		$delegate_permissions_to_wordpress_roles = $this->get_radio_post_parameter( 'room_permissions_preference' ) === 'delegate_to_wordpress_roles';
+		$room_name           = $post_library->get_text_post_parameter( 'room_name' );
+		$video_template      = $post_library->get_text_post_parameter( 'layout_id_preference' );
+		$reception_template  = $post_library->get_text_post_parameter( 'reception_id_preference' );
+		$video_reception_url = $post_library->get_text_post_parameter( 'reception_waiting_video_url' );
+
+		$disable_floorplan       = $post_library->get_checkbox_post_parameter( 'disable_floorplan_preference', true );
+		$enable_guest_reception  = $post_library->get_checkbox_post_parameter( 'reception_enabled_preference', true );
+		$use_multiple_shortcodes = $post_library->get_radio_post_parameter( 'room_permissions_preference' ) === 'shortcode_pair';
 
 		// if the reception url value is not a YouTube ID - then escape it.
 		if ( ! preg_match( '/^[A-Za-z0-9_\-]{11}$/', $video_reception_url ) ) {
@@ -256,7 +219,7 @@ class Module extends Shortcode {
 			$shortcode_constructor->set_layout( $video_template );
 		}
 
-		if ( ! $delegate_permissions_to_wordpress_roles ) {
+		if ( $use_multiple_shortcodes ) {
 			$shortcode_constructor->set_as_host();
 		}
 
@@ -352,14 +315,5 @@ class Module extends Shortcode {
 	 */
 	private function is_initial_preview_enabled( array $attributes ): bool {
 		return ! isset( $attributes['initial_preview'] ) || 'false' !== $attributes['initial_preview'];
-	}
-
-	/**
-	 * Is the request a POST
-	 *
-	 * @return bool
-	 */
-	private function is_post_request(): bool {
-		return ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false );
 	}
 }

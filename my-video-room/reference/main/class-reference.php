@@ -1,6 +1,6 @@
 <?php
 /**
- * @TODO
+ * The shortcode reference
  *
  * @package MyVideoRoomPlugin/Reference/Main
  */

@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
+use MyVideoRoomPlugin\Library\Post;
 use MyVideoRoomPlugin\ValueObject\GettingStarted;
 use MyVideoRoomPlugin\Library\AdminNavigation;
 use MyVideoRoomPlugin\Library\Activation;
@@ -263,7 +264,7 @@ class Admin {
 		global $wp_roles;
 		$all_roles = $wp_roles->roles;
 
-		if ( $this->is_post_request() ) {
+		if ( Factory::get_instance( Post::class )->is_post_request() ) {
 			check_admin_referer( 'update_caps', 'myvideoroom_permissions_nonce' );
 
 			foreach ( array_keys( $all_roles ) as $role_name ) {
@@ -372,7 +373,7 @@ class Admin {
 	 * @return string
 	 */
 	public function create_advanced_settings_page(): string {
-		if ( $this->is_post_request() ) {
+		if ( Factory::get_instance( Post::class )->is_post_request() ) {
 			check_admin_referer( 'update_settings', 'myvideoroom_advanced_settings_nonce' );
 
 			$reset_settings = sanitize_text_field( wp_unslash( $_POST['delete_activation'] ?? '' ) ) === 'on';
@@ -403,14 +404,5 @@ class Admin {
 		}
 
 		return $this->navigation_items;
-	}
-
-	/**
-	 * Is the request a POST
-	 *
-	 * @return bool
-	 */
-	private function is_post_request(): bool {
-		return ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false );
 	}
 }

@@ -114,6 +114,23 @@ class Module {
 	}
 
 	/**
+	 * Is a module currently active
+	 *
+	 * @param string $module_slug The module slug to check for activation status.
+	 *
+	 * @return bool
+	 */
+	public function is_module_active( string $module_slug ): bool {
+		$active_modules = $this->get_active_modules();
+
+		return in_array(
+			$module_slug,
+			array_map( fn( ModuleInstance $module) => $module->get_slug(), $active_modules ),
+			true
+		);
+	}
+
+	/**
 	 * Load all the built in modules
 	 */
 	public static function load_built_in_modules() {

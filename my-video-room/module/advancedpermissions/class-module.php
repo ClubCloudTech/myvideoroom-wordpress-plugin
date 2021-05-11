@@ -9,6 +9,8 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\AdvancedPermissions;
 
+use MyVideoRoomPlugin\Factory;
+
 /**
  * Class Module
  */
@@ -20,7 +22,12 @@ class Module {
 	public function __construct() {
 		add_filter( 'myvideoroom_is_host', array( $this, 'is_host' ), 0, 2 );
 
-		new RoomBuilder();
+		$roombuilder_is_active = Factory::get_instance( \MyVideoRoomPlugin\Library\Module::class )
+										->is_module_active( 'roombuilder' );
+
+		if ( $roombuilder_is_active ) {
+			new RoomBuilder();
+		}
 	}
 
 	/**

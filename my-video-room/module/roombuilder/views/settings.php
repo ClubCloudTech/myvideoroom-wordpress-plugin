@@ -154,28 +154,33 @@ return function (
 			<?php
 				$room_permissions = ( new RoomPermissions() )->get_room_permission_options( $app_config );
 
-			foreach ( $room_permissions as $permission ) {
+			foreach ( $room_permissions as $option ) {
+				$option_id = 'myvideoroom_room_builder_room_permissions_preference_' . $id_index . '_' . $option->get_key();
+
 				?>
 					<input type="radio"
-						   name="myvideoroom_room_builder_room_permissions_preference"
-						   id="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index . '_' . $permission->get_key() ); ?>"
-						   value="<?php echo esc_attr( $permission->get_key() ); ?>"
-					<?php echo $permission->is_checked() ? 'checked' : ''; ?>
-						   aria-describedby="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index . '_' . $permission->get_key() . '_description' ); ?>"
+						name="myvideoroom_room_builder_room_permissions_preference"
+						id="<?php echo esc_attr( $option_id ); ?>"
+						value="<?php echo esc_attr( $option->get_key() ); ?>"
+						<?php echo $option->is_selected() ? 'checked' : ''; ?>
+						aria-describedby="<?php echo esc_attr( $option_id ); ?>_description"
 					/>
-					<label for="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index . '_' . $permission->get_key() ); ?>">
-					<?php echo esc_html( $permission->get_label() ); ?>
+					<label for="<?php echo esc_attr( $option_id ); ?>">
+						<?php echo esc_html( $option->get_label() ); ?>
 					</label>
-					<em id="myvideoroom_room_builder_room_permissions_preference_<?php echo esc_attr( $id_index . '_' . $permission->get_key() . '_description' ); ?>">
-					<?php echo $permission->get_description(); ?>
+					<em id="<?php echo esc_attr( $option_id ); ?>_description">
+						<?php
+							//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							echo $option->get_description();
+						?>
 					</em>
 					<br />
-					<?php
+				<?php
 			}
 			?>
 		</fieldset>
 
-		<?php do_action('myvideoroom_roombuilder_permission_section', $id_index); ?>
+		<?php do_action( 'myvideoroom_roombuilder_permission_section' ); ?>
 
 		<fieldset>
 			<legend><?php echo esc_html__( 'Guest Settings', 'myvideoroom' ); ?></legend>

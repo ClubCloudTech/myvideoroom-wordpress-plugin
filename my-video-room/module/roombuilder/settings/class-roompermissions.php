@@ -1,6 +1,6 @@
 <?php
 /**
- * @TODO
+ * Returns the list of available options for setting room permissions
  *
  * @package MyVideoRoomPlugin/Module/RoomBuilder/Settings
  */
@@ -18,7 +18,9 @@ use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 class RoomPermissions {
 
 	/**
-	 * @param AppShortcodeConstructor|null $app_config
+	 * Get room permission options.
+	 *
+	 * @param ?AppShortcodeConstructor $app_config The current shortcode config.
 	 *
 	 * @return RoomPermissionsOption[]
 	 */
@@ -50,8 +52,12 @@ class RoomPermissions {
 			),
 		);
 
+		// Add any extra options.
+		$room_permissions = apply_filters( 'myvideoroom_roombuilder_permission_options', $room_permissions );
 
-		return apply_filters( 'myvideoroom_roombuilder_permission_options', $room_permissions );
+		// Update the currently selected option.
+		// This is done as a second step, so that regardless of the order in which options are added then the correct option can be selected.
+		return apply_filters( 'myvideoroom_roombuilder_permission_options_selected', $room_permissions );
 	}
 
 }
