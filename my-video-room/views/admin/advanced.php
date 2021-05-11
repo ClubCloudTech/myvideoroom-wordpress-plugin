@@ -102,9 +102,9 @@ return function (
 				function () {
 					\MyVideoRoomPlugin\Library\Module::register(
 						'my-custom-module', // " . esc_html__( 'a unique slug for for the module', 'myvideoroom' ) . "'
-						'My Custom Module', //  " . esc_html__( 'the name of the module', 'myvideoroom' ) . "'
+						__( 'My Custom Module', 'mycustommodule' ), //  " . esc_html__( 'the name of the module', 'myvideoroom' ) . "'
 						array( // " . esc_html__( 'a list of translated description paragraphs', 'myvideoroom' ) . "'
-							esc_html(
+							__(
 								'A custom module to extend MyVideoRoom.',
 								'mycustommodule'
 							)

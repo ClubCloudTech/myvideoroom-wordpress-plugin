@@ -14,7 +14,7 @@ add_action(
 	function () {
 		Module::register(
 			'monitor',
-			'Monitor',
+			__( 'Monitor', 'myvideoroom' ),
 			array(
 				__(
 					'Adds a WordPress shortcode to allow monitoring of the number of people in a room. Will show browser notifications when users join. The outputted text and format can be customised and translated.',

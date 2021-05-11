@@ -14,9 +14,9 @@ add_action(
 	function () {
 		Module::register(
 			'roombuilder',
-			'Room Builder',
+			__( 'Room Builder', 'myvideoroom' ),
 			array(
-				esc_html__(
+				__(
 					'A tool to explore the different options provided by MyVideoRoom, and to generate the correct app shortcode to output the room.',
 					'myvideoroom'
 				),
