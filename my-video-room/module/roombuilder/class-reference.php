@@ -26,8 +26,8 @@ class Reference {
 	public function get_shortcode_reference(): Shortcode {
 		$shortcode_reference = new Shortcode(
 			Module::SHORTCODE_TAG,
-			__( 'Room builder widget', 'myvideoroom' ),
-			__(
+			\esc_html__( 'Room builder widget', 'myvideoroom' ),
+			\esc_html__(
 				'A tool to explore the different options provided by MyVideoRoom, and to generate the correct app shortcode to output the room.',
 				'myvideoroom'
 			),
@@ -42,7 +42,7 @@ class Reference {
 			new Option(
 				'initial_preview',
 				array(
-					esc_html__(
+					\esc_html__(
 						'If a preview should be loaded at the start, instead of waiting for for the user to make selections first.',
 						'myvideoroom'
 					),

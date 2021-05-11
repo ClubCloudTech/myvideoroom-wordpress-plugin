@@ -20,8 +20,8 @@ jQuery.noConflict()(
 					var target = $( this ).attr( 'href' );
 					$( target ).hide();
 				}
-			)
-		}
+			);
+		};
 
 		hide_all_non_active();
 
@@ -40,8 +40,8 @@ jQuery.noConflict()(
 						event.preventDefault();
 						return false;
 					}
-				)
+				);
 			}
-		)
+		);
 	}
 );

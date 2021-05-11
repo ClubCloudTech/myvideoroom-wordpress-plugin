@@ -26,13 +26,13 @@ class Reference {
 	public function get_shortcode_reference(): Shortcode {
 		$shortcode_reference = new Shortcode(
 			Module::SHORTCODE_TAG,
-			__( 'Monitor widget', 'myvideoroom' ),
-			__( 'This shows the number of people currently waiting in a room', 'myvideoroom' ),
+			\__( 'Monitor widget', 'myvideoroom' ),
+			\__( 'This shows the number of people currently waiting in a room', 'myvideoroom' ),
 			array(
 				'name'        => 'MyVideoRoom',
-				'text-empty'  => __( 'Nobody is currently waiting', 'myvideoroom' ),
-				'text-single' => __( 'One person is waiting in reception', 'myvideoroom' ),
-				'text-plural' => __( '{{count}} people are waiting in reception', 'myvideoroom' ),
+				'text-empty'  => \__( 'Nobody is currently waiting', 'myvideoroom' ),
+				'text-single' => \__( 'One person is waiting in reception', 'myvideoroom' ),
+				'text-plural' => \__( '{{count}} people are waiting in reception', 'myvideoroom' ),
 			)
 		);
 
@@ -42,36 +42,36 @@ class Reference {
 			array(
 				new Option(
 					'name',
-					array( esc_html__( 'The name of the room', 'myvideoroom' ) ),
-					get_bloginfo( 'name' )
+					array( \esc_html__( 'The name of the room', 'myvideoroom' ) ),
+					\get_bloginfo( 'name' )
 				),
 
 				new Option(
 					'text-empty',
-					array( esc_html__( 'The text to show when nobody is waiting', 'myvideoroom' ) ),
-					'"' . __( 'Nobody is currently waiting', 'myvideoroom' ) . '"',
+					array( \esc_html__( 'The text to show when nobody is waiting', 'myvideoroom' ) ),
+					'"' . \esc_html__( 'Nobody is currently waiting', 'myvideoroom' ) . '"',
 				),
 
 				new Option(
 					'text-empty-plain',
 					array(
-						esc_html__( 'The plain text to show when nobody is waiting', 'myvideoroom' ),
-						esc_html__( 'To be used in notifications where `text-empty` contains HTML', 'myvideoroom' ),
+						\esc_html__( 'The plain text to show when nobody is waiting', 'myvideoroom' ),
+						\esc_html__( 'To be used in notifications where `text-empty` contains HTML', 'myvideoroom' ),
 					),
 					'(text-empty)',
 				),
 
 				new Option(
 					'text-single',
-					array( esc_html__( 'The text to show when a single person is waiting', 'myvideoroom' ) ),
-					'"' . __( 'One person is waiting in reception', 'myvideoroom' ) . '"',
+					array( \esc_html__( 'The text to show when a single person is waiting', 'myvideoroom' ) ),
+					'"' . \esc_html__( 'One person is waiting in reception', 'myvideoroom' ) . '"',
 				),
 
 				new Option(
 					'text-single-plain',
 					array(
-						esc_html__( 'The plain text to show a single person is waiting', 'myvideoroom' ),
-						esc_html__( 'To be used in notifications where `text-single` contains HTML', 'myvideoroom' ),
+						\esc_html__( 'The plain text to show a single person is waiting', 'myvideoroom' ),
+						\esc_html__( 'To be used in notifications where `text-single` contains HTML', 'myvideoroom' ),
 					),
 					'(text-single)',
 				),
@@ -79,22 +79,22 @@ class Reference {
 				new Option(
 					'text-plural',
 					array(
-						esc_html__(
+						\esc_html__(
 							'The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count',
 							'myvideoroom'
 						),
 					),
-					'"' . __( '{{count}} people are waiting in reception', 'myvideoroom' ) . '"',
+					'"' . \esc_html__( '{{count}} people are waiting in reception', 'myvideoroom' ) . '"',
 				),
 
 				new Option(
 					'text-plural-plain',
 					array(
-						esc_html__(
+						\esc_html__(
 							'The text to show when a more than one person is waiting. "{{count}}" will be substituted with the actual count',
 							'myvideoroom'
 						),
-						esc_html__(
+						\esc_html__(
 							'To be used in notifications where `text-plural` contains HTML',
 							'myvideoroom'
 						),
@@ -104,24 +104,24 @@ class Reference {
 
 				new Option(
 					'loading-text',
-					array( esc_html__( 'The text to show while the widget is loading', 'myvideoroom' ) ),
-					'"' . __( 'Loading...', 'myvideoroom' ) . '"',
+					array( \esc_html__( 'The text to show while the widget is loading', 'myvideoroom' ) ),
+					'"' . \esc_html__( 'Loading...', 'myvideoroom' ) . '"',
 				),
 
 				new Option(
 					'type',
 					array(
-						esc_html__( 'The type of count to show:', 'myvideoroom' ),
+						\esc_html__( 'The type of count to show:', 'myvideoroom' ),
 
 						'<dl>
 							<dt>"reception":</dt>
-							<dd>' . esc_html__( 'The number of people waiting in reception', 'myvideoroom' ) . '</dd>
+							<dd>' . \esc_html__( 'The number of people waiting in reception', 'myvideoroom' ) . '</dd>
 							
 							<dt>"seated":</dt>
-							<dd>' . esc_html__( 'The number of people currently seated', 'myvideoroom' ) . '</dd>
+							<dd>' . \esc_html__( 'The number of people currently seated', 'myvideoroom' ) . '</dd>
 							
 							<dt>"all":</dt>
-							<dd>' . esc_html__( 'The total number of people, including reception, seated and non-seated hosts', 'myvideoroom' ) . '</dd>
+							<dd>' . \esc_html__( 'The total number of people, including reception, seated and non-seated hosts', 'myvideoroom' ) . '</dd>
 						</dl>',
 					),
 					'reception',

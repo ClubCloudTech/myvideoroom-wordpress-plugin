@@ -68,7 +68,7 @@ class Shortcode {
 		string $shortcode_tag,
 		string $name,
 		string $description,
-		array $example_shortcode_params,
+		array $example_shortcode_params = array(),
 		?string $example_description = null
 	) {
 		$this->shortcode_tag            = $shortcode_tag;
@@ -133,6 +133,7 @@ class Shortcode {
 	 */
 	public function add_section( Section $section ): self {
 		$this->sections[] = $section;
+
 		return $this;
 	}
 

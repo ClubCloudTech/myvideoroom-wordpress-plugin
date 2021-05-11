@@ -15,7 +15,7 @@ jQuery.noConflict()(
 		var watch            = {};
 		var $indexedElements = {};
 
-		if (Notification.permission !== "denied") {
+		if (Notification.permission !== 'denied') {
 			Notification.requestPermission();
 		}
 
@@ -28,12 +28,12 @@ jQuery.noConflict()(
 		 * @return {string}
 		 */
 		var getText = function ($element, defaults, name) {
-			if ($element.data( name ) ) {
+			if ($element.data( name )) {
 				return $element.data( name );
 			} else {
 				return defaults[name] || '';
 			}
-		}
+		};
 
 		/**
 		 * Update all the monitors with text indicating number of people
@@ -83,7 +83,7 @@ jQuery.noConflict()(
 						.replace( /{{name}}/g, roomName );
 				}
 
-				if ($element.data( 'type' ) === "reception" && Notification.permission === "granted") {
+				if ($element.data( 'type' ) === 'reception' && Notification.permission === 'granted') {
 					new Notification( outputTextPlain );
 				}
 			} else {
@@ -93,7 +93,7 @@ jQuery.noConflict()(
 			if ($element) {
 				$element.html( outputText );
 			}
-		}
+		};
 
 		if ($elements.length) {
 			$elements.each(
@@ -116,7 +116,7 @@ jQuery.noConflict()(
 						}
 					);
 				}
-			)
+			);
 
 			for (var endpoint in watch) {
 				if (watch.hasOwnProperty( endpoint )) {
@@ -129,21 +129,21 @@ jQuery.noConflict()(
 						);
 
 						socket.on(
-							"connect",
+							'connect',
 							function () {
 								socket.emit( 'watch', watch[endpoint], function () {} );
 							}
 						);
 
 						socket.on(
-							"error",
+							'error',
 							function (e) {
 								console && console.log && console.log( e );
 							}
 						);
 
 						socket.on( 'table-data', updateEndpoints );
-					})( endpoint )
+					})( endpoint );
 				}
 			}
 		}

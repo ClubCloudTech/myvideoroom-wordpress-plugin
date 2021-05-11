@@ -7,33 +7,37 @@
 
 declare( strict_types=1 );
 
+namespace MyVideoRoomPlugin;
+
+use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Reference\Shortcode;
 
 /**
  * Render the shortcode reference page
  *
  * @param Shortcode[] $shortcodes A list of shortcode
- * @param integer     $id_index   A unique number to ensure uniqueness of ids.
  */
 return function (
-	array $shortcodes = array(),
-	int $id_index = 0
+	array $shortcodes = array()
 ): string {
 	$reference_section_render = require __DIR__ . '/reference-section.php';
+	$reference_sections       = array();
 
-	ob_start();
+	$html_lib = Factory::get_instance( HTML::class, array( 'reference' ) );
+
+	\ob_start();
 
 	?>
-	<h2><?php esc_html_e( 'Shortcode reference', 'myvideoroom' ); ?></h2>
+	<h2><?php \esc_html_e( 'Shortcode reference', 'myvideoroom' ); ?></h2>
 
 	<p>
 		<?php
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The translated text will be escaped, but we want to render the link correctly.
-			printf(
-				/* translators: %s is the text "WordPress Shortcodes" and links to the WordPress help page for shortcodes */
-				esc_html__( 'You can use the following %s to add the MyVideoRoom widgets to a page.', 'myvideoroom' ),
-				'<a href="https://support.wordpress.com/shortcodes/" target="_blank">' . esc_html__( 'WordPress shortcodes', 'myvideoroom' ) . '</a>'
-			);
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The translated text will be escaped, but we want to render the link correctly.
+		\printf(
+		/* translators: %s is the text "WordPress Shortcodes" and links to the WordPress help page for shortcodes */
+			\esc_html__( 'You can use the following %s to add the MyVideoRoom widgets to a page.', 'myvideoroom' ),
+			'<a href="https://support.wordpress.com/shortcodes/" target="_blank">' . \esc_html__( 'WordPress shortcodes', 'myvideoroom' ) . '</a>'
+		);
 		?>
 	</p>
 
@@ -43,14 +47,15 @@ return function (
 			$active_class = ' nav-tab-active';
 
 			foreach ( $shortcodes as $shortcode ) {
-				$id = '#' . str_replace( '_', '-', $shortcode->get_shortcode_tag() ) . '-' . $id_index;
+				$id                   = $html_lib->get_id( $shortcode->get_shortcode_tag() );
+				$reference_sections[] = $reference_section_render( $shortcode, $id );
 
 				?>
-					<li>
-						<a class="nav-tab<?php echo esc_attr( $active_class ); ?>" href="<?php echo esc_attr( $id ); ?>">
-							<?php echo esc_html( $shortcode->get_name() ); ?>
-						</a>
-					</li>
+				<li>
+					<a class="nav-tab<?php echo \esc_attr( $active_class ); ?>" href="#<?php echo \esc_attr( $id ); ?>">
+						<?php echo \esc_html( $shortcode->get_name() ); ?>
+					</a>
+				</li>
 				<?php
 
 				$active_class = '';
@@ -60,12 +65,12 @@ return function (
 	</nav>
 
 	<?php
-	foreach ( $shortcodes as $shortcode ) {
+	foreach ( $reference_sections as $reference_section ) {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Escaping is handled by the shortcode reference render function
-		echo $reference_section_render( $shortcode, $id_index );
+		echo $reference_section;
 	}
 	?>
 
 	<?php
-	return ob_get_clean();
+	return \ob_get_clean();
 };

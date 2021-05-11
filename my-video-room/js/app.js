@@ -11,6 +11,7 @@ jQuery.noConflict()(
 		var $ = jQuery.noConflict();
 
 		if ($( '.myvideoroom-app' ).length) {
+			// WordPress may add custom headers to the request, this is likely to trigger CORS issues, so we remove them.
 			if ($.ajaxSettings && $.ajaxSettings.headers) {
 				delete $.ajaxSettings.headers;
 			}
@@ -29,9 +30,9 @@ jQuery.noConflict()(
 							if (file.endsWith( '.js' )) {
 								$.ajax(
 									{
-										beforeSend: function() {},
+										beforeSend: function () {},
 										url: url,
-										dataType: "script"
+										dataType: 'script'
 									}
 								);
 							} else if (file.endsWith( '.css' )) {
@@ -42,7 +43,7 @@ jQuery.noConflict()(
 						}
 					);
 				}
-			)
+			);
 		}
 	}
-)
+);

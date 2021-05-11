@@ -17,7 +17,8 @@ class Module {
 	/**
 	 * Module constructor.
 	 */
-	public function __construct() {}
+	public function __construct() {
+	}
 
 	/**
 	 * Create the admin settings page
@@ -25,16 +26,16 @@ class Module {
 	 * @return string
 	 */
 	public static function create_admin_settings(): string {
-		ob_start();
+		\ob_start();
 
 		?>
 
 		<p>
-			<?php esc_html_e( 'The module is not yet ready. Check back soon!', 'myvideoroom' ); ?>
+			<?php \esc_html_e( 'The module is not yet ready. Check back soon!', 'myvideoroom' ); ?>
 		</p>
 
 		<?php
 
-		return ob_get_clean();
+		return \ob_get_clean();
 	}
 }

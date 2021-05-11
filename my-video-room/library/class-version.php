@@ -20,8 +20,14 @@ class Version {
 	 * @return string
 	 */
 	public function get_plugin_version(): string {
-		$plugin_data = get_plugin_data( __DIR__ . '/../index.php' );
+		$plugin_data = \get_plugin_data( __DIR__ . '/../index.php' );
 
-		return $plugin_data['Version'] . time();
+		$plugin_version = $plugin_data['Version'];
+
+		if ( \defined( 'MYVIDEOROOM_STATIC_CACHE_SUFFIX' ) ) {
+			$plugin_version .= '-' . MYVIDEOROOM_STATIC_CACHE_SUFFIX;
+		}
+
+		return $plugin_version;
 	}
 }

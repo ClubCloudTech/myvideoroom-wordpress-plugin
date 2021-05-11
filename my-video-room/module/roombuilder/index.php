@@ -7,21 +7,24 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Library\Module;
+namespace MyVideoRoomPlugin\Module\RoomBuilder;
 
-add_action(
+use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\RoomBuilder\Module as RoomBuilder;
+
+\add_action(
 	'myvideoroom_init',
 	function () {
 		Module::register(
 			'roombuilder',
-			'Room Builder',
+			\esc_html__( 'Room Builder', 'myvideoroom' ),
 			array(
-				esc_html__(
+				\esc_html__(
 					'A tool to explore the different options provided by MyVideoRoom, and to generate the correct app shortcode to output the room.',
 					'myvideoroom'
 				),
 			),
-			fn() => new MyVideoRoomPlugin\Module\RoomBuilder\Module()
+			fn() => new RoomBuilder()
 		);
 
 		/**

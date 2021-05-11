@@ -1,3 +1,9 @@
+/**
+ * The MyVideoRoom css for display in both wp-admin and public pages.
+ *
+ * @package MyVideoRoomPlugin
+ */
+
 code.myvideoroom-shortcode-example {
 	display: block;
 	padding: 16px 8px 16px calc(1.5em + 8px);

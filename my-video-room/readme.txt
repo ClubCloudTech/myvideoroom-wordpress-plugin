@@ -1,5 +1,5 @@
 === MyVideoRoom  ===
-Stable tag: 2.0.1
+Stable tag: 2.1.0
 Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 5.7
@@ -17,7 +17,7 @@ Features include:
 
 * 1-to-1 or multiway meetings
 * Up to 30 participants per meeting (more can be catered for on request)
-* Advanced security features including role level control.
+* Custom security features including role level control.
 * Click to mute, kick-out, restrict users and allow only certain user
 * Virtual Lobby/Reception function for extra layer of security
 * Video Reception can include video streaming for an enhanced video experience, while waiting
@@ -44,7 +44,7 @@ Acceptable Use Policy: [https://clubcloud.tech/acceptable-use](https://clubcloud
 
 * Immersive quality 1-to-1 or multiway meetings
 * Up to 30 participants per meeting (more can be catered for on request)
-* Advanced security features including role level control.
+* Custom security features including role level control.
 * Click to mute, kick-out, restrict users and allow only certain users.
 * Virtual Lobby/Reception function for extra layer of security
 * Video Reception can include video streaming for an enhanced video experience, while waiting
@@ -161,6 +161,9 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 
 == Changelog ==
 
+= 2.1.0 =
+* Adds personal meeting rooms and invites
+
 = 2.0.0 =
 * Adds room builder
 * Adds extension modules
@@ -194,6 +197,9 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 * Initial public release.
 
 == Upgrade Notice ==
+
+= 2.1.* =
+New modules are available! Check out the modules tab in the admin pages.
 
 = 2.0.* =
 This updated changes the roles that are added to WordPress. Although you should have no problems it may be wise to remove the plugin and re-install to ensure you have no issues.

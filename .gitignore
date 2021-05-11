@@ -4,6 +4,8 @@
 /builds
 .DS_Store
 
+/.phpunit.cache
+/.coverage
 /vendor/
 /svn
 /sync.sh

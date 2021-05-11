@@ -55,18 +55,6 @@ class Section {
 	}
 
 	/**
-	 * Add a single option to the section
-	 *
-	 * @param Option $option The option to add.
-	 *
-	 * @return $this
-	 */
-	public function add_option( Option $option ): self {
-		$this->options[] = $option;
-		return $this;
-	}
-
-	/**
 	 * Add a list of options to the array
 	 *
 	 * @param array $options The options to add.
@@ -77,6 +65,20 @@ class Section {
 		foreach ( $options as $option ) {
 			$this->add_option( $option );
 		}
+
+		return $this;
+	}
+
+	/**
+	 * Add a single option to the section
+	 *
+	 * @param Option $option The option to add.
+	 *
+	 * @return $this
+	 */
+	public function add_option( Option $option ): self {
+		$this->options[] = $option;
+
 		return $this;
 	}
 }

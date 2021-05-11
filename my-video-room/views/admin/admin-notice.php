@@ -7,6 +7,8 @@
 
 declare( strict_types=1 );
 
+namespace MyVideoRoomPlugin;
+
 use MyVideoRoomPlugin\ValueObject\Notice;
 
 /**
@@ -17,15 +19,15 @@ use MyVideoRoomPlugin\ValueObject\Notice;
 return function (
 	Notice $notice
 ): string {
-	ob_start();
+	\ob_start();
 
 	?>
-	<div class="notice notice-<?php echo esc_attr( $notice->get_type() ); ?> is-dismissible">
+	<div class="notice notice-<?php echo \esc_attr( $notice->get_type() ); ?> is-dismissible">
 		<p>
-			<?php echo esc_html( $notice->get_message() ); ?>
+			<?php echo \esc_html( $notice->get_message() ); ?>
 		</p>
 	</div>
 	<?php
-	return ob_get_clean();
+	return \ob_get_clean();
 
 };

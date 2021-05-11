@@ -7,7 +7,8 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Factory;
+namespace MyVideoRoomPlugin;
+
 use MyVideoRoomPlugin\Library\ShortcodeConstructor;
 use MyVideoRoomPlugin\Reference\Shortcode;
 
@@ -15,43 +16,41 @@ use MyVideoRoomPlugin\Reference\Shortcode;
  * Render the shortcode reference page
  *
  * @param Shortcode $shortcode The shortcode reference.
- * @param integer   $id_index  A unique number to ensure uniqueness of ids.
+ * @param string    $id        A unique id for this section.
  */
 return function (
 	Shortcode $shortcode,
-	int $id_index = 0
+	string $id
 ): string {
-	ob_start();
-
-	$id = str_replace( '_', '-', $shortcode->get_shortcode_tag() ) . '-' . $id_index;
+	\ob_start();
 
 	?>
-	<article id="<?php echo esc_attr( $id ); ?>">
+	<article id="<?php echo \esc_attr( $id ); ?>">
 		<h3>
 			<?php
-			printf(
-				/* translators: %s is the text the shortcode name */
-				esc_html__(
+			\printf(
+			/* translators: %s is the text the shortcode name */
+				\esc_html__(
 					'%s shortcode reference',
 					'myvideoroom'
 				),
-				esc_html( $shortcode->get_name() )
+				\esc_html( $shortcode->get_name() )
 			);
 			?>
 		</h3>
-		<p><?php echo esc_html( $shortcode->get_description() ); ?></p>
+		<p><?php echo \esc_html( $shortcode->get_description() ); ?></p>
 		<code class="myvideoroom-shortcode-example">
 			<?php
-			echo esc_html(
+			echo \esc_html(
 				Factory::get_instance( ShortcodeConstructor::class, array( $shortcode->get_shortcode_tag() ) )
-				->get_shortcode_text( $shortcode->get_example_shortcode_params() )
+					->get_shortcode_text( $shortcode->get_example_shortcode_params() )
 			);
 			?>
 		</code>
 
 		<?php
 		if ( $shortcode->get_example_description() ) {
-			echo '<p>' . esc_html( $shortcode->get_example_description() ) . '</p>';
+			echo '<p>' . \esc_html( $shortcode->get_example_description() ) . '</p>';
 		}
 		?>
 
@@ -60,13 +59,13 @@ return function (
 			<thead>
 			<tr>
 				<th class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Attribute', 'myvideoroom' ); ?>
+					<?php \esc_html_e( 'Attribute', 'myvideoroom' ); ?>
 				</th>
 				<th class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Details', 'myvideoroom' ); ?>
+					<?php \esc_html_e( 'Details', 'myvideoroom' ); ?>
 				</th>
 				<th class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Default', 'myvideoroom' ); ?>
+					<?php \esc_html_e( 'Default', 'myvideoroom' ); ?>
 				</th>
 			</tr>
 			</thead>
@@ -79,7 +78,7 @@ return function (
 					?>
 					<tr class="active">
 						<th class="manage-column column-name column-primary" colspan="4">
-							<strong><?php echo esc_html( $section->get_name() ); ?></strong>
+							<strong><?php echo \esc_html( $section->get_name() ); ?></strong>
 						</th>
 					</tr>
 					<?php
@@ -87,24 +86,24 @@ return function (
 
 				foreach ( $section->get_options() as $option ) {
 					?>
-						<tr class="inactive">
-							<td class="column-primary">
-								<em><?php echo esc_html( $option->get_param() ); ?></em>
-							</td>
+					<tr class="inactive">
+						<td class="column-primary">
+							<em><?php echo \esc_html( $option->get_param() ); ?></em>
+						</td>
 
-							<td class="column-description">
+						<td class="column-description">
 							<?php
 							foreach ( $option->get_description() as $paragraph ) {
-							    //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Allow HTML from plugins
+								//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Allow HTML from plugins
 								echo '<p>' . $paragraph . '</p>';
 							}
 							?>
-							</td>
+						</td>
 
-							<td>
-								<?php echo esc_html( $option->get_default() ); ?>
-							</td>
-						</tr>
+						<td>
+							<?php echo \esc_html( $option->get_default() ); ?>
+						</td>
+					</tr>
 					<?php
 				}
 
@@ -114,5 +113,5 @@ return function (
 		</table>
 	</article>
 	<?php
-	return ob_get_clean();
+	return \ob_get_clean();
 };

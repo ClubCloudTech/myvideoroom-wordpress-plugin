@@ -1,0 +1,48 @@
+.myvideoroom-personalmeetingrooms-invite form label {
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	width: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+}
+
+.myvideoroom-personalmeetingrooms-invite.icon form input {
+	width: auto;
+}
+
+.myvideoroom-personalmeetingrooms-invite.icon form input[type=submit],
+.myvideoroom-personalmeetingrooms-invite.icon .link input {
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	text-indent: -1000px;
+	min-width: 3.5em;
+	overflow: hidden;
+}
+
+.myvideoroom-personalmeetingrooms-invite.icon form input[type=submit] {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 455 455'%3E%3Cdefs/%3E%3Cpath d='M60 135v245l136-122zM319 258l136 122V135zM258 272l175-157H82zM258 313l-39-35L82 400h351L296 278z'/%3E%3Cpath d='M395 55H0v285h30V85h365z'/%3E%3C/svg%3E");
+}
+
+.myvideoroom-personalmeetingrooms-invite.icon .link input {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none'%3E%3Cdefs/%3E%3Cpath fill='black' d='M4 7V5L2 7v10c0 3 2 5 5 5h5l-1-1H7c-2 0-3-2-3-4V7z'/%3E%3Cpath fill='black' d='M18 11V4l-2-2H7L5 4v13l2 3h3v-2H7l-1-1V4h11v7h1z'/%3E%3Cpath fill='black' d='M17 12a5 5 0 110 11 5 5 0 010-11zm0 9v-3h2v-1h-2v-3h-1v3h-3v1h3v3h1z'/%3E%3C/svg%3E");
+}
+
+.myvideoroom-personalmeetingrooms-invite.icon .link input.success {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs/%3E%3Cpath d='M437 75A256 256 0 1075 438 256 256 0 00437 75zm-38 111L250 335a21 21 0 01-31 0l-85-85a21 21 0 1130-31l71 71 134-135a21 21 0 1130 31z'/%3E%3C/svg%3E");
+}
+
+.myvideoroom-personalmeetingrooms-invite.icon.invert form input[type=submit] {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 455 455'%3E%3Cdefs/%3E%3Cpath fill='white' d='M60 135v245l136-122zM319 258l136 122V135zM258 272l175-157H82zM258 313l-39-35L82 400h351L296 278z'/%3E%3Cpath fill='white' d='M395 55H0v285h30V85h365z'/%3E%3C/svg%3E");
+}
+
+.myvideoroom-personalmeetingrooms-invite.icon.invert .link input {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none'%3E%3Cdefs/%3E%3Cpath fill='white' d='M4 7V5L2 7v10c0 3 2 5 5 5h5l-1-1H7c-2 0-3-2-3-4V7z'/%3E%3Cpath fill='white' d='M18 11V4l-2-2H7L5 4v13l2 3h3v-2H7l-1-1V4h11v7h1z'/%3E%3Cpath fill='white' d='M17 12a5 5 0 110 11 5 5 0 010-11zm0 9v-3h2v-1h-2v-3h-1v3h-3v1h3v3h1z'/%3E%3C/svg%3E");
+}
+
+.myvideoroom-personalmeetingrooms-invite.icon.invert .link input.success {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs/%3E%3Cpath fill='white' d='M437 75A256 256 0 1075 438 256 256 0 00437 75zm-38 111L250 335a21 21 0 01-31 0l-85-85a21 21 0 1130-31l71 71 134-135a21 21 0 1130 31z'/%3E%3C/svg%3E");
+}
