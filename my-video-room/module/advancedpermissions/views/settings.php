@@ -31,7 +31,7 @@ return function (
 				id="myvideoroom_room_builder_advanced_permissions_users_<?php echo esc_attr( $id_index ); ?>"
 				multiple
 		>
-			<option value=""<?php echo $user_permissions ? '' : ' selected'; ?>>— None —</option>
+			<option value=""<?php echo $user_permissions ? '' : ' selected'; ?>>— Any —</option>
 			<?php
 			$all_users = \get_users();
 			foreach ( $all_users as $user ) {
@@ -51,7 +51,7 @@ return function (
 				id="myvideoroom_room_builder_advanced_permissions_roles_<?php echo esc_attr( $id_index ); ?>"
 				multiple
 		>
-			<option value=""<?php echo $role_permissions ? '' : ' selected'; ?>>— None —</option>
+			<option value=""<?php echo $role_permissions ? '' : ' selected'; ?>>— Any —</option>
 			<?php
 			global $wp_roles;
 			$all_roles = $wp_roles->roles;
