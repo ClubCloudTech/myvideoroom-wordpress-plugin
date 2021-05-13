@@ -264,13 +264,13 @@ class Admin {
 		global $wp_roles;
 		$all_roles = $wp_roles->roles;
 
-		if ( Factory::get_instance( Post::class )->is_post_request() ) {
-			check_admin_referer( 'update_caps', 'myvideoroom_permissions_nonce' );
-
+		$post_library = Factory::get_instance( Post::class );
+		if ( $post_library->is_admin_post_request( 'update_permissions' ) ) {
 			foreach ( array_keys( $all_roles ) as $role_name ) {
 				$role = get_role( $role_name );
 
-				if ( isset( $_POST[ 'role_' . $role_name ] ) ) {
+
+				if ( $post_library->get_checkbox_post_parameter( 'role_' . $role_name ) ) {
 					$role->add_cap( Plugin::CAP_GLOBAL_HOST );
 				} else {
 					$role->remove_cap( Plugin::CAP_GLOBAL_HOST );
@@ -373,10 +373,10 @@ class Admin {
 	 * @return string
 	 */
 	public function create_advanced_settings_page(): string {
-		if ( Factory::get_instance( Post::class )->is_post_request() ) {
-			check_admin_referer( 'update_settings', 'myvideoroom_custom_settings_nonce' );
+		$post_library = Factory::get_instance( Post::class );
 
-			$reset_settings = sanitize_text_field( wp_unslash( $_POST['delete_activation'] ?? '' ) ) === 'on';
+		if ( $post_library->is_admin_post_request( 'update_advanced_settings' ) ) {
+			$reset_settings = $post_library->get_checkbox_post_parameter( 'delete_activation' );
 
 			if ( $reset_settings ) {
 				delete_option( Plugin::SETTING_ACTIVATION_KEY );
@@ -384,7 +384,7 @@ class Admin {
 				delete_option( Plugin::SETTING_PRIVATE_KEY );
 			}
 
-			$server_endpoint = sanitize_text_field( wp_unslash( $_POST['myvideoroom_settings_server_domain'] ?? '' ) );
+			$server_endpoint = $post_library->get_text_post_parameter( 'server_domain' );
 			update_option( Plugin::SETTING_SERVER_DOMAIN, $server_endpoint );
 		}
 

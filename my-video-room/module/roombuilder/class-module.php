@@ -162,7 +162,10 @@ class Module {
 
 		$shortcode_constructor = null;
 
-		if ( $this->is_initial_preview_enabled( $attributes ) || Factory::get_instance( Post::class )->is_post_request() ) {
+		if (
+			$this->is_initial_preview_enabled( $attributes ) ||
+			Factory::get_instance( Post::class )->is_post_request( 'show_preview' )
+		) {
 			$shortcode_constructor = apply_filters( 'myvideoroom_roombuilder_create_shortcode', $this->create_shortcode_constructor() );
 		}
 
@@ -177,7 +180,7 @@ class Module {
 		// If we have a config, then use it to render out the preview.
 
 		if ( $shortcode_constructor ) {
-			if ( Factory::get_instance( Post::class )->is_post_request() && ! $this->is_nonce_valid() ) {
+			if ( Factory::get_instance( Post::class )->is_post_request( 'show_preview' ) && ! $this->is_nonce_valid() ) {
 				$output .= $this->generate_nonce_error();
 			} else {
 				$output .= $this->generate_preview( $shortcode_constructor );
@@ -195,14 +198,14 @@ class Module {
 	private function create_shortcode_constructor(): AppShortcodeConstructor {
 		$post_library = Factory::get_instance( Post::class );
 
-		$room_name           = $post_library->get_text_post_parameter( 'room_name' );
-		$video_template      = $post_library->get_text_post_parameter( 'layout_id_preference' );
-		$reception_template  = $post_library->get_text_post_parameter( 'reception_id_preference' );
-		$video_reception_url = $post_library->get_text_post_parameter( 'reception_waiting_video_url' );
+		$room_name           = $post_library->get_text_post_parameter( 'room_builder_room_name' );
+		$video_template      = $post_library->get_text_post_parameter( 'room_builder_layout_id_preference' );
+		$reception_template  = $post_library->get_text_post_parameter( 'room_builder_reception_id_preference' );
+		$video_reception_url = $post_library->get_text_post_parameter( 'room_builder_reception_waiting_video_url' );
 
-		$disable_floorplan       = $post_library->get_checkbox_post_parameter( 'disable_floorplan_preference', true );
-		$enable_guest_reception  = $post_library->get_checkbox_post_parameter( 'reception_enabled_preference', true );
-		$use_multiple_shortcodes = $post_library->get_radio_post_parameter( 'room_permissions_preference' ) === 'shortcode_pair';
+		$disable_floorplan       = $post_library->get_checkbox_post_parameter( 'room_builder_disable_floorplan_preference', true );
+		$enable_guest_reception  = $post_library->get_checkbox_post_parameter( 'room_builder_reception_enabled_preference', true );
+		$use_multiple_shortcodes = $post_library->get_radio_post_parameter( 'room_builder_room_permissions_preference' ) === 'shortcode_pair';
 
 		// if the reception url value is not a YouTube ID - then escape it.
 		if ( ! preg_match( '/^[A-Za-z0-9_\-]{11}$/', $video_reception_url ) ) {
@@ -288,10 +291,10 @@ class Module {
 	 */
 	private function is_nonce_valid(): bool {
 		return (
-			isset( $_POST['myvideoroom_roombuilder_nonce'] ) &&
+			isset( $_POST['myvideoroom_nonce'] ) &&
 			wp_verify_nonce(
-				sanitize_text_field( wp_unslash( $_POST['myvideoroom_roombuilder_nonce'] ) ),
-				'build_shortcode'
+				sanitize_text_field( wp_unslash( $_POST['myvideoroom_nonce'] ) ),
+				'show_preview'
 			)
 		);
 	}

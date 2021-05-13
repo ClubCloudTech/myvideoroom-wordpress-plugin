@@ -303,7 +303,7 @@ return function (
 						<td>
 							<input
 									type="text"
-									name="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN ); ?>"
+									name="myvideoroom_server_domain"
 									value="<?php echo esc_attr( $video_server ); ?>"
 									id="<?php echo esc_attr( Plugin::SETTING_SERVER_DOMAIN . '_' . $id_index ); ?>"
 							/>
@@ -320,7 +320,7 @@ return function (
 						<td>
 							<input
 									type="checkbox"
-									name="delete_activation"
+									name="myvideoroom_delete_activation"
 									value="on"
 									id="delete_activation_<?php echo esc_attr( $id_index ); ?>"
 							/>
@@ -330,7 +330,8 @@ return function (
 				</table>
 			</fieldset>
 
-			<?php wp_nonce_field( 'update_settings', 'myvideoroom_custom_settings_nonce' ); ?>
+			<input type="hidden" value="update_advanced_settings" name="myvideoroom_action" />
+			<?php wp_nonce_field( 'update_advanced_settings', 'myvideoroom_nonce' ); ?>
 			<?php submit_button(); ?>
 		</form>
 	</article>

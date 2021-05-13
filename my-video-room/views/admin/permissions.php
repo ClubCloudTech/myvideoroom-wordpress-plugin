@@ -59,8 +59,9 @@ return function (
 						<td>
 							<input class="myvideoroom-admin-table-format"
 								id="role_<?php echo esc_attr( $role_name ); ?>"
-								name="role_<?php echo esc_attr( $role_name ); ?>"
+								name="myvideoroom_role_<?php echo esc_attr( $role_name ); ?>"
 								type="checkbox"<?php echo $has_host_cap ? ' checked="checked" ' : ''; ?>"
+								value="on"
 							/>
 						</td>
 					</tr>
@@ -71,7 +72,8 @@ return function (
 			</table>
 		</fieldset>
 
-		<?php wp_nonce_field( 'update_caps', 'myvideoroom_permissions_nonce' ); ?>
+		<input type="hidden" value="update_permissions" name="myvideoroom_action" />
+		<?php wp_nonce_field( 'update_permissions', 'myvideoroom_nonce' ); ?>
 		<?php submit_button(); ?>
 	</form>
 

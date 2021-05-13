@@ -73,8 +73,13 @@ class RoomBuilder {
 	 * @return RoomPermissionsOption[]
 	 */
 	public function add_permissions_option( array $options ): array {
-		$permissions_preference = Factory::get_instance( Post::class )->get_radio_post_parameter( 'room_permissions_preference' );
-		$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
+		$post_library = Factory::get_instance( Post::class );
+		if ( $post_library->is_post_request( 'show_preview' ) ) {
+			$permissions_preference = $post_library->get_radio_post_parameter( 'room_permissions_preference' );
+			$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
+		} else {
+			$use_custom_permissions = false;
+		}
 
 		$options[] = new RoomPermissionsOption(
 			self::PERMISSIONS_FIELD_NAME,
@@ -97,8 +102,14 @@ class RoomBuilder {
 	 * @return RoomPermissionsOption[]
 	 */
 	public function ensure_correct_permission_is_selected( array $options ): array {
-		$permissions_preference = Factory::get_instance( Post::class )->get_radio_post_parameter( 'room_permissions_preference' );
-		$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
+
+		$post_library = Factory::get_instance( Post::class );
+		if ( $post_library->is_post_request( 'show_preview' ) ) {
+			$permissions_preference = Factory::get_instance( Post::class )->get_radio_post_parameter( 'room_permissions_preference' );
+			$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
+		} else {
+			$use_custom_permissions = false;
+		}
 
 		foreach ( $options as $permission ) {
 			if ( self::PERMISSIONS_FIELD_NAME !== $permission->get_key() ) {
@@ -118,26 +129,27 @@ class RoomBuilder {
 	 */
 	public function generate_shortcode_constructor( AppShortcodeConstructor $shortcode_constructor ): AppShortcodeConstructor {
 		$post_library = Factory::get_instance( Post::class );
+		if ( $post_library->is_post_request( 'show_preview' ) ) {
+			$permissions_preference = $post_library->get_radio_post_parameter( 'room_permissions_preference' );
+			$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 
-		$permissions_preference = $post_library->get_radio_post_parameter( 'room_permissions_preference' );
-		$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
+			if ( $use_custom_permissions ) {
+				$admin_strings = array();
 
-		if ( $use_custom_permissions ) {
-			$admin_strings = array();
+				$user_permissions = $post_library->get_multi_post_parameter( 'custom_permissions_users' );
+				$role_permissions = $post_library->get_multi_post_parameter( 'custom_permissions_roles' );
 
-			$user_permissions = $post_library->get_multi_post_parameter( 'custom_permissions_users' );
-			$role_permissions = $post_library->get_multi_post_parameter( 'custom_permissions_roles' );
+				if ( $user_permissions ) {
+					$admin_strings[] = 'user:' . implode( ',', $user_permissions );
+				}
 
-			if ( $user_permissions ) {
-				$admin_strings[] = 'user:' . implode( ',', $user_permissions );
-			}
+				if ( $role_permissions ) {
+					$admin_strings[] = 'role:' . implode( ',', $role_permissions );
+				}
 
-			if ( $role_permissions ) {
-				$admin_strings[] = 'role:' . implode( ',', $role_permissions );
-			}
-
-			if ( $admin_strings ) {
-				$shortcode_constructor->add_custom_string_param( 'host', implode( ';', $admin_strings ) );
+				if ( $admin_strings ) {
+					$shortcode_constructor->add_custom_string_param( 'host', implode( ';', $admin_strings ) );
+				}
 			}
 		}
 

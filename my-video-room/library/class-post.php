@@ -24,7 +24,7 @@ class Post {
 	 */
 	public function get_text_post_parameter( string $name ): string {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing --Nonce is verified in parent function
-		return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_room_builder_' . $name ] ?? '' ) );
+		return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_' . $name ] ?? '' ) );
 	}
 
 	/**
@@ -36,9 +36,9 @@ class Post {
 	 * @return bool
 	 */
 	public function get_checkbox_post_parameter( string $name, bool $default = false ): bool {
-		if ( $this->is_post_request() ) {
+		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false ) {
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing --Nonce is verified in parent function
-			return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_room_builder_' . $name ] ?? '' ) ) === 'on';
+			return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_' . $name ] ?? '' ) ) === 'on';
 		} else {
 			return $default;
 		}
@@ -53,7 +53,7 @@ class Post {
 	 */
 	public function get_multi_post_parameter( string $name ): array {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$options = $_POST[ 'myvideoroom_room_builder_' . $name ] ?? array();
+		$options = $_POST[ 'myvideoroom_' . $name ] ?? array();
 
 		$return = array();
 
@@ -76,15 +76,38 @@ class Post {
 	 */
 	public function get_radio_post_parameter( string $name ): string {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing --Nonce is verified in parent function
-		return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_room_builder_' . $name ] ?? '' ) );
+		return sanitize_text_field( wp_unslash( $_POST[ 'myvideoroom_' . $name ] ?? '' ) );
 	}
 
 	/**
 	 * Is the request a POST
 	 *
+	 * @param string $action               The action we were expecting to call.
+	 *
 	 * @return bool
 	 */
-	public function is_post_request(): bool {
-		return ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false );
+	public function is_post_request( string $action ): bool {
+		$is_post = ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false ) &&
+			$this->get_text_post_parameter( 'action' ) === $action;
+
+		return $is_post;
+	}
+
+	/**
+	 * Is the request a POST request from the admin page
+	 *
+	 * @param string $action               The action we were expecting to call.
+	 *
+	 * @return bool
+	 */
+	public function is_admin_post_request( string $action ): bool {
+		$is_post = ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false ) &&
+		           $this->get_text_post_parameter( 'action' ) === $action;
+
+		if ( $is_post ) {
+			check_admin_referer( $action, 'myvideoroom_nonce' );
+		}
+
+		return $is_post;
 	}
 }
