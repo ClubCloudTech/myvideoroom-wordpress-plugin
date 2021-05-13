@@ -261,6 +261,16 @@ class Module {
 	 * @return bool
 	 */
 	private function send_invite_email( string $email_address, string $invite_link ): bool {
+			$site_name     = get_bloginfo( $show, $filter );
+			$email_from    = wp_get_current_user()->user_login;
+			$email_subject = $email_from . 'would like you to join a video meeting';
+			$message       = "<html>Hello There! <br><br>A guest of ours has sent you a link for a Video Meeting from " . $site_name  . ":<br><br><a href='" . $invite_link . "'>Click Here</a><br><br>All you need to do is click on the link and you will be taken to the video meeting hosted by <a href='https://www.clubcloud.tech'>ClubCloud</a>.<br>You will either need to click/tap on a flashing circle to join or will you arrive in a waiting room at which<br> point the host will be alerted and will join you to the meeting.<br><br>Thank You,<br><br>The " . $site_name  . " Team.</html>";			#Filter user input
+			$headers       = 'Content-type: text/html;charset=utf-8' . "\r\n";
+			$sent          = wp_mail( $email_address, $email_subject, $message, $headers );
+		if ( $sent ) {
+			echo 'sent'; }
+		else {
+			echo 'failed'; }
 		return true;
 	}
 }
