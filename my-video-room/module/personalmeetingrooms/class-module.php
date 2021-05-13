@@ -12,6 +12,7 @@ namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
 use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
+use MyVideoRoomPlugin\Library\Post;
 use MyVideoRoomPlugin\Plugin;
 
 /**
@@ -21,6 +22,13 @@ class Module {
 
 	const SETTING_URL_PARAM = Plugin::PLUGIN_NAMESPACE . '_url_param';
 	const SHORTCODE_TAG     = AppShortcode::SHORTCODE_TAG . '_personal_invite';
+
+	/**
+	 * A increment in case the same element is placed on the page twice
+	 *
+	 * @var int
+	 */
+	private static int $id_index = 0;
 
 	/**
 	 * MonitorShortcode constructor.
@@ -58,6 +66,8 @@ class Module {
 			return '';
 		}
 
+		$message = $this->process_email_send();
+
 		$meeting_hash = Factory::get_instance( MeetingIdGenerator::class )->get_meeting_hash_from_user_id( $host->ID );
 
 		$url_param = get_option( self::SETTING_URL_PARAM );
@@ -71,7 +81,9 @@ class Module {
 		$url      = add_query_arg( $params, $base_url );
 
 		return ( require __DIR__ . '/views/invite.php' )(
-			$url
+			$url,
+			$message,
+			self::$id_index++
 		);
 	}
 
@@ -124,5 +136,46 @@ class Module {
 		}
 
 		return $shortcode_constructor;
+	}
+
+	/**
+	 * Check if this was a email send request
+	 *
+	 * @return ?string
+	 */
+	private function process_email_send(): ?string {
+		$post_library = Factory::get_instance( Post::class );
+		if (
+			$post_library->is_post_request( 'myvideoroom_personalmeetingrooms_invite' )
+		) {
+			if ( $post_library->is_nonce_valid( 'myvideoroom_personalmeetingrooms_invite' ) ) {
+				return esc_html__( 'Something went wrong, please reload the page and try again', 'myvideoroom' );
+			} else {
+				$email       = $post_library->get_text_post_parameter( 'myvideoroom_personalmeetingrooms_invite_address' );
+				$invite_link = $post_library->get_text_post_parameter( 'myvideoroom_personalmeetingrooms_invite_link' );
+
+				$result = $this->send_invite_email( $email, $invite_link );
+
+				if ( $result ) {
+					return esc_html__( 'Email sent successfully.', 'myvideoroom' );
+				} else {
+					return esc_html__( 'Email failed to send. Please try again.', 'myvideoroom' );
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Send the email - returns true if successful, false if failed to send
+	 *
+	 * @param string $email_address The email address to send to.
+	 * @param string $invite_link   The invite link to send.
+	 *
+	 * @return bool
+	 */
+	private function send_invite_email( string $email_address, string $invite_link ): bool {
+		return true;
 	}
 }

@@ -92,6 +92,19 @@ class Post {
 			$this->get_text_post_parameter( 'action' ) === $action;
 	}
 
+
+	/**
+	 * Is the nonce valid
+	 *
+	 * @param string $action The action we were expecting to validate.
+	 *
+	 * @return bool
+	 */
+	public function is_nonce_valid( string $action ): bool {
+		$nonce = $this->get_text_post_parameter( 'myvideoroom_nonce' );
+		return ( wp_verify_nonce( $nonce, $action ) );
+	}
+
 	/**
 	 * Is the request a POST request from the admin page.
 	 *

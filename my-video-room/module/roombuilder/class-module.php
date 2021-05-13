@@ -153,6 +153,8 @@ class Module {
 			$attributes = array();
 		}
 
+		$post_library = Factory::get_instance( Post::class );
+
 		$available_layouts = Factory::get_instance( AvailableScenes::class )->get_available_layouts();
 		if ( ! $available_layouts ) {
 			return esc_html__( 'No Layouts Found', 'myvideoroom' );
@@ -164,7 +166,7 @@ class Module {
 
 		if (
 			$this->is_initial_preview_enabled( $attributes ) ||
-			Factory::get_instance( Post::class )->is_post_request( 'show_roombuilder_preview' )
+			$post_library->is_post_request( 'show_roombuilder_preview' )
 		) {
 			$shortcode_constructor = apply_filters( 'myvideoroom_roombuilder_create_shortcode', $this->create_shortcode_constructor() );
 		}
@@ -181,8 +183,8 @@ class Module {
 
 		if ( $shortcode_constructor ) {
 			if (
-				Factory::get_instance( Post::class )->is_post_request( 'show_roombuilder_preview' ) &&
-				! $this->is_nonce_valid()
+				$post_library->is_post_request( 'show_roombuilder_preview' ) &&
+				! $post_library->is_nonce_valid( 'show_roombuilder_preview' )
 			) {
 				$output .= $this->generate_nonce_error();
 			} else {
@@ -284,21 +286,6 @@ class Module {
 			$guest_shortcode_visual_text_constructor,
 			$host_shortcode_text_constructor,
 			$guest_shortcode_text_constructor,
-		);
-	}
-
-	/**
-	 * Is the nonce valid
-	 *
-	 * @return bool
-	 */
-	private function is_nonce_valid(): bool {
-		return (
-			isset( $_POST['myvideoroom_nonce'] ) &&
-			wp_verify_nonce(
-				sanitize_text_field( wp_unslash( $_POST['myvideoroom_nonce'] ) ),
-				'show_roombuilder_preview'
-			)
 		);
 	}
 
