@@ -13,6 +13,7 @@ use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\Post;
+use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Plugin;
 
 /**
@@ -36,14 +37,45 @@ class Module {
 	public function __construct() {
 		add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 
+		add_action( 'wp_ajax_myvideroom_personalmeetingrooms_invite', array( $this, 'process_ajax_request' ) );
+
 		add_filter( 'myvideoroom_shortcode_constructor', array( $this, 'modify_shortcode_constructor' ), 0, 2 );
+
+		add_action( 'wp_enqueue_scripts', fn() => $this->enqueue_scripts_and_styles() );
 
 		$roombuilder_is_active = Factory::get_instance( \MyVideoRoomPlugin\Library\Module::class )
 										->is_module_active( 'roombuilder' );
-
 		if ( $roombuilder_is_active ) {
 			new RoomBuilder();
 		}
+	}
+
+	/**
+	 * Enqueue required scripts and styles
+	 */
+	private function enqueue_scripts_and_styles() {
+		$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
+
+		wp_enqueue_style(
+			'myvideoroom-personalmeetingrooms-invite-css',
+			plugins_url( '/css/invite.css', realpath( __FILE__ ) ),
+			false,
+			$plugin_version,
+		);
+
+		wp_enqueue_script(
+			'myvideoroom-personalmeetingrooms-invite-js',
+			plugins_url( '/js/invite.js', realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			$plugin_version,
+			true
+		);
+
+		wp_localize_script(
+			'myvideoroom-personalmeetingrooms-invite-js',
+			'myvideroom_personalmeetingrooms_invite',
+			array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+		);
 	}
 
 	/**
@@ -66,7 +98,7 @@ class Module {
 			return '';
 		}
 
-		$message = $this->process_email_send();
+		list( $message, $success ) = $this->process_email_send();
 
 		$meeting_hash = Factory::get_instance( MeetingIdGenerator::class )->get_meeting_hash_from_user_id( $host->ID );
 
@@ -82,6 +114,7 @@ class Module {
 
 		return ( require __DIR__ . '/views/invite.php' )(
 			$url,
+			$success,
 			$message,
 			self::$id_index++
 		);
@@ -141,15 +174,18 @@ class Module {
 	/**
 	 * Check if this was a email send request
 	 *
-	 * @return ?string
+	 * @return ?array
 	 */
-	private function process_email_send(): ?string {
+	private function process_email_send(): ?array {
 		$post_library = Factory::get_instance( Post::class );
 		if (
 			$post_library->is_post_request( 'myvideoroom_personalmeetingrooms_invite' )
 		) {
 			if ( $post_library->is_nonce_valid( 'myvideoroom_personalmeetingrooms_invite' ) ) {
-				return esc_html__( 'Something went wrong, please reload the page and try again', 'myvideoroom' );
+				return array(
+					false,
+					esc_html__( 'Something went wrong, please reload the page and try again', 'myvideoroom' ),
+				);
 			} else {
 				$email       = $post_library->get_text_post_parameter( 'myvideoroom_personalmeetingrooms_invite_address' );
 				$invite_link = $post_library->get_text_post_parameter( 'myvideoroom_personalmeetingrooms_invite_link' );
@@ -157,14 +193,61 @@ class Module {
 				$result = $this->send_invite_email( $email, $invite_link );
 
 				if ( $result ) {
-					return esc_html__( 'Email sent successfully.', 'myvideoroom' );
+					return array(
+						true,
+						esc_html__( 'Email sent successfully.', 'myvideoroom' ),
+					);
 				} else {
-					return esc_html__( 'Email failed to send. Please try again.', 'myvideoroom' );
+					return array(
+						true,
+						esc_html__( 'Email failed to send. Please try again.', 'myvideoroom' ),
+					);
 				}
 			}
 		}
 
-		return null;
+		return array(
+			null,
+			null,
+		);
+	}
+
+	/**
+	 * Process an ajax request
+	 */
+	public function process_ajax_request() {
+		$nonce       = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ?? null ) );
+		$email       = sanitize_text_field( wp_unslash( $_REQUEST['email'] ?? null ) );
+		$invite_link = sanitize_text_field( wp_unslash( $_REQUEST['link'] ?? null ) );
+
+		if ( ! wp_verify_nonce( $nonce, 'myvideoroom_personalmeetingrooms_invite' ) ) {
+			$status   = 400;
+			$response = array(
+				'success' => false,
+				'message' => esc_html__( 'Something went wrong, please reload the page and try again', 'myvideoroom' ),
+			);
+		} else {
+			$result = $this->send_invite_email( $email, $invite_link );
+
+			if ( $result ) {
+				$status   = 201;
+				$response = array(
+					'success' => true,
+					'message' => esc_html__( 'Email sent successfully.', 'myvideoroom' ),
+				);
+			} else {
+				$status   = 400;
+				$response = array(
+					'success' => false,
+					'message' => esc_html__( 'Email failed to send. Please try again.', 'myvideoroom' ),
+				);
+			}
+		}
+
+		status_header( $status );
+		echo wp_json_encode( $response );
+
+		die();
 	}
 
 	/**

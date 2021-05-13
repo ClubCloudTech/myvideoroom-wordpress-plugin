@@ -269,7 +269,6 @@ class Admin {
 			foreach ( array_keys( $all_roles ) as $role_name ) {
 				$role = get_role( $role_name );
 
-
 				if ( $post_library->get_checkbox_post_parameter( 'role_' . $role_name ) ) {
 					$role->add_cap( Plugin::CAP_GLOBAL_HOST );
 				} else {

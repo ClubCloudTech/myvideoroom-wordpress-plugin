@@ -10,15 +10,17 @@
 /**
  * Output the invite link for a personal meeting room
  *
- * @param string  $url      The invite url
- * @param ?string $message  The success/failure message
- * @param integer $id_index A unique id to generate unique id names
+ * @param string  $url      The invite url.
+ * @param ?string $message  The success/failure message.
+ * @param bool    $success  The status.
+ * @param integer $id_index A unique id to generate unique id names.
  *
  * @return string
  */
 return function (
 	string $url,
 	?string $message,
+	?bool $success,
 	int $id_index = 0
 ): string {
 	ob_start();
@@ -60,9 +62,10 @@ return function (
 		</form>
 
 		<?php
-		if ( $message ) {
+		if ( null !== $success ) {
+			$status_type = $success ? 'failure' : 'success';
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-			echo $message;
+			echo '<span class="status ' . $status_type . '">' . $message . '</span>';
 		}
 		?>
 	</div>
