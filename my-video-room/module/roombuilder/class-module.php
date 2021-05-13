@@ -61,7 +61,7 @@ class Module {
 			function ( callable $add_to_menu ) {
 				$add_to_menu(
 					self::PAGE_SLUG_BUILDER,
-					'Room Builder',
+					__( 'Room Builder', 'myvideoroom' ),
 					array( new Admin(), 'create_room_builder_page' ),
 					1
 				);

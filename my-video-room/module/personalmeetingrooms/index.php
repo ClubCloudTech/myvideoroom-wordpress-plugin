@@ -21,6 +21,7 @@ add_action(
 					'myvideoroom'
 				),
 			),
+			fn() => new MyVideoRoomPlugin\Module\PersonalMeetingRooms\Module(),
 		);
 	}
 );

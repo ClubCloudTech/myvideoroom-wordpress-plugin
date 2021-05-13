@@ -21,7 +21,7 @@ class AdminNavigation {
 	const PAGE_SLUG_REFERENCE       = 'my-video-room-shortcode-reference';
 	const PAGE_SLUG_PERMISSIONS     = 'my-video-room-permissions';
 	const PAGE_SLUG_MODULES         = 'my-video-room-modules';
-	const PAGE_SLUG_ADVANCED        = 'my-video-room-advanced';
+	const PAGE_SLUG_CUSTOM          = 'my-video-room-custom';
 
 	/**
 	 * Get the navigation items
@@ -57,7 +57,7 @@ class AdminNavigation {
 				'callback' => array( $admin_manager, 'create_modules_page' ),
 			),
 
-			self::PAGE_SLUG_ADVANCED        => array(
+			self::PAGE_SLUG_CUSTOM          => array(
 				'title'      => esc_html__( 'Advanced', 'myvideoroom' ),
 				'title_icon' => 'admin-generic',
 				'callback'   => array( $admin_manager, 'create_advanced_settings_page' ),

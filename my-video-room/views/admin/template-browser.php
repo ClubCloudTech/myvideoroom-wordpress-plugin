@@ -57,12 +57,12 @@ return function (
 			</p>
 
 			<div class="view">
-				<h3>Host View</h3>
+				<h3><?php echo esc_html__( 'Host View', 'myvideoroom' ); ?></h3>
 				<img src="<?php echo esc_url( plugins_url( '/img/host-view.png', realpath( __DIR__ . '/../' ) ) ); ?>" alt="MyVideoRoom Host View" />
 			</div>
 
 			<div class="view">
-				<h3>Guest View</h3>
+				<h3><?php echo esc_html__( 'Guest View', 'myvideoroom' ); ?></h3>
 				<img src="<?php echo esc_url( plugins_url( '/img/guest-view.png', realpath( __DIR__ . '/../' ) ) ); ?>" alt="MyVideoRoom Guest View" />
 			</div>
 

@@ -374,7 +374,7 @@ class Admin {
 	 */
 	public function create_advanced_settings_page(): string {
 		if ( Factory::get_instance( Post::class )->is_post_request() ) {
-			check_admin_referer( 'update_settings', 'myvideoroom_advanced_settings_nonce' );
+			check_admin_referer( 'update_settings', 'myvideoroom_custom_settings_nonce' );
 
 			$reset_settings = sanitize_text_field( wp_unslash( $_POST['delete_activation'] ?? '' ) ) === 'on';
 

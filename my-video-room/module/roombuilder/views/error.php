@@ -7,6 +7,11 @@
  * @return string
  */
 
+/**
+ * Show an error message
+ *
+ * @return string
+ */
 return function (): string {
 	ob_start();
 	?>

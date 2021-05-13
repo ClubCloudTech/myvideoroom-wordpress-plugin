@@ -1,15 +1,16 @@
 <?php
 /**
- * The entry point for the AdvancedPermissions module
+ * The entry point for the CustomPermissions module
  *
  * @package MyVideoRoomPlugin/Module/Monitor
  */
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Module\AdvancedPermissions;
+namespace MyVideoRoomPlugin\Module\CustomPermissions;
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 
 /**
  * Class Module
@@ -20,7 +21,7 @@ class Module {
 	 * MonitorShortcode constructor.
 	 */
 	public function __construct() {
-		add_filter( 'myvideoroom_is_host', array( $this, 'is_host' ), 0, 2 );
+		add_filter( 'myvideoroom_shortcode_constructor', array( $this, 'modify_shortcode_constructor' ), 0, 2 );
 
 		$roombuilder_is_active = Factory::get_instance( \MyVideoRoomPlugin\Library\Module::class )
 										->is_module_active( 'roombuilder' );
@@ -33,14 +34,21 @@ class Module {
 	/**
 	 * Is the current user a host, based on the the string passed to the shortcode, and the current users id and groups
 	 *
-	 * @param ?bool   $is_host      If the host already determined.
-	 * @param ?string $host_string  The host string to parse by this function.
+	 * @param AppShortcodeConstructor $shortcode_constructor The shortcode constructor.
 	 *
-	 * @return ?bool
+	 * @return AppShortcodeConstructor
 	 */
-	public function is_host( bool $is_host = null, string $host_string = null ): ?bool {
-		if ( $host_string && null === $is_host ) {
-			$host_types = explode( ';', $host_string );
+	public function modify_shortcode_constructor( AppShortcodeConstructor $shortcode_constructor ): AppShortcodeConstructor {
+		$host = $shortcode_constructor->get_custom_string_param( 'host' );
+
+		if (
+			is_string( $host ) &&
+			(
+				strpos( $host, 'users:' ) === 0 ||
+				strpos( $host, 'roles:' ) === 0
+			)
+		) {
+			$host_types = explode( ';', $host );
 
 			$host_users  = array();
 			$host_groups = array();
@@ -64,13 +72,13 @@ class Module {
 				0 !== $current_user->ID &&
 				( $this->user_is_host( $host_users ) || $this->role_is_host( $host_groups ) )
 			) {
-				return true;
+				$shortcode_constructor->set_as_host();
+			} else {
+				$shortcode_constructor->set_as_guest();
 			}
-
-			return false;
 		}
 
-		return null;
+		return $shortcode_constructor;
 	}
 
 	/**
@@ -83,7 +91,7 @@ class Module {
 	private function user_is_host( array $host_users ): bool {
 		$current_user = wp_get_current_user();
 
-		return in_array( (string) $current_user->ID, $host_users, true ) || in_array( $current_user->user_login, $host_users, true );
+		return in_array( (string) $current_user->ID, $host_users, true ) || in_array( $current_user->user_nicename, $host_users, true );
 	}
 
 	/**

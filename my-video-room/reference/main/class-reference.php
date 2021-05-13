@@ -191,7 +191,7 @@ class Reference {
 							'myvideoroom'
 						),
 					),
-					'(Use reception setting)'
+					'(' . esc_html__( 'Use reception setting', 'myvideoroom' ) . ')'
 				),
 			)
 		);

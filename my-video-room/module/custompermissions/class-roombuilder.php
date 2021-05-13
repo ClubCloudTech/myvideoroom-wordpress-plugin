@@ -1,13 +1,13 @@
 <?php
 /**
- * Extends the room builder with advanced permissions
+ * Extends the room builder with custom permissions
  *
  * @package MyVideoRoomPlugin/Module/Monitor
  */
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Module\AdvancedPermissions;
+namespace MyVideoRoomPlugin\Module\CustomPermissions;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
@@ -19,6 +19,8 @@ use MyVideoRoomPlugin\Module\RoomBuilder\Settings\RoomPermissionsOption;
  * Class Module
  */
 class RoomBuilder {
+
+	const PERMISSIONS_FIELD_NAME = 'use_custom_permissions';
 
 	/**
 	 * A increment in case the same element is placed on the page twice
@@ -48,14 +50,14 @@ class RoomBuilder {
 		$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
 
 		wp_enqueue_style(
-			'myvideoroom-advancedpermissions-roombuilder-css',
+			'myvideoroom-custompermissions-roombuilder-css',
 			plugins_url( '/css/roombuilder.css', realpath( __FILE__ ) ),
 			false,
 			$plugin_version,
 		);
 
 		wp_enqueue_script(
-			'myvideoroom-advancedpermissions-roombuilder-js',
+			'myvideoroom-custompermissions-roombuilder-js',
 			plugins_url( '/js/roombuilder.js', realpath( __FILE__ ) ),
 			array( 'jquery' ),
 			$plugin_version,
@@ -64,20 +66,20 @@ class RoomBuilder {
 	}
 
 	/**
-	 * Add an option for advanced settings to the room builder permissions section
+	 * Add an option for custom settings to the room builder permissions section
 	 *
 	 * @param RoomPermissionsOption[] $options The current permissions options.
 	 *
 	 * @return RoomPermissionsOption[]
 	 */
 	public function add_permissions_option( array $options ): array {
-		$permissions_preference   = Factory::get_instance( Post::class )->get_radio_post_parameter( 'room_permissions_preference' );
-		$use_advanced_permissions = ( 'use_advanced_permissions' === $permissions_preference );
+		$permissions_preference = Factory::get_instance( Post::class )->get_radio_post_parameter( 'room_permissions_preference' );
+		$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 
 		$options[] = new RoomPermissionsOption(
-			'use_advanced_permissions',
-			$use_advanced_permissions,
-			__( 'Use advanced permissions', 'myvideoroom' ),
+			self::PERMISSIONS_FIELD_NAME,
+			$use_custom_permissions,
+			__( 'Use custom permissions', 'myvideoroom' ),
 			esc_html__(
 				'This will allow you to select which users or roles will be an admin for this shortcode.',
 				'myvideoroom'
@@ -95,12 +97,12 @@ class RoomBuilder {
 	 * @return RoomPermissionsOption[]
 	 */
 	public function ensure_correct_permission_is_selected( array $options ): array {
-		$permissions_preference   = Factory::get_instance( Post::class )->get_radio_post_parameter( 'room_permissions_preference' );
-		$use_advanced_permissions = ( 'use_advanced_permissions' === $permissions_preference );
+		$permissions_preference = Factory::get_instance( Post::class )->get_radio_post_parameter( 'room_permissions_preference' );
+		$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 
 		foreach ( $options as $permission ) {
-			if ( 'use_advanced_permissions' !== $permission->get_key() ) {
-				$permission->set_as_selected( $permission->is_selected() && ! $use_advanced_permissions );
+			if ( self::PERMISSIONS_FIELD_NAME !== $permission->get_key() ) {
+				$permission->set_as_selected( $permission->is_selected() && ! $use_custom_permissions );
 			}
 		}
 
@@ -117,14 +119,14 @@ class RoomBuilder {
 	public function generate_shortcode_constructor( AppShortcodeConstructor $shortcode_constructor ): AppShortcodeConstructor {
 		$post_library = Factory::get_instance( Post::class );
 
-		$permissions_preference   = $post_library->get_radio_post_parameter( 'room_permissions_preference' );
-		$use_advanced_permissions = ( 'use_advanced_permissions' === $permissions_preference );
+		$permissions_preference = $post_library->get_radio_post_parameter( 'room_permissions_preference' );
+		$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 
-		if ( $use_advanced_permissions ) {
+		if ( $use_custom_permissions ) {
 			$admin_strings = array();
 
-			$user_permissions = $post_library->get_multi_post_parameter( 'advanced_permissions_users' );
-			$role_permissions = $post_library->get_multi_post_parameter( 'advanced_permissions_roles' );
+			$user_permissions = $post_library->get_multi_post_parameter( 'custom_permissions_users' );
+			$role_permissions = $post_library->get_multi_post_parameter( 'custom_permissions_roles' );
 
 			if ( $user_permissions ) {
 				$admin_strings[] = 'user:' . implode( ',', $user_permissions );
@@ -148,8 +150,8 @@ class RoomBuilder {
 	public function add_permission_section() {
 		$post_library = Factory::get_instance( Post::class );
 
-		$user_permissions = $post_library->get_multi_post_parameter( 'advanced_permissions_users' );
-		$role_permissions = $post_library->get_multi_post_parameter( 'advanced_permissions_roles' );
+		$user_permissions = $post_library->get_multi_post_parameter( 'custom_permissions_users' );
+		$role_permissions = $post_library->get_multi_post_parameter( 'custom_permissions_roles' );
 
 		$section = ( require __DIR__ . '/views/settings.php' )(
 			$user_permissions,

@@ -48,133 +48,32 @@ return function (
 
 	<form class="myvideoroom-room-builder-settings" method="post" action="">
 		<fieldset>
-			<legend><?php esc_html_e( 'Naming', 'myvideoroom' ); ?></legend>
-			<label for="myvideoroom_room_builder_room_name_<?php echo esc_attr( $id_index ); ?>">
-					<?php esc_html_e( 'Room Name', 'myvideoroom' ); ?>
-			</label>
-			<input type="text"
-				placeholder="<?php esc_html_e( 'Your Room Name (optional)', 'myvideoroom' ); ?>"
-				id="myvideoroom_room_builder_room_name_<?php echo esc_attr( $id_index ); ?>"
-				name="myvideoroom_room_builder_room_name"
-				value="<?php echo esc_html( $app_config ? $app_config->get_name() : '' ); ?>"
-				aria-describedby="myvideoroom_room_builder_room_name_<?php echo esc_attr( $id_index ); ?>_description"
-			/>
-			<br />
-			<em id="myvideoroom_room_builder_room_name_<?php echo esc_attr( $id_index ); ?>_description">
-				<?php
-				esc_html_e(
-					'The name of the room. All video rooms on the same website that share a name will share the 
-					same video group. Defaults to the site name',
-					'myvideoroom'
-				);
-				?>
-			</em>
-		</fieldset>
-
-		<fieldset>
-			<legend><?php echo esc_html__( 'Room Layout', 'myvideoroom' ); ?></legend>
-			<label for="myvideoroom_room_builder_layout_id_preference_<?php echo esc_attr( $id_index ); ?>">
-				<?php echo esc_html__( 'Layout', 'myvideoroom' ); ?>
-			</label>
-			<select class="myvideoroom_room_builder_layout_id_preference"
-				name="myvideoroom_room_builder_layout_id_preference"
-				id="myvideoroom_room_builder_layout_id_preference_<?php echo esc_attr( $id_index ); ?>"
-				aria-describedby="myvideoroom_room_builder_layout_id_preference_<?php echo esc_attr( $id_index ); ?>_description"
-			>
-				<?php
-				if ( ! $app_config || ! $app_config->get_layout() ) {
-					echo '<option value="" selected disabled>— Select —</option>';
-				}
-
-				foreach ( $available_layouts as $available_layout ) {
-					$slug = $available_layout->slug;
-
-					if ( ! $slug ) {
-						$slug = $available_layout->id;
-					}
-
-					if ( $app_config && $app_config->get_layout() === $slug ) {
-						echo '<option value="' . esc_attr( $slug ) . '" selected>' . esc_html( $available_layout->name ) . '</option>';
-					} else {
-						echo '<option value="' . esc_attr( $slug ) . '">' . esc_html( $available_layout->name ) . '</option>';
-					}
-				}
-				?>
-			</select>
-			<br />
-			<em id="myvideoroom_room_builder_layout_id_preference_<?php echo esc_attr( $id_index ); ?>_description">
-				<?php
-				$layouts_page   = menu_page_url( AdminNavigation::PAGE_SLUG_ROOM_TEMPLATES, false );
-				$layouts_target = '';
-
-				if ( ! $layouts_page ) {
-					$layouts_page   = Factory::get_instance( Endpoints::class )->get_rooms_endpoint() . '/views/layouts';
-					$layouts_target = ' target="_blank"';
-				}
-
-				printf(
-					/* translators: %s is a link to the templates admin page */
-					esc_html__(
-						'The layout of the room, determines the background image, and the number of seats and 
-					        seat groups. See the %s page for a list of available room layouts and more details.',
-						'myvideoroom'
-					),
-					'<a href="' . esc_url( $layouts_page ) . '"' . esc_attr( $layouts_target ) . '>' .
-					esc_html__( 'templates', 'myvideoroom' ) .
-					'</a>'
-				);
-				?>
-			</em>
-			<br />
-
-			<label for="myvideoroom_room_builder_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>">
-				<?php echo esc_html__( 'Disable guest floorplan', 'myvideoroom' ); ?>
-			</label>
-			<input type="checkbox"
-				name="myvideoroom_room_builder_disable_floorplan_preference"
-				id="myvideoroom_room_builder_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo ! $app_config || ! $app_config->is_floorplan_enabled() ? 'checked' : ''; ?>
-				aria-describedby="myvideoroom_room_builder_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>_description"
-			/>
-			<br />
-			<em id="myvideoroom_room_builder_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>_description">
-				<?php
-				echo esc_html__(
-					'Prevents guests from seeing the floorplan, and selecting their own seats. Will
-				         automatically enable the reception',
-					'myvideoroom'
-				);
-				?>
-			</em>
-		</fieldset>
-
-		<fieldset>
 			<legend><?php echo esc_html__( 'Room Permissions', 'myvideoroom' ); ?></legend>
 
 			<?php
-				$room_permissions = ( new RoomPermissions() )->get_room_permission_options( $app_config );
+			$room_permissions = ( new RoomPermissions() )->get_room_permission_options( $app_config );
 
 			foreach ( $room_permissions as $option ) {
 				$option_id = 'myvideoroom_room_builder_room_permissions_preference_' . $id_index . '_' . $option->get_key();
 
 				?>
-					<input type="radio"
-						name="myvideoroom_room_builder_room_permissions_preference"
-						id="<?php echo esc_attr( $option_id ); ?>"
-						value="<?php echo esc_attr( $option->get_key() ); ?>"
-						<?php echo $option->is_selected() ? 'checked' : ''; ?>
-						aria-describedby="<?php echo esc_attr( $option_id ); ?>_description"
-					/>
-					<label for="<?php echo esc_attr( $option_id ); ?>">
-						<?php echo esc_html( $option->get_label() ); ?>
-					</label>
-					<em id="<?php echo esc_attr( $option_id ); ?>_description">
-						<?php
-							//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-							echo $option->get_description();
-						?>
-					</em>
-					<br />
+				<input type="radio"
+					name="myvideoroom_room_builder_room_permissions_preference"
+					id="<?php echo esc_attr( $option_id ); ?>"
+					value="<?php echo esc_attr( $option->get_key() ); ?>"
+					<?php echo $option->is_selected() ? 'checked' : ''; ?>
+					aria-describedby="<?php echo esc_attr( $option_id ); ?>_description"
+				/>
+				<label for="<?php echo esc_attr( $option_id ); ?>">
+					<?php echo esc_html( $option->get_label() ); ?>
+				</label>
+				<em id="<?php echo esc_attr( $option_id ); ?>_description">
+					<?php
+					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo $option->get_description();
+					?>
+				</em>
+				<br />
 				<?php
 			}
 			?>
@@ -182,93 +81,80 @@ return function (
 
 		<?php do_action( 'myvideoroom_roombuilder_permission_section' ); ?>
 
-		<fieldset>
-			<legend><?php echo esc_html__( 'Guest Settings', 'myvideoroom' ); ?></legend>
-			<label for="myvideoroom_room_builder_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-				<?php echo esc_html__( 'Enable guest reception?', 'myvideoroom' ); ?>
-			</label>
-			<input type="checkbox"
-				name="myvideoroom_room_builder_reception_enabled_preference"
-				id="myvideoroom_room_builder_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo ! $app_config || $app_config->is_reception_enabled() ? 'checked' : ''; ?>
-				aria-describedby="myvideoroom_room_builder_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>_description"
-			/>
-			<br />
-			<em id="myvideoroom_room_builder_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>_description">
-				<?php
-				echo esc_html__(
-					'The guest reception prevents guests from taking their own seats, and instead puts them 
-				        into a waiting room from where the host can drag them into a seat. Disabling this option will 
-				        also enable the guest floorplan',
-					'myvideoroom'
-				);
-				?>
-			</em>
-
-			<div class="reception-settings">
-				<label for="myvideoroom_room_builder_reception_id_preference_<?php echo esc_attr( $id_index ); ?>">
-					<?php echo esc_html__( 'Reception Appearance', 'myvideoroom' ); ?>
+		<div class="room-settings">
+			<fieldset>
+				<legend><?php esc_html_e( 'Naming', 'myvideoroom' ); ?></legend>
+				<label for="myvideoroom_room_builder_room_name_<?php echo esc_attr( $id_index ); ?>">
+						<?php esc_html_e( 'Room Name', 'myvideoroom' ); ?>
 				</label>
-				<select class="myvideoroom_room_builder_reception_id_preference"
-					name="myvideoroom_room_builder_reception_id_preference"
-					id="myvideoroom_room_builder_reception_id_preference_<?php echo esc_attr( $id_index ); ?>"
-					aria-describedby="myvideoroom_room_builder_reception_id_preference_<?php echo esc_attr( $id_index ); ?>_description"
+				<input type="text"
+					placeholder="<?php esc_html_e( 'Your Room Name (optional)', 'myvideoroom' ); ?>"
+					id="myvideoroom_room_builder_room_name_<?php echo esc_attr( $id_index ); ?>"
+					name="myvideoroom_room_builder_room_name"
+					value="<?php echo esc_html( $app_config ? $app_config->get_name() : '' ); ?>"
+					aria-describedby="myvideoroom_room_builder_room_name_<?php echo esc_attr( $id_index ); ?>_description"
+				/>
+				<br />
+				<em id="myvideoroom_room_builder_room_name_<?php echo esc_attr( $id_index ); ?>_description">
+					<?php
+					esc_html_e(
+						'The name of the room. All video rooms on the same website that share a name will share the 
+						same video group. Defaults to the site name',
+						'myvideoroom'
+					);
+					?>
+				</em>
+			</fieldset>
+
+			<fieldset>
+				<legend><?php echo esc_html__( 'Room Layout', 'myvideoroom' ); ?></legend>
+				<label for="myvideoroom_room_builder_layout_id_preference_<?php echo esc_attr( $id_index ); ?>">
+					<?php echo esc_html__( 'Layout', 'myvideoroom' ); ?>
+				</label>
+				<select class="myvideoroom_room_builder_layout_id_preference"
+					name="myvideoroom_room_builder_layout_id_preference"
+					id="myvideoroom_room_builder_layout_id_preference_<?php echo esc_attr( $id_index ); ?>"
+					aria-describedby="myvideoroom_room_builder_layout_id_preference_<?php echo esc_attr( $id_index ); ?>_description"
 				>
 					<?php
-					if ( ! $app_config || ! $app_config->get_reception_id() ) {
-						echo '<option value="" selected disabled>— Select —</option>';
+					if ( ! $app_config || ! $app_config->get_layout() ) {
+						echo '<option value="" selected disabled>— ' . esc_html__( 'Select', 'myvideoroom' ) . ' —</option>';
 					}
 
-					foreach ( $available_receptions as $available_reception ) {
-						$slug = $available_reception->slug;
+					foreach ( $available_layouts as $available_layout ) {
+						$slug = $available_layout->slug;
 
 						if ( ! $slug ) {
-							$slug = $available_reception->id;
+							$slug = $available_layout->id;
 						}
 
-						$selected = '';
-						$video    = 'false';
-
-						if ( $app_config && $app_config->get_reception_id() === $slug
-						) {
-							$selected = ' selected';
+						if ( $app_config && $app_config->get_layout() === $slug ) {
+							echo '<option value="' . esc_attr( $slug ) . '" selected>' . esc_html( $available_layout->name ) . '</option>';
+						} else {
+							echo '<option value="' . esc_attr( $slug ) . '">' . esc_html( $available_layout->name ) . '</option>';
 						}
-
-						if ( $available_reception->video ) {
-							$video = 'true';
-						}
-
-						?>
-							<option value="<?php echo esc_attr( $slug ); ?>"
-								data-has-video="<?php echo esc_attr( $video ); ?>"
-								<?php echo esc_attr( $selected ); ?>
-							>
-								<?php echo esc_html( $available_reception->name ); ?>
-							</option>
-						<?php
 					}
 					?>
 				</select>
 				<br />
-				<em id="myvideoroom_room_builder_reception_id_preference_<?php echo esc_attr( $id_index ); ?>_description">
+				<em id="myvideoroom_room_builder_layout_id_preference_<?php echo esc_attr( $id_index ); ?>_description">
 					<?php
+					$layouts_page   = menu_page_url( AdminNavigation::PAGE_SLUG_ROOM_TEMPLATES, false );
+					$layouts_target = '';
 
-					$receptions_page   = menu_page_url( AdminNavigation::PAGE_SLUG_ROOM_TEMPLATES, false );
-					$receptions_target = '';
-
-					if ( ! $receptions_page ) {
-						$receptions_page   = Factory::get_instance( Endpoints::class )->get_rooms_endpoint() . '/views/receptions';
-						$receptions_target = ' target="_blank"';
+					if ( ! $layouts_page ) {
+						$layouts_page   = Factory::get_instance( Endpoints::class )->get_rooms_endpoint() . '/views/layouts';
+						$layouts_target = ' target="_blank"';
 					}
 
 					printf(
-					/* translators: %s is a link to the templates admin page */
+						/* translators: %s is a link to the templates admin page */
 						esc_html__(
-							'The design of the reception. Some recetion additionally will show a background video.
-			                For a full list of available receptions see the %s page',
+							'The layout of the room, determines the background image, and the number of seats and 
+								seat groups. See the %s page for a list of available room layouts and more details.',
 							'myvideoroom'
 						),
-						'<a href="' . esc_url( $receptions_page ) . '"' . esc_attr( $receptions_target ) . '>' .
+						'<a href="' . esc_url( $layouts_page ) . '"' . esc_attr( $layouts_target ) . '>' .
 						esc_html__( 'templates', 'myvideoroom' ) .
 						'</a>'
 					);
@@ -276,40 +162,156 @@ return function (
 				</em>
 				<br />
 
-				<div class="custom-video-settings">
-					<label for="myvideoroom_room_builder_reception_custom_video_preference_<?php echo esc_attr( $id_index ); ?>">
-						<?php echo esc_html__( 'Customize Reception Waiting Room Video', 'myvideoroom' ); ?>
+				<label for="myvideoroom_room_builder_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>">
+					<?php echo esc_html__( 'Disable guest floorplan', 'myvideoroom' ); ?>
+				</label>
+				<input type="checkbox"
+					name="myvideoroom_room_builder_disable_floorplan_preference"
+					id="myvideoroom_room_builder_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
+					<?php echo ! $app_config || ! $app_config->is_floorplan_enabled() ? 'checked' : ''; ?>
+					aria-describedby="myvideoroom_room_builder_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>_description"
+				/>
+				<br />
+				<em id="myvideoroom_room_builder_disable_floorplan_preference_<?php echo esc_attr( $id_index ); ?>_description">
+					<?php
+					echo esc_html__(
+						'Prevents guests from seeing the floorplan, and selecting their own seats. Will
+							 automatically enable the reception',
+						'myvideoroom'
+					);
+					?>
+				</em>
+			</fieldset>
+
+			<fieldset>
+				<legend><?php echo esc_html__( 'Guest Settings', 'myvideoroom' ); ?></legend>
+				<label for="myvideoroom_room_builder_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
+					<?php echo esc_html__( 'Enable guest reception?', 'myvideoroom' ); ?>
+				</label>
+				<input type="checkbox"
+					name="myvideoroom_room_builder_reception_enabled_preference"
+					id="myvideoroom_room_builder_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
+					<?php echo ! $app_config || $app_config->is_reception_enabled() ? 'checked' : ''; ?>
+					aria-describedby="myvideoroom_room_builder_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>_description"
+				/>
+				<br />
+				<em id="myvideoroom_room_builder_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>_description">
+					<?php
+					echo esc_html__(
+						'The guest reception prevents guests from taking their own seats, and instead puts them 
+							into a waiting room from where the host can drag them into a seat. Disabling this option will 
+							also enable the guest floorplan',
+						'myvideoroom'
+					);
+					?>
+				</em>
+
+				<div class="reception-settings">
+					<label for="myvideoroom_room_builder_reception_id_preference_<?php echo esc_attr( $id_index ); ?>">
+						<?php echo esc_html__( 'Reception Appearance', 'myvideoroom' ); ?>
 					</label>
-					<input type="checkbox"
-						name="myvideoroom_room_builder_reception_custom_video_preference"
-						id="myvideoroom_room_builder_reception_custom_video_preference_<?php echo esc_attr( $id_index ); ?>"
-						<?php echo $app_config && $app_config->get_reception_video() ? 'checked' : ''; ?>
-					/>
+					<select class="myvideoroom_room_builder_reception_id_preference"
+						name="myvideoroom_room_builder_reception_id_preference"
+						id="myvideoroom_room_builder_reception_id_preference_<?php echo esc_attr( $id_index ); ?>"
+						aria-describedby="myvideoroom_room_builder_reception_id_preference_<?php echo esc_attr( $id_index ); ?>_description"
+					>
+						<?php
+						if ( ! $app_config || ! $app_config->get_reception_id() ) {
+							echo '<option value="" selected disabled>— ' . esc_html__( 'Select', 'myvideoroom' ) . ' —</option>';
+						}
+
+						foreach ( $available_receptions as $available_reception ) {
+							$slug = $available_reception->slug;
+
+							if ( ! $slug ) {
+								$slug = $available_reception->id;
+							}
+
+							$selected = '';
+							$video    = 'false';
+
+							if ( $app_config && $app_config->get_reception_id() === $slug
+							) {
+								$selected = ' selected';
+							}
+
+							if ( $available_reception->video ) {
+								$video = 'true';
+							}
+
+							?>
+								<option value="<?php echo esc_attr( $slug ); ?>"
+									data-has-video="<?php echo esc_attr( $video ); ?>"
+									<?php echo esc_attr( $selected ); ?>
+								>
+									<?php echo esc_html( $available_reception->name ); ?>
+								</option>
+							<?php
+						}
+						?>
+					</select>
+					<br />
+					<em id="myvideoroom_room_builder_reception_id_preference_<?php echo esc_attr( $id_index ); ?>_description">
+						<?php
+
+						$receptions_page   = menu_page_url( AdminNavigation::PAGE_SLUG_ROOM_TEMPLATES, false );
+						$receptions_target = '';
+
+						if ( ! $receptions_page ) {
+							$receptions_page   = Factory::get_instance( Endpoints::class )->get_rooms_endpoint() . '/views/receptions';
+							$receptions_target = ' target="_blank"';
+						}
+
+						printf(
+						/* translators: %s is a link to the templates admin page */
+							esc_html__(
+								'The design of the reception. Some recetion additionally will show a background video.
+								For a full list of available receptions see the %s page',
+								'myvideoroom'
+							),
+							'<a href="' . esc_url( $receptions_page ) . '"' . esc_attr( $receptions_target ) . '>' .
+							esc_html__( 'templates', 'myvideoroom' ) .
+							'</a>'
+						);
+						?>
+					</em>
 					<br />
 
-					<div class="custom-video-url">
-						<label for="myvideoroom_room_builder_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>">
-							<?php echo esc_html__( 'Video URL', 'myvideoroom' ); ?>:
+					<div class="custom-video-settings">
+						<label for="myvideoroom_room_builder_reception_custom_video_preference_<?php echo esc_attr( $id_index ); ?>">
+							<?php echo esc_html__( 'Customize Reception Waiting Room Video', 'myvideoroom' ); ?>
 						</label>
-						<input type="text"
-							id="myvideoroom_room_builder_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
-							name="myvideoroom_room_builder_reception_waiting_video_url"
-							<?php
-							if ( $app_config ) {
-								echo 'value="' . esc_attr( $app_config->get_reception_video() ) . '"'; }
-							?>
-							aria-describedby="myvideoroom_room_builder_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>_description"
+						<input type="checkbox"
+							name="myvideoroom_room_builder_reception_custom_video_preference"
+							id="myvideoroom_room_builder_reception_custom_video_preference_<?php echo esc_attr( $id_index ); ?>"
+							<?php echo $app_config && $app_config->get_reception_video() ? 'checked' : ''; ?>
 						/>
 						<br />
-						<em id="myvideoroom_room_builder_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>_description">
-							<?php
-								esc_html_e(
-									'Allow customisation of the video shown in the reception. Can either provide a full
-                                    url to a playable video, or instead pass the 11 character YouTube video ID.',
-									'myvideoroom'
-								)
-							?>
-						</em>
+
+						<div class="custom-video-url">
+							<label for="myvideoroom_room_builder_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>">
+								<?php echo esc_html__( 'Video URL', 'myvideoroom' ); ?>:
+							</label>
+							<input type="text"
+								id="myvideoroom_room_builder_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
+								name="myvideoroom_room_builder_reception_waiting_video_url"
+								<?php
+								if ( $app_config ) {
+									echo 'value="' . esc_attr( $app_config->get_reception_video() ) . '"'; }
+								?>
+								aria-describedby="myvideoroom_room_builder_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>_description"
+							/>
+							<br />
+							<em id="myvideoroom_room_builder_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>_description">
+								<?php
+									esc_html_e(
+										'Allow customisation of the video shown in the reception. Can either provide a full
+										url to a playable video, or instead pass the 11 character YouTube video ID.',
+										'myvideoroom'
+									)
+								?>
+							</em>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -320,7 +322,7 @@ return function (
 			name="submit"
 			id="submit"
 			class="button button-primary"
-			value="<?php echo esc_html__( 'Generate Room and Shortcode', 'myvideoroom' ); ?>"
+			value="<?php echo esc_html__( 'Preview room and shortcode', 'myvideoroom' ); ?>"
 		/>
 	</form>
 

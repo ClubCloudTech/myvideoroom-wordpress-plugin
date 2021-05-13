@@ -17,7 +17,7 @@ Features include:
 
 * 1-to-1 or multiway meetings
 * Up to 30 participants per meeting (more can be catered for on request)
-* Advanced security features including role level control.
+* Custom security features including role level control.
 * Click to mute, kick-out, restrict users and allow only certain user
 * Virtual Lobby/Reception function for extra layer of security
 * Video Reception can include video streaming for an enhanced video experience, while waiting
@@ -44,7 +44,7 @@ Acceptable Use Policy: [https://clubcloud.tech/acceptable-use](https://clubcloud
 
 * Immersive quality 1-to-1 or multiway meetings
 * Up to 30 participants per meeting (more can be catered for on request)
-* Advanced security features including role level control.
+* Custom security features including role level control.
 * Click to mute, kick-out, restrict users and allow only certain users.
 * Virtual Lobby/Reception function for extra layer of security
 * Video Reception can include video streaming for an enhanced video experience, while waiting

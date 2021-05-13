@@ -46,7 +46,7 @@ return function (
 
 	?>
 
-	<h2><?php esc_html_e( 'Advanced', 'myvideoroom' ); ?></h2>
+	<h2><?php esc_html_e( 'Advanced Settings and Information', 'myvideoroom' ); ?></h2>
 
 	<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 		<ul>
@@ -57,7 +57,7 @@ return function (
 			</li>
 
 			<li>
-				<a class="nav-tab" href="#myvideoroom-advanced-licencing-<?php echo esc_attr( $id_index ); ?>">
+				<a class="nav-tab" href="#myvideoroom-custom-licencing-<?php echo esc_attr( $id_index ); ?>">
 					<?php esc_html_e( 'Licencing', 'myvideoroom' ); ?>
 				</a>
 			</li>
@@ -286,7 +286,7 @@ return function (
 		</dl>
 	</article>
 
-	<article id="myvideoroom-advanced-licencing-<?php echo esc_attr( $id_index ); ?>">
+	<article id="myvideoroom-custom-licencing-<?php echo esc_attr( $id_index ); ?>">
 		<form method="post">
 			<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
@@ -330,7 +330,7 @@ return function (
 				</table>
 			</fieldset>
 
-			<?php wp_nonce_field( 'update_settings', 'myvideoroom_advanced_settings_nonce' ); ?>
+			<?php wp_nonce_field( 'update_settings', 'myvideoroom_custom_settings_nonce' ); ?>
 			<?php submit_button(); ?>
 		</form>
 	</article>

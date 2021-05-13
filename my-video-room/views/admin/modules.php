@@ -99,7 +99,7 @@ return function (
 										href="<?php echo esc_url( $deactivate_url ); ?>"
 										aria-label="<?php printf( /* translators: %s is the name of the module */ esc_html__( 'Deactivate %s ', 'myvideoroom' ), esc_html( $module->get_name() ) ); ?>"
 									>
-										Deactivate
+										<?php esc_html_e( 'Deactivate', 'myvideoroom' ); ?>
 									</a>
 								</span>
 
@@ -119,7 +119,7 @@ return function (
 									<a href="<?php echo esc_url( $activate_url ); ?>"
 										aria-label="<?php printf( /* translators: %s is the name of the module */ esc_html__( 'Activate %s ', 'myvideoroom' ), esc_html( $module->get_name() ) ); ?>"
 									>
-										Activate
+										<?php esc_html_e( 'Activate', 'myvideoroom' ); ?>
 									</a>
 								</span>
 
