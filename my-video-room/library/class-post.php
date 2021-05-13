@@ -80,34 +80,30 @@ class Post {
 	}
 
 	/**
-	 * Is the request a POST
+	 * Is the request a POST?
+	 * To be used on requests that are allowed to come from non-admin pages.
 	 *
-	 * @param string $action               The action we were expecting to call.
+	 * @param string $action The action we were expecting to call.
 	 *
 	 * @return bool
 	 */
 	public function is_post_request( string $action ): bool {
-		$is_post = ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false ) &&
+		return ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false ) &&
 			$this->get_text_post_parameter( 'action' ) === $action;
-
-		return $is_post;
 	}
 
 	/**
-	 * Is the request a POST request from the admin page
+	 * Is the request a POST request from the admin page.
 	 *
-	 * @param string $action               The action we were expecting to call.
+	 * @param string $action  The action we were expecting to call.
 	 *
 	 * @return bool
 	 */
 	public function is_admin_post_request( string $action ): bool {
-		$is_post = ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false ) &&
-		           $this->get_text_post_parameter( 'action' ) === $action;
-
-		if ( $is_post ) {
-			check_admin_referer( $action, 'myvideoroom_nonce' );
+		if ( $this->is_post_request( $action ) ) {
+			return check_admin_referer( $action, 'myvideoroom_nonce' );
 		}
 
-		return $is_post;
+		return false;
 	}
 }

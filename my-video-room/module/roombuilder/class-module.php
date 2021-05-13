@@ -164,7 +164,7 @@ class Module {
 
 		if (
 			$this->is_initial_preview_enabled( $attributes ) ||
-			Factory::get_instance( Post::class )->is_post_request( 'show_preview' )
+			Factory::get_instance( Post::class )->is_post_request( 'show_roombuilder_preview' )
 		) {
 			$shortcode_constructor = apply_filters( 'myvideoroom_roombuilder_create_shortcode', $this->create_shortcode_constructor() );
 		}
@@ -180,7 +180,10 @@ class Module {
 		// If we have a config, then use it to render out the preview.
 
 		if ( $shortcode_constructor ) {
-			if ( Factory::get_instance( Post::class )->is_post_request( 'show_preview' ) && ! $this->is_nonce_valid() ) {
+			if (
+				Factory::get_instance( Post::class )->is_post_request( 'show_roombuilder_preview' ) &&
+				! $this->is_nonce_valid()
+			) {
 				$output .= $this->generate_nonce_error();
 			} else {
 				$output .= $this->generate_preview( $shortcode_constructor );
@@ -294,7 +297,7 @@ class Module {
 			isset( $_POST['myvideoroom_nonce'] ) &&
 			wp_verify_nonce(
 				sanitize_text_field( wp_unslash( $_POST['myvideoroom_nonce'] ) ),
-				'show_preview'
+				'show_roombuilder_preview'
 			)
 		);
 	}

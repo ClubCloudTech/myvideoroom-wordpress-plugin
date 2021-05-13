@@ -317,8 +317,8 @@ return function (
 			</div>
 		</fieldset>
 
-		<input type="hidden" value="show_preview" name="myvideoroom_action" />
-		<?php wp_nonce_field( 'show_preview', 'myvideoroom_nonce' ); ?>
+		<input type="hidden" value="show_roombuilder_preview" name="myvideoroom_action" />
+		<?php wp_nonce_field( 'show_roombuilder_preview', 'myvideoroom_nonce' ); ?>
 		<input type="submit"
 			name="submit"
 			id="submit"
