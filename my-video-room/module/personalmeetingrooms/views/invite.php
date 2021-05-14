@@ -45,9 +45,8 @@ return function (
 		<div class="myvideoroom-personalmeetingrooms-invite-link" id="myvideoroom-personalmeetingrooms-invite-link">
 		<?php echo esc_html( $url ); ?>
 		</div>
-		<button class="mvr-header-copy-link" onclick="copyTextFromElement('myvideoroom-personalmeetingrooms-invite-link')">Copy Link</button>
-
-
+		
+		<button class="mvr-header-copy-link" onclick="copyTextFromElement('myvideoroom-personalmeetingrooms-invite-link')"><?php esc_html_e( 'Copy link' ); ?></button>
 
 		<p>
 			<?php
