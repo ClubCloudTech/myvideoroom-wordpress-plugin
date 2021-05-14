@@ -24,6 +24,8 @@ class Module {
 	const SETTING_URL_PARAM = Plugin::PLUGIN_NAMESPACE . '_url_param';
 	const SHORTCODE_TAG     = AppShortcode::SHORTCODE_TAG . '_personal_invite';
 
+	const INVITE_EMAIL_ACTION = 'personalmeetingrooms_invite';
+
 	/**
 	 * A increment in case the same element is placed on the page twice
 	 *
@@ -179,16 +181,16 @@ class Module {
 	private function process_email_send(): ?array {
 		$post_library = Factory::get_instance( Post::class );
 		if (
-			$post_library->is_post_request( 'myvideoroom_personalmeetingrooms_invite' )
+			$post_library->is_post_request( self::INVITE_EMAIL_ACTION )
 		) {
-			if ( $post_library->is_nonce_valid( 'myvideoroom_personalmeetingrooms_invite' ) ) {
+			if ( $post_library->is_nonce_valid( self::INVITE_EMAIL_ACTION ) ) {
 				return array(
 					false,
 					esc_html__( 'Something went wrong, please reload the page and try again', 'myvideoroom' ),
 				);
 			} else {
-				$email       = $post_library->get_text_post_parameter( 'myvideoroom_personalmeetingrooms_invite_address' );
-				$invite_link = $post_library->get_text_post_parameter( 'myvideoroom_personalmeetingrooms_invite_link' );
+				$email       = $post_library->get_text_post_parameter( self::INVITE_EMAIL_ACTION . '_address' );
+				$invite_link = $post_library->get_text_post_parameter( self::INVITE_EMAIL_ACTION . '_link' );
 
 				$result = $this->send_invite_email( $email, $invite_link );
 
@@ -217,10 +219,10 @@ class Module {
 	 */
 	public function process_ajax_request() {
 		$nonce       = sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ?? null ) );
-		$email       = sanitize_text_field( wp_unslash( $_REQUEST['email'] ?? null ) );
-		$invite_link = sanitize_text_field( wp_unslash( $_REQUEST['link'] ?? null ) );
+		$email       = sanitize_email( wp_unslash( $_REQUEST['email'] ?? null ) );
+		$invite_link = esc_url_raw( wp_unslash( $_REQUEST['link'] ?? null ) );
 
-		if ( ! wp_verify_nonce( $nonce, 'myvideoroom_personalmeetingrooms_invite' ) ) {
+		if ( ! wp_verify_nonce( $nonce, self::INVITE_EMAIL_ACTION ) ) {
 			$status   = 400;
 			$response = array(
 				'success' => false,

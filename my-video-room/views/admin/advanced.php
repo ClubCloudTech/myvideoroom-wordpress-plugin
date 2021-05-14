@@ -7,30 +7,10 @@
 
 declare( strict_types=1 );
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Library\Post;
 use MyVideoRoomPlugin\Plugin;
-
-/**
- * Strips leading tabs from code, and renders in a HTML code block
- *
- * @param string $code The code to render.
- */
-function render_code( string $code ) {
-	$code_lines = explode( "\n", $code );
-
-	preg_match_all( '/\t/', $code_lines[1], $matches );
-
-	$indent_size = count( $matches[0] );
-
-	$output_code = array_map(
-		function ( $line ) use ( $indent_size ) {
-			return preg_replace( '/^\t{' . $indent_size . '}/', '', $line );
-		},
-		$code_lines
-	);
-
-	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo '<code>' . trim( implode( "\n", $output_code ) ) . '</code>';
-}
 
 /**
  * Render the admin page
@@ -42,6 +22,7 @@ return function (
 	int $id_index = 0
 ): string {
 
+	$html_lib = Factory::get_instance( HTML::class, array( 'advanced' ) );
 	ob_start();
 
 	?>
@@ -51,20 +32,20 @@ return function (
 	<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 		<ul>
 			<li>
-				<a class="nav-tab nav-tab-active" href="#myvideoroom-development-<?php echo esc_attr( $id_index ); ?>">
+				<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_lib->get_id( 'development' ) ); ?>">
 					<?php esc_html_e( 'Module API/Development', 'myvideoroom' ); ?>
 				</a>
 			</li>
 
 			<li>
-				<a class="nav-tab" href="#myvideoroom-custom-licencing-<?php echo esc_attr( $id_index ); ?>">
+				<a class="nav-tab" href="#<?php echo esc_attr( $html_lib->get_id( 'licencing' ) ); ?>">
 					<?php esc_html_e( 'Licencing', 'myvideoroom' ); ?>
 				</a>
 			</li>
 		</ul>
 	</nav>
 
-	<article class="myvideoroom-api-reference" id="myvideoroom-development-<?php echo esc_attr( $id_index ); ?>">
+	<article id="<?php echo esc_attr( $html_lib->get_id( 'development' ) ); ?>" class="myvideoroom-api-reference">
 
 		<p>
 			<?php
@@ -95,7 +76,7 @@ return function (
 
 		<?php
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		render_code(
+		echo $html_lib->render_code_block(
 			"
 			add_action(
 				'myvideoroom_init',
@@ -160,7 +141,8 @@ return function (
 					</p>
 					<p>
 						<?php
-						render_code(
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo $html_lib->render_code_block(
 							'
 							function (
 								string $slug,			// ' . esc_html__( 'The page slug to generate a url.', 'myvideoroom' ) . ' 
@@ -286,7 +268,7 @@ return function (
 		</dl>
 	</article>
 
-	<article id="myvideoroom-custom-licencing-<?php echo esc_attr( $id_index ); ?>">
+	<article id="<?php echo esc_attr( $html_lib->get_id( 'licencing' ) ); ?>">
 		<form method="post">
 			<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
@@ -330,9 +312,10 @@ return function (
 				</table>
 			</fieldset>
 
-			<input type="hidden" value="update_advanced_settings" name="myvideoroom_action" />
-			<?php wp_nonce_field( 'update_advanced_settings', 'myvideoroom_nonce' ); ?>
-			<?php submit_button(); ?>
+			<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( Post::class )->create_admin_form_submit( 'update_advanced_settings' );
+			?>
 		</form>
 	</article>
 	<?php

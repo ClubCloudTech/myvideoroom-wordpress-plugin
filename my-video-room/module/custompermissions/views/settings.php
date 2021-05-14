@@ -10,25 +10,29 @@
  *
  * @param string[] $user_permissions The list of selected user permissions
  * @param string[] $role_permissions The list of selected role permissions
- * @param integer  $id_index         A unique id to generate unique id names
  *
  * @return string
  */
+
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\HTML;
+
 return function (
 	array $user_permissions,
-	array $role_permissions,
-	int $id_index = 0
+	array $role_permissions
 ): string {
 	ob_start();
+
+	$html_lib = Factory::get_instance( HTML::class, array( 'room_builder_custom_permissions' ) );
 
 	?>
 	<fieldset class="custom-permissions">
 		<legend><?php echo esc_html__( 'Custom permissions', 'myvideoroom' ); ?></legend>
 
-		<label for="myvideoroom_room_builder_custom_permissions_users_<?php echo esc_attr( $id_index ); ?>">Users</label>
+		<label for="<?php echo esc_attr( $html_lib->get_id( 'users' ) ); ?>">Users</label>
 		<select
-				name="myvideoroom_room_builder_custom_permissions_users[]"
-				id="myvideoroom_room_builder_custom_permissions_users_<?php echo esc_attr( $id_index ); ?>"
+				name="<?php echo esc_attr( $html_lib->get_field_name( 'users' ) ); ?>[]"
+				id="<?php echo esc_attr( $html_lib->get_id( 'users' ) ); ?>"
 				multiple
 		>
 			<option value=""<?php echo $user_permissions ? '' : ' selected'; ?>>— Any —</option>
@@ -45,10 +49,10 @@ return function (
 		<br />
 		<strong>— OR —</strong>
 
-		<label for="myvideoroom_room_builder_custom_permissions_roles_<?php echo esc_attr( $id_index ); ?>">Roles</label>
+		<label for="<?php echo esc_attr( $html_lib->get_id( 'roles' ) ); ?>">Roles</label>
 		<select
-				name="myvideoroom_room_builder_custom_permissions_roles[]"
-				id="myvideoroom_room_builder_custom_permissions_roles_<?php echo esc_attr( $id_index ); ?>"
+				name="<?php echo esc_attr( $html_lib->get_field_name( 'roles' ) ); ?>[]"
+				id="<?php echo esc_attr( $html_lib->get_id( 'roles' ) ); ?>"
 				multiple
 		>
 			<option value=""<?php echo $role_permissions ? '' : ' selected'; ?>>— Any —</option>

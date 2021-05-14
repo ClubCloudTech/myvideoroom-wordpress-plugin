@@ -14,11 +14,16 @@ declare( strict_types=1 );
  * @param array   $available_receptions The list of available receptions.
  * @param integer $id_index             A unique number to ensure uniqueness of ids.
  */
+
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\HTML;
+
 return function (
 	array $available_layouts = array(),
-	array $available_receptions = array(),
-	int $id_index = 0
+	array $available_receptions = array()
 ): string {
+	$html_lib = Factory::get_instance( HTML::class, array( 'template-browser' ) );
+
 	ob_start();
 	?>
 		<h2><?php esc_html_e( 'Room template and reception design library', 'myvideoroom' ); ?></h2>
@@ -26,26 +31,26 @@ return function (
 		<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 			<ul>
 				<li>
-					<a class="nav-tab nav-tab-active" href="#myvideoroom-how-to-use-templates-<?php echo esc_attr( $id_index ); ?>">
+					<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_lib->get_id( 'usage' ) ); ?>">
 						<?php esc_html_e( 'Using Templates', 'myvideoroom' ); ?>
 					</a>
 				</li>
 
 				<li>
-					<a class="nav-tab" href="#myvideoroom-layouts-<?php echo esc_attr( $id_index ); ?>">
+					<a class="nav-tab" href="#<?php echo esc_attr( $html_lib->get_id( 'layouts' ) ); ?>">
 						<?php esc_html_e( 'Video Room Templates', 'myvideoroom' ); ?>
 					</a>
 				</li>
 
 				<li>
-					<a class="nav-tab" href="#myvideoroom-receptions-<?php echo esc_attr( $id_index ); ?>">
+					<a class="nav-tab" href="#<?php echo esc_attr( $html_lib->get_id( 'receptions' ) ); ?>">
 						<?php esc_html_e( 'Reception Templates', 'myvideoroom' ); ?>
 					</a>
 				</li>
 			</ul>
 		</nav>
 
-		<article id="myvideoroom-how-to-use-templates-<?php echo esc_attr( $id_index ); ?>">
+		<article id="<?php echo esc_attr( $html_lib->get_id( 'usage' ) ); ?>">
 			<h2><?php echo esc_html__( 'How to use MyVideoRoom templates', 'myvideoroom' ); ?></h2>
 			<p>
 				<?php
@@ -76,7 +81,7 @@ return function (
 			</p>
 		</article>
 
-		<article id="myvideoroom-layouts-<?php echo esc_attr( $id_index ); ?>">
+		<article id="<?php echo esc_attr( $html_lib->get_id( 'layouts' ) ); ?>">
 			<h2><?php echo esc_html__( 'Video room templates', 'myvideoroom' ); ?></h2>
 			<p>
 			<?php
@@ -128,7 +133,7 @@ return function (
 			</ul>
 		</article>
 
-		<article id="myvideoroom-receptions-<?php echo esc_attr( $id_index ); ?>">
+		<article id="<?php echo esc_attr( $html_lib->get_id( 'receptions' ) ); ?>">
 			<h2><?php echo esc_html__( 'Using Receptions', 'myvideoroom' ); ?></h2>
 			<p>
 			<?php

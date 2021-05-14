@@ -23,13 +23,6 @@ class RoomBuilder {
 	const PERMISSIONS_FIELD_NAME = 'use_custom_permissions';
 
 	/**
-	 * A increment in case the same element is placed on the page twice
-	 *
-	 * @var int
-	 */
-	private static int $id_index = 0;
-
-	/**
 	 * RoomBuilder constructor.
 	 */
 	public function __construct() {
@@ -167,8 +160,7 @@ class RoomBuilder {
 
 		$section = ( require __DIR__ . '/views/settings.php' )(
 			$user_permissions,
-			$role_permissions,
-			self::$id_index++
+			$role_permissions
 		);
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- All upstream variables have already been sanitised in their function.

@@ -3,6 +3,7 @@
     <description>MyVideoRoom Wordpress Plugin Standards</description>
 
     <file>my-video-room</file>
+    <file>test</file>
     <file>build.php</file>
 
     <exclude-pattern>my-video-room/module/monitor/third-party</exclude-pattern>

@@ -17,9 +17,24 @@ jQuery.noConflict()(
 			function (e) {
 				var $form = $( this );
 
+				var $submit = $( 'input[type=submit]', $form );
+
+				if ($submit.is( ":disabled" )) {
+					return;
+				}
+
+				$submit.prop( 'disabled', true );
+
 				var nonce = $( 'input[name=myvideoroom_nonce]', $form ).val();
 				var email = $( 'input[name=myvideoroom_personalmeetingrooms_invite_address]', $form ).val();
 				var link  = $( 'input[name=myvideoroom_personalmeetingrooms_invite_link]', $form ).val();
+
+				var $status = $form.siblings( 'span.status' );
+				if ( ! $status.length ) {
+					$status = $( '<span class="status"></span>' ).insertAfter( $form );
+				}
+
+				$status.removeClass( ['error', 'success'] ).html( $form.data( 'sendingText' ) );
 
 				$.ajax(
 					{
@@ -33,10 +48,18 @@ jQuery.noConflict()(
 							link: link
 						},
 						success: function( response, data) {
-							$form.after( '<span class="status success">' + response.message + '</span>' );
+							$status.removeClass( ['error', 'success'] )
+								.addClass( 'success' )
+								.html( response.message );
+
+							$submit.prop( 'disabled', false );
 						},
 						error: function ( response ) {
-							$form.after( '<span class="status error">' + response.responseJSON.message + '</span>' );
+							$status.removeClass( ['error', 'success'] )
+								.addClass( 'error' )
+								.html( response.responseJSON.message );
+
+							$submit.prop( 'disabled', false );
 						}
 					}
 				);

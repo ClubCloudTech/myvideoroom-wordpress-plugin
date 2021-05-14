@@ -15,15 +15,13 @@ use MyVideoRoomPlugin\Reference\Shortcode;
  * Render the shortcode reference page
  *
  * @param Shortcode $shortcode The shortcode reference.
- * @param integer   $id_index  A unique number to ensure uniqueness of ids.
+ * @param string    $id        A unique id for this section.
  */
 return function (
 	Shortcode $shortcode,
-	int $id_index = 0
+	string $id
 ): string {
 	ob_start();
-
-	$id = str_replace( '_', '-', $shortcode->get_shortcode_tag() ) . '-' . $id_index;
 
 	?>
 	<article id="<?php echo esc_attr( $id ); ?>">

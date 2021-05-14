@@ -36,13 +36,6 @@ class Admin {
 	private array $notices = array();
 
 	/**
-	 * A increment in case the same element is placed on the page twice
-	 *
-	 * @var int
-	 */
-	private static int $id_index = 0;
-
-	/**
 	 * The list of navigation items
 	 *
 	 * @var array
@@ -226,8 +219,7 @@ class Admin {
 
 		return ( require __DIR__ . '/views/admin/template-browser.php' )(
 			$available_layouts,
-			$available_receptions,
-			self::$id_index++
+			$available_receptions
 		);
 	}
 
@@ -248,10 +240,7 @@ class Admin {
 			}
 		);
 
-		return ( require __DIR__ . '/views/admin/reference.php' )(
-			$shortcodes,
-			self::$id_index++
-		);
+		return ( require __DIR__ . '/views/admin/reference.php' )( $shortcodes );
 	}
 
 
@@ -269,7 +258,7 @@ class Admin {
 			foreach ( array_keys( $all_roles ) as $role_name ) {
 				$role = get_role( $role_name );
 
-				if ( $post_library->get_checkbox_post_parameter( 'role_' . $role_name ) ) {
+				if ( $post_library->get_checkbox_post_parameter( 'permissions_role_' . $role_name ) ) {
 					$role->add_cap( Plugin::CAP_GLOBAL_HOST );
 				} else {
 					$role->remove_cap( Plugin::CAP_GLOBAL_HOST );
@@ -389,7 +378,7 @@ class Admin {
 
 		$video_server = Factory::get_instance( Endpoints::class )->get_server_endpoint();
 
-		return ( require __DIR__ . '/views/admin/advanced.php' )( $video_server, self::$id_index++ );
+		return ( require __DIR__ . '/views/admin/advanced.php' )( $video_server );
 	}
 
 	/**

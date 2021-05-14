@@ -7,6 +7,8 @@
 
 declare( strict_types=1 );
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\ValueObject\GettingStarted;
 
@@ -19,6 +21,8 @@ return function (
 	GettingStarted $getting_started_steps
 ): string {
 	ob_start();
+
+	$html_lib = Factory::get_instance( HTML::class, array( 'room_builder' ) );
 
 	?>
 	<h2><?php echo esc_html__( 'Getting started with MyVideoRoom', 'myvideoroom' ); ?></h2>
@@ -75,7 +79,7 @@ return function (
 
 		<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
-		<label for="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>">
+		<label for="<?php echo esc_attr( $html_lib->get_id( 'activation-key' ) ); ?>">
 			<?php esc_html_e( 'Your activation key', 'myvideoroom' ); ?>
 		</label>
 		<input
@@ -83,7 +87,7 @@ return function (
 			type="text"
 			name="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
 			placeholder="<?php echo esc_html( $placeholder ); ?>"
-			id="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+			id="<?php echo esc_attr( $html_lib->get_id( 'activation-key' ) ); ?>"
 		/>
 
 		<?php

@@ -27,13 +27,6 @@ class Module {
 	const PAGE_SLUG_BUILDER = 'my-video-room-builder';
 
 	/**
-	 * A increment in case the same element is placed on the page twice
-	 *
-	 * @var int
-	 */
-	private static int $id_index = 0;
-
-	/**
 	 * Install the shortcode
 	 */
 	public function __construct() {
@@ -174,8 +167,7 @@ class Module {
 		$output = ( require __DIR__ . '/views/settings.php' )(
 			$available_layouts,
 			$available_receptions,
-			$shortcode_constructor,
-			self::$id_index++
+			$shortcode_constructor
 		);
 
 		// --

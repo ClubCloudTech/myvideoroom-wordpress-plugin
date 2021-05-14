@@ -7,6 +7,9 @@
 
 declare( strict_types=1 );
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Library\Post;
 use MyVideoRoomPlugin\Plugin;
 
 /**
@@ -18,6 +21,9 @@ return function (
 	array $all_wp_roles = array()
 ): string {
 	ob_start();
+
+	$html_lib = Factory::get_instance( HTML::class, array( 'permissions' ) );
+
 	?>
 	<h2><?php esc_html_e( 'Default room permissions', 'myvideoroom' ); ?></h2>
 
@@ -51,15 +57,15 @@ return function (
 				?>
 					<tr<?php echo $index % 2 ? ' class="alternate"' : ''; ?>>
 						<th scope="row">
-							<label for="role_<?php echo esc_attr( $role_name ); ?>">
+							<label for="<?php echo esc_attr( $html_lib->get_id( 'role_' . $role_name ) ); ?>">
 								<?php echo esc_html( $role_details['name'] ); ?>
 							</label>
 						</th>
 
 						<td>
 							<input class="myvideoroom-admin-table-format"
-								id="role_<?php echo esc_attr( $role_name ); ?>"
-								name="myvideoroom_role_<?php echo esc_attr( $role_name ); ?>"
+								id="<?php echo esc_attr( $html_lib->get_id( 'role_' . $role_name ) ); ?>"
+								name="<?php echo esc_attr( $html_lib->get_field_name( 'role_' . $role_name ) ); ?>"
 								type="checkbox"<?php echo $has_host_cap ? ' checked="checked" ' : ''; ?>"
 								value="on"
 							/>
@@ -72,9 +78,10 @@ return function (
 			</table>
 		</fieldset>
 
-		<input type="hidden" value="update_permissions" name="myvideoroom_action" />
-		<?php wp_nonce_field( 'update_permissions', 'myvideoroom_nonce' ); ?>
-		<?php submit_button(); ?>
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo Factory::get_instance( Post::class )->create_admin_form_submit( 'update_permissions' );
+		?>
 	</form>
 
 	<?php

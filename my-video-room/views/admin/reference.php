@@ -7,19 +7,22 @@
 
 declare( strict_types=1 );
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Reference\Shortcode;
 
 /**
  * Render the shortcode reference page
  *
  * @param Shortcode[] $shortcodes A list of shortcode
- * @param integer     $id_index   A unique number to ensure uniqueness of ids.
  */
 return function (
-	array $shortcodes = array(),
-	int $id_index = 0
+	array $shortcodes = array()
 ): string {
 	$reference_section_render = require __DIR__ . '/reference-section.php';
+	$reference_sections       = array();
+
+	$html_lib = Factory::get_instance( HTML::class, array( 'reference' ) );
 
 	ob_start();
 
@@ -43,11 +46,12 @@ return function (
 			$active_class = ' nav-tab-active';
 
 			foreach ( $shortcodes as $shortcode ) {
-				$id = '#' . str_replace( '_', '-', $shortcode->get_shortcode_tag() ) . '-' . $id_index;
+				$id                   = $html_lib->get_id( $shortcode->get_shortcode_tag() );
+				$reference_sections[] = $reference_section_render( $shortcode, $id );
 
 				?>
 					<li>
-						<a class="nav-tab<?php echo esc_attr( $active_class ); ?>" href="<?php echo esc_attr( $id ); ?>">
+						<a class="nav-tab<?php echo esc_attr( $active_class ); ?>" href="#<?php echo esc_attr( $id ); ?>">
 							<?php echo esc_html( $shortcode->get_name() ); ?>
 						</a>
 					</li>
@@ -60,9 +64,9 @@ return function (
 	</nav>
 
 	<?php
-	foreach ( $shortcodes as $shortcode ) {
+	foreach ( $reference_sections as $reference_section ) {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Escaping is handled by the shortcode reference render function
-		echo $reference_section_render( $shortcode, $id_index );
+		echo $reference_section;
 	}
 	?>
 

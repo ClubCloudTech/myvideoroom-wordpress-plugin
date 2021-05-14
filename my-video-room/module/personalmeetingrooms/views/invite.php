@@ -17,12 +17,19 @@
  *
  * @return string
  */
+
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Library\Post;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Module;
+
 return function (
 	string $url,
 	?string $message,
-	?bool $success,
-	int $id_index = 0
+	?bool $success
 ): string {
+	$html_lib = Factory::get_instance( HTML::class, array( 'personalmeetingrooms_invite' ) );
+
 	ob_start();
 	?>
 
@@ -45,20 +52,21 @@ return function (
 			);
 			?>
 		</p>
-		<form action="" method="post">
-			<label for="myvideoroom_personalmeetingrooms_invite_address_<?php echo esc_attr( $id_index ); ?>">Email address</label>
+		<form action="" method="post" data-sending-text="Sending...">
+			<label for="<?php echo esc_attr( $html_lib->get_id( 'address' ) ); ?>">Email address</label>
 			<input
 				type="email"
 				placeholder="<?php esc_html_e( 'Email address' ); ?>"
-				id="myvideoroom_personalmeetingrooms_invite_address_<?php echo esc_attr( $id_index ); ?>"
-				name="myvideoroom_personalmeetingrooms_invite_address"
+				id="<?php echo esc_attr( $html_lib->get_id( 'address' ) ); ?>"
+				name="<?php esc_attr( $html_lib->get_field_name( 'address' ) ); ?>"
 			/>
 
-			<input type="hidden" value="<?php echo esc_html( $url ); ?>" name="myvideoroom_personalmeetingrooms_invite_link" />
+			<input type="hidden" value="<?php echo esc_html( $url ); ?>" name="<?php esc_attr( $html_lib->get_field_name( 'link' ) ); ?>" />
 
-			<input type="hidden" value="myvideoroom_personalmeetingrooms_invite" name="myvideoroom_action" />
-			<?php wp_nonce_field( 'myvideoroom_personalmeetingrooms_invite', 'myvideoroom_nonce' ); ?>
-			<input type="submit" value="<?php esc_html_e( 'Send link' ); ?>">
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo Factory::get_instance( Post::class )->create_form_submit( Module::INVITE_EMAIL_ACTION, esc_html__( 'Send link', 'myvideoroom' ) );
+			?>
 		</form>
 
 		<?php
