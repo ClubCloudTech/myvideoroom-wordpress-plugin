@@ -9,9 +9,6 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\RoomBuilder\Settings;
 
-use MyVideoRoomPlugin\Library\AdminNavigation;
-use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
-
 /**
  * Class Reference
  */

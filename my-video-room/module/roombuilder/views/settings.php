@@ -5,7 +5,7 @@
  * @package MyVideoRoomPlugin\Module\RoomBuilder
  */
 
-use MyVideoRoomPlugin\Library\AdminNavigation;
+use MyVideoRoomPlugin\Admin\Navigation;
 use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
@@ -141,7 +141,7 @@ return function (
 				<br />
 				<em id="<?php echo esc_attr( $html_lib->get_description_id( 'layout_id_preference' ) ); ?>">
 					<?php
-					$layouts_page   = menu_page_url( AdminNavigation::PAGE_SLUG_ROOM_TEMPLATES, false );
+					$layouts_page   = menu_page_url( Navigation::PAGE_SLUG_ROOM_TEMPLATES, false );
 					$layouts_target = '';
 
 					if ( ! $layouts_page ) {
@@ -256,7 +256,7 @@ return function (
 					<em id="<?php echo esc_attr( $html_lib->get_description_id( 'reception_id_preference' ) ); ?>">
 						<?php
 
-						$receptions_page   = menu_page_url( AdminNavigation::PAGE_SLUG_ROOM_TEMPLATES, false );
+						$receptions_page   = menu_page_url( Navigation::PAGE_SLUG_ROOM_TEMPLATES, false );
 						$receptions_target = '';
 
 						if ( ! $receptions_page ) {

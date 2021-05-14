@@ -9,7 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\ValueObject;
 
-use MyVideoRoomPlugin\Library\AdminNavigation;
+use MyVideoRoomPlugin\Admin\Navigation;
 use MyVideoRoomPlugin\ValueObject\GettingStarted\Step;
 
 /**
@@ -47,7 +47,7 @@ class GettingStarted {
 				sprintf(
 				/* translators: %s is the text "templates" and links to the Template Section */
 					esc_html__( 'Learn about using %s for video layouts and receptions to find something you like.', 'myvideoroom' ),
-					'<a href="' . esc_url( menu_page_url( AdminNavigation::PAGE_SLUG_ROOM_TEMPLATES, false ) ) . '">' .
+					'<a href="' . esc_url( menu_page_url( Navigation::PAGE_SLUG_ROOM_TEMPLATES, false ) ) . '">' .
 					esc_html__( 'templates', 'myvideoroom' ) .
 					'</a>'
 				),
@@ -58,7 +58,7 @@ class GettingStarted {
 				sprintf(
 				/* translators: %s is the text "Room Permissions" and links to the Permissions Section */
 					esc_html__( 'Visit the %s page to plan how you want to give access to your rooms.', 'myvideoroom' ),
-					'<a href="' . esc_url( menu_page_url( AdminNavigation::PAGE_SLUG_PERMISSIONS, false ) ) . '">' .
+					'<a href="' . esc_url( menu_page_url( Navigation::PAGE_SLUG_PERMISSIONS, false ) ) . '">' .
 					esc_html__( 'room permission', 'myvideoroom' ) . '</a>'
 				),
 			),

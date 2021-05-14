@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Library\AdminNavigation;
+use MyVideoRoomPlugin\Admin\Navigation;
 use MyVideoRoomPlugin\Module\Module;
 use MyVideoRoomPlugin\ValueObject\Notice;
 
@@ -85,7 +85,7 @@ return function (
 		if ( $module ) {
 			$module_url = add_query_arg(
 				array( 'module' => $module->get_slug() ),
-				menu_page_url( AdminNavigation::PAGE_SLUG_MODULES, false )
+				menu_page_url( Navigation::PAGE_SLUG_MODULES, false )
 			);
 
 			?>

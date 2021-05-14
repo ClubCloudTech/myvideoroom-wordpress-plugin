@@ -7,14 +7,14 @@
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Library;
+namespace MyVideoRoomPlugin\Admin;
 
 use MyVideoRoomPlugin\Admin;
 
 /**
- * Class Admin Navigation
+ * Class Navigation
  */
-class AdminNavigation {
+class Navigation {
 
 	const PAGE_SLUG_GETTING_STARTED = 'my-video-room';
 	const PAGE_SLUG_ROOM_TEMPLATES  = 'my-video-room-templates';

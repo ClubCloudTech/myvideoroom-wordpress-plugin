@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
+use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Library\Module;
 
 /**
@@ -70,12 +71,10 @@ class Activation {
 		Module::load_built_in_modules();
 		do_action( 'myvideoroom_init' );
 
-		$module_library = Factory::get_instance( Module::class );
-
-		$room_builder_module = $module_library->get_module( 'roombuilder' );
+		$room_builder_module = Factory::get_instance( Module::class )->get_module( 'roombuilder' );
 
 		if ( $room_builder_module ) {
-			$module_library->activate_module( $room_builder_module );
+			Factory::get_instance( Modules::class )->activate_module( $room_builder_module );
 		}
 
 		return $this;

@@ -7,8 +7,8 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Admin;
-use MyVideoRoomPlugin\Library\AdminNavigation;
+use MyVideoRoomPlugin\Admin\Modules;
+use MyVideoRoomPlugin\Admin\Navigation;
 use MyVideoRoomPlugin\Module\Module;
 
 /**
@@ -49,7 +49,7 @@ return function (
 		<tbody id="the-list">
 		<?php
 
-		$base_url = menu_page_url( AdminNavigation::PAGE_SLUG_MODULES, false );
+		$base_url = menu_page_url( Navigation::PAGE_SLUG_MODULES, false );
 
 		foreach ( $modules as $key => $module ) {
 			if ( $module->is_active() ) {
@@ -63,8 +63,8 @@ return function (
 			$deactivate_url = add_query_arg(
 				array(
 					'module'   => $key,
-					'action'   => Admin::MODULE_ACTION_DEACTIVATE,
-					'_wpnonce' => wp_create_nonce( 'module_' . Admin::MODULE_ACTION_DEACTIVATE ),
+					'action'   => Modules::MODULE_ACTION_DEACTIVATE,
+					'_wpnonce' => wp_create_nonce( 'module_' . Modules::MODULE_ACTION_DEACTIVATE ),
 				),
 				$base_url
 			);
@@ -72,8 +72,8 @@ return function (
 			$activate_url = add_query_arg(
 				array(
 					'module'   => $key,
-					'action'   => Admin::MODULE_ACTION_ACTIVATE,
-					'_wpnonce' => wp_create_nonce( 'module_' . Admin::MODULE_ACTION_ACTIVATE ),
+					'action'   => Modules::MODULE_ACTION_ACTIVATE,
+					'_wpnonce' => wp_create_nonce( 'module_' . Modules::MODULE_ACTION_ACTIVATE ),
 				),
 				$base_url
 			);

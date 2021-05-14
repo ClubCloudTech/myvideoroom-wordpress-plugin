@@ -9,7 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
-use MyVideoRoomPlugin\Library\AdminNavigation;
+use MyVideoRoomPlugin\Admin\Navigation;
 use MyVideoRoomPlugin\Library\Module;
 
 /**
@@ -27,7 +27,6 @@ class Plugin {
 	public const SETTING_ACTIVATED_MODULES = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activated_modules';
 
 	public const CAP_GLOBAL_HOST = 'myvideoroom-global-host';
-
 
 	/**
 	 * Plugin constructor.
@@ -80,8 +79,8 @@ class Plugin {
 	 */
 	public function add_action_links( array $actions ): array {
 		$links = array(
-			'Settings'  => menu_page_url( AdminNavigation::PAGE_SLUG_GETTING_STARTED, false ),
-			'Reference' => menu_page_url( AdminNavigation::PAGE_SLUG_REFERENCE, false ),
+			'Settings'  => menu_page_url( Navigation::PAGE_SLUG_GETTING_STARTED, false ),
+			'Reference' => menu_page_url( Navigation::PAGE_SLUG_REFERENCE, false ),
 			'Support'   => 'https://clubcloud.tech',
 		);
 

@@ -9,7 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\RoomBuilder\Settings;
 
-use MyVideoRoomPlugin\Library\AdminNavigation;
+use MyVideoRoomPlugin\Admin\Navigation;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 
 /**
@@ -36,7 +36,7 @@ class RoomPermissions {
 						'When selected the permission of hosts and guests will be determined by the global settings. This means that you only need to only have one page, with a single shortcode. You can customise the global host settings in the %s page.',
 						'myvideoroom'
 					),
-					'<a href="' . esc_url( menu_page_url( AdminNavigation::PAGE_SLUG_PERMISSIONS, false ) ) . '">' .
+					'<a href="' . esc_url( menu_page_url( Navigation::PAGE_SLUG_PERMISSIONS, false ) ) . '">' .
 					esc_html__( 'room permissions', 'myvideoroom' ) .
 					'</a>'
 				),
