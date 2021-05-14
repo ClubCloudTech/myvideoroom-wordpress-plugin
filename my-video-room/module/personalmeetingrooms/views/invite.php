@@ -7,63 +7,77 @@
  * @return string
  */
 
-/**
- * Output the invite link for a personal meeting room
- *
- * @param string  $url      The invite url.
- * @param ?string $message  The success/failure message.
- * @param bool    $success  The status.
- * @param integer $id_index A unique id to generate unique id names.
- *
- * @return string
- */
-
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\Post;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Module;
 
+
+/**
+ * Output the invite link for a personal meeting room
+ *
+ * @param string  $url                The invite url.
+ * @param ?bool   $show_icons         If we should show icons instead of labels.
+ * @param ?bool   $invert_icon_colors If we should show invert the icon colors.
+ * @param ?string $message            The success/failure message.
+ * @param bool    $success            The status.
+ *
+ * @return string
+ */
 return function (
 	string $url,
+	?bool $show_icons,
+	?bool $invert_icon_colors,
 	?string $message,
 	?bool $success
 ): string {
 	$html_lib = Factory::get_instance( HTML::class, array( 'personalmeetingrooms_invite' ) );
 
+	$main_class = 'myvideoroom-personalmeetingrooms-invite';
+
+	if ( $show_icons ) {
+		$main_class .= ' icon';
+	}
+
+	if ( $show_icons ) {
+		$main_class .= ' invert';
+	}
 	ob_start();
 	?>
 
-	<div class="myvideoroom-personalmeetingrooms-invite">
+	<div class="<?php echo esc_attr( $main_class ); ?>">
 		<p>
 			<?php
 			esc_html_e(
-				'You can invite people to your personal meeting room using the following link:',
+				'Invite someone to your personal meeting:',
 				'myvideoroom'
 			);
 			?>
 		</p>
-		<div class="link">
-		<?php echo esc_html( $url ); ?>
-		</div>
 
-		<p>
-			<?php
-			esc_html_e(
-				'Or email the link to them.',
-				'myvideoroom'
-			);
-			?>
-		</p>
-		<form action="" method="post" data-sending-text="Sending...">
+		<span
+			class="link"
+			data-copy-text="<?php esc_attr_e( 'Copy to clipboard', 'myvideoroom' ); ?>"
+			data-copied-text="<?php esc_attr_e( 'Copied!', 'myvideoroom' ); ?>"
+		>
+		<?php echo esc_html( $url ); ?>
+		</span>
+
+		<form action="" method="post" data-sending-text="<?php esc_attr_e( 'Sending...', 'myvideoroom' ); ?>">
 			<label for="<?php echo esc_attr( $html_lib->get_id( 'address' ) ); ?>">Email address</label>
 			<input
 				type="email"
 				placeholder="<?php esc_html_e( 'Email address' ); ?>"
 				id="<?php echo esc_attr( $html_lib->get_id( 'address' ) ); ?>"
-				name="<?php esc_attr( $html_lib->get_field_name( 'address' ) ); ?>"
+				name="<?php echo esc_attr( $html_lib->get_field_name( 'address' ) ); ?>"
+				required
 			/>
 
-			<input type="hidden" value="<?php echo esc_html( $url ); ?>" name="<?php esc_attr( $html_lib->get_field_name( 'link' ) ); ?>" />
+			<input
+				type="hidden"
+				value="<?php echo esc_html( $url ); ?>"
+				name="<?php echo esc_attr( $html_lib->get_field_name( 'link' ) ); ?>"
+			/>
 
 			<?php
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

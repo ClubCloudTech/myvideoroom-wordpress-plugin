@@ -15,6 +15,7 @@ use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\Post;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Plugin;
+use WP_Error;
 
 /**
  * Class Module
@@ -25,13 +26,6 @@ class Module {
 	const SHORTCODE_TAG     = AppShortcode::SHORTCODE_TAG . '_personal_invite';
 
 	const INVITE_EMAIL_ACTION = 'personalmeetingrooms_invite';
-
-	/**
-	 * A increment in case the same element is placed on the page twice
-	 *
-	 * @var int
-	 */
-	private static int $id_index = 0;
 
 	/**
 	 * MonitorShortcode constructor.
@@ -110,15 +104,19 @@ class Module {
 			$url_param = 'invite';
 		}
 
+		$show_icons         = ( 'true' === ( $attributes['icon'] ?? '' ) );
+		$invert_icon_colors = ( 'true' === ( $attributes['invert'] ?? '' ) );
+
 		$base_url = home_url( $wp->request );
 		$params   = array( $url_param => $meeting_hash );
 		$url      = add_query_arg( $params, $base_url );
 
 		return ( require __DIR__ . '/views/invite.php' )(
 			$url,
+			$show_icons,
+			$invert_icon_colors,
 			$success,
-			$message,
-			self::$id_index++
+			$message
 		);
 	}
 
@@ -262,11 +260,11 @@ class Module {
 	 */
 	private function send_invite_email( string $email_address, string $invite_link ): bool {
 		$site_name     = get_bloginfo();
-		$email_from    = wp_get_current_user()->user_login;
+		$email_from    = wp_get_current_user()->display_name;
 		$email_subject = sprintf(
 			/* translators: %s is the name of the person sending the email */
 			esc_html__(
-				'%s would like you to join a video meeting',
+				'%s would like you to join a video meeting.',
 				'my-video-room'
 			),
 			esc_html( $email_from )
@@ -275,6 +273,27 @@ class Module {
 		$message = ( require __DIR__ . '/views/emailmessage.php' )( $invite_link, $site_name );
 		$headers = 'Content-type: text/html;charset=utf-8' . "\r\n";
 
-		return wp_mail( $email_address, $email_subject, $message, $headers );
+		add_action( 'wp_mail_failed', array( $this, 'on_mail_failure' ) );
+		$success = wp_mail( $email_address, $email_subject, $message, $headers );
+		remove_action( 'wp_mail_failed', array( $this, 'on_mail_failure' ) );
+
+		return $success;
+	}
+
+	/**
+	 * On email failure
+	 *
+	 * @param WP_Error $wp_error
+	 */
+	public function on_mail_failure( WP_Error $wp_error ) {
+		if (
+			defined( 'WP_DEBUG' ) &&
+			WP_DEBUG &&
+			defined( 'WP_DEBUG_LOG' ) &&
+			WP_DEBUG_LOG
+		) {
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- This is only in debug mode
+			error_log( $wp_error->get_error_message() );
+		}
 	}
 }

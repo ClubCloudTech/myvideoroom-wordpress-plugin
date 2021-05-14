@@ -10,16 +10,30 @@ jQuery.noConflict()(
 	function () {
 		var $ = jQuery.noConflict();
 
-		var $targetdiv    = $( '.myvideoroom-personalmeetingrooms-invite .link' );
-		var targetdivhtml = $targetdiv.html();
-		var $copybutton   = $( '<button class="myvideoroom-header-copy-link">Copy Link</button>' )
-		$targetdiv.after( $copybutton )
-		$copybutton.on(
-			'click',
-			function(){
-				navigator.clipboard.writeText( targetdivhtml );
-			}
-		)
+		var $link_container = $( '.myvideoroom-personalmeetingrooms-invite .link' );
+		var link_url        = $link_container.html().trim();
+
+		$( '<input type="button" value="' + $link_container.data( 'copyText' ) + '" />' )
+			.appendTo( $link_container ).on(
+				'click',
+				function() {
+					var $copy_button = $( this );
+					navigator.clipboard.writeText( link_url ).then(
+						function () {
+							$copy_button.val( $link_container.data( 'copiedText' ) )
+								.addClass( 'success' );
+
+							setTimeout(
+								function () {
+									$copy_button.val( $link_container.data( 'copyText' ) )
+										.removeClass( 'success' );
+								},
+								1500
+							)
+						}
+					);
+				}
+			);
 
 		var $invite_form = $( '.myvideoroom-personalmeetingrooms-invite form' );
 		var ajax_url     = myvideroom_personalmeetingrooms_invite.ajax_url;
