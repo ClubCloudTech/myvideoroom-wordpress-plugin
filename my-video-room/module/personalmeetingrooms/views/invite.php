@@ -42,11 +42,9 @@ return function (
 			);
 			?>
 		</p>
-		<div class="myvideoroom-personalmeetingrooms-invite-link" id="myvideoroom-personalmeetingrooms-invite-link">
+		<div class="link">
 		<?php echo esc_html( $url ); ?>
 		</div>
-		
-		<button class="mvr-header-copy-link" onclick="copyTextFromElement('myvideoroom-personalmeetingrooms-invite-link')"><?php esc_html_e( 'Copy link' ); ?></button>
 
 		<p>
 			<?php
@@ -81,15 +79,6 @@ return function (
 		}
 		?>
 	</div>
-	<script>function copyTextFromElement(elementID) {
-			let element = document.getElementById(elementID);
-			let elementText = element.textContent;
-			copyText(elementText);
-			}
-			function copyText(text) {
-			navigator.clipboard.writeText(text);
-			}
-	</script>
 	<?php
 
 	return ob_get_clean();

@@ -7,22 +7,19 @@
 .myvideoroom-personalmeetingrooms-invite-link{
 	color: green;
 }
-.myvideoroom-personalmeetingrooms-invite-form{
+.myvideoroom-personalmeetingrooms-invite form{
 	max-width: 400px;
 }
 #myvideoroom_personalmeetingrooms_invite_address_0{
 	background-color: white!important;
 }
-#main > div > div > div > section.elementor-section.elementor-top-section.elementor-element.elementor-element-66ef96f.elementor-section-boxed.elementor-section-height-default.elementor-section-height-default > div > div > div > div > div > div > div > div > div > button,
-#main > div > div > div > section.elementor-section.elementor-top-section.elementor-element.elementor-element-66ef96f.elementor-section-boxed.elementor-section-height-default.elementor-section-height-default > div > div > div > div > div > div > div > div > div > form > input.myvideoroom-personalmeetingrooms-invite-send{
+.myvideoroom-personalmeetingrooms-invite button, 
+.myvideoroom-personalmeetingrooms-invite .myvideoroom-personalmeetingrooms-invite-send
+{
 	padding: 10px;
-	background-color: rgb(28, 112, 0);
 	margin-top: 5px;
 	text-transform: uppercase;
 	color: white;
 	border: none;
-	font-family: Arial, Helvetica, sans-serif;
-	font-weight: 500;
-	font-size: small;
 	line-height: 13px;
 }

@@ -8,7 +8,16 @@
 
 jQuery.noConflict()(
 	function () {
-		var $            = jQuery.noConflict();
+		var $             = jQuery.noConflict();
+		
+		var $targetdiv    = $('.myvideoroom-personalmeetingrooms-invite .link');
+		var targetdivhtml = $targetdiv.html();
+		var $copybutton   = $('<button class="myvideoroom-header-copy-link">Copy Link</button>')
+		$targetdiv.after($copybutton)
+		$copybutton.on('click',function(){ 
+			navigator.clipboard.writeText(targetdivhtml); 
+		})
+
 		var $invite_form = $( '.myvideoroom-personalmeetingrooms-invite form' );
 		var ajax_url     = myvideroom_personalmeetingrooms_invite.ajax_url;
 
