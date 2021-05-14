@@ -113,9 +113,9 @@ class IDGeneratorTest extends TestCase {
 	 * @return integer
 	 */
 	private function verify_id( int $index ): int {
-		$id = Factory::get_instance( HTML::class, array( 'myvideoroom' ) )->get_id( 'test' );
+		$id = Factory::get_instance( HTML::class, array( 'test' ) )->get_id( 'item' );
 
-		$suffix = explode( '_', $id )[2];
+		$suffix = explode( '_', $id )[3];
 
 		$this->assertEquals( HTML::ID_LENGTH, strlen( $suffix ) );
 
