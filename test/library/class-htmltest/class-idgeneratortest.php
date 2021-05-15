@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
  * Class HtmlTest/IDGeneratorTest
  */
 class IDGeneratorTest extends TestCase {
-
 	/**
 	 * Reset the HTML after each test
 	 */
@@ -38,10 +37,11 @@ class IDGeneratorTest extends TestCase {
 	 * @uses \MyVideoRoomPlugin\Factory::get_instance()
 	 */
 	public function id_generator_creates_unique_strings() {
+		$start               = HTML::get_or_create_current_index();
 		$iterations_to_check = 100;
 		$suffixes            = array();
 
-		for ( $i = 0; $i < $iterations_to_check; ++$i ) {
+		for ( $i = $start; $i < $start + $iterations_to_check; ++$i ) {
 			$suffix_id = $this->verify_id( $i );
 			$this->assertArrayNotHasKey( $suffix_id, $suffixes );
 			$suffixes[ $suffix_id ] = true;

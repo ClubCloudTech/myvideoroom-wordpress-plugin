@@ -22,9 +22,9 @@ class HTML {
 	/**
 	 * The current index of the ID generator
 	 *
-	 * @var int
+	 * @var ?int
 	 */
-	private static int $id_index = 0;
+	private static ?int $id_index = null;
 
 	/**
 	 * The current cached ID suffix
@@ -41,6 +41,19 @@ class HTML {
 	private string $identifier;
 
 	/**
+	 * Get the current index, if null then create it
+	 *
+	 * @return integer
+	 */
+	public static function get_or_create_current_index(): int {
+		if ( ! self::$id_index ) {
+			self::$id_index = (int) wp_rand( 1, 10 ** self::ID_LENGTH - 1 );
+		}
+
+		return self::$id_index;
+	}
+
+	/**
 	 * HTML constructor.
 	 *
 	 * @param string $identifier The unique identifier for this element's parent.
@@ -48,13 +61,15 @@ class HTML {
 	 * @throws Exception If we've tried to generate too many IDs.
 	 */
 	public function __construct( string $identifier ) {
+		$current_index = self::get_or_create_current_index();
+
 		$this->identifier = Plugin::PLUGIN_NAMESPACE . '_' . $this->sanitize_name( $identifier );
 
-		if ( self::$id_index > 10 ** self::ID_LENGTH ) {
+		if ( $current_index > 10 ** self::ID_LENGTH ) {
 			throw new Exception( 'Cannot exceed maximum ID count' );
 		}
 
-		$seed = ( self::$id_index * 99 );
+		$seed = ( $current_index * 99 );
 
 		while ( $seed > 10 ** self::ID_LENGTH ) {
 			$seed -= 10 ** self::ID_LENGTH;

@@ -270,7 +270,7 @@ class Module {
 			esc_html( $email_from )
 		);
 
-		$message = ( require __DIR__ . '/views/emailmessage.php' )( $invite_link, $site_name );
+		$message = ( require __DIR__ . '/views/emailmessage.php' )( $invite_link, $site_name, $email_from );
 		$headers = 'Content-type: text/html;charset=utf-8' . "\r\n";
 
 		add_action( 'wp_mail_failed', array( $this, 'on_mail_failure' ) );
@@ -283,7 +283,7 @@ class Module {
 	/**
 	 * On email failure
 	 *
-	 * @param WP_Error $wp_error
+	 * @param WP_Error $wp_error The WordPress error message
 	 */
 	public function on_mail_failure( WP_Error $wp_error ) {
 		if (
