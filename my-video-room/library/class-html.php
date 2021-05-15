@@ -20,6 +20,13 @@ class HTML {
 	const ID_LENGTH = 3;
 
 	/**
+	 * The start index of the ID generator
+	 *
+	 * @var ?int
+	 */
+	private static ?int $start_index = null;
+
+	/**
 	 * The current index of the ID generator
 	 *
 	 * @var ?int
@@ -46,8 +53,9 @@ class HTML {
 	 * @return integer
 	 */
 	public static function get_or_create_current_index(): int {
-		if ( ! self::$id_index ) {
-			self::$id_index = (int) wp_rand( 1, 10 ** self::ID_LENGTH - 1 );
+		if ( ! self::$start_index ) {
+			self::$start_index = (int) ( wp_rand( 1, 10 ** self::ID_LENGTH - 1 ) );
+			self::$id_index    = (int) ( wp_rand( 1, 10 ** self::ID_LENGTH - 1 ) );
 		}
 
 		return self::$id_index;
@@ -65,7 +73,7 @@ class HTML {
 
 		$this->identifier = Plugin::PLUGIN_NAMESPACE . '_' . $this->sanitize_name( $identifier );
 
-		if ( $current_index > 10 ** self::ID_LENGTH ) {
+		if ( ( $current_index - self::$start_index ) > 10 ** self::ID_LENGTH ) {
 			throw new Exception( 'Cannot exceed maximum ID count' );
 		}
 
@@ -106,7 +114,8 @@ class HTML {
 			throw new Exception( 'Cannot exceed maximum ID count' );
 		}
 
-		self::$id_index = $id_index;
+		self::$id_index    = $id_index;
+		self::$start_index = $id_index;
 	}
 
 	/**
@@ -115,7 +124,8 @@ class HTML {
 	 * @throws Exception Always throws an exception, if you are using a test you can handle this.
 	 */
 	public static function reset() {
-		self::$id_index = 0;
+		self::$id_index    = 0;
+		self::$start_index = 0;
 
 		throw new Exception( 'This is likely to lean to collision - probably only for tests!' );
 	}
