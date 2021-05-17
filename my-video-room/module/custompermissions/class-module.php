@@ -21,10 +21,10 @@ class Module {
 	 * MonitorShortcode constructor.
 	 */
 	public function __construct() {
-		add_filter( 'myvideoroom_shortcode_constructor', array( $this, 'modify_shortcode_constructor' ), 0, 2 );
+		\add_filter( 'myvideoroom_shortcode_constructor', array( $this, 'modify_shortcode_constructor' ), 0, 2 );
 
 		$roombuilder_is_active = Factory::get_instance( \MyVideoRoomPlugin\Library\Module::class )
-										->is_module_active( 'roombuilder' );
+			->is_module_active( 'roombuilder' );
 
 		if ( $roombuilder_is_active ) {
 			new RoomBuilder();
@@ -42,23 +42,23 @@ class Module {
 		$host = $shortcode_constructor->get_custom_string_param( 'host' );
 
 		if (
-			is_string( $host ) &&
+			\is_string( $host ) &&
 			(
-				strpos( $host, 'users:' ) === 0 ||
-				strpos( $host, 'roles:' ) === 0
+				\strpos( $host, 'users:' ) === 0 ||
+				\strpos( $host, 'roles:' ) === 0
 			)
 		) {
-			$host_types = explode( ';', $host );
+			$host_types = \explode( ';', $host );
 
 			$host_users  = array();
 			$host_groups = array();
 
 			foreach ( $host_types as $host_type ) {
-				$type_parts = explode( ':', $host_type );
+				$type_parts = \explode( ':', $host_type );
 
 				switch ( $type_parts[0] ) {
 					case 'users':
-						$host_users = explode( ',', $type_parts[1] );
+						$host_users = \explode( ',', $type_parts[1] );
 						break;
 					case 'roles':
 						$host_groups = explode( ',', $type_parts[1] );
@@ -66,7 +66,7 @@ class Module {
 				}
 			}
 
-			$current_user = wp_get_current_user();
+			$current_user = \wp_get_current_user();
 
 			if (
 				0 !== $current_user->ID &&
@@ -89,9 +89,9 @@ class Module {
 	 * @return bool
 	 */
 	private function user_is_host( array $host_users ): bool {
-		$current_user = wp_get_current_user();
+		$current_user = \wp_get_current_user();
 
-		return in_array( (string) $current_user->ID, $host_users, true ) || in_array( $current_user->user_nicename, $host_users, true );
+		return \in_array( (string) $current_user->ID, $host_users, true ) || \in_array( $current_user->user_nicename, $host_users, true );
 	}
 
 	/**
@@ -102,9 +102,9 @@ class Module {
 	 * @return bool
 	 */
 	private function role_is_host( array $host_groups ): bool {
-		$current_user = wp_get_current_user();
+		$current_user = \wp_get_current_user();
 
-		return count( array_intersect( $current_user->roles, $host_groups ) ) > 0;
+		return \count( \array_intersect( $current_user->roles, $host_groups ) ) > 0;
 	}
 
 }

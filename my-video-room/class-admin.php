@@ -10,16 +10,18 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Admin\Modules;
-use MyVideoRoomPlugin\Library\Post;
-use MyVideoRoomPlugin\ValueObject\GettingStarted;
-use MyVideoRoomPlugin\Admin\Navigation;
+use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\Activation;
 use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Library\Endpoints;
+use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Reference\Main\Reference;
+use MyVideoRoomPlugin\ValueObject\GettingStarted;
 use MyVideoRoomPlugin\ValueObject\Notice;
+use function do_action;
 
 /**
  * Class Admin
@@ -43,7 +45,7 @@ class Admin {
 	 * Initialise the menu item.
 	 */
 	public function init() {
-		if ( is_admin() && current_user_can( 'manage_options' ) ) {
+		if ( \is_admin() && \current_user_can( 'manage_options' ) ) {
 			$this->init_admin();
 		}
 	}
@@ -66,30 +68,30 @@ class Admin {
 
 		$this->update_permissions();
 
-		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+		\add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 
-		add_action(
+		\add_action(
 			'admin_enqueue_scripts',
 			function () {
 				$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
 
-				wp_enqueue_style(
+				\wp_enqueue_style(
 					'myvideoroom-admin-css',
-					plugins_url( '/css/admin.css', __FILE__ ),
+					\plugins_url( '/css/admin.css', __FILE__ ),
 					false,
 					$plugin_version,
 				);
 
-				wp_enqueue_style(
+				\wp_enqueue_style(
 					'myvideoroom-main-css',
-					plugins_url( '/css/shared.css', __FILE__ ),
+					\plugins_url( '/css/shared.css', __FILE__ ),
 					false,
 					$plugin_version,
 				);
 
-				wp_enqueue_script(
+				\wp_enqueue_script(
 					'myvideoroom-admin-tabs',
-					plugins_url( '/js/tabbed.js', __FILE__ ),
+					\plugins_url( '/js/tabbed.js', __FILE__ ),
 					array( 'jquery' ),
 					$plugin_version,
 					true
@@ -97,9 +99,9 @@ class Admin {
 			}
 		);
 
-		add_action(
+		\add_action(
 			'admin_notices',
-			function() {
+			function () {
 				$notice_renderer = ( require __DIR__ . '/views/admin/admin-notice.php' );
 
 				foreach ( $this->notices as $notice ) {
@@ -111,31 +113,70 @@ class Admin {
 	}
 
 	/**
+	 * Update permissions
+	 */
+	private function update_permissions() {
+		$post_library = Factory::get_instance( HttpPost::class );
+		if ( $post_library->is_admin_post_request( 'update_permissions' ) ) {
+			global $wp_roles;
+			$all_roles = $wp_roles->roles;
+
+			foreach ( \array_keys( $all_roles ) as $role_name ) {
+				$role = \get_role( $role_name );
+
+				if ( $post_library->get_checkbox_parameter( 'permissions_role_' . $role_name ) ) {
+					$role->add_cap( Plugin::CAP_GLOBAL_HOST );
+				} else {
+					$role->remove_cap( Plugin::CAP_GLOBAL_HOST );
+				}
+			}
+
+			$this->notices[] = new Notice(
+				Notice::TYPE_SUCCESS,
+				\esc_html__( 'Roles updated.', 'myvideoroom' ),
+			);
+		}
+	}
+
+	/**
 	 * Add the admin menu page.
 	 */
 	public function add_admin_menu() {
 		global $admin_page_hooks;
 
-		if ( empty( $admin_page_hooks[ Navigation::PAGE_SLUG_GETTING_STARTED ] ) ) {
-			add_menu_page(
-				esc_html__( 'MyVideoRoom', 'myvideoroom' ),
-				esc_html__( 'MyVideoRoom', 'myvideoroom' ),
+		if ( empty( $admin_page_hooks[ PageList::PAGE_SLUG_GETTING_STARTED ] ) ) {
+			\add_menu_page(
+				\esc_html__( 'MyVideoRoom', 'myvideoroom' ),
+				\esc_html__( 'MyVideoRoom', 'myvideoroom' ),
 				'manage_options',
-				Navigation::PAGE_SLUG_GETTING_STARTED,
+				PageList::PAGE_SLUG_GETTING_STARTED,
 				array( $this, 'create_getting_started_page' ),
 				'dashicons-format-chat'
 			);
 
-			foreach ( $this->get_navigation_items() as $slug => $settings ) {
+			foreach ( $this->get_navigation_items() as $settings ) {
 				$this->add_submenu_link(
-					$settings['link'] ?? $settings['title'],
-					$slug,
+					$settings->get_title(),
+					$settings->get_slug(),
 					function () use ( $settings ) {
-						$this->render_admin_page( $settings['callback'] );
+						$this->render_admin_page( $settings->render_page() );
 					}
 				);
 			}
 		}
+	}
+
+	/**
+	 * Get the navigation items
+	 *
+	 * @return \MyVideoRoomPlugin\Admin\Page[]
+	 */
+	public function get_navigation_items(): array {
+		if ( ! $this->navigation_items ) {
+			$this->navigation_items = Factory::get_instance( PageList::class )->get_page_list( $this );
+		}
+
+		return $this->navigation_items;
 	}
 
 	/**
@@ -146,8 +187,8 @@ class Admin {
 	 * @param callable $callback The callback to render the page.
 	 */
 	private function add_submenu_link( string $title, string $slug, callable $callback ) {
-		add_submenu_page(
-			Navigation::PAGE_SLUG_GETTING_STARTED,
+		\add_submenu_page(
+			PageList::PAGE_SLUG_GETTING_STARTED,
 			$title,
 			$title,
 			'manage_options',
@@ -156,55 +197,26 @@ class Admin {
 		);
 	}
 
-	/**
-	 * Update permissions
-	 */
-	private function update_permissions() {
-		$post_library = Factory::get_instance( Post::class );
-		if ( $post_library->is_admin_post_request( 'update_permissions' ) ) {
-			global $wp_roles;
-			$all_roles = $wp_roles->roles;
-
-			foreach ( array_keys( $all_roles ) as $role_name ) {
-				$role = get_role( $role_name );
-
-				if ( $post_library->get_checkbox_post_parameter( 'permissions_role_' . $role_name ) ) {
-					$role->add_cap( Plugin::CAP_GLOBAL_HOST );
-				} else {
-					$role->remove_cap( Plugin::CAP_GLOBAL_HOST );
-				}
-			}
-
-			$this->notices[] = new Notice(
-				Notice::TYPE_SUCCESS,
-				esc_html__( 'Roles updated.', 'myvideoroom' ),
-			);
-		}
-	}
+	// --
 
 	/**
 	 * Render an admin page
 	 *
-	 * @param callable $page_callback The function to render the page.
+	 * @param string $page_contents The page contents.
 	 */
-	private function render_admin_page( callable $page_callback ) {
-		$page_contents = $page_callback();
-
+	private function render_admin_page( string $page_contents ) {
 		$activation_status = Factory::get_instance( Activation::class )->get_activation_status();
 		$navigation_items  = $this->get_navigation_items();
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
-		$action = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) );
+		$http_get_library = Factory::get_instance( HttpGet::class );
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
-		$current_page_slug = sanitize_text_field( wp_unslash( $_GET['page'] ?? Navigation::PAGE_SLUG_GETTING_STARTED ) );
-
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
-		$module_slug = sanitize_text_field( wp_unslash( $_GET['module'] ?? '' ) );
+		$action            = $http_get_library->get_text_parameter( 'action' );
+		$current_page_slug = $http_get_library->get_text_parameter( 'page', PageList::PAGE_SLUG_GETTING_STARTED );
+		$module_slug       = $http_get_library->get_text_parameter( 'module' );
 
 		$module = null;
 
-		if ( Navigation::PAGE_SLUG_MODULES === $current_page_slug && Modules::MODULE_ACTION_DEACTIVATE !== $action ) {
+		if ( PageList::PAGE_SLUG_MODULES === $current_page_slug && Modules::MODULE_ACTION_DEACTIVATE !== $action ) {
 
 			$module = Factory::get_instance( Module::class )->get_module( $module_slug );
 
@@ -228,8 +240,6 @@ class Admin {
 		echo "<div class=\"wrap myvideoroom-admin\">${header}<main>{$page_contents}</main></div>";
 	}
 
-	// --
-
 	/**
 	 * Creates Getting Started Page
 	 *
@@ -240,7 +250,6 @@ class Admin {
 
 		return ( require __DIR__ . '/views/admin/getting-started.php' )( $getting_started_steps );
 	}
-
 
 	/**
 	 * Create Template Reference Page
@@ -277,7 +286,6 @@ class Admin {
 		return ( require __DIR__ . '/views/admin/reference.php' )( $shortcodes );
 	}
 
-
 	/**
 	 * Create the settings page for the video
 	 *
@@ -296,12 +304,13 @@ class Admin {
 	 * @return string
 	 */
 	public function create_modules_page(): string {
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
-		$module_slug = sanitize_text_field( wp_unslash( $_GET['module'] ?? '' ) );
-		$module      = Factory::get_instance( Module::class )->get_module( $module_slug );
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Not required
-		$action = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) );
+		$http_get_library = Factory::get_instance( HttpGet::class );
+
+		$module_slug = $http_get_library->get_text_parameter( 'module' );
+		$action      = $http_get_library->get_text_parameter( 'action' );
+
+		$module = Factory::get_instance( Module::class )->get_module( $module_slug );
 
 		if (
 			$module &&
@@ -313,6 +322,7 @@ class Admin {
 		}
 
 		$modules = Factory::get_instance( Module::class )->get_all_modules();
+
 		return ( require __DIR__ . '/views/admin/modules.php' )( $modules );
 	}
 
@@ -322,36 +332,23 @@ class Admin {
 	 * @return string
 	 */
 	public function create_advanced_settings_page(): string {
-		$post_library = Factory::get_instance( Post::class );
+		$post_library = Factory::get_instance( HttpPost::class );
 
 		if ( $post_library->is_admin_post_request( 'update_advanced_settings' ) ) {
-			$reset_settings = $post_library->get_checkbox_post_parameter( 'delete_activation' );
+			$reset_settings = $post_library->get_checkbox_parameter( 'delete_activation' );
 
 			if ( $reset_settings ) {
-				delete_option( Plugin::SETTING_ACTIVATION_KEY );
-				delete_option( Plugin::SETTING_ACCESS_TOKEN );
-				delete_option( Plugin::SETTING_PRIVATE_KEY );
+				\delete_option( Plugin::SETTING_ACTIVATION_KEY );
+				\delete_option( Plugin::SETTING_ACCESS_TOKEN );
+				\delete_option( Plugin::SETTING_PRIVATE_KEY );
 			}
 
-			$server_endpoint = $post_library->get_text_post_parameter( 'server_domain' );
-			update_option( Plugin::SETTING_SERVER_DOMAIN, $server_endpoint );
+			$server_endpoint = $post_library->get_text_parameter( 'server_domain' );
+			\update_option( Plugin::SETTING_SERVER_DOMAIN, $server_endpoint );
 		}
 
 		$video_server = Factory::get_instance( Endpoints::class )->get_server_endpoint();
 
 		return ( require __DIR__ . '/views/admin/advanced.php' )( $video_server );
-	}
-
-	/**
-	 * Get the navigation items
-	 *
-	 * @return array[]
-	 */
-	public function get_navigation_items(): array {
-		if ( ! $this->navigation_items ) {
-			$this->navigation_items = Factory::get_instance( Navigation::class )->get_navigation_items( $this );
-		}
-
-		return $this->navigation_items;
 	}
 }

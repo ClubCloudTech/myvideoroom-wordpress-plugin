@@ -7,6 +7,8 @@
 
 declare( strict_types=1 );
 
+namespace MyVideoRoomPlugin;
+
 use MyVideoRoomPlugin\Module\Module;
 
 /**
@@ -18,14 +20,14 @@ return function (
 	Module $module
 ): string {
 
-	ob_start();
+	\ob_start();
 	?>
-	<h2><?php echo esc_html( $module->get_name() ); ?></h2>
+	<h2><?php echo \esc_html( $module->get_name() ); ?></h2>
 
 	<?php
 
-    //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --We want to render the HTML output from the module.
+	//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --We want to render the HTML output from the module.
 	echo $module->get_admin_page();
 
-	return ob_get_clean();
+	return \ob_get_clean();
 };

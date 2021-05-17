@@ -47,10 +47,10 @@ class AppShortcode extends Shortcode {
 	 * Install the shortcode
 	 */
 	public function init() {
-		add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 
-		add_action( 'wp_enqueue_scripts', fn() => $this->enqueue_scripts() );
-		add_action(
+		\add_action( 'wp_enqueue_scripts', fn() => $this->enqueue_scripts() );
+		\add_action(
 			'wp_head',
 			function () {
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, - Output already escaped.
@@ -58,8 +58,8 @@ class AppShortcode extends Shortcode {
 			}
 		);
 
-		add_action( 'myvideoroom_enqueue_scripts', fn() => $this->enqueue_scripts() );
-		add_action(
+		\add_action( 'myvideoroom_enqueue_scripts', fn() => $this->enqueue_scripts() );
+		\add_action(
 			'admin_head',
 			function () {
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped, - Output already escaped.
@@ -72,11 +72,11 @@ class AppShortcode extends Shortcode {
 	 * Enqueue the required javascript libraries
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'jquery' );
+		\wp_enqueue_script( 'jquery' );
 
-		wp_enqueue_script(
+		\wp_enqueue_script(
 			'myvideoroom-app',
-			plugins_url( '/js/app.js', __FILE__ ),
+			\plugins_url( '/js/app.js', __FILE__ ),
 			array( 'jquery' ),
 			$this->get_plugin_version(),
 			true
@@ -87,7 +87,7 @@ class AppShortcode extends Shortcode {
 	 * Get script to insert into head for JavaScript to be able to fetch the correct endpoint
 	 */
 	public function get_app_endpoint_head_script(): string {
-		return '<script>var myVideoRoomAppEndpoint = "' . esc_url( $this->endpoints->get_app_endpoint() ) . '"</script>';
+		return '<script>var myVideoRoomAppEndpoint = "' . \esc_url( $this->endpoints->get_app_endpoint() ) . '"</script>';
 	}
 
 	/**
@@ -104,7 +104,7 @@ class AppShortcode extends Shortcode {
 
 		if ( ! $this->private_key ) {
 			return $this->return_error(
-				'<div>' . esc_html__(
+				'<div>' . \esc_html__(
 					'MyVideoRoom is currently unlicensed.',
 					'myvideoroom'
 				) . '</div>'
@@ -115,7 +115,7 @@ class AppShortcode extends Shortcode {
 
 		if ( ! $hostname ) {
 			return $this->return_error(
-				'<div>' . esc_html__(
+				'<div>' . \esc_html__(
 					'MyVideoRoom cannot find the host that it is currently running on.',
 					'myvideoroom'
 				) . '</div>'
@@ -124,7 +124,7 @@ class AppShortcode extends Shortcode {
 
 		$shortcode_constructor = new AppShortcodeConstructor();
 
-		$shortcode_constructor->set_name( $attr['name'] ?? get_bloginfo( 'name' ) );
+		$shortcode_constructor->set_name( $attr['name'] ?? \get_bloginfo( 'name' ) );
 		$shortcode_constructor->set_seed( $attr['seed'] ?? null );
 		$shortcode_constructor->set_layout( $attr['layout'] ?? 'boardroom' );
 		$shortcode_constructor->set_reception_id( $attr['reception-id'] ?? 'office' );
@@ -151,7 +151,7 @@ class AppShortcode extends Shortcode {
 		}
 
 		if ( ! isset( $attr['host'] ) ) {
-			$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
+			$host = \current_user_can( Plugin::CAP_GLOBAL_HOST );
 		} else {
 			$host = ( 'true' === $attr['host'] );
 		}
@@ -173,7 +173,7 @@ class AppShortcode extends Shortcode {
 		 *
 		 * @var AppShortcodeConstructor $shortcode_constructor
 		 */
-		$shortcode_constructor = apply_filters( 'myvideoroom_shortcode_constructor', $shortcode_constructor, $attr );
+		$shortcode_constructor = \apply_filters( 'myvideoroom_shortcode_constructor', $shortcode_constructor, $attr );
 
 		if ( $shortcode_constructor->get_error() ) {
 			return '<div class="myvideoroom-error">' . $shortcode_constructor->get_error() . '</div>';
@@ -181,7 +181,7 @@ class AppShortcode extends Shortcode {
 
 		// --
 
-		$loading_text = esc_html__( 'Loading...', 'myvideoroom' );
+		$loading_text = \esc_html__( 'Loading...', 'myvideoroom' );
 		if ( $attr['text-loading'] ?? false ) {
 			$loading_text = $attr['text-loading'];
 		}
@@ -192,8 +192,8 @@ class AppShortcode extends Shortcode {
 		$app_endpoint          = $this->endpoints->get_app_endpoint();
 		$licence_endpoint      = $this->endpoints->get_licence_endpoint();
 
-		$room_hash = md5(
-			wp_json_encode(
+		$room_hash = \md5(
+			\wp_json_encode(
 				array(
 					'type'                => 'roomHash',
 					'roomName'            => $shortcode_constructor->get_name(),
@@ -204,9 +204,9 @@ class AppShortcode extends Shortcode {
 			)
 		);
 
-		$password = hash(
+		$password = \hash(
 			'sha256',
-			wp_json_encode(
+			\wp_json_encode(
 				array(
 					'type'                => 'password',
 					'roomName'            => $shortcode_constructor->get_name(),
@@ -218,7 +218,7 @@ class AppShortcode extends Shortcode {
 			)
 		);
 
-		$message = wp_json_encode(
+		$message = \wp_json_encode(
 			array(
 				'videoServerEndpoint' => $video_server_endpoint,
 				'roomName'            => $shortcode_constructor->get_name(),
@@ -227,22 +227,22 @@ class AppShortcode extends Shortcode {
 			)
 		);
 
-		if ( ! openssl_sign( $message, $signature, $this->private_key, OPENSSL_ALGO_SHA256 ) ) {
-			return $this->return_error( esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
+		if ( ! \openssl_sign( $message, $signature, $this->private_key, OPENSSL_ALGO_SHA256 ) ) {
+			return $this->return_error( \esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
 		}
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript
-		$security_token = rawurlencode( base64_encode( $signature ) );
+		$security_token = \rawurlencode( \base64_encode( $signature ) );
 
 		$jwt_endpoint = $licence_endpoint . '/' . $hostname . '.jwt?';
 
-		$current_user = wp_get_current_user();
+		$current_user = \wp_get_current_user();
 
 		$user_name  = null;
 		$avatar_url = null;
 
 		if ( isset( $attr['user-name'] ) ) {
-			$user_name = esc_attr( $attr['user-name'] );
+			$user_name = \esc_attr( $attr['user-name'] );
 		} elseif ( $current_user ) {
 			$user_name  = $current_user->display_name;
 			$avatar_url = $this->getAvatar( $current_user );
@@ -294,8 +294,8 @@ class AppShortcode extends Shortcode {
 	 * @return string|null
 	 */
 	private function getAvatar( WP_User $user = null ): ?string {
-		if ( $user && get_avatar_url( $user ) ) {
-			return get_avatar_url( $user );
+		if ( $user && \get_avatar_url( $user ) ) {
+			return \get_avatar_url( $user );
 		}
 
 		return null;

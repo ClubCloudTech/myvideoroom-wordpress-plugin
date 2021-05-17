@@ -66,6 +66,7 @@ class Step {
 	 */
 	public function set_description( string $description ): self {
 		$this->description = $description;
+
 		return $this;
 	}
 

@@ -21,7 +21,7 @@ class Host {
 	 */
 	public function get_host(): ?string {
 		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
-			return preg_replace( '#^https?://#', '', esc_url_raw( wp_unslash( $_SERVER['HTTP_HOST'] ) ) );
+			return \preg_replace( '#^https?://#', '', \esc_url_raw( \wp_unslash( $_SERVER['HTTP_HOST'] ) ) );
 		}
 
 		return null;

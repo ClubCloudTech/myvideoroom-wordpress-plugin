@@ -80,9 +80,9 @@ class Module {
 	/**
 	 * Module constructor.
 	 *
-	 * @param string    $slug The id/slug of the module.
-	 * @param string    $name The name of the module.
-	 * @param array     $description_array The description of the module.
+	 * @param string    $slug               The id/slug of the module.
+	 * @param string    $name               The name of the module.
+	 * @param array     $description_array  The description of the module.
 	 * @param ?callable $instantiation_hook The instantiation callback.
 	 */
 	public function __construct( string $slug, string $name, array $description_array, callable $instantiation_hook = null ) {
@@ -198,7 +198,19 @@ class Module {
 		}
 
 		$this->set_as_active();
+
 		return true;
+	}
+
+	/**
+	 * Mark the module as active
+	 *
+	 * @return $this
+	 */
+	public function set_as_active(): self {
+		$this->active = true;
+
+		return $this;
 	}
 
 	/**
@@ -229,7 +241,19 @@ class Module {
 		}
 
 		$this->set_as_inactive();
+
 		return true;
+	}
+
+	/**
+	 * Mark the module as inactive
+	 *
+	 * @return $this
+	 */
+	public function set_as_inactive(): self {
+		$this->active = false;
+
+		return $this;
 	}
 
 	/**
@@ -245,7 +269,6 @@ class Module {
 		return $this;
 	}
 
-
 	/**
 	 * Is the module published
 	 *
@@ -253,28 +276,6 @@ class Module {
 	 */
 	public function is_published(): bool {
 		return ! ! $this->instantiation_hook;
-	}
-
-	/**
-	 * Mark the module as active
-	 *
-	 * @return $this
-	 */
-	public function set_as_active(): self {
-		$this->active = true;
-
-		return $this;
-	}
-
-	/**
-	 * Mark the module as inactive
-	 *
-	 * @return $this
-	 */
-	public function set_as_inactive(): self {
-		$this->active = false;
-
-		return $this;
 	}
 
 	/**

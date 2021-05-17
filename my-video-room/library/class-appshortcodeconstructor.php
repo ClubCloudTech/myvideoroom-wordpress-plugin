@@ -127,6 +127,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function add_custom_string_param( string $key, string $value ): self {
 		$this->custom_settings[ $key ] = $value;
+
 		return $this;
 	}
 
@@ -142,116 +143,13 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	}
 
 	/**
-	 * Get the name of the room
-	 *
-	 * @return ?string
-	 */
-	public function get_name(): ?string {
-		return $this->name;
-	}
-
-	/**
-	 * Set the name of the room
-	 *
-	 * @param string $name The name of the room.
-	 *
-	 * @return $this
-	 */
-	public function set_name( string $name ): self {
-		$this->name = $name;
-		return $this;
-	}
-
-	/**
-	 * Get the layout
-	 *
-	 * @return ?string
-	 */
-	public function get_layout(): ?string {
-		return $this->layout;
-	}
-
-	/**
-	 * Set the id of the layout
-	 *
-	 * @param string $layout The id of the layout.
-	 *
-	 * @return $this
-	 */
-	public function set_layout( string $layout ): self {
-		$this->layout = $layout;
-		return $this;
-	}
-
-	/**
-	 * Should the user be a video host
-	 *
-	 * @return ?bool
-	 */
-	public function is_host(): ?bool {
-		return $this->host;
-	}
-
-	/**
-	 * Is the reception enabled
-	 *
-	 * @return bool
-	 */
-	public function is_reception_enabled(): bool {
-		return $this->reception;
-	}
-
-	/**
-	 * Is the floorplan enabled
-	 *
-	 * @return bool
-	 */
-	public function is_floorplan_enabled(): bool {
-		return ! $this->is_host() && $this->floorplan_enabled;
-	}
-
-	/**
-	 * Get the reception id
-	 *
-	 * @return ?string
-	 */
-	public function get_reception_id(): ?string {
-		return $this->reception_id;
-	}
-
-	/**
-	 * Set the reception id
-	 *
-	 * @param string $reception_id The reception id.
-	 *
-	 * @return $this
-	 */
-	public function set_reception_id( string $reception_id ): self {
-		$this->reception_id = $reception_id;
-
-		return $this;
-	}
-
-	/**
-	 * Get the reception video url
-	 *
-	 * @return ?string
-	 */
-	public function get_reception_video(): ?string {
-		if ( $this->is_host() ) {
-			return null;
-		} else {
-			return $this->reception_video;
-		}
-	}
-
-	/**
 	 * Enable the reception
 	 *
 	 * @return $this
 	 */
 	public function enable_reception(): self {
 		$this->reception = true;
+
 		return $this;
 	}
 
@@ -262,6 +160,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function disable_reception(): self {
 		$this->reception = false;
+
 		return $this;
 	}
 
@@ -281,6 +180,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function enable_lobby(): self {
 		$this->lobby_enabled = true;
+
 		return $this;
 	}
 
@@ -291,6 +191,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function disable_lobby(): self {
 		$this->lobby_enabled = false;
+
 		return $this;
 	}
 
@@ -314,6 +215,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function set_as_host(): self {
 		$this->host = true;
+
 		return $this;
 	}
 
@@ -324,6 +226,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function set_as_guest(): self {
 		$this->host = false;
+
 		return $this;
 	}
 
@@ -334,6 +237,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function delegate_is_host_to_wordpress(): self {
 		$this->host = null;
+
 		return $this;
 	}
 
@@ -344,6 +248,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function enable_floorplan(): self {
 		$this->floorplan_enabled = true;
+
 		return $this;
 	}
 
@@ -354,49 +259,17 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function disable_floorplan(): self {
 		$this->floorplan_enabled = false;
+
 		return $this;
 	}
 
 	/**
-	 * Set the user name
+	 * Get the error string
 	 *
-	 * @param string $user_name The name of the user.
-	 *
-	 * @return $this
+	 * @return ?string
 	 */
-	public function set_user_name( string $user_name ): self {
-		$this->user_name = $user_name;
-		return $this;
-	}
-
-	/**
-	 * Get the user name
-	 *
-	 * @return string|null
-	 */
-	public function get_user_name(): ?string {
-		return $this->user_name;
-	}
-
-	/**
-	 * Set a random seed to guarantee room uniqueness
-	 *
-	 * @param ?string $seed A random string.
-	 *
-	 * @return $this
-	 */
-	public function set_seed( ?string $seed ): self {
-		$this->seed = $seed;
-		return $this;
-	}
-
-	/**
-	 * Get a random seed to guarantee room uniqueness
-	 *
-	 * @return string|null
-	 */
-	public function get_seed(): ?string {
-		return $this->seed;
+	public function get_error(): ?string {
+		return $this->error;
 	}
 
 	/**
@@ -408,16 +281,8 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 */
 	public function set_error( string $error ): self {
 		$this->error = $error;
-		return $this;
-	}
 
-	/**
-	 * Get the error string
-	 *
-	 * @return ?string
-	 */
-	public function get_error(): ?string {
-		return $this->error;
+		return $this;
 	}
 
 	/**
@@ -471,8 +336,158 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 			$shortcode_array[ $key ] = $custom_setting;
 		}
 
-		$shortcode_array = apply_filters( 'myvideoroom_appshortcode_output', $shortcode_array );
+		$shortcode_array = \apply_filters( 'myvideoroom_appshortcode_output', $shortcode_array );
 
 		return $this->get_shortcode_text( $shortcode_array );
+	}
+
+	/**
+	 * Get the layout
+	 *
+	 * @return ?string
+	 */
+	public function get_layout(): ?string {
+		return $this->layout;
+	}
+
+	/**
+	 * Set the id of the layout
+	 *
+	 * @param string $layout The id of the layout.
+	 *
+	 * @return $this
+	 */
+	public function set_layout( string $layout ): self {
+		$this->layout = $layout;
+
+		return $this;
+	}
+
+	/**
+	 * Get the name of the room
+	 *
+	 * @return ?string
+	 */
+	public function get_name(): ?string {
+		return $this->name;
+	}
+
+	/**
+	 * Set the name of the room
+	 *
+	 * @param string $name The name of the room.
+	 *
+	 * @return $this
+	 */
+	public function set_name( string $name ): self {
+		$this->name = $name;
+
+		return $this;
+	}
+
+	/**
+	 * Should the user be a video host
+	 *
+	 * @return ?bool
+	 */
+	public function is_host(): ?bool {
+		return $this->host;
+	}
+
+	/**
+	 * Is the reception enabled
+	 *
+	 * @return bool
+	 */
+	public function is_reception_enabled(): bool {
+		return $this->reception;
+	}
+
+	/**
+	 * Get the reception id
+	 *
+	 * @return ?string
+	 */
+	public function get_reception_id(): ?string {
+		return $this->reception_id;
+	}
+
+	/**
+	 * Set the reception id
+	 *
+	 * @param string $reception_id The reception id.
+	 *
+	 * @return $this
+	 */
+	public function set_reception_id( string $reception_id ): self {
+		$this->reception_id = $reception_id;
+
+		return $this;
+	}
+
+	/**
+	 * Is the floorplan enabled
+	 *
+	 * @return bool
+	 */
+	public function is_floorplan_enabled(): bool {
+		return ! $this->is_host() && $this->floorplan_enabled;
+	}
+
+	/**
+	 * Get the reception video url
+	 *
+	 * @return ?string
+	 */
+	public function get_reception_video(): ?string {
+		if ( $this->is_host() ) {
+			return null;
+		} else {
+			return $this->reception_video;
+		}
+	}
+
+	/**
+	 * Get the user name
+	 *
+	 * @return string|null
+	 */
+	public function get_user_name(): ?string {
+		return $this->user_name;
+	}
+
+	/**
+	 * Set the user name
+	 *
+	 * @param string $user_name The name of the user.
+	 *
+	 * @return $this
+	 */
+	public function set_user_name( string $user_name ): self {
+		$this->user_name = $user_name;
+
+		return $this;
+	}
+
+	/**
+	 * Get a random seed to guarantee room uniqueness
+	 *
+	 * @return string|null
+	 */
+	public function get_seed(): ?string {
+		return $this->seed;
+	}
+
+	/**
+	 * Set a random seed to guarantee room uniqueness
+	 *
+	 * @param ?string $seed A random string.
+	 *
+	 * @return $this
+	 */
+	public function set_seed( ?string $seed ): self {
+		$this->seed = $seed;
+
+		return $this;
 	}
 }

@@ -1,3 +1,9 @@
+/**
+ * The wp-admin css for MyVideoRoom
+ *
+ * @package MyVideoRoomPlugin
+ */
+
 .myvideoroom-admin {
 	margin-right: 15px;
 }
@@ -20,13 +26,13 @@
 	min-width: 304px;
 }
 
-.myvideoroom-admin .button-primary.negative{
+.myvideoroom-admin .button-primary.negative {
 	background: #d63638;
 	color: #fff;
 	border-color: #d63638;
 }
 
-.myvideoroom-admin .button-primary.negative:hover  {
+.myvideoroom-admin .button-primary.negative:hover {
 	background: #b32d2e;
 	border-color: #b32d2e;
 }
@@ -41,7 +47,7 @@
 
 /*region Nav Tab */
 .myvideoroom-admin .nav-tab-wrapper li {
-	margin-bottom: -1px	;
+	margin-bottom: -1px;
 }
 
 .myvideoroom-admin .nav-tab-wrapper a {
@@ -52,6 +58,7 @@
 .myvideoroom-admin .nav-tab-wrapper a:hover {
 	background: none;
 }
+
 /*endregion*/
 
 /*region Header */
@@ -92,13 +99,13 @@
 }
 
 @media only screen and (min-width: 1034px) {
-	.myvideoroom-admin header div.overview  {
+	.myvideoroom-admin header div.overview {
 		padding-top: 72px;
 		min-width: 300px;
 		width: calc(100% - 293px);
 	}
 
-	.myvideoroom-admin header img  {
+	.myvideoroom-admin header img {
 		display: inline-block;
 		float: right;
 	}
@@ -116,6 +123,7 @@
 .myvideoroom-admin #myvideoroom-how-to-use-templates div.view img {
 	width: 100%;
 }
+
 /*endregion*/
 
 
@@ -169,6 +177,7 @@
 		float: left;
 	}
 }
+
 /*endregion */
 
 .myvideoroom-admin .reception-card,
@@ -216,12 +225,12 @@
 	}
 }
 
-.myvideoroom-admin table.widefat.myvideoroom-permissions  {
+.myvideoroom-admin table.widefat.myvideoroom-permissions {
 	width: auto;
 }
 
 @media only screen and (min-width: 600px) {
-	.myvideoroom-admin table.widefat.myvideoroom-permissions  {
+	.myvideoroom-admin table.widefat.myvideoroom-permissions {
 		min-width: 400px;
 	}
 }

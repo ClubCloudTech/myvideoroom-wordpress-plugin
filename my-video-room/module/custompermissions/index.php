@@ -7,21 +7,24 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Library\Module;
+namespace MyVideoRoomPlugin\Module\CustomPermissions;
 
-add_action(
+use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\CustomPermissions\Module as CustomPermissions;
+
+\add_action(
 	'myvideoroom_init',
 	function () {
 		Module::register(
 			'custompermissions',
-			__( 'Custom Permissions', 'myvideoroom' ),
+			\esc_html__( 'Custom Permissions', 'myvideoroom' ),
 			array(
-				__(
+				\esc_html__(
 					'Updates the main shortcode to allow more granular permissions, allowing permissions to be granted to specific WordPress groups or users on a per shortcode basis.',
 					'myvideoroom'
 				),
 			),
-			fn() => new MyVideoRoomPlugin\Module\CustomPermissions\Module()
+			fn() => new CustomPermissions()
 		);
 	}
 );

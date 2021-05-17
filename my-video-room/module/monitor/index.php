@@ -7,21 +7,24 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Library\Module;
+namespace MyVideoRoomPlugin\Module\Monitor;
 
-add_action(
+use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\Monitor\Module as Monitor;
+
+\add_action(
 	'myvideoroom_init',
 	function () {
 		Module::register(
 			'monitor',
-			__( 'Monitor', 'myvideoroom' ),
+			\esc_html__( 'Monitor', 'myvideoroom' ),
 			array(
-				__(
+				\esc_html__(
 					'Adds a WordPress shortcode to allow monitoring of the number of people in a room. Will show browser notifications when users join. The outputted text and format can be customised and translated.',
 					'myvideoroom'
 				),
 			),
-			fn() => new MyVideoRoomPlugin\Module\Monitor\Module()
+			fn() => new Monitor()
 		);
 	}
 );

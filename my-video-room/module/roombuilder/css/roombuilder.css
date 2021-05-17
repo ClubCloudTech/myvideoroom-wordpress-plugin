@@ -4,7 +4,7 @@ table.myvideoroom-room-builder-output {
 }
 
 table.myvideoroom-room-builder-output th,
-table.myvideoroom-room-builder-output td{
+table.myvideoroom-room-builder-output td {
 	padding: 8px;
 	vertical-align: top;
 }
@@ -63,5 +63,5 @@ table.myvideoroom-room-builder-output td{
 	font-size: 0.9em;
 	font-style: normal;
 	max-width: 600px;
-	width: calc( 100% - 32px );
+	width: calc(100% - 32px);
 }

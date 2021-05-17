@@ -55,7 +55,7 @@ class Endpoints {
 	 */
 	public function __construct() {
 
-		if ( defined( 'MYVIDEOROOM_CUSTOM_ENDPOINTS' ) ) {
+		if ( \defined( 'MYVIDEOROOM_CUSTOM_ENDPOINTS' ) ) {
 			$custom_endpoints = MYVIDEOROOM_CUSTOM_ENDPOINTS;
 		} else {
 			$custom_endpoints = array();
@@ -76,8 +76,8 @@ class Endpoints {
 	 * @return string
 	 */
 	public function get_server_endpoint(): string {
-		if ( esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
-			return esc_attr( get_option( Plugin::SETTING_SERVER_DOMAIN ) );
+		if ( \esc_attr( \get_option( Plugin::SETTING_SERVER_DOMAIN ) ) ) {
+			return \esc_attr( \get_option( Plugin::SETTING_SERVER_DOMAIN ) );
 		} else {
 			return 'clubcloud.tech';
 		}

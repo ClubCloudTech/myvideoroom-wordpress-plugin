@@ -10,6 +10,8 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
+use ReflectionClass;
+
 /**
  * Class Factory
  */
@@ -27,7 +29,7 @@ class Factory {
 	 * Get an instance of the required object
 	 *
 	 * @param string $class_name The class you want to get.
-	 * @param array  $arguments List of optional arguments.
+	 * @param array  $arguments  List of optional arguments.
 	 *
 	 * @return object
 	 */
@@ -36,7 +38,8 @@ class Factory {
 			return self::$objects[ $class_name ];
 		}
 
-		$class = new \ReflectionClass( $class_name );
+		$class = new ReflectionClass( $class_name );
+
 		return $class->newInstanceArgs( $arguments );
 	}
 

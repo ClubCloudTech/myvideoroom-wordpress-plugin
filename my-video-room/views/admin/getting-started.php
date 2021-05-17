@@ -7,9 +7,9 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Factory;
+namespace MyVideoRoomPlugin;
+
 use MyVideoRoomPlugin\Library\HTML;
-use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\ValueObject\GettingStarted;
 
 /**
@@ -20,79 +20,79 @@ use MyVideoRoomPlugin\ValueObject\GettingStarted;
 return function (
 	GettingStarted $getting_started_steps
 ): string {
-	ob_start();
+	\ob_start();
 
 	$html_lib = Factory::get_instance( HTML::class, array( 'room_builder' ) );
 
 	?>
-	<h2><?php echo esc_html__( 'Getting started with MyVideoRoom', 'myvideoroom' ); ?></h2>
+	<h2><?php echo \esc_html__( 'Getting started with MyVideoRoom', 'myvideoroom' ); ?></h2>
 	<p>
-	<?php
-		esc_html_e(
+		<?php
+		\esc_html_e(
 			'MyVideoRooms are more than just meetings. There are physical representations of real rooms with breakout areas, layouts and scenarios. The basis of a MyVideoRoom Meeting is to select a room template for your meeting, and use it to drag in guests from receptions. You can also remove anyone from the meeting at any time by clicking on the × symbol next to their picture.'
 		);
-	?>
+		?>
 	</p>
 
 	<ol class="getting-started-steps">
-	<?php
-	foreach ( $getting_started_steps->get_steps() as $step ) {
-		?>
+		<?php
+		foreach ( $getting_started_steps->get_steps() as $step ) {
+			?>
 			<li>
-				<h4><?php echo esc_html( $step->get_title() ); ?></h4>
+				<h4><?php echo \esc_html( $step->get_title() ); ?></h4>
 
-			<?php
+				<?php
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
 				echo $step->get_description();
-			?>
+				?>
 			</li>
-		<?php
-	}
+			<?php
+		}
 
-	?>
+		?>
 	</ol>
 
 	<p>
 		<?php
-		printf(
-			/* translators: %s is the text "MyVideoRoom Pricing" and links to the https://clubcloud.tech/pricing */
-			esc_html__(
+		\printf(
+		/* translators: %s is the text "MyVideoRoom Pricing" and links to the https://clubcloud.tech/pricing */
+			\esc_html__(
 				'Visit %s for more information on purchasing an activation key to use MyVideoRoom.',
 				'myvideoroom'
 			),
 			'<a href="https://clubcloud.tech/pricing">' .
-			esc_html__( 'MyVideoRoom pricing', 'myvideoroom' ) . '</a>'
+			\esc_html__( 'MyVideoRoom pricing', 'myvideoroom' ) . '</a>'
 		);
 		?>
 	</p>
 
 	<form method="post" action="options.php">
 		<?php
-		if ( get_option( Plugin::SETTING_PRIVATE_KEY ) ) {
-			$submit_text = __( 'Update', 'myvideoroom' );
+		if ( \get_option( Plugin::SETTING_PRIVATE_KEY ) ) {
+			$submit_text = \esc_html__( 'Update', 'myvideoroom' );
 			$placeholder = '∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗';
 		} else {
-			$submit_text = __( 'Activate', 'myvideoroom' );
-			$placeholder = __( '(enter your activation key here)', 'myvideoroom' );
+			$submit_text = \esc_html__( 'Activate', 'myvideoroom' );
+			$placeholder = \esc_html__( '(enter your activation key here)', 'myvideoroom' );
 		}
 		?>
 
-		<?php settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
+		<?php \settings_fields( Plugin::PLUGIN_NAMESPACE . '_' . Plugin::SETTINGS_NAMESPACE ); ?>
 
-		<label for="<?php echo esc_attr( $html_lib->get_id( 'activation-key' ) ); ?>">
-			<?php esc_html_e( 'Your activation key', 'myvideoroom' ); ?>
+		<label for="<?php echo \esc_attr( $html_lib->get_id( 'activation-key' ) ); ?>">
+			<?php \esc_html_e( 'Your activation key', 'myvideoroom' ); ?>
 		</label>
 		<input
 			class="activation-key"
 			type="text"
-			name="<?php echo esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
-			placeholder="<?php echo esc_html( $placeholder ); ?>"
-			id="<?php echo esc_attr( $html_lib->get_id( 'activation-key' ) ); ?>"
+			name="<?php echo \esc_attr( Plugin::SETTING_ACTIVATION_KEY ); ?>"
+			placeholder="<?php echo \esc_html( $placeholder ); ?>"
+			id="<?php echo \esc_attr( $html_lib->get_id( 'activation-key' ) ); ?>"
 		/>
 
 		<?php
-		submit_button(
-			esc_html( $submit_text ),
+		\submit_button(
+			\esc_html( $submit_text ),
 			'primary',
 			'submit',
 			false
@@ -102,5 +102,5 @@ return function (
 
 
 	<?php
-	return ob_get_clean();
+	return \ob_get_clean();
 };

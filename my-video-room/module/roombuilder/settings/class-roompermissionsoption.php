@@ -84,6 +84,7 @@ class RoomPermissionsOption {
 	 */
 	public function set_as_selected( bool $is_selected ): self {
 		$this->is_selected = $is_selected;
+
 		return $this;
 	}
 

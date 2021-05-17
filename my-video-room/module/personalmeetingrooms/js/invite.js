@@ -16,7 +16,7 @@ jQuery.noConflict()(
 		$( '<input type="button" value="' + $link_container.data( 'copyText' ) + '" />' )
 			.appendTo( $link_container ).on(
 				'click',
-				function() {
+				function () {
 					var $copy_button = $( this );
 					navigator.clipboard.writeText( link_url ).then(
 						function () {
@@ -29,7 +29,7 @@ jQuery.noConflict()(
 										.removeClass( 'success' );
 								},
 								1500
-							)
+							);
 						}
 					);
 				}
@@ -45,7 +45,7 @@ jQuery.noConflict()(
 
 				var $submit = $( 'input[type=submit]', $form );
 
-				if ($submit.is( ":disabled" )) {
+				if ($submit.is( ':disabled' )) {
 					return;
 				}
 
@@ -56,7 +56,7 @@ jQuery.noConflict()(
 				var link  = $( 'input[name=myvideoroom_personalmeetingrooms_invite_link]', $form ).val();
 
 				var $status = $form.siblings( 'span.status' );
-				if ( ! $status.length ) {
+				if ( ! $status.length) {
 					$status = $( '<span class="status"></span>' ).insertAfter( $form );
 				}
 
@@ -64,23 +64,23 @@ jQuery.noConflict()(
 
 				$.ajax(
 					{
-						type : "post",
-						dataType : "json",
-						url : ajax_url,
-						data : {
+						type: 'post',
+						dataType: 'json',
+						url: ajax_url,
+						data: {
 							action: 'myvideroom_personalmeetingrooms_invite',
 							nonce: nonce,
 							email: email,
 							link: link
 						},
-						success: function( response, data) {
+						success: function (response, data) {
 							$status.removeClass( ['error', 'success'] )
 								.addClass( 'success' )
 								.html( response.message );
 
 							$submit.prop( 'disabled', false );
 						},
-						error: function ( response ) {
+						error: function (response) {
 							$status.removeClass( ['error', 'success'] )
 								.addClass( 'error' )
 								.html( response.responseJSON.message );
@@ -92,6 +92,6 @@ jQuery.noConflict()(
 				e.preventDefault();
 				return false;
 			}
-		)
+		);
 	}
 );

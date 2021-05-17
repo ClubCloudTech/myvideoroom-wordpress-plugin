@@ -48,20 +48,6 @@ class HTML {
 	private string $identifier;
 
 	/**
-	 * Get the current index, if null then create it
-	 *
-	 * @return integer
-	 */
-	public static function get_or_create_current_index(): int {
-		if ( ! self::$start_index ) {
-			self::$start_index = (int) ( wp_rand( 1, 10 ** self::ID_LENGTH - 1 ) );
-			self::$id_index    = (int) ( wp_rand( 1, 10 ** self::ID_LENGTH - 1 ) );
-		}
-
-		return self::$id_index;
-	}
-
-	/**
 	 * HTML constructor.
 	 *
 	 * @param string $identifier The unique identifier for this element's parent.
@@ -94,7 +80,38 @@ class HTML {
 			''
 		);
 
-		++self::$id_index;
+		++ self::$id_index;
+	}
+
+	/**
+	 * Get the current index, if null then create it
+	 *
+	 * @return integer
+	 */
+	public static function get_or_create_current_index(): int {
+		if ( ! self::$start_index ) {
+			self::$start_index = (int) ( \wp_rand( 1, 10 ** self::ID_LENGTH - 1 ) );
+			self::$id_index    = (int) ( \wp_rand( 1, 10 ** self::ID_LENGTH - 1 ) );
+		}
+
+		return self::$id_index;
+	}
+
+	/**
+	 * Ensure a string has a correct format for a html attribute
+	 *
+	 * @param string $name The input name.
+	 *
+	 * @return string
+	 */
+	private function sanitize_name( string $name ): string {
+		return \preg_replace(
+			'/[^a-z0-9_]/',
+			'',
+			\strtolower(
+				\str_replace( '-', '_', $name )
+			)
+		);
 	}
 
 	/**
@@ -131,14 +148,14 @@ class HTML {
 	}
 
 	/**
-	 * Get a namespaced field name
+	 * Get a unique and namespaced id for a aria-describedby
 	 *
 	 * @param string $field_name The field name.
 	 *
 	 * @return string
 	 */
-	public function get_field_name( string $field_name ): string {
-		return $this->identifier . '_' . $this->sanitize_name( $field_name );
+	public function get_description_id( string $field_name ): string {
+		return $this->get_id( $field_name ) . '_description';
 	}
 
 	/**
@@ -153,14 +170,14 @@ class HTML {
 	}
 
 	/**
-	 * Get a unique and namespaced id for a aria-describedby
+	 * Get a namespaced field name
 	 *
 	 * @param string $field_name The field name.
 	 *
 	 * @return string
 	 */
-	public function get_description_id( string $field_name ): string {
-		return $this->get_id( $field_name ) . '_description';
+	public function get_field_name( string $field_name ): string {
+		return $this->identifier . '_' . $this->sanitize_name( $field_name );
 	}
 
 	/**
@@ -169,36 +186,19 @@ class HTML {
 	 * @param string $code The code to render.
 	 */
 	public function render_code_block( string $code ): string {
-		$code_lines = explode( "\n", $code );
+		$code_lines = \explode( "\n", $code );
 
-		preg_match_all( '/\t/', $code_lines[1], $matches );
+		\preg_match_all( '/\t/', $code_lines[1], $matches );
 
-		$indent_size = count( $matches[0] );
+		$indent_size = \count( $matches[0] );
 
-		$output_code = array_map(
+		$output_code = \array_map(
 			function ( $line ) use ( $indent_size ) {
-				return preg_replace( '/^\t{' . $indent_size . '}/', '', $line );
+				return \preg_replace( '/^\t{' . $indent_size . '}/', '', $line );
 			},
 			$code_lines
 		);
 
-		return '<code>' . esc_html( trim( implode( "\n", $output_code ) ) ) . '</code>';
-	}
-
-	/**
-	 * Ensure a string has a correct format for a html attribute
-	 *
-	 * @param string $name The input name.
-	 *
-	 * @return string
-	 */
-	private function sanitize_name( string $name ): string {
-		return preg_replace(
-			'/[^a-z0-9_]/',
-			'',
-			strtolower(
-				str_replace( '-', '_', $name )
-			)
-		);
+		return '<code>' . \esc_html( \trim( \implode( "\n", $output_code ) ) ) . '</code>';
 	}
 }

@@ -24,12 +24,12 @@ jQuery.noConflict()(
 				var fields = $( 'label', this );
 
 				fields.each(
-					function ( ) {
+					function () {
 						var input_id       = $( this ).attr( 'for' );
 						var description_id = $( '#' + input_id ).attr( 'aria-describedby' );
 						var $description   = $( '#' + description_id ).addClass( 'card' ).hide();
 
-						if ( $description.length ) {
+						if ($description.length) {
 							$( '<span role="button" class="myvideoroom-show-help"><i class="card dashicons dashicons-editor-help"></i></span>' )
 								.appendTo( this )
 								.append( $description )
@@ -56,13 +56,13 @@ jQuery.noConflict()(
 
 						}
 					}
-				)
+				);
 
-				if ( ! $reception_checkbox.is( ":checked" ) ) {
+				if ( ! $reception_checkbox.is( ':checked' )) {
 					$reception_settings.hide();
 				}
 
-				if ( ! $custom_video_checkbox.is( ":checked" ) ) {
+				if ( ! $custom_video_checkbox.is( ':checked' )) {
 					$custom_video_url.hide();
 				}
 
@@ -70,8 +70,8 @@ jQuery.noConflict()(
 					'change',
 					function () {
 						var val = $( this ).val();
-						if ( $( 'option[value=' + val, this ).data( 'hasVideo' ) ) {
-							if ( $custom_video_checkbox.is( ":checked" ) ) {
+						if ($( 'option[value=' + val, this ).data( 'hasVideo' )) {
+							if ($custom_video_checkbox.is( ':checked' )) {
 								$custom_video_url.show();
 							}
 
@@ -81,48 +81,48 @@ jQuery.noConflict()(
 							$custom_video_url.hide();
 						}
 					}
-				)
+				);
 
 				$floorplan_checkbox.on(
 					'change',
 					function () {
 						if (
-							$( this ).is( ":checked" ) &&
+							$( this ).is( ':checked' ) &&
 							! $reception_checkbox.is( ':checked' )
 						) {
 							$reception_checkbox.trigger( 'click' );
 						}
 					}
-				)
+				);
 
 				$reception_checkbox.on(
 					'change',
 					function () {
-						if ($( this ).is( ":checked" ) ) {
+						if ($( this ).is( ':checked' )) {
 							$reception_settings.show();
 						} else {
 							$reception_settings.hide();
 
-							if ( $floorplan_checkbox.is( ':checked' ) ) {
+							if ($floorplan_checkbox.is( ':checked' )) {
 								$floorplan_checkbox.trigger( 'click' );
 							}
 						}
 
 					}
-				)
+				);
 
 				$custom_video_checkbox.on(
 					'change',
 					function () {
-						if ($( this ).is( ":checked" ) ) {
+						if ($( this ).is( ':checked' )) {
 							$custom_video_url.show();
 						} else {
 							$custom_video_url.hide();
 						}
 					}
-				)
+				);
 			}
-		)
+		);
 
 		$outputs.each(
 			function () {
@@ -144,12 +144,12 @@ jQuery.noConflict()(
 										$button.prop( 'value', default_text );
 									},
 									2000
-								)
+								);
 							}
 						);
 					}
 				);
 			}
-		)
+		);
 	}
 );

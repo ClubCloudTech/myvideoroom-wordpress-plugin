@@ -9,13 +9,15 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\RoomBuilder;
 
+use MyVideoRoomPlugin\Admin\Page;
 use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Library\AvailableScenes;
-use MyVideoRoomPlugin\Library\Post;
-use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
+use MyVideoRoomPlugin\Library\AvailableScenes;
+use MyVideoRoomPlugin\Library\HttpPost;
+use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\ValueObject\GettingStarted;
+use function wp_generate_uuid4;
 
 /**
  * Class Module
@@ -30,61 +32,14 @@ class Module {
 	 * Install the shortcode
 	 */
 	public function __construct() {
-		add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 
-		add_action(
+		\add_action(
 			'wp_enqueue_scripts',
 			fn() => $this->enqueue_scripts_and_styles(),
 		);
 
 		$this->add_admin_actions_and_filters();
-	}
-
-	/**
-	 * Add actions and filters for admin area
-	 */
-	private function add_admin_actions_and_filters() {
-		add_action(
-			'admin_enqueue_scripts',
-			fn() => $this->enqueue_scripts_and_styles( true ),
-		);
-
-		add_action(
-			'myvideoroom_admin_menu',
-			function ( callable $add_to_menu ) {
-				$add_to_menu(
-					self::PAGE_SLUG_BUILDER,
-					__( 'Room Builder', 'myvideoroom' ),
-					array( new Admin(), 'create_room_builder_page' ),
-					1
-				);
-			}
-		);
-
-		add_action(
-			'myvideoroom_admin_getting_started_steps',
-			function ( GettingStarted $steps ) {
-				$steps->get_step( 2 )->set_description(
-					sprintf(
-						/* translators: %s is the text "room builder" and links to the Room Builder Section */
-						esc_html__(
-							'Use the visual %s to plan your room interactively, and learn about receptions and layouts.',
-							'myvideoroom'
-						),
-						'<a href="' . esc_url( menu_page_url( self::PAGE_SLUG_BUILDER, false ) ) . '">' .
-						esc_html__( 'room builder', 'myvideoroom' ) .
-						'</a>'
-					)
-				);
-			}
-		);
-
-		add_action(
-			'myvideoroom_shortcode_reference',
-			function ( callable $add_reference ) {
-				$add_reference( ( new Reference() )->get_shortcode_reference() );
-			}
-		);
 	}
 
 	/**
@@ -95,32 +50,32 @@ class Module {
 	private function enqueue_scripts_and_styles( bool $admin = false ) {
 		$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
 
-		wp_enqueue_style(
+		\wp_enqueue_style(
 			'myvideoroom-room-builder-css',
-			plugins_url( '/css/roombuilder.css', realpath( __FILE__ ) ),
+			\plugins_url( '/css/roombuilder.css', \realpath( __FILE__ ) ),
 			false,
 			$plugin_version,
 		);
 
-		wp_enqueue_style(
+		\wp_enqueue_style(
 			'myvideoroom-shared-css',
-			plugins_url( '/css/shared.css', realpath( __DIR__ . '/../' ) ),
+			\plugins_url( '/css/shared.css', \realpath( __DIR__ . '/../' ) ),
 			false,
 			$plugin_version,
 		);
 
-		wp_enqueue_script(
+		\wp_enqueue_script(
 			'myvideoroom-room-builder',
-			plugins_url( '/js/roombuilder.js', realpath( __FILE__ ) ),
+			\plugins_url( '/js/roombuilder.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
 			$plugin_version,
 			true
 		);
 
 		if ( $admin ) {
-			wp_enqueue_style(
+			\wp_enqueue_style(
 				'myvideoroom-room-builder-admin-css',
-				plugins_url( '/css/roombuilder-admin.css', realpath( __FILE__ ) ),
+				\plugins_url( '/css/roombuilder-admin.css', \realpath( __FILE__ ) ),
 				false,
 				$plugin_version,
 			);
@@ -135,6 +90,55 @@ class Module {
 	}
 
 	/**
+	 * Add actions and filters for admin area
+	 */
+	private function add_admin_actions_and_filters() {
+		\add_action(
+			'admin_enqueue_scripts',
+			fn() => $this->enqueue_scripts_and_styles( true ),
+		);
+
+		\add_action(
+			'myvideoroom_admin_menu',
+			function ( callable $add_to_menu ) {
+				$add_to_menu(
+					new Page(
+						self::PAGE_SLUG_BUILDER,
+						\esc_html__( 'Room Builder', 'myvideoroom' ),
+						array( new Admin(), 'create_room_builder_page' ),
+					),
+					1
+				);
+			}
+		);
+
+		\add_action(
+			'myvideoroom_admin_getting_started_steps',
+			function ( GettingStarted $steps ) {
+				$steps->get_step( 2 )->set_description(
+					\sprintf(
+					/* translators: %s is the text "room builder" and links to the Room Builder Section */
+						\esc_html__(
+							'Use the visual %s to plan your room interactively, and learn about receptions and layouts.',
+							'myvideoroom'
+						),
+						'<a href="' . \esc_url( \menu_page_url( self::PAGE_SLUG_BUILDER, false ) ) . '">' .
+						\esc_html__( 'room builder', 'myvideoroom' ) .
+						'</a>'
+					)
+				);
+			}
+		);
+
+		\add_action(
+			'myvideoroom_shortcode_reference',
+			function ( callable $add_reference ) {
+				$add_reference( ( new Reference() )->get_shortcode_reference() );
+			}
+		);
+	}
+
+	/**
 	 * Show a configuration page for user to visualise shortcodes
 	 *
 	 * @param array|string $attributes Attributes passed from the shortcode to this function.
@@ -146,11 +150,11 @@ class Module {
 			$attributes = array();
 		}
 
-		$post_library = Factory::get_instance( Post::class );
+		$post_library = Factory::get_instance( HttpPost::class );
 
 		$available_layouts = Factory::get_instance( AvailableScenes::class )->get_available_layouts();
 		if ( ! $available_layouts ) {
-			return esc_html__( 'No Layouts Found', 'myvideoroom' );
+			return \esc_html__( 'No Layouts Found', 'myvideoroom' );
 		}
 
 		$available_receptions = Factory::get_instance( AvailableScenes::class )->get_available_receptions();
@@ -161,7 +165,7 @@ class Module {
 			$this->is_initial_preview_enabled( $attributes ) ||
 			$post_library->is_post_request( 'show_roombuilder_preview' )
 		) {
-			$shortcode_constructor = apply_filters( 'myvideoroom_roombuilder_create_shortcode', $this->create_shortcode_constructor() );
+			$shortcode_constructor = \apply_filters( 'myvideoroom_roombuilder_create_shortcode', $this->create_shortcode_constructor() );
 		}
 
 		$output = ( require __DIR__ . '/views/settings.php' )(
@@ -188,25 +192,36 @@ class Module {
 	}
 
 	/**
+	 * Is the initial preview enabled, is on by default unless explicitly disabled
+	 *
+	 * @param array $attributes Params passed from the shortcode to this function.
+	 *
+	 * @return bool
+	 */
+	private function is_initial_preview_enabled( array $attributes ): bool {
+		return ! isset( $attributes['initial_preview'] ) || 'false' !== $attributes['initial_preview'];
+	}
+
+	/**
 	 * Create the shortcode constructor
 	 *
 	 * @return AppShortcodeConstructor
 	 */
 	private function create_shortcode_constructor(): AppShortcodeConstructor {
-		$post_library = Factory::get_instance( Post::class );
+		$post_library = Factory::get_instance( HttpPost::class );
 
-		$room_name           = $post_library->get_text_post_parameter( 'room_builder_room_name' );
-		$video_template      = $post_library->get_text_post_parameter( 'room_builder_layout_id_preference' );
-		$reception_template  = $post_library->get_text_post_parameter( 'room_builder_reception_id_preference' );
-		$video_reception_url = $post_library->get_text_post_parameter( 'room_builder_reception_waiting_video_url' );
+		$room_name           = $post_library->get_text_parameter( 'room_builder_room_name' );
+		$video_template      = $post_library->get_text_parameter( 'room_builder_layout_id_preference' );
+		$reception_template  = $post_library->get_text_parameter( 'room_builder_reception_id_preference' );
+		$video_reception_url = $post_library->get_text_parameter( 'room_builder_reception_waiting_video_url' );
 
-		$disable_floorplan       = $post_library->get_checkbox_post_parameter( 'room_builder_disable_floorplan_preference', true );
-		$enable_guest_reception  = $post_library->get_checkbox_post_parameter( 'room_builder_reception_enabled_preference', true );
-		$use_multiple_shortcodes = $post_library->get_radio_post_parameter( 'room_builder_room_permissions_preference' ) === 'shortcode_pair';
+		$disable_floorplan       = $post_library->get_checkbox_parameter( 'room_builder_disable_floorplan_preference', true );
+		$enable_guest_reception  = $post_library->get_checkbox_parameter( 'room_builder_reception_enabled_preference', true );
+		$use_multiple_shortcodes = $post_library->get_radio_parameter( 'room_builder_room_permissions_preference' ) === 'shortcode_pair';
 
 		// if the reception url value is not a YouTube ID - then escape it.
-		if ( ! preg_match( '/^[A-Za-z0-9_\-]{11}$/', $video_reception_url ) ) {
-			$video_reception_url = esc_url( $video_reception_url );
+		if ( ! \preg_match( '/^[A-Za-z0-9_\-]{11}$/', $video_reception_url ) ) {
+			$video_reception_url = \esc_url( $video_reception_url );
 		}
 
 		$shortcode_constructor = AppShortcodeConstructor::create_instance();
@@ -243,6 +258,16 @@ class Module {
 	}
 
 	/**
+	 * Generate an error page for the nonce being invalid
+	 *
+	 * @return string
+	 */
+	private function generate_nonce_error(): string {
+		// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.
+		return ( require __DIR__ . '/views/error.php' )();
+	}
+
+	/**
 	 * Generate the preview
 	 *
 	 * @param AppShortcodeConstructor $shortcode_constructor The settings for the preview.
@@ -273,32 +298,11 @@ class Module {
 		}
 
 		// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.
-		return (require __DIR__ . '/views/preview.php' )(
+		return ( require __DIR__ . '/views/preview.php' )(
 			$host_shortcode_visual_constructor,
 			$guest_shortcode_visual_text_constructor,
 			$host_shortcode_text_constructor,
 			$guest_shortcode_text_constructor,
 		);
-	}
-
-	/**
-	 * Generate an error page for the nonce being invalid
-	 *
-	 * @return string
-	 */
-	private function generate_nonce_error(): string {
-		// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.
-		return (require __DIR__ . '/views/error.php' )();
-	}
-
-	/**
-	 * Is the initial preview enabled, is on by default unless explicitly disabled
-	 *
-	 * @param array $attributes Params passed from the shortcode to this function.
-	 *
-	 * @return bool
-	 */
-	private function is_initial_preview_enabled( array $attributes ): bool {
-		return ! isset( $attributes['initial_preview'] ) || 'false' !== $attributes['initial_preview'];
 	}
 }

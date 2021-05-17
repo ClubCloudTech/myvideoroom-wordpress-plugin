@@ -40,7 +40,7 @@ class ShortcodeConstructor {
 		$output = $this->shortcode_tag;
 
 		foreach ( $attributes as $key => $value ) {
-			if ( is_bool( $value ) ) {
+			if ( \is_bool( $value ) ) {
 				if ( $value ) {
 					$output .= ' ' . $key . '=true';
 				} else {

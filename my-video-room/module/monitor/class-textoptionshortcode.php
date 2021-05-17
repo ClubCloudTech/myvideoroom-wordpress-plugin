@@ -22,7 +22,7 @@ class TextOptionShortcode extends Shortcode {
 	 * Install the shortcode
 	 */
 	public function init() {
-		add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 	}
 
 	/**
@@ -31,9 +31,9 @@ class TextOptionShortcode extends Shortcode {
 	 * @return string
 	 */
 	public function output_shortcode(): string {
-		$message = sprintf(
-			/* translators: First %s is it ths shortcode tag for the text-option and the second for the monitor tag */
-			esc_html__( 'The %1$s should be called from within the %2$s shortcode', 'myvideoroom' ),
+		$message = \sprintf(
+		/* translators: First %s is it ths shortcode tag for the text-option and the second for the monitor tag */
+			\esc_html__( 'The %1$s should be called from within the %2$s shortcode', 'myvideoroom' ),
 			self::SHORTCODE_TAG,
 			Module::SHORTCODE_TAG
 		);

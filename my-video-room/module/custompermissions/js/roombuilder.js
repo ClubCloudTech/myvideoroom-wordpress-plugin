@@ -14,22 +14,22 @@ jQuery.noConflict()(
 				var $custom_permissions        = $( '.custom-permissions', this );
 				var $custom_permissions_option = $( 'input[name=myvideoroom_room_builder_room_permissions_preference]', this );
 
-				if ($custom_permissions_option.filter( ":checked" ).val() !== 'use_custom_permissions') {
+				if ($custom_permissions_option.filter( ':checked' ).val() !== 'use_custom_permissions') {
 					$custom_permissions.hide();
 				}
 
 				$custom_permissions_option.on(
 					'change',
 					function () {
-						if ($( this ).val() === 'use_custom_permissions' ) {
+						if ($( this ).val() === 'use_custom_permissions') {
 							$custom_permissions.show();
 						} else {
 							$custom_permissions.hide();
 						}
 
 					}
-				)
+				);
 			}
-		)
+		);
 	}
 );

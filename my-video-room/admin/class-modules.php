@@ -10,7 +10,7 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Admin;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Admin\Navigation;
+use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\Module as ModuleInstance;
 use MyVideoRoomPlugin\Plugin;
@@ -30,11 +30,13 @@ class Modules {
 	 * @return ?Notice
 	 */
 	public function update_active_modules(): ?Notice {
-		$page        = sanitize_text_field( wp_unslash( $_GET['page'] ?? '' ) );
-		$module_slug = sanitize_text_field( wp_unslash( $_GET['module'] ?? '' ) );
-		$action      = sanitize_text_field( wp_unslash( $_GET['action'] ?? '' ) );
+		$http_get_library = Factory::get_instance( HttpGet::class );
 
-		if ( Navigation::PAGE_SLUG_MODULES !== $page || ! $module_slug || ! $action ) {
+		$page        = $http_get_library->get_text_parameter( 'page' );
+		$module_slug = $http_get_library->get_text_parameter( 'module' );
+		$action      = $http_get_library->get_text_parameter( 'action' );
+
+		if ( PageList::PAGE_SLUG_MODULES !== $page || ! $module_slug || ! $action ) {
 			return null;
 		}
 
@@ -44,7 +46,7 @@ class Modules {
 			return null;
 		}
 
-		check_admin_referer( 'module_' . $action );
+		\check_admin_referer( 'module_' . $action );
 
 		switch ( $action ) {
 			case self::MODULE_ACTION_ACTIVATE:
@@ -53,12 +55,12 @@ class Modules {
 				if ( $activation_status ) {
 					return new Notice(
 						Notice::TYPE_SUCCESS,
-						esc_html__( 'Module activated', 'myvideoroom' ),
+						\esc_html__( 'Module activated', 'myvideoroom' ),
 					);
 				} else {
 					return new Notice(
 						Notice::TYPE_ERROR,
-						esc_html__( 'Module activation failed', 'myvideoroom' ),
+						\esc_html__( 'Module activation failed', 'myvideoroom' ),
 					);
 				}
 			case self::MODULE_ACTION_DEACTIVATE:
@@ -67,12 +69,12 @@ class Modules {
 				if ( $activation_status ) {
 					return new Notice(
 						Notice::TYPE_SUCCESS,
-						esc_html__( 'Module deactivated', 'myvideoroom' ),
+						\esc_html__( 'Module deactivated', 'myvideoroom' ),
 					);
 				} else {
 					return new Notice(
 						Notice::TYPE_ERROR,
-						esc_html__( 'Module deactivation failed', 'myvideoroom' ),
+						\esc_html__( 'Module deactivation failed', 'myvideoroom' ),
 					);
 				}
 		}
@@ -98,9 +100,9 @@ class Modules {
 
 		$module->set_as_active();
 
-		$activated_modules = array_keys( array_filter( $all_modules, fn( $module ) => $module->is_active() ) );
+		$activated_modules = \array_keys( \array_filter( $all_modules, fn( $module ) => $module->is_active() ) );
 
-		update_option( Plugin::SETTING_ACTIVATED_MODULES, wp_json_encode( $activated_modules ) );
+		\update_option( Plugin::SETTING_ACTIVATED_MODULES, \wp_json_encode( $activated_modules ) );
 
 		$module->instantiate();
 
@@ -124,9 +126,9 @@ class Modules {
 
 		$module->set_as_inactive();
 
-		$activated_modules = array_keys( array_filter( $all_modules, fn( $module ) => $module->is_active() ) );
+		$activated_modules = \array_keys( \array_filter( $all_modules, fn( $module ) => $module->is_active() ) );
 
-		update_option( Plugin::SETTING_ACTIVATED_MODULES, wp_json_encode( $activated_modules ) );
+		\update_option( Plugin::SETTING_ACTIVATED_MODULES, \wp_json_encode( $activated_modules ) );
 
 		return true;
 	}

@@ -22,16 +22,7 @@ class AvailableScenes {
 	 * @return array
 	 */
 	public function get_available_layouts(): array {
-		return apply_filters( 'myvideoroom_available_layouts', $this->get_available_scenes( 'layouts' ) );
-	}
-
-	/**
-	 * Get a list of available receptions from MyVideoRoom
-	 *
-	 * @return array
-	 */
-	public function get_available_receptions(): array {
-		return apply_filters( 'myvideoroom_available_receptions', $this->get_available_scenes( 'receptions' ) );
+		return \apply_filters( 'myvideoroom_available_layouts', $this->get_available_scenes( 'layouts' ) );
 	}
 
 	/**
@@ -47,7 +38,7 @@ class AvailableScenes {
 		$host = Factory::get_instance( Host::class )->get_host();
 
 		if ( $host ) {
-			$url = add_query_arg( array( 'host' => $host ), $url );
+			$url = \add_query_arg( array( 'host' => $host ), $url );
 		}
 
 		$request = \wp_remote_get( $url );
@@ -65,5 +56,14 @@ class AvailableScenes {
 		}
 
 		return $scenes;
+	}
+
+	/**
+	 * Get a list of available receptions from MyVideoRoom
+	 *
+	 * @return array
+	 */
+	public function get_available_receptions(): array {
+		return \apply_filters( 'myvideoroom_available_receptions', $this->get_available_scenes( 'receptions' ) );
 	}
 }

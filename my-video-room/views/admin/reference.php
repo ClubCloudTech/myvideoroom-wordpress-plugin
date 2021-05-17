@@ -7,7 +7,8 @@
 
 declare( strict_types=1 );
 
-use MyVideoRoomPlugin\Factory;
+namespace MyVideoRoomPlugin;
+
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Reference\Shortcode;
 
@@ -24,19 +25,19 @@ return function (
 
 	$html_lib = Factory::get_instance( HTML::class, array( 'reference' ) );
 
-	ob_start();
+	\ob_start();
 
 	?>
-	<h2><?php esc_html_e( 'Shortcode reference', 'myvideoroom' ); ?></h2>
+	<h2><?php \esc_html_e( 'Shortcode reference', 'myvideoroom' ); ?></h2>
 
 	<p>
 		<?php
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The translated text will be escaped, but we want to render the link correctly.
-			printf(
-				/* translators: %s is the text "WordPress Shortcodes" and links to the WordPress help page for shortcodes */
-				esc_html__( 'You can use the following %s to add the MyVideoRoom widgets to a page.', 'myvideoroom' ),
-				'<a href="https://support.wordpress.com/shortcodes/" target="_blank">' . esc_html__( 'WordPress shortcodes', 'myvideoroom' ) . '</a>'
-			);
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The translated text will be escaped, but we want to render the link correctly.
+		\printf(
+		/* translators: %s is the text "WordPress Shortcodes" and links to the WordPress help page for shortcodes */
+			\esc_html__( 'You can use the following %s to add the MyVideoRoom widgets to a page.', 'myvideoroom' ),
+			'<a href="https://support.wordpress.com/shortcodes/" target="_blank">' . \esc_html__( 'WordPress shortcodes', 'myvideoroom' ) . '</a>'
+		);
 		?>
 	</p>
 
@@ -50,11 +51,11 @@ return function (
 				$reference_sections[] = $reference_section_render( $shortcode, $id );
 
 				?>
-					<li>
-						<a class="nav-tab<?php echo esc_attr( $active_class ); ?>" href="#<?php echo esc_attr( $id ); ?>">
-							<?php echo esc_html( $shortcode->get_name() ); ?>
-						</a>
-					</li>
+				<li>
+					<a class="nav-tab<?php echo \esc_attr( $active_class ); ?>" href="#<?php echo \esc_attr( $id ); ?>">
+						<?php echo \esc_html( $shortcode->get_name() ); ?>
+					</a>
+				</li>
 				<?php
 
 				$active_class = '';
@@ -71,5 +72,5 @@ return function (
 	?>
 
 	<?php
-	return ob_get_clean();
+	return \ob_get_clean();
 };

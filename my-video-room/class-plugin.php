@@ -9,7 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
-use MyVideoRoomPlugin\Admin\Navigation;
+use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\Module;
 
 /**
@@ -32,12 +32,12 @@ class Plugin {
 	 * Plugin constructor.
 	 */
 	public function __construct() {
-		$private_key = get_option( self::SETTING_PRIVATE_KEY );
-		do_action( 'myvideoroom_init' );
+		$private_key = \get_option( self::SETTING_PRIVATE_KEY );
+		\do_action( 'myvideoroom_init' );
 
-		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_filter(
-			'plugin_action_links_' . plugin_basename( __DIR__ . '/index.php' ),
+		\add_action( 'admin_init', array( $this, 'register_settings' ) );
+		\add_filter(
+			'plugin_action_links_' . \plugin_basename( __DIR__ . '/index.php' ),
 			array( $this, 'add_action_links' )
 		);
 
@@ -55,7 +55,7 @@ class Plugin {
 	/**
 	 * Initializer function, returns a instance of the plugin
 	 *
-	 * @return object
+	 * @return \MyVideoRoomPlugin\Plugin
 	 */
 	public static function init() {
 		return Factory::get_instance( self::class );
@@ -65,9 +65,9 @@ class Plugin {
 	 * Register all settings with WordPress.
 	 */
 	public function register_settings() {
-		register_setting( self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE, self::SETTING_ACTIVATION_KEY );
-		register_setting( self::PLUGIN_NAMESPACE, self::SETTING_PRIVATE_KEY );
-		register_setting( self::PLUGIN_NAMESPACE, self::SETTING_ACCESS_TOKEN );
+		\register_setting( self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE, self::SETTING_ACTIVATION_KEY );
+		\register_setting( self::PLUGIN_NAMESPACE, self::SETTING_PRIVATE_KEY );
+		\register_setting( self::PLUGIN_NAMESPACE, self::SETTING_ACCESS_TOKEN );
 	}
 
 	/**
@@ -79,8 +79,8 @@ class Plugin {
 	 */
 	public function add_action_links( array $actions ): array {
 		$links = array(
-			'Settings'  => menu_page_url( Navigation::PAGE_SLUG_GETTING_STARTED, false ),
-			'Reference' => menu_page_url( Navigation::PAGE_SLUG_REFERENCE, false ),
+			'Settings'  => \menu_page_url( PageList::PAGE_SLUG_GETTING_STARTED, false ),
+			'Reference' => \menu_page_url( PageList::PAGE_SLUG_REFERENCE, false ),
 			'Support'   => 'https://clubcloud.tech',
 		);
 

@@ -2,14 +2,13 @@
 /**
  * Render an invite link
  *
- * @package MyVideoRoomPlugin\Module\PersonalMeetingRooms
- *
  * @return string
+ * @package MyVideoRoomPlugin\Module\PersonalMeetingRooms
  */
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
-use MyVideoRoomPlugin\Library\Post;
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Module;
 
 
@@ -81,7 +80,7 @@ return function (
 
 			<?php
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( Post::class )->create_form_submit( Module::INVITE_EMAIL_ACTION, esc_html__( 'Send link', 'myvideoroom' ) );
+			echo Factory::get_instance( HttpPost::class )->create_form_submit( Module::INVITE_EMAIL_ACTION, esc_html__( 'Send link', 'myvideoroom' ) );
 			?>
 		</form>
 

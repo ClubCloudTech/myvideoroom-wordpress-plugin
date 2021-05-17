@@ -9,6 +9,8 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\ValueObject;
 
+use Exception;
+
 /**
  * Class Notice
  */
@@ -46,8 +48,8 @@ class Notice {
 	 * @throws \Exception When an invalid type is passed.
 	 */
 	public function __construct( string $type, string $message ) {
-		if ( ! in_array( $type, self::TYPES, true ) ) {
-			throw new \Exception( 'Invalid type' );
+		if ( ! \in_array( $type, self::TYPES, true ) ) {
+			throw new Exception( 'Invalid type' );
 		}
 
 		$this->type    = $type;
@@ -55,9 +57,9 @@ class Notice {
 	}
 
 	/**
-	 * Get the type of notice - @see self::TYPES
+	 * Get the type of notice - @return string
 	 *
-	 * @return string
+	 * @see self::TYPES
 	 */
 	public function get_type(): string {
 		return $this->type;

@@ -11,8 +11,7 @@ namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
-use MyVideoRoomPlugin\Library\Post;
-use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\RoomBuilder\Settings\RoomPermissionsOption;
 
 /**
@@ -26,9 +25,9 @@ class RoomBuilder {
 	 * RoomBuilder constructor.
 	 */
 	public function __construct() {
-		add_filter( 'myvideoroom_roombuilder_create_shortcode', array( $this, 'generate_shortcode_constructor' ), 0, 1 );
-		add_filter( 'myvideoroom_roombuilder_permission_options', array( $this, 'add_permissions_option' ) );
-		add_filter( 'myvideoroom_roombuilder_permission_options_selected', array( $this, 'ensure_correct_permission_is_selected' ) );
+		\add_filter( 'myvideoroom_roombuilder_create_shortcode', array( $this, 'generate_shortcode_constructor' ), 0, 1 );
+		\add_filter( 'myvideoroom_roombuilder_permission_options', array( $this, 'add_permissions_option' ) );
+		\add_filter( 'myvideoroom_roombuilder_permission_options_selected', array( $this, 'ensure_correct_permission_is_selected' ) );
 	}
 
 	/**
@@ -39,14 +38,14 @@ class RoomBuilder {
 	 * @return RoomPermissionsOption[]
 	 */
 	public function add_permissions_option( array $options ): array {
-		$permissions_preference = Factory::get_instance( Post::class )->get_radio_post_parameter( 'room_permissions_preference' );
-		$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
+		$permissions_preference     = Factory::get_instance( HttpPost::class )->get_radio_parameter( 'room_builder_room_permissions_preference' );
+		$use_personal_meeting_rooms = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 
 		$options[] = new RoomPermissionsOption(
 			self::PERMISSIONS_FIELD_NAME,
-			$use_custom_permissions,
-			__( 'Use personal meeting rooms', 'myvideoroom' ),
-			esc_html__(
+			$use_personal_meeting_rooms,
+			\esc_html__( 'Use personal meeting rooms', 'myvideoroom' ),
+			\esc_html__(
 				'Personal meeting rooms allows every WordPress user to be host of their own room.',
 				'myvideoroom'
 			),
@@ -63,7 +62,7 @@ class RoomBuilder {
 	 * @return RoomPermissionsOption[]
 	 */
 	public function ensure_correct_permission_is_selected( array $options ): array {
-		$permissions_preference = Factory::get_instance( Post::class )->get_radio_post_parameter( 'room_permissions_preference' );
+		$permissions_preference = Factory::get_instance( HttpPost::class )->get_radio_parameter( 'room_builder_room_permissions_preference' );
 		$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 
 		foreach ( $options as $permission ) {
@@ -83,9 +82,9 @@ class RoomBuilder {
 	 * @return AppShortcodeConstructor
 	 */
 	public function generate_shortcode_constructor( AppShortcodeConstructor $shortcode_constructor ): AppShortcodeConstructor {
-		$post_library = Factory::get_instance( Post::class );
+		$post_library = Factory::get_instance( HttpPost::class );
 
-		$permissions_preference = $post_library->get_radio_post_parameter( 'room_permissions_preference' );
+		$permissions_preference = $post_library->get_radio_parameter( 'room_builder_room_permissions_preference' );
 		$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 
 		if ( $use_custom_permissions ) {
