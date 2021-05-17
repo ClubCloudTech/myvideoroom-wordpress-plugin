@@ -9,7 +9,7 @@ namespace MyVideoRoomPlugin\Module\Security;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
-use MyVideoRoomPlugin\Core\Library\Dependencies;
+use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 

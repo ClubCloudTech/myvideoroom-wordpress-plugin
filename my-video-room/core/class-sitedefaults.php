@@ -9,13 +9,11 @@ namespace MyVideoRoomPlugin\Core;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Core\Library\UserRoles;
-use MyVideoRoomPlugin\Core\Library\WordPressUser;
-use MyVideoRoomPlugin\Core\Library\MeetingIdGenerator;
+use MyVideoRoomPlugin\Library\UserRoles;
+use MyVideoRoomPlugin\Library\WordPressUser;
+use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
-
-use \MyVideoRoomExtrasPlugin\Modules\WooCommerceBookings\WCHelpers;
-use MyVideoRoomPlugin\Core\Library\Dependencies;
+use MyVideoRoomPlugin\Library\Dependencies;
 
 /**
  * Class SiteDefaults
@@ -84,6 +82,7 @@ class SiteDefaults extends Shortcode {
 	 * @return void
 	 */
 	private function register_scripts_styles() {
+		// ToDO Fred to remove before final merge.
 		wp_register_script(
 			'myvideoroom-protect-input',
 			plugins_url( '/../js/protect-input.js', __FILE__ ),
@@ -169,11 +168,6 @@ class SiteDefaults extends Shortcode {
 				$outmeetingid = Factory::get_instance( MeetingIdGenerator::class )->invite( $input_id, 'user', null );
 
 				return 'Space-' . $output . '-' . $outmeetingid;
-
-			case 'bookings':
-				$store_slug = Factory::get_instance( WCHelpers::class )->orderinfo_by_booking( $input_id, 'store_slug', 0 );
-
-				return 'Booking-' . $store_slug . '-' . $input_id;
 
 			case 'group':
 				global $bp;

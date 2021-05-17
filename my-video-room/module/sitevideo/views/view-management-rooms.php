@@ -11,7 +11,7 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Core\DAO\RoomMap;
-use MyVideoRoomPlugin\Core\Library\Dependencies;
+use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
 use \MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;

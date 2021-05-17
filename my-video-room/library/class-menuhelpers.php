@@ -5,10 +5,10 @@
  * @package MyVideoRoomExtrasPlugin\Core
  */
 
-namespace MyVideoRoomPlugin\Core\Library;
+namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\Library\WordPressUser as LibraryWordPressUser;
+use MyVideoRoomPlugin\Library\WordPressUser as LibraryWordPressUser;
 use MyVideoRoomPlugin\Shortcode;
 
 /**

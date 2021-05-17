@@ -22,7 +22,7 @@ class MVRSiteVideo extends Shortcode {
 		// Constants For Site Video Module.
 		const MODULE_SITE_VIDEO_NAME           = 'site-video-module';
 		const ROOM_NAME_SITE_VIDEO             = 'site-conference-room';
-		const MODULE_SITE_VIDEO_ID             = \MyVideoRoomPlugin\Core\Library\Dependencies::MODULE_SITE_VIDEO_ID;
+		const MODULE_SITE_VIDEO_ID             = \MyVideoRoomPlugin\Library\Dependencies::MODULE_SITE_VIDEO_ID;
 		const MODULE_SITE_VIDEO_ADMIN_PAGE     = 'plugin-settings-sitevideo';
 		const MODULE_SITE_VIDEO_ADMIN_LOCATION = '/module/sitevideo/views/view-settings-sitevideo.php';
 		const MODULE_ROOM_MANAGEMENT_NAME      = 'site-video-multi-room-module';

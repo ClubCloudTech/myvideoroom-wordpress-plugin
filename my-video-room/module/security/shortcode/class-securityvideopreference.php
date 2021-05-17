@@ -9,8 +9,8 @@ namespace MyVideoRoomPlugin\Module\Security\Shortcode;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
-use MyVideoRoomPlugin\Core\Library\WordPressUser;
-use MyVideoRoomPlugin\Core\Library\Dependencies;
+use MyVideoRoomPlugin\Library\WordPressUser;
+use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 

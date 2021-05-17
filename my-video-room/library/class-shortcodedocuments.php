@@ -2,10 +2,10 @@
 /**
  * Display Shortcode Documentation
  *
- * @package MyVideoRoomPlugin\Core\Library\ShortcodeDocuments
+ * @package MyVideoRoomPlugin\Library\ShortcodeDocuments
  */
 
-namespace MyVideoRoomPlugin\Core\Library;
+namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Factory;

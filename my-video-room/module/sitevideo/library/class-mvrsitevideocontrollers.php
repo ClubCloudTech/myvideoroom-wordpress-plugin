@@ -12,10 +12,10 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\DAO\RoomMap;
 use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Core\VideoHelpers;
-use MyVideoRoomPlugin\Core\Library\Dependencies;
+use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Core\Shortcode\MyVideoRoomApp;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
-use MyVideoRoomPlugin\Core\Library\SectionTemplates;
+use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
