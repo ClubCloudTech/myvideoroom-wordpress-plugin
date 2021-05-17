@@ -1,0 +1,224 @@
+<?php
+/**
+ * Data Access Object for controlling Room Mapping Database Entries
+ *
+ * @package MyVideoRoomPlugin\Core\DAO
+ */
+
+namespace MyVideoRoomPlugin\Core\DAO;
+
+use MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\Factory;
+
+/**
+ * Class RoomMap
+ * Registers Rooms Permanently in Database - base for WCBookings, Meet Center, Site Video.
+ */
+class RoomMap {
+	const TABLE_NAME = SiteDefaults::TABLE_NAME_ROOM_MAP;
+
+	/**
+	 * Get a PostID from the Database for a Page
+	 *
+	 * @param  string $room_name inbound room from user.
+	 * @return string (db entry)
+	 */
+	public function read( string $room_name ) {
+		global $wpdb;
+		$raw_sql            = '
+				SELECT post_id
+				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+				WHERE room_name = %s
+			';
+			$prepared_query = $wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				$raw_sql,
+				array(
+					$room_name,
+				)
+			);
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+			$row = $wpdb->get_row( $prepared_query );
+		if ( $row ) {
+			return $row->post_id;
+		}
+		return null;
+	}
+	/**
+	 * Register a given room in the Database, and ensure it does not already exist
+	 *
+	 * @param  string $room_name - The Room Name.
+	 * @param  int    $post_id - The Post iD.
+	 * @param  string $room_type - The type of room to register.
+	 * @param  string $display_name - The Room Display Name for Header.
+	 * @param  string $slug - The Slug.
+	 *
+	 * @return DB Result Code or False s
+	 */
+	public function register_room_in_db( string $room_name, int $post_id, string $room_type, string $display_name, string $slug ) {
+		global $wpdb;
+		// Empty input exit.
+		if ( ! $room_name || ! $post_id ) {
+			return 'Room Name or PostID Blank';
+		}
+		// Create Post.
+		$result = $wpdb->insert(
+			$wpdb->prefix . self::TABLE_NAME,
+			array(
+				'room_name'    => $room_name,
+				'post_id'      => $post_id,
+				'room_type'    => $room_type,
+				'display_name' => $display_name,
+				'slug'         => $slug,
+			)
+		);
+		return $result;
+	}
+	/**
+	 * Get Room Info from Database.
+	 *
+	 * @param  int $post_id - The Room iD to query.
+	 * @return DB Result or False s
+	 */
+	public function get_room_info( int $post_id ) {
+		global $wpdb;
+		$raw_sql            = '
+				SELECT room_name, post_id, room_type, display_name, slug
+				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+				WHERE post_id = %d
+			';
+			$prepared_query = $wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				$raw_sql,
+				array(
+					$post_id,
+				)
+			);
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+			$row = $wpdb->get_row( $prepared_query );
+		if ( $row ) {
+			return $row;
+		}
+		return null;
+	}
+
+
+
+	/**
+	 * Update Room Post ID in Database
+	 *
+	 *  This plugin will update the room name in the database with the parameter
+	 *
+	 * @param  string $post_id - The Post iD.
+	 * @param  string $room_name - The Room Name.
+	 * @return Database updated result or False
+	 */
+	public function update_room_post_id( string $post_id, string $room_name ) {
+		global $wpdb;
+		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		// Empty input exit.
+		if ( ! $post_id || ! $room_name ) {
+			return false;
+		}
+		$raw_sql            = '
+				UPDATE ' . $wpdb->prefix . self::TABLE_NAME . '
+				SET post_id = %s
+				WHERE room_name = %s
+			';
+			$prepared_query = $wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+				$raw_sql,
+				array(
+					$room_name,
+					$post_id,
+				)
+			);
+		$result = $wpdb->query( $prepared_query );
+		return null;
+	}
+	/**
+	 * Delete a Room Record in Database.
+	 *
+	 *  This function will delete the room name in the database with the parameter.
+	 *
+	 *  @param  string $room_name - the Room Name.
+	 *  @return Database updated result or False
+	 */
+	public function delete_room_mapping( string $room_name ) {
+		global $wpdb;
+		$table_name = $wpdb->prefix . self::TABLE_NAME;
+		// empty input exit.
+		if ( ! $room_name ) {
+			return false;
+		}
+		$raw_sql            = '
+				DELETE FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+				WHERE room_name = %s
+			';
+			$prepared_query = $wpdb->prepare(
+				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared.
+				$raw_sql,
+				array(
+					$room_name,
+				)
+			);
+		$result = $wpdb->query( $prepared_query );
+		return null;
+	}
+
+	/**
+	 * Register a given room in the Database, and ensure it does not already exist
+	 *
+	 *  @param  string $room_name - the Room Name.
+	 *
+	 * @return String  Yes, No, Orphan (database exists but page deleted)
+	 */
+	public function check_page_exists( string $room_name ) {
+		global $wpdb;
+		// Empty input exit.
+		if ( ! $room_name ) {
+			return false;
+		}
+		// First Check Database for Room and Post ID - return No if blank.
+		$post_id_check = Factory::get_instance( self::class )->read( $room_name );
+		if ( ! $post_id_check ) {
+			return 'No';
+		}
+		// Second Check Post Actually Exists in WP still (user hasn't deleted page).
+		$post_object = get_post( $post_id_check );
+		if ( ! $post_object ) {
+			return 'Orphan';
+		} else {
+			return 'Yes';
+		}
+	}
+
+	/**
+	 * Get Additional Rooms Installed
+	 *
+	 * @param  string $room_type - the room type to query.
+	 * @return string - the room list.
+	 */
+	public function get_room_list( string $room_type ) {
+		global $wpdb;
+		$raw_sql        = '
+				SELECT post_id
+				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+				WHERE room_type = %s
+			';
+		$prepared_query = $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$raw_sql,
+			array(
+				$room_type,
+			)
+		);
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+		$row    = $wpdb->get_results( $prepared_query );
+		$output = array();
+		foreach ( $row as $datarow ) {
+			array_push( $output, $datarow->post_id );
+		}
+		return $output;
+	}
+}

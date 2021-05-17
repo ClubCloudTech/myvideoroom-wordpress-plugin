@@ -1,0 +1,18 @@
+.wp-submenu {
+    display: none!important;
+}
+
+#adminmenu {
+    display: none!important;
+}
+
+#adminmenuback {
+    display: none!important;
+}
+#adminmenuwrap {
+    display: none!important;
+}
+
+#adminmenubar {
+    display: none!important;
+}

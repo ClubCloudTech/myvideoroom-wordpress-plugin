@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
+use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Library\Host;
 use MyVideoRoomPlugin\Library\Version;
 use function defined;
@@ -40,6 +41,19 @@ abstract class Shortcode {
 		}
 
 		return $host;
+	}
+	/**
+	 * Registers a shortcode in WordPress
+	 *
+	 * @param string   $tag The suffix of the tag.
+	 * @param callable $callback The callback to render the shortcode.
+	 */
+	protected function add_shortcode( string $tag, callable $callback ) {
+		$prefix = SiteDefaults::SHORTCODE_PREFIX;
+			add_shortcode(
+				$prefix . $tag,
+				$callback
+			);
 	}
 
 	/**

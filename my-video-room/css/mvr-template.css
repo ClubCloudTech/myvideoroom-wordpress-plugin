@@ -1,0 +1,243 @@
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.menu {
+	display: flex;
+}
+
+.mvr-title-header {
+	display: inline!important;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.mvr-preferences-paragraph {
+	font-size: 13px;
+	font-weight: 500;
+	color: rgb(32, 32, 32);
+	margin-bottom: 10px!important;
+}
+
+.mvr-user-image {
+	z-index: 1;
+	color: #fff;
+	display: table;
+	font-size: 0;
+	position: relative;
+	width:  150px;
+	height: 150px;
+}
+
+.mvr-template-image {
+	z-index: 1;
+	color: #fff;
+	display: table;
+	font-size: 0;
+	position: relative;
+	width:  350px;
+	height: 350px;
+}
+
+.mvr-access-image {
+	z-index: 1;
+	color: #fff;
+	display: table;
+	font-size: 0;
+	position: relative;
+	border-radius: 50px;
+	place-self: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	width:  200px;
+	height: 200px;
+}
+
+.mvr-table {
+	border-style: solid;
+	border-width: 2px 2px 2px 2px;
+	border-color: #C6C0AD;
+	box-shadow: 0px 0px 5px 4px rgb(0 0 0 / 30%);
+	transition: background 0.3s,
+	border 0.3s, border-radius 0.3s,
+	box-shadow 0.3s;
+	margin: 10px 10px 10px 10px;
+	padding: 10px 10px 10px 10px;
+	display: grid;
+}
+.mvr-row {
+	border-style: solid;
+	border-width: 2px 2px 2px 2px;
+	border-color: #C6C0AD;
+	box-shadow: 0px 0px 5px 4px rgb(0 0 0 / 30%);
+	transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+	margin: 10px 10px 10px 10px;
+	padding: 10px 10px 10px 10px;
+	display: grid;
+}
+.mvr-header-text {
+	font-size: 18px;
+	font-weight: 400;
+	text-align: center;
+}
+
+.mvr-button-table {
+	margin-top: 15px;
+	margin-bottom: 10px;
+
+}
+
+.mvr-template-table {
+	width: 50%;
+	vertical-align: middle;
+	text-align: -webkit-center;
+
+}
+
+.mvr-template-text {
+	vertical-align: middle;
+	text-align: -webkit-center;
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.mvr-main-button-enabled {
+	vertical-align: middle;
+	text-align: -webkit-center;
+	font-size: 14px;
+	font-weight: 400;
+	background-color: rgb(15 144 15);
+	display: inline;
+	padding: 8px;
+	border-radius: 3px;
+	margin-left: 2px!important;
+	color: rgb(255 255 255)!important;
+}
+
+
+.mvr-main-button-disabled {
+	vertical-align: middle;
+	text-align: -webkit-center;
+	font-size: 14px;
+	font-weight: 400;
+	border-radius: 3px;
+	background-color:rgb(221, 6, 6);
+	display: inline;
+	padding: 8px;
+	margin-left: 2px!important;
+	color: rgb(255 255 255)!important;
+}
+
+.mvr-main-button-notice{
+	vertical-align: middle;
+	text-align: -webkit-center;
+	font-size: 14px;
+	font-weight: 400;
+	border-radius: 3px;
+	background-color:rgb(12, 0, 173);
+	display: inline;
+	padding: 8px;
+	margin-left: 2px!important;
+	color: rgb(255 255 255)!important;
+}
+
+.mvr-select-box {
+	vertical-align: middle;
+	font-size: 14px;
+	font-weight: 500;
+	background-color:rgb(253, 253, 253)!important;
+	width: 60%!important;
+	padding: 8px;
+	color:rgb(0, 0, 0) ;
+	border: 1px solid #6d6d6d!important;
+}
+
+.mvr-select-box-small {
+	vertical-align: middle;
+	font-size: 14px;
+	font-weight: 500;
+	background-color:rgb(253, 253, 253)!important;
+	padding: 8px;
+	color:rgb(0, 0, 0) ;
+	border: 1px solid #6d6d6d!important;
+
+}
+
+.mvr-hide {
+	display: none;
+  }
+
+  .mvr-reception-image:hover + .mvr-hide {
+	font-size: 14px;
+	font-weight: 500;
+	background-color:rgb(253, 253, 253)!important;
+	border: 3px solid #d2d2d2;
+	width: 70%!important;
+	padding: 8px;
+	position: absolute;
+	display: block;
+	color: rgb(41, 41, 41);
+  }
+
+  .mvr-video-template:hover + .mvr-hide {
+	font-size: 14px;
+	font-weight: 500;
+	background-color:rgb(253, 253, 253)!important;
+	border: 3px solid #d2d2d2;
+	width: 70%!important;
+	padding: 8px;
+	position: absolute;
+	display: block;
+	color: rgb(41, 41, 41);
+  }
+
+  .mvr-custom-video:hover + .mvr-hide {
+	font-size: 14px;
+	font-weight: 500;
+	background-color:rgb(253, 253, 253)!important;
+	border: 3px solid #d2d2d2;
+	width: 70%!important;
+	padding: 8px;
+	position: absolute;
+	display: block;
+	color: rgb(41, 41, 41);
+  }
+
+  .mvr-title-label {
+	color: #848B92;
+	font-family: "Montserrat", Sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: -0.7px;
+}
+
+.mvr-add-page {
+	font-size: 14px;
+	font-weight: 500;
+	background-color:rgb(253, 253, 253)!important;
+	border: 2px solid #d2d2d2;
+	padding: 4px;
+	margin: 1px;
+	color: rgb(41, 41, 41);
+	display:inline-block;
+  }
+
+.mvr-add-page-form {
+	display:none;
+	font-size: 14px;
+	font-weight: 500;
+	background-color:rgb(253, 253, 253)!important;
+	border: 3px solid #d2d2d2;
+	width: 70%!important;
+	padding: 8px;
+	color: rgb(41, 41, 41);
+	}
+
+.mvr-add-page:focus + .mvr-add-page-form{
+	display:block;
+	}
+
+.mvr-add-page-form:hover {
+	display: block!important;
+	}
