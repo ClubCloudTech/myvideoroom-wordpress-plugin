@@ -38,7 +38,7 @@ return function (
 		$main_class .= ' icon';
 	}
 
-	if ( $show_icons ) {
+	if ( $invert_icon_colors ) {
 		$main_class .= ' invert';
 	}
 	ob_start();
