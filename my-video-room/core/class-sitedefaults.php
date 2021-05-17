@@ -129,21 +129,6 @@ class SiteDefaults extends Shortcode {
 	}
 
 	/**
-	 * Is_mvr - checks if a site is MyVideoRoom.
-	 *
-	 * @return bool
-	 */
-	public function is_mvr() {
-		$site_title = get_bloginfo( 'name' );
-
-		if ( 'Just Coach' === $site_title || 'My Video Room' === $site_title ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
 	 * Is_Elementor - checks if a Elementor is enabled.
 	 *
 	 * @return bool
