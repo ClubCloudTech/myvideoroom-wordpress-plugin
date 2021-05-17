@@ -17,7 +17,7 @@
 
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\Setup\RoomAdmin;
+use MyVideoRoomPlugin\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
 use \MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;

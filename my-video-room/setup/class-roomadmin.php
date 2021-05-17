@@ -5,7 +5,7 @@
  * @package MyVideoRoomPlugin\Core\RoomAdmin
  */
 
-namespace MyVideoRoomPlugin\Core\Setup;
+namespace MyVideoRoomPlugin\Setup;
 
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Core\Dao\RoomMap;

@@ -12,7 +12,7 @@ use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Core\Dao\RoomMap;
 use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Core\Setup\RoomAdmin as RoomAdminSetup;
+use MyVideoRoomPlugin\Setup\RoomAdmin as RoomAdminSetup;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**

@@ -2,10 +2,10 @@
 /**
  * Setup Functions - Module Definition File- Config Modules will get initialised here.
  *
- * @package MyVideoRoomPlugin\Core\Setup
+ * @package MyVideoRoomPlugin\Setup
  */
 
-namespace MyVideoRoomPlugin\Core\Setup;
+namespace MyVideoRoomPlugin\Setup;
 
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Core\Dao\ModuleConfig;

@@ -19,8 +19,8 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\ShortcodeDocuments;
-use MyVideoRoomPlugin\Core\Setup\RoomAdmin;
-use MyVideoRoomPlugin\Core\Setup\Setup;
+use MyVideoRoomPlugin\Setup\RoomAdmin;
+use MyVideoRoomPlugin\Setup\Setup;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 
