@@ -52,7 +52,7 @@ class Plugin {
 
 		Factory::get_instance( AppShortcode::class, array( $private_key ) )->init();
 
-		Factory::get_instance( SiteDefaults::class )->runtime();
+		Factory::get_instance( SiteDefaults::class )->init();
 	}
 
 	/**

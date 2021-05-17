@@ -28,7 +28,7 @@ class SecurityVideoPreference extends Shortcode {
 	/**
 	 * Provide Runtime
 	 */
-	public function runtime() {
+	public function init() {
 		$this->add_shortcode( '_choose_security_settings', array( $this, 'choose_settings_shortcode' ) );
 	}
 

@@ -55,7 +55,7 @@ class SiteDefaults extends Shortcode {
 	/**
 	 * Runtime Functions.
 	 */
-	public function runtime() {
+	public function init() {
 		$this->register_scripts_styles();
 		$this->core_menu_setup();
 

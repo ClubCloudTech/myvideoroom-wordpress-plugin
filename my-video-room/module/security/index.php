@@ -25,7 +25,7 @@ add_action(
 					'myvideoroom'
 				),
 			),
-			fn() => Factory::get_instance( Security::class )->runtime()
+			fn() => Factory::get_instance( Security::class )->init()
 		)
 		->add_activation_hook(
 			fn () => Factory::get_instance( Security::class )->initialise_module()

@@ -20,7 +20,7 @@ class MenuHelpers extends Shortcode {
 	/**
 	 * Provide Runtime
 	 */
-	public function runtime() {
+	public function init() {
 		return null;
 	}
 

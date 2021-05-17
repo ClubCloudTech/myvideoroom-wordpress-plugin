@@ -26,7 +26,7 @@ class RoomAdmin extends Shortcode {
 	 *
 	 * @return void
 	 */
-	public function runtime() {
+	public function init() {
 
 		$this->add_shortcode( 'getvideo_room_info', array( $this, 'get_video_info_shortcode' ) );
 

@@ -61,7 +61,7 @@ class Security {
 	 * Runtime Shortcodes and Setup
 	 * Required for Normal Runtime.
 	 */
-	public function runtime() {
+	public function init() {
 
 		// Turn on Runtime Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();

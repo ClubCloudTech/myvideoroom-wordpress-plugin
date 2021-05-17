@@ -28,7 +28,7 @@ class UserVideoPreference extends Shortcode {
 	/**
 	 * Provide Runtime
 	 */
-	public function runtime() {
+	public function init() {
 		$this->add_shortcode( '_choose_settings', array( $this, 'choose_settings_shortcode' ) );
 	}
 
