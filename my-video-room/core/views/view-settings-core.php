@@ -17,6 +17,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
+use MyVideoRoomPlugin\Core\Library\Dependencies;
 use MyVideoRoomPlugin\Core\Library\ShortcodeDocuments;
 use MyVideoRoomPlugin\Core\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Core\Setup\Setup;
@@ -25,15 +26,12 @@ use MyVideoRoomPlugin\Core\SiteDefaults;
 
 
 return function (
-	string $active_tab,
-	array $tabs,
-	array $messages = array(),
-	array $module_tabs = array()
+	array $messages = array()
 ): string {
 
 	$render = require __DIR__ . '/header/header.php';
 	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
-	echo $render( $messages, $module_tabs );
+	echo $render( $messages );
 	wp_enqueue_style( 'mvr-template' );
 	wp_enqueue_style( 'mvr-menutab-header' );
 	ob_start();

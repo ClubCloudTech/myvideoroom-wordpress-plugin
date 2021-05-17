@@ -8,7 +8,6 @@
 namespace MyVideoRoomPlugin\Core\Library;
 
 use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
-use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 

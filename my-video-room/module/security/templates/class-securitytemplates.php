@@ -7,9 +7,8 @@
 
 namespace MyVideoRoomPlugin\Module\Security\Templates;
 
-use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
-use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
+
 
 /**
  * Class Security Templates
@@ -35,7 +34,7 @@ class SecurityTemplates extends Shortcode {
 				echo esc_html_e( 'This Room is Offline', 'myvideoroom' ) . '</h2>';
 			?>
 	<img class="mvr-access-image" src="
-			<?php echo esc_url( plugins_url( '../../../assets/img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
+			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
 
 	<p class="mvr-template-text">
 		<?php
@@ -67,7 +66,7 @@ class SecurityTemplates extends Shortcode {
 				echo esc_html_e( 'This Room is Offline', 'myvideoroom' ) . '</h2>';
 			?>
 	<img class="mvr-access-image" src="
-			<?php echo esc_url( plugins_url( '../../../assets/img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
+			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
 
 	<p class="mvr-template-text">
 					<?php
@@ -114,7 +113,7 @@ class SecurityTemplates extends Shortcode {
 				echo esc_html_e( 'This room is set to Signed in (known) Users Only', 'myvideoroom' ) . '</h2>';
 			?>
 	<img class="mvr-access-image" src="
-			<?php echo esc_url( plugins_url( '../../../assets/img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
+			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
 
 	<p class="mvr-template-text">
 					<?php
@@ -165,7 +164,7 @@ class SecurityTemplates extends Shortcode {
 				echo esc_html_e( 'This Room is set to Specific Roles Only', 'myvideoroom' ) . '</h2>';
 			?>
 	<img class="mvr-access-image" src="
-			<?php echo esc_url( plugins_url( '../../../assets/img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
+			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
 
 	<p class="mvr-template-text">
 					<?php
