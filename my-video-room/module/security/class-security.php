@@ -26,9 +26,9 @@ class Security {
 	const MODULE_SECURITY_ID              = SiteDefaults::MODULE_SECURITY_ID; // Proxied to Main Core so Activation state can be queried by Core Modules.
 	const MODULE_SECURITY_ENTITY_ID       = 1029;
 	const MODULE_SECURITY_ADMIN_PAGE      = 'view-admin-settings-security';
-	const MODULE_SECURITY_DISPLAY         = 'Room Permissions';
-	const MODULE_SECURITY_ADMIN_LOCATION  = '/modules/security/views/view-settings-security.php';
-	const MODULE_SECURITY_ENTITY_LOCATION = '/modules/security/views/view-settings-security-entity.php';
+	const MODULE_SECURITY_DISPLAY         = ' Advanced Room Permissions';
+	const MODULE_SECURITY_ADMIN_LOCATION  = '/module/security/views/view-settings-security.php';
+	const MODULE_SECURITY_ENTITY_LOCATION = '/module/security/views/view-settings-security-entity.php';
 	const PERMISSIONS_TABLE               = 'security-default-permissions';
 
 	/**
@@ -45,15 +45,27 @@ class Security {
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ENTITY_ID, true );
 
 	}
+
+	/**
+	 * De-Initialise On Module De-activation.
+	 * Once off functions for activating Module.
+	 */
+	public function de_initialise_module() {
+		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ID, false );
+		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ENTITY_ID, false );
+	}
+
+
+
 	/**
 	 * Runtime Shortcodes and Setup
 	 * Required for Normal Runtime.
 	 */
 	public function runtime() {
-		// Register Menu in Admin Page.
-		$this->security_menu_setup();
+
 		// Turn on Runtime Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
+		Factory::get_instance( self::class )->security_menu_setup();
 
 	}
 	/**
@@ -71,5 +83,17 @@ class Security {
 		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
 		$display = esc_html__( $name, 'myvideoroom' );
 		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $display ) . '</a>';
+	}
+	/**
+	 * Render Security Admin Page.
+	 */
+	public function render_security_admin_page() {
+		$active_tab = self::MODULE_SECURITY_NAME;
+		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
+		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
+		$messages   = array();
+		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
+		echo $render( $messages );
+		return 'Menu Page Rendered';
 	}
 }

@@ -8,7 +8,7 @@
 namespace MyVideoRoomPlugin\Module\Security\Templates;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomExtrasPlugin\Shortcode as Shortcode;
+use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 
 /**

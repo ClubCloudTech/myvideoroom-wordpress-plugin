@@ -15,8 +15,8 @@ add_action(
 	'myvideoroom_init',
 	function () {
 		Module::register(
-			'roompermissions',
-			'Room Permissions',
+			'advancedpermissions',
+			'Advanced Room Permissions',
 			array(
 				esc_html__(
 					'MyVideoRoom includes a Security and Permissions module which allows users, to precisely control the type of permissions they would like for their room. For example
@@ -26,6 +26,13 @@ add_action(
 				),
 			),
 			fn() => Factory::get_instance( Security::class )->runtime()
+		)
+		->add_activation_hook(
+			fn () => Factory::get_instance( Security::class )->initialise_module()
+		)
+		->add_admin_page_hook( fn () => Factory::get_instance( Security::class )->render_security_admin_page() )
+		->add_deactivation_hook(
+			fn () => Factory::get_instance( Security::class )->de_initialise_module()
 		);
 
 		/**
