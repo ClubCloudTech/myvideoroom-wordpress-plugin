@@ -2,10 +2,10 @@
 /**
  * Setup Functions
  *
- * @package MyVideoRoomPlugin\Core\Setup
+ * @package MyVideoRoomPlugin\Setup
  */
 
-namespace MyVideoRoomPlugin\Core\Setup;
+namespace MyVideoRoomPlugin\Setup;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\Dao\RoomInit;

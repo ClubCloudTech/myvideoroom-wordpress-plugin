@@ -10,7 +10,7 @@ namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Core\DAO\RoomMap;
-use MyVideoRoomPlugin\Core\Setup\RoomAdmin;
+use MyVideoRoomPlugin\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**

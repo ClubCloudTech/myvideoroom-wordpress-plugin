@@ -117,7 +117,7 @@ class UserVideoPreference extends Shortcode {
 		$available_layouts    = $this->get_available_layouts( $allowed_tags );
 		$available_receptions = $this->get_available_receptions( $allowed_tags );
 
-		$render = require __DIR__ . '/../views/shortcode/view-shortcode-uservideopreference.php';
+		$render = require __DIR__ . '/../../views/shortcode/view-shortcode-uservideopreference.php';
 		// Auto Refresh Room Post Settings Change.
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) &&
