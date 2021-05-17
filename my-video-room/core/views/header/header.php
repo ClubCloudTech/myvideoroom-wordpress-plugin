@@ -5,7 +5,7 @@
  * @package MyVideoRoomPlugin\Core\Views\header.php
  */
 
-use MyVideoRoomPlugin\Library\AdminNavigation;
+use MyVideoRoomPlugin\Admin\PageList;
 
 return function (
 	array $messages = array()
@@ -25,7 +25,7 @@ return function (
 				<h1 class="mvr-header-config-title">
 					<?php echo esc_html__( 'Video Module Settings and Configuration', 'myvideoroom' ); ?></h1>
 					<?php echo esc_html__( 'Return to : ', 'my-video-room' ); ?><a class="mvr-menu-header-item-switch"
-			href="/wp-admin/admin.php?page=<?php echo esc_textarea( AdminNavigation::PAGE_SLUG_MODULES ); ?>"><?php echo esc_html__( 'Module Activation Manager', 'myvideoroom' ); ?></a>
+			href="/wp-admin/admin.php?page=<?php echo esc_textarea( PageList::PAGE_SLUG_MODULES ); ?>"><?php echo esc_html__( 'Module Activation Manager', 'myvideoroom' ); ?></a>
 			</th>
 		</tr>
 		<tr>
