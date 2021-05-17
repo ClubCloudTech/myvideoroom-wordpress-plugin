@@ -9,6 +9,7 @@ namespace MyVideoRoomPlugin\Module\Security;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
+use MyVideoRoomPlugin\Core\Library\Dependencies;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
@@ -22,9 +23,9 @@ class Security {
 	const MODULE_SECURITY_NAME            = 'security-module';
 	const MODULE_SECURITY_ENTITY          = 'security-entity';
 	const HOST_TABLE_SUFFIX               = 'host-permission';
-	const MULTI_ROOM_HOST_SUFFIX          = '-hostsetting';
-	const MODULE_SECURITY_ID              = SiteDefaults::MODULE_SECURITY_ID; // Proxied to Main Core so Activation state can be queried by Core Modules.
-	const MODULE_SECURITY_ENTITY_ID       = 1029;
+	const MULTI_ROOM_HOST_SUFFIX          = Dependencies::MULTI_ROOM_HOST_SUFFIX;
+	const MODULE_SECURITY_ID              = Dependencies::MODULE_SECURITY_ID; // Proxied to Main Core so Activation state can be queried by Core Modules.
+	const MODULE_SECURITY_ENTITY_ID       = Dependencies::MODULE_SECURITY_ENTITY_ID;
 	const MODULE_SECURITY_ADMIN_PAGE      = 'view-admin-settings-security';
 	const MODULE_SECURITY_DISPLAY         = ' Advanced Room Permissions';
 	const MODULE_SECURITY_ADMIN_LOCATION  = '/module/security/views/view-settings-security.php';
