@@ -37,7 +37,7 @@ return function (
 		<div class="mvr-outer-box-wrap">
 		<h1><?php echo esc_html__( 'Advanced Room Permissions Control', 'my-video-room' ); ?></h1>
 		<?php
-		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( SiteDefaults::MODULE_SECURITY_ID );
+		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
 		if ( $security_enabled ) {
 			echo esc_html( Factory::get_instance( SecurityButtons::class )->site_wide_enabled() );
 		}

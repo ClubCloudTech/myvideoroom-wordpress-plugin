@@ -32,7 +32,7 @@ class SectionTemplates extends Shortcode {
 		wp_enqueue_style( 'mvr-menutab-header' );
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
 		$header_length    = strlen( $header );
-		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( SiteDefaults::MODULE_SECURITY_ID );
+		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
 		?>
 		<div class="mvr-nav-shortcode-outer-wrap">
 			<div class="mvr-header-section">

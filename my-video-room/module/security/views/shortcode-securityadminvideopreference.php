@@ -82,7 +82,7 @@ return function (
 								if ( function_exists( 'bp_is_groups_component' ) && \bp_is_groups_component() ) {
 									global $bp;
 									$group_id = $bp->groups->current_group->id;
-									echo $group_id;
+									echo esc_textarea( $group_id );
 								}
 								?>
 								" />

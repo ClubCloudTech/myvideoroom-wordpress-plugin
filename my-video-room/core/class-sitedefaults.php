@@ -15,7 +15,7 @@ use MyVideoRoomPlugin\Core\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 
 use \MyVideoRoomExtrasPlugin\Modules\WooCommerceBookings\WCHelpers;
-
+use MyVideoRoomPlugin\Core\Library\Dependencies;
 
 /**
  * Class SiteDefaults
@@ -41,7 +41,7 @@ class SiteDefaults extends Shortcode {
 	const MODULE_CORE_DISPLAY       = 'Video Default Settings';
 
 	// Listing Security Module ID in Core, so it can be checked for in Core Class to exit gracefully.
-	const MODULE_SECURITY_ID = 10;
+	const MODULE_SECURITY_ID = Dependencies::MODULE_SECURITY_ID;
 
 	/**
 	 * Initialise On Module Activation
