@@ -10,7 +10,6 @@ namespace MyVideoRoomPlugin\Module\Security;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
 use MyVideoRoomPlugin\Core\Library\Dependencies;
-use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 
@@ -95,6 +94,6 @@ class Security {
 		$messages   = array();
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
 		echo $render( $messages );
-		return 'Menu Page Rendered';
+		return 'Powered by MyVideoRoom';
 	}
 }

@@ -18,6 +18,7 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
+use MyVideoRoomPlugin\Core\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;

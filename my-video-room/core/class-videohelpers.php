@@ -57,7 +57,7 @@ class VideoHelpers extends Shortcode {
 		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->read(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				\MyVideoRoomExtrasPlugin\Modules\MVRSiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
+				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
 			if ( $current_user_setting && $current_user_setting->get_layout_id() ) {
 				return $current_user_setting->get_layout_id();
@@ -109,10 +109,11 @@ class VideoHelpers extends Shortcode {
 			return $current_user_setting->get_reception_video_url_setting();
 		}
 		// Multi-Owner Case in SiteVideo.
-		if ( $multi_owner ) {
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->read(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO
+				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
 			if ( $current_user_setting && $current_user_setting->get_reception_video_url_setting() ) {
 				return $current_user_setting->get_reception_video_url_setting();
@@ -165,10 +166,11 @@ class VideoHelpers extends Shortcode {
 		}
 
 		// Multi-Owner Case in SiteVideo.
-		if ( $multi_owner ) {
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->read(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO
+				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
 			if ( $current_user_setting && $current_user_setting->get_reception_video_enabled_setting() ) {
 				return $current_user_setting->get_reception_video_enabled_setting();
@@ -219,10 +221,11 @@ class VideoHelpers extends Shortcode {
 			return $current_user_setting->get_reception_id();
 		}
 		// Multi-Owner Case in SiteVideo.
-		if ( $multi_owner ) {
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->read(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO
+				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
 			if ( $current_user_setting && $current_user_setting->get_reception_id() ) {
 				return $current_user_setting->get_reception_id();
@@ -271,10 +274,11 @@ class VideoHelpers extends Shortcode {
 			return $current_user_setting->is_reception_enabled();
 		}
 		// Multi-Owner Case in SiteVideo.
-		if ( $multi_owner ) {
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->read(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO
+				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
 			if ( $current_user_setting && $current_user_setting->is_reception_enabled() ) {
 				return $current_user_setting->is_reception_enabled();
@@ -326,10 +330,11 @@ class VideoHelpers extends Shortcode {
 		}
 
 		// Multi-Owner Case in SiteVideo.
-		if ( $multi_owner ) {
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->read(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO
+				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
 			if ( $current_user_setting && $current_user_setting->get_show_floorplan_setting() ) {
 				return $current_user_setting->get_show_floorplan_setting();
