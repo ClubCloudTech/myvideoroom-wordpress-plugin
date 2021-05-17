@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Core\SiteDefaults;
 
 /**
  * Class Activation
@@ -24,7 +25,7 @@ class Activation {
 	 */
 	public static function activate() {
 		$activator = new self();
-
+		Factory::get_instance( SiteDefaults::class )->initialise_module();
 		$activator->create_roles_and_permissions()
 			->enable_default_modules();
 	}
