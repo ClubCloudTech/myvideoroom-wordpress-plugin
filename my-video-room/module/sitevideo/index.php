@@ -28,7 +28,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 					'myvideoroom'
 				),
 			),
-			fn() => Factory::get_instance( MVRSiteVideo::class )->runtime()
+			fn() => Factory::get_instance( MVRSiteVideo::class )->init()
 		)
 		->add_activation_hook(
 			fn () => Factory::get_instance( MVRSiteVideo::class )->initialise_module()

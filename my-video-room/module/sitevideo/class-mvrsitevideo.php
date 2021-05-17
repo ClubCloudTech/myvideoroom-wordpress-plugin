@@ -62,7 +62,7 @@ class MVRSiteVideo extends Shortcode {
 	 * Runtime Shortcodes and Setup
 	 * Required for Normal Runtime.
 	 */
-	public function runtime() {
+	public function init() {
 		$this->add_shortcode( 'sitevideoroom', array( MVRSiteVideoControllers::class, 'sitevideo_shortcode' ) );
 		$this->site_videoroom_menu_setup();
 
