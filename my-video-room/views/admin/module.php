@@ -22,7 +22,6 @@ return function (
 
 	\ob_start();
 	?>
-	<h2><?php echo \esc_html( $module->get_name() ); ?></h2>
 
 	<?php
 

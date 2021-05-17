@@ -29,7 +29,7 @@ return function (
 ): string {
 	\ob_start();
 	?>
-
+<div class="mvr-outer-box-wrap">
 	<header>
 		<h1 class="myvideoroom-header-config-title">
 			<?php \esc_html_e( 'MyVideoRoom Settings and Configuration', 'myvideoroom' ); ?>
@@ -93,19 +93,11 @@ return function (
 
 				?>
 
-<<<<<<< HEAD
 				<li>
 					<a class="nav-tab nav-tab-active nav-separate" href="<?php \esc_url( $module_url ); ?>">
 						<?php echo \esc_html( $module->get_name() ); ?>
 					</a>
 				</li>
-=======
-			<li>
-				<a class="nav-tab nav-tab-active nav-separate" href="<?php esc_url( $module_url ); ?>">
-				<?php echo esc_html( $module->get_name() ); ?>
-				</a>
-			</li>
->>>>>>> security integration and test fix
 
 				<?php
 			}
@@ -113,7 +105,7 @@ return function (
 			?>
 		</ul>
 	</nav>
-
+</div>
 	<?php
 	return \ob_get_clean();
 

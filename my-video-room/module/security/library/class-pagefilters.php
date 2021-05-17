@@ -13,7 +13,6 @@ use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Core\DAO\RoomMap;
 use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Core\Library\SectionTemplates;
 use MyVideoRoomPlugin\Core\Library\Dependencies;
 use MyVideoRoomPlugin\Core\Library\UserRoles;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
@@ -52,7 +51,7 @@ class PageFilters extends Shortcode {
 				$is_module_enabled = Factory::get_instance( ModuleConfig::class )->read_enabled_status( $module_id );
 
 				if ( ! $is_module_enabled ) {
-					return Factory::get_instance( SectionTemplates::class )->room_blocked_by_module();
+					return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
 				} else {
 					$module_id = Dependencies::MODULE_PERSONAL_MEETING_ID;
 				}
@@ -61,7 +60,7 @@ class PageFilters extends Shortcode {
 
 			$is_module_enabled = Factory::get_instance( ModuleConfig::class )->read_enabled_status( $module_id );
 			if ( ! $is_module_enabled ) {
-				return Factory::get_instance( SectionTemplates::class )->room_blocked_by_module();
+				return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
 			}
 		}
 	}
