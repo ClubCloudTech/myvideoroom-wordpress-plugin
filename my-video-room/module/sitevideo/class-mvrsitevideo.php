@@ -1,0 +1,137 @@
+<?php
+/**
+ * Addon functionality for Site Video Room.
+ *
+ * @package MyVideoRoomExtrasPlugin\Modules\SiteVideo
+ */
+
+namespace MyVideoRoomPlugin\Module\SiteVideo;
+
+use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
+use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
+use MyVideoRoomPlugin\Module\Security\Security;
+use MyVideoRoomPlugin\Shortcode as Shortcode;
+
+/**
+ * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
+ */
+class MVRSiteVideo extends Shortcode {
+
+		// Constants For Site Video Module.
+		const MODULE_SITE_VIDEO_NAME           = 'site-video-module';
+		const ROOM_NAME_SITE_VIDEO             = 'site-conference-room';
+		const MODULE_SITE_VIDEO_ID             = \MyVideoRoomPlugin\Core\Library\Dependencies::MODULE_SITE_VIDEO_ID;
+		const MODULE_SITE_VIDEO_ADMIN_PAGE     = 'plugin-settings-sitevideo';
+		const MODULE_SITE_VIDEO_ADMIN_LOCATION = '/module/sitevideo/views/view-settings-sitevideo.php';
+		const MODULE_ROOM_MANAGEMENT_NAME      = 'site-video-multi-room-module';
+		const MODULE_ROOM_MANAGEMENT_ID        = 435;
+		const MODULE_ROOM_MANAGEMENT_PATH      = '/module/sitevideo/views/view-management-rooms.php';
+		const MODULE_SITE_VIDEO_DISPLAY        = 'Site Conference Rooms';
+		const MODULE_SITE_VIDEO_DESCRIPTION    = 'Meeting Center';
+		const ROOM_TITLE_SITE_VIDEO            = 'Main Conference Room';
+		const ROOM_SLUG_SITE_VIDEO             = 'conference';
+		const ROOM_SHORTCODE_SITE_VIDEO        = 'mvr_sitevideoroom';
+		const MODULE_DB_ID                     = 'mvr_sitevideoroom';
+
+	/**
+	 * Initialise On Module Activation
+	 * Once off functions for activating Module
+	 */
+	public function initialise_module() {
+		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_SITE_VIDEO_NAME, self::MODULE_SITE_VIDEO_ID, true, self::MODULE_SITE_VIDEO_ADMIN_LOCATION );
+		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SITE_VIDEO_ID, true );
+
+		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_ROOM_MANAGEMENT_NAME, self::MODULE_ROOM_MANAGEMENT_ID, true, self::MODULE_ROOM_MANAGEMENT_PATH );
+		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_ROOM_MANAGEMENT_ID, true );
+
+		// Generate Site Video Room Page.
+		$this->create_site_videoroom_page();
+	}
+	/**
+	 * De-Initialise On Module De-activation.
+	 * Once off functions for activating Module.
+	 */
+	public function de_initialise_module() {
+		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SITE_VIDEO_ID, false );
+		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_ROOM_MANAGEMENT_ID, false );
+	}
+
+	/**
+	 * Runtime Shortcodes and Setup
+	 * Required for Normal Runtime.
+	 */
+	public function runtime() {
+		$this->add_shortcode( 'sitevideoroom', array( MVRSiteVideoControllers::class, 'sitevideo_shortcode' ) );
+		$this->site_videoroom_menu_setup();
+
+		// Rooms Permissions Manager Header Remove.
+		add_action( 'admin_head', array( $this, 'remove_admin_menus' ) );
+	}
+
+	/**
+	 * Setup of Module Menu
+	 */
+	public function site_videoroom_menu_setup() {
+		add_action( 'mvr_module_submenu_add', array( self::class, 'site_videoroom_menu_button' ) );
+	}
+
+	/**
+	 * Render Module Menu.
+	 */
+	public function site_videoroom_menu_button() {
+		$name = self::MODULE_SITE_VIDEO_DISPLAY;
+		$slug = self::MODULE_SITE_VIDEO_NAME;
+		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
+		$display = esc_html__( $name, 'myvideoroom' );
+		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $display ) . '</a>';
+	}
+
+	/**
+	 * Create Site VideoRoom Handler
+	 *
+	 * @param  int $old_post_id - ID - the PostID that needs to be updated.
+	 * @return null as its a database function.
+	 */
+	public function create_site_videoroom_page( $old_post_id = null ) {
+
+		return Factory::get_instance( RoomAdmin::class )->create_and_check_page(
+			self::ROOM_NAME_SITE_VIDEO,
+			get_bloginfo( 'name' ) . ' ' . self::ROOM_TITLE_SITE_VIDEO,
+			self::ROOM_SLUG_SITE_VIDEO,
+			self::ROOM_SHORTCODE_SITE_VIDEO,
+			$old_post_id,
+		);
+	}
+
+	/**
+	 * Remove Admin Area from Site Video Room Manager Permissions Manager.
+	 *
+	 * @return void
+	 */
+	public function remove_admin_menus() {
+
+		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+			$uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+			if ( strpos( $uri, Security::MODULE_SECURITY_ENTITY ) !== false || strpos( $uri, self::MODULE_ROOM_MANAGEMENT_NAME ) !== false ) {
+				wp_enqueue_style( 'mvr-remove-admin-bar' );
+				wp_enqueue_script( 'myvideoroom-remove-admin-header' );
+			}
+		}
+	}
+	/**
+	 * Render Security Admin Page.
+	 */
+	public function render_sitevideo_admin_page() {
+		$active_tab = self::MODULE_SITE_VIDEO_NAME;
+		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
+		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
+		$messages   = array();
+		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
+		echo $render( $messages );
+		return 'Powered by MyVideoRoom';
+	}
+}
+
+
