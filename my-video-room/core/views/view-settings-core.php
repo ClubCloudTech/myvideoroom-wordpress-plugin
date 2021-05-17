@@ -49,7 +49,7 @@ return function (
 		<?php
 		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( SiteDefaults::MODULE_SECURITY_ID );
 		if ( $security_enabled ) {
-			echo esc_html( Factory::get_instance( \MyVideoRoomExtrasPlugin\Modules\Security\Templates\SecurityButtons::class )->site_wide_enabled() );
+			echo esc_html( Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons::class )->site_wide_enabled() );
 		}
 
 		echo '<p>';

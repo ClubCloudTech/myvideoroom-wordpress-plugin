@@ -7,7 +7,7 @@
 
 namespace MyVideoRoomPlugin\Core\Library;
 
-use MyVideoRoomExtrasPlugin\Modules\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
+use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDAO;
 
