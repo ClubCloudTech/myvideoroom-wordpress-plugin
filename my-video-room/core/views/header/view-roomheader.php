@@ -9,7 +9,7 @@
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\Library\TemplateIcons;
+use MyVideoRoomPlugin\Library\TemplateIcons;
 use MyVideoRoomExtrasPlugin\Modules\WooCommerceBookings\ShortCodeConstructor;
 
 return function (

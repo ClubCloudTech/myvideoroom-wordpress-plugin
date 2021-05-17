@@ -5,7 +5,7 @@
  * @package MyVideoRoomPlugin\Core\Library
  */
 
-namespace MyVideoRoomPlugin\Core\Library;
+namespace MyVideoRoomPlugin\Library;
 
 /**
  * Class UserRoles

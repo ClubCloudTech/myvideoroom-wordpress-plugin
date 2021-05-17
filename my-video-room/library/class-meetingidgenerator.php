@@ -5,7 +5,7 @@
  * @package MyVideoRoomExtrasPlugin\Library
  */
 
-namespace MyVideoRoomPlugin\Core\Library;
+namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Factory;
 

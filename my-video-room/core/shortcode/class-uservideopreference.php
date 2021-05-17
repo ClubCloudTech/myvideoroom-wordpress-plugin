@@ -9,7 +9,7 @@ namespace MyVideoRoomPlugin\Core\Shortcode;
 
 use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Core\Entity\UserVideoPreference as UserVideoPreferenceEntity;
-use MyVideoRoomPlugin\Core\Library\WordPressUser;
+use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Shortcode;
 

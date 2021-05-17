@@ -15,7 +15,7 @@ use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Core\Library\Dependencies;
+use MyVideoRoomPlugin\Library\Dependencies;
 
 /**
  * Class Template

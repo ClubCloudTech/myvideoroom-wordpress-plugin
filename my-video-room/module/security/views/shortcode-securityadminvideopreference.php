@@ -14,7 +14,7 @@ use MyVideoRoomPlugin\Module\Security\Dao\SecurityVideoPreference as SecurityVid
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Core\Library\Dependencies;
+use MyVideoRoomPlugin\Library\Dependencies;
 
 return function (
 	SecurityVideoPreference $current_user_setting = null,

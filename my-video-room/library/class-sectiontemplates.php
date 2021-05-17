@@ -2,10 +2,10 @@
 /**
  * Display section templates
  *
- * @package MyVideoRoomPlugin\Core\Library\SectionTemplates.php
+ * @package MyVideoRoomPlugin\Library\SectionTemplates.php
  */
 
-namespace MyVideoRoomPlugin\Core\Library;
+namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
 use MyVideoRoomPlugin\Factory;

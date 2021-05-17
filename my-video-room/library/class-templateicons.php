@@ -2,10 +2,10 @@
 /**
  * Display Icon Templates in Header of Meetings
  *
- * @package MyVideoRoomPlugin\Core\Library
+ * @package MyVideoRoomPlugin\Library
  */
 
-namespace MyVideoRoomPlugin\Core\Library;
+namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Factory;
