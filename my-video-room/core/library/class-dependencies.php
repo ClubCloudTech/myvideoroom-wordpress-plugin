@@ -14,7 +14,7 @@ namespace MyVideoRoomPlugin\Core\Library;
 class Dependencies {
 
 	const MODULE_BUDDYPRESS_ID = 434;
-
+	const MODULE_SITE_VIDEO_ID = 1095; // Use Any random number above 1000.
 
 
 	/**

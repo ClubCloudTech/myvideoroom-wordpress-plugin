@@ -15,7 +15,7 @@ use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomExtrasPlugin\Modules\MVRSiteVideo\MVRSiteVideo;
+use MyVideoRoomPlugin\Core\Library\Dependencies;
 
 /**
  * Class Template
@@ -53,11 +53,11 @@ class VideoHelpers extends Shortcode {
 			return $current_user_setting->get_layout_id();
 		}
 		// Multi-Owner Case in SiteVideo.
-		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( SiteDefaults::MODULE_SECURITY_ID );
-		if ( $multi_owner ) {
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->read(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO
+				\MyVideoRoomExtrasPlugin\Modules\MVRSiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
 			if ( $current_user_setting && $current_user_setting->get_layout_id() ) {
 				return $current_user_setting->get_layout_id();
