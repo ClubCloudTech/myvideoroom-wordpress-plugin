@@ -8,8 +8,8 @@
 namespace MyVideoRoomPlugin\Module\Security\Library;
 
 use MyVideoRoomPlugin\Factory;
-use \MyVideoRoomPlugin\Plugin;
-use MyVideoRoomExtrasPlugin\Shortcode as Shortcode;
+use MyVideoRoomPlugin\Plugin;
+use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Core\DAO\RoomMap;
 use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
@@ -17,6 +17,7 @@ use MyVideoRoomPlugin\Core\Library\SectionTemplates;
 use MyVideoRoomPlugin\Core\Library\Dependencies;
 use MyVideoRoomPlugin\Core\Library\UserRoles;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
+use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 
@@ -55,7 +56,7 @@ class PageFilters extends Shortcode {
 				} else {
 					$module_id = Dependencies::MODULE_PERSONAL_MEETING_ID;
 				}
-		}
+			}
 			// Normal Check.
 
 			$is_module_enabled = Factory::get_instance( ModuleConfig::class )->read_enabled_status( $module_id );
@@ -487,7 +488,7 @@ class PageFilters extends Shortcode {
 			return null;
 		}
 			// Get Global Information on User Relationships to start.
-		$visitor_id     = get_current_user_id();
+		$visitor_id = get_current_user_id();
 		if ( function_exists( 'friends_check_friendship_status' ) ) {
 			$friends_status = friends_check_friendship_status( $user_id, $visitor_id );
 		}

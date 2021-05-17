@@ -8,7 +8,7 @@
 namespace MyVideoRoomPlugin\Module\Security\Shortcode;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomExtrasPlugin\Shortcode as Shortcode;
+use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Core\Library\WordPressUser;
 use MyVideoRoomPlugin\Core\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
@@ -69,7 +69,7 @@ class SecurityVideoPreference extends Shortcode {
 				$user_id = $bp->groups->current_group->creator_id;
 			}
 		}
-		$security_preference_dao = $this->get_instance( SecurityVideoPreferenceDao::class );
+		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
 		$current_user_setting    = $security_preference_dao->read(
 			$user_id,
 			$room_name

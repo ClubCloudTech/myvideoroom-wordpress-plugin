@@ -9,6 +9,7 @@ namespace MyVideoRoomPlugin\Module\Security\DAO;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\Security\Security;
+use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
 
 /**
  * Class ModuleConfig

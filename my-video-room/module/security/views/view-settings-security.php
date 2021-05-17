@@ -23,22 +23,19 @@ use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 
 return function (
-	string $active_tab,
-	array $tabs,
-	array $messages = array(),
-	array $module_tabs = array()
+	array $messages = array()
 	): string {
 	wp_enqueue_style( 'mvr-template' );
 	wp_enqueue_style( 'mvr-menutab-header' );
 	$path   = '/core/views/header/header.php';
 	$render = require WP_PLUGIN_DIR . '/my-video-room' . $path;
 	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Output already rendered safe upstream.
-	echo $render( $messages, $module_tabs );
+	echo $render( $messages );
 	ob_start(); ?>
 <div class="wrap">
 
 		<div class="mvr-outer-box-wrap">
-		<h1><?php echo esc_html__( 'Security and Permissions Control', 'my-video-room' ); ?></h1>
+		<h1><?php echo esc_html__( 'Advanced Room Permissions Control', 'my-video-room' ); ?></h1>
 		<?php
 		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( SiteDefaults::MODULE_SECURITY_ID );
 		if ( $security_enabled ) {
@@ -48,7 +45,7 @@ return function (
 		<p> 
 		<?php
 			echo esc_html__(
-				'MyVideoRoom includes a Security and Permissions module which allows users, to precisely control the type of permissions they would like for their room. For example
+				'The advanced room permissions control module allows users, to precisely control the type of room access permissions they would like for their room. For example
 				users can select logged in users, specific site roles, disable rooms entirely, or work in conjunction with other modules (like groups and friends in Buddypress). The module also
 				provides central enforcement and override capability which allows central control of specific room settings, and configuration.',
 				'my-video-room'

@@ -122,7 +122,6 @@ class ModuleConfig {
 		}
 		// Exit if Module already Exists.
 		if ( $this->check_module_exists( $module_id ) ) {
-			echo 'module already exists';
 			return true;
 		}
 

@@ -37,7 +37,7 @@ class SiteDefaults extends Shortcode {
 	// Module Names and IDs.
 	const MODULE_DEFAULT_VIDEO_NAME = 'default-video-module';
 	const MODULE_DEFAULT_VIDEO_ID   = 1;
-	const MODULE_CORE_PATH          = '/modules/core/views/view-settings-core.php';
+	const MODULE_CORE_PATH          = '/core/views/view-settings-core.php';
 	const MODULE_CORE_DISPLAY       = 'Video Default Settings';
 
 	// Listing Security Module ID in Core, so it can be checked for in Core Class to exit gracefully.
