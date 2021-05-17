@@ -16,7 +16,7 @@ return function (
 	<table style="width:100%">
 		<tr>
 			<th class="mvr-visualiser-image-left">
-				<img src="<?php echo esc_url( plugins_url( '/../../../assets/img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
+				<img src="<?php echo esc_url( plugins_url( '/../../img/mvr-imagelogo.png', realpath( __DIR__ . '/' ) ) ); ?>"
 					alt="My Video Room Extras" width="120" height="120" />
 			</th>
 			<th class="mvr-visualiser-image">
