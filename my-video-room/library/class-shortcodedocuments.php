@@ -15,49 +15,6 @@ use MyVideoRoomPlugin\Factory;
  */
 class ShortcodeDocuments {
 
-	// ---
-	// Shortcode Documents Section.
-
-	/**
-	 * Render all Shortcodes that are published for User usage.
-	 */
-	public function render_all_shortcode_docs() {
-
-		$this->render_general_shortcode_docs();
-		$this->render_sitevideoroom_shortcode_docs();
-		$this->render_personalmeeting_shortcode_docs();
-		$this->render_buddypress_shortcode_docs();
-		$this->render_wcfm_shortcode_docs();
-		$this->render_wcbookings_shortcode_docs();
-		$this->render_elementor_shortcode_docs();
-
-	}
-
-	/**
-	 * Render_filtered_shortcode_documents.
-	 *
-	 * @return null - it prints strings.
-	 */
-	public function render_filtered_shortcode_docs() {
-
-		$this->render_general_shortcode_docs();
-		$this->render_sitevideoroom_shortcode_docs();
-		$this->render_personalmeeting_shortcode_docs();
-		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
-			$this->render_buddypress_shortcode_docs();
-		}
-		if ( Factory::get_instance( SiteDefaults::class )->is_wcfm_active() ) {
-			$this->render_wcfm_shortcode_docs();
-		}
-		if ( Factory::get_instance( SiteDefaults::class )->is_elementor_active() ) {
-			$this->render_elementor_shortcode_docs();
-		}
-		if ( Factory::get_instance( SiteDefaults::class )->is_woocommerce_bookings_active() ) {
-			$this->render_wcbookings_shortcode_docs();
-		}
-		return null;
-	}
-
 
 	/**
 	 * Render all General Shortcodes that are published for User usage.
@@ -82,26 +39,6 @@ class ShortcodeDocuments {
 				</p>
 				</th>
 			</tr>
-
-			<tr>
-			<td style="width:25%; text-align: left;"><h2>[getvideo_room_info]</h2>
-			<p><strong><?php echo esc_html__( 'Arguments', 'my-video-room' ); ?></strong><br>
-			room="XX" type="YY"</p>
-			</td>
-			<td style="width:75%; text-align: left;">
-			<?php
-			esc_html_e(
-				'Returns a Variety of useful Information about a room that you can place in your pages<br>
-				Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>
-				Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- www.c.com/jones has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room
-				Type (url) - returns URL of room. <BR>
-				Usage - <strong>[getvideo_room_info room="bookings-center" type = "url"]</strong> will return the URL of the Bookings Center]',
-				'my-video-room'
-			);
-			?>
-			</td>
-			</tr>
-
 		</table>
 	</div>
 		<?php

@@ -2,21 +2,22 @@
 /**
  * Short code for creating the video widget
  *
- * @package MyVideoRoomPlugin
+ * @package MyVideoRoomPlugin/Shortcode
  */
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin;
+namespace MyVideoRoomPlugin\Shortcode;
 
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\Endpoints;
+use MyVideoRoomPlugin\Shortcode;
 use WP_User;
 
 /**
- * Class AppShortcode
+ * Class App
  */
-class AppShortcode extends Shortcode {
+class App extends Shortcode {
 	const SHORTCODE_TAG = 'myvideoroom';
 
 	/**
