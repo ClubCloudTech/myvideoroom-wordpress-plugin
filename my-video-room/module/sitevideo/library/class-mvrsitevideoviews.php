@@ -28,9 +28,16 @@ class MVRSiteVideoViews extends Shortcode {
 	 * @return string
 	 */
 	public function site_videoroom_host_template( int $room_id ) {
-		$room_object   = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-		$display_name  = $room_object->display_name;
-		$room_name     = $room_object->room_name;
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+
+		$display_name = '';
+		$room_name    = '';
+
+		if ( $room_object ) {
+			$display_name = $room_object->display_name;
+			$room_name    = $room_object->room_name;
+		}
+
 		$module_suffix = ' ' . MVRSiteVideo::MODULE_SITE_VIDEO_DESCRIPTION;
 		$module_id     = $display_name;
 		$render        = require WP_PLUGIN_DIR . '/my-video-room/core/views/header/view-roomheader.php';
