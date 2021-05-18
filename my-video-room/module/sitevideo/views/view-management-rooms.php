@@ -68,16 +68,16 @@ return function(): string {
 	?>
 <nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 	<ul class="menu">
-		<a class="nav-tab nav-tab-active" href="#page1" style><?php echo esc_html__( 'Room Hosts', 'my-video-room' ); ?>
+		<a class="nav-tab nav-tab-active" href="#page1" style><?php esc_html_e( 'Room Hosts', 'my-video-room' ); ?>
 		</a>
 		<?php
 		if ( $security_enabled ) {
 			?>
-			<a class="nav-tab" href="#page2" style><?php echo esc_html__( 'Room Permissions', 'my-video-room' ); ?> </a>
+			<a class="nav-tab" href="#page2" style><?php esc_html_e( 'Room Permissions', 'my-video-room' ); ?> </a>
 			<?php
 		}
 		?>
-		<a class="nav-tab" href="#page4" style><?php echo esc_html__( 'Video Settings', 'my-video-room' ); ?></a>
+		<a class="nav-tab" href="#page4" style><?php esc_html_e( 'Video Settings', 'my-video-room' ); ?></a>
 
 	</ul>
 </nav>

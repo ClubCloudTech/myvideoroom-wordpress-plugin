@@ -76,7 +76,7 @@ return function (
 		<div class="mvr-header-table-right">
 			<h2 class="mvr-header-title"><?php echo esc_html( $name_output ) . ' ' . esc_html( $module_name ); ?></h2>
 			<p class="mvr-preferences-paragraph">
-				<?php echo esc_html__( 'Meeting Link- ', 'my-video-room' ) . esc_url( $invite_menu ); ?>
+				<?php esc_html_e( 'Meeting Link- ', 'my-video-room' ) . esc_url( $invite_menu ); ?>
 			</p>
 		</div>
 	</section>
