@@ -353,16 +353,4 @@ class VideoHelpers extends Shortcode {
 			return null;
 		}
 	}
-
-	/**
-	 * Render an Elementor Template by the id
-	 *
-	 * @param int $elementor_template_id The id of the elementor template id.
-	 *
-	 * @return string
-	 */
-	public function call_elementor_template( int $elementor_template_id ): string {
-		return \do_shortcode( '[elementor-template id="' . $elementor_template_id . '"]' );
-	}
-
 }

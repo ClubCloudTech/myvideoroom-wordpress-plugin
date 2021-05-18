@@ -145,7 +145,7 @@ class Module {
 		return \array_filter(
 			self::$modules,
 			function ( ModuleInstance $module, $key ) use ( $activated_modules ) {
-				return $module->is_published() && \in_array( $key, $activated_modules, true );
+				return $module->is_published() && $module->is_compatible() && \in_array( $key, $activated_modules, true );
 			},
 			ARRAY_FILTER_USE_BOTH
 		);

@@ -54,6 +54,10 @@ return function (
 		$base_url = \menu_page_url( PageList::PAGE_SLUG_MODULES, false );
 
 		foreach ( $modules as $key => $module ) {
+			if ( $module->is_hidden() ) {
+				continue;
+			}
+
 			if ( $module->is_active() ) {
 				$is_active = true;
 				$row_class = 'active';

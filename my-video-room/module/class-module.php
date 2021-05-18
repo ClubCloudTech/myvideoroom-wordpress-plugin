@@ -78,6 +78,13 @@ class Module {
 	private bool $active = false;
 
 	/**
+	 * Is the module hidden
+	 *
+	 * @var bool
+	 */
+	private bool $hidden = false;
+
+	/**
 	 * Module constructor.
 	 *
 	 * @param string    $slug               The id/slug of the module.
@@ -252,8 +259,26 @@ class Module {
 	 */
 	public function set_as_inactive(): self {
 		$this->active = false;
-
 		return $this;
+	}
+
+	/**
+	 * Mark the module as hidden - will still be active, but not show to the user
+	 *
+	 * @return $this
+	 */
+	public function set_as_hidden(): self {
+		$this->hidden = true;
+		return $this;
+	}
+
+	/**
+	 * Is the module hidden?
+	 * 
+	 * @return bool
+	 */
+	public function is_hidden(): bool {
+		return $this->hidden;
 	}
 
 	/**
