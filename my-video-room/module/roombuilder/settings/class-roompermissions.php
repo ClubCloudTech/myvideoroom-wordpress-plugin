@@ -29,7 +29,7 @@ class RoomPermissions {
 			new RoomPermissionsOption(
 				'delegate_to_wordpress_roles',
 				! $app_config || $app_config->is_host() === null,
-				\esc_html__( 'Use WordPress roles to determine room permissions', 'myvideoroom' ),
+				\esc_html__( 'Use WordPress roles to determine room permissions (recomended)', 'myvideoroom' ),
 				\sprintf(
 				/* translators: %s is a link to the room permissions admin page */
 					\esc_html__(
