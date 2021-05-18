@@ -9,8 +9,6 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
 
-use MyVideoRoomPlugin\Admin\PageList;
-use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
@@ -18,9 +16,8 @@ use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Plugin;
+use MyVideoRoomPlugin\Shortcode\App;
 use WP_Error;
-use function get_user_by;
-use function wp_get_current_user;
 
 /**
  * Class Module
@@ -28,7 +25,7 @@ use function wp_get_current_user;
 class Module {
 
 	const SETTING_URL_PARAM = Plugin::PLUGIN_NAMESPACE . '_url_param';
-	const SHORTCODE_TAG     = AppShortcode::SHORTCODE_TAG . '_personal_invite';
+	const SHORTCODE_TAG     = App::SHORTCODE_TAG . '_personal_invite';
 
 	const INVITE_EMAIL_ACTION = 'personalmeetingrooms_invite';
 

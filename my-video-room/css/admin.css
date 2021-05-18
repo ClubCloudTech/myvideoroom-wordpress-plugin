@@ -296,3 +296,29 @@
 	padding: 0 4px;
 	overflow: visible;
 }
+
+.myvideoroom-reference ul {
+	margin: 16px;
+	list-style: disc;
+}
+
+.myvideoroom-reference dt,
+.myvideoroom-reference dd {
+	float: left
+}
+
+.myvideoroom-reference dt {
+	clear: both;
+	width: 60px;
+	word-break: break-all;
+}
+
+.myvideoroom-reference dt:after {
+	content: ': ';
+}
+
+.myvideoroom-reference dd:after {
+	content: '';
+	clear: both;
+	display: block;
+}

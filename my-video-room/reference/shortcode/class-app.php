@@ -7,19 +7,19 @@
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Reference\Main;
+namespace MyVideoRoomPlugin\Reference\Shortcode;
 
-use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Reference\Option;
 use MyVideoRoomPlugin\Reference\Section;
 use MyVideoRoomPlugin\Reference\Shortcode;
+use MyVideoRoomPlugin\Shortcode\App as AppShortcode;
 
 /**
- * Class Reference
+ * Class App
  */
-class Reference {
+class App {
 
 	/**
 	 * Get the shortcode reference
