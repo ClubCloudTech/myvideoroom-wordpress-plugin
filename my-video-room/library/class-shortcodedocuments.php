@@ -39,6 +39,27 @@ class ShortcodeDocuments {
 				</p>
 				</th>
 			</tr>
+
+			<tr>
+			<td style="width:25%; text-align: left;"><h2>[getvideo_room_info]</h2>
+			<p><b><?php echo esc_html__( 'Arguments', 'my-video-room' ); ?></b><br>
+			room="XX" type="YY"</p>
+			</td>
+			<td style="width:75%; text-align: left;">
+			<?php
+			echo esc_html__(
+				'Returns a Variety of useful Information about a room that you can place in your pages<br>
+				Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>
+				Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- www.c.com/jones has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room
+				Type (url) - returns URL of room. <BR>
+				Usage - <b>[getvideo_room_info room="bookings-center" type = "url"]</b> will return the URL of the Bookings Center]',
+				'my-video-room'
+			);
+			?>
+			</td>
+			</tr>
+
+
 		</table>
 	</div>
 		<?php
