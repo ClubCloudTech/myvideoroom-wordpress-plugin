@@ -35,7 +35,7 @@ class Security {
 	 * Initialise On Module Activation.
 	 * Once off functions for activating Module.
 	 */
-	public function initialise_module() {
+	public function activate_module() {
 		// Install Room Security Config table.
 		Factory::get_instance( DBSetup::class )->install_security_config_table();
 		// Register and Activate Module In Module Table.
@@ -50,7 +50,7 @@ class Security {
 	 * De-Initialise On Module De-activation.
 	 * Once off functions for activating Module.
 	 */
-	public function de_initialise_module() {
+	public function de_activate_module() {
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ID, false );
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ENTITY_ID, false );
 	}

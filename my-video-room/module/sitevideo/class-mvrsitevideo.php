@@ -39,7 +39,7 @@ class MVRSiteVideo extends Shortcode {
 	 * Initialise On Module Activation
 	 * Once off functions for activating Module
 	 */
-	public function initialise_module() {
+	public function activate_module() {
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_SITE_VIDEO_NAME, self::MODULE_SITE_VIDEO_ID, true, self::MODULE_SITE_VIDEO_ADMIN_LOCATION );
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SITE_VIDEO_ID, true );
 
@@ -53,7 +53,7 @@ class MVRSiteVideo extends Shortcode {
 	 * De-Initialise On Module De-activation.
 	 * Once off functions for activating Module.
 	 */
-	public function de_initialise_module() {
+	public function de_activate_module() {
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SITE_VIDEO_ID, false );
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_ROOM_MANAGEMENT_ID, false );
 	}

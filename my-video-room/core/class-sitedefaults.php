@@ -47,7 +47,7 @@ class SiteDefaults extends Shortcode {
 	 * Initialise On Module Activation
 	 * Once off functions for activating Module
 	 */
-	public function initialise_module() {
+	public function activate_module() {
 		Factory::get_instance( Setup::class )->install_room_post_mapping_table();
 		Factory::get_instance( Setup::class )->install_user_video_preference_table();
 		Factory::get_instance( Setup::class )->install_module_config_table();
