@@ -21,8 +21,8 @@ return function (
 	string $meeting_link = null,
 	string $post_site_title = null
 ): string {
-	wp_enqueue_style( 'mvr-template' );
-	wp_enqueue_style( 'mvr-menutab-header' );
+	wp_enqueue_style( 'myvideoroom-template' );
+	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
 
 	if ( isset( $_SERVER['REQUEST_METHOD'] )

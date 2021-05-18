@@ -19,16 +19,6 @@ use function defined;
  */
 abstract class Shortcode {
 	/**
-	 * Get the current version of the installed plugin
-	 * Used for cache-busting.
-	 *
-	 * @return string
-	 */
-	protected function get_plugin_version(): string {
-		return Factory::get_instance( Version::class )->get_plugin_version();
-	}
-
-	/**
 	 * Get the current host this instance is on, and strip the scheme
 	 *
 	 * @return string

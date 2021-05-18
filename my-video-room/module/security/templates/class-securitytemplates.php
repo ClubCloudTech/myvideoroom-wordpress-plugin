@@ -24,7 +24,7 @@ class SecurityTemplates extends Shortcode {
 	 */
 	public static function room_blocked_by_site( int $user_id = null ) {
 		ob_start();
-		wp_enqueue_style( 'mvr-template' );
+		wp_enqueue_style( 'myvideoroom-template' );
 		?>
 
 <div class="mvr-row">
@@ -56,7 +56,7 @@ class SecurityTemplates extends Shortcode {
 	 */
 	public function room_blocked_by_user( int $user_id ) {
 		ob_start();
-		wp_enqueue_style( 'mvr-template' );
+		wp_enqueue_style( 'myvideoroom-template' );
 		?>
 
 <div class="mvr-row">
@@ -104,7 +104,7 @@ class SecurityTemplates extends Shortcode {
 	 */
 	public function anonymous_blocked_by_user( $user_id ) {
 		ob_start();
-		wp_enqueue_style( 'mvr-template' );
+		wp_enqueue_style( 'myvideoroom-template' );
 		?>
 <div class="mvr-row">
 	<h2 class="mvr-header-text">
@@ -153,7 +153,7 @@ class SecurityTemplates extends Shortcode {
 	 * @return string
 	 */
 	public function blocked_by_role_template( $user_id ) {
-		wp_enqueue_style( 'mvr-template' );
+		wp_enqueue_style( 'myvideoroom-template' );
 		ob_start();
 		?>
 
@@ -202,7 +202,7 @@ class SecurityTemplates extends Shortcode {
 	 */
 	public function blocked_by_group_membership( $user_id = null ) {
 		ob_start();
-		wp_enqueue_style( 'mvr-template' );
+		wp_enqueue_style( 'myvideoroom-template' );
 		?>
 <div class="mvr-row">
 

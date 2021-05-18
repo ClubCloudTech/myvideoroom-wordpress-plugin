@@ -27,8 +27,8 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoDisplayRooms;
 return function (
 	array $messages = array()
 ): string {
-	wp_enqueue_style( 'mvr-template' );
-	wp_enqueue_style( 'mvr-menutab-header' );
+	wp_enqueue_style( 'myvideoroom-template' );
+	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	wp_enqueue_script( 'myvideoroom-protect-input' );
 	ob_start();
 	$path   = '/core/views/header/header.php';

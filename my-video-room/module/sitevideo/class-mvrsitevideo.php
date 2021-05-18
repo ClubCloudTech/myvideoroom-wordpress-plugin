@@ -134,7 +134,7 @@ class MVRSiteVideo extends Shortcode {
 		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
 			$uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 			if ( strpos( $uri, Security::MODULE_SECURITY_ENTITY ) !== false || strpos( $uri, self::MODULE_ROOM_MANAGEMENT_NAME ) !== false ) {
-				wp_enqueue_style( 'mvr-remove-admin-bar' );
+				wp_enqueue_style( 'myvideoroom-remove-admin-bar' );
 				wp_enqueue_script( 'myvideoroom-remove-admin-header' );
 			}
 		}
