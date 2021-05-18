@@ -66,9 +66,14 @@ class MVRSiteVideoControllers {
 	public function site_videoroom_host_function( int $post_id ) {
 
 		// Get Room Entity Information.
-		$room_object  = Factory::get_instance( RoomMap::class )->get_room_info( $post_id );
-		$room_name    = $room_object->room_name;
-		$display_name = $room_object->display_name;
+		$room_name    = '';
+		$display_name = '';
+
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $post_id );
+		if ( $room_object ) {
+			$room_name    = $room_object->room_name;
+			$display_name = $room_object->display_name;
+		}
 
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
 		if ( Factory::get_instance( ModuleConfig::class )->read_enabled_status( Dependencies::MODULE_SECURITY_ID ) ) {

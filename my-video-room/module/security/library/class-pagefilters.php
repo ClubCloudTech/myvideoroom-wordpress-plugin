@@ -157,9 +157,12 @@ class PageFilters extends Shortcode {
 	 * @return string - host or guest status.
 	 */
 	public function allowed_roles_host( int $owner_id ): string {
-		// Get Room Name.
+		$room_name = '';
+
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $owner_id );
-		$room_name   = $room_object->room_name . Security::MULTI_ROOM_HOST_SUFFIX;
+		if ( $room_object ) {
+			$room_name = $room_object->room_name . Security::MULTI_ROOM_HOST_SUFFIX;
+		}
 
 		// Check Module Override State.
 		$site_override = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, 'site_override_enabled' );
