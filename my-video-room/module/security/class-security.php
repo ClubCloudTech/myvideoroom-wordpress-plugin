@@ -55,8 +55,6 @@ class Security {
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ENTITY_ID, false );
 	}
 
-
-
 	/**
 	 * Runtime Shortcodes and Setup
 	 * Required for Normal Runtime.
@@ -90,8 +88,9 @@ class Security {
 	public function render_security_admin_page() {
 		$active_tab = self::MODULE_SECURITY_NAME;
 		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
-		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
-		$messages   = array();
+		echo $path . 'path';
+		$render   = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
+		$messages = array();
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
 		echo $render( $messages );
 		return 'Powered by MyVideoRoom';
