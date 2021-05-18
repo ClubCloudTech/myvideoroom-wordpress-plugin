@@ -39,10 +39,7 @@ return function (
 	<p class="myvideoroom-explainer-text">
 		<?php
 		echo \esc_html__(
-			' Use this tool to explore and create your preferred configuration of MyVideoRoom, including layouts, 
-			receptions, permissions, and other settings. The preview is interactive and allows you to drag users in and 
-			out of the reception, and to see the output for both hosts and guests. The tool will output the shortcodes 
-			that you can then copy and paste into your page or post',
+			' Use this tool to explore and create your preferred configuration of MyVideoRoom, including layouts, receptions, permissions, and other settings. The preview is interactive and allows you to drag users in and out of the reception, and to see the output for both hosts and guests. The tool will output the shortcodes that you can then copy and paste into your page or post',
 			'myvideoroom'
 		)
 		?>
@@ -102,8 +99,7 @@ return function (
 				<em id="<?php echo \esc_attr( $html_lib->get_description_id( 'room_name' ) ); ?>">
 					<?php
 					\esc_html_e(
-						'The name of the room. All video rooms on the same website that share a name will share the 
-						same video group. Defaults to the site name',
+						'The name of the room. All video rooms on the same website that share a name will share the same video group. Defaults to the site name',
 						'myvideoroom'
 					);
 					?>
@@ -154,8 +150,7 @@ return function (
 					\printf(
 					/* translators: %s is a link to the templates admin page */
 						\esc_html__(
-							'The layout of the room, determines the background image, and the number of seats and 
-								seat groups. See the %s page for a list of available room layouts and more details.',
+							'The layout of the room, determines the background image, and the number of seats and seat groups. See the %s page for a list of available room layouts and more details.',
 							'myvideoroom'
 						),
 						'<a href="' . \esc_url( $layouts_page ) . '"' . \esc_attr( $layouts_target ) . '>' .
@@ -179,8 +174,7 @@ return function (
 				<em id="<?php echo \esc_attr( $html_lib->get_description_id( 'disable_floorplan_preference' ) ); ?>">
 					<?php
 					\esc_html_e(
-						'Prevents guests from seeing the floorplan, and selecting their own seats. Will
-							 automatically enable the reception',
+						'Prevents guests from seeing the floorplan, and selecting their own seats. Will automatically enable the reception',
 						'myvideoroom'
 					);
 					?>
@@ -202,9 +196,7 @@ return function (
 				<em id="<?php echo \esc_attr( $html_lib->get_description_id( 'reception_enabled_preference' ) ); ?>">
 					<?php
 					\esc_html_e(
-						'The guest reception prevents guests from taking their own seats, and instead puts them 
-							into a waiting room from where the host can drag them into a seat. Disabling this option will 
-							also enable the guest floorplan',
+						'The guest reception prevents guests from taking their own seats, and instead puts them into a waiting room from where the host can drag them into a seat. Disabling this option will also enable the guest floorplan',
 						'myvideoroom'
 					);
 					?>
@@ -269,8 +261,7 @@ return function (
 						\printf(
 						/* translators: %s is a link to the templates admin page */
 							\esc_html__(
-								'The design of the reception. Some recetion additionally will show a background video.
-								For a full list of available receptions see the %s page',
+								'The design of the reception. Some recetion additionally will show a background video. For a full list of available receptions see the %s page',
 								'myvideoroom'
 							),
 							'<a href="' . \esc_url( $receptions_page ) . '"' . \esc_attr( $receptions_target ) . '>' .
@@ -311,8 +302,7 @@ return function (
 							<em id="<?php echo \esc_attr( $html_lib->get_description_id( 'reception_waiting_video_url' ) ); ?>">
 								<?php
 								\esc_html_e(
-									'Allow customisation of the video shown in the reception. Can either provide a full
-										url to a playable video, or instead pass the 11 character YouTube video ID.',
+									'Allow customisation of the video shown in the reception. Can either provide a full url to a playable video, or instead pass the 11 character YouTube video ID.',
 									'myvideoroom'
 								)
 								?>

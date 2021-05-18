@@ -1,5 +1,5 @@
 === MyVideoRoom  ===
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 5.7
