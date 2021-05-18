@@ -18,60 +18,67 @@ class UserVideoPreference {
 	 * @var int $user_id
 	 */
 	private int $user_id;
+
 	/**
 	 * Room_name
 	 *
-	 * @var int $room_name
+	 * @var string $room_name
 	 */
 	private string $room_name;
+
 	/**
 	 * Layout_id
 	 *
-	 * @var int $layout_id
+	 * @var ?string $layout_id
 	 */
 	private ?string $layout_id;
+
 	/**
 	 * Reception_id
 	 *
-	 * @var int $reception_id
+	 * @var ?string $reception_id
 	 */
 	private ?string $reception_id;
+
 	/**
 	 * Reception_enabled
 	 *
-	 * @var int $reception_enabled
+	 * @var bool $reception_enabled
 	 */
 	private bool $reception_enabled;
+
 	/**
 	 * Reception_video_enabled
 	 *
-	 * @var int $reception_video_enabled
+	 * @var bool $reception_video_enabled
 	 */
 	private bool $reception_video_enabled;
+
 	/**
 	 * Reception_video_url
 	 *
-	 * @var int $reception_video_url
+	 * @var ?string $reception_video_url
 	 */
 	private ?string $reception_video_url;
+
 	/**
 	 * Show_floorplan
 	 *
-	 * @var int $show_floorplan
+	 * @var bool $show_floorplan
 	 */
 	private bool $show_floorplan;
 
 	/**
 	 * UserVideoPreference constructor.
 	 *
-	 * @param int         $user_id - Userid.
-	 * @param string      $room_name - Room Name.
-	 * @param string|null $layout_id - Video Template.
-	 * @param string|null $reception_id - Reception Template.
-	 * @param bool        $reception_enabled - Reception Status.
-	 * @param bool        $reception_video_enabled - Reception Video Status.
-	 * @param string      $reception_video_url - Reception Video Path.
-	 * @param bool        $show_floorplan - Show Video Template to Guests Status.
+	 * @param int     $user_id                  Userid.
+	 * @param string  $room_name                Room Name.
+	 * @param ?string $layout_id                Video Template.
+	 * @param ?string $reception_id             Reception Template.
+	 * @param bool    $reception_enabled        Reception Status.
+	 * @param bool    $reception_video_enabled  Reception Video Status.
+	 * @param ?string $reception_video_url      Reception Video Path.
+	 * @param bool    $show_floorplan           Show Video Template to Guests Status.
 	 */
 	public function __construct(
 		int $user_id,

@@ -12,8 +12,8 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Core\VideoHelpers;
-use MyVideoRoomPlugin\Core\Shortcode\MyVideoRoomApp;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
+use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\Dependencies;
@@ -80,14 +80,15 @@ class MVRSiteVideoControllers {
 
 		// Get Room Parameters.
 		$video_template  = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $post_id, $room_name, true );
-		$myvideoroom_app = MyVideoRoomApp::create_instance(
-			Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $display_name ),
-			$video_template
-		)->enable_admin();
+
+		$myvideoroom_app = AppShortcodeConstructor::create_instance()
+			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $display_name ) )
+			->set_layout( $video_template )
+			->set_as_host();
 
 		// Construct Shortcode Template - and execute.
 		$header     = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_host_template( $post_id );
-		$shortcode  = $myvideoroom_app->output_shortcode();
+		$shortcode  = \do_shortcode( $myvideoroom_app->output_shortcode_text() );
 		$admin_page = Factory::get_instance( UserVideoPreference::class )->choose_settings(
 			$post_id,
 			$room_name,
@@ -134,10 +135,10 @@ class MVRSiteVideoControllers {
 		$disable_floorplan     = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $room_id, $room_name, true );
 
 		// Build Base Room.
-		$myvideoroom_app = MyVideoRoomApp::create_instance(
-			Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $display_name ),
-			$video_template,
-		);
+		$myvideoroom_app = AppShortcodeConstructor::create_instance();
+		$myvideoroom_app->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $display_name ) );
+		$myvideoroom_app->set_layout( $video_template );
+
 		// Reception setting.
 		if ( $reception_setting ) {
 			$myvideoroom_app->enable_reception()->set_reception_id( $reception_template );
@@ -154,7 +155,7 @@ class MVRSiteVideoControllers {
 		}
 		// Construct Shortcode Template - and execute.
 		$header    = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_guest_template( $room_id );
-		$shortcode = $myvideoroom_app->output_shortcode();
+		$shortcode = \do_shortcode( $myvideoroom_app->output_shortcode_text() );
 
 		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $shortcode );
 	}
