@@ -85,8 +85,8 @@ class ShortcodeDocuments {
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[getvideo_room_info]</h2>
-			<p><b><?php esc_html_e( 'Arguments', 'my-video-room' ); ?></b><br>
-			<?php esc_html_e( 'room="XX" type="YY"', 'my-video-room' ); ?></p>
+			<p><b><?php echo esc_html__( 'Arguments', 'my-video-room' ); ?></b><br>
+			room="XX" type="YY"</p>
 			</td>
 			<td style="width:75%; text-align: left;">
 			<?php
