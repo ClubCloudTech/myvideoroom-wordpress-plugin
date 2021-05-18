@@ -34,7 +34,7 @@ class TemplateIcons {
 		$anonymous_enabled          = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'anonymous_enabled' );
 		$allow_role_control_enabled = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'allow_role_control_enabled' );
 		$restrict_to_friends        = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
-		$restrict_to_groups         = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'restrict_group_to_members' );
+		$restrict_to_groups         = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
 		$icon_output                = null;
 		if ( $reception_enabled || $floorplan_enabled ) {
 			$icon_output .= '<i class="card dashicons mvr-icons dashicons-lock" title="Your Guests will see the Reception Template of your choice and will not be admitted into the room until you drag their icon in."></i>';

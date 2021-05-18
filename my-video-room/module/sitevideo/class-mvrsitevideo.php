@@ -34,8 +34,7 @@ class MVRSiteVideo extends Shortcode {
 		const MODULE_SITE_VIDEO_DESCRIPTION    = 'Meeting Center';
 		const ROOM_TITLE_SITE_VIDEO            = 'Main Conference Room';
 		const ROOM_SLUG_SITE_VIDEO             = 'conference';
-		const ROOM_SHORTCODE_SITE_VIDEO        = 'mvr_sitevideoroom';
-		const MODULE_DB_ID                     = 'mvr_sitevideoroom';
+		const ROOM_SHORTCODE_SITE_VIDEO        = 'myvideoroom_sitevideoroom';
 
 	/**
 	 * Initialise On Module Activation

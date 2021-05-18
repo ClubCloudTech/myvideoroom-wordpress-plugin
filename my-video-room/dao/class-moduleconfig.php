@@ -26,17 +26,11 @@ class ModuleConfig {
 	 */
 	public function read( string $room_name ) {
 		global $wpdb;
-		$raw_sql        = '
-				SELECT post_id
-				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE room_name = %s
-			';
+		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$room_name,
-			)
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT post_id	FROM $table_name_sql WHERE room_name = %s",
+			$room_name
 		);
 
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
@@ -55,12 +49,11 @@ class ModuleConfig {
 	 */
 	public function check_table_exists( string $table_name ) {
 		global $wpdb;
-		$raw_sql        = '
-				SELECT 1
-				FROM ' . $wpdb->prefix . $table_name . '
-				LIMIT 1
-			';
-		$prepared_query = $wpdb->prepare( $raw_sql );
+		$table_name_sql = $wpdb->prefix . $table_name;
+		$prepared_query = $wpdb->prepare(
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT 1 FROM $table_name_sql LIMIT 1",
+		);
 
 		try {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
@@ -87,21 +80,15 @@ class ModuleConfig {
 		if ( ! $module_id ) {
 			return false;
 		}
-		$raw_sql        = '
-				SELECT module_name
-				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE module_id = %d
-			';
+		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$module_id,
-			)
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT 1 FROM $table_name_sql WHERE module_id = %d",
+			$module_id
 		);
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- already prepared above.
 		$row = $wpdb->query( $prepared_query );
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- already prepared above.
 		$row = $wpdb->get_row( $prepared_query );
 		if ( $row ) {
 			return true;
@@ -152,27 +139,19 @@ class ModuleConfig {
 	 */
 	public function update_enabled_status( int $module_id, bool $module_enabled ) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		// First Check Database for Room and Post ID - return No if blank.
 
 		if ( ! $module_id ) {
 			return false;
 		}
-
-		$raw_sql        = '
-				UPDATE ' . $wpdb->prefix . self::TABLE_NAME . '
-				SET module_enabled = %d
-				WHERE module_id = %d
-			';
+		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$module_enabled,
-				$module_id,
-
-			)
+			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"UPDATE $table_name_sql SET module_enabled = %d WHERE module_id = %d",
+			$module_enabled,
+			$module_id,
 		);
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- already prepared above.
 		$result = $wpdb->query( $prepared_query );
 		return $result;
 	}
@@ -189,18 +168,13 @@ class ModuleConfig {
 		if ( ! $module_id ) {
 			return false;
 		}
-		$raw_sql        = '
-				SELECT module_enabled
-				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE module_id = %s
-			';
+		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$module_id,
-			)
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT module_enabled FROM $table_name_sql	WHERE module_id = %d",
+			$module_id
 		);
+
 	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$row    = $wpdb->query( $prepared_query );
 		$result = null;
@@ -213,7 +187,6 @@ class ModuleConfig {
 		return $result;
 	}
 
-
 	/**
 	 * Get Admin URL of Page
 	 *
@@ -222,17 +195,12 @@ class ModuleConfig {
 	 */
 	public function get_module_admin_path( string $module_name ) {
 		global $wpdb;
-		// First Check Database for Room and Post ID - return No if blank.
-		$raw_sql        = '
-				SELECT module_admin_path
-				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE module_name = %s
-			';
+
+		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-			$raw_sql,
-			array(
-				$module_name,
-			)
+			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT module_admin_path FROM $table_name_sql WHERE module_name = %s",
+			$module_name
 		);
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$row    = $wpdb->query( $prepared_query );
@@ -258,18 +226,11 @@ class ModuleConfig {
 		if ( ! $room_name ) {
 			return false;
 		}
-
-		$raw_sql        = '
-				DELETE FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE room_name = %s
-			';
+		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$room_name,
-
-			)
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"DELETE FROM $table_name_sql WHERE room_name = %s",
+			$room_name
 		);
 // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->query( $prepared_query );

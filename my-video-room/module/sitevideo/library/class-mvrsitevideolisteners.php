@@ -70,7 +70,7 @@ class MVRSiteVideoListeners extends Shortcode {
 					$room_name    = $room_object->room_name;
 					$display_name = $room_object->display_name;
 					$slug         = $room_object->slug;
-					$room_type    = MVRSiteVideo::MODULE_DB_ID;
+					$room_type    = MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO;
 					// Delete Objects and Rebuild.
 					Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_name );
 					Factory::get_instance( RoomAdmin::class )->create_and_check_page( $room_name, $display_name, $slug, $room_type, $old_page_id );
