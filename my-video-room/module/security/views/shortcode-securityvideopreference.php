@@ -28,7 +28,7 @@ return function (
 	ob_start(); ?>
 
 <div id="security-video-host-wrap"class="mvr-nav-settingstabs-outer-wrap">
-			<h1><?php echo esc_html__( 'Security Settings for ', 'my-video-room' ); ?>
+			<h1><?php esc_html_e( 'Security Settings for ', 'my-video-room' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );
 			echo esc_attr( ucwords( $output ) );
@@ -95,7 +95,7 @@ return function (
 					?>
 					"/>
 					<hr>
-					<h2 class="mvr-title-header"><i class="dashicons mvr-icons dashicons-dismiss"></i><?php echo esc_html__( 'Disable Room', 'my-video-room' ); ?></h2>
+					<h2 class="mvr-title-header"><i class="dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable Room', 'my-video-room' ); ?></h2>
 				</label>
 				<input
 					type="checkbox"
@@ -105,11 +105,11 @@ return function (
 					<?php echo $current_user_setting && $current_user_setting->is_room_disabled() ? 'checked' : ''; ?>
 				/>
 				<p class="mvr-preferences-paragraph">
-				<?php echo esc_html__( 'Enable this setting to switch off your room. No one will be able to join it. ', 'my-video-room' ); ?>
+				<?php esc_html_e( 'Enable this setting to switch off your room. No one will be able to join it. ', 'my-video-room' ); ?>
 				</p>
 				<hr />
 				<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-admin-users"></i><?php echo esc_html__( 'Restrict Anonymous Access ( Force Users to Sign In )', 'my-video-room' ); ?></h2>
+					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Restrict Anonymous Access ( Force Users to Sign In )', 'my-video-room' ); ?></h2>
 				</label>
 				<input
 					type="checkbox"
@@ -120,7 +120,7 @@ return function (
 				/>
 				<p class="mvr-preferences-paragraph">
 				<?php
-				echo esc_html__(
+				esc_html_e(
 					'If you enable this setting, anonymous users from the Internet WILL NOT be able to enter your room. The only way
 					someone can enter your room is if they have an account on your website. This means that external users, will have 
 					to go through whatever registration process exists for your website. Default is disabled, which means anonymous access is allowed.',
@@ -131,7 +131,7 @@ return function (
 
 				<hr />
 					<label for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-id"></i><?php echo esc_html__( 'Enable Role Control - For Allowed Roles', 'my-video-room' ); ?></h2>
+					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable Role Control - For Allowed Roles', 'my-video-room' ); ?></h2>
 					</label>
 					<input
 							type="checkbox"
@@ -143,7 +143,7 @@ return function (
 					<br>
 					<p class="mvr-preferences-paragraph">
 					<?php
-					echo esc_html__(
+					esc_html_e(
 						'If you enable this setting only the following roles will be allowed to access your rooms. If you want to reverse the setting, then click 
 						"block these roles instead" which will allow all roles - except for the ones you select. ',
 						'my-video-room'
@@ -152,7 +152,7 @@ return function (
 					</p><br>
 
 				<label for="myvideoroom_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-				<?php echo esc_html__( 'Allowed Roles setting:', 'my-video-room' ); ?>
+				<?php esc_html_e( 'Allowed Roles setting:', 'my-video-room' ); ?>
 				</label>
 				<select multiple="multiple"
 						class="mvr-roles-multiselect mvr-select-box"
@@ -166,7 +166,7 @@ return function (
 				</select>
 				<br>
 					<label for="myvideoroom_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-					<br><?php echo esc_html__( 'Block These Roles Instead', 'my-video-room' ); ?>
+					<br><?php esc_html_e( 'Block These Roles Instead', 'my-video-room' ); ?>
 				</label>
 				<input
 					type="checkbox"
@@ -181,7 +181,7 @@ return function (
 					<br>
 					<p class="mvr-preferences-paragraph">
 						<?php
-						echo esc_html__(
+						esc_html_e(
 							'Use this setting to determine what user roles you want to explicitly allow or - the reverse (block all users but a specific role) if you tick the Block Role option. Please Note: 
 							If you choose to Block a Role, you must still decide if you would like Anonymous Users to access the room separately in the Restrict Anonymous option above.',
 							'my-video-room'

@@ -35,7 +35,7 @@ class Security {
 	 * Initialise On Module Activation.
 	 * Once off functions for activating Module.
 	 */
-	public function initialise_module() {
+	public function activate_module() {
 		// Install Room Security Config table.
 		Factory::get_instance( DBSetup::class )->install_security_config_table();
 		// Register and Activate Module In Module Table.
@@ -50,7 +50,7 @@ class Security {
 	 * De-Initialise On Module De-activation.
 	 * Once off functions for activating Module.
 	 */
-	public function de_initialise_module() {
+	public function de_activate_module() {
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ID, false );
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ENTITY_ID, false );
 	}
@@ -88,9 +88,8 @@ class Security {
 	public function render_security_admin_page() {
 		$active_tab = self::MODULE_SECURITY_NAME;
 		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
-		echo $path . 'path';
-		$render   = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
-		$messages = array();
+		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
+		$messages   = array();
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
 		echo $render( $messages );
 		return 'Powered by MyVideoRoom';

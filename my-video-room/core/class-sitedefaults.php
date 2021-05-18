@@ -9,12 +9,13 @@ namespace MyVideoRoomPlugin\Core;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Library\UserRoles;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Library\Dependencies;
-use MyVideoRoomPlugin\Setup\Setup;
+use MyVideoRoomPlugin\DAO\Setup;
 
 /**
  * Class SiteDefaults
@@ -46,7 +47,7 @@ class SiteDefaults extends Shortcode {
 	 * Initialise On Module Activation
 	 * Once off functions for activating Module
 	 */
-	public function initialise_module() {
+	public function activate_module() {
 		Factory::get_instance( Setup::class )->install_room_post_mapping_table();
 		Factory::get_instance( Setup::class )->install_user_video_preference_table();
 		Factory::get_instance( Setup::class )->install_module_config_table();
@@ -61,14 +62,17 @@ class SiteDefaults extends Shortcode {
 	public function init() {
 		$this->register_scripts_styles();
 		$this->core_menu_setup();
-
+			// Check to see if Default settings exist on entry- reinitialise if missing.
+		if ( ! Factory::get_instance( RoomAdmin::class )->check_default_settings_exist() ) {
+			Factory::get_instance( Setup::class )->initialise_default_video_settings();
+		}
 	}
 
 	/**
 	 * Setup of Module Menu
 	 */
 	public function core_menu_setup() {
-		add_action( 'mvr_module_submenu_add', array( self::class, 'core_menu_button' ) );
+		add_action( 'mvr_module_submenu_add', array( $this, 'core_menu_button' ) );
 	}
 	/**
 	 * Render Module Menu.

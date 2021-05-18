@@ -26,7 +26,7 @@ return function (
 
 	?>
 	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
-				<h1><?php echo esc_html__( 'Video Host Settings for ', 'my-video-room' ); ?>
+				<h1><?php esc_html_e( 'Video Host Settings for ', 'my-video-room' ); ?>
 			<?php
 				$output = str_replace( '-', ' ', $room_name );
 				echo esc_html( ucwords( $output ) );
@@ -54,15 +54,15 @@ return function (
 					<input name="myvideoroom_user_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
 
 					<label for="myvideoroom_user_layout_id_preference_<?php echo esc_attr( $id_index ); ?>">
-						<h2 class ="mvr-title-header"><?php echo esc_html__( 'Video layout setting:', 'my-video-room' ); ?></h2>
+						<h2 class ="mvr-title-header"><?php esc_html_e( 'Video layout setting:', 'my-video-room' ); ?></h2>
 					</label>
 					<div class="mvr-video-template mvr-title-header"><i class="dashicons mvr-icons dashicons-editor-help"></i></div>
 
 					<div class="mvr-hide mvr-template-table">
 						<div class="mvr-template-table" style="float:left">
-							<h2><?php echo esc_html__( 'Lifelike Rooms', 'my-video-room' ); ?></h2>
+							<h2><?php esc_html_e( 'Lifelike Rooms', 'my-video-room' ); ?></h2>
 								<?php
-								echo esc_html__(
+								esc_html_e(
 									'You can pick your room template to suit the type of meeting you have. Including whether to have breakout areas, seating position, seniority, and 
 									live room placement. ',
 									'my-video-room'
@@ -99,10 +99,10 @@ return function (
 						?>
 					</select>
 					<p class="mvr-preferences-paragraph">
-						<?php echo esc_html__( 'Use this setting to control the layout of the room you and your guests will see. There are lots of templates to chose from, and more are being added monthly.', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Use this setting to control the layout of the room you and your guests will see. There are lots of templates to chose from, and more are being added monthly.', 'my-video-room' ); ?>
 					</p>
 					<label for="myvideoroom_user_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-					<b><?php echo esc_html__( 'Disable Interactive Floorplan:', 'my-video-room' ); ?></b>
+					<strong><?php esc_html_e( 'Disable Interactive Floorplan:', 'my-video-room' ); ?></strong>
 					</label>
 					<input
 						type="checkbox"
@@ -113,7 +113,7 @@ return function (
 					/>
 					<p class="mvr-preferences-paragraph">
 						<?php
-						echo esc_html__(
+						esc_html_e(
 							'Disable Floorplan and use classic video without templates. Please note if you select this,
 							the reception will automatically be turned on and users will be held in reception until you allow them in.',
 							'my-video-room'
@@ -122,7 +122,7 @@ return function (
 					</p>
 					<hr />
 					<label for="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"class="mvr-preferences-paragraph">
-					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-lock"></i><?php echo esc_html__( 'Enable Reception', 'my-video-room' ); ?></h2>
+					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'my-video-room' ); ?></h2>
 					</label>
 					<input
 						type="checkbox"
@@ -133,7 +133,7 @@ return function (
 					/>
 					<p class="mvr-preferences-paragraph">
 					<?php
-					echo esc_html__(
+					esc_html_e(
 						'Enable this if you want to have guests wait in a secure location that you must allow into your space,
 						or disable if you want people to pop in or out of your room. This setting is automatically applied if you
 						chose the "Disable Floorplan" feature which automatically turns on Reception.',
@@ -146,15 +146,15 @@ return function (
 					<br>
 
 					<label for="myvideoroom_user_reception_id_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-					<?php echo esc_html__( 'Reception Appearance', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Reception Appearance', 'my-video-room' ); ?>
 					</label>
 					<div class="mvr-template-table mvr-reception-image mvr-title-header"><i class="dashicons mvr-icons dashicons-editor-help"></i></div>
 
 					<div class="mvr-hide">
 						<div class="mvr-template-table" style="float:left">
-						<h2><?php echo esc_html__( 'Interactive Receptions', 'my-video-room' ); ?></h2>
+						<h2><?php esc_html_e( 'Interactive Receptions', 'my-video-room' ); ?></h2>
 						<?php
-						echo esc_html__(
+						esc_html_e(
 							'A Reception can be styled in many ways, and is what your guest will see whilst they wait for you. You can even pick a video for them
 							to watch whilst they wait.',
 							'my-video-room'
@@ -196,7 +196,7 @@ return function (
 					<br><br>
 					<p class="mvr-preferences-paragraph">
 					<?php
-					echo esc_html__(
+					esc_html_e(
 						'Use this setting to decide what you want your Video Space reception to look like. This will be shown for all guests while they wait for
 						admission into the room. The enable reception setting must be turned on for this setting to take effect.',
 						'my-video-room'
@@ -204,14 +204,14 @@ return function (
 					?>
 					</p><br>
 					<label for="myvideoroom_user_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-					<b><?php echo esc_html__( 'Enable Custom Video for Reception :', 'my-video-room' ); ?></b>
+					<strong><?php esc_html_e( 'Enable Custom Video for Reception :', 'my-video-room' ); ?></strong>
 					</label>
 					<div class="mvr-template-table mvr-custom-video mvr-title-header"><i class="dashicons mvr-icons dashicons-editor-help"></i></div>
 
 					<div class="mvr-hide">
 						<div class="mvr-template-table" style="float:left">
-						<h2><?php echo esc_html__( 'Choose your Reception Video Screening', 'my-video-room' ); ?></h2>
-						<?php echo esc_html__( 'Select the content you want your guest to view whilst they wait for you.', 'my-video-room' ); ?>
+						<h2><?php esc_html_e( 'Choose your Reception Video Screening', 'my-video-room' ); ?></h2>
+						<?php esc_html_e( 'Select the content you want your guest to view whilst they wait for you.', 'my-video-room' ); ?>
 						<img class="mvr-template-image"src="<?php echo esc_url( plugins_url( '/../../img/sitevideoreception.png', __FILE__ ) ); ?>">
 						</div>
 						<div class="mvr-template-table" style="float:right">
@@ -228,7 +228,7 @@ return function (
 					/>
 <br>
 					<label for="myvideoroom_user_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-					<?php echo esc_html__( 'Your Video URL:', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Your Video URL:', 'my-video-room' ); ?>
 					</label>
 					<input
 								type="text"
@@ -240,7 +240,7 @@ return function (
 					<br><br>
 					<p class="mvr-preferences-paragraph">
 					<?php
-					echo esc_html__(
+					esc_html_e(
 						'This setting controls whether you want your guests to see a video or movie channel if Reception is enabled.
 						Enter a url in the form of https://youvideoservice.com/yourvideofolder/video.mp4 - and this video will be displayed to your guests in your Dynamic
 						reception areas if you have enabled a guest reception template option that can show video.',

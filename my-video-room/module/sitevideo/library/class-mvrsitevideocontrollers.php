@@ -167,10 +167,10 @@ class MVRSiteVideoControllers {
 		?>
 		<table style="width:70%; border: 1px solid black;"  >
 		</table>
-			<h1><?php echo esc_html__( 'Site Video Room Settings', 'my-video-room' ); ?></h1>
+			<h1><?php esc_html_e( 'Site Video Room Settings', 'my-video-room' ); ?></h1>
 			<p>
 				<?php
-				echo esc_html__(
+				esc_html_e(
 					'The Site Video Room is available for Team wide meetings at the website level. It is created automatically by the plugin, at activation. It can be secured such that any normal
 					site administrator is an owner of the room',
 					'my-video-room'
