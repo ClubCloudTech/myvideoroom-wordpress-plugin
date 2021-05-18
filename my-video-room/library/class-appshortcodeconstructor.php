@@ -9,7 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Library;
 
-use MyVideoRoomPlugin\AppShortcode;
+use MyVideoRoomPlugin\Shortcode\App;
 
 /**
  * Class AppShortcodeConstructor
@@ -105,7 +105,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 * MyVideoRoomApp constructor.
 	 */
 	public function __construct() {
-		parent::__construct( AppShortcode::SHORTCODE_TAG );
+		parent::__construct( App::SHORTCODE_TAG );
 	}
 
 	/**

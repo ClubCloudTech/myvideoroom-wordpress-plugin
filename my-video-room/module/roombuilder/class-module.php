@@ -10,21 +10,20 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\RoomBuilder;
 
 use MyVideoRoomPlugin\Admin\Page;
-use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Shortcode\App;
 use MyVideoRoomPlugin\ValueObject\GettingStarted;
-use function wp_generate_uuid4;
 
 /**
  * Class Module
  */
 class Module {
 
-	const SHORTCODE_TAG = AppShortcode::SHORTCODE_TAG . '_room_builder';
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_room_builder';
 
 	const PAGE_SLUG_BUILDER = 'my-video-room-builder';
 

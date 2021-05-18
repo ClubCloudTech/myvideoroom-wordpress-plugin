@@ -61,7 +61,7 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 			<?php
 			$post_id_return = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room_name, 'post_id' );
 			if ( $post_id_return ) {
-				echo '<b>[ ' . esc_html( MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $post_id_return ) . '" ]</b>';
+				echo '<strong>[ ' . esc_html( MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $post_id_return ) . '" ]</strong>';
 			}
 			?>
 </td>
@@ -79,7 +79,7 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 				//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a superglobal not user input.
 					$slug = admin_url( 'admin.php?page=' . esc_textarea( wp_unslash( $_GET['page'] ) ) );
 				}
-				echo '<a href="' . esc_url_raw( $slug ) . '&tab=' . esc_textarea( MVRSiteVideo::MODULE_ROOM_MANAGEMENT_NAME ) . '&id=' . esc_textarea( $post_id ) . '" class="dashicons mvr-icons dashicons-admin-generic" target="iframe1" title="' . esc_html__( 'Manage Room Settings and Hosts', 'my-video-room' ) . '"></a>';
+				echo '<a href="#" class="dashicons mvr-icons dashicons-admin-generic myvideoroom-sitevideo-settings" data-post-id="' . esc_attr( $post_id ) . '"></a>';
 				echo '<a href="' . esc_url_raw( $slug ) . '&tab=' . esc_textarea( MVRSiteVideo::MODULE_ROOM_MANAGEMENT_NAME ) . '&id=' . esc_textarea( $post_id ) . '&delete=true" class="dashicons mvr-icons dashicons-dismiss" target="iframe1" title="' . esc_html__( 'Delete Room', 'my-video-room' ) . '"></a>';
 			} else {
 				?>

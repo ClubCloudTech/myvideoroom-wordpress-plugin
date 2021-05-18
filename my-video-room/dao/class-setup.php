@@ -2,10 +2,10 @@
 /**
  * Setup Functions
  *
- * @package MyVideoRoomPlugin\Setup
+ * @package MyVideoRoomPlugin\DAO
  */
 
-namespace MyVideoRoomPlugin\Setup;
+namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomInit;
@@ -43,7 +43,7 @@ class Setup {
 		}
 		// Create Main Table for Room Config.
 		$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . $table_name . '` (
-                           `user_id` BIGINT UNSIGNED NOT NULL,
+                           `user_id` BIGINT UNSIGNED NULL,
                            `room_name` VARCHAR(255) NOT NULL,
                            `layout_id` VARCHAR(255) NULL,
                            `reception_id` VARCHAR(255) NULL,

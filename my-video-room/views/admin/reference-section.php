@@ -25,7 +25,7 @@ return function (
 	\ob_start();
 
 	?>
-	<article id="<?php echo \esc_attr( $id ); ?>">
+	<article id="<?php echo \esc_attr( $id ); ?>" class="myvideoroom-reference">
 		<h3>
 			<?php
 			\printf(

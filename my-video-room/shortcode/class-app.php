@@ -2,21 +2,22 @@
 /**
  * Short code for creating the video widget
  *
- * @package MyVideoRoomPlugin
+ * @package MyVideoRoomPlugin/Shortcode
  */
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin;
+namespace MyVideoRoomPlugin\Shortcode;
 
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\Endpoints;
+use MyVideoRoomPlugin\Shortcode;
 use WP_User;
 
 /**
- * Class AppShortcode
+ * Class App
  */
-class AppShortcode extends Shortcode {
+class App extends Shortcode {
 	const SHORTCODE_TAG = 'myvideoroom';
 
 	/**
@@ -76,7 +77,7 @@ class AppShortcode extends Shortcode {
 
 		\wp_enqueue_script(
 			'myvideoroom-app',
-			\plugins_url( '/js/app.js', __FILE__ ),
+			\plugins_url( '/../js/app.js', __FILE__ ),
 			array( 'jquery' ),
 			$this->get_plugin_version(),
 			true

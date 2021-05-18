@@ -119,8 +119,8 @@ class MVRSiteVideoListeners extends Shortcode {
 			?>
 		<div class="mvr-nav-shortcode-outer-wrap mvr-security-room-host">
 			<form method="post" action="">
-				<h1><?php echo esc_html__( 'Are you sure you want to delete ', 'my-video-room' ) . esc_textarea( $display_name ) . '?'; ?> </h1>
-				<p class="mvr-add-page"> <?php echo esc_html__( 'This action cannot be undone', 'my-video-room' ); ?> </p>
+				<h1><?php esc_html_e( 'Are you sure you want to delete ', 'my-video-room' ) . esc_textarea( $display_name ) . '?'; ?> </h1>
+				<p class="mvr-add-page"> <?php esc_html_e( 'This action cannot be undone', 'my-video-room' ); ?> </p>
 				<input name="myvideoroom_delete_page_id" type="hidden" value="<?php echo esc_attr( $room_id ); ?>" />
 				<?php wp_nonce_field( 'myvideoroom_delete_page', 'nonce' ); ?>
 				<i class="dashicons dashicons-dismiss"></i>

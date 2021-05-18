@@ -15,49 +15,6 @@ use MyVideoRoomPlugin\Factory;
  */
 class ShortcodeDocuments {
 
-	// ---
-	// Shortcode Documents Section.
-
-	/**
-	 * Render all Shortcodes that are published for User usage.
-	 */
-	public function render_all_shortcode_docs() {
-
-		$this->render_general_shortcode_docs();
-		$this->render_sitevideoroom_shortcode_docs();
-		$this->render_personalmeeting_shortcode_docs();
-		$this->render_buddypress_shortcode_docs();
-		$this->render_wcfm_shortcode_docs();
-		$this->render_wcbookings_shortcode_docs();
-		$this->render_elementor_shortcode_docs();
-
-	}
-
-	/**
-	 * Render_filtered_shortcode_documents.
-	 *
-	 * @return null - it prints strings.
-	 */
-	public function render_filtered_shortcode_docs() {
-
-		$this->render_general_shortcode_docs();
-		$this->render_sitevideoroom_shortcode_docs();
-		$this->render_personalmeeting_shortcode_docs();
-		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
-			$this->render_buddypress_shortcode_docs();
-		}
-		if ( Factory::get_instance( SiteDefaults::class )->is_wcfm_active() ) {
-			$this->render_wcfm_shortcode_docs();
-		}
-		if ( Factory::get_instance( SiteDefaults::class )->is_elementor_active() ) {
-			$this->render_elementor_shortcode_docs();
-		}
-		if ( Factory::get_instance( SiteDefaults::class )->is_woocommerce_bookings_active() ) {
-			$this->render_wcbookings_shortcode_docs();
-		}
-		return null;
-	}
-
 
 	/**
 	 * Render all General Shortcodes that are published for User usage.
@@ -66,13 +23,13 @@ class ShortcodeDocuments {
 
 		?>
 	<div class="mvr-row">
-	<h2><?php echo esc_html__( 'General Shortcodes', 'my-video-room' ); ?></h2>
+	<h2><?php esc_html_e( 'General Shortcodes', 'my-video-room' ); ?></h2>
 		<table style="width:70%; border: 1px solid black;">
 			<tr>
 				<th style="width:25%; text-align: left;"><h2>[ccsitedefaultconfig]</h2></th>
 				<th style="width:75%; text-align: left;"><p>
 				<?php
-				echo esc_html__(
+				esc_html_e(
 					'This Shortcode renders the site default room configuration
 					in the frontend of the site. Please be careful with the placement of this shortcode as it allows site
 					default settings to be edited, so care must be taken its placement.',
@@ -102,6 +59,7 @@ class ShortcodeDocuments {
 			</td>
 			</tr>
 
+
 		</table>
 	</div>
 		<?php
@@ -116,18 +74,18 @@ class ShortcodeDocuments {
 		?>
 	<div class="mvr-row">
 
-		<h2><?php echo esc_html__( 'BuddyPress Video Shortcodes', 'my-video-room' ); ?></h2>
+		<h2><?php esc_html_e( 'BuddyPress Video Shortcodes', 'my-video-room' ); ?></h2>
 			<table>
 				<tr>
-					<th style="width:25%; text-align: left;"><?php echo esc_html__( 'Shortcode Name', 'my-video-room' ); ?></th>
-					<th style="width:75%; text-align: left;"><?php echo esc_html__( 'Usage', 'my-video-room' ); ?></th>
+					<th style="width:25%; text-align: left;"><?php esc_html_e( 'Shortcode Name', 'my-video-room' ); ?></th>
+					<th style="width:75%; text-align: left;"><?php esc_html_e( 'Usage', 'my-video-room' ); ?></th>
 				</tr>
 
 				<tr>
 				<td style="width:25%; text-align: left;"><h2>[ccbpboardroomswitch]</h2></td>
 				<td style="width:75%; text-align: left;">
 				<?php
-				echo esc_html__(
+				esc_html_e(
 					'This Shortcode is designed to be used in BuddyPress profile pages. It is not
 					available outside of the BuddyPress profile loop environment. It handles everything in the context of whose profile you are viewing
 					If you are viewing your own profile, then you get a host video experience, if you are looking at someone elses profile (or are signed out)
@@ -158,34 +116,34 @@ class ShortcodeDocuments {
 
 		?>
 	<div class="mvr-row">
-	<h2><?php echo esc_html__( 'Site Video Room Shortcodes', 'my-video-room' ); ?></h2>
+	<h2><?php esc_html_e( 'Site Video Room Shortcodes', 'my-video-room' ); ?></h2>
 		<table style="width:70%; border: 1px solid black;">
 			<tr>
-				<th style="width:25%; text-align: left;"><h2><?php echo esc_html__( 'Shortcode Name', 'my-video-room' ); ?></h2></th>
-				<th style="width:75%; text-align: left;"><?php echo esc_html__( 'Usage', 'my-video-room' ); ?></th>
+				<th style="width:25%; text-align: left;"><h2><?php esc_html_e( 'Shortcode Name', 'my-video-room' ); ?></h2></th>
+				<th style="width:75%; text-align: left;"><?php esc_html_e( 'Usage', 'my-video-room' ); ?></th>
 			</tr>
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[ccsitevideoroom]</h2></td>
-			<td style="width:75%; text-align: left;"><?php echo esc_html__( 'Renders the main Site Video Room - it can be used on any page in the site - and handles automatically whether you are a host or guest.', 'my-video-room' ); ?></td>
+			<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the main Site Video Room - it can be used on any page in the site - and handles automatically whether you are a host or guest.', 'my-video-room' ); ?></td>
 			</tr>
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[ccsitevideoroomhost]</h2></td>
-			<td style="width:75%; text-align: left;"><?php echo esc_html__( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <b>Host</b> of site Video Room<', 'my-video-room' ); ?>/td>
+			<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <strong>Host</strong> of site Video Room<', 'my-video-room' ); ?>/td>
 			</tr>
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[ccsitevideoroomguest]</h2></td>
-			<td style="width:75%; text-align: left;"><?php echo esc_html__( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <b>Guest</b> of site Video Room', 'my-video-room' ); ?></td>
+			<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <strong>Guest</strong> of site Video Room', 'my-video-room' ); ?></td>
 			</tr>
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[ccsitevideoroomsettings]</h2></td>
 			<td style="width:75%; text-align: left;">
 			<?php
-			echo esc_html__(
-				'Renders the settings of the Site Video Room - <b>Note</b> - any place where this is added will be able to adjust the settings
+			esc_html_e(
+				'Renders the settings of the Site Video Room - <strong>Note</strong> - any place where this is added will be able to adjust the settings
 				please pay attention to security where placing this shortcode to prevent unwanted modification',
 				'my-video-room'
 			);
@@ -206,19 +164,19 @@ class ShortcodeDocuments {
 
 		?>
 	<div class="mvr-row">
-	<h2><?php echo esc_html__( 'Personal Meeting Shortcodes', 'my-video-room' ); ?></h2>
+	<h2><?php esc_html_e( 'Personal Meeting Shortcodes', 'my-video-room' ); ?></h2>
 		<table style="width:70%; border: 1px solid black;">
 			<tr>
-				<th style="width:25%; text-align: left;"><?php echo esc_html__( 'Shortcode Name', 'my-video-room' ); ?></th>
-				<th style="width:75%; text-align: left;"><?php echo esc_html__( 'Usage', 'my-video-room' ); ?></th>
+				<th style="width:25%; text-align: left;"><?php esc_html_e( 'Shortcode Name', 'my-video-room' ); ?></th>
+				<th style="width:75%; text-align: left;"><?php esc_html_e( 'Usage', 'my-video-room' ); ?></th>
 			</tr>
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[ccmeetswitch]</h2></td>
-			<td style="width:75%; text-align: left;"><b>
+			<td style="width:75%; text-align: left;"><strong>
 			<?php
-			echo esc_html__(
-				'Use this Shortcode wherever possible to render Personal Meetings </b>. Renders the Main Site Meeting Center Reception page for users. This page is automatically
+			esc_html_e(
+				'Use this Shortcode wherever possible to render Personal Meetings </strong>. Renders the Main Site Meeting Center Reception page for users. This page is automatically
 				created by the plugin in the details above, but can also be added anywhere on the site. Please note that this switch automatically
 				changes the host and guest context depending on user state (logged on/off/admins etc). Take special care when using this page with
 				regards to emails- invites etc. The page contains filters in the host for anonymous meeting invites, querying users etc. We recommend
@@ -235,10 +193,10 @@ class ShortcodeDocuments {
 			<td style="width:25%; text-align: left;"><h2>[ccpersonalmeetingguest]</h2></td>
 			<td style="width:75%; text-align: left;">
 			<?php
-			echo esc_html__(
-				'This shortcode will always render the <b>Guest</b> reception of the meeting center. It will prompt
+			esc_html_e(
+				'This shortcode will always render the <strong>Guest</strong> reception of the meeting center. It will prompt
 				the user for the username of the Host, accept a meeting invite link (automatically in the URL), or accept a hostname (automatically in the URL)
-				It will also prompt for the Site Video Room if enabled. <b>Please note</b>- this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which
+				It will also prompt for the Site Video Room if enabled. <strong>Please note</strong>- this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which
 				use their own logic. Please use the shortcodes in BuddyPress, WCFM, WooCommerce Bookings, etc for placing on plugin pages.',
 				'my-video-room'
 			);
@@ -251,10 +209,10 @@ class ShortcodeDocuments {
 			<td style="width:25%; text-align: left;"><h2>[ccpersonalmeetinghost]</h2></td>
 			<td style="width:75%; text-align: left;">
 			<?php
-			echo esc_html__(
-				'This shortcode will always render the <b>Host</b> reception of the meeting center. This page determines its host from
+			esc_html_e(
+				'This shortcode will always render the <strong>Host</strong> reception of the meeting center. This page determines its host from
 				the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will default to guest reception mode.
-				<b>Please note</b> this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which
+				<strong>Please note</strong> this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which
 				use their own logic. Please use the shortcodes in BuddyPress, WCFM, WooCommerce Bookings, etc for placing on plugin pages. Host settings render
 				automatically in the short code or can be rendered separately by using the [personalmeetinghostsettings] shortcode',
 				'my-video-room'
@@ -268,11 +226,11 @@ class ShortcodeDocuments {
 			<td style="width:25%; text-align: left;"><h2>[ccpersonalmeetinghostsettings]</h2></td>
 			<td style="width:75%; text-align: left;">
 			<?php
-			echo esc_html__(
-				'This shortcode will render only the <b>settings </b>page of the <b>Host</b>. This is useful if you just want to edit
+			esc_html_e(
+				'This shortcode will render only the <strong>settings </strong>page of the <strong>Host</strong>. This is useful if you just want to edit
 				the room settings without launching the full room. This shortcode determines its host from
 				the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will return blank.
-				<b>Please note</b> admin settings for personal rooms are shared between BuddyPress Profile Rooms and Personal Video Rooms as
+				<strong>Please note</strong> admin settings for personal rooms are shared between BuddyPress Profile Rooms and Personal Video Rooms as
 				they are effectively the same room, with multiple entrances ',
 				'my-video-room'
 			);
@@ -294,11 +252,11 @@ class ShortcodeDocuments {
 
 		?>
 	<div class="mvr-row">
-	<h2><?php echo esc_html__( 'WooCommerce Bookings Shortcodes', 'my-video-room' ); ?></h2>
+	<h2><?php esc_html_e( 'WooCommerce Bookings Shortcodes', 'my-video-room' ); ?></h2>
 		<table style="width:70%; border: 1px solid black;">
 			<tr>
-				<th style="width:25%; text-align: left;"><?php echo esc_html__( 'Shortcode Name', 'my-video-room' ); ?></th>
-				<th style="width:75%; text-align: left;"><?php echo esc_html__( 'Usage', 'my-video-room' ); ?></th>
+				<th style="width:25%; text-align: left;"><?php esc_html_e( 'Shortcode Name', 'my-video-room' ); ?></th>
+				<th style="width:75%; text-align: left;"><?php esc_html_e( 'Usage', 'my-video-room' ); ?></th>
 			</tr>
 
 
@@ -317,11 +275,11 @@ class ShortcodeDocuments {
 
 		?>
 	<div class="mvr-row">
-	<h2><?php echo esc_html__( 'WCFM Shortcodes', 'my-video-room' ); ?></h2>
+	<h2><?php esc_html_e( 'WCFM Shortcodes', 'my-video-room' ); ?></h2>
 		<table style="width:70%; border: 1px solid black;">
 			<tr>
-				<th style="width:25%; text-align: left;"><?php echo esc_html__( 'Shortcode Name', 'my-video-room' ); ?></th>
-				<th style="width:75%; text-align: left;"><?php echo esc_html__( 'Usage', 'my-video-room' ); ?></th>
+				<th style="width:25%; text-align: left;"><?php esc_html_e( 'Shortcode Name', 'my-video-room' ); ?></th>
+				<th style="width:75%; text-align: left;"><?php esc_html_e( 'Usage', 'my-video-room' ); ?></th>
 			</tr>
 
 		</table>
@@ -337,11 +295,11 @@ class ShortcodeDocuments {
 
 		?>
 	<div class="mvr-row">
-	<h2><?php echo esc_html__( 'Elementor Shortcodes', 'my-video-room' ); ?></h2>
+	<h2><?php esc_html_e( 'Elementor Shortcodes', 'my-video-room' ); ?></h2>
 		<table style="width:70%; border: 1px solid black;">
 			<tr>
-				<th style="width:25%; text-align: left;"><?php echo esc_html__( 'Shortcode Name', 'my-video-room' ); ?></th>
-				<th style="width:75%; text-align: left;"><?php echo esc_html__( 'Usage', 'my-video-room' ); ?></th>
+				<th style="width:25%; text-align: left;"><?php esc_html_e( 'Shortcode Name', 'my-video-room' ); ?></th>
+				<th style="width:75%; text-align: left;"><?php esc_html_e( 'Usage', 'my-video-room' ); ?></th>
 			</tr>
 
 		</table>
