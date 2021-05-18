@@ -73,7 +73,7 @@ class SiteDefaults extends Shortcode {
 	 * Render Module Menu.
 	 */
 	public function core_menu_button() {
-		$name = self::esc_html__( 'Video Default Settings', 'my-video-room' );
+		$name = esc_html__( 'Video Default Settings', 'my-video-room' );
 		$slug = self::MODULE_DEFAULT_VIDEO_NAME;
 		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
 		$display = esc_html__( $name, 'myvideoroom' );
