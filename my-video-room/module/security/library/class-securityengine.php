@@ -96,6 +96,7 @@ class SecurityEngine {
 		}
 
 		// Check Allowed_Roles and Blocked Roles.
+		echo $host_id.$room_name.'renderblock';
 		$allowed_roles_block = Factory::get_instance( PageFilters::class )->allowed_roles_room_video_render( $host_id, $room_name, $host_status, $room_type );
 
 		if ( $allowed_roles_block ) {

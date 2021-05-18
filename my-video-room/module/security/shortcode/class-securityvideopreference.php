@@ -68,6 +68,7 @@ class SecurityVideoPreference extends Shortcode {
 				$user_id = $bp->groups->current_group->creator_id;
 			}
 		}
+		echo $user_id.$room_name.'security';
 		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
 		$current_user_setting    = $security_preference_dao->read(
 			$user_id,
