@@ -63,14 +63,14 @@ class Security {
 
 		// Turn on Runtime Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
-		Factory::get_instance( self::class )->security_menu_setup();
+		$this->security_menu_setup();
 
 	}
 	/**
 	 * Setup of Module Menu
 	 */
 	public function security_menu_setup() {
-		add_action( 'mvr_module_submenu_add', array( self::class, 'security_menu_button' ) );
+		add_action( 'mvr_module_submenu_add', array( $this, 'security_menu_button' ) );
 	}
 	/**
 	 * Render Module Menu.

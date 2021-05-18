@@ -10,6 +10,7 @@ namespace MyVideoRoomPlugin\DAO;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\Library\HttpGet;
 
 /**
  * Class ModuleConfig
@@ -18,6 +19,10 @@ use MyVideoRoomPlugin\DAO\RoomMap;
 class ModuleConfig {
 
 	const TABLE_NAME = SiteDefaults::TABLE_NAME_MODULE_CONFIG;
+
+	const ACTION_ENABLE  = 'enable';
+	const ACTION_DISABLE = 'disable';
+
 	/**
 	 * Get a User Video Preference from the database
 	 *
@@ -273,60 +278,78 @@ class ModuleConfig {
 	 * @return string  Button with link
 	 */
 	public function module_activation_button( int $module_id ) {
-		$module_id_by_url = null;
-		// Listening for Input.
-		if ( isset( $_GET['action'] ) ) {
-			$module_status = $params['action'] ?? htmlspecialchars( sanitize_textarea_field( wp_unslash( $_GET['action'] ) ) ?? '' );
-		}
-		if ( isset( $_GET['moduleid'] ) ) {
-			$module_id_by_url = $params['moduleid'] ?? htmlspecialchars( sanitize_textarea_field( wp_unslash( $_GET['moduleid'] ) ) ?? '' );
-		}
+		$http_get_library = Factory::get_instance( HttpGet::class );
+
+		$module_status = $http_get_library->get_text_parameter( 'module_action' );
+		$module_id     = $http_get_library->get_text_parameter( 'module_id', $module_id );
+
+		$server_path = '';
 		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
 			$server_path = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
 		}
 
-		// Replace Module ID from URL post if one exists.
-		if ( $module_id_by_url ) {
-			$module_id = $module_id_by_url;
-		}
-
-		// Check Modules State.
-		if ( $module_status ) {
-			// Case Disable State Change.
-			if ( 'disable' === $module_status ) {
-				Factory::get_instance( self::class )->update_enabled_status( $module_id, false );
-
-			} elseif ( 'enable' === $module_status ) {
+		switch ( $module_status ) {
+			case self::ACTION_ENABLE:
 				Factory::get_instance( self::class )->update_enabled_status( $module_id, true );
-			}
+				break;
+			case self::ACTION_DISABLE:
+				Factory::get_instance( self::class )->update_enabled_status( $module_id, false );
+				break;
 		}
-
-		// Processing Link for Button.
 
 		// Check enabled status to see which button to render.
 		$is_module_enabled = Factory::get_instance( self::class )->read_enabled_status( $module_id );
+
 		// Check if is sub tab to mark as such to strip out extra data in URL when called back.
 
-		$sub_tab_tag = '&subtab=1';
+		$base_url = \add_query_arg(
+			array(
+				'module_id' => $module_id,
+			),
+			home_url( $server_path )
+		);
 
-		// Build URL.
-		$current_url = home_url( $server_path );
-		if ( ! $is_module_enabled ) {
-
-			$current_url .= '&action=enable&moduleid=' . $module_id;
-			$output_link  = '<div style= "display: flex; justify-content: space-between; width: 50%;"> <a href="' . $current_url . '" class="button button-primary" style="background-color:red;" >' . esc_html_e( 'Disabled', 'myvideoroom' ) . '</a><a href="' . $current_url . $sub_tab_tag . '" class="button button-primary">' . esc_html_e( 'Enable Module', 'myvideoroom' ) . '</a></div>';
-			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  output already formatted without user input.
-			echo $output_link;
-			return false;
-
+		if ( $is_module_enabled ) {
+			$action      = self::ACTION_DISABLE;
+			$type        = 'positive';
+			$main_text   = __( 'Enabled', 'myvideoroom' );
+			$action_text = __( 'Disable module', 'myvideoroom' );
+			$result      = true;
 		} else {
-			$current_url .= '&action=disable&moduleid=' . $module_id;
-			$output_link  = '<div style= "display: flex;	justify-content: space-between; width: 50%;"> <a href="' . $current_url . '" class="button button-primary" style="background-color:green;" >' . esc_html_e( 'Enabled', 'myvideoroom' ) . '</a><a href="' . $current_url . $sub_tab_tag . '" class="button button-primary">' . esc_html_e( 'Disable Module', 'myvideoroom' ) . '</a></div>';
-
+			$action      = self::ACTION_ENABLE;
+			$type        = 'negative';
+			$main_text   = __( 'Disabled', 'myvideoroom' );
+			$action_text = __( 'Enable module', 'myvideoroom' );
+			$result      = false;
 		}
-		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  output already formatted without user input.
-		echo $output_link;
-		return true;
+
+		$url = \add_query_arg(
+			array(
+				'module_action' => $action,
+			),
+			$base_url
+		);
+
+		$sub_tab_url = \add_query_arg(
+			array(
+				'subtab' => 1,
+			),
+			$url
+		);
+
+		?>
+		<div style="display: flex; justify-content: space-between; width: 50%;">
+			<a href="<?php echo esc_url( $url ); ?>" class="button button-primary <?php echo esc_attr( $type ); ?>">
+				<?php echo esc_html( $main_text ); ?>
+			</a>
+			<a href="<?php echo esc_url( $sub_tab_url ); ?>" class="button button-primary">
+				<?php echo esc_html( $action_text ); ?>
+			</a>
+		</div>
+		<?php
+
+		return $result;
+
 	}
 
 
