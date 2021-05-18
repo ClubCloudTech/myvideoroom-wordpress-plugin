@@ -106,10 +106,8 @@ return function (
 							<input		type="text"
 										id="myvideoroom_add_room_slug"
 										name="myvideoroom_add_room_slug"
-										class="mvr-roles-multiselect mvr-select-box-small"
+										class="mvr-roles-multiselect mvr-select-box-small myvideoroom-input-restrict-alphanumeric"
 										maxlength="64"
-										onkeyup="chText()"
-										onkeydown="chText()"
 										value="">
 							<p class="mvr-preferences-paragraph">
 							<?php
@@ -150,7 +148,7 @@ return function (
 				<iframe id="iframe1" name="iframe1" src="" width="100%" height="950" ></iframe>
 						</div>
 				</div>
-			</div>	
+			</div>
 		<div>
 	</div>
 	<?php
