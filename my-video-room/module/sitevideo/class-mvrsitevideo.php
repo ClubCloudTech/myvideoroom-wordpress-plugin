@@ -66,7 +66,9 @@ class MVRSiteVideo extends Shortcode {
 	 * Required for Normal Runtime.
 	 */
 	public function init() {
-		$this->add_shortcode( 'sitevideoroom', array( MVRSiteVideoControllers::class, 'sitevideo_shortcode' ) );
+		$site_video_controller = Factory::get_instance( MVRSiteVideoControllers::class );
+		$this->add_shortcode( 'sitevideoroom', array( $site_video_controller, 'sitevideo_shortcode' ) );
+
 		$this->site_videoroom_menu_setup();
 
 		// Rooms Permissions Manager Header Remove.

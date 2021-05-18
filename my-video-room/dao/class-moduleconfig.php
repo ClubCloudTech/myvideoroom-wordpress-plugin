@@ -312,6 +312,7 @@ class ModuleConfig {
 	 * @return string  Button with link
 	 */
 	public function module_activation_button( int $module_id ) {
+		$module_id_by_url = null;
 		// Listening for Input.
 		if ( isset( $_GET['action'] ) ) {
 			$module_status = $params['action'] ?? htmlspecialchars( sanitize_textarea_field( wp_unslash( $_GET['action'] ) ) ?? '' );
@@ -352,14 +353,14 @@ class ModuleConfig {
 		if ( ! $is_module_enabled ) {
 
 			$current_url .= '&action=enable&moduleid=' . $module_id;
-			$output_link  = '<div style= "display: flex; justify-content: space-between; width: 50%;"> <a href="' . $current_url . '" class="button button-primary" style="background-color:red;" >Disabled</a><a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" >Enable Module</a></div>';
+			$output_link  = '<div style= "display: flex; justify-content: space-between; width: 50%;"> <a href="' . $current_url . '" class="button button-primary" style="background-color:red;" >' . esc_html_e( 'Disabled', 'myvideoroom' ) . '</a><a href="' . $current_url . $sub_tab_tag . '" class="button button-primary">' . esc_html_e( 'Enable Module', 'myvideoroom' ) . '</a></div>';
 			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  output already formatted without user input.
 			echo $output_link;
 			return false;
 
 		} else {
 			$current_url .= '&action=disable&moduleid=' . $module_id;
-			$output_link  = '<div style= "display: flex;	justify-content: space-between; width: 50%;"> <a href="' . $current_url . '" class="button button-primary" style="background-color:green;" >Enabled</a><a href="' . $current_url . $sub_tab_tag . '" class="button button-primary"  >Disable Module</a></div>';
+			$output_link  = '<div style= "display: flex;	justify-content: space-between; width: 50%;"> <a href="' . $current_url . '" class="button button-primary" style="background-color:green;" >' . esc_html_e( 'Enabled', 'myvideoroom' ) . '</a><a href="' . $current_url . $sub_tab_tag . '" class="button button-primary">' . esc_html_e( 'Disable Module', 'myvideoroom' ) . '</a></div>';
 
 		}
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  output already formatted without user input.
