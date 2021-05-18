@@ -20,13 +20,14 @@ class SectionTemplates extends Shortcode {
 	 * Render a Template to Automatically Wrap the Video Shortcode with additional tabs to add more functionality
 	 *  Used to add Admin Page for each Room for Hosts, Returns Header and Shortcode if no additional pages passed in
 	 *
-	 * @param  string $header - The Header of the Shortcode.
-	 * @param  string $shortcode - The Shortcode to Render.
-	 * @param  string $admin_page - The admin page if any.
-	 * @param  string $permissions_page - The Permissions Page.
-	 * @return String. The completed Formatted Template.
+	 * @param ?string $header           The Header of the Shortcode.
+	 * @param ?string $shortcode        The Shortcode to Render.
+	 * @param ?string $admin_page       The admin page if any.
+	 * @param null    $permissions_page The Permissions Page.
+	 *
+	 * @return string. The completed Formatted Template.
 	 */
-	public function shortcode_template_wrapper( string $header = null, string $shortcode = null, string $admin_page = null, $permissions_page = null ) {
+	public function shortcode_template_wrapper( string $header = null, string $shortcode = null, string $admin_page = null, $permissions_page = null ): string {
 		wp_enqueue_script( 'myvideoroom-admin-tabs' );
 		wp_enqueue_style( 'myvideoroom-menutab-header' );
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
@@ -37,7 +38,7 @@ class SectionTemplates extends Shortcode {
 			<div class="mvr-header-section">
 			<?php
 				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
-				echo $header;			
+				echo $header;
 			?>
 			</div>
 			<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper mvr-shortcode-menu">
@@ -61,16 +62,16 @@ class SectionTemplates extends Shortcode {
 				Adding Body Section
 			*/
 			// Adding Shortcode (the only one guaranteed to exist).
-			$output  = '<article id="myvideoroom_page1' .  esc_attr( $header_length ) . '" >';
+			$output  = '<article id="myvideoroom_page1' . esc_attr( $header_length ) . '" >';
 			$output .= $shortcode . '</article>';
 			// Adding Permissions Tab if Exists.
 			if ( $security_enabled && $permissions_page ) {
-				$output .= '<article id="myvideoroom_page2' .  esc_attr( $header_length ) . '">';
+				$output .= '<article id="myvideoroom_page2' . esc_attr( $header_length ) . '">';
 				$output .= $permissions_page . ' </article>';
 			}
 			// Adding Room Admin Tab if Exists.
 			if ( $admin_page ) {
-				$output .= '<article id="myvideoroom_page3' .  esc_attr( $header_length ) . '">';
+				$output .= '<article id="myvideoroom_page3' . esc_attr( $header_length ) . '">';
 				$output .= $admin_page . ' </article>';
 			}
 

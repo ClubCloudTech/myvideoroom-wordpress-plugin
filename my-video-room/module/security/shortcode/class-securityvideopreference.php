@@ -35,14 +35,14 @@ class SecurityVideoPreference extends Shortcode {
 	/**
 	 * Render shortcode to allow user to update their settings
 	 *
-	 * @param array $params List of shortcode params.
+	 * @param array|string $attributes List of shortcode params.
 	 *
 	 * @return string
 	 * @throws \Exception When the update fails.
 	 */
-	public function choose_settings_shortcode( $params = array() ): string {
-		$room_name = $params['room'] ?? 'default';
-		$user_id   = $params['user'] ?? null;
+	public function choose_settings_shortcode( $attributes = array() ): string {
+		$room_name = $attributes['room'] ?? 'default';
+		$user_id   = $attributes['user'] ?? null;
 
 		if ( ! $user_id ) {
 			$user_id = Factory::get_instance( WordPressUser::class )->get_logged_in_wordpress_user()->ID;
@@ -54,13 +54,14 @@ class SecurityVideoPreference extends Shortcode {
 	/**
 	 * Show drop down for user to change their settings
 	 *
-	 * @param  int    $user_id - the user id.
-	 * @param  string $room_name - the room name.
-	 * @param  string $group_name - name of group.
-	 * @param  string $type to return.
+	 * @param  int         $user_id    The user id.
+	 * @param  string      $room_name  The room name.
+	 * @param  ?string     $group_name Name of group.
+	 * @param string|null $type       To return.
+	 *
 	 * @return string
 	 */
-	public function choose_settings( int $user_id, string $room_name, string $group_name = null, $type = null ): string {
+	public function choose_settings( int $user_id, string $room_name, string $group_name = null, string $type = null ): string {
 		// Trap BuddyPress Environment and send Group ID as the USer ID for storage in DB.
 		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
 			if ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() ) {
@@ -68,6 +69,7 @@ class SecurityVideoPreference extends Shortcode {
 				$user_id = $bp->groups->current_group->creator_id;
 			}
 		}
+
 		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
 		$current_user_setting    = $security_preference_dao->read(
 			$user_id,
@@ -145,7 +147,9 @@ class SecurityVideoPreference extends Shortcode {
 				$security_preference_dao->create( $current_user_setting );
 			}
 		}
+
 		// Auto Refresh Room Post Settings Change.
+		// @TODO - Alec to check this.
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) &&
 			'POST' === $_SERVER['REQUEST_METHOD'] &&
@@ -153,15 +157,19 @@ class SecurityVideoPreference extends Shortcode {
 		) {
 			echo( "<meta http-equiv='refresh' content='.1'>" );
 		}
-		// Type of Shortcode to render.
-		if ( 'admin' === $type ) {
-				$render = include __DIR__ . '/../views/shortcode-securityadminvideopreference.php';
-		} elseif ( 'roomhost' === $type ) {
-				$render = include __DIR__ . '/../views/shortcode-securityroomhost.php';
-		} else {
-			$render = include __DIR__ . '/../views/shortcode-securityvideopreference.php';
-		}
-		return $render( $current_user_setting, $room_name, self::$id_index++, $user_id, $group_name );
 
+		// Type of Shortcode to render.
+		switch ( $type ) {
+			case 'admin':
+				$render = include __DIR__ . '/../views/shortcode-securityadminvideopreference.php';
+				break;
+			case 'roomhost':
+				$render = include __DIR__ . '/../views/shortcode-securityroomhost.php';
+				break;
+			default:
+				$render = include __DIR__ . '/../views/shortcode-securityvideopreference.php';
+		}
+
+		return $render( $current_user_setting, $room_name, self::$id_index++, $user_id, $group_name );
 	}
 }

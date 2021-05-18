@@ -20,48 +20,96 @@ class TemplateIcons {
 	/**
 	 * Takes UserID and Room Name from Template pages and returns formatted room information icons.
 	 *
-	 * @param  int    $user_id - User ID to check.
-	 * @param  string $room_name - Room Name to check.
-	 * @return string - the icons.
+	 * @param  int    $user_id   User ID to check.
+	 * @param  string $room_name Room Name to check.
+	 *
+	 * @return ?string - the icons.
 	 */
-	public function show_icon( int $user_id, string $room_name ) {
+	public function show_icon( int $user_id, string $room_name ): ?string {
 		if ( ! $user_id && ! $room_name ) {
 			return null;
 		}
-		$reception_enabled          = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
-		$floorplan_enabled          = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
-		$custom_video               = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'reception_video_enabled' );
-		$anonymous_enabled          = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'anonymous_enabled' );
-		$allow_role_control_enabled = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'allow_role_control_enabled' );
-		$restrict_to_friends        = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
-		$restrict_to_groups         = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
-		$icon_output                = null;
-		if ( $reception_enabled || $floorplan_enabled ) {
-			$icon_output .= '<i class="card dashicons mvr-icons dashicons-lock" title="Your Guests will see the Reception Template of your choice and will not be admitted into the room until you drag their icon in."></i>';
-		}
-		if ( ! $reception_enabled && ! $floorplan_enabled ) {
-			$icon_output .= '<i class="card dashicons mvr-icons dashicons-unlock" title="Your Guests can freely enter and exit your room if you are in it."></i>';
-		}
-		if ( $floorplan_enabled ) {
-			$icon_output .= '<i class="card dashicons mvr-icons dashicons-welcome-view-site" title="Your Guests will not see the Image of the Room Floorplan and only have a classic Video Experience"></i>';
-		}
-		if ( $custom_video && ( $reception_enabled || $floorplan_enabled ) ) {
-			$icon_output .= '<i class="card dashicons mvr-icons dashicons-playlist-video" title="A custom video is playing in your reception"></i>';
-		}
-		if ( $anonymous_enabled ) {
-			$icon_output .= '<i class="card dashicons mvr-icons dashicons-admin-users" title="Users Must be signed in to access your room"></i>';
-		}
-		if ( $allow_role_control_enabled ) {
-			$icon_output .= '<i class="card dashicons mvr-icons dashicons-id" title="Guests must belong to specific roles for access to your room"></i>';
-		}
-		if ( $restrict_to_friends ) {
-			$icon_output .= '<i class="card dashicons mvr-icons dashicons-share" title="Guests must be friends/connected to you to access your room"></i>';
-		}
-		if ( $restrict_to_groups ) {
-			$icon_output .= '<i class="card dashicons mvr-icons dashicons-format-chat" title="Guests must be a member of this group (or moderator/admin) to access your room"></i>';
-		}
-		return $icon_output;
 
+		$user_video_dao     = Factory::get_instance( UserVideoPreferenceDAO::class );
+		$security_video_dao = Factory::get_instance( SecurityVideoPreferenceDAO::class );
+
+		$reception_enabled          = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
+		$floorplan_enabled          = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
+		$custom_video               = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_video_enabled' );
+		$anonymous_enabled          = $security_video_dao->read_security_settings( $user_id, $room_name, 'anonymous_enabled' );
+		$allow_role_control_enabled = $security_video_dao->read_security_settings( $user_id, $room_name, 'allow_role_control_enabled' );
+		$restrict_to_friends        = $security_video_dao->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
+		$restrict_to_groups         = $security_video_dao->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
+		$icon_output                = null;
+
+		if ( $reception_enabled || $floorplan_enabled ) {
+			$icon_output .= $this->create_icon(
+				'lock',
+				__( 'Your guests will see the reception template of your choice and will not be admitted into the room until you drag their icon in.', 'myvideoroom' )
+			);
+		}
+
+		if ( ! $reception_enabled && ! $floorplan_enabled ) {
+			$icon_output .= $this->create_icon(
+				'unlock',
+				__( 'Your guests can freely enter and exit your room if you are in it.', 'myvideoroom' )
+			);
+		}
+
+		if ( $floorplan_enabled ) {
+			$icon_output .= $this->create_icon(
+				'welcome-view-site',
+				__( 'Your guests will not see the image of the room floorplan and only have a classic video experience.', 'myvideoroom' )
+			);
+		}
+
+		if ( $custom_video && ( $reception_enabled || $floorplan_enabled ) ) {
+			$icon_output .= $this->create_icon(
+				'playlist-video',
+				__( 'A custom video is playing in your reception.', 'myvideoroom' )
+			);
+		}
+
+		if ( $anonymous_enabled ) {
+			$icon_output .= $this->create_icon(
+				'admin-users',
+				__( 'Users must be signed in to access your room.', 'myvideoroom' )
+			);
+		}
+
+		if ( $allow_role_control_enabled ) {
+			$icon_output .= $this->create_icon(
+				'id',
+				__( 'Guests must belong to specific roles for access to your room.', 'myvideoroom' )
+			);
+		}
+
+		if ( $restrict_to_friends ) {
+			$icon_output .= $this->create_icon(
+				'share',
+				__( 'Guests must be friends/connected to you to access your room,', 'myvideoroom' )
+			);
+		}
+
+		if ( $restrict_to_groups ) {
+			$icon_output .= $this->create_icon(
+				'format-chat',
+				__( 'Guests must be a member of this group (or moderator/admin) to access your room.', 'myvideoroom' )
+			);
+		}
+
+		return $icon_output;
 	}
 
+	/**
+	 * Create an icon
+	 *
+	 * @param string $icon  The icon.
+	 * @param string $title The text.
+	 *
+	 * @return string
+	 */
+	private function create_icon( string $icon, string $title ): string {
+		return '<i class="card dashicons mvr-icons dashicons-' . esc_attr( $icon ) . '" title="' . esc_html( $title ) . '"></i>';
+	}
 }

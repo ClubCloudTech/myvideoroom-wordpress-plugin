@@ -21,16 +21,17 @@ class RoomInit {
 	/**
 	 * Room Default Settings Install
 	 *
-	 * @param  int    $user_id - The UserID.
-	 * @param  string $room_name - The Room Name.
-	 * @param  string $layout_id_to_set - Template.
-	 * @param  string $reception_id_to_set - Default Reception View.
-	 * @param  bool   $reception_enabled - Status of Reception.
+	 * @param int    $user_id             - The UserID.
+	 * @param string $room_name           - The Room Name.
+	 * @param string $layout_id_to_set    - Template.
+	 * @param string $reception_id_to_set - Default Reception View.
+	 * @param bool   $reception_enabled   - Status of Reception.
+	 *
 	 * @return void
 	 */
 	public function room_default_settings_install( int $user_id, string $room_name, string $layout_id_to_set, string $reception_id_to_set, bool $reception_enabled ) {
-
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
+
 		// Check Exists.
 		$current_user_setting = $video_preference_dao->read(
 			$user_id,

@@ -29,9 +29,10 @@ class VideoHelpers extends Shortcode {
 	 * @param  int    $user_id - userid.
 	 * @param  string $room_name = the room name to check.
 	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
-	 * @return string Video Room Template if any.
+	 *
+	 * @return ?string Video Room Template if any.
 	 */
-	public function get_videoroom_template( int $user_id, string $room_name, bool $multi_owner = false ) {
+	public function get_videoroom_template( int $user_id, string $room_name, bool $multi_owner = false ): ?string {
 		// First try the User's Value.
 		$video_preference_dao = factory::get_instance( UserVideoPreferenceDao::class );
 		$current_user_setting = $video_preference_dao->read(
@@ -85,9 +86,10 @@ class VideoHelpers extends Shortcode {
 	 * @param  int    $user_id - userid.
 	 * @param  string $room_name = the room name to check.
 	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
-	 * @return string url if any.
+	 *
+	 * @return ?string url if any.
 	 */
-	public function get_video_reception_url( int $user_id, string $room_name, bool $multi_owner = false ) {
+	public function get_video_reception_url( int $user_id, string $room_name, bool $multi_owner = false ): ?string {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 		$current_user_setting = $video_preference_dao->read(
@@ -141,9 +143,10 @@ class VideoHelpers extends Shortcode {
 	 * @param  int    $user_id - userid.
 	 * @param  string $room_name = the room name to check.
 	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
-	 * @return string Video Reception State.
+	 *
+	 * @return bool Video Reception State.
 	 */
-	public function get_video_reception_state( int $user_id, string $room_name, bool $multi_owner = false ) {
+	public function get_video_reception_state( int $user_id, string $room_name, bool $multi_owner = false ): ?bool {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 		$current_user_setting = $video_preference_dao->read(
@@ -197,9 +200,10 @@ class VideoHelpers extends Shortcode {
 	 * @param  int    $user_id - userid.
 	 * @param  string $room_name = the room name to check.
 	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
-	 * @return string Reception template
+	 *
+	 * @return ?string Reception template
 	 */
-	public function get_reception_template( int $user_id, string $room_name, bool $multi_owner = false ) {
+	public function get_reception_template( int $user_id, string $room_name, bool $multi_owner = false ): ?string {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 		$current_user_setting = $video_preference_dao->read(
@@ -251,9 +255,10 @@ class VideoHelpers extends Shortcode {
 	 * @param  int    $user_id - userid.
 	 * @param  string $room_name = the room name to check.
 	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
-	 * @return bool - Video Reception State.
+	 *
+	 * @return ?bool - Video Reception State.
 	 */
-	public function get_enable_reception_state( int $user_id, string $room_name, bool $multi_owner = false ) {
+	public function get_enable_reception_state( int $user_id, string $room_name, bool $multi_owner = false ): ?bool {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 		$current_user_setting = $video_preference_dao->read(
@@ -305,9 +310,10 @@ class VideoHelpers extends Shortcode {
 	 * @param  int    $user_id - required.
 	 * @param  string $room_name - required.
 	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
-	 * @return string Floorplan status.
+	 *
+	 * @return ?bool Floorplan status.
 	 */
-	public function get_show_floorplan( int $user_id, string $room_name, bool $multi_owner = false ) {
+	public function get_show_floorplan( int $user_id, string $room_name, bool $multi_owner = false ): ?bool {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 		$current_user_setting = $video_preference_dao->read(

@@ -171,11 +171,7 @@ class SiteDefaults extends Shortcode {
 	 *
 	 * @return string
 	 */
-	public function room_map( string $type, $input_id = null ) {
-		if ( ! $type ) {
-			return 'ERR: CC101 - No Room Type Provided';
-		}
-
+	public function room_map( string $type, $input_id = null ): string {
 		switch ( $type ) {
 			case 'sitevideo':
 				return preg_replace( '/[^A-Za-z0-9\-]/', '', get_bloginfo( 'name' ) ) . '-' . preg_replace( '/[^A-Za-z0-9\-]/', '', $input_id );
@@ -210,16 +206,20 @@ class SiteDefaults extends Shortcode {
 				$outmeetingid = Factory::get_instance( MeetingIdGenerator::class )->invite( $input_id, 'user', null );
 
 				return 'Space-' . $output . '-' . $outmeetingid;
+
+			default:
+				return 'ERR: CC101 - No Room Type Provided';
 		}
 	}
 
 	/**
 	 * Splits Name of Meeting Rooms
 	 *
-	 * @param  string $name - the name to be split.
+	 * @param ?string $name The name to be split.
+	 *
 	 * @return string
 	 */
-	public function name_split( $name ) {
+	public function name_split( string $name = null ): string {
 		if ( ! $name ) {
 			return 'ERR: CC102 - No Name Provided';
 		}

@@ -23,30 +23,37 @@ class RoomMap {
 	/**
 	 * Get a PostID from the Database for a Page
 	 *
-	 * @param  string $room_name inbound room from user.
-	 * @return string (db entry)
+	 * @param string $room_name inbound room from user.
+	 *
+	 * @return ?int
 	 */
-	public function read( string $room_name ) {
+	public function read( string $room_name ): ?int {
 		global $wpdb;
-		$raw_sql            = '
-				SELECT post_id
-				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE room_name = %s
-			';
-			$prepared_query = $wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-				$raw_sql,
-				array(
-					$room_name,
-				)
-			);
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-			$row = $wpdb->get_row( $prepared_query );
+
+		$raw_sql = '
+			SELECT post_id
+			FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+			WHERE room_name = %s
+		';
+
+		$prepared_query = $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$raw_sql,
+			array(
+				$room_name,
+			)
+		);
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+		$row = $wpdb->get_row( $prepared_query );
+
 		if ( $row ) {
-			return $row->post_id;
+			return (int) $row->post_id;
 		}
+
 		return null;
 	}
+
 	/**
 	 * Register a given room in the Database, and ensure it does not already exist
 	 *
@@ -56,7 +63,7 @@ class RoomMap {
 	 * @param  string $display_name - The Room Display Name for Header.
 	 * @param  string $slug - The Slug.
 	 *
-	 * @return DB Result Code or False s
+	 * @return string|int|false
 	 */
 	public function register_room_in_db( string $room_name, int $post_id, string $room_type, string $display_name, string $slug ) {
 		global $wpdb;
@@ -64,6 +71,7 @@ class RoomMap {
 		if ( ! $room_name || ! $post_id ) {
 			return 'Room Name or PostID Blank';
 		}
+
 		// Create Post.
 		$result = $wpdb->insert(
 			$wpdb->prefix . self::TABLE_NAME,
@@ -75,33 +83,40 @@ class RoomMap {
 				'slug'         => $slug,
 			)
 		);
+
 		return $result;
 	}
+
 	/**
 	 * Get Room Info from Database.
 	 *
-	 * @param  int $post_id - The Room iD to query.
-	 * @return DB Result or False s
+	 * @param int $post_id The Room iD to query.
+	 *
+	 * @return array|object|void|null
 	 */
 	public function get_room_info( int $post_id ) {
 		global $wpdb;
-		$raw_sql            = '
-				SELECT room_name, post_id, room_type, display_name, slug
-				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE post_id = %d
-			';
-			$prepared_query = $wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-				$raw_sql,
-				array(
-					$post_id,
-				)
-			);
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-			$row = $wpdb->get_row( $prepared_query );
+		$raw_sql = '
+			SELECT room_name, post_id, room_type, display_name, slug
+			FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+			WHERE post_id = %d
+		';
+
+		$prepared_query = $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$raw_sql,
+			array(
+				$post_id,
+			)
+		);
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+		$row = $wpdb->get_row( $prepared_query );
+
 		if ( $row ) {
 			return $row;
 		}
+
 		return null;
 	}
 
@@ -109,84 +124,93 @@ class RoomMap {
 
 	/**
 	 * Update Room Post ID in Database
+	 * This plugin will update the room name in the database with the parameter
 	 *
-	 *  This plugin will update the room name in the database with the parameter
+	 * @param string $post_id   The Post iD.
+	 * @param string $room_name The Room Name.
 	 *
-	 * @param  string $post_id - The Post iD.
-	 * @param  string $room_name - The Room Name.
-	 * @return Database updated result or False
+	 * @return bool|null
 	 */
 	public function update_room_post_id( string $post_id, string $room_name ) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . self::TABLE_NAME;
+
 		// Empty input exit.
 		if ( ! $post_id || ! $room_name ) {
 			return false;
 		}
-		$raw_sql            = '
-				UPDATE ' . $wpdb->prefix . self::TABLE_NAME . '
-				SET post_id = %s
-				WHERE room_name = %s
-			';
-			$prepared_query = $wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-				$raw_sql,
-				array(
-					$room_name,
-					$post_id,
-				)
-			);
-		$result = $wpdb->query( $prepared_query );
+
+		$raw_sql = '
+			UPDATE ' . $wpdb->prefix . self::TABLE_NAME . '
+			SET post_id = %s
+			WHERE room_name = %s
+		';
+
+		$prepared_query = $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$raw_sql,
+			array(
+				$room_name,
+				$post_id,
+			)
+		);
+
+		$wpdb->query( $prepared_query );
+
 		return null;
 	}
 	/**
 	 * Delete a Room Record in Database.
+	 * This function will delete the room name in the database with the parameter.
 	 *
-	 *  This function will delete the room name in the database with the parameter.
+	 * @param string $room_name The Room Name.
 	 *
-	 *  @param  string $room_name - the Room Name.
-	 *  @return Database updated result or False
+	 * @return bool|null
 	 */
 	public function delete_room_mapping( string $room_name ) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . self::TABLE_NAME;
+
 		// empty input exit.
 		if ( ! $room_name ) {
 			return false;
 		}
-		$raw_sql            = '
-				DELETE FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE room_name = %s
-			';
-			$prepared_query = $wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared.
-				$raw_sql,
-				array(
-					$room_name,
-				)
-			);
-		$result = $wpdb->query( $prepared_query );
+
+		$raw_sql = '
+			DELETE FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+			WHERE room_name = %s
+		';
+
+		$prepared_query = $wpdb->prepare(
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared.
+			$raw_sql,
+			array(
+				$room_name,
+			)
+		);
+
+		$wpdb->query( $prepared_query );
+
 		return null;
 	}
 
 	/**
 	 * Register a given room in the Database, and ensure it does not already exist
 	 *
-	 *  @param  string $room_name - the Room Name.
+	 * @param string $room_name The Room Name.
 	 *
-	 * @return String  Yes, No, Orphan (database exists but page deleted)
+	 * @return bool|String  Yes, No, Orphan (database exists but page deleted)
 	 */
 	public function check_page_exists( string $room_name ) {
-		global $wpdb;
 		// Empty input exit.
 		if ( ! $room_name ) {
 			return false;
 		}
+
 		// First Check Database for Room and Post ID - return No if blank.
 		$post_id_check = Factory::get_instance( self::class )->read( $room_name );
 		if ( ! $post_id_check ) {
 			return self::PAGE_STATUS_NOT_EXISTS;
 		}
+
 		// Second Check Post Actually Exists in WP still (user hasn't deleted page).
 		$post_object = get_post( $post_id_check );
 		if ( ! $post_object ) {
@@ -200,15 +224,18 @@ class RoomMap {
 	 * Get Additional Rooms Installed
 	 *
 	 * @param  string $room_type - the room type to query.
-	 * @return string - the room list.
+	 *
+	 * @return array
 	 */
-	public function get_room_list( string $room_type ) {
+	public function get_room_list( string $room_type ): attay {
 		global $wpdb;
-		$raw_sql        = '
-				SELECT post_id
-				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE room_type = %s
-			';
+
+		$raw_sql = '
+			SELECT post_id
+			FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+			WHERE room_type = %s
+		';
+
 		$prepared_query = $wpdb->prepare(
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$raw_sql,
@@ -216,12 +243,15 @@ class RoomMap {
 				$room_type,
 			)
 		);
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$row    = $wpdb->get_results( $prepared_query );
+		$row = $wpdb->get_results( $prepared_query );
+
 		$output = array();
 		foreach ( $row as $datarow ) {
 			array_push( $output, $datarow->post_id );
 		}
+
 		return $output;
 	}
 }

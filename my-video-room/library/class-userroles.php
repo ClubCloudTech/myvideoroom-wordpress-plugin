@@ -24,7 +24,7 @@ class UserRoles {
 	/**
 	 * UserRoles constructor.
 	 *
-	 * @param string $user - WP User Object.
+	 * @param \WP_User|null $user - WP User Object.
 	 */
 	public function __construct( \WP_User $user = null ) {
 		if ( $user ) {
@@ -86,23 +86,17 @@ class UserRoles {
 	/**
 	 * Get current user WordPress Roles
 	 *
+	 * @param ?int $user_id The user id.
+	 *
 	 * @return array of roles
-	 * @param int $user_id - the user id.
 	 */
-	public function get_user_roles( $user_id = null ) {
+	public function get_user_roles( int $user_id = null ): array {
 		if ( ! $user_id ) {
 			$user_id = get_current_user_id();
 		}
 
-		$user_meta  = get_userdata( $user_id );
-		$user_roles = $user_meta->roles;
-
-		return $user_roles;
+		$user_meta = get_userdata( $user_id );
+		return $user_meta->roles;
 
 	}
-
-
-
-
-
 }

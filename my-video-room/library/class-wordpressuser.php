@@ -15,7 +15,7 @@ class WordPressUser {
 	/**
 	 * Get_logged_in_wordpress_user.
 	 *
-	 * @return WP_User
+	 * @return ?\WP_User
 	 */
 	public function get_logged_in_wordpress_user(): ?\WP_User {
 		return \wp_get_current_user();
@@ -23,7 +23,7 @@ class WordPressUser {
 	/**
 	 * Get a WordPress by user by id
 	 *
-	 * @param int $user_id The id of the user.
+	 * @param ?int $user_id The id of the user.
 	 *
 	 * @return \WP_User|null
 	 */
