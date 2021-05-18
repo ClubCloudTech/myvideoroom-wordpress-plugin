@@ -163,17 +163,6 @@ class SiteDefaults extends Shortcode {
 	}
 
 	/**
-	 * Is_Elementor - checks if a Elementor is enabled.
-	 *
-	 * @return bool
-	 */
-	public function is_elementor_active() {
-		include_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-		return ( is_plugin_active( 'elementor/elementor.php' ) );
-	}
-
-	/**
 	 * Generates all default Room Names for All Functions that use Video Rooms
 	 * Video functions call this function to get default room names to ensure all generate consistently
 	 *

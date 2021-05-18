@@ -69,12 +69,25 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 </td>
 <td class="mvr-table-height mvr-table-editpage">
 			<?php
+
+			$edit_actions = array(
+				array(
+					'Edit in WordPress',
+					get_site_url() . '/wp-admin/post.php?post=' . esc_textarea( $post_id ) . '&action=edit',
+					'dashicons dashicons-wordpress',
+				),
+			);
+
+			// Add any extra options.
+			$edit_actions = \apply_filters( 'myvideoroom_sitevideo_edit_actions', $edit_actions, $post_id );
+
+
 			// Render Buttons for Action Area.
 			if ( $post_id_return ) {
-				if ( Factory::get_instance( SiteDefaults::class )->is_elementor_active() ) {
-					echo '<a href="' . esc_url( get_site_url() ) . '/wp-admin/post.php?post=' . esc_textarea( $post_id ) . '&action=elementor" class="fab fa-elementor mvr-icons"target="_blank" title="Edit in Elementor"></a>';
+
+				foreach ( $edit_actions as $action ) {
+					echo '<a href="' . esc_url( $action[1] ) . '" class="mvr-icons ' . esc_attr( $action[2] ) . '" target="_blank" title="' . esc_attr( $action[0] ) . '"></a>';
 				}
-				echo '<a href="' . esc_url( get_site_url() ) . '/wp-admin/post.php?post=' . esc_textarea( $post_id ) . '&action=edit" class="dashicons mvr-icons dashicons-wordpress" target="_blank" title="Edit in WordPress"></a>';
 
 				//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a superglobal not user input.
 				if ( null !== ( esc_url_raw( wp_unslash( $_GET['page'] ) ) ) ){
