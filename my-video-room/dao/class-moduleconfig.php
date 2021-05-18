@@ -217,7 +217,6 @@ class ModuleConfig {
 	 */
 	public function get_module_admin_path( string $module_name ) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		// First Check Database for Room and Post ID - return No if blank.
 		$raw_sql        = '
 				SELECT module_admin_path
