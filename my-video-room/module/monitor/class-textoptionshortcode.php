@@ -9,14 +9,14 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\Monitor;
 
-use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Shortcode;
+use MyVideoRoomPlugin\Shortcode\App;
 
 /**
  * Class TextOptionShortcode
  */
 class TextOptionShortcode extends Shortcode {
-	const SHORTCODE_TAG = AppShortcode::SHORTCODE_TAG . '_text_option';
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_text_option';
 
 	/**
 	 * Install the shortcode

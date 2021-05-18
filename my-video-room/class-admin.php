@@ -18,10 +18,10 @@ use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\Version;
-use MyVideoRoomPlugin\Reference\Main\Reference;
+use MyVideoRoomPlugin\Reference\Shortcode\App as AppShortcodeReference;
+use MyVideoRoomPlugin\Reference\Shortcode\RoomInfo as RoomInfoReference;
 use MyVideoRoomPlugin\ValueObject\GettingStarted;
 use MyVideoRoomPlugin\ValueObject\Notice;
-use function do_action;
 
 /**
  * Class Admin
@@ -273,7 +273,8 @@ class Admin {
 	 */
 	public function create_shortcode_reference_page(): string {
 		$shortcodes = array(
-			( new Reference() )->get_shortcode_reference(),
+			( new AppShortcodeReference() )->get_shortcode_reference(),
+			( new RoomInfoReference() )->get_shortcode_reference(),
 		);
 
 		\do_action(

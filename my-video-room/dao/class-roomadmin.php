@@ -22,36 +22,6 @@ class RoomAdmin extends Shortcode {
 	const TABLE_NAME = SiteDefaults::TABLE_NAME_ROOM_MAP;
 
 	/**
-	 * Install - called by Plugin initiation, and will run any lines in this class for the plugin automatically.
-	 *
-	 * @return void
-	 */
-	public function init() {
-
-		$this->add_shortcode( 'getvideo_room_info', array( $this, 'get_video_info_shortcode' ) );
-
-	}
-
-	/**
-	 * Create Page for Meet Center and record Post ID - Called by Activation Plugin.
-	 *
-	 * $param mixed - below
-	 *
-	 * @params room, type.
-	 * @param string $params - ['room'] - name of room to call.
-	 * ['type'] $room_type - type of room to call.
-	 *
-	 * @return string Sends shortcode output to worker function.
-	 */
-	public function get_video_info_shortcode( $params = array() ) {
-
-		$room_name = $params['room'] ?? '';
-		$room_type = $params['type'] ?? '';
-
-		return $this->get_videoroom_info( $room_name, $room_type );
-	}
-
-	/**
 	 * Returns Video Page information of pages created in the database.
 	 *
 	 * @param string $room_name - name of room.

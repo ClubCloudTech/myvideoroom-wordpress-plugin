@@ -9,18 +9,18 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\Monitor;
 
-use MyVideoRoomPlugin\AppShortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\Shortcode;
+use MyVideoRoomPlugin\Shortcode\App;
 
 /**
  * Class Module
  */
 class Module extends Shortcode {
 
-	const SHORTCODE_TAG = AppShortcode::SHORTCODE_TAG . '_monitor';
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_monitor';
 
 	/**
 	 * The list of endpoints for services.
