@@ -227,30 +227,23 @@ class SecurityTemplates extends Shortcode {
 		<?php
 
 		$new_user   = get_userdata( $user_id );
-		$first_name = $new_user->user_firstname;
-		$nicename   = $new_user->user_nicename;
-		if ( $first_name ) {
-			echo esc_html( $first_name );
+		if ( $new_user->user_firstname ) {
+			$initial_admin_name = '<strong>' . esc_html( $new_user->user_firstname ) . '</strong>';
+			$secondary_admin_name = $initial_admin_name;
+		} elseif ( $new_user->user_nicename ) {
+			$initial_admin_name  = '<strong>' . esc_html( $new_user->user_nicename ) . '</strong>';
+			$secondary_admin_name = $initial_admin_name;
 		} else {
-			echo esc_html( $nicename );
+			$initial_admin_name  = esc_html__( 'The administrator', 'my-video-room' );
+			$secondary_admin_name  = esc_html__( 'the administrator', 'my-video-room' );
 		}
 
-		echo esc_html_e(
-			' or one of the moderators have enabled this room only for specific membership of the group. You are not in a class of user that ',
-			'myvideoroom'
-		);
-
-		if ( $first_name ) {
-			echo '<b>' . esc_html( ucfirst( $first_name ) ) . '</b>';
-		} elseif ( $nicename ) {
-			echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
-		} else {
-			echo esc_html__( 'The Administrator', 'my-video-room' );
-		}
-		echo esc_html_e(
-			' or the group moderators have allowed. Please contact any of the group admins or moderators for assistance. ',
-			'myvideoroom'
-		);
+		printf(
+			esc_html__( '%s or one of the moderators have enabled this room only for specific membership of the group. You are not in a class of user that %s or the group moderators have allowed. Please contact any of the group admins or moderators for assistance.' ),
+			
+			$initial_admin_name,
+			$secondary_admin_name
+		)
 		?>
 
 </div>
