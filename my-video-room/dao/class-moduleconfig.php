@@ -28,12 +28,8 @@ class ModuleConfig {
 		global $wpdb;
 		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-			'
-			SELECT post_id
-			FROM %s 
-			WHERE room_name = %s
-		',
-			$table_name_sql,
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT post_id	FROM $table_name_sql WHERE room_name = %s",
 			$room_name
 		);
 
@@ -55,12 +51,8 @@ class ModuleConfig {
 		global $wpdb;
 		$table_name_sql = $wpdb->prefix . $table_name;
 		$prepared_query = $wpdb->prepare(
-			'
-			SELECT 1
-			FROM %s
-			LIMIT 1
-		',
-			$table_name_sql
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT 1 FROM $table_name_sql LIMIT 1",
 		);
 
 		try {
@@ -90,12 +82,8 @@ class ModuleConfig {
 		}
 		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-			'
-			SELECT 1
-			FROM %s
-			WHERE module_id = %d
-		',
-			$table_name_sql,
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT 1 FROM $table_name_sql WHERE module_id = %d",
 			$module_id
 		);
 	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- already prepared above.
@@ -151,7 +139,6 @@ class ModuleConfig {
 	 */
 	public function update_enabled_status( int $module_id, bool $module_enabled ) {
 		global $wpdb;
-		$table_name = $wpdb->prefix . self::TABLE_NAME;
 		// First Check Database for Room and Post ID - return No if blank.
 
 		if ( ! $module_id ) {
@@ -159,12 +146,8 @@ class ModuleConfig {
 		}
 		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-			'
-			UPDATE %s
-			SET module_enabled = %d
-			WHERE module_id = %d
-		',
-			$table_name_sql,
+			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"UPDATE $table_name_sql SET module_enabled = %d WHERE module_id = %d",
 			$module_enabled,
 			$module_id,
 		);
@@ -187,7 +170,8 @@ class ModuleConfig {
 		}
 		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-			"SELECT module_enabled FROM $table_name_sql WHERE module_id = %d",
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT module_enabled FROM $table_name_sql	WHERE module_id = %d",
 			$module_id
 		);
 
@@ -211,15 +195,11 @@ class ModuleConfig {
 	 */
 	public function get_module_admin_path( string $module_name ) {
 		global $wpdb;
-		// First Check Database for Room and Post ID - return No if blank.
+
 		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-			'
-			SELECT module_admin_path
-			FROM %s
-			WHERE module_name = %s
-		',
-			$table_name_sql,
+			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"SELECT module_admin_path FROM $table_name_sql WHERE module_name = %s",
 			$module_name
 		);
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
@@ -246,18 +226,11 @@ class ModuleConfig {
 		if ( ! $room_name ) {
 			return false;
 		}
-
-		$raw_sql        = '
-				DELETE FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE room_name = %s
-			';
+		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
 		$prepared_query = $wpdb->prepare(
-	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$room_name,
-
-			)
+		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			"DELETE FROM $table_name_sql WHERE room_name = %s",
+			$room_name
 		);
 // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		$result = $wpdb->query( $prepared_query );
