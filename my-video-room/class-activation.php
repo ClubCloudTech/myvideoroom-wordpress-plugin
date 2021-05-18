@@ -40,14 +40,12 @@ class Activation {
 		\do_action( 'myvideoroom_init' );
 
 		$room_builder_module = Factory::get_instance( Module::class )->get_module( 'roombuilder' );
-
 		if ( $room_builder_module ) {
 			Factory::get_instance( Modules::class )->activate_module( $room_builder_module );
 		}
 
 		$elementor_module = Factory::get_instance( Module::class )->get_module( 'elementor' );
-
-		if ( $elementor_module && $elementor_module->is_compatible() ) {
+		if ( $elementor_module ) {
 			Factory::get_instance( Modules::class )->activate_module( $elementor_module );
 		}
 
