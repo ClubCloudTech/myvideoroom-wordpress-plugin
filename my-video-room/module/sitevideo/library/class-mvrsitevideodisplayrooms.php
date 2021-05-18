@@ -61,7 +61,7 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 			<?php
 			$post_id_return = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room_name, 'post_id' );
 			if ( $post_id_return ) {
-				echo '<b>[ ' . esc_html( MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $post_id_return ) . '" ]</b>';
+				echo '<strong>[ ' . esc_html( MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $post_id_return ) . '" ]</strong>';
 			}
 			?>
 </td>

@@ -102,7 +102,7 @@ return function (
 						<?php esc_html_e( 'Use this setting to control the layout of the room you and your guests will see. There are lots of templates to chose from, and more are being added monthly.', 'my-video-room' ); ?>
 					</p>
 					<label for="myvideoroom_user_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-					<b><?php esc_html_e( 'Disable Interactive Floorplan:', 'my-video-room' ); ?></b>
+					<strong><?php esc_html_e( 'Disable Interactive Floorplan:', 'my-video-room' ); ?></strong>
 					</label>
 					<input
 						type="checkbox"
@@ -204,7 +204,7 @@ return function (
 					?>
 					</p><br>
 					<label for="myvideoroom_user_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-					<b><?php esc_html_e( 'Enable Custom Video for Reception :', 'my-video-room' ); ?></b>
+					<strong><?php esc_html_e( 'Enable Custom Video for Reception :', 'my-video-room' ); ?></strong>
 					</label>
 					<div class="mvr-template-table mvr-custom-video mvr-title-header"><i class="dashicons mvr-icons dashicons-editor-help"></i></div>
 

@@ -167,7 +167,7 @@ return function (
 					?>
 					</select>
 					<label for="myvideoroom_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<b><?php esc_html_e( 'Block', 'my-video-room' ); ?></b><?php esc_html_e( 'These Roles Instead', 'my-video-room' ); ?>
+					<strong><?php esc_html_e( 'Block', 'my-video-room' ); ?></strong><?php esc_html_e( 'These Roles Instead', 'my-video-room' ); ?>
 				</label>
 				<input
 					type="checkbox"

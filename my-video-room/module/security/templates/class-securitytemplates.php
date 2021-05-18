@@ -74,9 +74,9 @@ class SecurityTemplates extends Shortcode {
 					$first_name = $new_user->user_firstname;
 					$nicename   = $new_user->user_nicename;
 					if ( $first_name ) {
-						echo '<b>' . esc_html( ucfirst( $first_name ) ) . '</b>';
+						echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
 					} elseif ( $nicename ) {
-						echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
+						echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
 					} else {
 						esc_html_e( 'The Administrator', 'my-video-room' );
 					}
@@ -121,9 +121,9 @@ class SecurityTemplates extends Shortcode {
 					$first_name = $new_user->user_firstname;
 					$nicename   = $new_user->user_nicename;
 					if ( $first_name ) {
-						echo '<b>' . esc_html( ucfirst( $first_name ) ) . '</b>';
+						echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
 					} else {
-						echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
+						echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
 					}
 					esc_html_e(
 						' only allows signed in/registered users to access their video room. To be able to access this room,
@@ -131,9 +131,9 @@ class SecurityTemplates extends Shortcode {
 						'myvideoroom'
 					);
 					if ( $first_name ) {
-						echo '<b>' . esc_html( ucfirst( $first_name ) ) . '</b>';
+						echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
 					} elseif ( $nicename ) {
-						echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
+						echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
 					} else {
 						esc_html_e( 'The Administrator', 'my-video-room' );
 					}
@@ -172,9 +172,9 @@ class SecurityTemplates extends Shortcode {
 					$first_name = $new_user->user_firstname;
 					$nicename   = $new_user->user_nicename;
 					if ( $first_name ) {
-						echo '<b>' . esc_html( ucfirst( $first_name ) ) . '</b>';
+						echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
 					} elseif ( $nicename ) {
-						echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
+						echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
 					} else {
 						esc_html_e( 'The Administrator', 'my-video-room' );
 					}
@@ -241,9 +241,9 @@ class SecurityTemplates extends Shortcode {
 		);
 
 		if ( $first_name ) {
-			echo '<b>' . esc_html( ucfirst( $first_name ) ) . '</b>';
+			echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
 		} elseif ( $nicename ) {
-			echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
+			echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
 		} else {
 			esc_html_e( 'The Administrator', 'my-video-room' );
 		}

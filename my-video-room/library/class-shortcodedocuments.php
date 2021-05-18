@@ -85,7 +85,7 @@ class ShortcodeDocuments {
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[getvideo_room_info]</h2>
-			<p><b><?php echo esc_html__( 'Arguments', 'my-video-room' ); ?></b><br>
+			<p><strong><?php echo esc_html__( 'Arguments', 'my-video-room' ); ?></strong><br>
 			room="XX" type="YY"</p>
 			</td>
 			<td style="width:75%; text-align: left;">
@@ -95,7 +95,7 @@ class ShortcodeDocuments {
 				Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>
 				Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- www.c.com/jones has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room
 				Type (url) - returns URL of room. <BR>
-				Usage - <b>[getvideo_room_info room="bookings-center" type = "url"]</b> will return the URL of the Bookings Center]',
+				Usage - <strong>[getvideo_room_info room="bookings-center" type = "url"]</strong> will return the URL of the Bookings Center]',
 				'my-video-room'
 			);
 			?>
@@ -172,12 +172,12 @@ class ShortcodeDocuments {
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[ccsitevideoroomhost]</h2></td>
-			<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <b>Host</b> of site Video Room<', 'my-video-room' ); ?>/td>
+			<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <strong>Host</strong> of site Video Room<', 'my-video-room' ); ?>/td>
 			</tr>
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[ccsitevideoroomguest]</h2></td>
-			<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <b>Guest</b> of site Video Room', 'my-video-room' ); ?></td>
+			<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <strong>Guest</strong> of site Video Room', 'my-video-room' ); ?></td>
 			</tr>
 
 			<tr>
@@ -185,7 +185,7 @@ class ShortcodeDocuments {
 			<td style="width:75%; text-align: left;">
 			<?php
 			esc_html_e(
-				'Renders the settings of the Site Video Room - <b>Note</b> - any place where this is added will be able to adjust the settings
+				'Renders the settings of the Site Video Room - <strong>Note</strong> - any place where this is added will be able to adjust the settings
 				please pay attention to security where placing this shortcode to prevent unwanted modification',
 				'my-video-room'
 			);
@@ -215,10 +215,10 @@ class ShortcodeDocuments {
 
 			<tr>
 			<td style="width:25%; text-align: left;"><h2>[ccmeetswitch]</h2></td>
-			<td style="width:75%; text-align: left;"><b>
+			<td style="width:75%; text-align: left;"><strong>
 			<?php
 			esc_html_e(
-				'Use this Shortcode wherever possible to render Personal Meetings </b>. Renders the Main Site Meeting Center Reception page for users. This page is automatically
+				'Use this Shortcode wherever possible to render Personal Meetings </strong>. Renders the Main Site Meeting Center Reception page for users. This page is automatically
 				created by the plugin in the details above, but can also be added anywhere on the site. Please note that this switch automatically
 				changes the host and guest context depending on user state (logged on/off/admins etc). Take special care when using this page with
 				regards to emails- invites etc. The page contains filters in the host for anonymous meeting invites, querying users etc. We recommend
@@ -236,9 +236,9 @@ class ShortcodeDocuments {
 			<td style="width:75%; text-align: left;">
 			<?php
 			esc_html_e(
-				'This shortcode will always render the <b>Guest</b> reception of the meeting center. It will prompt
+				'This shortcode will always render the <strong>Guest</strong> reception of the meeting center. It will prompt
 				the user for the username of the Host, accept a meeting invite link (automatically in the URL), or accept a hostname (automatically in the URL)
-				It will also prompt for the Site Video Room if enabled. <b>Please note</b>- this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which
+				It will also prompt for the Site Video Room if enabled. <strong>Please note</strong>- this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which
 				use their own logic. Please use the shortcodes in BuddyPress, WCFM, WooCommerce Bookings, etc for placing on plugin pages.',
 				'my-video-room'
 			);
@@ -252,9 +252,9 @@ class ShortcodeDocuments {
 			<td style="width:75%; text-align: left;">
 			<?php
 			esc_html_e(
-				'This shortcode will always render the <b>Host</b> reception of the meeting center. This page determines its host from
+				'This shortcode will always render the <strong>Host</strong> reception of the meeting center. This page determines its host from
 				the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will default to guest reception mode.
-				<b>Please note</b> this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which
+				<strong>Please note</strong> this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which
 				use their own logic. Please use the shortcodes in BuddyPress, WCFM, WooCommerce Bookings, etc for placing on plugin pages. Host settings render
 				automatically in the short code or can be rendered separately by using the [personalmeetinghostsettings] shortcode',
 				'my-video-room'
@@ -269,10 +269,10 @@ class ShortcodeDocuments {
 			<td style="width:75%; text-align: left;">
 			<?php
 			esc_html_e(
-				'This shortcode will render only the <b>settings </b>page of the <b>Host</b>. This is useful if you just want to edit
+				'This shortcode will render only the <strong>settings </strong>page of the <strong>Host</strong>. This is useful if you just want to edit
 				the room settings without launching the full room. This shortcode determines its host from
 				the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will return blank.
-				<b>Please note</b> admin settings for personal rooms are shared between BuddyPress Profile Rooms and Personal Video Rooms as
+				<strong>Please note</strong> admin settings for personal rooms are shared between BuddyPress Profile Rooms and Personal Video Rooms as
 				they are effectively the same room, with multiple entrances ',
 				'my-video-room'
 			);
