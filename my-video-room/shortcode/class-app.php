@@ -77,7 +77,7 @@ class App extends Shortcode {
 
 		\wp_enqueue_script(
 			'myvideoroom-app',
-			\plugins_url( '/js/app.js', __FILE__ ),
+			\plugins_url( '/../js/app.js', __FILE__ ),
 			array( 'jquery' ),
 			$this->get_plugin_version(),
 			true
