@@ -24,7 +24,7 @@ class SiteDefaults extends Shortcode {
 
 	// All Up Site Default Master Setting.
 	const ROOM_NAME_SITE_DEFAULT = 'site-default-settings';
-	const SHORTCODE_PREFIX       = array( 'cc', 'mvr_' );
+	const SHORTCODE_PREFIX       = array( 'cc', 'myvideoroom_' );
 
 	// Default User ID to Use for Room Site Defaults .
 	const USER_ID_SITE_DEFAULTS = 443556987;
