@@ -43,29 +43,4 @@ class MenuHelpers extends Shortcode {
 		return $user->user_nicename;
 	}
 
-	/**
-	 * Remove_admin_bar - removes Admin Bar from WordPress for iframe.
-	 *
-	 * @return void
-	 */
-	public function remove_admin_bar() {
-		wp_enqueue_style( 'mvr-template' );
-		wp_enqueue_style( 'mvr-menutab-header' );
-		show_admin_bar( false );
-		add_filter( 'show_admin_bar', '__return_false' );
-		add_action( 'get_header', array( $this, 'remove_admin_bar_action' ) );
-
-	}
-
-	/**
-	 * Remove_admin_bar_action Function.
-	 *
-	 * @return void
-	 */
-	public function remove_admin_bar_action() {
-		\show_admin_bar( false );
-		remove_action( 'wp_head', '_admin_bar_bump_cb' );
-	}
-
 }
-

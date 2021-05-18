@@ -63,6 +63,7 @@ return function (
 			<?php
 			if ( false === $visitor_status ) {
 				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function is Icon only, and already escaped within it.
+				
 				echo Factory::get_instance( TemplateIcons::class )->show_icon( $user_id, $room_name );
 			} else {
 				echo '<form method="post" action="">';

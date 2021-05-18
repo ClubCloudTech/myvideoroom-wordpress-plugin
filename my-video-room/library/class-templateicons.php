@@ -25,6 +25,9 @@ class TemplateIcons {
 	 * @return string - the icons.
 	 */
 	public function show_icon( int $user_id, string $room_name ) {
+		if ( ! $user_id && ! $room_name ) {
+			return null;
+		}
 		$reception_enabled          = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
 		$floorplan_enabled          = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
 		$custom_video               = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'reception_video_enabled' );

@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Library\Dependencies;
+use MyVideoRoomPlugin\Setup\Setup;
 
 /**
  * Class SiteDefaults
@@ -46,6 +47,10 @@ class SiteDefaults extends Shortcode {
 	 * Once off functions for activating Module
 	 */
 	public function initialise_module() {
+		Factory::get_instance( Setup::class )->install_room_post_mapping_table();
+		Factory::get_instance( Setup::class )->install_user_video_preference_table();
+		Factory::get_instance( Setup::class )->install_module_config_table();
+		Factory::get_instance( Setup::class )->initialise_default_video_settings();
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_DEFAULT_VIDEO_NAME, self::MODULE_DEFAULT_VIDEO_ID, true, self::MODULE_CORE_PATH );
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_DEFAULT_VIDEO_ID, true );
 	}

@@ -34,12 +34,11 @@ class MVRSiteVideoViews extends Shortcode {
 		$module_suffix = ' ' . MVRSiteVideo::MODULE_SITE_VIDEO_DESCRIPTION;
 		$module_id     = $display_name;
 		$render        = require WP_PLUGIN_DIR . '/my-video-room/core/views/header/view-roomheader.php';
-		$user_id       = \get_current_user_id();
 		$name_output   = esc_html__( 'Hosting ', 'my-video-room' );
 		$is_guest      = false;
 		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room_name, 'url' );
 
-		return $render( $module_id, $name_output, $user_id, MVRSiteVideo::ROOM_NAME_SITE_VIDEO, $is_guest, $meeting_link, $module_suffix );
+		return $render( $module_id, $name_output, $room_id, MVRSiteVideo::ROOM_NAME_SITE_VIDEO, $is_guest, $meeting_link, $module_suffix );
 
 	}
 
