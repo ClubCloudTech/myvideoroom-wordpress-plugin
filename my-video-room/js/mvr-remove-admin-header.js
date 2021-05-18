@@ -4,7 +4,8 @@
  * @package MyVideoRoomPlugin
  */
 
-jQuery(document).ready( function($) {
-		$('#adminmenuback, #adminmenuwrap, #wpadminbar').remove();
-}); 
-
+jQuery( document ).ready(
+	function($) {
+		$( '#adminmenuback, #adminmenuwrap, #wpadminbar' ).remove();
+	}
+);
