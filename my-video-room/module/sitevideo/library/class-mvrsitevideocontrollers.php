@@ -12,11 +12,11 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\DAO\RoomMap;
 use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Core\VideoHelpers;
-use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Core\Shortcode\MyVideoRoomApp;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
+use MyVideoRoomPlugin\Library\Dependencies;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -99,9 +99,8 @@ class MVRSiteVideoControllers {
 				$post_id,
 				$room_name,
 			);
-
-			return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $shortcode, $admin_page, $permissions_page );
 		}
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $shortcode, $admin_page, $permissions_page );
 	}
 
 	/**

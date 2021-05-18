@@ -51,7 +51,6 @@ class SecurityVideoPreference extends Shortcode {
 		return $this->choose_settings( $user_id, $room_name );
 	}
 
-
 	/**
 	 * Show drop down for user to change their settings
 	 *
@@ -152,8 +151,7 @@ class SecurityVideoPreference extends Shortcode {
 			'POST' === $_SERVER['REQUEST_METHOD'] &&
 			sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_room_name'] ?? null ) ) === $room_name
 		) {
-			$second = 0.1;
-			header( "Refresh:$second" );
+			echo( "<meta http-equiv='refresh' content='.1'>" );
 		}
 		if ( 'admin' === $type ) {
 				$render = include __DIR__ . '/../views/shortcode-securityadminvideopreference.php';

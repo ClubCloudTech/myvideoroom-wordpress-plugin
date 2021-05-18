@@ -18,8 +18,6 @@ use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
  */
 class Setup {
 
-	const TABLE_NAME = 'myvideoroom_extras_room_post_mapping';
-
 	/**
 	 * Initialise_default_video_settings - adds default settings to the main room table on Plugin setup.
 	 *
@@ -103,28 +101,6 @@ class Setup {
 						`module_param` VARCHAR(255) NULL,
 						`module_has_admin_page` BOOLEAN,
 						`module_admin_path` VARCHAR(255) NULL,
-						
-						`status_feature1` VARCHAR(255) NULL,
-						`status_feature2` VARCHAR(255) NULL,
-						`status_feature3` VARCHAR(255) NULL,
-						`status_feature4` VARCHAR(255) NULL,
-						`status_feature5` VARCHAR(255) NULL,
-						`status_feature6` VARCHAR(255) NULL,
-						`status_feature7` VARCHAR(255) NULL,
-						`status_feature8` VARCHAR(255) NULL,
-						`status_feature9` VARCHAR(255) NULL,
-						`status_feature10` VARCHAR(255) NULL,
-
-						`info_feature1` VARCHAR(255) NULL,
-						`info_feature2` VARCHAR(255) NULL,
-						`info_feature3` VARCHAR(255) NULL,
-						`info_feature4` VARCHAR(255) NULL,
-						`info_feature5` VARCHAR(255) NULL,
-						`info_feature6` VARCHAR(255) NULL,
-						`info_feature7` VARCHAR(255) NULL,
-						`info_feature8` VARCHAR(255) NULL,
-						`info_feature9` VARCHAR(255) NULL,
-						`info_feature10` VARCHAR(255) NULL,
 						PRIMARY KEY (`module_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 

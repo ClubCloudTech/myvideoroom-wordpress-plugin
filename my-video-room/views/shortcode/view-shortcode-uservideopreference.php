@@ -68,10 +68,10 @@ return function (
 									'my-video-room'
 								);
 								?>
-							<img  src="<?php echo esc_url( plugins_url( '/../../../img/video-template2.png', __FILE__ ) ); ?>" >
+							<img  src="<?php echo esc_url( plugins_url( '/../../img/video-template2.png', __FILE__ ) ); ?>" >
 						</div>
 						<div class="mvr-template-table" style="float:right">
-								<img src="<?php echo esc_url( plugins_url( '/../../../img/video-template1.png', __FILE__ ) ); ?>" >
+								<img src="<?php echo esc_url( plugins_url( '/../../img/video-template1.png', __FILE__ ) ); ?>" >
 
 						</div>
 					</div>
@@ -162,7 +162,7 @@ return function (
 						?>
 						</div>
 						<div class="mvr-template-table" style="float:right">
-						<img class="mvr-template-image"src="<?php echo esc_url( plugins_url( '/../../../img/reception-view.png', __FILE__ ) ); ?>">
+						<img class="mvr-template-image"src="<?php echo esc_url( plugins_url( '/../../img/reception-view.png', __FILE__ ) ); ?>">
 						</div>
 
 					</div>
@@ -212,10 +212,10 @@ return function (
 						<div class="mvr-template-table" style="float:left">
 						<h2><?php echo esc_html__( 'Choose your Reception Video Screening', 'my-video-room' ); ?></h2>
 						<?php echo esc_html__( 'Select the content you want your guest to view whilst they wait for you.', 'my-video-room' ); ?>
-						<img class="mvr-template-image"src="<?php echo esc_url( plugins_url( '/../../../img/sitevideoreception.png', __FILE__ ) ); ?>">
+						<img class="mvr-template-image"src="<?php echo esc_url( plugins_url( '/../../img/sitevideoreception.png', __FILE__ ) ); ?>">
 						</div>
 						<div class="mvr-template-table" style="float:right">
-						<img src="<?php echo esc_url( plugins_url( '/../../../img/video-reception.png', __FILE__ ) ); ?>">
+						<img src="<?php echo esc_url( plugins_url( '/../../img/video-reception.png', __FILE__ ) ); ?>">
 						</div>
 					</div>
 

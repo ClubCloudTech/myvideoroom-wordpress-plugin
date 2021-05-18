@@ -40,23 +40,8 @@ class DBSetup {
 					`allowed_users` VARCHAR(255) NULL,
 					`blocked_users` VARCHAR(255) NULL,
 					`bp_friends_setting` VARCHAR(255) NULL,
-										
 					`allowed_template_id` BIGINT UNSIGNED NULL,
 					`blocked_template_id` BIGINT UNSIGNED NULL,
-					
-					`parameter1_bool` BOOLEAN,
-					`parameter2_bool` BOOLEAN,
-					`parameter3_bool` BOOLEAN,
-					`parameter4_bool` BOOLEAN,
-					`parameter5_bool` BOOLEAN,
-					`parameter6_bool` BOOLEAN,
-					`parameter7_bool` BOOLEAN,
-					`parameter8_bool` BOOLEAN,
-
-					`parameter1_setting1` VARCHAR(255) NULL,
-					`parameter1_setting2` VARCHAR(255) NULL,
-					`parameter1_setting3` VARCHAR(255) NULL,
-					`parameter1_setting4` VARCHAR(255) NULL,
 					PRIMARY KEY (`user_id`, `room_name`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 

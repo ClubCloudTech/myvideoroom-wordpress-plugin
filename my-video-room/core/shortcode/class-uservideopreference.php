@@ -118,14 +118,14 @@ class UserVideoPreference extends Shortcode {
 		$available_receptions = $this->get_available_receptions( $allowed_tags );
 
 		$render = require __DIR__ . '/../../views/shortcode/view-shortcode-uservideopreference.php';
+
 		// Auto Refresh Room Post Settings Change.
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) &&
 			'POST' === $_SERVER['REQUEST_METHOD'] &&
 			sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_user_room_name'] ?? null ) ) === $room_name
 		) {
-			$second = 0.1;
-			header( "Refresh:$second" );
+			echo( "<meta http-equiv='refresh' content='.1'>" );
 		}
 		return $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $user_id );
 	}
