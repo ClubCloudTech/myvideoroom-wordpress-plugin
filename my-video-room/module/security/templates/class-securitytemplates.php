@@ -239,9 +239,11 @@ class SecurityTemplates extends Shortcode {
 		}
 
 		printf(
-			esc_html__( '%s or one of the moderators have enabled this room only for specific membership of the group. You are not in a class of user that %s or the group moderators have allowed. Please contact any of the group admins or moderators for assistance.' ),
-			
+			/* translators: Both %s refer to the name of the administrator */
+			esc_html__( '%1$s or one of the moderators have enabled this room only for specific membership of the group. You are not in a class of user that %2$s or the group moderators have allowed. Please contact any of the group admins or moderators for assistance.' ),
+			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
 			$initial_admin_name,
+			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
 			$secondary_admin_name
 		)
 		?>
