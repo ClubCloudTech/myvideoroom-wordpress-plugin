@@ -49,7 +49,8 @@ abstract class Shortcode {
 	 * @param callable $callback The callback to render the shortcode.
 	 */
 	protected function add_shortcode( string $tag, callable $callback ) {
-		foreach ( SiteDefaults::SHORTCODE_PREFIX as $prefix ) {
+		$shortcode_prefixes = SiteDefaults::SHORTCODE_PREFIX;
+		foreach ( $shortcode_prefixes  as $prefix ) {
 			add_shortcode(
 				$prefix . $tag,
 				$callback
