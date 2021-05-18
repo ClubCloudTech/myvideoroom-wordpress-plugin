@@ -2,17 +2,17 @@
 /**
  * Room Admin Functions
  *
- * @package MyVideoRoomPlugin\Core\RoomAdmin
+ * @package MyVideoRoomPlugin\DAO\RoomAdmin
  */
 
-namespace MyVideoRoomPlugin\Setup;
+namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Core\Dao\RoomMap;
-use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDao;
+use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 
 /**
  * Class RoomAdmin

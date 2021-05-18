@@ -2,14 +2,14 @@
 /**
  * Data Access Object for controlling Room Mapping Database Entries - Configures Modules.
  *
- * @package MyVideoRoomPlugin\Core\DAO
+ * @package MyVideoRoomPlugin\DAO
  */
 
-namespace MyVideoRoomPlugin\Core\DAO;
+namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Core\Dao\RoomMap;
+use MyVideoRoomPlugin\DAO\RoomMap;
 
 /**
  * Class ModuleConfig

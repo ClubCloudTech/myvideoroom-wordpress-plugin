@@ -2,10 +2,10 @@
 /**
  * Data Access Object for controlling Room Mapping Database Entries
  *
- * @package MyVideoRoomPlugin\Core\DAO
+ * @package MyVideoRoomPlugin\DAO
  */
 
-namespace MyVideoRoomPlugin\Core\DAO;
+namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Factory;

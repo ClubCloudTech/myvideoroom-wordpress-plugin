@@ -10,8 +10,8 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Core\DAO\RoomMap;
+use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;
@@ -69,8 +69,8 @@ return function (
 				echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 				?>
 				<form method="post" action="">
-				<input name="myvideoroom_extras_security_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
-				<input name="myvideoroom_extras_security_user_id" type="hidden" value="
+				<input name="myvideoroom_security_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
+				<input name="myvideoroom_security_user_id" type="hidden" value="
 					<?php
 
 					$buddypress_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_BUDDYPRESS_ID );
@@ -89,14 +89,14 @@ return function (
 					}
 					?>
 					"/>
-					<label for="myvideoroom_extras_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
+					<label for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
 					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-id"></i><?php echo esc_html__( 'Enable custom hosts for this room', 'my-video-room' ); ?></h2>
 					</label>
 					<input
 							type="checkbox"
-							class="myvideoroom_extras_security_allow_role_control_enabled_preference"
-							name="myvideoroom_extras_security_allow_role_control_enabled_preference"
-							id="myvideoroom_extras_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
+							class="myvideoroom_security_allow_role_control_enabled_preference"
+							name="myvideoroom_security_allow_role_control_enabled_preference"
+							id="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					<?php echo $current_user_setting && $current_user_setting->is_allow_role_control_enabled() ? 'checked' : ''; ?>
 					/>
 					<br>
@@ -109,13 +109,13 @@ return function (
 					?>
 					</p><br>
 
-				<label for="myvideoroom_extras_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
+				<label for="myvideoroom_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
 				<?php echo esc_html__( 'Allowed Host Groups', 'my-video-room' ); ?>
 				</label>
 				<select multiple="multiple"
 						class="mvr-roles-multiselect mvr-select-box"
-						name="myvideoroom_extras_security_allowed_roles_preference[]"
-						id="myvideoroom_extras_security_allowed_roles_preference">
+						name="myvideoroom_security_allowed_roles_preference[]"
+						id="myvideoroom_security_allowed_roles_preference">
 					<?php
 					$roles_output = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_multi_checkbox_admin_roles( $user_id, $room_name, 'allowed_roles' );
 					//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already escapes HTML properly upstream.
@@ -123,14 +123,14 @@ return function (
 					?>
 				</select>
 				<br>
-					<label for="myvideoroom_extras_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
+					<label for="myvideoroom_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
 					<br><?php echo esc_html__( 'Block These Roles from Hosting Instead (allow anyone EXCEPT the above).', 'my-video-room' ); ?>
 				</label>
 				<input
 					type="checkbox"
-					class="myvideoroom_extras_security_block_role_control_enabled_preference"
-					name="myvideoroom_extras_security_block_role_control_enabled_preference"
-					id="myvideoroom_extras_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
+					class="myvideoroom_security_block_role_control_enabled_preference"
+					name="myvideoroom_security_block_role_control_enabled_preference"
+					id="myvideoroom_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					<?php
 						echo $current_user_setting && $current_user_setting->is_block_role_control_enabled() ? 'checked' : '';
 					?>
@@ -147,14 +147,14 @@ return function (
 						?>
 					</p>
 				<hr>
-				<label for="myvideoroom_extras_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
+				<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
 					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-admin-users"></i><?php echo esc_html__( 'Allow Anonymous Users to Host Rooms (not recommended)', 'my-video-room' ); ?></h2>
 				</label>
 				<input
 					type="checkbox"
-					class="myvideoroom_extras_security_anonymous_enabled_preference"
-					name="myvideoroom_extras_security_anonymous_enabled_preference"
-					id="myvideoroom_extras_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
+					class="myvideoroom_security_anonymous_enabled_preference"
+					name="myvideoroom_security_anonymous_enabled_preference"
+					id="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					<?php echo $current_user_setting && $current_user_setting->is_anonymous_enabled() ? 'checked' : ''; ?>
 				/>
 				<p class="mvr-preferences-paragraph">
@@ -169,7 +169,7 @@ return function (
 
 				<hr />
 
-				<?php wp_nonce_field( 'myvideoroom_extras_update_security_video_preference', 'nonce' ); ?>
+				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
 
 				<input type="submit" name="submit" id="submit" class="mvr-form-button" value="Save Changes"  />
 			</form>

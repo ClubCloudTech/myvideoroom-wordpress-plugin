@@ -12,7 +12,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Dao\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
-use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Library\Dependencies;
 
@@ -76,8 +76,8 @@ return function (
 			echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 			?>
 				<form method="post" action="">
-				<input name="myvideoroom_extras_security_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
-				<input name="myvideoroom_extras_security_user_id" type="hidden" value="
+				<input name="myvideoroom_security_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
+				<input name="myvideoroom_security_user_id" type="hidden" value="
 								<?php
 								if ( function_exists( 'bp_is_groups_component' ) && \bp_is_groups_component() ) {
 									global $bp;
@@ -90,9 +90,9 @@ return function (
 					<h2 class="mvr-title-header"><?php echo esc_html__( 'Override User preferences', 'my-video-room' ); ?></h1>
 					<input
 					type="checkbox"
-					class="myvideoroom_extras_override_all_preferences"
-					name="myvideoroom_extras_override_all_preferences"
-					id="myvideoroom_extras_override_all_preferences_<?php echo esc_attr( $id_index ); ?>"
+					class="myvideoroom_override_all_preferences"
+					name="myvideoroom_override_all_preferences"
+					id="myvideoroom_override_all_preferences_<?php echo esc_attr( $id_index ); ?>"
 					<?php echo $current_user_setting && $current_user_setting->check_site_override_setting() ? 'checked' : ''; ?> />
 
 					<p><?php echo esc_html__( 'Use this setting to ignore user and group individual room settings and enforce security settings across all of', 'my-video-room' ); ?>
@@ -107,21 +107,21 @@ return function (
 				</label>
 				<input
 					type="checkbox"
-					class="myvideoroom_extras_security_room_disabled_preference"
-					name="myvideoroom_extras_security_room_disabled_preference"
-					id="myvideoroom_extras_security_room_disabled_preference_<?php echo esc_attr( $id_index ); ?>"
+					class="myvideoroom_security_room_disabled_preference"
+					name="myvideoroom_security_room_disabled_preference"
+					id="myvideoroom_security_room_disabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					<?php echo $current_user_setting && $current_user_setting->is_room_disabled() ? 'checked' : ''; ?> />
 				<p>
 					<?php echo esc_html__( 'Enable this setting to switch off all rooms. All Users will be Blocked from Access and will be notified Video is Offline if they try to join rooms.', 'my-video-room' ); ?> 
 				</p>
-				<label for="myvideoroom_extras_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
+				<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
 					<h2 class="mvr-title-header"><i class="dashicons mvr-icons dashicons-admin-users"></i><?php echo esc_html__( 'Restrict Anonymous Access (Force Users to Register)', 'my-video-room' ); ?></h2>
 				</label>
 				<input
 					type="checkbox"
-					class="myvideoroom_extras_security_anonymous_enabled_preference"
-					name="myvideoroom_extras_security_anonymous_enabled_preference"
-					id="myvideoroom_extras_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
+					class="myvideoroom_security_anonymous_enabled_preference"
+					name="myvideoroom_security_anonymous_enabled_preference"
+					id="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					<?php echo $current_user_setting && $current_user_setting->is_anonymous_enabled() ? 'checked' : ''; ?>/><br>
 				<p>
 					<?php
@@ -133,14 +133,14 @@ return function (
 					);
 					?>
 				</p>
-					<label for="myvideoroom_extras_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
+					<label for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
 					<h2 class="mvr-title-header"><i class="dashicons mvr-icons dashicons-id"></i><?php echo esc_html__( 'Enable Role Control - For Allowed Roles', 'my-video-room' ); ?></h2>
 					</label>
 					<input
 							type="checkbox"
-							class="myvideoroom_extras_security_allow_role_control_enabled_preference"
-							name="myvideoroom_extras_security_allow_role_control_enabled_preference"
-							id="myvideoroom_extras_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
+							class="myvideoroom_security_allow_role_control_enabled_preference"
+							name="myvideoroom_security_allow_role_control_enabled_preference"
+							id="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					<?php echo $current_user_setting && $current_user_setting->is_allow_role_control_enabled() ? 'checked' : ''; ?>	/>
 					<br>
 					<p>
@@ -152,28 +152,28 @@ return function (
 						);
 						?>
 					</p>
-				<label for="myvideoroom_extras_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>">
+				<label for="myvideoroom_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>">
 					<?php echo esc_html__( 'Allowed Roles setting: ', 'my-video-room' ); ?>
 				</label>
 				<select multiple="multiple"
-						class="myvideoroom_extras_security_allowed_roles_preference"
-						name="myvideoroom_extras_security_allowed_roles_preference[]"
+						class="myvideoroom_security_allowed_roles_preference"
+						name="myvideoroom_security_allowed_roles_preference[]"
 						style="width:50%"
-						id="myvideoroom_extras_security_allowed_roles_preference">
+						id="myvideoroom_security_allowed_roles_preference">
 					<?php
 					$output = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_multi_checkbox_admin_roles( $user_id, $room_name, 'allowed_roles' );
 					//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
 					echo $output;
 					?>
 					</select>
-					<label for="myvideoroom_extras_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
+					<label for="myvideoroom_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
 					<b><?php echo esc_html__( 'Block', 'my-video-room' ); ?></b><?php echo esc_html__( 'These Roles Instead', 'my-video-room' ); ?>
 				</label>
 				<input
 					type="checkbox"
-					class="myvideoroom_extras_security_block_role_control_enabled_preference"
-					name="myvideoroom_extras_security_block_role_control_enabled_preference"
-					id="myvideoroom_extras_security_block_role_control_enabled_preference_<?php	echo esc_attr( $id_index ); ?>"
+					class="myvideoroom_security_block_role_control_enabled_preference"
+					name="myvideoroom_security_block_role_control_enabled_preference"
+					id="myvideoroom_security_block_role_control_enabled_preference_<?php	echo esc_attr( $id_index ); ?>"
 					<?php echo $current_user_setting && $current_user_setting->is_block_role_control_enabled() ? 'checked' : ''; ?>/>
 					<br>
 					<br>
@@ -195,7 +195,7 @@ return function (
 					}
 				}
 				?>
-				<?php wp_nonce_field( 'myvideoroom_extras_update_security_video_preference', 'nonce' ); ?>
+				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
 				<hr>
 				<input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"  />
 			</form>

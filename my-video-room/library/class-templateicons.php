@@ -9,7 +9,7 @@ namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDAO;
+use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDAO;
 
 /**
  * Class TemplateIcons

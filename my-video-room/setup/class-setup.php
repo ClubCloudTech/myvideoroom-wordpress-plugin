@@ -8,9 +8,9 @@
 namespace MyVideoRoomPlugin\Setup;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\Dao\RoomInit;
+use MyVideoRoomPlugin\DAO\RoomInit;
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 
 /**
  * Class Setup

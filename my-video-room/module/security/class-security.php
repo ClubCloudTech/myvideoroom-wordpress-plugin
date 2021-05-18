@@ -8,7 +8,7 @@
 namespace MyVideoRoomPlugin\Module\Security;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
@@ -18,7 +18,7 @@ use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
  */
 class Security {
 
-	const TABLE_NAME_SECURITY_CONFIG      = 'myvideoroom_extras_security_config';
+	const TABLE_NAME_SECURITY_CONFIG      = 'myvideoroom_security_config';
 	const MODULE_SECURITY_NAME            = 'security-module';
 	const MODULE_SECURITY_ENTITY          = 'security-entity';
 	const HOST_TABLE_SUFFIX               = 'host-permission';

@@ -76,19 +76,19 @@ class SecurityVideoPreference extends Shortcode {
 
 		if ( isset( $_SERVER['REQUEST_METHOD'] )
 			&& 'POST' === $_SERVER['REQUEST_METHOD']
-			&& sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_room_name'] ?? null ) ) === $room_name
+			&& sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_room_name'] ?? null ) ) === $room_name
 			) {
-			check_admin_referer( 'myvideoroom_extras_update_security_video_preference', 'nonce' );
-			$blocked_roles              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_blocked_roles_preference'] ?? null ) );
-			$room_disabled              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_room_disabled_preference'] ?? '' ) ) === 'on';
-			$anonymous_enabled          = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_anonymous_enabled_preference'] ?? '' ) ) === 'on';
-			$allow_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_allow_role_control_enabled_preference'] ?? '' ) ) === 'on';
-			$block_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_block_role_control_enabled_preference'] ?? '' ) ) === 'on';
+			check_admin_referer( 'myvideoroom_update_security_video_preference', 'nonce' );
+			$blocked_roles              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_blocked_roles_preference'] ?? null ) );
+			$room_disabled              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_room_disabled_preference'] ?? '' ) ) === 'on';
+			$anonymous_enabled          = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_anonymous_enabled_preference'] ?? '' ) ) === 'on';
+			$allow_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_allow_role_control_enabled_preference'] ?? '' ) ) === 'on';
+			$block_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_block_role_control_enabled_preference'] ?? '' ) ) === 'on';
 			//phpcs:ignore --WordPress.Security.ValidatedSanitizedInput.InputNotValidated - input sanitised but not mandatory.
-			$restrict_group_to_members_setting = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_restrict_group_to_members'] ) );
-			$site_override_enabled             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_override_all_preferences'] ?? '' ) ) === 'on';
+			$restrict_group_to_members_setting = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_restrict_group_to_members'] ) );
+			$site_override_enabled             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_override_all_preferences'] ?? '' ) ) === 'on';
 			//phpcs:ignore --WordPress.Security.ValidatedSanitizedInput.InputNotValidated - input sanitised but not mandatory.
-			$bp_friends_setting                = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_restrict_bp_friends'] ) );
+			$bp_friends_setting                = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_restrict_bp_friends'] ) );
 
 			// Handle Default Off State for Group Restrictions.
 			if ( $restrict_group_to_members_setting ) {
@@ -99,7 +99,7 @@ class SecurityVideoPreference extends Shortcode {
 
 			// Handle Multi_box array and change it to a Database compatible string.
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized  --  Sanitised in function below (post MultiBox Array dissasembly that is destroyed by WP sanitising functions).
-			$inbound_multibox = $_POST['myvideoroom_extras_security_allowed_roles_preference'] ?? null;
+			$inbound_multibox = $_POST['myvideoroom_security_allowed_roles_preference'] ?? null;
 			if ( $inbound_multibox ) {
 				$output_data = array_unique( $inbound_multibox ); // ensure there are no duplicated roles.
 				sort( $output_data );
@@ -149,7 +149,7 @@ class SecurityVideoPreference extends Shortcode {
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) &&
 			'POST' === $_SERVER['REQUEST_METHOD'] &&
-			sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_security_room_name'] ?? null ) ) === $room_name
+			sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_room_name'] ?? null ) ) === $room_name
 		) {
 			echo( "<meta http-equiv='refresh' content='.1'>" );
 		}
