@@ -25,7 +25,7 @@ class SiteDefaults extends Shortcode {
 
 	// All Up Site Default Master Setting.
 	const ROOM_NAME_SITE_DEFAULT = 'site-default-settings';
-	const SHORTCODE_PREFIX       = array( 'cc', 'myvideoroom_' );
+	const SHORTCODE_PREFIXES     = array( 'cc', 'myvideoroom_' );
 
 	// Default User ID to Use for Room Site Defaults .
 	const USER_ID_SITE_DEFAULTS = -1;
@@ -39,7 +39,6 @@ class SiteDefaults extends Shortcode {
 	const MODULE_DEFAULT_VIDEO_NAME = 'default-video-module';
 	const MODULE_DEFAULT_VIDEO_ID   = 1;
 	const MODULE_CORE_PATH          = '/core/views/view-settings-core.php';
-	const MODULE_CORE_DISPLAY       = 'Video Default Settings';
 
 	// Listing Security Module ID in Core, so it can be checked for in Core Class to exit gracefully.
 	const MODULE_SECURITY_ID = Dependencies::MODULE_SECURITY_ID;
@@ -79,7 +78,7 @@ class SiteDefaults extends Shortcode {
 	 * Render Module Menu.
 	 */
 	public function core_menu_button() {
-		$name = self::MODULE_CORE_DISPLAY;
+		$name = esc_html__( 'Video Default Settings', 'my-video-room' );
 		$slug = self::MODULE_DEFAULT_VIDEO_NAME;
 		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
 		$display = esc_html__( $name, 'myvideoroom' );
