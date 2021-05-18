@@ -423,8 +423,8 @@ class ModuleConfig {
 
 			$current_url .= '&subaction=enable&submoduleid=' . $module_id;
 			$output_link  = '<div id="ccbutton-array" style="display: flex;	justify-content: space-between; width: 50%;">
-			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" style="background-color:red" >Disabled</a>
-			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" >Enable Module</a>
+			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" style="background-color:red" >' . esc_html_e( 'Disabled', 'myvideoroom' ) . '</a>
+			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" >' . esc_html_e( 'Enable Module', 'myvideoroom' ) . '</a>
 			</div>';
 			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  output already formatted without user input.
 			echo $output_link;
@@ -433,8 +433,8 @@ class ModuleConfig {
 		} else {
 			$current_url .= '&subaction=disable&submoduleid=' . $module_id;
 			$output_link  = '<div id="ccbutton-array" style= "display: flex;	justify-content: space-between; width: 50%;">
-			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" style="background-color:green" >Enabled</a>
-			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary"  >Disable Module</a>
+			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" style="background-color:green" >' . esc_html_e( 'Enabled', 'myvideoroom' ) . '</a>
+			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary"  >' . esc_html_e( 'Disable Module', 'myvideoroom' ) . '</a>
 			</div>';
 		}
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  output already formatted without user input.
