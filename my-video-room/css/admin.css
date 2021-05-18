@@ -59,6 +59,35 @@
 	background: none;
 }
 
+@media screen and (min-width: 600px) {
+	.myvideoroom-admin .nav-tab-wrapper {
+		overflow-x: auto;
+		border-bottom: none;
+	}
+
+	.myvideoroom-admin .nav-tab-wrapper ul {
+		white-space: nowrap;
+	}
+
+
+	.myvideoroom-admin .nav-tab-wrapper li {
+		display: inline-block;
+		border-bottom: 1px solid #c3c4c7;
+		position: relative;
+	}
+
+	.myvideoroom-admin .nav-tab-wrapper li:after {
+		content: ' ';
+		display: block;
+		position: absolute;
+		border-bottom: 1px solid #c3c4c7;
+		width: 5px;
+		right: -5px;
+		bottom: -1px;
+
+	}
+}
+
 /*endregion*/
 
 /*region Header */
