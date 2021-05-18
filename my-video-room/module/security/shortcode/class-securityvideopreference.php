@@ -45,7 +45,7 @@ class SecurityVideoPreference extends Shortcode {
 		$user_id   = $params['user'] ?? null;
 
 		if ( ! $user_id ) {
-			$user_id = $this->get_instance( WordPressUser::class )->get_logged_in_wordpress_user()->ID;
+			$user_id = Factory::get_instance( WordPressUser::class )->get_logged_in_wordpress_user()->ID;
 		}
 
 		return $this->choose_settings( $user_id, $room_name );
@@ -68,7 +68,6 @@ class SecurityVideoPreference extends Shortcode {
 				$user_id = $bp->groups->current_group->creator_id;
 			}
 		}
-		echo $user_id.$room_name.'security';
 		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
 		$current_user_setting    = $security_preference_dao->read(
 			$user_id,

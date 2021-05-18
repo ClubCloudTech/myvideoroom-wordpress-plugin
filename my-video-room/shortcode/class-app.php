@@ -13,6 +13,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\Shortcode;
 use WP_User;
 

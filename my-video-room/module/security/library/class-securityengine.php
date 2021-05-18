@@ -62,7 +62,7 @@ class SecurityEngine {
 		}
 		// Trapping any Host filter to set host status.
 		$host_status = false;
-		if ( strpos( $room_type, 'host' ) !== false && ! $disable_host_check ) {
+		if ( strpos( $room_type, 'host' ) !== false ) {
 			$host_status = true;
 		}
 
@@ -96,7 +96,6 @@ class SecurityEngine {
 		}
 
 		// Check Allowed_Roles and Blocked Roles.
-		echo $host_id.$room_name.'renderblock';
 		$allowed_roles_block = Factory::get_instance( PageFilters::class )->allowed_roles_room_video_render( $host_id, $room_name, $host_status, $room_type );
 
 		if ( $allowed_roles_block ) {

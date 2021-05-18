@@ -74,7 +74,7 @@ class PageFilters extends Shortcode {
 	 * @param  string $room_type - class of room.
 	 * @return null|string depending.
 	 */
-	public function block_disabled_room_video_render( int $user_id, string $room_name, $host_status, $room_type = null ) {
+	public function block_disabled_room_video_render( int $user_id, string $room_name, bool $host_status, $room_type = null ) {
 		// Check Module Override State.
 		$site_override = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, 'site_override_enabled' );
 		// Override Control Check.
@@ -94,7 +94,6 @@ class PageFilters extends Shortcode {
 			$is_room_disabled = Factory::get_instance( SecurityVideoPreferenceDAO::class )
 			->read_security_settings( $user_id, $room_name, 'room_disabled' );
 		}
-
 		// Is Disable setting active ?
 		if ( $is_room_disabled ) {
 			if ( $host_status ) {
