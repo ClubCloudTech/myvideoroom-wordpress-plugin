@@ -288,27 +288,5 @@ class ShortcodeDocuments {
 
 	}
 
-	/**
-	 * Render all Elementor Shortcodes that are published for User usage.
-	 */
-	public function render_elementor_shortcode_docs() {
-
-		?>
-	<div class="mvr-row">
-	<h2><?php esc_html_e( 'Elementor Shortcodes', 'my-video-room' ); ?></h2>
-		<table style="width:70%; border: 1px solid black;">
-			<tr>
-				<th style="width:25%; text-align: left;"><?php esc_html_e( 'Shortcode Name', 'my-video-room' ); ?></th>
-				<th style="width:75%; text-align: left;"><?php esc_html_e( 'Usage', 'my-video-room' ); ?></th>
-			</tr>
-
-		</table>
-	</div>
-		<?php
-
-	}
-
-
-
 }
 
