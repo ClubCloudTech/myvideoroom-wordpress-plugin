@@ -88,9 +88,8 @@ class Security {
 	public function render_security_admin_page() {
 		$active_tab = self::MODULE_SECURITY_NAME;
 		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
-		echo $path . 'path';
-		$render   = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
-		$messages = array();
+		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
+		$messages   = array();
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
 		echo $render( $messages );
 		return 'Powered by MyVideoRoom';
