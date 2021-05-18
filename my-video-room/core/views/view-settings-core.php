@@ -32,8 +32,8 @@ return function (
 	$render = require __DIR__ . '/header/header.php';
 	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
 	echo $render( $messages );
-	wp_enqueue_style( 'mvr-template' );
-	wp_enqueue_style( 'mvr-menutab-header' );
+	wp_enqueue_style( 'myvideoroom-template' );
+	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
 
 	?>

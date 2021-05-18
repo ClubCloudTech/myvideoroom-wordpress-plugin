@@ -30,8 +30,8 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 	 * @return void
 	 */
 	public function site_videoroom_display_rooms( $type = null ) {
-		wp_enqueue_style( 'mvr-template' );
-		wp_enqueue_style( 'mvr-menutab-header' );
+		wp_enqueue_style( 'myvideoroom-template' );
+		wp_enqueue_style( 'myvideoroom-menutab-header' );
 		$available_rooms = Factory::get_instance( RoomMap::class )->get_room_list( MVRSiteVideo::MODULE_DB_ID );
 		foreach ( $available_rooms as $room_id ) {
 			$room_object  = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
