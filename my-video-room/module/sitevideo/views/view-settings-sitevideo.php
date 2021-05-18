@@ -58,13 +58,10 @@ return function (
 
 		echo '<p>';
 		esc_html_e(
-			'The site conference module suite is available for team wide meetings, events, or any need for central rooms at the website level.
-			These permanent rooms are created automatically by the module, at activation, and can be renamed. They can be individually secured
-			such that any site role group can host the room. Room permissions, reception settings, templates, and custom reception videos
-			are all available for each conference room. You can connect permanent WebRTC enabled devices like projectors, and microphones to rooms permanently',
+			'The site conference module suite is available for team wide meetings, events, or any need for central rooms at the website level. These permanent rooms are created automatically by the module, at activation, and can be renamed. They can be individually secured such that any site role group can host the room. Room permissions, reception settings, templates, and custom reception videos are all available for each conference room. You can connect permanent WebRTC enabled devices like projectors, and microphones to rooms permanently',
 			'my-video-room'
 		);
-		echo '<br></p>';
+		echo '</p>';
 
 			// Activation/module.
 		if ( ! Factory::get_instance( ModuleConfig::class )->module_activation_button( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
