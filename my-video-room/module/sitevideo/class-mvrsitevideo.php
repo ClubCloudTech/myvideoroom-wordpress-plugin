@@ -74,7 +74,7 @@ class MVRSiteVideo extends Shortcode {
 	 * Setup of Module Menu
 	 */
 	public function site_videoroom_menu_setup() {
-		add_action( 'mvr_module_submenu_add', array( self::class, 'site_videoroom_menu_button' ) );
+		add_action( 'mvr_module_submenu_add', array( $this, 'site_videoroom_menu_button' ) );
 	}
 
 	/**

@@ -44,15 +44,15 @@ class SectionTemplates extends Shortcode {
 			<?php
 			// Video Menu Tab - only show if others exist.
 			if ( $admin_page || $permissions_page ) {
-				echo '<a class="nav-tab-active mvr-menu-header-item mvr-main-shortcode" href="#myvideoroom_page1' . esc_textarea( $header_length ) . '" >' . esc_html__( 'Video Room', 'my-video-room' ) . '</a>';
+				echo '<a class="nav-tab-active mvr-menu-header-item mvr-main-shortcode" href="#myvideoroom_page1' . esc_attr( $header_length ) . '" >' . esc_html__( 'Video Room', 'my-video-room' ) . '</a>';
 			}
 			// Security Tab.
 			if ( $security_enabled && $permissions_page ) {
-				echo '<a class="mvr-menu-header-item mvr-main-shortcode" href="#myvideoroom_page2' . esc_textarea( $header_length ) . '" >' . esc_html__( 'Room Permissions', 'my-video-room' ) . '</a>';
+				echo '<a class="mvr-menu-header-item mvr-main-shortcode" href="#myvideoroom_page2' . esc_attr( $header_length ) . '" >' . esc_html__( 'Room Permissions', 'my-video-room' ) . '</a>';
 			}
 			// Admin Tab.
 			if ( $admin_page ) {
-				echo '<a class="mvr-menu-header-item mvr-main-shortcode" href="#myvideoroom_page3' . esc_textarea( $header_length ) . '" >' . esc_html__( 'Host Settings', 'my-video-room' ) . '</a>';
+				echo '<a class="mvr-menu-header-item mvr-main-shortcode" href="#myvideoroom_page3' . esc_attr( $header_length ) . '" >' . esc_html__( 'Host Settings', 'my-video-room' ) . '</a>';
 			}
 			?>
 			</nav>
@@ -61,16 +61,16 @@ class SectionTemplates extends Shortcode {
 				Adding Body Section
 			*/
 			// Adding Shortcode (the only one guaranteed to exist).
-			$output  = '<article id="myvideoroom_page1' . $header_length . '" >';
+			$output  = '<article id="myvideoroom_page1' .  esc_attr( $header_length ) . '" >';
 			$output .= $shortcode . '</article>';
 			// Adding Permissions Tab if Exists.
 			if ( $security_enabled && $permissions_page ) {
-				$output .= '<article id="myvideoroom_page2' . $header_length . '">';
+				$output .= '<article id="myvideoroom_page2' .  esc_attr( $header_length ) . '">';
 				$output .= $permissions_page . ' </article>';
 			}
 			// Adding Room Admin Tab if Exists.
 			if ( $admin_page ) {
-				$output .= '<article id="myvideoroom_page3' . $header_length . '">';
+				$output .= '<article id="myvideoroom_page3' .  esc_attr( $header_length ) . '">';
 				$output .= $admin_page . ' </article>';
 			}
 
