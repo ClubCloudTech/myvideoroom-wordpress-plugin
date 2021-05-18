@@ -50,10 +50,10 @@ abstract class Shortcode {
 	 */
 	protected function add_shortcode( string $tag, callable $callback ) {
 		$prefix = SiteDefaults::SHORTCODE_PREFIX;
-			add_shortcode(
-				$prefix . $tag,
-				$callback
-			);
+		add_shortcode(
+			$prefix . $tag,
+			$callback
+		);
 	}
 
 	/**
