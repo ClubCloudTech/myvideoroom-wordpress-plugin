@@ -61,6 +61,7 @@ class SecurityEngine {
 			}
 		}
 		// Trapping any Host filter to set host status.
+		$host_status = false;
 		if ( strpos( $room_type, 'host' ) !== false && ! $disable_host_check ) {
 			$host_status = true;
 		}
