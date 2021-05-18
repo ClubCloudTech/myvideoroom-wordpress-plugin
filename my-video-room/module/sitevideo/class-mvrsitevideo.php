@@ -9,6 +9,8 @@ namespace MyVideoRoomPlugin\Module\SiteVideo;
 
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\Ajax;
+use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Module\Security\Security;
@@ -48,6 +50,7 @@ class MVRSiteVideo extends Shortcode {
 
 		// Generate Site Video Room Page.
 		$this->create_site_videoroom_page();
+
 	}
 	/**
 	 * De-Initialise On Module De-activation.
@@ -68,6 +71,22 @@ class MVRSiteVideo extends Shortcode {
 
 		// Rooms Permissions Manager Header Remove.
 		add_action( 'admin_head', array( $this, 'remove_admin_menus' ) );
+
+		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ) );
+
+		\wp_enqueue_script(
+			'myvideoroom-sitevideo-settings-js',
+			\plugins_url( '/js/settings.js', \realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			Factory::get_instance( Version::class )->get_plugin_version(),
+			true
+		);
+
+		\wp_localize_script(
+			'myvideoroom-sitevideo-settings-js',
+			'myvideoroom_sitevideo_settings',
+			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
+		);
 	}
 
 	/**
@@ -131,6 +150,16 @@ class MVRSiteVideo extends Shortcode {
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
 		echo $render( $messages );
 		return 'Powered by MyVideoRoom';
+	}
+
+
+	/**
+	 * Get the setting section
+	 */
+	public function get_ajax_page_settings() {
+		$post_id = Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
+		echo 'You requested the page with id: ' . esc_attr( $post_id );
+		die();
 	}
 }
 
