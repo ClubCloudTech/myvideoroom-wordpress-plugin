@@ -72,7 +72,7 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 
 			$edit_actions = array(
 				array(
-					'Edit in WordPress',
+					__( 'Edit in WordPress' ),
 					get_site_url() . '/wp-admin/post.php?post=' . esc_textarea( $post_id ) . '&action=edit',
 					'dashicons dashicons-wordpress',
 				),
