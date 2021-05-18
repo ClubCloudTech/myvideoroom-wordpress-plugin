@@ -22,8 +22,8 @@ return function (
 	int $id_index = 0,
 	int $user_id = null
 	): string {
-	wp_enqueue_style( 'mvr-template' );
-	wp_enqueue_style( 'mvr-menutab-header' );
+	wp_enqueue_style( 'myvideoroom-template' );
+	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
 	?>
 <div id="security-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">

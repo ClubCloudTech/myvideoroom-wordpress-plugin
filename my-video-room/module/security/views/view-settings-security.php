@@ -26,8 +26,8 @@ use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 return function (
 	array $messages = array()
 	): string {
-	wp_enqueue_style( 'mvr-template' );
-	wp_enqueue_style( 'mvr-menutab-header' );
+	wp_enqueue_style( 'myvideoroom-template' );
+	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	$path   = '/core/views/header/header.php';
 	$render = require WP_PLUGIN_DIR . '/my-video-room' . $path;
 	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Output already rendered safe upstream.

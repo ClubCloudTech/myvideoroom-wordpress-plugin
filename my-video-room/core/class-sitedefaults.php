@@ -11,6 +11,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Library\UserRoles;
+use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
@@ -91,20 +92,24 @@ class SiteDefaults extends Shortcode {
 	 * @return void
 	 */
 	private function register_scripts_styles() {
-		// ToDO Fred to remove before final merge.
+		$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
+
+		// --
+		// javascript
+
 		wp_register_script(
 			'myvideoroom-protect-input',
 			plugins_url( '/../js/protect-input.js', __FILE__ ),
 			null,
-			$this->get_plugin_version() . gmdate( 'Ymdhms' ),
+			$plugin_version,
 			true
 		);
 
 		wp_register_script(
 			'myvideoroom-frame-refresh',
-			plugins_url( '/../js/mvr-frame-refresh.js', __FILE__ ),
+			plugins_url( '/../js/frame-refresh.js', __FILE__ ),
 			null,
-			$this->get_plugin_version() . gmdate( 'Ymdhms' ),
+			$plugin_version,
 			true
 		);
 
@@ -112,28 +117,49 @@ class SiteDefaults extends Shortcode {
 			'myvideoroom-admin-tabs',
 			plugins_url( '/../js/tabbed.js', __FILE__ ),
 			array( 'jquery' ),
-			$this->get_plugin_version(),
+			$plugin_version,
 			true
 		);
+
 		wp_register_script(
 			'myvideoroom-outer-tabs',
 			plugins_url( '/../js/outer-tabbed.js', __FILE__ ),
 			array( 'jquery' ),
-			$this->get_plugin_version() . gmdate( 'Ymdhms' ),
+			$plugin_version,
 			true
 		);
 
 		wp_register_script(
 			'myvideoroom-remove-admin-header',
-			plugins_url( '/../js/mvr-remove-admin-header.js', __FILE__ ),
+			plugins_url( '/../js/remove-admin-header.js', __FILE__ ),
 			array( 'jquery' ),
-			$this->get_plugin_version() . gmdate( 'Ymdhms' ),
+			$plugin_version,
 			true,
 		);
 
-		wp_register_style( 'mvr-menutab-header', plugins_url( '/../css/mvr-menutab.css', __FILE__ ), false, $this->get_plugin_version() . gmdate( 'Ymdhms' ) );
-		wp_register_style( 'mvr-template', plugins_url( '/../css/mvr-template.css', __FILE__ ), false, $this->get_plugin_version() . gmdate( 'Ymdhms' ) );
-		wp_register_style( 'mvr-remove-admin-bar', plugins_url( '/../css/mvr-admin-bar.css', __FILE__ ), false, $this->get_plugin_version() . gmdate( 'Ymdhms' ) );
+		// --
+		// css
+
+		wp_register_style(
+			'myvideoroom-menutab-header',
+			plugins_url( '/../css/menutab.css', __FILE__ ),
+			false,
+			$plugin_version
+		);
+
+		wp_register_style(
+			'myvideoroom-template',
+			plugins_url( '/../css/template.css', __FILE__ ),
+			false,
+			$plugin_version
+		);
+
+		wp_register_style(
+			'myvideoroom-remove-admin-bar',
+			plugins_url( '/../css/admin-bar.css', __FILE__ ),
+			false,
+			$plugin_version
+		);
 	}
 
 	/**
@@ -144,12 +170,7 @@ class SiteDefaults extends Shortcode {
 	public function is_elementor_active() {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-		if ( is_plugin_active( 'elementor/elementor.php' ) ) {
-
-			return true;
-		} else {
-			return false;
-		}
+		return ( is_plugin_active( 'elementor/elementor.php' ) );
 	}
 
 	/**

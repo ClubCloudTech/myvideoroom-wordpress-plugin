@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin\Module\Monitor;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Endpoints;
+use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\Shortcode;
 use MyVideoRoomPlugin\Shortcode\App;
@@ -63,7 +64,7 @@ class Module extends Shortcode {
 					'myvideoroom-monitor',
 					\plugins_url( '/js/monitor.js', __FILE__ ),
 					array( 'jquery', 'socket-io-3.1.0' ),
-					$this->get_plugin_version(),
+					Factory::get_instance( Version::class )->get_plugin_version(),
 					true
 				);
 

@@ -19,8 +19,8 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 return function(): string {
 	wp_enqueue_script( 'myvideoroom-remove-admin-header' );
-	wp_enqueue_style( 'mvr-template' );
-	wp_enqueue_style( 'mvr-menutab-header' );
+	wp_enqueue_style( 'myvideoroom-template' );
+	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
 
 	// Delete Room Handler.

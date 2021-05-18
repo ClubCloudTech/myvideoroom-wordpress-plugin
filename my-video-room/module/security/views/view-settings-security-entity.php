@@ -14,8 +14,8 @@ use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference as ShortcodeSecurityVideoPreference;
 
 return function (): string {
-	wp_enqueue_style( 'mvr-template' );
-	wp_enqueue_style( 'mvr-menutab-header' );
+	wp_enqueue_style( 'myvideoroom-template' );
+	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
 
 	if ( null !== ( sanitize_text_field( wp_unslash( $_GET['id'] ) ) ) ) {

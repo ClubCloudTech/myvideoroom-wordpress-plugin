@@ -9,8 +9,10 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Shortcode;
 
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\Endpoints;
+use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Shortcode;
 use WP_User;
 
@@ -79,7 +81,7 @@ class App extends Shortcode {
 			'myvideoroom-app',
 			\plugins_url( '/../js/app.js', __FILE__ ),
 			array( 'jquery' ),
-			$this->get_plugin_version(),
+			Factory::get_instance( Version::class )->get_plugin_version(),
 			true
 		);
 	}
