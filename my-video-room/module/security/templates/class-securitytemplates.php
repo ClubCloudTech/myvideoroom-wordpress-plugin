@@ -31,14 +31,14 @@ class SecurityTemplates extends Shortcode {
 	<h2 class="mvr-header-text">
 			<?php
 				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
-				echo esc_html_e( 'This Room is Offline', 'myvideoroom' ) . '</h2>';
+				esc_html_e( 'This Room is Offline', 'myvideoroom' ) . '</h2>';
 			?>
 	<img class="mvr-access-image" src="
 			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
 
 	<p class="mvr-template-text">
 		<?php
-		echo esc_html_e( 'The Administrators have disabled this room. Please contact the site owner, or an admin for help.', 'myvideoroom' );
+		esc_html_e( 'The Administrators have disabled this room. Please contact the site owner, or an admin for help.', 'myvideoroom' );
 		?>
 	</p>
 
@@ -63,7 +63,7 @@ class SecurityTemplates extends Shortcode {
 	<h2 class="mvr-header-text">
 			<?php
 				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
-				echo esc_html_e( 'This Room is Offline', 'myvideoroom' ) . '</h2>';
+				esc_html_e( 'This Room is Offline', 'myvideoroom' ) . '</h2>';
 			?>
 	<img class="mvr-access-image" src="
 			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
@@ -78,15 +78,15 @@ class SecurityTemplates extends Shortcode {
 					} elseif ( $nicename ) {
 						echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
 					} else {
-						echo esc_html__( 'The Administrator', 'my-video-room' );
+						esc_html_e( 'The Administrator', 'my-video-room' );
 					}
-					echo esc_html_e( ' has disabled this room. Please contact the site owner, or ', 'myvideoroom' );
+					esc_html_e( ' has disabled this room. Please contact the site owner, or ', 'myvideoroom' );
 					if ( $first_name ) {
 						echo \esc_attr( ucfirst( $first_name ) );
 					} else {
 						echo esc_attr( ucfirst( $nicename ) );
 					}
-					echo esc_html_e( ' for more assistance.', 'myvideoroom' );
+					esc_html_e( ' for more assistance.', 'myvideoroom' );
 					?>
 	</p>
 
@@ -110,7 +110,7 @@ class SecurityTemplates extends Shortcode {
 	<h2 class="mvr-header-text">
 			<?php
 				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
-				echo esc_html_e( 'This room is set to Signed in (known) Users Only', 'myvideoroom' ) . '</h2>';
+				esc_html_e( 'This room is set to Signed in (known) Users Only', 'myvideoroom' ) . '</h2>';
 			?>
 	<img class="mvr-access-image" src="
 			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
@@ -125,7 +125,7 @@ class SecurityTemplates extends Shortcode {
 					} else {
 						echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
 					}
-					echo esc_html_e(
+					esc_html_e(
 						' only allows signed in/registered users to access their video room. To be able to access this room,
 					you must have an account on this site. Please Register for access or ask ',
 						'myvideoroom'
@@ -135,9 +135,9 @@ class SecurityTemplates extends Shortcode {
 					} elseif ( $nicename ) {
 						echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
 					} else {
-						echo esc_html__( 'The Administrator', 'my-video-room' );
+						esc_html_e( 'The Administrator', 'my-video-room' );
 					}
-					echo esc_html_e( ' for more assistance.', 'myvideoroom' );
+					esc_html_e( ' for more assistance.', 'myvideoroom' );
 					?>
 	</p>
 </div>
@@ -161,7 +161,7 @@ class SecurityTemplates extends Shortcode {
 	<h2 class="mvr-header-text">
 			<?php
 				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
-				echo esc_html_e( 'This Room is set to Specific Roles Only', 'myvideoroom' ) . '</h2>';
+				esc_html_e( 'This Room is set to Specific Roles Only', 'myvideoroom' ) . '</h2>';
 			?>
 	<img class="mvr-access-image" src="
 			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
@@ -176,9 +176,9 @@ class SecurityTemplates extends Shortcode {
 					} elseif ( $nicename ) {
 						echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
 					} else {
-						echo esc_html__( 'The Administrator', 'my-video-room' );
+						esc_html_e( 'The Administrator', 'my-video-room' );
 					}
-					echo esc_html_e(
+					esc_html_e(
 						' has enabled this room only for specific roles of users. You are not in a group that has been given access. Please contact the site owner or ',
 						'myvideoroom'
 					);
@@ -187,7 +187,7 @@ class SecurityTemplates extends Shortcode {
 					} else {
 						echo esc_attr( ucfirst( $nicename ) );
 					}
-					echo esc_html_e( ' for more assistance.', 'myvideoroom' );
+					esc_html_e( ' for more assistance.', 'myvideoroom' );
 					?>
 	</p>
 		<?php
@@ -235,7 +235,7 @@ class SecurityTemplates extends Shortcode {
 			echo esc_html( $nicename );
 		}
 
-		echo esc_html_e(
+		esc_html_e(
 			' or one of the moderators have enabled this room only for specific membership of the group. You are not in a class of user that ',
 			'myvideoroom'
 		);
@@ -245,9 +245,9 @@ class SecurityTemplates extends Shortcode {
 		} elseif ( $nicename ) {
 			echo '<b>' . esc_html( ucfirst( $nicename ) ) . '</b>';
 		} else {
-			echo esc_html__( 'The Administrator', 'my-video-room' );
+			esc_html_e( 'The Administrator', 'my-video-room' );
 		}
-		echo esc_html_e(
+		esc_html_e(
 			' or the group moderators have allowed. Please contact any of the group admins or moderators for assistance. ',
 			'myvideoroom'
 		);

@@ -36,14 +36,9 @@ return function (
 	wp_enqueue_style( 'mvr-menutab-header' );
 	ob_start();
 
-	// Check to see if Default settings exist on entry- reinitialise if missing.
-	if ( ! Factory::get_instance( RoomAdmin::class )->check_default_settings_exist() ) {
-		Factory::get_instance( Setup::class )->initialise_default_video_settings();
-	}
-
 	?>
 <div class="mvr-outer-box-wrap">
-		<h1><?php echo esc_html__( 'Video Room Site Default Configuration', 'my-video-room' ); ?></h1>
+		<h1><?php esc_html_e( 'Video Room Site Default Configuration', 'my-video-room' ); ?></h1>
 		<?php
 		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
 		if ( $security_enabled ) {
@@ -51,7 +46,7 @@ return function (
 		}
 
 		echo '<p>';
-		echo esc_html__(
+		esc_html_e(
 			'The Following Settings define site wide video default parameters in case other modules have not set parameters there. These defaults will be used 
 			if a user has not selected a setting for the room configuration, or it hasnt been defined at the module level. You can use the Template Browser tab
 			to view room selection templates.',

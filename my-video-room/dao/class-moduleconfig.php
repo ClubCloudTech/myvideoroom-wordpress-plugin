@@ -62,12 +62,17 @@ class ModuleConfig {
 			';
 		$prepared_query = $wpdb->prepare( $raw_sql );
 
-	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$row = $wpdb->get_row( $prepared_query );
-		if ( $row ) {
-			return true;
+		try {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+			$row = $wpdb->get_row( $prepared_query );
+			if ( $row ) {
+				return true;
+			}
+
+				return false;
+		} catch ( \Throwable $e ) {
+			return false;
 		}
-		return false;
 	}
 
 	/**

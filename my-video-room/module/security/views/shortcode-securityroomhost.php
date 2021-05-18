@@ -30,7 +30,7 @@ return function (
 	$room_display_name = $room_object->room_name;
 	?>
 <div id="security-video-host-wrap"class="mvr-nav-shortcode-outer-wrap mvr-nav-settingstabs-outer-wrap ">
-			<h1><?php echo esc_html__( 'Room Host Settings for ', 'my-video-room' ); ?>
+			<h1><?php esc_html_e( 'Room Host Settings for ', 'my-video-room' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_display_name );
 			echo esc_attr( ucwords( $output ) );
@@ -90,7 +90,7 @@ return function (
 					?>
 					"/>
 					<label for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-id"></i><?php echo esc_html__( 'Enable custom hosts for this room', 'my-video-room' ); ?></h2>
+					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable custom hosts for this room', 'my-video-room' ); ?></h2>
 					</label>
 					<input
 							type="checkbox"
@@ -102,7 +102,7 @@ return function (
 					<br>
 					<p class="mvr-preferences-paragraph">
 					<?php
-					echo esc_html__(
+					esc_html_e(
 						'Please select the User Role Groups you would like to be able to host your room. Anyone not setup here will be a guest of your room.',
 						'my-video-room'
 					);
@@ -110,7 +110,7 @@ return function (
 					</p><br>
 
 				<label for="myvideoroom_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-				<?php echo esc_html__( 'Allowed Host Groups', 'my-video-room' ); ?>
+				<?php esc_html_e( 'Allowed Host Groups', 'my-video-room' ); ?>
 				</label>
 				<select multiple="multiple"
 						class="mvr-roles-multiselect mvr-select-box"
@@ -124,7 +124,7 @@ return function (
 				</select>
 				<br>
 					<label for="myvideoroom_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
-					<br><?php echo esc_html__( 'Block These Roles from Hosting Instead (allow anyone EXCEPT the above).', 'my-video-room' ); ?>
+					<br><?php esc_html_e( 'Block These Roles from Hosting Instead (allow anyone EXCEPT the above).', 'my-video-room' ); ?>
 				</label>
 				<input
 					type="checkbox"
@@ -139,7 +139,7 @@ return function (
 					<br>
 					<p class="mvr-preferences-paragraph">
 						<?php
-						echo esc_html__(
+						esc_html_e(
 							'Use this setting to determine what group roles you want to explicitly allow to host your room or - the reverse (block all users but a specific role from hosting). Please Note: 
 							If you choose to Block a Role, you must still decide if you would like Anonymous Users to host the room separately below.',
 							'my-video-room'
@@ -148,7 +148,7 @@ return function (
 					</p>
 				<hr>
 				<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-admin-users"></i><?php echo esc_html__( 'Allow Anonymous Users to Host Rooms (not recommended)', 'my-video-room' ); ?></h2>
+					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Allow Anonymous Users to Host Rooms (not recommended)', 'my-video-room' ); ?></h2>
 				</label>
 				<input
 					type="checkbox"
@@ -159,7 +159,7 @@ return function (
 				/>
 				<p class="mvr-preferences-paragraph">
 				<?php
-				echo esc_html__(
+				esc_html_e(
 					'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please
 					consider the security ramifications of this setting. ',
 					'my-video-room'

@@ -36,7 +36,7 @@ return function (
 <div class="wrap">
 
 		<div class="mvr-outer-box-wrap">
-		<h1><?php echo esc_html__( 'Advanced Room Permissions Control', 'my-video-room' ); ?></h1>
+		<h1><?php esc_html_e( 'Advanced Room Permissions Control', 'my-video-room' ); ?></h1>
 		<?php
 		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
 		if ( $security_enabled ) {
@@ -45,7 +45,7 @@ return function (
 		?>
 		<p> 
 		<?php
-			echo esc_html__(
+			esc_html_e(
 				'The advanced room permissions control module allows users, to precisely control the type of room access permissions they would like for their room. For example
 				users can select logged in users, specific site roles, disable rooms entirely, or work in conjunction with other modules (like groups and friends in Buddypress). The module also
 				provides central enforcement and override capability which allows central control of specific room settings, and configuration.',
@@ -65,16 +65,16 @@ return function (
 		<div class="mvr-nav-shortcode-outer-wrap">
 			<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 				<ul class="menu" >
-					<a class="nav-tab nav-tab-active" href="#page1" style><?php echo esc_html__( 'Default Permissions', 'my-video-room' ); ?> </a>
-					<a class="nav-tab" href="#page2" style><?php echo esc_html__( 'Override Permissions', 'my-video-room' ); ?> </a>
-					<a class="nav-tab" href="#page4" style><?php echo esc_html__( 'Security Shortcodes', 'my-video-room' ); ?></a>
+					<a class="nav-tab nav-tab-active" href="#page1" style><?php esc_html_e( 'Default Permissions', 'my-video-room' ); ?> </a>
+					<a class="nav-tab" href="#page2" style><?php esc_html_e( 'Override Permissions', 'my-video-room' ); ?> </a>
+					<a class="nav-tab" href="#page4" style><?php esc_html_e( 'Security Shortcodes', 'my-video-room' ); ?></a>
 				</ul>
 			</nav>
 				<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
 					<article id="page1" style>
 						<p> 
 						<?php
-						echo esc_html__(
+						esc_html_e(
 							'These are the Default Room Permissions. These settings will be used by the Room, if the user has not yet set up a permissions preference.
 							Users\' preferences override these defaults if they choose them. To enforce settings use the Override Permissions tab.',
 							'my-video-room'
@@ -95,7 +95,7 @@ return function (
 					<article id="page2" style>
 					<br>
 					<?php
-						echo esc_html__(
+						esc_html_e(
 							'These are the enforced/mandatory room permissions. These settings will be used by the Room regardless of the User\'s preference.
 							To allow the settings to be overriden please use the Default Permissions tab.',
 							'my-video-room'
