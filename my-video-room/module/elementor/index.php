@@ -34,6 +34,6 @@ use MyVideoRoomPlugin\Module\Elementor\Module as Elementor;
 				include_once ABSPATH . 'wp-admin/includes/plugin.php';
 				return \is_plugin_active( 'elementor/elementor.php' );
 			}
-		);
+		)->set_as_hidden();
 	}
 );
