@@ -18,3 +18,18 @@ fi
 
 rsync -av "${SCRIPT_DIR}/${PLUGIN_DIR}/" "${SCRIPT_DIR}/svn/trunk" --exclude .DS_Store --exclude test/
 rsync -av "${SCRIPT_DIR}/assets/" "${SCRIPT_DIR}/svn/assets" --exclude .DS_Store --exclude test/
+
+(
+  cd svn
+  svn st trunk | grep ? | awk '{print $2}' | xargs svn add
+  svn st assets | grep ? | awk '{print $2}' | xargs svn add
+)
+
+echo "
+You probably want to do something like this:
+
+cd svn
+svn ci -m '<message>'
+svn cp trunk tags/<tag>
+svn ci -m 'Tag <tag>'
+"
