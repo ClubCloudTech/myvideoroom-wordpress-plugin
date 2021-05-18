@@ -2,10 +2,10 @@
 /**
  * Data Access Object for user video preferences
  *
- * @package MyVideoRoomPlugin\Core\Dao
+ * @package MyVideoRoomPlugin\DAO
  */
 
-namespace MyVideoRoomPlugin\Core\DAO;
+namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\Core\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Core\SiteDefaults;

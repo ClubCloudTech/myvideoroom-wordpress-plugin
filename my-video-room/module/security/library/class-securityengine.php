@@ -10,7 +10,7 @@ namespace MyVideoRoomPlugin\Module\Security\Library;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Library\Dependencies;
-use MyVideoRoomPlugin\Core\Dao\ModuleConfig;
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;

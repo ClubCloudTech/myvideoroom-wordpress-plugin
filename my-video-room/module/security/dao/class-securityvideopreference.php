@@ -2,7 +2,7 @@
 /**
  * Data Access Object for user video preferences
  *
- * @package MyVideoRoomPlugin\Core\Dao
+ * @package MyVideoRoomPlugin\DAO
  */
 
 namespace MyVideoRoomPlugin\Module\Security\DAO;

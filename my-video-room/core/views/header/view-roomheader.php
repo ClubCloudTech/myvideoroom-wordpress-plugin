@@ -27,10 +27,10 @@ return function (
 
 	if ( isset( $_SERVER['REQUEST_METHOD'] )
 			&& 'POST' === $_SERVER['REQUEST_METHOD']
-			&& sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_refresh'] ?? null ) ) === 'true'
+			&& sanitize_text_field( wp_unslash( $_POST['myvideoroom_refresh'] ?? null ) ) === 'true'
 			) {
-		check_admin_referer( 'myvideoroom_extras_refresh_nonce', 'nonce' );
-		$refresh = $params['refresh'] ?? sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_refresh'] ?? '' ) );
+		check_admin_referer( 'myvideoroom_refresh_nonce', 'nonce' );
+		$refresh = $params['refresh'] ?? sanitize_text_field( wp_unslash( $_POST['myvideoroom_refresh'] ?? '' ) );
 		if ( true === $refresh ) {
 				$second = 0.1;
 				header( "Refresh:$second" );
@@ -67,8 +67,8 @@ return function (
 				echo Factory::get_instance( TemplateIcons::class )->show_icon( $user_id, $room_name );
 			} else {
 				echo '<form method="post" action="">';
-				echo '<input name="myvideoroom_extras_refresh" type="hidden" value="true" />';
-				wp_nonce_field( 'myvideoroom_extras_refresh_nonce', 'nonce' );
+				echo '<input name="myvideoroom_refresh" type="hidden" value="true" />';
+				wp_nonce_field( 'myvideoroom_refresh_nonce', 'nonce' );
 				echo '<input type="submit" name="submit" id="submit" class="button mvr-form-button mvr-form-button-max" value="Exit Meeting"  />';
 			}
 			?>

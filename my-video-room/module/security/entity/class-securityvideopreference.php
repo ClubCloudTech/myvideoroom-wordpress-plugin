@@ -22,70 +22,70 @@ class SecurityVideoPreference {
 	/**
 	 * Room_name
 	 *
-	 * @var int $room_name
+	 * @var string $room_name
 	 */
 	private string $room_name;
 
 	/**
 	 * Allowed_roles
 	 *
-	 * @var int $allowed_roles
+	 * @var string $allowed_roles
 	 */
 	private ?string $allowed_roles;
 
 	/**
 	 * Blocked_roles
 	 *
-	 * @var int $blocked_roles
+	 * @var string $blocked_roles
 	 */
 	private ?string $blocked_roles;
 
 	/**
 	 * Room_disabled
 	 *
-	 * @var int $room_disabled
+	 * @var bool $room_disabled
 	 */
 	private bool $room_disabled;
 
 	/**
 	 * Site_override_enabled
 	 *
-	 * @var int $user_id
+	 * @var bool site_override_enabled
 	 */
 	private bool $site_override_enabled;
 
 	/**
 	 * Anonymous_enabled
 	 *
-	 * @var int $anonymous_enabled
+	 * @var bool $anonymous_enabled
 	 */
 	private bool $anonymous_enabled;
 
 	/**
 	 * Allow_role_control_enabled
 	 *
-	 * @var int $allow_role_control_enabled
+	 * @var bool $allow_role_control_enabled
 	 */
 	private bool $allow_role_control_enabled;
 
 	/**
 	 * User_id
 	 *
-	 * @var int $user_id
+	 * @var bool $block_role_control_enabled
 	 */
 	private bool $block_role_control_enabled;
 
 	/**
 	 * Restrict_group_to_members_setting
 	 *
-	 * @var int $restrict_group_to_members_setting
+	 * @var string $restrict_group_to_members_setting
 	 */
 	private ?string $restrict_group_to_members_setting;
 
 	/**
 	 * Bp_friends_setting
 	 *
-	 * @var int $bp_friends_setting
+	 * @var string $bp_friends_setting
 	 */
 	private ?string $bp_friends_setting;
 

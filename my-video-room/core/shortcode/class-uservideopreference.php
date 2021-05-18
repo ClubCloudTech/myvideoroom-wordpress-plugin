@@ -7,7 +7,7 @@
 
 namespace MyVideoRoomPlugin\Core\Shortcode;
 
-use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDao;
+use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Core\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Factory;
@@ -80,16 +80,16 @@ class UserVideoPreference extends Shortcode {
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) &&
 			'POST' === $_SERVER['REQUEST_METHOD'] &&
-			sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_user_room_name'] ?? null ) ) === $room_name
+			sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_room_name'] ?? null ) ) === $room_name
 		) {
-			check_admin_referer( 'myvideoroom_extras_update_user_video_preference', 'nonce' );
-			$layout_id               = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_user_layout_id_preference'] ?? null ) );
-			$reception_id            = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_user_reception_id_preference'] ?? null ) );
-			$reception_enabled       = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_user_reception_enabled_preference'] ?? '' ) ) === 'on';
-			$reception_video_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_user_reception_video_enabled_preference'] ?? '' ) ) === 'on';
+			check_admin_referer( 'myvideoroom_update_user_video_preference', 'nonce' );
+			$layout_id               = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_layout_id_preference'] ?? null ) );
+			$reception_id            = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_reception_id_preference'] ?? null ) );
+			$reception_enabled       = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_reception_enabled_preference'] ?? '' ) ) === 'on';
+			$reception_video_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_reception_video_enabled_preference'] ?? '' ) ) === 'on';
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, - esc_url raw does the appropriate sanitisation.
-			$reception_video_url = esc_url_raw( $_POST['myvideoroom_extras_user_reception_waiting_video_url'] );
-			$show_floorplan      = sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_user_show_floorplan_preference'] ?? '' ) ) === 'on';
+			$reception_video_url = esc_url_raw( $_POST['myvideoroom_user_reception_waiting_video_url'] );
+			$show_floorplan      = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_show_floorplan_preference'] ?? '' ) ) === 'on';
 
 			if ( $current_user_setting ) {
 				$current_user_setting->set_layout_id( $layout_id )
@@ -123,7 +123,7 @@ class UserVideoPreference extends Shortcode {
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) &&
 			'POST' === $_SERVER['REQUEST_METHOD'] &&
-			sanitize_text_field( wp_unslash( $_POST['myvideoroom_extras_user_room_name'] ?? null ) ) === $room_name
+			sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_room_name'] ?? null ) ) === $room_name
 		) {
 			echo( "<meta http-equiv='refresh' content='.1'>" );
 		}

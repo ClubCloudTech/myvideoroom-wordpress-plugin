@@ -11,9 +11,9 @@
 namespace MyVideoRoomPlugin\Core;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
-use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDao;
+use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Library\Dependencies;
 

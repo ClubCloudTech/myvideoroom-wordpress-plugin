@@ -9,8 +9,8 @@ namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 
 use \MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\DAO\RoomMap;
-use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Core\VideoHelpers;
 use MyVideoRoomPlugin\Core\Shortcode\MyVideoRoomApp;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;

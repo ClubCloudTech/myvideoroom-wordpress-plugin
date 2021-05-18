@@ -9,10 +9,10 @@ namespace MyVideoRoomPlugin\Module\SiteVideo\Setup;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Core\Dao\RoomMap;
-use MyVideoRoomPlugin\Core\Dao\UserVideoPreference as UserVideoPreferenceDao;
-use MyVideoRoomPlugin\Core\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Setup\RoomAdmin as RoomAdminSetup;
+use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
+use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\RoomAdmin as RoomAdminSetup;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
