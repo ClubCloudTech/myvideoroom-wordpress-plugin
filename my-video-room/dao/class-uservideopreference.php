@@ -275,6 +275,10 @@ class UserVideoPreference {
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
 		$row = $wpdb->get_row( $prepared_query );
 
+		if ( ! $row ) {
+			return null;
+		}
+
 		// Return Data.
 		switch ( $return_type ) {
 			case 'layout_id':

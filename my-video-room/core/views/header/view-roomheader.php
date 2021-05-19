@@ -10,7 +10,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\TemplateIcons;
-use MyVideoRoomExtrasPlugin\Modules\WooCommerceBookings\ShortCodeConstructor;
+//use MyVideoRoomExtrasPlugin\Modules\WooCommerceBookings\ShortCodeConstructor;
 
 return function (
 	string $module_name = null,
@@ -26,20 +26,21 @@ return function (
 	ob_start();
 
 	if ( $visitor_status ) {
-
-		$invite_menu = Factory::get_instance( ShortCodeConstructor::class )->
-		invite_menu_shortcode(
-			array(
-				'type'    => 'guestlink',
-				'user_id' => $user_id,
-			)
-		);
+//
+//		$invite_menu = Factory::get_instance( ShortCodeConstructor::class )->
+//		invite_menu_shortcode(
+//			array(
+//				'type'    => 'guestlink',
+//				'user_id' => $user_id,
+//			)
+//		);
 	}
 	// Generate Invite Link for Meeting - First simple case of already received it in template.
+	$invite_menu = null;
 	if ( $meeting_link ) {
 		$invite_menu = $meeting_link;
 	} else {
-		$invite_menu = Factory::get_instance( ShortCodeConstructor::class )->invite_menu_shortcode( array( 'user_id' => $user_id ) );
+//		$invite_menu = Factory::get_instance( ShortCodeConstructor::class )->invite_menu_shortcode( array( 'user_id' => $user_id ) );
 	}
 
 	?>

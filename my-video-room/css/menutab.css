@@ -49,20 +49,6 @@
 	max-height: 30px;
 }
 
-.mvr-nav-shortcode-outer-wrap {
-	background-color: white;
-	padding: 10px 10px 10px 10px;
-	border: rgb(68, 68, 68);
-	border:solid;
-	border-width: 1px;
-	display: flow-root;
-}
-
-.mvr-nav-shortcode-outer-wrap-clean {
-	padding: 10px 10px 10px 10px;
-	display: flow-root;
-}
-
 .mvr-nav-border-bottom-none {
 	border-bottom: none;
 }
