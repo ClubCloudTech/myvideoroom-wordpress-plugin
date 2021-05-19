@@ -378,7 +378,7 @@ class ModuleConfig {
 	 */
 	public function sub_module_activation_button( int $module_id ): string {
 		$module_id_by_url = null;
-		$module_status = null;
+		$module_status    = null;
 
 		// Listening for Input.
 		if ( isset( $_GET['subaction'] ) ) {

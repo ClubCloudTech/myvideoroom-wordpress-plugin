@@ -10,7 +10,6 @@ namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
-use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
@@ -26,7 +25,6 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 	/**
 	 * Render Site Videoroom Available Rooms.
 	 *
-	 * @param  string $type - type of display.
 	 * @return void
 	 */
 	public function site_videoroom_display_rooms() {
@@ -80,7 +78,6 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 
 			// Add any extra options.
 			$edit_actions = \apply_filters( 'myvideoroom_sitevideo_edit_actions', $edit_actions, $post_id );
-
 
 			// Render Buttons for Action Area.
 			if ( $post_id_return ) {

@@ -10,7 +10,7 @@
 	$( '.myvideoroom-sitevideo-settings' ).on(
 		'click',
 		function (e) {
-			var post_id = $( this ).data( 'postId' );
+			var post_id    = $( this ).data( 'postId' );
 			var input_type = $( this ).data( 'inputType' );
 
 			var ajax_url = myvideoroom_sitevideo_settings.ajax_url;

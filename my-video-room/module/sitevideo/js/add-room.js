@@ -12,7 +12,7 @@
 			var $add_room = $( this );
 			$add_room.hide();
 
-			$('<span class="close">×</span>' ).appendTo( $add_room ).on(
+			$( '<span class="close">×</span>' ).appendTo( $add_room ).on(
 				'click',
 				function ( e ) {
 					$add_room.hide();
