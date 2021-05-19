@@ -27,7 +27,8 @@ class DBSetup {
 			return true;
 		}
 				$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . $table_name . '` (
-					`user_id` BIGINT UNSIGNED NOT NULL,
+					`record_id` int NOT NULL AUTO_INCREMENT,
+					`user_id` BIGINT NOT NULL,
 					`room_name` VARCHAR(255) NOT NULL,
 					`room_disabled` BOOLEAN,
 					`anonymous_enabled` BOOLEAN,
@@ -42,7 +43,7 @@ class DBSetup {
 					`bp_friends_setting` VARCHAR(255) NULL,
 					`allowed_template_id` BIGINT UNSIGNED NULL,
 					`blocked_template_id` BIGINT UNSIGNED NULL,
-					PRIMARY KEY (`user_id`, `room_name`)
+					PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';

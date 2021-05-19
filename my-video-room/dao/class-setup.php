@@ -43,7 +43,8 @@ class Setup {
 		}
 		// Create Main Table for Room Config.
 		$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . $table_name . '` (
-                           `user_id` BIGINT UNSIGNED NULL,
+                           `record_id` int NOT NULL AUTO_INCREMENT,
+						   `user_id` BIGINT NOT NULL,
                            `room_name` VARCHAR(255) NOT NULL,
                            `layout_id` VARCHAR(255) NULL,
                            `reception_id` VARCHAR(255) NULL,
@@ -51,7 +52,7 @@ class Setup {
 						   `reception_video_enabled` BOOLEAN,
 						   `reception_video_url` VARCHAR(255) NULL,
 						   `show_floorplan` BOOLEAN,
-                           PRIMARY KEY (`user_id`, `room_name`)
+                           PRIMARY KEY (`record_id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -69,12 +70,13 @@ class Setup {
 			return true;
 		}
 		$sql2 = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . $table_name . '` (
+			`record_id` int NOT NULL AUTO_INCREMENT,
 			`room_name` VARCHAR(255) NOT NULL,
 			`post_id` BIGINT UNSIGNED NOT NULL,
 			`room_type` VARCHAR(255) NOT NULL,
 			`display_name` VARCHAR(255) NOT NULL,
 			`slug` VARCHAR(255) NOT NULL,
-			PRIMARY KEY (`post_id`, `room_name`)
+			PRIMARY KEY (`record_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -93,7 +95,6 @@ class Setup {
 		}
 		// Create Main Table for Module Config.
 					$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . $table_name . '` (
-						
 						`module_id` BIGINT UNSIGNED NOT NULL,
 						`module_name` VARCHAR(255) NOT NULL,
 						`module_enabled` BOOLEAN,

@@ -28,7 +28,7 @@ class SiteDefaults extends Shortcode {
 	const SHORTCODE_PREFIX       = array( 'cc', 'myvideoroom_' );
 
 	// Default User ID to Use for Room Site Defaults .
-	const USER_ID_SITE_DEFAULTS = 443556987;
+	const USER_ID_SITE_DEFAULTS = -1;
 
 	// Default Database Table Names.
 	const TABLE_NAME_MODULE_CONFIG         = 'myvideoroom_module_config';
