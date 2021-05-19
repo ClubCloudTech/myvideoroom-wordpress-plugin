@@ -29,7 +29,7 @@ return function (
 	$room_object       = Factory::get_instance( RoomMap::class )->get_room_info( $user_id );
 	$room_display_name = $room_object->room_name;
 	?>
-<div id="security-video-host-wrap"class="mvr-nav-shortcode-outer-wrap mvr-nav-settingstabs-outer-wrap ">
+<div id="security-video-host-wrap" class="mvr-nav-shortcode-outer-wrap mvr-nav-settingstabs-outer-wrap">
 			<h1><?php esc_html_e( 'Room Host Settings for ', 'my-video-room' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_display_name );

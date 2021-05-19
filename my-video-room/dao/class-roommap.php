@@ -206,7 +206,7 @@ class RoomMap {
 		}
 
 		// First Check Database for Room and Post ID - return No if blank.
-		$post_id_check = Factory::get_instance( self::class )->read( $room_name );
+		$post_id_check = $this->read( $room_name );
 		if ( ! $post_id_check ) {
 			return self::PAGE_STATUS_NOT_EXISTS;
 		}
@@ -227,7 +227,7 @@ class RoomMap {
 	 *
 	 * @return array
 	 */
-	public function get_room_list( string $room_type ): attay {
+	public function get_room_list( string $room_type ): array {
 		global $wpdb;
 
 		$raw_sql = '

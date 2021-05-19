@@ -22,13 +22,14 @@ class RoomAdmin extends RoomAdminSetup {
 
 	const TABLE_NAME = SiteDefaults::TABLE_NAME_ROOM_MAP;
 	/**
-	 * Create a page into the Worpress environment, register in page table, and ensure its enabled.
+	 * Create a page into the WordPress environment, register in page table, and ensure its enabled.
 	 *
-	 * @param  string $room_name - name of room to build.
-	 * @param  string $display_title - Title of Page.
-	 * @param  string $slug - Worpress Slug to assign page.
-	 * @param  string $room_type - Type of Room in DB.
-	 * @param  string $old_post_id - Type Old Room in DB to update the value to the new post..
+	 * @param  string  $room_name       Name of room to build.
+	 * @param  string  $display_title   Title of Page.
+	 * @param  string  $slug            WordPress Slug to assign page.
+	 * @param  string  $room_type       Type of Room in DB.
+	 * @param  ?string $old_post_id     Type Old Room in DB to update the value to the new post..
+	 *
 	 * @return null  - page executes database functions doesn't return to user.
 	 */
 	public function create_and_check_page( string $room_name, string $display_title, string $slug, string $room_type, string $old_post_id = null ) {

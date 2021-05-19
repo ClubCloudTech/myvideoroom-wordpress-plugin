@@ -38,11 +38,26 @@ class Security {
 	public function activate_module() {
 		// Install Room Security Config table.
 		Factory::get_instance( DBSetup::class )->install_security_config_table();
+
 		// Register and Activate Module In Module Table.
-		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_SECURITY_NAME, self::MODULE_SECURITY_ID, true, self::MODULE_SECURITY_ADMIN_LOCATION );
-		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_SECURITY_ENTITY, self::MODULE_SECURITY_ENTITY_ID, true, self::MODULE_SECURITY_ENTITY_LOCATION );
-		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ID, true );
-		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SECURITY_ENTITY_ID, true );
+		$module_config = Factory::get_instance( ModuleConfig::class );
+
+		$module_config->register_module_in_db(
+			self::MODULE_SECURITY_NAME,
+			self::MODULE_SECURITY_ID,
+			true,
+			self::MODULE_SECURITY_ADMIN_LOCATION
+		);
+
+		$module_config->register_module_in_db(
+			self::MODULE_SECURITY_ENTITY,
+			self::MODULE_SECURITY_ENTITY_ID,
+			true,
+			self::MODULE_SECURITY_ENTITY_LOCATION
+		);
+
+		$module_config->update_enabled_status( self::MODULE_SECURITY_ID, true );
+		$module_config->update_enabled_status( self::MODULE_SECURITY_ENTITY_ID, true );
 
 	}
 
@@ -60,18 +75,19 @@ class Security {
 	 * Required for Normal Runtime.
 	 */
 	public function init() {
-
 		// Turn on Runtime Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
 		$this->security_menu_setup();
 
 	}
+
 	/**
 	 * Setup of Module Menu
 	 */
 	public function security_menu_setup() {
 		add_action( 'mvr_module_submenu_add', array( $this, 'security_menu_button' ) );
 	}
+
 	/**
 	 * Render Module Menu.
 	 */
@@ -82,6 +98,7 @@ class Security {
 		$display = esc_html__( $name, 'myvideoroom' );
 		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $display ) . '</a>';
 	}
+
 	/**
 	 * Render Security Admin Page.
 	 */

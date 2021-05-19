@@ -30,7 +30,9 @@ add_action(
 		->add_activation_hook(
 			fn () => Factory::get_instance( Security::class )->activate_module()
 		)
-		->add_admin_page_hook( fn () => Factory::get_instance( Security::class )->render_security_admin_page() )
+		->add_admin_page_hook(
+			fn () => Factory::get_instance( Security::class )->render_security_admin_page()
+		)
 		->add_deactivation_hook(
 			fn () => Factory::get_instance( Security::class )->de_activate_module()
 		);
@@ -38,9 +40,6 @@ add_action(
 		/**
 		 * Example of adding hooks
 		 * ->add_compatibility_hook( fn () => true )
-		 * ->add_admin_page_hook( fn () => 'The room builder was successfully activated' )
-		 * ->add_activation_hook( fn () => false )
-		 * ->add_deactivation_hook( fn () => false );
 		 */
 	}
 );

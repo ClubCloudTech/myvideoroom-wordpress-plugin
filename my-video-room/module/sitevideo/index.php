@@ -21,10 +21,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 			\esc_html__( 'Site Conference Center', 'myvideoroom' ),
 			array(
 				\esc_html__(
-					'The site conference module suite is available for team wide meetings, events, or any need for central rooms at the website level.
-					These permanent rooms are created automatically by the module, at activation, and can be renamed. They can be individually secured
-					such that any site role group can host the room. Room permissions, reception settings, templates, and custom reception videos
-					are all available for each conference room. You can connect permanent WebRTC enabled devices like projectors, and microphones to rooms permanently',
+					'The site conference module suite is available for team wide meetings, events, or any need for central rooms at the website level. These permanent rooms are created automatically by the module, at activation, and can be renamed. They can be individually secured such that any site role group can host the room. Room permissions, reception settings, templates, and custom reception videos are all available for each conference room. You can connect permanent WebRTC enabled devices like projectors, and microphones to rooms permanently',
 					'myvideoroom'
 				),
 			),
@@ -37,13 +34,5 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 		->add_deactivation_hook(
 			fn () => Factory::get_instance( MVRSiteVideo::class )->de_activate_module()
 		);
-
-		/**
-		 * Example of adding hooks
-		 * ->add_compatibility_hook( fn () => true )
-		 * ->add_admin_page_hook( fn () => 'The room builder was successfully activated' )
-		 * ->add_activation_hook( fn () => false )
-		 * ->add_deactivation_hook( fn () => false );
-		 */
 	}
 );

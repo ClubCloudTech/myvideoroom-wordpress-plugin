@@ -24,10 +24,11 @@ class MVRSiteVideoViews extends Shortcode {
 	/**
 	 * Render Site Videoroom Host Template
 	 *
-	 * @param  int $room_id - The room ID.
+	 * @param int $room_id The room ID.
+	 *
 	 * @return string
 	 */
-	public function site_videoroom_host_template( int $room_id ) {
+	public function site_videoroom_host_template( int $room_id ): string {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 
 		$display_name = '';
@@ -52,10 +53,11 @@ class MVRSiteVideoViews extends Shortcode {
 	/**
 	 * Render Site Video Guest Template
 	 *
-	 * @param  int $host_id - ID of Host for calculating Headers.
+	 * @param int $host_id ID of Host for calculating Headers.
+	 *
 	 * @return string
 	 */
-	public function site_videoroom_guest_template( int $host_id ) {
+	public function site_videoroom_guest_template( int $host_id ): string {
 		$room_object   = Factory::get_instance( RoomMap::class )->get_room_info( $host_id );
 		$display_name  = $room_object->display_name;
 		$room_name     = $room_object->room_name;

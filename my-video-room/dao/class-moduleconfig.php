@@ -306,15 +306,15 @@ class ModuleConfig {
 
 		switch ( $module_status ) {
 			case self::ACTION_ENABLE:
-				Factory::get_instance( self::class )->update_enabled_status( $module_id, true );
+				$this->update_enabled_status( $module_id, true );
 				break;
 			case self::ACTION_DISABLE:
-				Factory::get_instance( self::class )->update_enabled_status( $module_id, false );
+				$this->update_enabled_status( $module_id, false );
 				break;
 		}
 
 		// Check enabled status to see which button to render.
-		$is_module_enabled = Factory::get_instance( self::class )->read_enabled_status( $module_id );
+		$is_module_enabled = $this->read_enabled_status( $module_id );
 
 		// Check if is sub tab to mark as such to strip out extra data in URL when called back.
 
@@ -399,10 +399,10 @@ class ModuleConfig {
 		if ( $module_status ) {
 			// Case Disable State Change.
 			if ( 'disable' === $module_status ) {
-				Factory::get_instance( self::class )->update_enabled_status( $module_id, false );
+				$this->update_enabled_status( $module_id, false );
 
 			} elseif ( 'enable' === $module_status ) {
-				Factory::get_instance( self::class )->update_enabled_status( $module_id, true );
+				$this->update_enabled_status( $module_id, true );
 			}
 		}
 
@@ -416,7 +416,7 @@ class ModuleConfig {
 		}
 
 		// Check enabled status to see which button to render.
-					$is_module_enabled = Factory::get_instance( self::class )->read_enabled_status( $module_id );
+					$is_module_enabled = $this->read_enabled_status( $module_id );
 					// Check if is sub tab to mark as such to strip out extra data in URL when called back.
 
 					$sub_tab_tag = '&subtab=1';
