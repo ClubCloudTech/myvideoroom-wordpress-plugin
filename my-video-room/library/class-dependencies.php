@@ -25,15 +25,8 @@ class Dependencies {
 	 *
 	 * @return bool
 	 */
-	public function is_buddypress_active() {
+	public function is_buddypress_active(): bool {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
-
-		if ( is_plugin_active( 'buddypress/bp-loader.php' ) ) {
-			// plugin is active.
-			return true;
-		} else {
-			return false;
-		}
+		return is_plugin_active( 'buddypress/bp-loader.php' );
 	}
-
 }

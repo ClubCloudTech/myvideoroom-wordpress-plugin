@@ -226,18 +226,18 @@ class SecurityTemplates extends Shortcode {
 	<p class="mvr-header-text">
 		<?php
 
-		$new_user   = get_userdata( $user_id );
+		$new_user = get_userdata( $user_id );
+
 		if ( $new_user->user_firstname ) {
-			$initial_admin_name = '<strong>' . esc_html( $new_user->user_firstname ) . '</strong>';
+			$initial_admin_name   = '<strong>' . esc_html( $new_user->user_firstname ) . '</strong>';
 			$secondary_admin_name = $initial_admin_name;
 		} elseif ( $new_user->user_nicename ) {
-			$initial_admin_name  = '<strong>' . esc_html( $new_user->user_nicename ) . '</strong>';
+			$initial_admin_name   = '<strong>' . esc_html( $new_user->user_nicename ) . '</strong>';
 			$secondary_admin_name = $initial_admin_name;
 		} else {
-			$initial_admin_name  = esc_html__( 'The administrator', 'my-video-room' );
-			$secondary_admin_name  = esc_html__( 'the administrator', 'my-video-room' );
+			$initial_admin_name   = esc_html__( 'The administrator', 'my-video-room' );
+			$secondary_admin_name = esc_html__( 'the administrator', 'my-video-room' );
 		}
-
 
 		printf(
 			/* translators: Both %s refer to the name of the administrator */

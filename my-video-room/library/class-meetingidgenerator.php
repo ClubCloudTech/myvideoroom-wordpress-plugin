@@ -128,12 +128,13 @@ class MeetingIdGenerator {
 	 * Constructs Invites for meetings
 	 * Function is called on to support Shortcode meeting functions
 	 *
-	 * @param  string $invite - Invite - the invite number.
-	 * @param  string $direction - inbound or outbound.
-	 * @param  string $input - the item to hash or decode.
+	 * @param  ?string $invite - Invite - the invite number.
+	 * @param  string  $direction - inbound or outbound.
+	 * @param  ?string $input - the item to hash or decode.
+	 *
 	 * @return string - the Invite or resulted de-hash.
 	 */
-	public function invite( string $invite = null, string $direction, string $input = null ) {
+	public function invite( ?string $invite, string $direction, string $input = null ) {
 
 		if ( $input && ! $invite && 'out' === $direction ) {
 			return self::get_meeting_hash_from_user_id( $input );
@@ -144,7 +145,6 @@ class MeetingIdGenerator {
 		}
 
 		if ( isset( $input ) ) {
-
 			$user = Factory::get_instance( WordPressUser::class )->get_wordpress_user_by_identifier_string( $input );
 
 			if ( ! $user ) {
@@ -152,7 +152,6 @@ class MeetingIdGenerator {
 			}
 
 			$user_id = $user->ID;
-
 		}
 
 		switch ( $direction ) {
@@ -171,7 +170,6 @@ class MeetingIdGenerator {
 		}
 
 		return $user_id;
-
 	}
 
 }

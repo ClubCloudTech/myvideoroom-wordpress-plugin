@@ -18,7 +18,6 @@ class UserVideoPreference {
 
 	const TABLE_NAME = SiteDefaults::TABLE_NAME_USER_VIDEO_PREFERENCE;
 
-
 	/**
 	 * Save a User Video Preference into the database
 	 *
@@ -56,6 +55,7 @@ class UserVideoPreference {
 		if ( ! $result ) {
 			throw new \Exception();
 		}
+
 		// Removing cache as conflict happening in rooms - to test.
 		// wp_cache_set( $cache_key, $user_video_preference );.
 		return $user_video_preference;
@@ -71,6 +71,7 @@ class UserVideoPreference {
 	 */
 	public function read( int $user_id, string $room_name ): ?UserVideoPreferenceEntity {
 		global $wpdb;
+
 		/*
 		$cache_key     = $this->create_cache_key( $user_id, $room_name );
 		$cached_result = wp_cache_get( $cache_key );
@@ -199,7 +200,8 @@ class UserVideoPreference {
 	 *
 	 * @param  int $new_post_id - new post_id to update preference table with.
 	 * @param  int $old_post_id - the old post that was deleted.
-	 * @return void|null
+	 *
+	 * @return bool|int
 	 */
 	public function update_post_id( int $new_post_id, int $old_post_id ) {
 		global $wpdb;
@@ -222,6 +224,7 @@ class UserVideoPreference {
 				'user_id' => $old_post_id,
 			)
 		);
+
 		// wp_cache_set( $cache_key, $user_video_preference );.
 		return $result;
 	}
@@ -244,20 +247,23 @@ class UserVideoPreference {
 	 * Get a Just Preference Data from the database
 	 * Returns layout ID, Reception ID, or Reception Enabled Status.
 	 *
-	 * @param int    $user_id The user id.
-	 * @param string $room_name The room name.
-	 * @param string $return_type - The flag for which type of setting to return.
+	 * @param int    $user_id     The user id.
+	 * @param string $room_name   The room name.
+	 * @param string $return_type The return type.
+	 *
+	 * @return string|bool
 	 */
 	public function read_user_video_settings( int $user_id, string $room_name, string $return_type ) {
 		global $wpdb;
+
 		$raw_sql = '
-		SELECT user_id, room_name, layout_id, reception_id, reception_enabled, reception_video_enabled, reception_video_url, show_floorplan
-		FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-		WHERE user_id = %d AND room_name = %s;
-	';
+			SELECT user_id, room_name, layout_id, reception_id, reception_enabled, reception_video_enabled, reception_video_url, show_floorplan
+			FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+			WHERE user_id = %d AND room_name = %s;
+		';
 
 		$prepared_query = $wpdb->prepare(
-                                            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$raw_sql,
 			array(
 				$user_id,
@@ -292,9 +298,11 @@ class UserVideoPreference {
 	 * Get Preference Data from the database
 	 * Returns layout ID, Reception ID, or Reception Enabled Status.
 	 *
-	 * @param int    $user_id The user id.
-	 * @param string $room_name The room name.
-	 * @param string $return_type - The room name.
+	 * @param int    $user_id       The user id.
+	 * @param string $room_name     The room name.
+	 * @param string $return_type   The room name.
+	 *
+	 * @return string|null
 	 */
 	public function read_user_settings( int $user_id, string $room_name, string $return_type ) {
 		global $wpdb;
@@ -303,10 +311,10 @@ class UserVideoPreference {
 		}
 
 		$raw_sql = '
-		SELECT user_id, room_name, ' . $return_type . '
-		FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-		WHERE user_id = %d AND room_name = %s;
-	';
+			SELECT user_id, room_name, ' . $return_type . '
+			FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+			WHERE user_id = %d AND room_name = %s;
+		';
 
 		$prepared_query = $wpdb->prepare(
 											// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
@@ -322,13 +330,4 @@ class UserVideoPreference {
 
 		return $row->$return_type;
 	}
-
-
-
-
-
-
-}//end class
-
-
-
+}

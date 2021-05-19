@@ -15,6 +15,7 @@ use MyVideoRoomPlugin\Core\VideoHelpers;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\SectionTemplates;
+use MyVideoRoomPlugin\Module\Security\Library\PageFilters as PageFiltersLibrary;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\Dependencies;
 
@@ -32,7 +33,7 @@ class MVRSiteVideoControllers {
 	public function sitevideo_shortcode( $params = array() ): string {
 		$id = $params['id'] ?? null;
 
-		return factory::get_instance( self::class )->sitevideo_switch( $id );
+		return $this->sitevideo_switch( $id );
 	}
 
 	/**
@@ -44,12 +45,12 @@ class MVRSiteVideoControllers {
 	public function sitevideo_switch( int $id ) {
 
 		// Fetch User Parameters and Roles...
-		$host_status = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Library\PageFilters::class )->allowed_roles_host( $id );
+		$host_status = Factory::get_instance( PageFiltersLibrary::class )->allowed_roles_host( $id );
 
 		if ( $host_status ) {
-			return Factory::get_instance( self::class )->site_videoroom_host_function( $id );
+			return $this->site_videoroom_host_function( $id );
 		} else {
-			return Factory::get_instance( self::class )->site_videoroom_guest_shortcode( $id );
+			return $this->site_videoroom_guest_shortcode( $id );
 		}
 	}
 
@@ -75,14 +76,14 @@ class MVRSiteVideoControllers {
 
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
 		if ( Factory::get_instance( ModuleConfig::class )->read_enabled_status( Dependencies::MODULE_SECURITY_ID ) ) {
-			$render_block = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Library\SecurityEngine::class )->render_block( $post_id, 'sitevideohost', MVRSiteVideo::MODULE_SITE_VIDEO_ID, $room_name, true );
+			$render_block = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Library\SecurityEngine::class )->render_block( $post_id, 'sitevideohost', MVRSiteVideo::MODULE_SITE_VIDEO_ID, $room_name );
 			if ( $render_block ) {
 				return $render_block;
 			}
 		}
 
 		// Get Room Parameters.
-		$video_template  = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $post_id, $room_name, true );
+		$video_template = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $post_id, $room_name, true );
 
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $display_name ) )

@@ -15,97 +15,94 @@ class SecurityVideoPreference {
 	/**
 	 * User_id
 	 *
-	 * @var int $user_id
+	 * @var int
 	 */
 	private int $user_id;
 
 	/**
 	 * Room_name
 	 *
-	 * @var string $room_name
+	 * @var string
 	 */
 	private string $room_name;
 
 	/**
 	 * Allowed_roles
 	 *
-	 * @var string $allowed_roles
+	 * @var ?string
 	 */
 	private ?string $allowed_roles;
 
 	/**
 	 * Blocked_roles
 	 *
-	 * @var string $blocked_roles
+	 * @var ?string
 	 */
 	private ?string $blocked_roles;
 
 	/**
 	 * Room_disabled
 	 *
-	 * @var bool $room_disabled
+	 * @var bool
 	 */
 	private bool $room_disabled;
 
 	/**
 	 * Site_override_enabled
 	 *
-	 * @var bool site_override_enabled
+	 * @var bool
 	 */
 	private bool $site_override_enabled;
 
 	/**
 	 * Anonymous_enabled
 	 *
-	 * @var bool $anonymous_enabled
+	 * @var bool
 	 */
 	private bool $anonymous_enabled;
 
 	/**
 	 * Allow_role_control_enabled
 	 *
-	 * @var bool $allow_role_control_enabled
+	 * @var bool
 	 */
 	private bool $allow_role_control_enabled;
 
 	/**
 	 * User_id
 	 *
-	 * @var bool $block_role_control_enabled
+	 * @var bool
 	 */
 	private bool $block_role_control_enabled;
 
 	/**
 	 * Restrict_group_to_members_setting
 	 *
-	 * @var string $restrict_group_to_members_setting
+	 * @var ?bool
 	 */
-	private ?string $restrict_group_to_members_setting;
+	private ?bool $restrict_group_to_members_enabled;
 
 	/**
 	 * Bp_friends_setting
 	 *
-	 * @var string $bp_friends_setting
+	 * @var ?string
 	 */
 	private ?string $bp_friends_setting;
-
-
-
 
 	/**
 	 * SecurityVideoPreference constructor.
 	 *
-	 * @param int         $user_id - The User ID.
-	 * @param string      $room_name - The Room Name.
-	 * @param string|null $allowed_roles - Roles Allowed to be Hosted/Shown.
-	 * @param string|null $blocked_roles - Invert Roles to Blocked Instead.
-	 * @param bool        $room_disabled - Disable Room from Displaying.
-	 * @param bool        $anonymous_enabled - Disable Room from Displaying to Signed Out Users.
-	 * @param bool        $allow_role_control_enabled - Disable Room to users who arent in specific roles.
-	 * @param bool        $block_role_control_enabled - Flips Allowed Roles to Blocked Roles instead.
-	 * @param bool        $site_override_enabled - Overrides User settings with central ones.
-	 * @param string|null $restrict_group_to_members_setting - Blocks rooms from outside users (used for BuddyPress initially but can use any group plugin).
-	 * @param string|null $bp_friends_setting - Setting for BuddyPress Friends (can be other platforms with plugins).
+	 * @param int     $user_id                              The User ID.
+	 * @param string  $room_name                            The Room Name.
+	 * @param ?string $allowed_roles                        Roles Allowed to be Hosted/Shown.
+	 * @param ?string $blocked_roles                        Invert Roles to Blocked Instead.
+	 * @param bool    $room_disabled                        Disable Room from Displaying.
+	 * @param bool    $anonymous_enabled                    Disable Room from Displaying to Signed Out Users.
+	 * @param bool    $allow_role_control_enabled           Disable Room to users who arent in specific roles.
+	 * @param bool    $block_role_control_enabled           Flips Allowed Roles to Blocked Roles instead.
+	 * @param bool    $site_override_enabled                Overrides User settings with central ones.
+	 * @param ?string $restrict_group_to_members_enabled    Blocks rooms from outside users (used for BuddyPress initially but can use any group plugin).
+	 * @param ?string $bp_friends_setting                   Setting for BuddyPress Friends (can be other platforms with plugins).
 	 */
 	public function __construct(
 		int $user_id,
@@ -117,7 +114,7 @@ class SecurityVideoPreference {
 		bool $allow_role_control_enabled = false,
 		bool $block_role_control_enabled = false,
 		bool $site_override_enabled = false,
-		string $restrict_group_to_members_setting = null,
+		string $restrict_group_to_members_enabled = null,
 		string $bp_friends_setting = null
 
 	) {
@@ -130,7 +127,7 @@ class SecurityVideoPreference {
 		$this->allow_role_control_enabled        = $allow_role_control_enabled;
 		$this->block_role_control_enabled        = $block_role_control_enabled;
 		$this->site_override_enabled             = $site_override_enabled;
-		$this->restrict_group_to_members_setting = $restrict_group_to_members_setting;
+		$this->restrict_group_to_members_enabled = $restrict_group_to_members_enabled;
 		$this->bp_friends_setting                = $bp_friends_setting;
 	}
 
@@ -302,9 +299,9 @@ class SecurityVideoPreference {
 	/**
 	 * Get Restrict Group to Members State.
 	 *
-	 * @return bool
+	 * @return ?bool
 	 */
-	public function check_restrict_group_to_members_setting(): ?string {
+	public function check_restrict_group_to_members_setting(): ?bool {
 		return $this->restrict_group_to_members_enabled;
 	}
 
@@ -315,7 +312,7 @@ class SecurityVideoPreference {
 	 *
 	 * @return SecurityVideoPreference
 	 */
-	public function set_restrict_group_to_members_setting( $restrict_group_to_members_enabled ): SecurityVideoPreference {
+	public function set_restrict_group_to_members_setting( bool $restrict_group_to_members_enabled ): SecurityVideoPreference {
 		$this->restrict_group_to_members_enabled = $restrict_group_to_members_enabled;
 		return $this;
 	}
@@ -325,7 +322,7 @@ class SecurityVideoPreference {
 	 *
 	 * @return bool
 	 */
-	public function check_bp_friends_setting(): ?string {
+	public function check_bp_friends_setting(): ?bool {
 		return $this->bp_friends_setting;
 	}
 
@@ -336,7 +333,7 @@ class SecurityVideoPreference {
 	 *
 	 * @return SecurityVideoPreference
 	 */
-	public function set_bp_friends_setting( $bp_friends_setting ): SecurityVideoPreference {
+	public function set_bp_friends_setting( bool $bp_friends_setting ): SecurityVideoPreference {
 		$this->bp_friends_setting = $bp_friends_setting;
 		return $this;
 	}

@@ -10,6 +10,7 @@ namespace MyVideoRoomPlugin\DAO;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
+use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
@@ -32,7 +33,9 @@ class RoomAdmin extends Shortcode {
 	public function get_videoroom_info( string $room_name, string $type = 'name' ) {
 		// Trap Blank Input.
 		if ( ! $room_name ) {
-			return null;}
+			return null;
+		}
+
 		// Get Data from Database.
 		$room_post_id = Factory::get_instance( RoomMap::class )->read( $room_name );
 		// Retrieve Post Object from Post.
@@ -54,17 +57,17 @@ class RoomAdmin extends Shortcode {
 		} elseif ( 'url' === $type ) {
 			return get_site_url() . '/' . $post_slug . '/';
 		}
-
 	}
 
 	/**
 	 * Create a page into the Worpress environment, register in page table, and ensure its enabled.
 	 *
-	 * @param  string $room_name - name of room to build.
-	 * @param  string $display_title - Title of Page.
-	 * @param  string $slug - Worpress Slug to assign page.
-	 * @param  string $room_type - Type of Room in DB.
-	 * @param  string $old_post_id - Type Old Room in DB to update the value to the new post..
+	 * @param  string  $room_name        Name of room to build.
+	 * @param  string  $display_title    Title of Page.
+	 * @param  string  $slug             Worpress Slug to assign page.
+	 * @param  string  $room_type        Type of Room in DB.
+	 * @param  ?string $old_post_id     Type Old Room in DB to update the value to the new post..
+	 *
 	 * @return null  - page executes database functions doesn't return to user.
 	 */
 	public function create_and_check_page( string $room_name, string $display_title, string $slug, string $room_type, string $old_post_id = null ) {
@@ -107,7 +110,7 @@ class RoomAdmin extends Shortcode {
 			return null;
 		} elseif ( RoomMap::PAGE_STATUS_ORPHANED === $check_page_exists ) {
 			// Update the DB if Orphan.
-			Factory::get_instance( RoomMap::class )->update_room_post_id( $room_name, $post_id, $room_type, $display_title, $slug );
+			Factory::get_instance( RoomMap::class )->update_room_post_id( $post_id, $room_name );
 			return null;
 		}
 	}
@@ -117,17 +120,14 @@ class RoomAdmin extends Shortcode {
 	 * @return bool yes it does or no it doesnt.
 	 */
 	public function check_default_settings_exist(): bool {
-
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
+
 		// Check Exists.
 		$current_user_setting = $video_preference_dao->read(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
-		if ( $current_user_setting ) {
-			return true;
-		} else {
-			return false;
-		}
+
+		return (bool) $current_user_setting;
 	}
 }

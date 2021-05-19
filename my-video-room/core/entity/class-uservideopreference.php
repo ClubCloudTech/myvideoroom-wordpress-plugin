@@ -218,9 +218,9 @@ class UserVideoPreference {
 	/**
 	 * Gets Custom Reception Video Status.
 	 *
-	 * @return string
+	 * @return ?string
 	 */
-	public function get_reception_video_url_setting() {
+	public function get_reception_video_url_setting(): ?string {
 		return $this->reception_video_url;
 	}
 
@@ -245,16 +245,4 @@ class UserVideoPreference {
 
 		return $this;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 }
