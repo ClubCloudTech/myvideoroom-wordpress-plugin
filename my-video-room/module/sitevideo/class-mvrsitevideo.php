@@ -13,6 +13,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
@@ -74,6 +75,7 @@ class MVRSiteVideo extends Shortcode {
 			'myvideoroom_admin_init',
 			function () {
 				Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
+				Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 			}
 		);
 

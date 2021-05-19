@@ -31,7 +31,7 @@ class SecurityVideoPreference extends Shortcode {
 	 * Provide Runtime
 	 */
 	public function init() {
-		$this->add_shortcode( 'choose_security_settings', array( $this, 'choose_settings_shortcode' ) );
+		$this->add_shortcode( 'choose_security_settings', array( $this, 'choose_security_settings_shortcode' ) );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class SecurityVideoPreference extends Shortcode {
 	 * @return string
 	 * @throws \Exception When the update fails.
 	 */
-	public function choose_settings_shortcode( $attributes = array() ): string {
+	public function choose_security_settings_shortcode( $attributes = array() ): string {
 		$room_name = $attributes['room'] ?? 'default';
 		$user_id   = $attributes['user'] ?? null;
 
