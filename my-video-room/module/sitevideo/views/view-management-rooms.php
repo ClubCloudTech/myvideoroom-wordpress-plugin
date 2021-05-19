@@ -17,8 +17,10 @@ use \MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
-return function(): string {
-	wp_enqueue_script( 'myvideoroom-remove-admin-header' );
+return function(
+	int $room_id,
+	string $input_type = null
+	): string {
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
@@ -51,8 +53,7 @@ return function(): string {
 	//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a global not user input.
 	if ( null !== ( esc_textarea( wp_unslash( $_GET['id'] ) ) ) ) {
 	//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a global not user input.
-		$room_id_string = esc_textarea( wp_unslash( $_GET['id'] ) );
-		$room_id        = intval( $room_id_string );
+		
 
 	} else {
 		echo 'No Room ID Provided - exiting';
