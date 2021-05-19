@@ -31,11 +31,6 @@ return function (
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	wp_enqueue_script( 'myvideoroom-protect-input' );
 	ob_start();
-	$path   = '/core/views/header/header.php';
-	$render = require WP_PLUGIN_DIR . '/my-video-room' . $path;
-
-	// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
-	echo $render( $messages );
 
 	$post_id = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( MVRSiteVideo::ROOM_NAME_SITE_VIDEO, 'post_id' );
 
