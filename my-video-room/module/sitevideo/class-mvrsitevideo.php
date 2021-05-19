@@ -12,6 +12,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
@@ -95,6 +96,9 @@ class MVRSiteVideo extends Shortcode {
 			'myvideoroom_sitevideo_settings',
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
+
+		// Listener for Handling Room Add. Listens for Room Adds- and Handles Form below.
+		Factory::get_instance( MVRSiteVideoListeners::class )->site_videoroom_add_page();
 	}
 
 	/**

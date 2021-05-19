@@ -39,10 +39,6 @@ return function (
 
 	$post_id = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( MVRSiteVideo::ROOM_NAME_SITE_VIDEO, 'post_id' );
 
-	global $wp;
-
-	// Listener for Handling Room Add. Listens for Room Adds- and Handles Form below.
-	Factory::get_instance( MVRSiteVideoListeners::class )->site_videoroom_add_page();
 	// Listener for Handling Regeneration of Site Video Room Pages in case of orphaning.
 	Factory::get_instance( MVRSiteVideoListeners::class )->site_videoroom_regenerate_page();
 

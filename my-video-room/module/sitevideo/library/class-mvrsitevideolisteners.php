@@ -26,6 +26,8 @@ class MVRSiteVideoListeners extends Shortcode {
 	 * @return void
 	 */
 	public function site_videoroom_add_page() {
+
+
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) && isset( $_POST['myvideoroom_add_room_title'] ) &&
 			'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['myvideoroom_add_room_slug'] )

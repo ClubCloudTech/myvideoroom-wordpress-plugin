@@ -4,7 +4,7 @@
  * @package MyVideoRoomPlugin\Module\SiteVideo
  */
 
-/*global myvideroom_sitevideo_settings*/
+/*global myvideoroom_sitevideo_settings*/
 
 (function ( $ ) {
 	$( '.myvideoroom-sitevideo-settings' ).on(
@@ -26,7 +26,13 @@
 						inputType: input_type
 					},
 					success: function (response) {
-						$( '.mvr-security-room-host' ).html( response );
+						var $container = $( '.mvr-security-room-host' );
+
+						$container.html( response );
+
+						if ( window.myvideoroom_tabbed_init ) {
+							window.myvideoroom_tabbed_init( $container );
+						}
 					},
 					error: function (response) {
 
