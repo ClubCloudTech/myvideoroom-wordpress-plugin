@@ -11,6 +11,7 @@
 		'click',
 		function (e) {
 			var post_id = $( this ).data( 'postId' );
+			var room_name = $( this ).data( 'roomName' );
 
 			var ajax_url = myvideoroom_sitevideo_settings.ajax_url;
 
@@ -21,7 +22,8 @@
 					url: ajax_url,
 					data: {
 						action: 'myvideoroom_sitevideo_settings',
-						postId: post_id
+						postId: post_id,
+						roomName: room_name
 					},
 					success: function (response) {
 						$( '.mvr-security-room-host' ).html( response );
