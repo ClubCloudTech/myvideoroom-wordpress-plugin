@@ -220,11 +220,17 @@ ul {
 	padding: 4px;
 	margin: 1px;
 	color: rgb(41, 41, 41);
-	display:inline-block;
-  }
+	display: inline-block;
+	cursor: pointer;
+}
+
+.myvideoroom-sitevideo-add-room-button {
+	display: none;
+}
 
 .mvr-add-page-form {
-	display:none;
+	position: relative;
+	display: block;
 	font-size: 14px;
 	font-weight: 500;
 	background-color:rgb(253, 253, 253)!important;
@@ -232,12 +238,23 @@ ul {
 	width: 70%!important;
 	padding: 8px;
 	color: rgb(41, 41, 41);
-	}
+}
 
-.mvr-add-page:focus + .mvr-add-page-form{
-	display:block;
-	}
+.mvr-add-page-form .close {
+	position: absolute;
+	top: -15px;
+	right: -15px;y-video-room/dao/class-uservideopreference.php
+	border-radius: 50%;
+	line-height: 30px;
+	font-size: 20px;
+	width: 30px;
+	text-align: center;
+	display: block;
+	cursor: pointer;
+	background-color: #FFFFFF;
+	border: 1px solid #000000;
+}
 
-.mvr-add-page-form:hover {
-	display: block!important;
-	}
+.mvr-add-page-form .close:hover {
+	background-color: #CCCCCC;
+}

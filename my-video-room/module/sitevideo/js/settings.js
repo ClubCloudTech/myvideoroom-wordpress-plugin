@@ -10,8 +10,8 @@
 	$( '.myvideoroom-sitevideo-settings' ).on(
 		'click',
 		function (e) {
-			var post_id   = $( this ).data( 'postId' );
-			var room_name = $( this ).data( 'roomName' );
+			var post_id = $( this ).data( 'postId' );
+			var input_type = $( this ).data( 'inputType' );
 
 			var ajax_url = myvideoroom_sitevideo_settings.ajax_url;
 
@@ -23,7 +23,7 @@
 					data: {
 						action: 'myvideoroom_sitevideo_settings',
 						postId: post_id,
-						roomName: room_name
+						inputType: input_type
 					},
 					success: function (response) {
 						var $container = $( '.mvr-security-room-host' );

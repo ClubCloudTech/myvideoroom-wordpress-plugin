@@ -124,5 +124,6 @@ class SecurityEngine {
 				}
 			}
 		}
+		return null;
 	}
 }

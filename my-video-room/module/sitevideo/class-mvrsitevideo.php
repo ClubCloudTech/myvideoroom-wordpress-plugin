@@ -83,6 +83,14 @@ class MVRSiteVideo extends Shortcode {
 			true
 		);
 
+		\wp_enqueue_script(
+			'myvideoroom-sitevideo-add-room-js',
+			\plugins_url( '/js/add-room.js', \realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			Factory::get_instance( Version::class )->get_plugin_version(),
+			true
+		);
+
 		\wp_localize_script(
 			'myvideoroom-sitevideo-settings-js',
 			'myvideoroom_sitevideo_settings',
@@ -161,9 +169,12 @@ class MVRSiteVideo extends Shortcode {
 	 * Get the setting section
 	 */
 	public function get_ajax_page_settings() {
-		$post_id = Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
-		$render  = require WP_PLUGIN_DIR . '/my-video-room/module/sitevideo/views/view-management-rooms.php';
-		echo $render( $post_id );
+		$post_id     = Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
+		$post_id_int = intval( $post_id );
+		$input_type  = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
+		$render      = require WP_PLUGIN_DIR . '/my-video-room/module/sitevideo/views/view-management-rooms.php';
+		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
+		echo $render( $post_id_int, $input_type );
 		die();
 	}
 }

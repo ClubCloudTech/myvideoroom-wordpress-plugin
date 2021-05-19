@@ -21,9 +21,7 @@ return function(
 	int $room_id,
 	string $input_type = null
 	): string {
-	wp_enqueue_script( 'myvideoroom-admin-tabs' );
-	wp_enqueue_style( 'myvideoroom-template' );
-	wp_enqueue_style( 'myvideoroom-menutab-header' );
+
 	ob_start();
 
 	// Delete Room Handler.
@@ -39,7 +37,7 @@ return function(
 	// Rendering Only Default Config Page.
 
 	//phpcs:ignore --WordPress.Security.NonceVerification.Recommended - Not needed as only using it as a flag - no processing.
-	if ( isset( $_SERVER['REQUEST_METHOD'] ) && isset( $_GET['manage'] ) && isset( $_GET['id'] ) && ( 'true' === $_GET['manage'] ) ) {
+	if ( 'admin' === $input_type ) {
 		echo '<div class="mvr-nav-shortcode-outer-wrap mvr-security-room-host">';
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Escaped.
 		echo Factory::get_instance( UserVideoPreference::class )->choose_settings(
@@ -70,20 +68,20 @@ return function(
 	?>
 <nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 	<ul class="menu">
-		<a class="nav-tab nav-tab-active" href="#page1" style><?php esc_html_e( 'Room Hosts', 'my-video-room' ); ?>
+		<a class="nav-tab nav-tab-active" href="#page1"><?php esc_html_e( 'Room Hosts', 'my-video-room' ); ?>
 		</a>
 		<?php
 		if ( $security_enabled ) {
 			?>
-			<a class="nav-tab" href="#page2" style><?php esc_html_e( 'Room Permissions', 'my-video-room' ); ?> </a>
+			<a class="nav-tab" href="#page2"><?php esc_html_e( 'Room Permissions', 'my-video-room' ); ?> </a>
 			<?php
 		}
 		?>
-		<a class="nav-tab" href="#page4" style><?php esc_html_e( 'Video Settings', 'my-video-room' ); ?></a>
+		<a class="nav-tab" href="#page4"><?php esc_html_e( 'Video Settings', 'my-video-room' ); ?></a>
 
 	</ul>
 </nav>
-<div class="mvr-nav-shortcode-outer-wrap mvr-security-room-host">
+
 	<?php
 	if ( $security_enabled ) {
 		?>
@@ -112,7 +110,7 @@ return function(
 			?>
 		</p>
 	</article>
-</div>
+
 	<?php
 
 	return ob_get_clean();
