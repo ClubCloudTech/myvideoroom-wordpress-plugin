@@ -4,13 +4,13 @@
  * @package MyVideoRoomPlugin\Module\SiteVideo
  */
 
-/*global myvideroom_sitevideo_settings*/
+/*global myvideoroom_sitevideo_settings*/
 
 (function ( $ ) {
 	$( '.myvideoroom-sitevideo-settings' ).on(
 		'click',
 		function (e) {
-			var post_id = $( this ).data( 'postId' );
+			var post_id   = $( this ).data( 'postId' );
 			var room_name = $( this ).data( 'roomName' );
 
 			var ajax_url = myvideoroom_sitevideo_settings.ajax_url;
@@ -26,7 +26,13 @@
 						roomName: room_name
 					},
 					success: function (response) {
-						$( '.mvr-security-room-host' ).html( response );
+						var $container = $( '.mvr-security-room-host' );
+
+						$container.html( response );
+
+						if ( window.myvideoroom_tabbed_init ) {
+							window.myvideoroom_tabbed_init( $container );
+						}
 					},
 					error: function (response) {
 

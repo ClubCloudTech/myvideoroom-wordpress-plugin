@@ -67,10 +67,10 @@ class RoomAdmin extends RoomAdminSetup {
 			}
 
 			// Insert into DB as Page Didn't Exist.
-			if ( 'No' === $check_page_exists ) {
+			if ( RoomMap::PAGE_STATUS_NOT_EXISTS === $check_page_exists ) {
 				Factory::get_instance( RoomMap::class )->register_room_in_db( $room_name, $post_id, $room_type, $display_title, $slug );
 				return null;
-			} elseif ( 'Orphan' === $check_page_exists ) {
+			} elseif ( RoomMap::PAGE_STATUS_ORPHANED === $check_page_exists ) {
 				// Update the DB if Orphan.
 				Factory::get_instance( RoomMap::class )->update_room_post_id( $room_name, $post_id, $room_type, $display_title, $slug );
 				return null;

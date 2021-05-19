@@ -5,7 +5,6 @@
  */
 
 (function ($) {
-	var $tabs = $( '.myvideoroom-nav-tab-wrapper a' );
 
 	/**
 	 * Hide all non active pages
@@ -21,24 +20,36 @@
 		);
 	};
 
-	hide_all_non_active();
+	/**
+	 * Initialise the plugin
+	 *
+	 * @param {JQuery} $parent
+	 */
+	var init = function ( $parent ) {
+		hide_all_non_active();
 
-	$tabs.each(
-		function () {
-			var $tab = $( this );
-			$tab.on(
-				'click',
-				function (event) {
-					$tabs.removeClass( 'nav-tab-active' );
-					hide_all_non_active();
+		var $tabs = $( '.myvideoroom-nav-tab-wrapper a', $parent );
+		$tabs.each(
+			function () {
+				var $tab = $( this );
+				$tab.on(
+					'click',
+					function (event) {
+						$tabs.removeClass( 'nav-tab-active' );
+						hide_all_non_active();
 
-					$tab.addClass( 'nav-tab-active' );
-					$( $tab.attr( 'href' ) ).show();
+						$tab.addClass( 'nav-tab-active' );
+						$( $tab.attr( 'href' ) ).show();
 
-					event.preventDefault();
-					return false;
-				}
-			);
-		}
-	);
+						event.preventDefault();
+						return false;
+					}
+				);
+			}
+		);
+	}
+
+	init( $( document ) );
+
+	window.myvideoroom_tabbed_init = init;
 })( jQuery );
