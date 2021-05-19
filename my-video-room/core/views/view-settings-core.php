@@ -26,10 +26,6 @@ use MyVideoRoomPlugin\Core\SiteDefaults;
 return function (
 	array $messages = array()
 ): string {
-
-	$render = require __DIR__ . '/header/header.php';
-	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
-	echo $render( $messages );
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
@@ -42,7 +38,6 @@ return function (
 		if ( $security_enabled ) {
 			echo esc_html( Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons::class )->site_wide_enabled() );
 		}
-
 		echo '<p>';
 		esc_html_e(
 			'The Following Settings define site wide video default parameters in case other modules have not set parameters there. These defaults will be used 

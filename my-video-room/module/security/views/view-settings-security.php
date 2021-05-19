@@ -28,10 +28,6 @@ return function (
 	): string {
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
-	$path   = '/core/views/header/header.php';
-	$render = require WP_PLUGIN_DIR . '/my-video-room' . $path;
-	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Output already rendered safe upstream.
-	echo $render( $messages );
 	ob_start(); ?>
 <div class="wrap">
 

@@ -191,25 +191,8 @@ return function (
 				<hr>
 				<?php
 
-				// TODO This needs to be an action hook.
-				if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
-					global $bp;
-					$is_group_page = $bp->groups->current_group->slug;
-					$room_object   = Factory::get_instance( RoomMap::class )->get_room_info( $user_id );
-					// Group setting from BP.
-					if ( ( Factory::get_instance( ModuleConfig::class )->module_activation_status( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::MODULE_BUDDYPRESS_GROUP_ID ) ) && ! $room_object &&
-					( Factory::get_instance( ModuleConfig::class )->module_activation_status( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::MODULE_BUDDYPRESS_ID ) ) && $is_group_page ) {
-						echo esc_attr( Factory::get_instance( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPressConfig::class )->render_group_menu_options( $bp->groups->current_group->creator_id, $room_name, $id_index ) );
-					} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === $user_id ) {
-						echo esc_attr( Factory::get_instance( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPressConfig::class )->render_group_menu_options( SiteDefaults::USER_ID_SITE_DEFAULTS, MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::MODULE_BUDDYPRESS_GROUP_NAME, $id_index ) );
-					}
-					// Friends Setting from BP.
+				echo do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting );
 
-					if ( ( Factory::get_instance( ModuleConfig::class )->module_activation_status( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID ) ) &&
-					( Factory::get_instance( ModuleConfig::class )->module_activation_status( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::MODULE_BUDDYPRESS_ID ) ) && ! $room_object && ! $is_group_page ) {
-						echo esc_attr( Factory::get_instance( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPressConfig::class )->render_friends_menu_options( $user_id, $room_name, $id_index ) );
-					}
-				}
 				?>
 
 

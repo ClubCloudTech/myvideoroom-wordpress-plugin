@@ -14,7 +14,6 @@ use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
-use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 
 /**
@@ -134,7 +133,7 @@ class MVRSiteVideo extends Shortcode {
 	}
 
 	/**
-	 * Render Security Admin Page.
+	 * Render Site Video Admin Page.
 	 */
 	public function render_sitevideo_admin_page() {
 		$active_tab = self::MODULE_SITE_VIDEO_NAME;
@@ -146,9 +145,8 @@ class MVRSiteVideo extends Shortcode {
 		return 'Powered by MyVideoRoom';
 	}
 
-
 	/**
-	 * Get the setting section
+	 * Get Site Video Ajax Data
 	 */
 	public function get_ajax_page_settings() {
 		$post_id     = Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
