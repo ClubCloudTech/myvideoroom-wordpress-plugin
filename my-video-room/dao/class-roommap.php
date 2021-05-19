@@ -15,7 +15,10 @@ use MyVideoRoomPlugin\Factory;
  * Registers Rooms Permanently in Database - base for WCBookings, Meet Center, Site Video.
  */
 class RoomMap {
-	const TABLE_NAME = SiteDefaults::TABLE_NAME_ROOM_MAP;
+	const TABLE_NAME             = SiteDefaults::TABLE_NAME_ROOM_MAP;
+	const PAGE_STATUS_EXISTS     = 'page-exists';
+	const PAGE_STATUS_NOT_EXISTS = 'page-not-exists';
+	const PAGE_STATUS_ORPHANED   = 'page-not-exists-but-has-reference';
 
 	/**
 	 * Get a PostID from the Database for a Page
@@ -182,14 +185,14 @@ class RoomMap {
 		// First Check Database for Room and Post ID - return No if blank.
 		$post_id_check = Factory::get_instance( self::class )->read( $room_name );
 		if ( ! $post_id_check ) {
-			return 'No';
+			return self::PAGE_STATUS_NOT_EXISTS;
 		}
 		// Second Check Post Actually Exists in WP still (user hasn't deleted page).
 		$post_object = get_post( $post_id_check );
 		if ( ! $post_object ) {
-			return 'Orphan';
+			return self::PAGE_STATUS_ORPHANED;
 		} else {
-			return 'Yes';
+			return self::PAGE_STATUS_EXISTS;
 		}
 	}
 

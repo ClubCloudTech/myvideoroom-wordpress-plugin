@@ -72,7 +72,7 @@ class RoomAdmin extends Shortcode {
 		$check_page_exists = Factory::get_instance( RoomMap::class )->check_page_exists( $room_name );
 
 		// Check_page_exists has three states, Yes, No, Or Orphan - if yes - exit function, if no create the room, if orphan delete room mapping in database and create room again.
-		if ( 'Yes' === $check_page_exists ) {
+		if ( RoomMap::PAGE_STATUS_EXISTS === $check_page_exists ) {
 			return null;
 		}
 
@@ -101,12 +101,11 @@ class RoomAdmin extends Shortcode {
 				Factory::get_instance( \MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference::class )->update_post_id( $post_id, $old_post_id );
 			}
 		}
-
 		// Insert into DB as Page Didn't Exist.
-		if ( 'No' === $check_page_exists ) {
+		if ( RoomMap::PAGE_STATUS_NOT_EXISTS === $check_page_exists ) {
 			Factory::get_instance( RoomMap::class )->register_room_in_db( $room_name, $post_id, $room_type, $display_title, $slug );
 			return null;
-		} elseif ( 'Orphan' === $check_page_exists ) {
+		} elseif ( RoomMap::PAGE_STATUS_ORPHANED === $check_page_exists ) {
 			// Update the DB if Orphan.
 			Factory::get_instance( RoomMap::class )->update_room_post_id( $room_name, $post_id, $room_type, $display_title, $slug );
 			return null;

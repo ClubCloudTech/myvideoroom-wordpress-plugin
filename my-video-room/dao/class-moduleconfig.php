@@ -20,8 +20,11 @@ class ModuleConfig {
 
 	const TABLE_NAME = SiteDefaults::TABLE_NAME_MODULE_CONFIG;
 
-	const ACTION_ENABLE  = 'enable';
-	const ACTION_DISABLE = 'disable';
+	const ACTION_ENABLE          = 'enable';
+	const ACTION_DISABLE         = 'disable';
+	const PAGE_STATUS_EXISTS     = 'page-exists';
+	const PAGE_STATUS_NOT_EXISTS = 'page-not-exists';
+	const PAGE_STATUS_ORPHANED   = 'page-not-exists-but-has-reference';
 
 	/**
 	 * Get a User Video Preference from the database
@@ -259,14 +262,14 @@ class ModuleConfig {
 
 		$post_id_check = Factory::get_instance( RoomMap::class )->read( $room_name );
 		if ( ! $post_id_check ) {
-			return 'No';
+			return self::PAGE_STATUS_NOT_EXISTS;
 		}
 		// Second Check Post Actually Exists in WP still (user hasn't deleted page).
 		$post_object = get_post( $post_id_check );
 		if ( ! $post_object ) {
-			return 'Orphan';
+			return self::PAGE_STATUS_ORPHANED;
 		} else {
-			return 'Yes';
+			return self::PAGE_STATUS_EXISTS;
 		}
 	}
 
