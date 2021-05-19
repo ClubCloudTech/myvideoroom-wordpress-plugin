@@ -130,7 +130,6 @@ class MVRSiteVideo extends Shortcode {
 	 * @return null as its a database function.
 	 */
 	public function create_site_videoroom_page( $old_post_id = null ) {
-
 		return Factory::get_instance( RoomAdmin::class )->create_and_check_page(
 			self::ROOM_NAME_SITE_VIDEO,
 			get_bloginfo( 'name' ) . ' ' . self::ROOM_TITLE_SITE_VIDEO,

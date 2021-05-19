@@ -241,9 +241,7 @@ return function (
 					<p class="mvr-preferences-paragraph">
 					<?php
 					esc_html_e(
-						'This setting controls whether you want your guests to see a video or movie channel if Reception is enabled.
-						Enter a url in the form of https://youvideoservice.com/yourvideofolder/video.mp4 - and this video will be displayed to your guests in your Dynamic
-						reception areas if you have enabled a guest reception template option that can show video.',
+						'This setting controls whether you want your guests to see a video or movie channel if Reception is enabled. Enter a url in the form of https://youvideoservice.com/yourvideofolder/video.mp4 - and this video will be displayed to your guests in your Dynamic reception areas if you have enabled a guest reception template option that can show video.',
 						'my-video-room'
 					);
 					?>

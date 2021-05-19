@@ -56,7 +56,7 @@ class SecurityVideoPreference extends Shortcode {
 	public function check_for_update_request( ) {
 		if ( isset( $_SERVER['REQUEST_METHOD'] )
 			&& 'POST' === $_SERVER['REQUEST_METHOD'] &
-			'securityroomhost' === ( $_POST['myvideoroom_type'] ?? '' )
+			'securityvideopreference' === ( $_POST['myvideoroom_type'] ?? '' )
 		) {
 
 			$room_name = sanitize_text_field( wp_unslash( $_POST['myvideoroom_room_name'] ?? '' ) );

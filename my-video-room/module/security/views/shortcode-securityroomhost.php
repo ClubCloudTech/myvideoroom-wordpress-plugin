@@ -160,8 +160,7 @@ return function (
 				<p class="mvr-preferences-paragraph">
 				<?php
 				esc_html_e(
-					'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please
-					consider the security ramifications of this setting. ',
+					'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please consider the security ramifications of this setting. ',
 					'my-video-room'
 				);
 				?>
