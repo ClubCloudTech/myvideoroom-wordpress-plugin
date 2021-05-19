@@ -157,9 +157,12 @@ class MVRSiteVideo extends Shortcode {
 	 * Get the setting section
 	 */
 	public function get_ajax_page_settings() {
-		$post_id = Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
-		$render  = require WP_PLUGIN_DIR . '/my-video-room/module/sitevideo/views/view-management-rooms.php';
-		echo $render( $post_id );
+		$post_id     = Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
+		$post_id_int = intval( $post_id );
+		$input_type  = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
+		$render      = require WP_PLUGIN_DIR . '/my-video-room/module/sitevideo/views/view-management-rooms.php';
+		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
+		echo $render( $post_id_int, $input_type );
 		die();
 	}
 }

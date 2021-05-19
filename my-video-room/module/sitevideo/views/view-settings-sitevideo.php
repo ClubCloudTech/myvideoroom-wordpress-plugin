@@ -75,7 +75,7 @@ return function (
 			<?php
 			//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a superglobal not user input.
 			$slug = admin_url( 'admin.php?page=' . esc_textarea( wp_unslash( $_GET['page'] ) ) );
-			echo '<a href="' . esc_url_raw( $slug ) . '&tab=' . esc_textarea( MVRSiteVideo::MODULE_ROOM_MANAGEMENT_NAME ) . '&id=' . esc_textarea( $post_id ) . '&manage=true" class="dashicons mvr-icons dashicons-cover-image" target="iframe1" title="' . esc_html__( 'Manage Default Video Room Appearance Settings', 'my-video-room' ) . '"></a>';
+			echo '<a href="#" class="dashicons mvr-icons dashicons-cover-image myvideoroom-sitevideo-settings" title="' . esc_html__( 'Manage Default Video Room Appearance Settings', 'my-video-room' ) . ' data-post-id="' . esc_attr( $post_id ) . '" data-input-type="admin"></a>';
 			?>
 				<?php esc_html_e( 'Default Room Settings', 'my-video-room' ); ?>
 			</div>
