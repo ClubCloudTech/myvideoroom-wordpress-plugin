@@ -16,6 +16,7 @@ use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters as PageFiltersLibrary;
+use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\Dependencies;
 
@@ -32,6 +33,9 @@ class MVRSiteVideoControllers {
 	 */
 	public function sitevideo_shortcode( $params = array() ): string {
 		$id = $params['id'] ?? null;
+
+		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
+		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 
 		return $this->sitevideo_switch( $id );
 	}
