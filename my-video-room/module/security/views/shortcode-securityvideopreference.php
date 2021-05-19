@@ -190,9 +190,8 @@ return function (
 					</p>
 				<hr>
 				<?php
-
-				echo do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting );
-
+				// Action Hook to Display additional Form Entries from other Modules.
+				echo esc_textarea( do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting ) );
 				?>
 
 
