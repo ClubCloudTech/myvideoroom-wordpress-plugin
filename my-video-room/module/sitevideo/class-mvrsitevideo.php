@@ -146,7 +146,7 @@ class MVRSiteVideo extends Shortcode {
 	public function render_sitevideo_admin_page() {
 		$settings = null;
 
-		$room_id = Factory::get_instance( HttpGet::class )->get_text_parameter( 'room_id' );
+		$room_id = Factory::get_instance( HttpGet::class )->get_integer_parameter( 'room_id' );
 		if ( null !== $room_id ) {
 			$settings = ( require __DIR__ . '/views/view-management-rooms.php' )( $room_id, 'normal' );
 		}
@@ -158,7 +158,7 @@ class MVRSiteVideo extends Shortcode {
 	 * Get Site Video Ajax Data
 	 */
 	public function get_ajax_page_settings() {
-		$post_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
+		$post_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
 		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
 
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
