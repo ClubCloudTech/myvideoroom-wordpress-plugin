@@ -29,7 +29,7 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 	 * @param  string $type - type of display.
 	 * @return void
 	 */
-	public function site_videoroom_display_rooms( $type = null ) {
+	public function site_videoroom_display_rooms() {
 
 		wp_enqueue_style( 'myvideoroom-template' );
 		wp_enqueue_style( 'myvideoroom-menutab-header' );

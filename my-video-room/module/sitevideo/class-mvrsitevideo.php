@@ -158,7 +158,8 @@ class MVRSiteVideo extends Shortcode {
 	 */
 	public function get_ajax_page_settings() {
 		$post_id = Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
-		echo 'You requested the page with id: ' . esc_attr( $post_id );
+		$render  = require WP_PLUGIN_DIR . '/my-video-room/module/sitevideo/views/view-management-rooms.php';
+		echo $render( $post_id );
 		die();
 	}
 }

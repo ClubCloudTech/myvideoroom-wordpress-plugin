@@ -54,7 +54,6 @@ class Plugin {
 
 		Factory::get_instance( App::class, array( $private_key ) )->init();
 		Factory::get_instance( RoomInfo::class )->init();
-
 		Factory::get_instance( SiteDefaults::class )->init();
 	}
 

@@ -21,6 +21,7 @@ return function(
 	int $room_id,
 	string $input_type = null
 	): string {
+	wp_enqueue_script( 'myvideoroom-admin-tabs' );
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
