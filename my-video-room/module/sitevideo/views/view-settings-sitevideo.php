@@ -20,7 +20,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoDisplayRooms;
  *
  * @return string
  */
-return function ( string $settings = null): string {
+return function ( string $settings = null ): string {
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	wp_enqueue_script( 'myvideoroom-protect-input' );

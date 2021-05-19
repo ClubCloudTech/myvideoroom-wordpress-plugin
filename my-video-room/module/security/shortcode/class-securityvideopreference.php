@@ -8,11 +8,13 @@
 namespace MyVideoRoomPlugin\Module\Security\Shortcode;
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
+use MyVideoRoomPlugin\ValueObject\Notice;
 
 /**
  * Class SecurityVideoPreference
@@ -52,24 +54,28 @@ class SecurityVideoPreference extends Shortcode {
 		return $this->choose_settings( $user_id, $room_name );
 	}
 
+	/**
+	 * Check if this is an update request
+	 */
+	public function check_for_update_request() {
+		$http_post_library = Factory::get_instance( HttpPost::class );
 
-	public function check_for_update_request( ) {
-		if ( isset( $_SERVER['REQUEST_METHOD'] )
-			&& 'POST' === $_SERVER['REQUEST_METHOD'] &
-			'securityvideopreference' === ( $_POST['myvideoroom_type'] ?? '' )
-		) {
+		if ( $http_post_library->is_post_request( 'update_security_video_preference' ) ) {
+			if ( ! $http_post_library->is_nonce_valid( 'update_security_video_preference' ) ) {
+				// @TODO - FIX ME/HANDLE ME/...
+				throw new \Exception( 'Invalid nonce' );
+			}
 
-			$room_name = sanitize_text_field( wp_unslash( $_POST['myvideoroom_room_name'] ?? '' ) );
-			$user_id = (int) sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_id'] ?? -1 ) );
+			$room_name = $http_post_library->get_string_parameter( 'room_name' );
+			$user_id   = $http_post_library->get_integer_parameter( 'user_id' );
 
 			$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
 
-			$current_user_setting    = $security_preference_dao->read(
+			$current_user_setting = $security_preference_dao->read(
 				$user_id,
 				$room_name
 			);
 
-			check_admin_referer( 'myvideoroom_update_security_video_preference', 'nonce' );
 			$blocked_roles              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_blocked_roles_preference'] ?? null ) );
 			$room_disabled              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_room_disabled_preference'] ?? '' ) ) === 'on';
 			$anonymous_enabled          = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_anonymous_enabled_preference'] ?? '' ) ) === 'on';

@@ -209,9 +209,9 @@ class Admin {
 
 		$http_get_library = Factory::get_instance( HttpGet::class );
 
-		$action            = $http_get_library->get_text_parameter( 'action' );
-		$current_page_slug = $http_get_library->get_text_parameter( 'page', PageList::PAGE_SLUG_GETTING_STARTED );
-		$module_slug       = $http_get_library->get_text_parameter( 'module' );
+		$action            = $http_get_library->get_string_parameter( 'action' );
+		$current_page_slug = $http_get_library->get_string_parameter( 'page', PageList::PAGE_SLUG_GETTING_STARTED );
+		$module_slug       = $http_get_library->get_string_parameter( 'module' );
 
 		$module = null;
 
@@ -307,8 +307,8 @@ class Admin {
 
 		$http_get_library = Factory::get_instance( HttpGet::class );
 
-		$module_slug = $http_get_library->get_text_parameter( 'module' );
-		$action      = $http_get_library->get_text_parameter( 'action' );
+		$module_slug = $http_get_library->get_string_parameter( 'module' );
+		$action      = $http_get_library->get_string_parameter( 'action' );
 
 		$module = Factory::get_instance( Module::class )->get_module( $module_slug );
 
@@ -343,7 +343,7 @@ class Admin {
 				\delete_option( Plugin::SETTING_PRIVATE_KEY );
 			}
 
-			$server_endpoint = $post_library->get_text_parameter( 'server_domain' );
+			$server_endpoint = $post_library->get_string_parameter( 'server_domain' );
 			\update_option( Plugin::SETTING_SERVER_DOMAIN, $server_endpoint );
 		}
 

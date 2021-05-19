@@ -79,7 +79,7 @@ class Security {
 		// Turn on Runtime Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
 		$this->security_menu_setup();
-		Factory::get_instance(SecurityVideoPreference::class)->check_for_update_request();
+		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 
 	}
 

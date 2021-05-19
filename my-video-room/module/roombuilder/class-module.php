@@ -210,10 +210,10 @@ class Module {
 	private function create_shortcode_constructor(): AppShortcodeConstructor {
 		$post_library = Factory::get_instance( HttpPost::class );
 
-		$room_name           = $post_library->get_text_parameter( 'room_builder_room_name' );
-		$video_template      = $post_library->get_text_parameter( 'room_builder_layout_id_preference' );
-		$reception_template  = $post_library->get_text_parameter( 'room_builder_reception_id_preference' );
-		$video_reception_url = $post_library->get_text_parameter( 'room_builder_reception_waiting_video_url' );
+		$room_name           = $post_library->get_string_parameter( 'room_builder_room_name' );
+		$video_template      = $post_library->get_string_parameter( 'room_builder_layout_id_preference' );
+		$reception_template  = $post_library->get_string_parameter( 'room_builder_reception_id_preference' );
+		$video_reception_url = $post_library->get_string_parameter( 'room_builder_reception_waiting_video_url' );
 
 		$disable_floorplan       = $post_library->get_checkbox_parameter( 'room_builder_disable_floorplan_preference', true );
 		$enable_guest_reception  = $post_library->get_checkbox_parameter( 'room_builder_reception_enabled_preference', true );

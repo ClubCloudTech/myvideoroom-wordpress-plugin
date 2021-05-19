@@ -250,10 +250,14 @@ return function (
 
 					<input type="hidden" name="myvideoroom_room_name" value="<?php echo esc_attr( $room_name ); ?>" />
 					<input type="hidden" name="myvideoroom_user_id" value="<?php echo esc_attr( $user_id ); ?>" />
-					<input type="hidden" name="myvideoroom_type" value="uservideopreference" />
 
-					<?php wp_nonce_field( 'myvideoroom_update_user_video_preference', 'nonce' ); ?>
-					<input type="submit" name="submit" id="submit" class="mvr-form-button" value="Save Changes"  />
+					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo Factory::get_instance( \MyVideoRoomPlugin\Library\HttpPost::class )->create_form_submit(
+						'update_user_video_preference',
+						\esc_html__( 'Save changes', 'myvideoroom' )
+					);
+					?>
 				</form>
 	</div>
 	<?php

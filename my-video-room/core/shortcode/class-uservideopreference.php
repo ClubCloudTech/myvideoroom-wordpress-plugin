@@ -10,6 +10,7 @@ namespace MyVideoRoomPlugin\Core\Shortcode;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Core\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Library\AvailableScenes;
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Shortcode;
@@ -56,13 +57,16 @@ class UserVideoPreference extends Shortcode {
 	}
 
 	public function check_for_update_request() {
-		if (
-			isset( $_SERVER['REQUEST_METHOD'] ) &&
-			'POST' === $_SERVER['REQUEST_METHOD'] &&
-			'uservideopreference' === ( $_POST['myvideoroom_type'] ?? '' )
-		) {
-			$room_name = sanitize_text_field( wp_unslash( $_POST['myvideoroom_room_name'] ?? '' ) );
-			$user_id   = (int) sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_id'] ?? -1 ) );
+		$http_post_library = Factory::get_instance( HttpPost::class );
+
+		if ( $http_post_library->is_post_request( 'update_user_video_preference' ) ) {
+			if ( ! $http_post_library->is_nonce_valid( 'update_user_video_preference' ) ) {
+				// @TODO - FIX ME/HANDLE ME/...
+				throw new \Exception( 'Invalid nonce' );
+			}
+
+			$room_name = $http_post_library->get_string_parameter( 'room_name' );
+			$user_id   = $http_post_library->get_integer_parameter( 'user_id' );
 
 			$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 
