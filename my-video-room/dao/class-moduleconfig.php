@@ -296,8 +296,8 @@ class ModuleConfig {
 	public function module_activation_button( int $module_id ): string {
 		$http_get_library = Factory::get_instance( HttpGet::class );
 
-		$module_status = $http_get_library->get_text_parameter( 'module_action' );
-		$module_id     = $http_get_library->get_text_parameter( 'module_id', $module_id );
+		$module_status = $http_get_library->get_string_parameter( 'module_action' );
+		$module_id     = $http_get_library->get_string_parameter( 'module_id', $module_id );
 
 		$server_path = '';
 		if ( isset( $_SERVER['REQUEST_URI'] ) ) {

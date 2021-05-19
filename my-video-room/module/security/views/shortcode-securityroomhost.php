@@ -160,8 +160,7 @@ return function (
 				<p class="mvr-preferences-paragraph">
 				<?php
 				esc_html_e(
-					'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please
-					consider the security ramifications of this setting. ',
+					'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please consider the security ramifications of this setting. ',
 					'my-video-room'
 				);
 				?>
@@ -169,9 +168,16 @@ return function (
 
 				<hr />
 
-				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
+				<input type="hidden" name="myvideoroom_room_name" value="<?php echo esc_attr( $room_name ); ?>" />
+				<input type="hidden" name="myvideoroom_user_id" value="<?php echo esc_attr( $user_id ); ?>" />
 
-				<input type="submit" name="submit" id="submit" class="mvr-form-button" value="Save Changes"  />
+				<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( \MyVideoRoomPlugin\Library\HttpPost::class )->create_form_submit(
+					'update_security_video_preference',
+					\esc_html__( 'Save changes', 'myvideoroom' )
+				);
+				?>
 			</form>
 </div>
 

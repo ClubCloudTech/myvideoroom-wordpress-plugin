@@ -13,6 +13,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\Dependencies;
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Dao\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
@@ -182,8 +183,7 @@ return function (
 					<p class="mvr-preferences-paragraph">
 						<?php
 						esc_html_e(
-							'Use this setting to determine what user roles you want to explicitly allow or - the reverse (block all users but a specific role) if you tick the Block Role option. Please Note: 
-							If you choose to Block a Role, you must still decide if you would like Anonymous Users to access the room separately in the Restrict Anonymous option above.',
+							'Use this setting to determine what user roles you want to explicitly allow or - the reverse (block all users but a specific role) if you tick the Block Role option. Please Note: If you choose to Block a Role, you must still decide if you would like Anonymous Users to access the room separately in the Restrict Anonymous option above.',
 							'my-video-room'
 						);
 						?>
@@ -194,10 +194,16 @@ return function (
 				echo esc_textarea( do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting ) );
 				?>
 
+				<input type="hidden" name="myvideoroom_room_name" value="<?php echo esc_attr( $room_name ); ?>" />
+				<input type="hidden" name="myvideoroom_user_id" value="<?php echo esc_attr( $user_id ); ?>" />
 
-				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
-
-				<input type="submit" name="submit" id="submit" class="mvr-form-button" value="Save Changes"  />
+				<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( HttpPost::class )->create_form_submit(
+					'update_security_video_preference',
+					\esc_html__( 'Save changes', 'myvideoroom' )
+				);
+				?>
 			</form>
 </div>
 

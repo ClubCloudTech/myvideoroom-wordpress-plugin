@@ -50,9 +50,9 @@ return function(
 	}
 
 	//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a global not user input.
-	if ( null !== ( esc_textarea( wp_unslash( $_GET['id'] ) ) ) ) {
+	if ( null !== ( esc_textarea( wp_unslash( $_GET['id'] ?? '' ) ) ) ) {
 	//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a global not user input.
-		
+
 
 	} else {
 		echo 'No Room ID Provided - exiting';

@@ -241,17 +241,23 @@ return function (
 					<p class="mvr-preferences-paragraph">
 					<?php
 					esc_html_e(
-						'This setting controls whether you want your guests to see a video or movie channel if Reception is enabled.
-						Enter a url in the form of https://youvideoservice.com/yourvideofolder/video.mp4 - and this video will be displayed to your guests in your Dynamic
-						reception areas if you have enabled a guest reception template option that can show video.',
+						'This setting controls whether you want your guests to see a video or movie channel if Reception is enabled. Enter a url in the form of https://youvideoservice.com/yourvideofolder/video.mp4 - and this video will be displayed to your guests in your Dynamic reception areas if you have enabled a guest reception template option that can show video.',
 						'my-video-room'
 					);
 					?>
 					</p>
 					<hr>
 
-					<?php wp_nonce_field( 'myvideoroom_update_user_video_preference', 'nonce' ); ?>
-					<input type="submit" name="submit" id="submit" class="mvr-form-button" value="Save Changes"  />
+					<input type="hidden" name="myvideoroom_room_name" value="<?php echo esc_attr( $room_name ); ?>" />
+					<input type="hidden" name="myvideoroom_user_id" value="<?php echo esc_attr( $user_id ); ?>" />
+
+					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo Factory::get_instance( \MyVideoRoomPlugin\Library\HttpPost::class )->create_form_submit(
+						'update_user_video_preference',
+						\esc_html__( 'Save changes', 'myvideoroom' )
+					);
+					?>
 				</form>
 	</div>
 	<?php

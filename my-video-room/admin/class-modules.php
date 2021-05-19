@@ -32,9 +32,9 @@ class Modules {
 	public function update_active_modules(): ?Notice {
 		$http_get_library = Factory::get_instance( HttpGet::class );
 
-		$page        = $http_get_library->get_text_parameter( 'page' );
-		$module_slug = $http_get_library->get_text_parameter( 'module' );
-		$action      = $http_get_library->get_text_parameter( 'action' );
+		$page        = $http_get_library->get_string_parameter( 'page' );
+		$module_slug = $http_get_library->get_string_parameter( 'module' );
+		$action      = $http_get_library->get_string_parameter( 'action' );
 
 		if ( PageList::PAGE_SLUG_MODULES !== $page || ! $module_slug || ! $action ) {
 			return null;

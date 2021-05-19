@@ -153,6 +153,7 @@ class UserVideoPreference {
 				'room_name' => $user_video_preference->get_room_name(),
 			)
 		);
+
 		// wp_cache_set( $cache_key, $user_video_preference );.
 		return $user_video_preference;
 	}
@@ -317,7 +318,7 @@ class UserVideoPreference {
 		';
 
 		$prepared_query = $wpdb->prepare(
-											// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$raw_sql,
 			array(
 				$user_id,
@@ -328,6 +329,10 @@ class UserVideoPreference {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
 		$row = $wpdb->get_row( $prepared_query );
 
-		return $row->$return_type;
+		if ( $row && $row->$return_type ) {
+			return $row->$return_type;
+		}
+
+		return null;
 	}
 }

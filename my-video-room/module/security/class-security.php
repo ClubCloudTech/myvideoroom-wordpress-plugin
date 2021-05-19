@@ -12,6 +12,7 @@ use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
+use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 
 /**
  * Class Security- Provides the Render Block Host Function for Security.
@@ -78,6 +79,7 @@ class Security {
 		// Turn on Runtime Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
 		$this->security_menu_setup();
+		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 
 	}
 

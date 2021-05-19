@@ -24,20 +24,8 @@ return function (
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
-	if ( isset( $_SERVER['REQUEST_METHOD'] )
-			&& 'POST' === $_SERVER['REQUEST_METHOD']
-			&& sanitize_text_field( wp_unslash( $_POST['myvideoroom_refresh'] ?? null ) ) === 'true'
-			) {
-		check_admin_referer( 'myvideoroom_refresh_nonce', 'nonce' );
-		$refresh = $params['refresh'] ?? sanitize_text_field( wp_unslash( $_POST['myvideoroom_refresh'] ?? '' ) );
-		if ( true === $refresh ) {
-				$second = 0.1;
-				header( "Refresh:$second" );
-				exit();
-		}
-	}
 
-	if ( true === $visitor_status ) {
+	if ( $visitor_status ) {
 
 		$invite_menu = Factory::get_instance( ShortCodeConstructor::class )->
 		invite_menu_shortcode(
@@ -65,8 +53,6 @@ return function (
 				echo Factory::get_instance( TemplateIcons::class )->show_icon( $user_id, $room_name );
 			} else {
 				echo '<form method="post" action="">';
-				echo '<input name="myvideoroom_refresh" type="hidden" value="true" />';
-				wp_nonce_field( 'myvideoroom_refresh_nonce', 'nonce' );
 				echo '<input type="submit" name="submit" id="submit" class="button mvr-form-button mvr-form-button-max" value="Exit Meeting"  />';
 			}
 			?>

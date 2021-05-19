@@ -137,7 +137,7 @@ class Module {
 	private function process_email_send(): ?array {
 		$post_library = Factory::get_instance( HttpPost::class );
 		if (
-		$post_library->is_post_request( self::INVITE_EMAIL_ACTION )
+			$post_library->is_post_request( self::INVITE_EMAIL_ACTION )
 		) {
 			if ( $post_library->is_nonce_valid( self::INVITE_EMAIL_ACTION ) ) {
 				return array(
@@ -145,8 +145,8 @@ class Module {
 					\esc_html__( 'Something went wrong, please reload the page and try again', 'myvideoroom' ),
 				);
 			} else {
-				$email       = $post_library->get_text_parameter( self::INVITE_EMAIL_ACTION . '_address' );
-				$invite_link = $post_library->get_text_parameter( self::INVITE_EMAIL_ACTION . '_link' );
+				$email       = $post_library->get_string_parameter( self::INVITE_EMAIL_ACTION . '_address' );
+				$invite_link = $post_library->get_string_parameter( self::INVITE_EMAIL_ACTION . '_link' );
 
 				$result = $this->send_invite_email( $email, $invite_link );
 
@@ -220,7 +220,7 @@ class Module {
 			}
 
 			$http_get_library = Factory::get_instance( HttpGet::class );
-			$invite_id        = $http_get_library->get_text_parameter( $url_param );
+			$invite_id        = $http_get_library->get_string_parameter( $url_param );
 
 			if ( $invite_id ) {
 				$host_id = Factory::get_instance( MeetingIdGenerator::class )->get_user_id_from_meeting_hash( $invite_id );

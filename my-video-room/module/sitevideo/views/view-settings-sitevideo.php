@@ -5,17 +5,6 @@
  * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
  */
 
-/**
- * Render the admin page
- *
- * @param string $active_tab
- * @param array $tabs
- * @param array $messages
- *
- * @return string
- */
-
-
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
@@ -24,9 +13,14 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoDisplayRooms;
 
-return function (
-	array $messages = array()
-): string {
+/**
+ * Render the admin page
+ *
+ * @param ?string $settings Optional setting section
+ *
+ * @return string
+ */
+return function ( string $settings = null ): string {
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	wp_enqueue_script( 'myvideoroom-protect-input' );
@@ -139,8 +133,12 @@ return function (
 				echo Factory::get_instance( MVRSiteVideoDisplayRooms::class )->site_videoroom_display_rooms();
 			?>
 			</table>
+
 			<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host">
-				<iframe id="iframe1" name="iframe1" src="" width="100%" height="950" ></iframe>
+				<?php
+					//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - Item already Escaped in parent function.
+					echo $settings;
+				?>
 			</div>
 		</div>
 	</div>

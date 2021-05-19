@@ -188,20 +188,6 @@ return function (
 					?>
 				</dd>
 			</dl>
-
-			<dl>
-				<dt>myvideoroom_enqueue_scripts</dt>
-				<dd>
-					<p>
-						<?php
-						\esc_html_e(
-							'Can be called to load the MyVideoRoom scripts. Required to load the MyVideoApp in the admin pages',
-							'myvideoroom'
-						);
-						?>
-					</p>
-				</dd>
-			</dl>
 		</section>
 
 		<h4><?php \esc_html_e( 'Module methods' ); ?></h4>

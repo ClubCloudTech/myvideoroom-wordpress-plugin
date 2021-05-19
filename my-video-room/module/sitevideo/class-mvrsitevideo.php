@@ -7,9 +7,11 @@
 
 namespace MyVideoRoomPlugin\Module\SiteVideo;
 
+use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
+use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
@@ -25,7 +27,6 @@ class MVRSiteVideo extends Shortcode {
 		const MODULE_SITE_VIDEO_NAME           = 'site-video-module';
 		const ROOM_NAME_SITE_VIDEO             = 'site-conference-room';
 		const MODULE_SITE_VIDEO_ID             = \MyVideoRoomPlugin\Library\Dependencies::MODULE_SITE_VIDEO_ID;
-		const MODULE_SITE_VIDEO_ADMIN_PAGE     = 'plugin-settings-sitevideo';
 		const MODULE_SITE_VIDEO_ADMIN_LOCATION = '/module/sitevideo/views/view-settings-sitevideo.php';
 		const MODULE_ROOM_MANAGEMENT_NAME      = 'site-video-multi-room-module';
 		const MODULE_ROOM_MANAGEMENT_ID        = 435;
@@ -68,6 +69,13 @@ class MVRSiteVideo extends Shortcode {
 		$site_video_controller = Factory::get_instance( MVRSiteVideoControllers::class );
 		$this->add_shortcode( 'sitevideoroom', array( $site_video_controller, 'sitevideo_shortcode' ) );
 		$this->site_videoroom_menu_setup();
+
+		\add_action(
+			'myvideoroom_admin_init',
+			function () {
+				Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
+			}
+		);
 
 		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ) );
 
@@ -122,7 +130,6 @@ class MVRSiteVideo extends Shortcode {
 	 * @return null as its a database function.
 	 */
 	public function create_site_videoroom_page( $old_post_id = null ) {
-
 		return Factory::get_instance( RoomAdmin::class )->create_and_check_page(
 			self::ROOM_NAME_SITE_VIDEO,
 			get_bloginfo( 'name' ) . ' ' . self::ROOM_TITLE_SITE_VIDEO,
@@ -136,25 +143,25 @@ class MVRSiteVideo extends Shortcode {
 	 * Render Site Video Admin Page.
 	 */
 	public function render_sitevideo_admin_page() {
-		$active_tab = self::MODULE_SITE_VIDEO_NAME;
-		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
-		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
-		$messages   = array();
-		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
-		echo $render( $messages );
-		return 'Powered by MyVideoRoom';
+		$settings = null;
+
+		$room_id = Factory::get_instance( HttpGet::class )->get_integer_parameter( 'room_id' );
+		if ( null !== $room_id ) {
+			$settings = ( require __DIR__ . '/views/view-management-rooms.php' )( $room_id, 'normal' );
+		}
+
+		return ( require __DIR__ . '/views/view-settings-sitevideo.php' )( $settings );
 	}
 
 	/**
 	 * Get Site Video Ajax Data
 	 */
 	public function get_ajax_page_settings() {
-		$post_id     = Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
-		$post_id_int = intval( $post_id );
-		$input_type  = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
-		$render      = require WP_PLUGIN_DIR . '/my-video-room/module/sitevideo/views/view-management-rooms.php';
+		$post_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
+		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
+
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
-		echo $render( $post_id_int, $input_type );
+		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $post_id, $input_type );
 		die();
 	}
 }
