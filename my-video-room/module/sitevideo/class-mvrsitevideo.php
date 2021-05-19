@@ -70,9 +70,6 @@ class MVRSiteVideo extends Shortcode {
 		$this->add_shortcode( 'sitevideoroom', array( $site_video_controller, 'sitevideo_shortcode' ) );
 		$this->site_videoroom_menu_setup();
 
-		// Rooms Permissions Manager Header Remove.
-		add_action( 'admin_head', array( $this, 'remove_admin_menus' ) );
-
 		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ) );
 
 		\wp_enqueue_script(
@@ -136,21 +133,6 @@ class MVRSiteVideo extends Shortcode {
 		);
 	}
 
-	/**
-	 * Remove Admin Area from Site Video Room Manager Permissions Manager.
-	 *
-	 * @return void
-	 */
-	public function remove_admin_menus() {
-
-		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-			$uri = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
-			if ( strpos( $uri, Security::MODULE_SECURITY_ENTITY ) !== false || strpos( $uri, self::MODULE_ROOM_MANAGEMENT_NAME ) !== false ) {
-				wp_enqueue_style( 'myvideoroom-remove-admin-bar' );
-				wp_enqueue_script( 'myvideoroom-remove-admin-header' );
-			}
-		}
-	}
 	/**
 	 * Render Security Admin Page.
 	 */

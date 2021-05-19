@@ -24,7 +24,6 @@ return function (
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
-
 	if ( isset( $_SERVER['REQUEST_METHOD'] )
 			&& 'POST' === $_SERVER['REQUEST_METHOD']
 			&& sanitize_text_field( wp_unslash( $_POST['myvideoroom_refresh'] ?? null ) ) === 'true'
@@ -63,7 +62,6 @@ return function (
 			<?php
 			if ( false === $visitor_status ) {
 				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function is Icon only, and already escaped within it.
-				
 				echo Factory::get_instance( TemplateIcons::class )->show_icon( $user_id, $room_name );
 			} else {
 				echo '<form method="post" action="">';
@@ -76,7 +74,7 @@ return function (
 		<div class="mvr-header-table-right">
 			<h2 class="mvr-header-title"><?php echo esc_html( $name_output ) . ' ' . esc_html( $module_name ); ?></h2>
 			<p class="mvr-preferences-paragraph">
-				<?php esc_html_e( 'Meeting Link- ', 'my-video-room' ) . esc_url( $invite_menu ); ?>
+				<?php echo esc_html__( 'Meeting Link- ', 'my-video-room' ) . esc_url( $invite_menu ); ?>
 			</p>
 		</div>
 	</section>

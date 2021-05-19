@@ -45,18 +45,19 @@ class RoomAdmin extends Shortcode {
 		$post_title = $post->post_title;
 		$post_id    = $post->ID;
 
-		if ( 'name' === $type ) {
-			return $post_slug;
-		} elseif ( 'slug' === $type ) {
-			return $post_slug;
-		} elseif ( 'post_id' === $type ) {
-			return $post_id;
-
-		} elseif ( 'title' === $type ) {
-			return $post_title;
-		} elseif ( 'url' === $type ) {
-			return get_site_url() . '/' . $post_slug . '/';
+		switch ( $type ) {
+			case 'name':
+				return $post_slug;
+			case 'slug':
+				return $post_id;
+			case 'post_id':
+				return $post_id;
+			case 'title':
+				return $post_title;
+			case 'url':
+				return get_site_url() . '/' . $post_slug . '/';
 		}
+		return null;
 	}
 
 	/**

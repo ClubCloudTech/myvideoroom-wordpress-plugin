@@ -5,10 +5,10 @@
  *
  * One function is added per setting
  *
- * @package MyVideoRoomPlugin\Core\VideoHelpers
+ * @package MyVideoRoomPlugin\Library\VideoHelpers
  */
 
-namespace MyVideoRoomPlugin\Core;
+namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
