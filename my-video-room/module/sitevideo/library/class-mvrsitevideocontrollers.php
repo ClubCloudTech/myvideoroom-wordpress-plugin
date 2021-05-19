@@ -44,9 +44,7 @@ class MVRSiteVideoControllers {
 	public function sitevideo_switch( int $id ) {
 
 		// Fetch User Parameters and Roles...
-		if ( Factory::get_instance( ModuleConfig::class )->read_enabled_status( Dependencies::MODULE_SECURITY_ID ) ) {
-			$host_status = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Library\PageFilters::class )->allowed_roles_host( $id );
-		}
+		$host_status = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Library\PageFilters::class )->allowed_roles_host( $id );
 
 		if ( $host_status ) {
 			return Factory::get_instance( self::class )->site_videoroom_host_function( $id );

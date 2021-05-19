@@ -153,10 +153,10 @@ class SecurityVideoPreference extends Shortcode {
 		) {
 			echo( "<meta http-equiv='refresh' content='.1'>" );
 		}
+		// Type of Shortcode to render.
 		if ( 'admin' === $type ) {
 				$render = include __DIR__ . '/../views/shortcode-securityadminvideopreference.php';
-		}
-		if ( 'roomhost' === $type ) {
+		} elseif ( 'roomhost' === $type ) {
 				$render = include __DIR__ . '/../views/shortcode-securityroomhost.php';
 		} else {
 			$render = include __DIR__ . '/../views/shortcode-securityvideopreference.php';

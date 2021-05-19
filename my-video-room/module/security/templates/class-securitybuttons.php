@@ -51,19 +51,19 @@ class SecurityButtons {
 		if ( 'nourl' === $input_type ) {
 			$path = null;
 		} else {
-			$path = 'href="' . get_admin_url() . 'admin.php?page=' . $plugin_path . '&tab=' . $admin_page . '#disabled"';
+			$path = ' href="' . get_admin_url() . 'admin.php?page=' . $plugin_path . '&tab=' . $admin_page . '#disabled" ';
 		}
 		if ( $site_override ) {
-			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:#daab33">' . esc_html_e( 'Site Enforcement Active', 'my-video-room' ) . '</a>';
+			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:#daab33">' . esc_html__( 'Site Enforcement Active', 'my-video-room' ) . '</a>';
 		}
 		if ( $room_disabled && null === $input_type ) {
-			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:Red">' . esc_html_e( 'Site Video Disabled', 'my-video-room' ) . '</a>';
+			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:Red">' . esc_html__( 'Site Video Disabled', 'my-video-room' ) . '</a>';
 		}
 		if ( ( $room_anonymous || $roles ) && $site_override ) {
-			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:blue">' . esc_html_e( 'Site Mandatory Settings Applied', 'my-video-room' ) . '</a>';
+			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:blue">' . esc_html__( 'Site Mandatory Settings Applied', 'my-video-room' ) . '</a>';
 		}
 		if ( $room_anonymous && $site_override ) {
-				$output .= '<a ' . $path . ' class="button button-primary" style="background-color:blue">' . esc_html_e( 'Site Anonymous Block Applied', 'my-video-room' ) . '</a>';
+				$output .= '<a ' . $path . ' class="button button-primary" style="background-color:blue">' . esc_html__( 'Site Anonymous Block Applied', 'my-video-room' ) . '</a>';
 		}
 
 		return $output;
