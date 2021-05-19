@@ -82,6 +82,14 @@ class MVRSiteVideo extends Shortcode {
 			true
 		);
 
+		\wp_enqueue_script(
+			'myvideoroom-sitevideo-add-room-js',
+			\plugins_url( '/js/add-room.js', \realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			Factory::get_instance( Version::class )->get_plugin_version(),
+			true
+		);
+
 		\wp_localize_script(
 			'myvideoroom-sitevideo-settings-js',
 			'myvideoroom_sitevideo_settings',
