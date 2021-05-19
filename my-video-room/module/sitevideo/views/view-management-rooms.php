@@ -67,18 +67,26 @@ return function(
 	$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
 	?>
 <nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
-	<ul class="menu">
-		<a class="nav-tab nav-tab-active" href="#page1"><?php esc_html_e( 'Room Hosts', 'my-video-room' ); ?>
-		</a>
+	<ul>
+		<li>
+			<a class="nav-tab nav-tab-active" href="#page1">
+				<?php esc_html_e( 'Room Hosts', 'my-video-room' ); ?>
+			</a>
+		</li>
+
 		<?php
 		if ( $security_enabled ) {
 			?>
-			<a class="nav-tab" href="#page2"><?php esc_html_e( 'Room Permissions', 'my-video-room' ); ?> </a>
+			<li>
+				<a class="nav-tab" href="#page2"><?php esc_html_e( 'Room Permissions', 'my-video-room' ); ?> </a>
+			</li>
 			<?php
 		}
 		?>
-		<a class="nav-tab" href="#page4"><?php esc_html_e( 'Video Settings', 'my-video-room' ); ?></a>
 
+		<li>
+			<a class="nav-tab" href="#page4"><?php esc_html_e( 'Video Settings', 'my-video-room' ); ?></a>
+		</li>
 	</ul>
 </nav>
 

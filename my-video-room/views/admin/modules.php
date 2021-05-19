@@ -38,14 +38,14 @@ return function (
 
 	<table class="wp-list-table widefat plugins">
 		<thead>
-		<tr>
-			<th scope="col" class="manage-column column-name column-primary">
-				<?php \esc_html_e( 'Module', 'myvideoroom' ); ?>
-			</th>
-			<th scope="col" class="manage-column column-description">
-				<?php \esc_html_e( 'Description', 'myvideoroom' ); ?>
-			</th>
-		</tr>
+			<tr>
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php \esc_html_e( 'Module', 'myvideoroom' ); ?>
+				</th>
+				<th scope="col" class="manage-column column-description">
+					<?php \esc_html_e( 'Description', 'myvideoroom' ); ?>
+				</th>
+			</tr>
 		</thead>
 
 		<tbody id="the-list">

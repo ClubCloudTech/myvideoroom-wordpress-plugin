@@ -31,7 +31,7 @@ return function (
 	ob_start();
 
 	?>
-<div class="mvr-outer-box-wrap">
+<div>
 		<h1><?php esc_html_e( 'Video Room Site Default Configuration', 'my-video-room' ); ?></h1>
 		<?php
 		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
@@ -48,7 +48,8 @@ return function (
 		echo '<br></p>';
 		?>
 	</div>
-<div class="mvr-outer-box-wrap">
+
+<div>
 
 	<?php
 	$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(

@@ -43,7 +43,7 @@ return function (
 	}
 
 	?>
-<div id="video-host-wrap" class="mvr-header-outer-wrap">
+
 	<section class="mvr-header-section">
 		<div class="mvr-header-table-left">
 			<h2 class="mvr-header-title"><?php echo esc_html( get_bloginfo( 'name' ) ) . esc_html( $post_site_title ); ?></h2>
@@ -57,6 +57,7 @@ return function (
 			}
 			?>
 		</div>
+
 		<div class="mvr-header-table-right">
 			<h2 class="mvr-header-title"><?php echo esc_html( $name_output ) . ' ' . esc_html( $module_name ); ?></h2>
 			<p class="mvr-preferences-paragraph">
@@ -64,7 +65,6 @@ return function (
 			</p>
 		</div>
 	</section>
-</div>
 
 	<?php
 	return ob_get_clean();

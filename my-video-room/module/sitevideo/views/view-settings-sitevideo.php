@@ -33,7 +33,7 @@ return function ( string $settings = null ): string {
 
 	?>
 
-	<div class="mvr-outer-box-wrap">
+	<div>
 		<h1><?php esc_html_e( 'Site Conference Center', 'my-video-room' ); ?></h1>
 		<?php
 		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( SiteDefaults::MODULE_SECURITY_ID );
@@ -55,7 +55,7 @@ return function ( string $settings = null ): string {
 		?>
 	</div>
 
-	<div class="mvr-outer-box-wrap">
+	<div>
 		<h1 class="mvr-title-header"><?php esc_html_e( 'Current Room Information ', 'my-video-room' ); ?></h1>
 
 		<div class="mvr-add-page" >
@@ -119,28 +119,40 @@ return function ( string $settings = null ): string {
 		</div>
 	</div>
 
-	<div id="video-host-wrap" class="mvr-outer-box-wrap">
-		<div class="label" id="label"></div>
-			<table class="mvr-templates-outer-wrap mvr-header-table"  >
-					<tr>
-						<th class="mvr-table-pagename" ><?php esc_html_e( 'Page Name', 'my-video-room' ); ?></th>
-						<th class="mvr-table-pageurl" ><?php esc_html_e( 'Page URL', 'my-video-room' ); ?></th>
-						<th class="mvr-table-pagepostid" ><?php esc_html_e( 'Shortcode', 'my-video-room' ); ?></th>
-						<th class="mvr-table-editpage" ><?php esc_html_e( 'Actions', 'my-video-room' ); ?></th>
-					</tr>
-			<?php
-				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - Item already Escaped in parent function.
-				echo Factory::get_instance( MVRSiteVideoDisplayRooms::class )->site_videoroom_display_rooms();
-			?>
-			</table>
+	<table class="wp-list-table widefat plugins" >
+		<thead>
+			<tr>
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php esc_html_e( 'Page Name', 'my-video-room' ); ?>
+				</th>
 
-			<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host">
-				<?php
-					//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - Item already Escaped in parent function.
-					echo $settings;
-				?>
-			</div>
-		</div>
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php esc_html_e( 'Page URL', 'my-video-room' ); ?>
+				</th>
+
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php esc_html_e( 'Shortcode', 'my-video-room' ); ?>
+				</th>
+
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php esc_html_e( 'Actions', 'my-video-room' ); ?>
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+		<?php
+			//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - Item already Escaped in parent function.
+			echo Factory::get_instance( MVRSiteVideoDisplayRooms::class )->site_videoroom_display_rooms();
+		?>
+		</tbody>
+	</table>
+
+	<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host">
+		<?php
+			//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - Item already Escaped in parent function.
+			echo $settings;
+		?>
 	</div>
 
 	<?php
