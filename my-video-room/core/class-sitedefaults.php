@@ -128,14 +128,6 @@ class SiteDefaults extends Shortcode {
 			true
 		);
 
-		wp_register_script(
-			'myvideoroom-remove-admin-header',
-			plugins_url( '/../js/remove-admin-header.js', __FILE__ ),
-			array( 'jquery' ),
-			$plugin_version,
-			true,
-		);
-
 		// --
 		// css
 
@@ -149,13 +141,6 @@ class SiteDefaults extends Shortcode {
 		wp_register_style(
 			'myvideoroom-template',
 			plugins_url( '/../css/template.css', __FILE__ ),
-			false,
-			$plugin_version
-		);
-
-		wp_register_style(
-			'myvideoroom-remove-admin-bar',
-			plugins_url( '/../css/admin-bar.css', __FILE__ ),
 			false,
 			$plugin_version
 		);

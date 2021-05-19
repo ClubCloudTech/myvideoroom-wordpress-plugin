@@ -46,7 +46,8 @@ class Admin {
 	 */
 	public function init() {
 		if ( \is_admin() && \current_user_can( 'manage_options' ) ) {
-			$this->init_admin();
+			\add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
+			\add_action( 'myvideoroom_admin_init', array( $this, 'init_admin' ) );
 		}
 	}
 
@@ -67,8 +68,6 @@ class Admin {
 		}
 
 		$this->update_permissions();
-
-		\add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 
 		\add_action(
 			'admin_enqueue_scripts',

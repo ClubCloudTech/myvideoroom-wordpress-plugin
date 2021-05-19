@@ -12,7 +12,6 @@ use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\Version;
-use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
@@ -27,7 +26,6 @@ class MVRSiteVideo extends Shortcode {
 		const MODULE_SITE_VIDEO_NAME           = 'site-video-module';
 		const ROOM_NAME_SITE_VIDEO             = 'site-conference-room';
 		const MODULE_SITE_VIDEO_ID             = \MyVideoRoomPlugin\Library\Dependencies::MODULE_SITE_VIDEO_ID;
-		const MODULE_SITE_VIDEO_ADMIN_PAGE     = 'plugin-settings-sitevideo';
 		const MODULE_SITE_VIDEO_ADMIN_LOCATION = '/module/sitevideo/views/view-settings-sitevideo.php';
 		const MODULE_ROOM_MANAGEMENT_NAME      = 'site-video-multi-room-module';
 		const MODULE_ROOM_MANAGEMENT_ID        = 435;
@@ -70,6 +68,13 @@ class MVRSiteVideo extends Shortcode {
 		$site_video_controller = Factory::get_instance( MVRSiteVideoControllers::class );
 		$this->add_shortcode( 'sitevideoroom', array( $site_video_controller, 'sitevideo_shortcode' ) );
 		$this->site_videoroom_menu_setup();
+
+		\add_action(
+			'myvideoroom_admin_init',
+			function () {
+				Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
+			}
+		);
 
 		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ) );
 
@@ -138,9 +143,6 @@ class MVRSiteVideo extends Shortcode {
 	 * Render Site Video Admin Page.
 	 */
 	public function render_sitevideo_admin_page() {
-		$user_id = Factory::get_instance( WordPressUser::class )->get_logged_in_wordpress_user()->ID;
-		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
-
 		$active_tab = self::MODULE_SITE_VIDEO_NAME;
 		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
 		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;

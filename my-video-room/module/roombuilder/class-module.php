@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\RoomBuilder;
 
 use MyVideoRoomPlugin\Admin\Page;
+use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\AvailableScenes;
@@ -25,7 +26,7 @@ class Module {
 
 	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_room_builder';
 
-	const PAGE_SLUG_BUILDER = 'my-video-room-builder';
+	const PAGE_SLUG_BUILDER = PageList::PAGE_SLUG_DEFAULT . '-room-builder';
 
 	/**
 	 * Install the shortcode

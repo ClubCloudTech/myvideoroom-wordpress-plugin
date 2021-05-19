@@ -137,7 +137,7 @@ class Module {
 	private function process_email_send(): ?array {
 		$post_library = Factory::get_instance( HttpPost::class );
 		if (
-		$post_library->is_post_request( self::INVITE_EMAIL_ACTION )
+			$post_library->is_post_request( self::INVITE_EMAIL_ACTION )
 		) {
 			if ( $post_library->is_nonce_valid( self::INVITE_EMAIL_ACTION ) ) {
 				return array(

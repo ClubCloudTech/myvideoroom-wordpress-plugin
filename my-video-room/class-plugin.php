@@ -38,7 +38,21 @@ class Plugin {
 		$private_key = \get_option( self::SETTING_PRIVATE_KEY );
 		\do_action( 'myvideoroom_init' );
 
-		\add_action( 'admin_init', array( $this, 'register_settings' ) );
+		$this->register_settings();
+
+		\add_action(
+			'current_screen',
+			function ( \WP_Screen $current_screen ) {
+				if (
+					\is_admin() &&
+					\current_user_can( 'manage_options' ) &&
+					strpos( $current_screen->base, 'page_' . PageList::PAGE_SLUG_DEFAULT ) !== false
+				) {
+					\do_action( 'myvideoroom_admin_init' );
+				}
+			}
+		);
+
 		\add_filter(
 			'plugin_action_links_' . \plugin_basename( __DIR__ . '/index.php' ),
 			array( $this, 'add_action_links' )
@@ -53,6 +67,7 @@ class Plugin {
 		}
 
 		Factory::get_instance( App::class, array( $private_key ) )->init();
+
 		Factory::get_instance( RoomInfo::class )->init();
 		Factory::get_instance( SiteDefaults::class )->init();
 	}

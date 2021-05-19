@@ -51,11 +51,11 @@ class UserVideoPreference extends Shortcode {
 			$user_id = Factory::get_instance( WordPressUser::class )->get_logged_in_wordpress_user()->ID;
 		}
 
-		$this->check_for_update_request( );
+		$this->check_for_update_request();
 		return $this->choose_settings( $user_id, $room_name, $allowed_tags );
 	}
 
-	public function check_for_update_request( ) {
+	public function check_for_update_request() {
 
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) &&
@@ -63,7 +63,7 @@ class UserVideoPreference extends Shortcode {
 			'uservideopreference' === ( $_POST['myvideoroom_type'] ?? '' )
 		) {
 			$room_name = sanitize_text_field( wp_unslash( $_POST['myvideoroom_room_name'] ?? '' ) );
-			$user_id = (int) sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_id'] ?? -1 ) );
+			$user_id   = (int) sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_id'] ?? -1 ) );
 
 			$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 
