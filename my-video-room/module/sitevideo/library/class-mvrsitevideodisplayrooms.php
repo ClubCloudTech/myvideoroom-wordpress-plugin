@@ -26,9 +26,10 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 	/**
 	 * Render Site Videoroom Available Rooms.
 	 *
+	 * @param  string $type - type of display.
 	 * @return void
 	 */
-	public function site_videoroom_display_rooms() {
+	public function site_videoroom_display_rooms( $type = null ) {
 
 		wp_enqueue_style( 'myvideoroom-template' );
 		wp_enqueue_style( 'myvideoroom-menutab-header' );
@@ -93,7 +94,7 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 				//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a superglobal not user input.
 					$slug = admin_url( 'admin.php?page=' . esc_textarea( wp_unslash( $_GET['page'] ) ) );
 				}
-				echo '<a href="#" class="dashicons mvr-icons dashicons-admin-generic myvideoroom-sitevideo-settings" data-post-id="' . esc_attr( $post_id ) . '"></a>';
+				echo '<a href="#" class="dashicons mvr-icons dashicons-admin-generic myvideoroom-sitevideo-settings" data-post-id="' . esc_attr( $post_id ) . '"</a>';
 				echo '<a href="' . esc_url_raw( $slug ) . '&tab=' . esc_textarea( MVRSiteVideo::MODULE_ROOM_MANAGEMENT_NAME ) . '&id=' . esc_textarea( $post_id ) . '&delete=true" class="dashicons mvr-icons dashicons-dismiss" target="iframe1" title="' . esc_html__( 'Delete Room', 'my-video-room' ) . '"></a>';
 			} else {
 				?>
