@@ -79,9 +79,9 @@ class Plugin {
 	 */
 	public function add_action_links( array $actions ): array {
 		$links = array(
-			'Settings'  => \menu_page_url( PageList::PAGE_SLUG_GETTING_STARTED, false ),
-			'Reference' => \menu_page_url( PageList::PAGE_SLUG_REFERENCE, false ),
-			'Support'   => 'https://clubcloud.tech',
+			esc_html__( 'Settings', 'myvideoroom' )  => \menu_page_url( PageList::PAGE_SLUG_GETTING_STARTED, false ),
+			esc_html__( 'Reference', 'myvideoroom' ) => \menu_page_url( PageList::PAGE_SLUG_REFERENCE, false ),
+			esc_html__( 'Support', 'myvideoroom' )   => 'https://clubcloud.tech',
 		);
 
 		foreach ( $links as $link_name => $link_address ) {
