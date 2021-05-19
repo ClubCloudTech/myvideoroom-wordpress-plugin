@@ -7,10 +7,12 @@
 
 namespace MyVideoRoomPlugin\Module\SiteVideo;
 
+use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
@@ -136,6 +138,9 @@ class MVRSiteVideo extends Shortcode {
 	 * Render Site Video Admin Page.
 	 */
 	public function render_sitevideo_admin_page() {
+		$user_id = Factory::get_instance( WordPressUser::class )->get_logged_in_wordpress_user()->ID;
+		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
+
 		$active_tab = self::MODULE_SITE_VIDEO_NAME;
 		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
 		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;

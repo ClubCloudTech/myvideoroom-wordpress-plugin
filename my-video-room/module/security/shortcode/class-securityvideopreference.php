@@ -48,38 +48,27 @@ class SecurityVideoPreference extends Shortcode {
 			$user_id = Factory::get_instance( WordPressUser::class )->get_logged_in_wordpress_user()->ID;
 		}
 
+		$this->check_for_update_request();
 		return $this->choose_settings( $user_id, $room_name );
 	}
 
-	/**
-	 * Show drop down for user to change their settings
-	 *
-	 * @param  int         $user_id    The user id.
-	 * @param  string      $room_name  The room name.
-	 * @param  ?string     $group_name Name of group.
-	 * @param string|null $type       To return.
-	 *
-	 * @return string
-	 */
-	public function choose_settings( int $user_id, string $room_name, string $group_name = null, string $type = null ): string {
-		// Trap BuddyPress Environment and send Group ID as the USer ID for storage in DB.
-		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
-			if ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() ) {
-				global $bp;
-				$user_id = $bp->groups->current_group->creator_id;
-			}
-		}
 
-		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
-		$current_user_setting    = $security_preference_dao->read(
-			$user_id,
-			$room_name
-		);
-
+	public function check_for_update_request( ) {
 		if ( isset( $_SERVER['REQUEST_METHOD'] )
-			&& 'POST' === $_SERVER['REQUEST_METHOD']
-			&& sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_room_name'] ?? null ) ) === $room_name
-			) {
+			&& 'POST' === $_SERVER['REQUEST_METHOD'] &
+			'securityroomhost' === ( $_POST['myvideoroom_type'] ?? '' )
+		) {
+
+			$room_name = sanitize_text_field( wp_unslash( $_POST['myvideoroom_room_name'] ?? '' ) );
+			$user_id = (int) sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_id'] ?? -1 ) );
+
+			$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
+
+			$current_user_setting    = $security_preference_dao->read(
+				$user_id,
+				$room_name
+			);
+
 			check_admin_referer( 'myvideoroom_update_security_video_preference', 'nonce' );
 			$blocked_roles              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_blocked_roles_preference'] ?? null ) );
 			$room_disabled              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_room_disabled_preference'] ?? '' ) ) === 'on';
@@ -147,6 +136,34 @@ class SecurityVideoPreference extends Shortcode {
 				$security_preference_dao->create( $current_user_setting );
 			}
 		}
+	}
+
+	/**
+	 * Show drop down for user to change their settings
+	 *
+	 * @param  int         $user_id    The user id.
+	 * @param  string      $room_name  The room name.
+	 * @param  ?string     $group_name Name of group.
+	 * @param string|null $type       To return.
+	 *
+	 * @return string
+	 */
+	public function choose_settings( int $user_id, string $room_name, string $group_name = null, string $type = null ): string {
+		// Trap BuddyPress Environment and send Group ID as the USer ID for storage in DB.
+		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
+			if ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() ) {
+				global $bp;
+				$user_id = $bp->groups->current_group->creator_id;
+			}
+		}
+
+		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
+		$current_user_setting    = $security_preference_dao->read(
+			$user_id,
+			$room_name
+		);
+
+
 
 		// Auto Refresh Room Post Settings Change.
 		// @TODO - Alec to check this.

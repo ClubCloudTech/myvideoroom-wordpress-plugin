@@ -153,6 +153,17 @@ class UserVideoPreference {
 				'room_name' => $user_video_preference->get_room_name(),
 			)
 		);
+
+		echo '<pre>';
+		var_dump(
+			$user_video_preference->get_user_id(),
+			$user_video_preference->get_room_name(),
+			$result
+		);
+		echo '</pre>';
+
+
+
 		// wp_cache_set( $cache_key, $user_video_preference );.
 		return $user_video_preference;
 	}
