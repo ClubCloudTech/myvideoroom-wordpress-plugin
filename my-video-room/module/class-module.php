@@ -263,7 +263,9 @@ class Module {
 	}
 
 	/**
-	 * Mark the module as hidden - will still be active, but not show to the user
+	 * Mark the module as hidden
+	 * If the module is active then it will still be active, but not shown on the modules page.
+	 * If the module is inactive then it will be shown on the modules page to allow the user to activate it.
 	 *
 	 * @return $this
 	 */
@@ -274,11 +276,12 @@ class Module {
 
 	/**
 	 * Is the module hidden?
-	 * 
+	 * Modules that are marked as hidden, and are active will not be shown in the modules page.
+	 *
 	 * @return bool
 	 */
 	public function is_hidden(): bool {
-		return $this->hidden;
+		return $this->is_active() && $this->hidden;
 	}
 
 	/**
