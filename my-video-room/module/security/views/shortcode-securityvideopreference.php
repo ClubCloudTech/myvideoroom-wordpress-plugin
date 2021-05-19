@@ -10,8 +10,6 @@
 
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;

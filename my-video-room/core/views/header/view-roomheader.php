@@ -10,7 +10,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\TemplateIcons;
-use MyVideoRoomExtrasPlugin\Modules\WooCommerceBookings\ShortCodeConstructor;
+//use MyVideoRoomExtrasPlugin\Modules\WooCommerceBookings\ShortCodeConstructor;
 
 return function (
 	string $module_name = null,
@@ -39,7 +39,7 @@ return function (
 	if ( $meeting_link ) {
 		$invite_menu = $meeting_link;
 	} else {
-		$invite_menu = Factory::get_instance( ShortCodeConstructor::class )->invite_menu_shortcode( array( 'user_id' => $user_id ) );
+		//$invite_menu = Factory::get_instance( ShortCodeConstructor::class )->invite_menu_shortcode( array( 'user_id' => $user_id ) );
 	}
 
 	?>

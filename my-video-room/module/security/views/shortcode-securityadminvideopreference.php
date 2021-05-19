@@ -180,20 +180,8 @@ return function (
 				<p><?php esc_html_e( 'Use this setting to determine what user roles you want to explicitly allow or - the reverse (block all users but a specific role) if you tick the Block Role option.', 'my-video-room' ); ?></p>
 				<hr>
 				<?php
-				// This needs to be an action hook.
-				if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
-
-					// Group setting from BP.
-					if ( ( Factory::get_instance( ModuleConfig::class )->module_activation_status( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::MODULE_BUDDYPRESS_GROUP_ID ) ) &&
-					( Factory::get_instance( ModuleConfig::class )->module_activation_status( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::MODULE_BUDDYPRESS_ID ) ) ) {
-						echo esc_attr( Factory::get_instance( \MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPressConfig::class )->render_group_menu_options( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, $id_index ) );
-					}
-					// Friends Setting from BP.
-					if ( ( Factory::get_instance( ModuleConfig::class )->module_activation_status( MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID ) ) &&
-					( Factory::get_instance( ModuleConfig::class )->module_activation_status( \MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::MODULE_BUDDYPRESS_ID ) ) ) {
-						echo esc_attr( Factory::get_instance( \MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPressConfig::class )->render_friends_menu_options( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, $id_index ) );
-					}
-				}
+					// Action Hook to Display additional Form Entries from other Modules.
+					echo esc_textarea( do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting ) );
 				?>
 				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
 				<hr>

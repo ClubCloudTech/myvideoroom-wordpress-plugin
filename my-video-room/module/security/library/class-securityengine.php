@@ -53,7 +53,6 @@ class SecurityEngine {
 		Setup Environment Room Name Transformations for Special Cases.
 		* Room names need to be modified for special cases - like multi-user scenarios.
 		*/
-
 		// Case BuddyPress Groups = need to pass room name, and host IDs as their creator and group name.
 		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
 			global $bp;
@@ -67,13 +66,6 @@ class SecurityEngine {
 		$host_status = false;
 		if ( strpos( $room_type, 'host' ) !== false ) {
 			$host_status = true;
-		}
-
-		// Filter Application.
-
-		$render_block = apply_filters( 'mvr_render_block', '', $host_id, $room_name, $host_status, $room_type );
-		if ( $render_block ) {
-			return $render_block;
 		}
 
 		// First - Check Room Active - User Disable/Enable check.
@@ -105,25 +97,12 @@ class SecurityEngine {
 			return $allowed_roles_block;
 		}
 
-		// Check BuddyPress Group Membership - and other related if module enabled.
-		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) { // Apply to Groups Only.
-			if ( function_exists( 'bp_is_groups_component' ) && \bp_is_groups_component() ) {
-				// Check Group Filter.
-				$bp_group_block = Factory::get_instance( PageFilters::class )->block_bp_non_group_member_video_render( $room_name, $host_status, $room_type );
-
-				if ( $bp_group_block ) {
-					return $bp_group_block;
-				}
-			}
-			// Check Friend Filter.
-			if ( ( strpos( $room_type, 'guest' ) !== false ) ) {
-				$bp_friend_block = Factory::get_instance( PageFilters::class )->block_bp_friend_video_render( $host_id, $room_name, $room_type );
-
-				if ( $bp_friend_block ) {
-					return $bp_friend_block;
-				}
-			}
+		// Action Hook to Display additional Form Entries from other Modules.
+		$render_block = do_action( 'myvideoroom_security_render_block', $host_id, $room_name, $host_status, $room_type );
+		if ( $render_block ) {
+			return $render_block;
 		}
+
 		return null;
 	}
 }
