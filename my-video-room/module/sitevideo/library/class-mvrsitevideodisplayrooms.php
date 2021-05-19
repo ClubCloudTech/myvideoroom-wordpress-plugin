@@ -39,7 +39,7 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 			$post_id      = $room_object->post_id;
 			$display_name = $room_object->display_name;
 			?>
-<tr>
+<tr data-room-id="<?php echo esc_attr( $room_id ); ?>">
 <td class="mvr-table-height">
 			<?php
 				$title = $display_name;
@@ -91,7 +91,19 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 				//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a superglobal not user input.
 					$slug = admin_url( 'admin.php?page=' . esc_textarea( wp_unslash( $_GET['page'] ) ) );
 				}
-				echo '<a href="#" class="dashicons mvr-icons dashicons-admin-generic myvideoroom-sitevideo-settings" data-post-id="' . esc_attr( $post_id ) . '" data-input-type="normal" </a>';
+
+				$settings_url = \add_query_arg( array( 'room_id' => $room_id ), \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
+
+				?>
+					<a
+						href="<?php echo esc_url( $settings_url ); ?>"
+						class="dashicons mvr-icons dashicons-admin-generic myvideoroom-sitevideo-settings"
+						data-post-id="<?php echo esc_attr( $post_id ); ?>"
+						data-room-id="<?php echo esc_attr( $room_id ); ?>"
+						data-input-type="normal"
+					></a>
+				<?php
+
 				echo '<a href="' . esc_url_raw( $slug ) . '&tab=' . esc_textarea( MVRSiteVideo::MODULE_ROOM_MANAGEMENT_NAME ) . '&id=' . esc_textarea( $post_id ) . '&delete=true" class="dashicons mvr-icons dashicons-dismiss" target="iframe1" title="' . esc_html__( 'Delete Room', 'my-video-room' ) . '"></a>';
 			} else {
 				?>

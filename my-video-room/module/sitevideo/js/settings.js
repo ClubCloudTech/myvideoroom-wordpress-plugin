@@ -10,6 +10,8 @@
 	$( '.myvideoroom-sitevideo-settings' ).on(
 		'click',
 		function (e) {
+			return;
+
 			var post_id    = $( this ).data( 'postId' );
 			var input_type = $( this ).data( 'inputType' );
 

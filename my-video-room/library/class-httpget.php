@@ -26,4 +26,22 @@ class HttpGet {
 		return \sanitize_text_field( \wp_unslash( $_GET[ $name ] ?? $default ) );
 	}
 
+	/**
+	 * Get a string from the $_GET
+	 *
+	 * @param string   $name    The name of the field.
+	 * @param ?integer $default The default value.
+	 *
+	 * @return ?integer
+	 */
+	public function get_integer_parameter( string $name, int $default = null ): ?int {
+		$value = $this->get_text_parameter( $name );
+
+		if ( $value !== '' ) {
+			return (int) $value;
+		}
+
+		return $default;
+	}
+
 }

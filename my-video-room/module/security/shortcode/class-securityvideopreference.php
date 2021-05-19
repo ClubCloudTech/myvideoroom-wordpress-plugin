@@ -76,10 +76,10 @@ class SecurityVideoPreference extends Shortcode {
 			$allow_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_allow_role_control_enabled_preference'] ?? '' ) ) === 'on';
 			$block_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_block_role_control_enabled_preference'] ?? '' ) ) === 'on';
 			//phpcs:ignore --WordPress.Security.ValidatedSanitizedInput.InputNotValidated - input sanitised but not mandatory.
-			$restrict_group_to_members_setting = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_restrict_group_to_members'] ) );
+			$restrict_group_to_members_setting = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_restrict_group_to_members'] ?? '' ) );
 			$site_override_enabled             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_override_all_preferences'] ?? '' ) ) === 'on';
 			//phpcs:ignore --WordPress.Security.ValidatedSanitizedInput.InputNotValidated - input sanitised but not mandatory.
-			$bp_friends_setting                = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_restrict_bp_friends'] ) );
+			$bp_friends_setting                = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_restrict_bp_friends'] ?? '' ) );
 
 			// Handle Default Off State for Group Restrictions.
 			if ( $restrict_group_to_members_setting ) {
@@ -162,18 +162,6 @@ class SecurityVideoPreference extends Shortcode {
 			$user_id,
 			$room_name
 		);
-
-
-
-		// Auto Refresh Room Post Settings Change.
-		// @TODO - Alec to check this.
-		if (
-			isset( $_SERVER['REQUEST_METHOD'] ) &&
-			'POST' === $_SERVER['REQUEST_METHOD'] &&
-			sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_room_name'] ?? null ) ) === $room_name
-		) {
-			echo( "<meta http-equiv='refresh' content='.1'>" );
-		}
 
 		// Type of Shortcode to render.
 		switch ( $type ) {

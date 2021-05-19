@@ -56,7 +56,6 @@ class UserVideoPreference extends Shortcode {
 	}
 
 	public function check_for_update_request() {
-
 		if (
 			isset( $_SERVER['REQUEST_METHOD'] ) &&
 			'POST' === $_SERVER['REQUEST_METHOD'] &&
@@ -139,16 +138,6 @@ class UserVideoPreference extends Shortcode {
 		}
 
 		$render = require __DIR__ . '/../../views/shortcode/view-shortcode-uservideopreference.php';
-
-		// Auto Refresh Room Post Settings Change.
-		// @TODO - ALEC - check if we can sort this.
-		if (
-			isset( $_SERVER['REQUEST_METHOD'] ) &&
-			'POST' === $_SERVER['REQUEST_METHOD'] &&
-			sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_room_name'] ?? null ) ) === $room_name
-		) {
-			echo( "<meta http-equiv='refresh' content='.1'>" );
-		}
 		return $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $user_id );
 	}
 }

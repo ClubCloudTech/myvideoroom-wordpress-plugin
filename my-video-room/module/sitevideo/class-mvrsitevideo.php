@@ -11,6 +11,7 @@ use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
+use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
@@ -143,25 +144,25 @@ class MVRSiteVideo extends Shortcode {
 	 * Render Site Video Admin Page.
 	 */
 	public function render_sitevideo_admin_page() {
-		$active_tab = self::MODULE_SITE_VIDEO_NAME;
-		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
-		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
-		$messages   = array();
-		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
-		echo $render( $messages );
-		return 'Powered by MyVideoRoom';
+		$settings = null;
+
+		$room_id = Factory::get_instance( HttpGet::class )->get_text_parameter( 'room_id' );
+		if ( null !== $room_id ) {
+			$settings = ( require __DIR__ . '/views/view-management-rooms.php' )( $room_id, 'normal' );
+		}
+
+		return ( require __DIR__ . '/views/view-settings-sitevideo.php' )( $settings );
 	}
 
 	/**
 	 * Get Site Video Ajax Data
 	 */
 	public function get_ajax_page_settings() {
-		$post_id     = Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
-		$post_id_int = intval( $post_id );
-		$input_type  = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
-		$render      = require WP_PLUGIN_DIR . '/my-video-room/module/sitevideo/views/view-management-rooms.php';
+		$post_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'postId' );
+		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
+
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
-		echo $render( $post_id_int, $input_type );
+		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $post_id, $input_type );
 		die();
 	}
 }
