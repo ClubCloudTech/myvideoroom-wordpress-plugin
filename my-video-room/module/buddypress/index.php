@@ -28,6 +28,6 @@ use MyVideoRoomPlugin\Module\BuddyPress\Module as BuddyPress;
 		)
 			->add_compatibility_hook( fn() => true ) // @TODO - for testing - always compatible.
 			->add_activation_hook( fn() => ( new Activation() )->activate() )
-			->add_deactivation_hook( fn() => ( new Activation() )->deactivate() );
+			->add_uninstall_hook( fn() => ( new Activation() )->uninstall() );
 	}
 );

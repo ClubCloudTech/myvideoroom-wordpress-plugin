@@ -25,10 +25,10 @@ class Activation {
 	}
 
 	/**
-	 * Deactivate the module
+	 * Uninstall the module
 	 * - drops the table
 	 */
-	public function deactivate() {
+	public function uninstall() {
 		Factory::get_instance( Dao::class )->drop_table();
 	}
 }
