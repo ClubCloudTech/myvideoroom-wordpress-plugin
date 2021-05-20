@@ -8,7 +8,7 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use \MyVideoRoomPlugin\Core\SiteDefaults;
+use \MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoDisplayRooms;

@@ -7,12 +7,12 @@
 
 namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 
-use \MyVideoRoomPlugin\Core\SiteDefaults;
+use \MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\VideoHelpers;
-use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
+use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters as PageFiltersLibrary;

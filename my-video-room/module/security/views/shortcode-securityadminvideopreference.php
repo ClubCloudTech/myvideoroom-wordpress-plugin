@@ -14,7 +14,7 @@ use MyVideoRoomPlugin\Module\Security\Dao\SecurityVideoPreference as SecurityVid
 use MyVideoRoomPlugin\Module\Security\Settings\Field as InputField;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Library\Dependencies;
 
 return function (

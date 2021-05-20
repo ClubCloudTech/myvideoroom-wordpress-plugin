@@ -8,7 +8,7 @@
  * @package MyVideoRoomPlugin\Core\Views\Shortcode
  */
 
-use MyVideoRoomPlugin\Core\Entity\UserVideoPreference;
+use MyVideoRoomPlugin\Entity\UserVideoPreference;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDAO;
 
@@ -20,10 +20,7 @@ return function (
 	int $id_index = 0,
 	int $user_id = null
 ): string {
-	wp_enqueue_style( 'myvideoroom-template' );
-	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
-
 	?>
 	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
 				<h1><?php esc_html_e( 'Video Host Settings for ', 'my-video-room' ); ?>

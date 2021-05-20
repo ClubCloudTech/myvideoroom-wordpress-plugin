@@ -7,7 +7,7 @@
 
 namespace MyVideoRoomPlugin\Module\SiteVideo;
 
-use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference as UserVideoPreference;
+use MyVideoRoomPlugin\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
