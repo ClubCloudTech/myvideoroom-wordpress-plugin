@@ -94,17 +94,33 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 
 				$settings_url = \add_query_arg( array( 'room_id' => $room_id ), \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
 
+				$delete_nonce = wp_create_nonce( 'delete_room_' . $room_id );
+				$delete_url   = \add_query_arg(
+					array(
+						'room_id'  => $room_id,
+						'delete'   => 'true',
+						'_wpnonce' => $delete_nonce,
+					),
+					\esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) )
+				);
+
 				?>
 					<a
 						href="<?php echo esc_url( $settings_url ); ?>"
 						class="dashicons mvr-icons dashicons-admin-generic myvideoroom-sitevideo-settings"
-						data-post-id="<?php echo esc_attr( $post_id ); ?>"
 						data-room-id="<?php echo esc_attr( $room_id ); ?>"
 						data-input-type="normal"
+						title="<?php esc_html_e( 'View settings', 'myvideoroom' ); ?>"
+					></a>
+
+					<a
+						href="<?php echo esc_url( $delete_url ); ?>"
+						class="dashicons mvr-icons dashicons-dismiss myvideoroom-sitevideo-delete"
+						data-room-id="<?php echo esc_attr( $room_id ); ?>"
+						data-nonce="<?php echo esc_attr( $delete_nonce ); ?>"
+						title="<?php esc_html_e( 'Delete room', 'myvideoroom' ); ?>"
 					></a>
 				<?php
-
-				echo '<a href="' . esc_url_raw( $slug ) . '&tab=' . esc_textarea( MVRSiteVideo::MODULE_ROOM_MANAGEMENT_NAME ) . '&id=' . esc_textarea( $post_id ) . '&delete=true" class="dashicons mvr-icons dashicons-dismiss" target="iframe1" title="' . esc_html__( 'Delete Room', 'my-video-room' ) . '"></a>';
 			} else {
 				?>
 				<form method="post" action="">

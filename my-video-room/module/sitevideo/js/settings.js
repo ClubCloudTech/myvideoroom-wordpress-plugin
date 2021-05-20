@@ -13,6 +13,11 @@
 			var room_id    = $( this ).data( 'roomId' );
 			var input_type = $( this ).data( 'inputType' );
 
+			var $container   = $( '.mvr-security-room-host' );
+			var loading_text = $container.data( 'loadingText' );
+
+			$container.html( loading_text );
+
 			var ajax_url = myvideoroom_sitevideo_settings.ajax_url;
 
 			$.ajax(
@@ -33,8 +38,6 @@
 							var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
 							history.pushState( null, '', newRelativePathQuery );
 						}
-
-						var $container = $( '.mvr-security-room-host' );
 
 						$container.html( response );
 
