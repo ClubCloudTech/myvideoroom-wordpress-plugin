@@ -71,6 +71,13 @@ class Module {
 	private $deactivation_hook = null;
 
 	/**
+	 * The uninstall hook
+	 *
+	 * @var ?callable
+	 */
+	private $uninstall_hook = null;
+
+	/**
 	 * Is the module active
 	 *
 	 * @var bool
@@ -107,15 +114,6 @@ class Module {
 	}
 
 	/**
-	 * Is the module compatible with this WordPress instance
-	 *
-	 * @return bool
-	 */
-	public function is_compatible(): bool {
-		return ! $this->compatibility_hook || ( $this->compatibility_hook )();
-	}
-
-	/**
 	 * Add a compatibility hook
 	 *
 	 * @param callable $hook A callback to check if the module is compatible with the WordPress install.
@@ -126,6 +124,15 @@ class Module {
 		$this->compatibility_hook = $hook;
 
 		return $this;
+	}
+
+	/**
+	 * Is the module compatible with this WordPress instance
+	 *
+	 * @return bool
+	 */
+	public function is_compatible(): bool {
+		return ! $this->compatibility_hook || ( $this->compatibility_hook )();
 	}
 
 	/**
@@ -191,25 +198,6 @@ class Module {
 	}
 
 	/**
-	 * Mark the module as active, and call the module's activation hook
-	 *
-	 * @return bool
-	 */
-	public function activate(): bool {
-		if ( $this->activation_hook ) {
-			$status = ( $this->activation_hook )();
-
-			if ( false === $status ) {
-				return false;
-			}
-		}
-
-		$this->set_as_active();
-
-		return true;
-	}
-
-	/**
 	 * Mark the module as active
 	 *
 	 * @return $this
@@ -234,6 +222,38 @@ class Module {
 	}
 
 	/**
+	 * Mark the module as active, and call the module's activation hook
+	 *
+	 * @return bool
+	 */
+	public function activate(): bool {
+		if ( $this->activation_hook ) {
+			$status = ( $this->activation_hook )();
+
+			if ( false === $status ) {
+				return false;
+			}
+		}
+
+		$this->set_as_active();
+
+		return true;
+	}
+
+	/**
+	 * Add an deactivation hook
+	 *
+	 * @param callable $deactivation_hook Add a callback to call when the module is deactivated.
+	 *
+	 * @return $this
+	 */
+	public function add_deactivation_hook( callable $deactivation_hook ): self {
+		$this->deactivation_hook = $deactivation_hook;
+
+		return $this;
+	}
+
+	/**
 	 * Call the module's deactivation hook, and mark as inactive
 	 *
 	 * @return bool
@@ -248,6 +268,36 @@ class Module {
 		}
 
 		$this->set_as_inactive();
+
+		return true;
+	}
+
+	/**
+	 * Add an uninstall hook
+	 *
+	 * @param callable $uninstall_hook Add a callback to call when the module is uninstalled.
+	 *
+	 * @return $this
+	 */
+	public function add_uninstall_hook( callable $uninstall_hook ): self {
+		$this->uninstall_hook = $uninstall_hook;
+
+		return $this;
+	}
+
+	/**
+	 * Call the module's uninstall hook
+	 *
+	 * @return bool
+	 */
+	public function uninstall(): bool {
+		if ( $this->uninstall_hook ) {
+			$status = ( $this->uninstall_hook )();
+
+			if ( false === $status ) {
+				return false;
+			}
+		}
 
 		return true;
 	}
@@ -282,19 +332,6 @@ class Module {
 	 */
 	public function is_hidden(): bool {
 		return $this->is_active() && $this->hidden;
-	}
-
-	/**
-	 * Add an deactivation hook
-	 *
-	 * @param callable $deactivation_hook Add a callback to call when the module is deactivated.
-	 *
-	 * @return $this
-	 */
-	public function add_deactivation_hook( callable $deactivation_hook ): self {
-		$this->deactivation_hook = $deactivation_hook;
-
-		return $this;
 	}
 
 	/**

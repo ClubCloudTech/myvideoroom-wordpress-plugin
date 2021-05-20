@@ -24,27 +24,43 @@ class Activation {
 	 * Activate the plugin
 	 */
 	public static function activate() {
-		$activator = new self();
 		Factory::get_instance( SiteDefaults::class )->activate_module();
 
-		$activator->create_roles_and_permissions()
+		( new self() )
+			->create_roles_and_permissions()
 			->enable_default_modules();
+
+		$active_modules = Factory::get_instance( Module::class )->get_active_modules();
+		foreach ( $active_modules as $active_module ) {
+			$active_module->activate();
+		}
 	}
 
 	/**
 	 * Remove the plugin
 	 */
 	public static function deactivate() {
-		$activator = new self();
-		$activator->delete_roles_and_permissions()
-			->delete_options();
+		$active_modules = Factory::get_instance( Module::class )->get_all_modules();
+		foreach ( $active_modules as $active_module ) {
+			$active_module->deactivate();
+		}
 	}
 
 	/**
 	 * Uninstall the plugin
 	 */
 	public static function uninstall() {
+		Module::load_built_in_modules();
+		\do_action( 'myvideoroom_init' );
+		$active_modules = Factory::get_instance( Module::class )->get_all_modules();
+		
+		foreach ( $active_modules as $active_module ) {
+			$active_module->uninstall();
+		}
 
+		( new self() )
+			->delete_roles_and_permissions()
+			->delete_options();
 	}
 
 	// ---
