@@ -18,7 +18,7 @@ return function (
 	int $user_id = null,
 	string $room_name = null,
 	bool $visitor_status = false,
-	string $meeting_link = null,
+	string $invite_menu = null,
 	string $post_site_title = null
 ): string {
 	wp_enqueue_style( 'myvideoroom-template' );
@@ -34,12 +34,6 @@ return function (
 				'user_id' => $user_id,
 			)
 		);
-	}
-	// Generate Invite Link for Meeting - First simple case of already received it in template.
-	if ( $meeting_link ) {
-		$invite_menu = $meeting_link;
-	} else {
-		$invite_menu = Factory::get_instance( MeetingIdGenerator::class )->invite_menu_shortcode( array( 'user_id' => $user_id ) );
 	}
 
 	?>
@@ -60,7 +54,11 @@ return function (
 		<div class="mvr-header-table-right">
 			<h2 class="mvr-header-title"><?php echo esc_html( $name_output ) . ' ' . esc_html( $module_name ); ?></h2>
 			<p class="mvr-preferences-paragraph">
-				<?php echo esc_html__( 'Meeting Link- ', 'my-video-room' ) . esc_url( $invite_menu ); ?>
+				<?php
+				if ( $invite_menu ) {
+					echo esc_html__( 'Meeting Link- ', 'my-video-room' ) . esc_url( $invite_menu );
+				}
+				?>
 			</p>
 		</div>
 	</section>
