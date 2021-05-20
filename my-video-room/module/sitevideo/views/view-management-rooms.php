@@ -55,7 +55,7 @@ return function (
 	$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 	$room_name   = $room_object->room_name;
 	if ( ! $room_name ) {
-		return 'Invalid Room Number';
+		return null;
 	}
 
 	$base_menu = new MenuTabDisplay();
@@ -71,7 +71,6 @@ return function (
 		);
 	$base_option  = array( $base_menu );
 	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_id );
-
 	?>
 	<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 		<ul>
