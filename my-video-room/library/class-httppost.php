@@ -93,6 +93,18 @@ class HttpPost {
 	}
 
 	/**
+	 * Does a parameter exist in the request?
+	 *
+	 * @param string $name The name of the field.
+	 *
+	 * @return bool
+	 */
+	public function has_parameter( string $name ): bool {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing --Nonce is verified in parent function
+		return isset( $_POST[ 'myvideoroom_' . $name ] );
+	}
+
+	/**
 	 * Get a integer from the $_POST
 	 *
 	 * @param string   $name    The name of the field.

@@ -26,9 +26,28 @@ class Activation {
 	public static function activate() {
 		$activator = new self();
 		Factory::get_instance( SiteDefaults::class )->activate_module();
+
 		$activator->create_roles_and_permissions()
 			->enable_default_modules();
 	}
+
+	/**
+	 * Remove the plugin
+	 */
+	public static function deactivate() {
+		$activator = new self();
+		$activator->delete_roles_and_permissions()
+			->delete_options();
+	}
+
+	/**
+	 * Uninstall the plugin
+	 */
+	public static function uninstall() {
+
+	}
+
+	// ---
 
 	/**
 	 * Enable default modules
@@ -52,8 +71,6 @@ class Activation {
 		return $this;
 	}
 
-	// ---
-
 	/**
 	 * Creates role and caps
 	 *
@@ -74,15 +91,6 @@ class Activation {
 		}
 
 		return $this;
-	}
-
-	/**
-	 * Remove the plugin
-	 */
-	public static function deactivate() {
-		$activator = new self();
-		$activator->delete_roles_and_permissions()
-			->delete_options();
 	}
 
 	/**
