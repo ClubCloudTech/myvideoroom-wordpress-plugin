@@ -28,27 +28,23 @@ class Module {
 	public function add_security_settings( SecurityVideoPreferenceEntity $security_video_preference ) {
 		ob_start();
 
-		$restrict_to_members = false;
-		$restrict_bp_friends = '';
+		$settings = null;
 
 		if ( $security_video_preference ) {
-			global $wpdb;
-			$query  = $wpdb->prepare(
-				'SELECT restrict_group_to_members_enabled, bp_friends_setting FROM ' . $wpdb->prefix . 'myvideoroom_buddypress WHERE record_id = %s',
-				$security_video_preference->get_id()
-			);
-			$result = $wpdb->get_row( $query );
+			$settings = Factory::get_instance( Dao::class )->get_by_id( $security_video_preference->get_id() );
+		}
 
-			if ( $result ) {
-				$restrict_to_members = (bool) $result->restrict_group_to_members_enabled;
-				$restrict_bp_friends = $result->bp_friends_setting;
+		$checked             = '';
+		$restrict_bp_friends = '';
+
+		if ( $settings ) {
+			if ( $settings->is_restrict_group_to_members_enabled() ) {
+				$checked = ' checked';
 			}
+
+			$restrict_bp_friends = $settings->get_friend_restriction();
 		}
 
-		$checked = '';
-		if ( $restrict_to_members ) {
-			$checked = ' checked';
-		}
 		?>
 
 		myvideoroom_security_restrict_group_to_members:
@@ -70,28 +66,13 @@ class Module {
 		$restrict_group_to_members_setting = $http_post_library->get_checkbox_parameter( 'security_restrict_group_to_members' );
 		$bp_friends_setting                = $http_post_library->get_string_parameter( 'security_restrict_bp_friends' );
 
-		// Handle Default Off State for Group Restrictions.
-		if ( $restrict_group_to_members_setting ) {
-			if ( 'Turned Off' === $restrict_group_to_members_setting || '' === $restrict_group_to_members_setting ) {
-				$restrict_group_to_members_setting = null;
-			}
-		}
-
-		global $wpdb;
-		// Create Post.
-		$wpdb->replace(
-			$wpdb->prefix . 'myvideoroom_buddypress',
-			array(
-				'record_id'                         => $security_video_preference->get_id(),
-				'restrict_group_to_members_enabled' => (int) $restrict_group_to_members_setting,
-				'bp_friends_setting'                => $bp_friends_setting,
-			),
-			array(
-				'record_id'                         => '%d',
-				'restrict_group_to_members_enabled' => '%d',
-				'bp_friends_setting'                => '%s',
-			)
+		$settings = new Settings(
+			$security_video_preference->get_id(),
+			$restrict_group_to_members_setting,
+			$bp_friends_setting
 		);
+
+		Factory::get_instance( Dao::class )->persist( $settings );
 
 		return $security_video_preference;
 	}
