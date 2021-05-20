@@ -28,8 +28,7 @@ class SectionTemplates extends Shortcode {
 	 * @return string. The completed Formatted Template.
 	 */
 	public function shortcode_template_wrapper( string $header = null, string $shortcode = null, string $admin_page = null, $permissions_page = null ): string {
-		wp_enqueue_script( 'myvideoroom-admin-tabs' );
-		wp_enqueue_style( 'myvideoroom-menutab-header' );
+
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
 		$header_length    = strlen( $header );
 		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
