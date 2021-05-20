@@ -53,7 +53,7 @@ class SecurityEngine {
 		* Room names need to be modified for special cases - like multi-user scenarios.
 		*/
 
-		// Filters to Modify Blocking Behaviour.
+		// Filters to Modify Blocking Behaviour for default and third party blockers.
 		$host_id   = apply_filters( 'myvideoroom_security_change_user_id', $host_id );
 		$room_name = apply_filters( 'myvideoroom_security_change_room_name', $room_name );
 
@@ -92,8 +92,8 @@ class SecurityEngine {
 			return $allowed_roles_block;
 		}
 
-		// Action Hook to Display additional Form Entries from other Modules.
-		$render_block = do_action( 'myvideoroom_security_render_block', $host_id, $room_name, $host_status, $room_type );
+		// Action Hook to Display additional Filters from other Modules.
+		$render_block = apply_filters( 'myvideoroom_security_render_block', '', $host_id, $room_name, $host_status, $room_type );
 		if ( $render_block ) {
 			return $render_block;
 		}

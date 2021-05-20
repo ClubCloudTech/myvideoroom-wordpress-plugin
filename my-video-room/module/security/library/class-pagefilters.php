@@ -32,7 +32,6 @@ class PageFilters extends Shortcode {
 	public function runtime_filters() {
 
 	}
-
 	/**
 	 * This function Checks a Module is Active to allow it to render Video
 	 * Used only in admin pages of plugin
@@ -56,7 +55,6 @@ class PageFilters extends Shortcode {
 					$module_id = Dependencies::MODULE_PERSONAL_MEETING_ID;
 				}
 			}
-
 			// Normal Check.
 			$is_module_enabled = Factory::get_instance( ModuleConfig::class )->read_enabled_status( $module_id );
 

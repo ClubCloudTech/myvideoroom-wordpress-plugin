@@ -319,6 +319,9 @@ class SecurityVideoPreference {
 	 *
 	 * @param int    $user_id The user id.
 	 * @param string $room_name The room name.
+	 * @param string $return_type - The field to return.
+	 *
+	 * @return null
 	 *
 	 * Returns layout ID, Reception ID, or Reception Enabled Status
 	 */
