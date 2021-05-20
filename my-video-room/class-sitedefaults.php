@@ -109,7 +109,7 @@ class SiteDefaults extends Shortcode {
 
 		wp_register_script(
 			'myvideoroom-protect-input',
-			plugins_url( '/../js/protect-input.js', __FILE__ ),
+			plugins_url( '/js/protect-input.js', __FILE__ ),
 			null,
 			$plugin_version,
 			true
@@ -117,7 +117,7 @@ class SiteDefaults extends Shortcode {
 
 		wp_register_script(
 			'myvideoroom-frame-refresh',
-			plugins_url( '/../js/frame-refresh.js', __FILE__ ),
+			plugins_url( '/js/frame-refresh.js', __FILE__ ),
 			null,
 			$plugin_version,
 			true
@@ -125,7 +125,7 @@ class SiteDefaults extends Shortcode {
 
 		wp_register_script(
 			'myvideoroom-admin-tabs',
-			plugins_url( '/../js/tabbed.js', __FILE__ ),
+			plugins_url( '/js/tabbed.js', __FILE__ ),
 			array( 'jquery' ),
 			$plugin_version,
 			true
@@ -133,7 +133,7 @@ class SiteDefaults extends Shortcode {
 
 		wp_register_script(
 			'myvideoroom-outer-tabs',
-			plugins_url( '/../js/outer-tabbed.js', __FILE__ ),
+			plugins_url( '/js/outer-tabbed.js', __FILE__ ),
 			array( 'jquery' ),
 			$plugin_version,
 			true
@@ -144,14 +144,14 @@ class SiteDefaults extends Shortcode {
 
 		wp_register_style(
 			'myvideoroom-menutab-header',
-			plugins_url( '/../css/menutab.css', __FILE__ ),
+			plugins_url( '/css/menutab.css', __FILE__ ),
 			false,
 			$plugin_version
 		);
 
 		wp_register_style(
 			'myvideoroom-template',
-			plugins_url( '/../css/template.css', __FILE__ ),
+			plugins_url( '/css/template.css', __FILE__ ),
 			false,
 			$plugin_version
 		);

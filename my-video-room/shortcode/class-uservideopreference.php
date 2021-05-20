@@ -141,7 +141,7 @@ class UserVideoPreference extends Shortcode {
 			return \esc_html__( 'No Layouts Found', 'myvideoroom' );
 		}
 
-		$render = require __DIR__ . '/../../views/shortcode/view-shortcode-uservideopreference.php';
+		$render = require __DIR__ . '/../views/shortcode/view-shortcode-uservideopreference.php';
 		return $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $user_id );
 	}
 }
