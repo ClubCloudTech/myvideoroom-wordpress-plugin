@@ -60,14 +60,10 @@ class ModuleConfig {
 	public function check_table_exists( string $table_name ): bool {
 		global $wpdb;
 		$table_name_sql = $wpdb->prefix . $table_name;
-		$prepared_query = $wpdb->prepare(
-			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
-			'SELECT 1 FROM ' . $table_name_sql . ' LIMIT 1',
-		);
 
 		try {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-			$row = $wpdb->get_row( $prepared_query );
+			$row = $wpdb->get_row( 'SELECT 1 FROM ' . $table_name_sql . ' LIMIT 1' );
 			if ( $row ) {
 				return true;
 			}
