@@ -72,44 +72,19 @@ return function (
 	$base_option  = array( $base_menu );
 	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_id );
 	?>
-<<<<<<< HEAD
-			<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
-				<ul class="menu">
-					<?php
-					$active = '-active';
-					foreach ( $output_array as $menu_output ) {
-						$tab_display_name = $menu_output->get_tab_display_name();
-						$tab_slug         = $menu_output->get_tab_slug();
-						?>
-						<li>
-							<a class="nav-tab nav-tab<?php echo esc_textarea( $active ); ?>" href="#<?php echo esc_textarea( $tab_slug ); ?>"><?php echo esc_textarea( $tab_display_name ); ?> </a>
-						</li>
-						<?php
-						$active = null;
-					}
-					?>
-				</ul>
-			</nav>
-
-=======
 	<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 		<ul>
->>>>>>> f0fdb8be47a4ae44b53b5eb8c254a36e50124ef7
 			<?php
 			$active = 'nav-tab-active';
 			foreach ( $output_array as $menu_output ) {
 				$tab_display_name = $menu_output->get_tab_display_name();
 				$tab_slug         = $menu_output->get_tab_slug();
 				?>
-<<<<<<< HEAD
-				</article>	
-=======
 				<li>
 					<a class="nav-tab <?php echo esc_attr( $active ); ?>" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 						<?php echo esc_html( $tab_display_name ); ?>
 					</a>
 				</li>
->>>>>>> f0fdb8be47a4ae44b53b5eb8c254a36e50124ef7
 				<?php
 				$active = null;
 			}
