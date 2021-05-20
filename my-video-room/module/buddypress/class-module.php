@@ -22,9 +22,14 @@ class Module {
 	 */
 	public function __construct() {
 		\add_action( 'myvideoroom_securityvideopreference_persisted', array( $this, 'update_security_video_preference' ) );
-		\add_action( 'myvideoroom_security_preference_form', array( $this, 'add_security_settings' ) );
+		\add_action( 'myvideoroom_security_preference_settings', array( $this, 'add_security_settings' ) );
 	}
 
+	/**
+	 * Add security settings to settings page
+	 *
+	 * @param SecurityVideoPreferenceEntity $security_video_preference The security settings.
+	 */
 	public function add_security_settings( SecurityVideoPreferenceEntity $security_video_preference ) {
 		ob_start();
 
@@ -59,7 +64,13 @@ class Module {
 		echo ob_get_clean();
 	}
 
-
+	/**
+	 * Update the security video preference
+	 *
+	 * @param SecurityVideoPreferenceEntity $security_video_preference The updated security video preference.
+	 *
+	 * @return SecurityVideoPreferenceEntity
+	 */
 	public function update_security_video_preference( SecurityVideoPreferenceEntity $security_video_preference ) {
 		$http_post_library = Factory::get_instance( HttpPost::class );
 

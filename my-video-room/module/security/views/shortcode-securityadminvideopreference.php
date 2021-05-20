@@ -181,7 +181,9 @@ return function (
 				<hr>
 				<?php
 					// Action Hook to Display additional Form Entries from other Modules.
-					do_action( 'myvideoroom_security_preference_form', $current_user_setting );
+					do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting );
+
+					do_action( 'myvideoroom_security_preference_settings', $current_user_setting );
 				?>
 				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
 				<hr>
