@@ -30,10 +30,10 @@ class Module {
 	/**
 	 * Add security settings to settings page
 	 *
-	 * @param callable                      $register_setting          Callback to add an option.
-	 * @param SecurityVideoPreferenceEntity $security_video_preference The security settings.
+	 * @param callable                       $register_setting          Callback to add an option.
+	 * @param ?SecurityVideoPreferenceEntity $security_video_preference The security settings.
 	 */
-	public function add_security_settings( callable $register_setting, SecurityVideoPreferenceEntity $security_video_preference ) {
+	public function add_security_settings( callable $register_setting, SecurityVideoPreferenceEntity $security_video_preference = null ) {
 		$settings = null;
 		if ( $security_video_preference ) {
 			$settings = Factory::get_instance( Dao::class )->get_by_id( $security_video_preference->get_id() );
