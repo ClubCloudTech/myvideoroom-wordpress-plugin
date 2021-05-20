@@ -41,9 +41,9 @@ class MenuTabDisplay {
 	 * @param ?string $function_callback  Function to display content.
 	 */
 	public function __construct(
-		string $tab_display_name,
-		string $tab_slug,
-		string $function_callback
+		string $tab_display_name = null,
+		string $tab_slug = null,
+		string $function_callback = null
 	) {
 		$this->tab_display_name  = $tab_display_name;
 		$this->tab_slug          = $tab_slug;

@@ -9,10 +9,11 @@ namespace MyVideoRoomPlugin\Module\Security;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
-use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
+use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 
 /**
  * Class Security- Provides the Render Block Host Function for Security.
@@ -79,6 +80,7 @@ class Security {
 		// Turn on Runtime Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
 		$this->security_menu_setup();
+		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_security_sitevideo_tabs' ), 20, 2 );
 
 	}
 
@@ -111,5 +113,26 @@ class Security {
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
 		echo $render( $messages );
 		return 'Powered by MyVideoRoom';
+	}
+
+	/**
+	 * Render Security Admin Tabs.
+	 *
+	 * @param  array $input - the inbound menu.
+	 * @param  int   $room_id - the room identifier.
+	 * @return array - outbound menu.
+	 */
+	public function render_security_sitevideo_tabs( $input = array(), int $room_id ): array {
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+		$room_name   = $room_object->room_name;
+		$base_menu   = new MenuTabDisplay();
+		$base_menu->set_tab_display_name( esc_html__( 'Room Permissions', 'my-video-room' ) )
+		->set_tab_slug( 'roompermissions' )
+		->set_function_callback(
+			Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference::class )->choose_settings( $room_id, esc_textarea( $room_name ), 'roomhost' )
+		);
+		array_push( $input, $base_menu );
+
+		return $input;
 	}
 }

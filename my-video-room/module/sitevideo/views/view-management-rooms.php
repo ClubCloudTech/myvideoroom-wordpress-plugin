@@ -9,7 +9,6 @@
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
@@ -63,60 +62,45 @@ return function(
 	if ( ! $room_name ) {
 		return 'Invalid Room Number';
 	}
-	$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
-	$base_menu        = new MenuTabDisplay();
+
+	$base_menu = new MenuTabDisplay();
 	$base_menu->set_tab_display_name( esc_html__( 'Room Hosts', 'my-video-room' ) )
 	->set_tab_slug( 'roomhosts' )
-	->set_function_callback
-	
+	->set_function_callback(
+		Factory::get_instance( MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference::class )->choose_settings( $room_id, $room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX, null, 'roomhost' )
+	);
+	$base_option  = array( $base_menu );
+	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_id );
 	?>
-<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
-	<ul class="menu">
-		<a class="nav-tab nav-tab-active" href="#page1"><?php esc_html_e( 'Room Hosts', 'my-video-room' ); ?>
-		</a>
-		<?php
-		$display_object = apply_filters( 'display_management_rooms', '' );
-		if ( $security_enabled ) {
-			?>
-			<a class="nav-tab" href="#page2"><?php esc_html_e( 'Room Permissions', 'my-video-room' ); ?> </a>
+			<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
+				<ul class="menu">
+					<?php
+					$active = '-active';
+					foreach ( $output_array as $menu_output ) {
+						$tab_display_name = $menu_output->get_tab_display_name();
+						$tab_slug         = $menu_output->get_tab_slug();
+						?>
+						<a class="nav-tab nav-tab<?php echo esc_textarea( $active ); ?>" href="#<?php echo esc_textarea( $tab_slug ); ?>"><?php echo esc_textarea( $tab_display_name ); ?> </a>
+						<?php
+						$active = null;
+					}
+					?>
+				</ul>
+			</nav>
+
 			<?php
-		}
-		?>
-		<a class="nav-tab" href="#page4"><?php esc_html_e( 'Video Settings', 'my-video-room' ); ?></a>
+			foreach ( $output_array as $article_output ) {
+				$function_callback = $article_output->get_function_callback();
+				$tab_slug          = $article_output->get_tab_slug();
+				?>
+				<article id="<?php echo esc_textarea( $tab_slug ); ?> ">
+				<?php
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
+				echo $function_callback;
+				?>
+				</article>	
 
-	</ul>
-</nav>
-
-	<?php
-	if ( $security_enabled ) {
-		?>
-	<article id="page1">
-			<?php
-				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Escaped.
-				echo Factory::get_instance( MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference::class )->choose_settings( $room_id, $room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX, null, 'roomhost' );
-			?>
-		</p>
-	</article>
-
-	<article id="page2">
-			<?php
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
-			echo Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference::class )->choose_settings( $room_id, esc_textarea( $room_name ), 'roomhost' );
-			?>
-		</p>
-	</article>
-		<?php
-	}
-	?>
-	<article id="page4">
-			<?php
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
-				echo Factory::get_instance( UserVideoPreference::class )->choose_settings( $room_id, $room_name, array( 'basic', 'premium' ) );
-			?>
-		</p>
-	</article>
-
-	<?php
-
+				<?php
+			}
 	return ob_get_clean();
 };
