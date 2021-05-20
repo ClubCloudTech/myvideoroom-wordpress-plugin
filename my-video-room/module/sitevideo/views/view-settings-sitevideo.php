@@ -75,7 +75,8 @@ return function ( string $settings = null, bool $deleted = false ): string {
 		<div class="mvr-add-page-form myvideoroom-sitevideo-add-room">
 			<h2 class="mvr-title-header"><?php esc_html_e( 'Add a Conference Room ', 'my-video-room' ); ?>   </h2>
 			<p><?php esc_html_e( 'Use this section to add a Conference Room to your site. It will remain available permanently, and can be configured to your needs.', 'my-video-room' ); ?></p>
-			<form method="post" action="">
+
+			<form method="post" action="<?php echo \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ); ?>">
 					<label for="myvideoroom_add_room_title" class="mvr-preferences-paragraph"><?php esc_html_e( 'Room Display Name ', 'my-video-room' ); ?></label>
 					<input		type="text"
 								id="myvideoroom_add_room_title"
