@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
+use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 
 /**
  * Class Security- Provides the Render Block Host Function for Security.
@@ -123,13 +124,27 @@ class Security {
 	 * @return array - outbound menu.
 	 */
 	public function render_security_sitevideo_tabs( $input = array(), int $room_id ): array {
+		// Host Menu Tab - rendered in Security as its a module feature of Security.
+		$host_menu = new MenuTabDisplay();
+		$host_menu->set_tab_display_name( esc_html__( 'Room Hosts', 'my-video-room' ) )
+			->set_tab_slug( 'roomhosts' )
+			->set_function_callback(
+				Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
+					$room_id,
+					$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
+					null,
+					'roomhost'
+				)
+			);
+		array_push( $input, $host_menu );
+		// Permissions Default Tab - rendered in Security as its a module feature of Security.
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 		$room_name   = $room_object->room_name;
 		$base_menu   = new MenuTabDisplay();
 		$base_menu->set_tab_display_name( esc_html__( 'Room Permissions', 'my-video-room' ) )
 		->set_tab_slug( 'roompermissions' )
 		->set_function_callback(
-			Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference::class )->choose_settings( $room_id, esc_textarea( $room_name ), 'roomhost' )
+			Factory::get_instance( SecurityVideoPreference::class )->choose_settings( $room_id, esc_textarea( $room_name ), 'roomhost' )
 		);
 		array_push( $input, $base_menu );
 

@@ -10,6 +10,7 @@ namespace MyVideoRoomPlugin\Module\SiteVideo;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\HttpGet;
@@ -107,6 +108,8 @@ class MVRSiteVideo extends Shortcode {
 
 		// Listener for Handling Room Add. Listens for Room Adds- and Handles Form below.
 		Factory::get_instance( MVRSiteVideoListeners::class )->site_videoroom_add_page();
+
+		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_sitevideo_roomsetting_tab' ), 21, 2 );
 	}
 
 	/**
@@ -178,6 +181,26 @@ class MVRSiteVideo extends Shortcode {
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
 		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_id, $input_type );
 		die();
+	}
+
+	/**
+	 * Render Site Video Room Setting Tab.
+	 *
+	 * @param  array $input - the inbound menu.
+	 * @param  int   $room_id - the room identifier.
+	 * @return array - outbound menu.
+	 */
+	public function render_sitevideo_roomsetting_tab( $input = array(), int $room_id ): array {
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+		$room_name   = $room_object->room_name;
+		$base_menu   = new MenuTabDisplay();
+		$base_menu->set_tab_display_name( esc_html__( 'Video Settings', 'my-video-room' ) )
+		->set_tab_slug( 'videosettings' )
+		->set_function_callback(
+			Factory::get_instance( UserVideoPreference::class )->choose_settings( $room_id, $room_name, array( 'basic', 'premium' ) )
+		);
+		array_push( $input, $base_menu );
+		return $input;
 	}
 }
 

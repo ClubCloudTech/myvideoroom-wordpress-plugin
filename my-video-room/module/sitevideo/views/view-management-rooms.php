@@ -10,13 +10,9 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
-use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\HTML as HTML;
-use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference as SecurityVideoPreference;
-use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 return function (
@@ -26,16 +22,6 @@ return function (
 	$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 
 	ob_start();
-
-	// Delete Room Handler.
-	Factory::get_instance( MVRSiteVideoListeners::class )->site_videoroom_delete_page();
-
-	// Stop Rendering further in case of Simple Delete Page (delete listener above would have caught the post).
-
-	//phpcs:ignore --WordPress.Security.NonceVerification.Recommended - Not needed as only using it as a flag - no processing.
-	if ( isset( $_SERVER['REQUEST_METHOD'] ) && isset( $_GET['delete'] ) && isset( $_GET['id'] ) && ( 'true' === $_GET['delete'] ) ) {
-		return ob_get_clean();
-	}
 
 	// Rendering Only Default Config Page.
 
@@ -58,18 +44,7 @@ return function (
 		return null;
 	}
 
-	$base_menu = new MenuTabDisplay();
-	$base_menu->set_tab_display_name( esc_html__( 'Room Hosts', 'my-video-room' ) )
-		->set_tab_slug( 'roomhosts' )
-		->set_function_callback(
-			Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
-				$room_id,
-				$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
-				null,
-				'roomhost'
-			)
-		);
-	$base_option  = array( $base_menu );
+	$base_option  = array();
 	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_id );
 	?>
 	<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
