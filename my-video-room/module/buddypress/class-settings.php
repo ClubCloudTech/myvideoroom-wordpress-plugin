@@ -14,40 +14,64 @@ namespace MyVideoRoomPlugin\Module\BuddyPress;
  */
 class Settings {
 
+	/**
+	 * The record id
+	 *
+	 * @var integer
+	 */
 	private int $id;
 
-	private bool $restrict_group_to_members_enabled;
+	/**
+	 * The member restriction string
+	 *
+	 * @var ?string
+	 */
+	private ?string $member_restriction;
 
-	private string $friend_restriction;
+	/**
+	 * The friend restriction string
+	 *
+	 * @var ?string
+	 */
+	private ?string $friend_restriction;
 
 	/**
 	 * Settings constructor.
 	 *
-	 * @param int    $id                                The record id.
-	 * @param bool   $restrict_group_to_members_enabled
-	 * @param string $friend_restriction
+	 * @param int     $id                 The record id.
+	 * @param ?string $member_restriction The current member restriction string.
+	 * @param ?string $friend_restriction The current friend restriction string.
 	 */
-	public function __construct( int $id, bool $restrict_group_to_members_enabled, string $friend_restriction ) {
-		$this->id                                = $id;
-		$this->restrict_group_to_members_enabled = $restrict_group_to_members_enabled;
-		$this->friend_restriction                = $friend_restriction;
+	public function __construct( int $id, ?string $member_restriction, ?string $friend_restriction ) {
+		$this->id                 = $id;
+		$this->member_restriction = $member_restriction;
+		$this->friend_restriction = $friend_restriction;
 	}
 
+	/**
+	 * Get the record id
+	 *
+	 * @return integer
+	 */
 	public function get_id(): int {
 		return $this->id;
 	}
 
 	/**
-	 * @return bool
+	 * Get the current member restriction
+	 *
+	 * @return ?string
 	 */
-	public function is_restrict_group_to_members_enabled(): bool {
-		return $this->restrict_group_to_members_enabled;
+	public function get_member_restriction(): ?string {
+		return $this->member_restriction;
 	}
 
 	/**
-	 * @return string
+	 * Get the current friend restriction
+	 *
+	 * @return ?string
 	 */
-	public function get_friend_restriction(): string {
+	public function get_friend_restriction(): ?string {
 		return $this->friend_restriction;
 	}
 }

@@ -41,8 +41,8 @@ class Dao {
 		$sql        = <<<SQL
 		CREATE TABLE IF NOT EXISTS `${table_name}` (
 			`record_id` int NOT NULL,
-			`restrict_group_to_members_enabled` BOOLEAN,
-			`bp_friends_setting` VARCHAR(255) NULL,
+			`restrict_group_to_members_enabled` CHAR(25) NULL,
+			`bp_friends_setting` CHAR(25) NULL,
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 SQL;
@@ -93,7 +93,7 @@ SQL;
 		if ( $result ) {
 			return new Settings(
 				$id,
-				(bool) $result['restrict_group_to_members_enabled'],
+				$result['restrict_group_to_members_enabled'],
 				$result['bp_friends_setting']
 			);
 		}
@@ -116,12 +116,12 @@ SQL;
 			$this->get_table_name(),
 			array(
 				'record_id'                         => $settings->get_id(),
-				'restrict_group_to_members_enabled' => (int) $settings->is_restrict_group_to_members_enabled(),
+				'restrict_group_to_members_enabled' => $settings->get_member_restriction(),
 				'bp_friends_setting'                => $settings->get_friend_restriction(),
 			),
 			array(
 				'record_id'                         => '%d',
-				'restrict_group_to_members_enabled' => '%d',
+				'restrict_group_to_members_enabled' => '%s',
 				'bp_friends_setting'                => '%s',
 			)
 		);
@@ -129,7 +129,7 @@ SQL;
 		\wp_cache_set(
 			$settings->get_id(),
 			array(
-				'restrict_group_to_members_enabled' => (int) $settings->is_restrict_group_to_members_enabled(),
+				'restrict_group_to_members_enabled' => $settings->get_member_restriction(),
 				'bp_friends_setting'                => $settings->get_friend_restriction(),
 			),
 			$this->get_cache_group()
