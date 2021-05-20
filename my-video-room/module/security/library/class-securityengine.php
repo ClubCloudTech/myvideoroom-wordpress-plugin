@@ -9,7 +9,6 @@ namespace MyVideoRoomPlugin\Module\Security\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
@@ -53,14 +52,10 @@ class SecurityEngine {
 		Setup Environment Room Name Transformations for Special Cases.
 		* Room names need to be modified for special cases - like multi-user scenarios.
 		*/
-		// Case BuddyPress Groups = need to pass room name, and host IDs as their creator and group name.
-		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
-			global $bp;
-			if ( \MyVideoRoomExtrasPlugin\Modules\BuddyPress\BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS === $room_name ) {
-				$host_id   = $bp->groups->current_group->creator_id;
-				$room_name = $bp->groups->current_group->slug;
-			}
-		}
+
+		// Filters to Modify Blocking Behaviour.
+		$host_id   = apply_filters( 'myvideoroom_security_change_user_id', $host_id );
+		$room_name = apply_filters( 'myvideoroom_security_change_room_name', $room_name );
 
 		// Trapping any Host filter to set host status.
 		$host_status = false;
