@@ -80,7 +80,9 @@ return function(
 						$tab_display_name = $menu_output->get_tab_display_name();
 						$tab_slug         = $menu_output->get_tab_slug();
 						?>
-						<a class="nav-tab nav-tab<?php echo esc_textarea( $active ); ?>" href="#<?php echo esc_textarea( $tab_slug ); ?>"><?php echo esc_textarea( $tab_display_name ); ?> </a>
+						<li>
+							<a class="nav-tab nav-tab<?php echo esc_textarea( $active ); ?>" href="#<?php echo esc_textarea( $tab_slug ); ?>"><?php echo esc_textarea( $tab_display_name ); ?> </a>
+						</li>
 						<?php
 						$active = null;
 					}
@@ -99,7 +101,6 @@ return function(
 				echo $function_callback;
 				?>
 				</article>	
-
 				<?php
 			}
 	return ob_get_clean();
