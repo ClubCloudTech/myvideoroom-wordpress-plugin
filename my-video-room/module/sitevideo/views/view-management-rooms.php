@@ -9,7 +9,6 @@
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Library\HTML as HTML;
@@ -36,12 +35,6 @@ return function (
 		echo '</div>';
 
 		return ob_get_clean();
-	}
-
-	$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-	$room_name   = $room_object->room_name;
-	if ( ! $room_name ) {
-		return null;
 	}
 
 	$base_option  = array();

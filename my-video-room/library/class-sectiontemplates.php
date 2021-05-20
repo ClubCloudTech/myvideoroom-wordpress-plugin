@@ -7,7 +7,6 @@
 
 namespace MyVideoRoomPlugin\Library;
 
-use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 
@@ -20,61 +19,62 @@ class SectionTemplates extends Shortcode {
 	 * Render a Template to Automatically Wrap the Video Shortcode with additional tabs to add more functionality
 	 *  Used to add Admin Page for each Room for Hosts, Returns Header and Shortcode if no additional pages passed in
 	 *
-	 * @param ?string $header           The Header of the Shortcode.
-	 * @param ?string $shortcode        The Shortcode to Render.
-	 * @param ?string $admin_page       The admin page if any.
-	 * @param null    $permissions_page The Permissions Page.
+	 * @param string $header        The Header of the Shortcode.
+	 * @param array  $inbound_tabs  Inbound object with tabs.
+	 * @param int    $user_id       User ID for passing to other Filters.
+	 * @param string $room_name     Room Name for passing to other Filters.
 	 *
-	 * @return string. The completed Formatted Template.
+	 * @return void. The completed Formatted Template.
 	 */
-	public function shortcode_template_wrapper( string $header = null, string $shortcode = null, string $admin_page = null, $permissions_page = null ): string {
-
+	public function shortcode_template_wrapper( string $header, array $inbound_tabs, int $user_id = null, string $room_name = null ) {
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
-		$header_length    = strlen( $header );
-		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
+		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
+		$tabs         = apply_filters( 'myvideoroom_main_template_render', $inbound_tabs, $user_id, $room_name );
 		?>
-		<div class="mvr-nav-shortcode-outer-wrap">
-			<div class="mvr-header-section">
+
+<div class="mvr-nav-shortcode-outer-wrap">
+	<div class="mvr-header-section">
 			<?php
 				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
 				echo $header;
 			?>
-			</div>
-			<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper mvr-shortcode-menu">
+	</div>
+	<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
+		<ul>
 			<?php
-			// Video Menu Tab - only show if others exist.
-			if ( $admin_page || $permissions_page ) {
-				echo '<a class="nav-tab-active mvr-menu-header-item mvr-main-shortcode" href="#myvideoroom_page1' . esc_attr( $header_length ) . '" >' . esc_html__( 'Video Room', 'my-video-room' ) . '</a>';
-			}
-			// Security Tab.
-			if ( $security_enabled && $permissions_page ) {
-				echo '<a class="mvr-menu-header-item mvr-main-shortcode" href="#myvideoroom_page2' . esc_attr( $header_length ) . '" >' . esc_html__( 'Room Permissions', 'my-video-room' ) . '</a>';
-			}
-			// Admin Tab.
-			if ( $admin_page ) {
-				echo '<a class="mvr-menu-header-item mvr-main-shortcode" href="#myvideoroom_page3' . esc_attr( $header_length ) . '" >' . esc_html__( 'Host Settings', 'my-video-room' ) . '</a>';
+			$active = 'nav-tab-active';
+			foreach ( $tabs as $menu_output ) {
+				$tab_display_name = $menu_output->get_tab_display_name();
+				$tab_slug         = $menu_output->get_tab_slug();
+				?>
+				<li>
+					<a class="nav-tab <?php echo esc_attr( $active ); ?>" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+						<?php echo esc_html( $tab_display_name ); ?>
+					</a>
+				</li>
+				<?php
+				$active = null;
 			}
 			?>
-			</nav>
-			<?php
-			/*
-				Adding Body Section
-			*/
-			// Adding Shortcode (the only one guaranteed to exist).
-			$output  = '<article id="myvideoroom_page1' . esc_attr( $header_length ) . '" >';
-			$output .= $shortcode . '</article>';
-			// Adding Permissions Tab if Exists.
-			if ( $security_enabled && $permissions_page ) {
-				$output .= '<article id="myvideoroom_page2' . esc_attr( $header_length ) . '">';
-				$output .= $permissions_page . ' </article>';
-			}
-			// Adding Room Admin Tab if Exists.
-			if ( $admin_page ) {
-				$output .= '<article id="myvideoroom_page3' . esc_attr( $header_length ) . '">';
-				$output .= $admin_page . ' </article>';
-			}
+		</ul>
+	</nav>
+		<?php
+		foreach ( $tabs as $article_output ) {
+			$function_callback = $article_output->get_function_callback();
+			$tab_slug          = $article_output->get_tab_slug();
+			?>
+			<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+				<?php
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
+				echo $function_callback;
+				?>
+			</article>
 
-			$output .= '</div>';
-			return $output;
+			<?php
+		}
+		?>
+	</div>
+</div>
+		<?php
 	}
 }
