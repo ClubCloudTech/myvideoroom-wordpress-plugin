@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
 use \MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
@@ -51,8 +52,6 @@ return function(
 
 	//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a global not user input.
 	if ( null !== ( esc_textarea( wp_unslash( $_GET['id'] ?? '' ) ) ) ) {
-	//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a global not user input.
-
 
 	} else {
 		echo 'No Room ID Provided - exiting';
@@ -65,12 +64,18 @@ return function(
 		return 'Invalid Room Number';
 	}
 	$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
+	$base_menu        = new MenuTabDisplay();
+	$base_menu->set_tab_display_name( esc_html__( 'Room Hosts', 'my-video-room' ) )
+	->set_tab_slug( 'roomhosts' )
+	->set_function_callback
+	
 	?>
 <nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 	<ul class="menu">
 		<a class="nav-tab nav-tab-active" href="#page1"><?php esc_html_e( 'Room Hosts', 'my-video-room' ); ?>
 		</a>
 		<?php
+		$display_object = apply_filters( 'display_management_rooms', '' );
 		if ( $security_enabled ) {
 			?>
 			<a class="nav-tab" href="#page2"><?php esc_html_e( 'Room Permissions', 'my-video-room' ); ?> </a>

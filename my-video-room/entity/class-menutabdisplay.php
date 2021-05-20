@@ -17,21 +17,21 @@ class MenuTabDisplay {
 	 *
 	 * @var string $tab_display_name
 	 */
-	private ?string $tab_display_name;
+	private ?string $tab_display_name = null;
 
 	/**
 	 * Tab slug
 	 *
 	 * @var ?string $tab_slug
 	 */
-	private ?string $tab_slug;
+	private ?string $tab_slug = null;
 
 	/**
 	 * CallBack Content
 	 *
 	 * @var ?string $function_callback
 	 */
-	private ?string $function_callback;
+	private ?string $function_callback = null;
 
 	/**
 	 * MenuTabDisplay constructor.
