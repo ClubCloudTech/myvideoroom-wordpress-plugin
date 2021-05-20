@@ -11,19 +11,38 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Dao\SecurityVideoPreference as SecurityVideoPreferenceDAO;
+use MyVideoRoomPlugin\Module\Security\Settings\Field as InputField;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Library\Dependencies;
 
 return function (
-	SecurityVideoPreference $current_user_setting = null,
+	?SecurityVideoPreference $current_user_setting,
 	string $room_name,
 	int $id_index = 0,
 	int $user_id = null
 	): string {
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
+
+	$html_library = Factory::get_instance( \MyVideoRoomPlugin\Library\HTML::class, array( 'security' ) );
+
+	/**
+	 * This should be moved to the controller.
+	 *
+	 * @var InputField[] $fields
+	 */
+	$fields = array();
+
+	do_action(
+		'myvideoroom_security_preference_settings',
+		function( InputField $field ) use ( &$fields ) {
+			$fields[] = $field;
+		},
+		$current_user_setting
+	);
+
 	ob_start();
 	?>
 <div id="security-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
@@ -183,7 +202,11 @@ return function (
 					// Action Hook to Display additional Form Entries from other Modules.
 					do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting );
 
-					do_action( 'myvideoroom_security_preference_settings', $current_user_setting );
+				foreach ( $fields as $field ) {
+					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo $field->to_string( $html_library );
+					echo '<br />';
+				}
 				?>
 				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
 				<hr>

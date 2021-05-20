@@ -137,7 +137,7 @@ class SecurityVideoPreference extends Shortcode {
 			 *
 			 * @var SecurityVideoPreferenceEntity $current_user_setting
 			 */
-			\do_action( 'myvideoroom_securityvideopreference_persisted', $current_user_setting );
+			\do_action( 'myvideoroom_security_preference_persisted', $current_user_setting );
 		}
 	}
 
