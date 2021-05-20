@@ -56,6 +56,8 @@ class SecurityVideoPreference {
 			)
 		);
 
+		$user_video_preference->set_id( $wpdb->insert_id );
+
 		if ( ! $result ) {
 			throw new \Exception();
 		}
@@ -84,7 +86,7 @@ class SecurityVideoPreference {
 		*/
 
 		$raw_sql = '
-				SELECT user_id, room_name, allowed_roles, blocked_roles, room_disabled, anonymous_enabled, allow_role_control_enabled, block_role_control_enabled, site_override_enabled, restrict_group_to_members_enabled, bp_friends_setting
+				SELECT record_id, user_id, room_name, allowed_roles, blocked_roles, room_disabled, anonymous_enabled, allow_role_control_enabled, block_role_control_enabled, site_override_enabled, restrict_group_to_members_enabled, bp_friends_setting
 				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
 				WHERE user_id = %d AND room_name = %s;
 			';
@@ -105,6 +107,7 @@ class SecurityVideoPreference {
 
 		if ( $row ) {
 			$result = new SecurityVideoPreferenceEntity(
+				(int) $row->record_id,
 				(int) $row->user_id,
 				$row->room_name,
 				$row->allowed_roles,

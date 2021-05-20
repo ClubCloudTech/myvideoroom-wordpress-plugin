@@ -87,7 +87,7 @@ return function (
 								?>
 								" />
 					<br>
-					<h2 class="mvr-title-header"><?php esc_html_e( 'Override User preferences', 'my-video-room' ); ?></h1>
+					<h2 class="mvr-title-header"><?php esc_html_e( 'Override User preferences', 'my-video-room' ); ?></h2>
 					<input
 					type="checkbox"
 					class="myvideoroom_override_all_preferences"
@@ -112,7 +112,7 @@ return function (
 					id="myvideoroom_security_room_disabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					<?php echo $current_user_setting && $current_user_setting->is_room_disabled() ? 'checked' : ''; ?> />
 				<p>
-					<?php esc_html_e( 'Enable this setting to switch off all rooms. All Users will be Blocked from Access and will be notified Video is Offline if they try to join rooms.', 'my-video-room' ); ?> 
+					<?php esc_html_e( 'Enable this setting to switch off all rooms. All Users will be Blocked from Access and will be notified Video is Offline if they try to join rooms.', 'my-video-room' ); ?>
 				</p>
 				<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
 					<h2 class="mvr-title-header"><i class="dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Restrict Anonymous Access (Force Users to Register)', 'my-video-room' ); ?></h2>
@@ -181,7 +181,7 @@ return function (
 				<hr>
 				<?php
 					// Action Hook to Display additional Form Entries from other Modules.
-					echo esc_textarea( do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting ) );
+					do_action( 'myvideoroom_security_preference_form', $current_user_setting );
 				?>
 				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
 				<hr>

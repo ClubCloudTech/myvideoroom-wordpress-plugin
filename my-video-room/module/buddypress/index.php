@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\BuddyPress;
 
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\BuddyPress\Module as BuddyPress;
 
 \add_action(
 	'myvideoroom_init',
@@ -23,6 +24,7 @@ use MyVideoRoomPlugin\Library\Module;
 					'myvideoroom'
 				),
 			),
-		);
+			fn() => new BuddyPress()
+		)->add_activation_hook( fn() => (new Activation())->activate() );
 	}
 );

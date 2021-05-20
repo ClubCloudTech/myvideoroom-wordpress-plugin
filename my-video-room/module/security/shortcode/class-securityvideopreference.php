@@ -81,18 +81,8 @@ class SecurityVideoPreference extends Shortcode {
 			$anonymous_enabled          = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_anonymous_enabled_preference'] ?? '' ) ) === 'on';
 			$allow_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_allow_role_control_enabled_preference'] ?? '' ) ) === 'on';
 			$block_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_block_role_control_enabled_preference'] ?? '' ) ) === 'on';
-			//phpcs:ignore --WordPress.Security.ValidatedSanitizedInput.InputNotValidated - input sanitised but not mandatory.
-			$restrict_group_to_members_setting = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_restrict_group_to_members'] ?? '' ) );
-			$site_override_enabled             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_override_all_preferences'] ?? '' ) ) === 'on';
-			//phpcs:ignore --WordPress.Security.ValidatedSanitizedInput.InputNotValidated - input sanitised but not mandatory.
-			$bp_friends_setting                = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_restrict_bp_friends'] ?? '' ) );
 
-			// Handle Default Off State for Group Restrictions.
-			if ( $restrict_group_to_members_setting ) {
-				if ( 'Turned Off' === $restrict_group_to_members_setting || '' === $restrict_group_to_members_setting ) {
-					$restrict_group_to_members_setting = null;
-				}
-			}
+			$site_override_enabled             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_override_all_preferences'] ?? '' ) ) === 'on';
 
 			// Handle Multi_box array and change it to a Database compatible string.
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized  --  Sanitised in function below (post MultiBox Array dissasembly that is destroyed by WP sanitising functions).
@@ -120,13 +110,13 @@ class SecurityVideoPreference extends Shortcode {
 					->set_anonymous_enabled( $anonymous_enabled )
 					->set_allow_role_control_enabled( $allow_role_control_enabled )
 					->set_block_role_control_enabled( $block_role_control_enabled )
-					->set_restrict_group_to_members_setting( $restrict_group_to_members_setting )
-					->set_site_override_setting( $site_override_enabled )
-					->set_bp_friends_setting( $bp_friends_setting );
+					->set_site_override_setting( $site_override_enabled );
+
 				$security_preference_dao->update( $current_user_setting );
 			} else {
 
 				$current_user_setting = new SecurityVideoPreferenceEntity(
+					null,
 					$user_id,
 					$room_name,
 					$allowed_roles,
@@ -135,12 +125,19 @@ class SecurityVideoPreference extends Shortcode {
 					$anonymous_enabled,
 					$allow_role_control_enabled,
 					$block_role_control_enabled,
-					$site_override_enabled,
-					$restrict_group_to_members_setting,
-					$bp_friends_setting
+					$site_override_enabled
 				);
+
 				$security_preference_dao->create( $current_user_setting );
 			}
+
+
+			/**
+			 * Update the current user setting
+			 *
+			 * @var SecurityVideoPreferenceEntity $current_user_setting
+			 */
+			\do_action( 'myvideoroom_securityvideopreference_persisted', $current_user_setting );
 		}
 	}
 

@@ -189,7 +189,7 @@ return function (
 				<hr>
 				<?php
 				// Action Hook to Display additional Form Entries from other Modules.
-				echo esc_textarea( do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting ) );
+				do_action( 'myvideoroom_security_preference_form', $current_user_setting );
 				?>
 
 				<input type="hidden" name="myvideoroom_room_name" value="<?php echo esc_attr( $room_name ); ?>" />
