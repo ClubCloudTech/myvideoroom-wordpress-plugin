@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\Elementor;
 
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\Elementor\Module as Elementor;
 
@@ -30,10 +31,7 @@ use MyVideoRoomPlugin\Module\Elementor\Module as Elementor;
 			),
 			fn() => new Elementor()
 		)->add_compatibility_hook(
-			function () {
-				include_once ABSPATH . 'wp-admin/includes/plugin.php';
-				return \is_plugin_active( 'elementor/elementor.php' );
-			}
+			fn() => Factory::get_instance( Elementor::class )->is_elementor_active()
 		)->set_as_hidden();
 	}
 );

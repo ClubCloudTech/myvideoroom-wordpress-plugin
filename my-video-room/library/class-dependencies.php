@@ -16,6 +16,7 @@ class Dependencies {
 	const MODULE_BUDDYPRESS_ID       = 434;
 	const MODULE_SITE_VIDEO_ID       = 1095;
 	const MODULE_PERSONAL_MEETING_ID = 1065;
+	const ROOM_NAME_PERSONAL_MEETING = 'personal-video-room';
 	const MODULE_SECURITY_ENTITY_ID  = 1029;
 	const MODULE_SECURITY_ID         = 10;
 	const MULTI_ROOM_HOST_SUFFIX     = '-hostsetting';

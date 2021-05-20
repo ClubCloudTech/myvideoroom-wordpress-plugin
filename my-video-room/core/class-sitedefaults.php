@@ -62,10 +62,12 @@ class SiteDefaults extends Shortcode {
 	public function init() {
 		$this->register_scripts_styles();
 		$this->core_menu_setup();
-			// Check to see if Default settings exist on entry- reinitialise if missing.
+
+		// Check to see if Default settings exist on entry- reinitialise if missing.
 		if ( ! Factory::get_instance( RoomAdmin::class )->check_default_settings_exist() ) {
 			Factory::get_instance( Setup::class )->initialise_default_video_settings();
 		}
+		$this->add_shortcode( 'invitemenu', array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
 	}
 
 	/**

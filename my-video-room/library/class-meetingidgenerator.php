@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Library;
 
+use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Factory;
 
 /**
@@ -125,7 +126,7 @@ class MeetingIdGenerator {
 	}
 
 	/**
-	 * Constructs Invites for meetings
+	 * Constructs Invites for meetings from User or Room ID.
 	 * Function is called on to support Shortcode meeting functions
 	 *
 	 * @param  ?string $invite - Invite - the invite number.
@@ -172,4 +173,48 @@ class MeetingIdGenerator {
 		return $user_id;
 	}
 
+	/**
+	 * A Shortcode to Return Header Displays and Meeting Invites correctly in Sequences for Menus
+	 * This is meant to be the new universal formatting invite list
+	 *
+	 * @param array $params - $host - the host type. $invite - the Invite Code. $user_id - the inbound user ID to convert if any.
+	 *
+	 * @return string
+	 */
+	public function invite_menu_shortcode( $params = array() ) {
+		$type = $params['type'] ?? 'host';
+		//phpcs:ignore -- WordPress.Security.NonceVerification.Recommended - not needed as data is lookup and transient only.
+		$host     = $params['host'] ?? htmlspecialchars( sanitize_text_field( wp_unslash( $_GET['host'] ?? '' ) ) );
+		//phpcs:ignore -- WordPress.Security.NonceVerification.Recommended - not needed as data is lookup and transient only.
+		$invite   = $params['invite'] ?? htmlspecialchars( sanitize_text_field( wp_unslash( $_GET['invite'] ?? '' ) ) );
+		$user_id  = $params['user_id'] ?? '';
+		$meet_url = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( Dependencies::ROOM_NAME_PERSONAL_MEETING, 'url' );
+
+		if ( 'host' === $type ) {
+			if ( ! $user_id ) {
+				$user    = wp_get_current_user();
+				$user_id = $user->ID;
+			}
+			$out_meeting_id = $this->invite( $user_id, 'user', null );
+			return $meet_url . '?invite=' . $out_meeting_id;
+		}
+
+		if ( $invite && ! $user_id ) {
+			$user_id = $this->invite( $invite, 'in', null );
+		}
+
+		if ( $host && ! $user_id ) {
+			$input   = $host;
+			$user    = Factory::get_instance( WordPressUser::class )->get_wordpress_user_by_identifier_string( $input );
+			$user_id = $user->ID;
+		}
+			$invite      = $this->invite( $user_id, 'user', null );
+			$user_detail = Factory::get_instance( WordPressUser::class )->get_wordpress_user_by_id( $user_id );
+
+		if ( 'guestname' === $type ) {
+				return $user_detail->display_name;
+		} elseif ( 'guestlink' === $type && $invite ) {
+			return $meet_url . '?invite=' . $invite;
+		}
+	}
 }

@@ -36,4 +36,14 @@ class Module {
 			2
 		);
 	}
+
+	/**
+	 * Is Elementor Active - checks if Elementor is enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_elementor_active(): bool {
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		return is_plugin_active( 'elementor/elementor.php' );
+	}
 }
