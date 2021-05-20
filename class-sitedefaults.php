@@ -5,7 +5,7 @@
  * @package MyVideoRoomExtrasPlugin\Core
  */
 
-namespace MyVideoRoomPlugin\Core;
+namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;

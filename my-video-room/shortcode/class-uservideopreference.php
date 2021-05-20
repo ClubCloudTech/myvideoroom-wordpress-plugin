@@ -5,10 +5,10 @@
  * @package MyVideoRoomExtrasPlugin\Modules\BuddyPress
  */
 
-namespace MyVideoRoomPlugin\Core\Shortcode;
+namespace MyVideoRoomPlugin\Shortcode;
 
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
-use MyVideoRoomPlugin\Core\Entity\UserVideoPreference as UserVideoPreferenceEntity;
+use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\WordPressUser;

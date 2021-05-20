@@ -7,7 +7,7 @@
 
 namespace MyVideoRoomPlugin\DAO;
 
-use MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Library\Dependencies;

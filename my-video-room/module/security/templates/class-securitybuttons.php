@@ -7,7 +7,7 @@
 
 namespace MyVideoRoomPlugin\Module\Security\Templates;
 
-use MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Module\Security\Security;

@@ -11,7 +11,7 @@ namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\Module;
-use MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Shortcode\App;
 use MyVideoRoomPlugin\Shortcode\RoomInfo;
 

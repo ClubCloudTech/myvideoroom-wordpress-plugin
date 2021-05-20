@@ -10,8 +10,8 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
-use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
-use MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
+use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Library\HTML as HTML;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 

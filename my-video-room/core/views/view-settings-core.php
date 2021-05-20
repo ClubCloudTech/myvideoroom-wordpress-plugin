@@ -19,8 +19,8 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\ShortcodeDocuments;
-use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference;
-use MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
+use MyVideoRoomPlugin\SiteDefaults;
 
 
 return function (

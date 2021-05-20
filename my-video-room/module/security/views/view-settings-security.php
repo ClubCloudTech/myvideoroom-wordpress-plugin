@@ -16,7 +16,7 @@
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\Security;

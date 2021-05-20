@@ -8,7 +8,7 @@
  * @package MyVideoRoomPlugin\Core\Views\Shortcode
  */
 
-use MyVideoRoomPlugin\Core\Entity\UserVideoPreference;
+use MyVideoRoomPlugin\Entity\UserVideoPreference;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDAO;
 

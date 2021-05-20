@@ -8,7 +8,7 @@
  * @package MyVideoRoomExtrasPlugin\Views\Public
  */
 
-use MyVideoRoomPlugin\Core\SiteDefaults;
+use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\HttpPost;

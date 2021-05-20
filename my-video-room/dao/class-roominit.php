@@ -8,8 +8,8 @@
 namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
-use MyVideoRoomPlugin\Core\SiteDefaults;
-use MyVideoRoomPlugin\Core\Entity\UserVideoPreference as UserVideoPreferenceEntity;
+use MyVideoRoomPlugin\SiteDefaults;
+use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Factory;
 
 /**
