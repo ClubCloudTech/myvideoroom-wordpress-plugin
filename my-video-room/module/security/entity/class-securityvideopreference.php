@@ -13,6 +13,13 @@ namespace MyVideoRoomPlugin\Module\Security\Entity;
 class SecurityVideoPreference {
 
 	/**
+	 * The record id
+	 *
+	 * @var ?int
+	 */
+	private ?int $id;
+
+	/**
 	 * User_id
 	 *
 	 * @var int
@@ -92,6 +99,7 @@ class SecurityVideoPreference {
 	/**
 	 * SecurityVideoPreference constructor.
 	 *
+	 * @param ?int    $id                                   The record id.
 	 * @param int     $user_id                              The User ID.
 	 * @param string  $room_name                            The Room Name.
 	 * @param ?string $allowed_roles                        Roles Allowed to be Hosted/Shown.
@@ -105,6 +113,7 @@ class SecurityVideoPreference {
 	 * @param ?string $bp_friends_setting                   Setting for BuddyPress Friends (can be other platforms with plugins).
 	 */
 	public function __construct(
+		?int $id,
 		int $user_id,
 		string $room_name,
 		string $allowed_roles = null,
@@ -118,6 +127,7 @@ class SecurityVideoPreference {
 		string $bp_friends_setting = null
 
 	) {
+		$this->id                                = $id;
 		$this->user_id                           = $user_id;
 		$this->room_name                         = $room_name;
 		$this->allowed_roles                     = $allowed_roles;
@@ -129,6 +139,27 @@ class SecurityVideoPreference {
 		$this->site_override_enabled             = $site_override_enabled;
 		$this->restrict_group_to_members_enabled = $restrict_group_to_members_enabled;
 		$this->bp_friends_setting                = $bp_friends_setting;
+	}
+
+	/**
+	 * Get the record id
+	 *
+	 * @return ?int
+	 */
+	public function get_id(): ?int {
+		return $this->id;
+	}
+
+	/**
+	 * Set the record id
+	 *
+	 * @param int $id
+	 *
+	 * @return $this
+	 */
+	public function set_id( int $id ): self {
+		$this->id = $id;
+		return $this;
 	}
 
 	/**
