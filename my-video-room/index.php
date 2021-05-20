@@ -72,10 +72,3 @@ if ( ! \class_exists( Plugin::class ) ) {
 	\register_activation_hook( __FILE__, array( Activation::class, 'activate' ) );
 	\register_deactivation_hook( __FILE__, array( Activation::class, 'deactivate' ) );
 }
-
-// @TODO DO NOT RELEASE ME!!!
-function debug( $message ) {
-	echo '<pre style="margin-left: 100px">';
-	var_dump( $message );
-	echo '</pre>';
-}
