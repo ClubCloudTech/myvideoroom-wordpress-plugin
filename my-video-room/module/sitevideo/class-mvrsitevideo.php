@@ -9,6 +9,7 @@ namespace MyVideoRoomPlugin\Module\SiteVideo;
 
 use MyVideoRoomPlugin\Core\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\HttpGet;
@@ -18,6 +19,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
+use MyVideoRoomPlugin\ValueObject\Notice;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -145,25 +147,36 @@ class MVRSiteVideo extends Shortcode {
 	 * Render Site Video Admin Page.
 	 */
 	public function render_sitevideo_admin_page() {
-		$settings = null;
+		$room_settings = null;
 
+		$delete  = Factory::get_instance( HttpGet::class )->get_string_parameter( 'delete' );
 		$room_id = Factory::get_instance( HttpGet::class )->get_integer_parameter( 'room_id' );
+
 		if ( null !== $room_id ) {
-			$settings = ( require __DIR__ . '/views/view-management-rooms.php' )( $room_id, 'normal' );
+			if ( $delete ) {
+				\check_admin_referer( 'delete_room_' . $room_id );
+
+				$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+				$room_name   = $room_object->room_name;
+				Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_name );
+				\wp_delete_post( $room_id, true );
+			} else {
+				$room_settings = ( require __DIR__ . '/views/view-management-rooms.php' )( $room_id, 'normal' );
+			}
 		}
 
-		return ( require __DIR__ . '/views/view-settings-sitevideo.php' )( $settings );
+		return ( require __DIR__ . '/views/view-settings-sitevideo.php' )( $room_settings, $delete );
 	}
 
 	/**
 	 * Get Site Video Ajax Data
 	 */
 	public function get_ajax_page_settings() {
-		$post_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
+		$room_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
 		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
 
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
-		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $post_id, $input_type );
+		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_id, $input_type );
 		die();
 	}
 }

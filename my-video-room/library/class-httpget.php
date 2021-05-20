@@ -44,4 +44,18 @@ class HttpGet {
 		return $default;
 	}
 
+
+	/**
+	 * Is the nonce valid
+	 *
+	 * @param string $action The action we were expecting to validate.
+	 *
+	 * @return bool
+	 */
+	public function is_nonce_valid( string $action ): bool {
+		$nonce = $this->get_string_parameter( 'nonce' );
+
+		return (bool) \wp_verify_nonce( $nonce, $action );
+	}
+
 }

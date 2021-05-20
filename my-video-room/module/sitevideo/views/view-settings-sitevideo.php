@@ -17,10 +17,11 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoDisplayRooms;
  * Render the admin page
  *
  * @param ?string $settings Optional setting section
+ * @param bool    $deleted  If a page was deleted
  *
  * @return string
  */
-return function ( string $settings = null ): string {
+return function ( string $settings = null, bool $deleted = false ): string {
 	wp_enqueue_style( 'myvideoroom-template' );
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	wp_enqueue_script( 'myvideoroom-protect-input' );
@@ -74,7 +75,8 @@ return function ( string $settings = null ): string {
 		<div class="mvr-add-page-form myvideoroom-sitevideo-add-room">
 			<h2 class="mvr-title-header"><?php esc_html_e( 'Add a Conference Room ', 'my-video-room' ); ?>   </h2>
 			<p><?php esc_html_e( 'Use this section to add a Conference Room to your site. It will remain available permanently, and can be configured to your needs.', 'my-video-room' ); ?></p>
-			<form method="post" action="">
+
+			<form method="post" action="<?php echo \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ); ?>">
 					<label for="myvideoroom_add_room_title" class="mvr-preferences-paragraph"><?php esc_html_e( 'Room Display Name ', 'my-video-room' ); ?></label>
 					<input		type="text"
 								id="myvideoroom_add_room_title"
@@ -134,7 +136,12 @@ return function ( string $settings = null ): string {
 			?>
 			</table>
 
-			<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host">
+			<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host" data-loading-text="<?php echo esc_attr__( 'Loading...', 'myvideoroom' ); ?>">
+				<?php
+				if ( $deleted ) {
+					echo '<span class="page-deleted">' . esc_html__( 'The page was successfully deleted', 'myvideoroom' ) . '</span>';
+				}
+				?>
 				<?php
 					//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - Item already Escaped in parent function.
 					echo $settings;
