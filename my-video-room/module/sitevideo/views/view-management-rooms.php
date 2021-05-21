@@ -19,7 +19,6 @@ return function (
 	string $input_type = null
 ): string {
 	$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
-
 	ob_start();
 
 	// Rendering Only Default Config Page.

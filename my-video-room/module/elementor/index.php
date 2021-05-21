@@ -29,7 +29,7 @@ use MyVideoRoomPlugin\Module\Elementor\Module as Elementor;
 					'<a href="https://elementor.com/">Elementor</a>'
 				),
 			),
-			fn() => new Elementor()
+			fn() => Factory::get_instance( Elementor::class )->init()
 		)->add_compatibility_hook(
 			fn() => Factory::get_instance( Elementor::class )->is_elementor_active()
 		)->set_as_hidden();
