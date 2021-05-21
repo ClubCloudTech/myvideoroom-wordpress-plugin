@@ -7,7 +7,6 @@
 
 namespace MyVideoRoomPlugin\Library;
 
-use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDAO;
 
@@ -30,17 +29,19 @@ class TemplateIcons {
 			return null;
 		}
 
-		$user_video_dao     = Factory::get_instance( UserVideoPreferenceDAO::class );
-		$security_video_dao = Factory::get_instance( SecurityVideoPreferenceDAO::class );
+		$user_video_dao                 = Factory::get_instance( UserVideoPreferenceDAO::class );
+		$video_default_settings_applied = Factory::get_instance( UserVideoPreferenceDAO::class )->read( $user_id, $room_name );
+		$reception_enabled              = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
+		$floorplan_enabled              = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
+		$custom_video                   = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_video_enabled' );
+		$icon_output                    = null;
 
-		$reception_enabled          = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
-		$floorplan_enabled          = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
-		$custom_video               = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_video_enabled' );
-		$anonymous_enabled          = $security_video_dao->read_security_settings( $user_id, $room_name, 'anonymous_enabled' );
-		$allow_role_control_enabled = $security_video_dao->read_security_settings( $user_id, $room_name, 'allow_role_control_enabled' );
-		$restrict_to_friends        = $security_video_dao->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
-		$restrict_to_groups         = $security_video_dao->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
-		$icon_output                = null;
+		if ( ! $video_default_settings_applied ){
+			$icon_output .= $this->create_icon(
+				'warning',
+				__( 'Default Video Settings are being Applied at the site level as you haven\'t set any preferences yet.', 'myvideoroom' )
+			);
+		}
 
 		if ( $reception_enabled || $floorplan_enabled ) {
 			$icon_output .= $this->create_icon(
@@ -70,34 +71,6 @@ class TemplateIcons {
 			);
 		}
 
-		if ( $anonymous_enabled ) {
-			$icon_output .= $this->create_icon(
-				'admin-users',
-				__( 'Users must be signed in to access your room.', 'myvideoroom' )
-			);
-		}
-
-		if ( $allow_role_control_enabled ) {
-			$icon_output .= $this->create_icon(
-				'id',
-				__( 'Guests must belong to specific roles for access to your room.', 'myvideoroom' )
-			);
-		}
-
-		if ( $restrict_to_friends ) {
-			$icon_output .= $this->create_icon(
-				'share',
-				__( 'Guests must be friends/connected to you to access your room,', 'myvideoroom' )
-			);
-		}
-
-		if ( $restrict_to_groups ) {
-			$icon_output .= $this->create_icon(
-				'format-chat',
-				__( 'Guests must be a member of this group (or moderator/admin) to access your room.', 'myvideoroom' )
-			);
-		}
-
 		return $icon_output;
 	}
 
@@ -112,4 +85,23 @@ class TemplateIcons {
 	private function create_icon( string $icon, string $title ): string {
 		return '<i class="card dashicons mvr-icons dashicons-' . esc_attr( $icon ) . '" title="' . esc_html( $title ) . '"></i>';
 	}
+	/**
+	 * Filter for Adding Template Buttons to Shortcode Builder
+	 *
+	 * @param string  $template_icons The room name to use.
+	 * @param int     $user_id The user id to construct from.
+	 * @param ?string $room_name The room name to use.
+	 * @param bool    $visitor_status - Whether guest/host.
+	 *
+	 * @return string
+	 */
+	public function add_default_video_icons_to_header( ?string $template_icons, int $user_id, string $room_name, bool $visitor_status = null ): string {
+		if ( true === $visitor_status && ! $template_icons ) {
+			$template_icons .= '<form method="post" action=""><input type="submit" name="submit" id="submit" class="button mvr-form-button mvr-form-button-max" value="Exit Meeting"  />';
+		} else {
+			$template_icons .= Factory::get_instance( self::class )->show_icon( $user_id, $room_name );
+		}
+		return $template_icons;
+	}
+
 }

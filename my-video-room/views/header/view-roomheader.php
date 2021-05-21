@@ -10,7 +10,6 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
-use MyVideoRoomPlugin\Library\TemplateIcons;
 
 return function (
 	string $module_name = null,
@@ -42,13 +41,10 @@ return function (
 		<div class="mvr-header-table-left">
 			<h2 class="mvr-header-title"><?php echo esc_html( get_bloginfo( 'name' ) ) . esc_html( $post_site_title ); ?></h2>
 			<?php
-			if ( false === $visitor_status ) {
-				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function is Icon only, and already escaped within it.
-				echo Factory::get_instance( TemplateIcons::class )->show_icon( $user_id, $room_name );
-			} else {
-				echo '<form method="post" action="">';
-				echo '<input type="submit" name="submit" id="submit" class="button mvr-form-button mvr-form-button-max" value="Exit Meeting"  />';
-			}
+				$template_icons = null;
+				$template_icons = apply_filters( 'myvideoroom_template_icon_section', $template_icons, $user_id, $room_name, $visitor_status );
+				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+				echo $template_icons;
 			?>
 		</div>
 		<div class="mvr-header-table-right">

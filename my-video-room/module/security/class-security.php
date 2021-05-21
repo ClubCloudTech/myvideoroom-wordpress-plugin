@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
+use MyVideoRoomPlugin\Module\Security\Library\TemplateIcons;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 
 /**
@@ -84,6 +85,8 @@ class Security {
 		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_security_sitevideo_tabs' ), 20, 2 );
 		// Add Permissions Menu to Main Frontend Template.
 		add_filter( 'myvideoroom_main_template_render', array( $this, 'render_shortcode_security_permissions_tab' ), 40, 4 );
+		// Add Permissions Icons Status to Main Shortcode Header.
+		\add_filter( 'myvideoroom_template_icon_section', array( Factory::get_instance( TemplateIcons::class ), 'add_default_video_icons_to_header' ), 10, 4 );
 
 	}
 
