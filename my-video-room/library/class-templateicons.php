@@ -29,11 +29,19 @@ class TemplateIcons {
 			return null;
 		}
 
-		$user_video_dao    = Factory::get_instance( UserVideoPreferenceDAO::class );
-		$reception_enabled = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
-		$floorplan_enabled = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
-		$custom_video      = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_video_enabled' );
-		$icon_output       = null;
+		$user_video_dao                 = Factory::get_instance( UserVideoPreferenceDAO::class );
+		$video_default_settings_applied = Factory::get_instance( UserVideoPreferenceDAO::class )->read( $user_id, $room_name );
+		$reception_enabled              = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
+		$floorplan_enabled              = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
+		$custom_video                   = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_video_enabled' );
+		$icon_output                    = null;
+
+		if ( ! $video_default_settings_applied ){
+			$icon_output .= $this->create_icon(
+				'warning',
+				__( 'Default Video Settings are being Applied at the site level as you haven\'t set any preferences yet.', 'myvideoroom' )
+			);
+		}
 
 		if ( $reception_enabled || $floorplan_enabled ) {
 			$icon_output .= $this->create_icon(
