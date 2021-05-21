@@ -181,7 +181,6 @@ class UserVideoPreference {
 		$this->reception_enabled = $reception_enabled;
 		return $this;
 	}
-
 	/**
 	 * Gets Reception Video Enabled State.
 	 *

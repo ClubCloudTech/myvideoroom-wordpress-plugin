@@ -200,11 +200,15 @@ class MVRSiteVideo extends Shortcode {
 		if ( ! $room_object ) {
 			$room_name = self::ROOM_NAME_SITE_VIDEO;
 		}
-		$base_menu = new MenuTabDisplay();
-		$base_menu->set_tab_display_name( esc_html__( 'Video Settings', 'my-video-room' ) )
-		->set_tab_slug( 'videosettings' )
-		->set_function_callback(
-			Factory::get_instance( UserVideoPreference::class )->choose_settings( $room_id, $room_name, array( 'basic', 'premium' ) )
+		$base_menu = new MenuTabDisplay(
+			esc_html__( 'Video Settings', 'my-video-room' ),
+			'videosettings',
+			fn() => Factory::get_instance( UserVideoPreference::class )
+			->choose_settings(
+				$room_id,
+				$room_name,
+				array( 'basic', 'premium' )
+			)
 		);
 		array_push( $input, $base_menu );
 		return $input;

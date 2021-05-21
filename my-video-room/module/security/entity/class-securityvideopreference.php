@@ -153,7 +153,7 @@ class SecurityVideoPreference {
 	/**
 	 * Set the record id
 	 *
-	 * @param int $id
+	 * @param int $id - userid.
 	 *
 	 * @return $this
 	 */
