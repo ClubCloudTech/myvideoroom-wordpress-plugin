@@ -20,6 +20,7 @@ use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -173,26 +174,36 @@ class MVRSiteVideo extends Shortcode {
 		}
 
 		if ( null !== $room_id ) {
-			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 
-			if ( ! $room_object ) {
-				return ( require __DIR__ . '/views/view-settings-sitevideo.php' )(
-					\esc_html__( 'Room does not exist', 'myvideoroom' ),
-					false
-				);
-			}
+			if ( -1 !== $room_id ) {
+				$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 
-			if ( $delete_confirm ) {
-				\check_admin_referer( 'delete_room_confirmation_' . $room_id );
-				$room_name = $room_object->room_name;
-				Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_name );
-				\wp_delete_post( $room_id, true );
-				$deleted = true;
-			} elseif ( $delete ) {
-				\check_admin_referer( 'delete_room_' . $room_id );
-				return ( require __DIR__ . '/views/room-delete-confirmation.php' )( $room_object );
+				if ( ! $room_object ) {
+					return ( require __DIR__ . '/views/view-settings-sitevideo.php' )(
+						\esc_html__( 'Room does not exist', 'myvideoroom' ),
+						false
+					);
+				}
+
+				if ( $delete_confirm ) {
+					\check_admin_referer( 'delete_room_confirmation_' . $room_id );
+					$room_name = $room_object->room_name;
+					Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_name );
+					\wp_delete_post( $room_id, true );
+					$deleted = true;
+				} elseif ( $delete ) {
+					\check_admin_referer( 'delete_room_' . $room_id );
+
+					return ( require __DIR__ . '/views/room-delete-confirmation.php' )( $room_object );
+				} else {
+					$room_settings = ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, 'normal' );
+				}
 			} else {
-				$room_settings = ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, 'normal' );
+				$room_settings = Factory::get_instance( UserVideoPreference::class )->choose_settings(
+					SiteDefaults::USER_ID_SITE_DEFAULTS,
+					MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+					array( 'basic', 'premium' )
+				);
 			}
 		}
 
@@ -206,10 +217,19 @@ class MVRSiteVideo extends Shortcode {
 		$room_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
 		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
 
-		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+		if ( -1 !== $room_id ) {
+			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
+			echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, $input_type );
+		} else {
+			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Escaped.
+			echo Factory::get_instance( UserVideoPreference::class )->choose_settings(
+				SiteDefaults::USER_ID_SITE_DEFAULTS,
+				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+				array( 'basic', 'premium' )
+			);
+		}
 
-		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
-		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, $input_type );
 		die();
 	}
 

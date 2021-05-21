@@ -12,26 +12,11 @@ use MyVideoRoomPlugin\Library\HTML as HTML;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 return function (
-	\stdClass $room_object,
-	string $input_type = null
+	\stdClass $room_object
 ): string {
 	$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 	ob_start();
 
-	// Rendering Only Default Config Page.
-
-	if ( 'admin' === $input_type ) {
-		echo '<div class="mvr-nav-shortcode-outer-wrap mvr-security-room-host">';
-		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Escaped.
-		echo Factory::get_instance( UserVideoPreference::class )->choose_settings(
-			SiteDefaults::USER_ID_SITE_DEFAULTS,
-			MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-			array( 'basic', 'premium' )
-		);
-		echo '</div>';
-
-		return ob_get_clean();
-	}
 
 	$base_option  = array();
 	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_object->post_id );
