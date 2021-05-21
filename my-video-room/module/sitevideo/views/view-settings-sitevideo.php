@@ -8,11 +8,11 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Library\HttpPost;
-use \MyVideoRoomPlugin\SiteDefaults;
+use \MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoDisplayRooms;
+use MyVideoRoomPlugin\SiteDefaults as MyVideoRoomPluginSiteDefaults;
 
 /**
  * Render the admin page
@@ -38,7 +38,7 @@ return function ( string $settings = null, bool $deleted = false ): string {
 	<div class="mvr-outer-box-wrap">
 		<h1><?php esc_html_e( 'Site Conference Center', 'my-video-room' ); ?></h1>
 		<?php
-		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( SiteDefaults::MODULE_SECURITY_ID );
+		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( MyVideoRoomPluginSiteDefaults::MODULE_SECURITY_ID );
 		if ( $security_enabled ) {
 			echo esc_html( Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons::class )->site_wide_enabled() );
 		}
@@ -64,7 +64,7 @@ return function ( string $settings = null, bool $deleted = false ): string {
 			<?php
 			//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a superglobal not user input.
 			$slug = admin_url( 'admin.php?page=' . esc_textarea( wp_unslash( $_GET['page'] ) ) );
-			echo '<a href="#" class="dashicons mvr-icons dashicons-cover-image myvideoroom-sitevideo-settings" title="' . esc_html__( 'Manage Default Video Room Appearance Settings', 'my-video-room' ) . ' data-post-id="' . esc_attr( $post_id ) . '" data-input-type="admin"></a>';
+			echo '<a href="#" class="dashicons mvr-icons dashicons-cover-image myvideoroom-sitevideo-settings" title="' . esc_html__( 'Manage Default Video Room Appearance Settings', 'my-video-room' ) . '" data-post-id="' . esc_attr( MyVideoRoomPluginSiteDefaults::USER_ID_SITE_DEFAULTS ) . '" data-input-type="admin"></a>';
 			?>
 				<?php esc_html_e( 'Default Room Settings', 'my-video-room' ); ?>
 		</div>

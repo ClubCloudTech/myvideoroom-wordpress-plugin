@@ -12,6 +12,11 @@ ul {
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
+.mvr-ul-header {
+	display: inline!important;
+	margin-top: 10px;
+	margin-bottom: 0px;
+}
 
 .mvr-preferences-paragraph {
 	font-size: 13px;
@@ -164,6 +169,28 @@ ul {
 
 }
 
+.mvr-menu-shortcode-button {
+	display: inline;
+	border: 1px solid #afafaf;
+	padding: 5px 10px;
+	font-size: 14px;
+	line-height: 1.71428571;
+	font-weight: 600;
+	background: #c7c7c7;
+	color: #555;
+	text-decoration: none;
+}
+.mvr-ul-header {
+	display: inline!important;
+	margin-top: 10px;
+	margin-bottom: 0px;
+	margin-left: auto;
+}
+
+.nav-tab-active {
+	border: 2px solid #000!important;
+	border-bottom: none!important;
+}
 .mvr-hide {
 	display: none;
   }

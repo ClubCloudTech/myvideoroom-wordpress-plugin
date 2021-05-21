@@ -15,9 +15,9 @@ namespace MyVideoRoomPlugin\Module\Elementor;
 class Module {
 
 	/**
-	 * Module constructor.
+	 * Initialise Function.
 	 */
-	public function __construct() {
+	public function init() {
 		\add_filter(
 			'myvideoroom_sitevideo_edit_actions',
 			function ( array $actions, int $post_id ) {

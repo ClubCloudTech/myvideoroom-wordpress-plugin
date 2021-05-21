@@ -22,7 +22,8 @@ class MVRSiteVideoViews extends Shortcode {
 	// Site Video Room Templates.
 
 	/**
-	 * Render Site Videoroom Host Template
+	 * Render Site Videoroom Host Template Controllers
+	 * These functions prepare information for delivery to templates and views.
 	 *
 	 * @param int $room_id The room ID.
 	 *

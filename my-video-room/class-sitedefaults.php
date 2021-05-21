@@ -71,7 +71,8 @@ class SiteDefaults extends Shortcode {
 	public function init() {
 		$this->register_scripts_styles();
 		$this->core_menu_setup();
-
+		wp_enqueue_script( 'myvideoroom-admin-tabs' );
+		wp_enqueue_style( 'myvideoroom-menutab-header' );
 		// Check to see if Default settings exist on entry- reinitialise if missing.
 		if ( ! Factory::get_instance( RoomAdmin::class )->check_default_settings_exist() ) {
 			Factory::get_instance( Setup::class )->initialise_default_video_settings();
@@ -155,6 +156,18 @@ class SiteDefaults extends Shortcode {
 			false,
 			$plugin_version
 		);
+
+		wp_register_style(
+			'myvideoroom-admin-css',
+			plugins_url( '/css/admin.css', __FILE__ ),
+			false,
+			$plugin_version
+		);
+
+		\wp_enqueue_style( 'myvideoroom-template' );
+		\wp_enqueue_style( 'myvideoroom-menutab-header' );
+		\wp_enqueue_style( 'myvideoroom-admin-css' );
+
 	}
 
 	/**

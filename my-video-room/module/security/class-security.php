@@ -82,6 +82,8 @@ class Security {
 		Factory::get_instance( PageFilters::class )->runtime_filters();
 		$this->security_menu_setup();
 		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_security_sitevideo_tabs' ), 20, 2 );
+		// Add Permissions Menu to Main Frontend Template.
+		add_filter( 'myvideoroom_main_template_render', array( $this, 'render_shortcode_security_permissions_tab' ), 40, 4 );
 
 	}
 
@@ -127,6 +129,41 @@ class Security {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 		$room_name   = $room_object->room_name;
 		// Host Menu Tab - rendered in Security as its a module feature of Security.
+		$host_menu = new MenuTabDisplay(
+			esc_html__( 'Room Hosts', 'my-video-room' ),
+			'roomhosts',
+			fn() => Factory::get_instance( SecurityVideoPreference::class )
+			->choose_settings(
+				$room_id,
+				$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
+				null,
+				'roomhost'
+			)
+		);
+		array_push( $input, $host_menu );
+		// Permissions Default Tab - rendered in Security as its a module feature of Security.
+		$base_menu = new MenuTabDisplay(
+			esc_html__( 'Room Permissions', 'my-video-room' ),
+			'roompermissions',
+			fn()=> Factory::get_instance( SecurityVideoPreference::class )
+			->choose_settings( $room_id, esc_textarea( $room_name ), 'roomhost' )
+		);
+		array_push( $input, $base_menu );
+
+		return $input;
+	}
+
+	/**
+	 * Render Security Admin Tabs.
+	 *
+	 * @param  array $input - the inbound menu.
+	 * @param  int   $room_id - the room identifier.
+	 * @return array - outbound menu.
+	 */
+	public function render_security_shortcode_tabs( $input = array(), int $room_id ): array {
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+		$room_name   = $room_object->room_name;
+		// Host Menu Tab - rendered in Security as its a module feature of Security.
 		$host_menu = new MenuTabDisplay();
 		$host_menu->set_tab_display_name( esc_html__( 'Room Hosts', 'my-video-room' ) )
 			->set_tab_slug( 'roomhosts' )
@@ -148,6 +185,31 @@ class Security {
 		);
 		array_push( $input, $base_menu );
 
+		return $input;
+	}
+
+	/**
+	 * Render Security Admin Tabs in Main Shortcode.
+	 *
+	 * @param  array  $input - the inbound menu.
+	 * @param  int    $post_id - the user or entity identifier.
+	 * @param  string $room_name - the room identifier.
+	 * @return array - outbound menu.
+	 */
+	public function render_shortcode_security_permissions_tab( $input = array(), int $post_id, string $room_name, bool $host_status ): array {
+		if ( ! $host_status ) {
+			return $input;
+		}
+		$permissions_menu = new MenuTabDisplay();
+		$permissions_menu->set_tab_display_name( esc_html__( 'Room Permissions', 'my-video-room' ) )
+			->set_tab_slug( 'roompermissions' )
+			->set_function_callback(
+				Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
+					$post_id,
+					$room_name,
+				)
+			);
+		array_push( $input, $permissions_menu );
 		return $input;
 	}
 }

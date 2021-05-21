@@ -11,6 +11,7 @@ use \MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\VideoHelpers;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
@@ -58,7 +59,6 @@ class MVRSiteVideoControllers {
 		}
 	}
 
-
 	/**
 	 * A Shortcode for the Site Video Room - Host
 	 * This is used for the Member admin entry pages to access their preferred Video Layout - it is paired with the sitevideoroomguest function and accessed by the relevant video switch
@@ -95,21 +95,29 @@ class MVRSiteVideoControllers {
 			->set_as_host();
 
 		// Construct Shortcode Template - and execute.
-		$header     = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_host_template( $post_id );
-		$shortcode  = \do_shortcode( $myvideoroom_app->output_shortcode_text() );
-		$admin_page = Factory::get_instance( UserVideoPreference::class )->choose_settings(
-			$post_id,
-			$room_name,
-			array( 'basic', 'premium' )
+		$header        = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_host_template( $post_id );
+		$host_status   = true;
+		$output_object = array();
+		$host_menu     = new MenuTabDisplay(
+			esc_html__( 'Video Room', 'my-video-room' ),
+			'videoroom',
+			fn() => $myvideoroom_app->output_shortcode_text()
 		);
+		array_push( $output_object, $host_menu );
+		$admin_menu = new MenuTabDisplay(
+			esc_html__( 'Host Settings', 'my-video-room' ),
+			'adminpage',
+			fn() => \do_shortcode(
+				Factory::get_instance( UserVideoPreference::class )->choose_settings(
+					$post_id,
+					$room_name,
+					array( 'basic', 'premium' )
+				)
+			)
+		);
+		array_push( $output_object, $admin_menu );
 
-		if ( Factory::get_instance( ModuleConfig::class )->read_enabled_status( Dependencies::MODULE_SECURITY_ID ) ) {
-			$permissions_page = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference::class )->choose_settings(
-				$post_id,
-				$room_name,
-			);
-		}
-		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $shortcode, $admin_page, $permissions_page );
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $post_id, $room_name, $host_status );
 	}
 
 	/**
@@ -162,10 +170,16 @@ class MVRSiteVideoControllers {
 
 		}
 		// Construct Shortcode Template - and execute.
-		$header    = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_guest_template( $room_id );
-		$shortcode = \do_shortcode( $myvideoroom_app->output_shortcode_text() );
-
-		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $shortcode );
+		$header        = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_guest_template( $room_id );
+		$host_status   = false;
+		$output_object = array();
+		$host_menu     = new MenuTabDisplay(
+			esc_html__( 'Video Room', 'my-video-room' ),
+			'videoroom',
+			fn() => $myvideoroom_app->output_shortcode_text()
+		);
+		array_push( $output_object, $host_menu );
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $room_id, $room_name, $host_status );
 	}
 
 	/**

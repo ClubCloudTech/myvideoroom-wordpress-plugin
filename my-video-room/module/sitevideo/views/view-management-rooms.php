@@ -6,7 +6,6 @@
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Library\HTML as HTML;
@@ -17,7 +16,6 @@ return function (
 	string $input_type = null
 ): string {
 	$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
-
 	ob_start();
 
 	// Rendering Only Default Config Page.
@@ -27,7 +25,7 @@ return function (
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Escaped.
 		echo Factory::get_instance( UserVideoPreference::class )->choose_settings(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
-			esc_textarea( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ),
+			MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
 			array( 'basic', 'premium' )
 		);
 		echo '</div>';
