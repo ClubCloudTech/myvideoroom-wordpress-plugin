@@ -224,7 +224,7 @@ class SecurityVideoPreference {
 		$db_setting = $this->read_security_settings( $user_id, $room_name, $return_type );
 		// Add Clear Option to Select Box if there are parameters Stored.
 		if ( $db_setting ) {
-			echo '<option value="">( Clear Selections - Remove Stored Roles)</option>';
+			$clear_option = '<option value="">' . esc_html__( '( Clear Selections - Remove Stored Roles)', 'myvideoroom' ) . '</option>';
 		}
 		$db_array  = explode( '|', $db_setting );
 		$db_output = null;
@@ -243,7 +243,7 @@ class SecurityVideoPreference {
 				}
 			}
 		}
-		return $db_output . $output;
+		return $clear_option . $db_output . $output;
 	}
 
 	/**

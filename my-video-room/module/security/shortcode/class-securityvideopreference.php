@@ -161,11 +161,12 @@ class SecurityVideoPreference extends Shortcode {
 		}
 
 		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
+		$roles_output            = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_multi_checkbox_admin_roles( $user_id, $room_name, 'allowed_roles' );
 		$current_user_setting    = $security_preference_dao->read(
 			$user_id,
 			$room_name
 		);
-
+		
 		// Type of Shortcode to render.
 		switch ( $type ) {
 			case 'admin':
@@ -178,6 +179,6 @@ class SecurityVideoPreference extends Shortcode {
 				$render = include __DIR__ . '/../views/shortcode-securityvideopreference.php';
 		}
 
-		return $render( $current_user_setting, $room_name, self::$id_index++, $user_id, $group_name );
+		return $render( $current_user_setting, $room_name, self::$id_index++, $roles_output, $user_id, $group_name );
 	}
 }
