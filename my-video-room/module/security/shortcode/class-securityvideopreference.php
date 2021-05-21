@@ -14,7 +14,6 @@ use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
-use MyVideoRoomPlugin\ValueObject\Notice;
 
 /**
  * Class SecurityVideoPreference
@@ -81,8 +80,7 @@ class SecurityVideoPreference extends Shortcode {
 			$anonymous_enabled          = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_anonymous_enabled_preference'] ?? '' ) ) === 'on';
 			$allow_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_allow_role_control_enabled_preference'] ?? '' ) ) === 'on';
 			$block_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_block_role_control_enabled_preference'] ?? '' ) ) === 'on';
-
-			$site_override_enabled             = sanitize_text_field( wp_unslash( $_POST['myvideoroom_override_all_preferences'] ?? '' ) ) === 'on';
+			$site_override_enabled      = sanitize_text_field( wp_unslash( $_POST['myvideoroom_override_all_preferences'] ?? '' ) ) === 'on';
 
 			// Handle Multi_box array and change it to a Database compatible string.
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized  --  Sanitised in function below (post MultiBox Array dissasembly that is destroyed by WP sanitising functions).
@@ -161,11 +159,12 @@ class SecurityVideoPreference extends Shortcode {
 		}
 
 		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
+		$roles_output            = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_multi_checkbox_admin_roles( $user_id, $room_name, 'allowed_roles' );
 		$current_user_setting    = $security_preference_dao->read(
 			$user_id,
 			$room_name
 		);
-
+		
 		// Type of Shortcode to render.
 		switch ( $type ) {
 			case 'admin':
@@ -178,6 +177,6 @@ class SecurityVideoPreference extends Shortcode {
 				$render = include __DIR__ . '/../views/shortcode-securityvideopreference.php';
 		}
 
-		return $render( $current_user_setting, $room_name, self::$id_index++, $user_id, $group_name );
+		return $render( $current_user_setting, $room_name, self::$id_index++, $roles_output, $user_id, $group_name );
 	}
 }

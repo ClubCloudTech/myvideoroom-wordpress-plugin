@@ -6,9 +6,7 @@
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use \MyVideoRoomPlugin\Core\SiteDefaults;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoDisplayRooms;
@@ -23,9 +21,6 @@ use MyVideoRoomPlugin\SiteDefaults as MyVideoRoomPluginSiteDefaults;
  * @return string
  */
 return function ( string $settings = null, bool $deleted = false ): string {
-	wp_enqueue_style( 'myvideoroom-template' );
-	wp_enqueue_style( 'myvideoroom-menutab-header' );
-	wp_enqueue_script( 'myvideoroom-protect-input' );
 	ob_start();
 
 	// Listener for Handling Regeneration of Site Video Room Pages in case of orphaning.
@@ -36,11 +31,10 @@ return function ( string $settings = null, bool $deleted = false ): string {
 	<div class="mvr-outer-box-wrap">
 		<h1><?php esc_html_e( 'Site Conference Center', 'my-video-room' ); ?></h1>
 		<?php
-		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( MyVideoRoomPluginSiteDefaults::MODULE_SECURITY_ID );
-		if ( $security_enabled ) {
-			echo esc_html( Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons::class )->site_wide_enabled() );
-		}
-
+		$output = null;
+		$output = apply_filters( 'myvideoroom_sitevideo_control_panel_view', $output );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
+		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 		echo '<p>';
 		esc_html_e(
 			'The site conference module suite is available for team wide meetings, events, or any need for central rooms at the website level. These permanent rooms are created automatically by the module, at activation, and can be renamed. They can be individually secured such that any site role group can host the room. Room permissions, reception settings, templates, and custom reception videos are all available for each conference room. You can connect permanent WebRTC enabled devices like projectors, and microphones to rooms permanently',

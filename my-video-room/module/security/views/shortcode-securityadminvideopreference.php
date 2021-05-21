@@ -9,24 +9,20 @@
  */
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;
-use MyVideoRoomPlugin\Module\Security\Dao\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Module\Security\Settings\Field as InputField;
-use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
-use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\SiteDefaults;
-use MyVideoRoomPlugin\Library\Dependencies;
 
 return function (
 	?SecurityVideoPreference $current_user_setting,
 	string $room_name,
 	int $id_index = 0,
+	$roles_output = null,
 	int $user_id = null
 	): string {
-	wp_enqueue_style( 'myvideoroom-template' );
-	wp_enqueue_style( 'myvideoroom-menutab-header' );
 
-	$html_library = Factory::get_instance( \MyVideoRoomPlugin\Library\HTML::class, array( 'security' ) );
+	$html_library = Factory::get_instance( HTML::class, array( 'security' ) );
 
 	/**
 	 * This should be moved to the controller.
@@ -48,63 +44,12 @@ return function (
 <div id="security-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
 
 			<?php
-			// room permissions info.
-			$site_override              = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, 'site_override_enabled' );
-			$room_disabled              = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'room_disabled' );
-			$anonymous_enabled          = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'anonymous_enabled' );
-			$allow_role_control_enabled = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'allow_role_control_enabled' );
-			$block_role_control         = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'block_role_control_enabled' );
-			$output                     = null;
-
-			if ( ! $site_override ) {
-				if ( ! $room_disabled ) {
-					$output .= '<p class="mvr-main-button-enabled" >' . esc_html__( 'Site Enabled', 'my-video-room' ) . '</p>';
-				} else {
-					$output .= '<p class="mvr-main-button-disabled button" >' . esc_html__( 'Site Disabled', 'my-video-room' ) . '</p>';
-				}
-				if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
-					$restrict_group_to_members_enabled = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
-					$restrict_to_friends               = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
-					if ( $restrict_group_to_members_enabled ) {
-						$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Restricted to Members', 'my-video-room' ) . '</p>';
-					}
-					if ( $restrict_to_friends ) {
-						$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Restricted to Friends', 'my-video-room' ) . '</p>';
-					}
-				}
-				if ( $allow_role_control_enabled ) {
-					$db_setting = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'allowed_roles' );
-					if ( ! $db_setting ) {
-						$db_setting = 'No One';
-					}
-					if ( $block_role_control ) {
-						$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions are Excluding : ', 'my-video-room' ) . $db_setting . '</p>';
-					} else {
-						$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions Only Allowing : ', 'my-video-room' ) . '' . $db_setting . '</p>';
-					}
-				}
-
-				if ( $anonymous_enabled ) {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Anonymous Disabled', 'my-video-room' ) . '</p>';
-				}
-			} else {
-				$output .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled( 'nourl' );
-				$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'You are overriding User and Room settings with ones applied centrally below.', 'my-video-room' ) . '</p>';
-			}
-			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - Not Needed already escaped.
+			$output = null;
+			$output = apply_filters( 'myvideoroom_security_admin_preference_buttons', $output, $user_id, $room_name );
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
 			echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 			?>
 				<form method="post" action="">
-				<input name="myvideoroom_security_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
-				<input name="myvideoroom_security_user_id" type="hidden" value="
-								<?php
-								if ( function_exists( 'bp_is_groups_component' ) && \bp_is_groups_component() ) {
-									global $bp;
-									$group_id = $bp->groups->current_group->id;
-									echo esc_textarea( $group_id );
-								}
-								?>
-								" />
 					<br>
 					<h2 class="mvr-title-header"><?php esc_html_e( 'Override User preferences', 'my-video-room' ); ?></h2>
 					<input
@@ -177,12 +122,10 @@ return function (
 				<select multiple="multiple"
 						class="myvideoroom_security_allowed_roles_preference"
 						name="myvideoroom_security_allowed_roles_preference[]"
-						style="width:50%"
 						id="myvideoroom_security_allowed_roles_preference">
 					<?php
-					$output = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_multi_checkbox_admin_roles( $user_id, $room_name, 'allowed_roles' );
 					//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
-					echo $output;
+					echo $roles_output;
 					?>
 					</select>
 					<label for="myvideoroom_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
@@ -208,11 +151,22 @@ return function (
 					echo '<br />';
 				}
 				?>
-				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
-				<hr>
-				<input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"  />
+
+				<input name="myvideoroom_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
+				<input name="myvideoroom_user_id" type="hidden" value="
+					<?php
+						$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
+						echo esc_html( $user_id );
+					?>
+					" />
+				<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( HttpPost::class )->create_form_submit(
+					'update_security_video_preference',
+					\esc_html__( 'Save changes', 'myvideoroom' )
+				);
+				?>
 			</form>
-			<hr>
 </div>
 
 	<?php
