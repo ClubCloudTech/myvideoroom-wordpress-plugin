@@ -19,7 +19,7 @@ return function (
 
 
 	$base_option  = array();
-	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_object->post_id );
+	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_object->id );
 	?>
 	<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 		<ul>

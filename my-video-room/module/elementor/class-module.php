@@ -27,6 +27,7 @@ class Module {
 						__( 'Edit in Elementor' ),
 						get_site_url() . '/wp-admin/post.php?post=' . esc_textarea( $post_id ) . '&action=elementor',
 						'fab fa-elementor',
+						array( 'target' => '_blank' )
 					)
 				);
 

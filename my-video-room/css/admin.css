@@ -26,6 +26,10 @@
 	min-width: 304px;
 }
 
+.myvideoroom-admin .button-primary i.dashicons {
+	line-height: 1.4;
+}
+
 .myvideoroom-admin .button-primary.positive {
 	background: #238823;
 	color: #fff;
