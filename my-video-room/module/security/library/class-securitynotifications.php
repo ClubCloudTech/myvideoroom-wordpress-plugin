@@ -32,13 +32,20 @@ class SecurityNotifications {
 			return null;
 		}
 
-		$security_video_dao = Factory::get_instance( SecurityVideoPreferenceDAO::class );
-
+		$security_video_dao         = Factory::get_instance( SecurityVideoPreferenceDAO::class );
+		$site_override              = $security_video_dao->read_security_settings( $user_id, $room_name, 'site_override_enabled' );
 		$anonymous_enabled          = $security_video_dao->read_security_settings( $user_id, $room_name, 'anonymous_enabled' );
 		$allow_role_control_enabled = $security_video_dao->read_security_settings( $user_id, $room_name, 'allow_role_control_enabled' );
 		$restrict_to_friends        = $security_video_dao->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
 		$restrict_to_groups         = $security_video_dao->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
 		$icon_output                = null;
+
+		if ( $site_override ) {
+			$icon_output .= $this->create_icon(
+				'warning',
+				__( 'Administrators are Centrally enforcing specific mandatory settings. Your settings may not be applied.', 'myvideoroom' )
+			);
+		}
 
 		if ( $anonymous_enabled ) {
 			$icon_output .= $this->create_icon(
