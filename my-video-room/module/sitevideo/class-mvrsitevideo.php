@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Module\SiteVideo;
 
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
@@ -106,9 +107,6 @@ class MVRSiteVideo extends Shortcode {
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
 
-		// Listener for Handling Room Add. Listens for Room Adds- and Handles Form below.
-		Factory::get_instance( MVRSiteVideoListeners::class )->site_videoroom_add_page();
-
 		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_sitevideo_roomsetting_tab' ), 21, 2 );
 	}
 
@@ -152,23 +150,52 @@ class MVRSiteVideo extends Shortcode {
 	public function render_sitevideo_admin_page() {
 		$room_settings = null;
 
-		$delete  = Factory::get_instance( HttpGet::class )->get_string_parameter( 'delete' );
-		$room_id = Factory::get_instance( HttpGet::class )->get_integer_parameter( 'room_id' );
+		$deleted = false;
+
+		$http_post_library = Factory::get_instance( HttpPost::class );
+		$http_get_library  = Factory::get_instance( HttpGet::class );
+
+		$delete         = $http_get_library->get_string_parameter( 'delete' );
+		$delete_confirm = $http_get_library->get_string_parameter( 'confirm' );
+		$room_id        = $http_get_library->get_integer_parameter( 'room_id' );
+
+		if ( $http_post_library->is_admin_post_request( 'add_room' ) ) {
+			$display_title = $http_post_library->get_string_parameter( 'add_room_title' );
+			$room_slug     = $http_post_library->get_string_parameter( 'add_room_slug' );
+
+			$room_id = Factory::get_instance( RoomAdmin::class )->create_and_check_page(
+				strtolower( str_replace( ' ', '-', trim( $display_title ) ) ),
+				$display_title,
+				$room_slug,
+				self::ROOM_SHORTCODE_SITE_VIDEO
+			);
+		}
 
 		if ( null !== $room_id ) {
-			if ( $delete ) {
-				\check_admin_referer( 'delete_room_' . $room_id );
+			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 
-				$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-				$room_name   = $room_object->room_name;
+			if ( ! $room_object ) {
+				return ( require __DIR__ . '/views/view-settings-sitevideo.php' )(
+					\esc_html__( 'Room does not exist', 'myvideoroom' ),
+					false
+				);
+			}
+
+			if ( $delete_confirm ) {
+				\check_admin_referer( 'delete_room_confirmation_' . $room_id );
+				$room_name = $room_object->room_name;
 				Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_name );
 				\wp_delete_post( $room_id, true );
+				$deleted = true;
+			} elseif ( $delete ) {
+				\check_admin_referer( 'delete_room_' . $room_id );
+				return ( require __DIR__ . '/views/room-delete-confirmation.php' )( $room_object );
 			} else {
-				$room_settings = ( require __DIR__ . '/views/view-management-rooms.php' )( $room_id, 'normal' );
+				$room_settings = ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, 'normal' );
 			}
 		}
 
-		return ( require __DIR__ . '/views/view-settings-sitevideo.php' )( $room_settings, $delete );
+		return ( require __DIR__ . '/views/view-settings-sitevideo.php' )( $room_settings, $deleted );
 	}
 
 	/**
@@ -178,8 +205,10 @@ class MVRSiteVideo extends Shortcode {
 		$room_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
 		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
 
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
-		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_id, $input_type );
+		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, $input_type );
 		die();
 	}
 

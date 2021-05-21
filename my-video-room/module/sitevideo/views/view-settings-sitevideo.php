@@ -8,6 +8,7 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\Library\HttpPost;
 use \MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
@@ -76,7 +77,19 @@ return function ( string $settings = null, bool $deleted = false ): string {
 			<h2 class="mvr-title-header"><?php esc_html_e( 'Add a Conference Room ', 'my-video-room' ); ?>   </h2>
 			<p><?php esc_html_e( 'Use this section to add a Conference Room to your site. It will remain available permanently, and can be configured to your needs.', 'my-video-room' ); ?></p>
 
-			<form method="post" action="<?php echo \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ); ?>">
+			<?php
+				$post_url = \add_query_arg(
+					array(
+						'delete'   => null,
+						'_wpnonce' => null,
+						'confirm'  => null,
+						'room_id'  => null,
+					),
+					\esc_url_raw( \wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) )
+				);
+			?>
+
+			<form method="post" action="<?php echo \esc_url_raw( $post_url ); ?>">
 					<label for="myvideoroom_add_room_title" class="mvr-preferences-paragraph"><?php esc_html_e( 'Room Display Name ', 'my-video-room' ); ?></label>
 					<input		type="text"
 								id="myvideoroom_add_room_title"
@@ -115,8 +128,14 @@ return function ( string $settings = null, bool $deleted = false ): string {
 					);
 					?>
 					<br>
-					<?php wp_nonce_field( 'myvideoroom_add_room', 'nonce' ); ?>
-					<input type="submit" name="submit" id="submit" class="mvr-form-button" value="<?php esc_html_e( 'Add Room', 'my-video-room' ); ?>"  />
+
+					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo Factory::get_instance( HttpPost::class )->create_form_submit(
+						'add_room',
+						esc_html__( 'Add Room', 'my-video-room' )
+					);
+					?>
 				</form>
 		</div>
 	</div>
