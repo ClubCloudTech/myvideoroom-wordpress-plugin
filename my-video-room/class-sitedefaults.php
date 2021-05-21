@@ -17,6 +17,7 @@ use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\DAO\Setup;
+use MyVideoRoomPlugin\Library\TemplateIcons;
 
 /**
  * Class SiteDefaults
@@ -78,6 +79,7 @@ class SiteDefaults extends Shortcode {
 			Factory::get_instance( Setup::class )->initialise_default_video_settings();
 		}
 		$this->add_shortcode( 'invitemenu', array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
+		\add_filter( 'myvideoroom_template_icon_section', array( Factory::get_instance( TemplateIcons::class ), 'add_default_video_icons_to_header' ), 10, 4 );
 	}
 
 	/**
