@@ -18,11 +18,8 @@ use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
-use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
-use MyVideoRoomPlugin\SiteDefaults;
-use MyVideoRoomPlugin\ValueObject\Notice;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
