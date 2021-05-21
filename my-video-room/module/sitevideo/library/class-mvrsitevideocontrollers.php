@@ -101,7 +101,7 @@ class MVRSiteVideoControllers {
 		$host_menu     = new MenuTabDisplay(
 			esc_html__( 'Video Room', 'my-video-room' ),
 			'videoroom',
-			fn() => $myvideoroom_app->output_shortcode_text()
+			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
 		array_push( $output_object, $host_menu );
 		$admin_menu = new MenuTabDisplay(
@@ -176,7 +176,7 @@ class MVRSiteVideoControllers {
 		$host_menu     = new MenuTabDisplay(
 			esc_html__( 'Video Room', 'my-video-room' ),
 			'videoroom',
-			fn() => $myvideoroom_app->output_shortcode_text()
+			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
 		array_push( $output_object, $host_menu );
 		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $room_id, $room_name, $host_status );

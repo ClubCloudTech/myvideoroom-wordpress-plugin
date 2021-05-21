@@ -20,8 +20,6 @@ return function (
 	string $invite_menu = null,
 	string $post_site_title = null
 ): string {
-	wp_enqueue_style( 'myvideoroom-template' );
-	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
 
 	if ( $visitor_status ) {
