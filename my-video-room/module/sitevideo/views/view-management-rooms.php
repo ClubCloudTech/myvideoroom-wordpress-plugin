@@ -2,9 +2,6 @@
 /**
  * Renders the form for changing the user video preference.
  *
- * @param string|null $current_user_setting
- * @param array       $available_layouts
- *
  * @package MyVideoRoomPlugin\Module\SiteVideo
  */
 
@@ -15,7 +12,7 @@ use MyVideoRoomPlugin\Library\HTML as HTML;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 return function (
-	int $room_id,
+	\stdClass $room_object,
 	string $input_type = null
 ): string {
 	$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
@@ -37,7 +34,7 @@ return function (
 	}
 
 	$base_option  = array();
-	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_id );
+	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_object->post_id );
 	?>
 	<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
 		<ul>

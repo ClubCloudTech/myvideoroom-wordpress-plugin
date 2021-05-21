@@ -99,6 +99,7 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 				$delete_url   = \add_query_arg(
 					array(
 						'room_id'  => $room_id,
+						'confirm'  => null,
 						'delete'   => 'true',
 						'_wpnonce' => $delete_nonce,
 					),

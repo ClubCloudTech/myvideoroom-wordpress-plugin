@@ -20,30 +20,6 @@ class MVRSiteVideoListeners extends Shortcode {
 	// ---
 	// Site Video Room Templates.
 
-	/**
-	 * Render Site Videoroom Host Template
-	 *
-	 * @return void
-	 */
-	public function site_videoroom_add_page() {
-
-		if (
-			isset( $_SERVER['REQUEST_METHOD'] ) && isset( $_POST['myvideoroom_add_room_title'] ) &&
-			'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['myvideoroom_add_room_slug'] )
-		) {
-			check_admin_referer( 'myvideoroom_add_room', 'nonce' );
-			$display_title = sanitize_text_field( wp_unslash( $_POST['myvideoroom_add_room_title'] ) );
-			$room_slug     = sanitize_text_field( wp_unslash( $_POST['myvideoroom_add_room_slug'] ) );
-
-			Factory::get_instance( RoomAdmin::class )->create_and_check_page(
-				strtolower( str_replace( ' ', '-', trim( $display_title ) ) ),
-				$display_title,
-				$room_slug,
-				MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO
-			);
-		}
-	}
-
 
 	/**
 	 * Render Site Videoroom Regenerate Page Engine.
