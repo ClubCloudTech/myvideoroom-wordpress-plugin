@@ -53,7 +53,7 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 				$url = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room_name, 'url' );
 
 				if ( $url ) {
-				//phpcs:ignore --Squiz.WhiteSpace.LanguageConstructSpacing.IncorrectSingle - ESCURL is escaped properly.
+				// phpcs:ignore Squiz.WhiteSpace.LanguageConstructSpacing.IncorrectSingle, ESCURL is escaped properly.
 					echo  '<a href="' . esc_url( $url ) . '" target="_blank">' . esc_html( $url ) . '</a>';
 			}
 			?>
