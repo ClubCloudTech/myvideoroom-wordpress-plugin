@@ -18,7 +18,7 @@ $_SERVER['argv'] = array( 'vendor/bin/phpcs' );
 $exit_code       = $runner->runPHPCS();
 
 if ( $exit_code ) {
-	// throw new \Exception( 'PHP Checkstyle failed - cannot build' );
+	throw new \Exception( 'PHP Checkstyle failed - cannot build' );
 }
 
 // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
