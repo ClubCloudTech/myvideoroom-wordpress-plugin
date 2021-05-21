@@ -60,6 +60,10 @@ class RoomAdmin extends Shortcode {
 			case 'title':
 				return $post_title;
 			case 'url':
+				// rooms which are no longer published should no longer have urls.
+				if ( 'publish' !== $post->post_status) {
+					return null;
+				}
 				return get_site_url() . '/' . $post_slug . '/';
 		}
 		return null;

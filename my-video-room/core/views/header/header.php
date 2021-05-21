@@ -14,7 +14,6 @@ return function (
 	wp_enqueue_script( 'myvideoroom-admin-tabs' );
 	wp_enqueue_style( 'mvr-extras' );
 	?>
-	<div class="mvr-outer-box-wrap">
 	<table style="width:100%">
 		<tr>
 			<th class="mvr-visualiser-image-left">
@@ -48,7 +47,6 @@ return function (
 		?>
 
 	</nav>
-</div>
 
 	<ul>
 		<?php
