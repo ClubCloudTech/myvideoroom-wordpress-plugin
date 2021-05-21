@@ -33,7 +33,7 @@ class Setup {
 			false
 		);
 
-		return '<h2>' . esc_html__( 'Default Settings Updated', 'myvideoroom' ) . '</h2>';
+		return '';
 	}
 
 	/**

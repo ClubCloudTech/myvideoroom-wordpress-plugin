@@ -20,6 +20,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoListeners;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
+use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\ValueObject\Notice;
 
 /**
@@ -54,6 +55,9 @@ class MVRSiteVideo extends Shortcode {
 
 		// Generate Site Video Room Page.
 		$this->create_site_videoroom_page();
+
+		// Configure Default Category Settings for Room.
+		Factory::get_instance( RoomAdmin::class )->initialise_default_sitevideo_settings();
 
 	}
 	/**
@@ -193,7 +197,10 @@ class MVRSiteVideo extends Shortcode {
 	public function render_sitevideo_roomsetting_tab( $input = array(), int $room_id ): array {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 		$room_name   = $room_object->room_name;
-		$base_menu   = new MenuTabDisplay();
+		if ( ! $room_object ) {
+			$room_name = self::ROOM_NAME_SITE_VIDEO;
+		}
+		$base_menu = new MenuTabDisplay();
 		$base_menu->set_tab_display_name( esc_html__( 'Video Settings', 'my-video-room' ) )
 		->set_tab_slug( 'videosettings' )
 		->set_function_callback(

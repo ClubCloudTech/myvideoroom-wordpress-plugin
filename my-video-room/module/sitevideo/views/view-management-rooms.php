@@ -28,7 +28,7 @@ return function (
 		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Escaped.
 		echo Factory::get_instance( UserVideoPreference::class )->choose_settings(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
-			esc_textarea( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ),
+			MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
 			array( 'basic', 'premium' )
 		);
 		echo '</div>';
