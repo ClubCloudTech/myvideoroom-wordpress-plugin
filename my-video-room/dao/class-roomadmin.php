@@ -40,7 +40,12 @@ class RoomAdmin extends Shortcode {
 		$room_post_id = Factory::get_instance( RoomMap::class )->read( $room_name );
 		// Retrieve Post Object from Post.
 
-		$post       = get_post( $room_post_id );
+		$post = get_post( $room_post_id );
+
+		if ( ! $post ) {
+			return null;
+		}
+
 		$post_slug  = $post->post_name;
 		$post_title = $post->post_title;
 		$post_id    = $post->ID;
