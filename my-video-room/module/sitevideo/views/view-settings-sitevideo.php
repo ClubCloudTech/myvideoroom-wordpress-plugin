@@ -28,8 +28,6 @@ return function ( string $settings = null, bool $deleted = false ): string {
 	wp_enqueue_script( 'myvideoroom-protect-input' );
 	ob_start();
 
-	$post_id = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( MVRSiteVideo::ROOM_NAME_SITE_VIDEO, 'post_id' );
-
 	// Listener for Handling Regeneration of Site Video Room Pages in case of orphaning.
 	Factory::get_instance( MVRSiteVideoListeners::class )->site_videoroom_regenerate_page();
 
@@ -131,7 +129,7 @@ return function ( string $settings = null, bool $deleted = false ): string {
 
 					<?php
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo Factory::get_instance( HttpPost::class )->create_form_submit(
+					echo Factory::get_instance( \MyVideoRoomPlugin\Library\HttpPost::class )->create_form_submit(
 						'add_room',
 						esc_html__( 'Add Room', 'my-video-room' )
 					);
