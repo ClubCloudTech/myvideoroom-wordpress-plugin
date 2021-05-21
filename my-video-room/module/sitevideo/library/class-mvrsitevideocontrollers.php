@@ -96,8 +96,8 @@ class MVRSiteVideoControllers {
 			->set_as_host();
 
 		// Construct Shortcode Template - and execute.
-		$header = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_host_template( $post_id );
-
+		$header        = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_host_template( $post_id );
+		$host_status   = true;
 		$output_object = array();
 		$host_menu     = new MenuTabDisplay();
 		$host_menu->set_tab_display_name( esc_html__( 'Video Room', 'my-video-room' ) )
@@ -121,13 +121,7 @@ class MVRSiteVideoControllers {
 			);
 		array_push( $output_object, $admin_menu );
 
-		if ( Factory::get_instance( ModuleConfig::class )->read_enabled_status( Dependencies::MODULE_SECURITY_ID ) ) {
-			$permissions_page = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference::class )->choose_settings(
-				$post_id,
-				$room_name,
-			);
-		}
-		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $post_id, $room_name );
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $post_id, $room_name, $host_status );
 	}
 
 	/**
@@ -181,9 +175,16 @@ class MVRSiteVideoControllers {
 		}
 		// Construct Shortcode Template - and execute.
 		$header    = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_guest_template( $room_id );
-		$shortcode = \do_shortcode( $myvideoroom_app->output_shortcode_text() );
-
-		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $shortcode );
+		$host_status   = false;
+		$output_object = array();
+		$host_menu     = new MenuTabDisplay();
+		$host_menu->set_tab_display_name( esc_html__( 'Video Room', 'my-video-room' ) )
+			->set_tab_slug( 'videoroom' )
+			->set_function_callback(
+				\do_shortcode( $myvideoroom_app->output_shortcode_text() )
+			);
+		array_push( $output_object, $host_menu );
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $room_id, $room_name, $host_status );
 	}
 
 	/**

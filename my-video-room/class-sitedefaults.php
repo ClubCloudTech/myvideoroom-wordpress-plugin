@@ -155,6 +155,18 @@ class SiteDefaults extends Shortcode {
 			false,
 			$plugin_version
 		);
+
+		wp_register_style(
+			'myvideoroom-admin-css',
+			plugins_url( '/css/admin.css', __FILE__ ),
+			false,
+			$plugin_version
+		);
+
+		\wp_enqueue_style( 'myvideoroom-template' );
+		\wp_enqueue_style( 'myvideoroom-menutab-header' );
+		\wp_enqueue_style( 'myvideoroom-admin-css' );
+
 	}
 
 	/**
