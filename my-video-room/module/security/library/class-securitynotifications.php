@@ -10,6 +10,7 @@ namespace MyVideoRoomPlugin\Module\Security\Library;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Dependencies;
+use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 use MyVideoRoomPlugin\SiteDefaults;
 
 /**
@@ -259,5 +260,17 @@ class SecurityNotifications {
 			$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'An Administrator is overriding your settings with ones applied centrally. Certains Settings stored here may not be applied', 'my-video-room' ) . '</p>';
 		}
 		return $output;
+	}
+
+	/**
+	 * Filter for Showing Security Sitewide Block Status
+	 *
+	 * @param string $input The inbound filter name to use.
+	 *
+	 * @return string
+	 */
+	public function show_security_sitewide_status( ?string $input ): string {
+		$input .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled();
+		return $input;
 	}
 }

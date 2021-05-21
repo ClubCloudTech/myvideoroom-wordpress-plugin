@@ -94,6 +94,7 @@ class Security {
 		\add_filter( 'myvideoroom_security_admin_preference_buttons', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_admin_status' ), 10, 3 );
 		\add_filter( 'myvideoroom_security_settings_preference_buttons', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_settings_status' ), 10, 3 );
 		\add_filter( 'myvideoroom_security_roomhosts_preference_buttons', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_roomhosts_status' ), 10, 3 );
+		\add_filter( 'myvideoroom_sitevideo_control_panel_view', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_sitewide_status' ), 10, 1 );
 
 	}
 

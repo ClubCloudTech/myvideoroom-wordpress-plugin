@@ -55,15 +55,7 @@ return function (
 			echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 			?>
 				<form method="post" action="">
-				<input name="myvideoroom_security_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
-				<input name="myvideoroom_security_user_id" type="hidden" value="
-					<?php
-						$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
-						echo esc_html( $user_id );
-					?>
-					"/>
-					<hr>
-					<h2 class="mvr-title-header"><i class="dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable Room', 'my-video-room' ); ?></h2>
+				<h2 class="mvr-title-header"><i class="dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable Room', 'my-video-room' ); ?></h2>
 				</label>
 				<input
 					type="checkbox"
@@ -166,8 +158,13 @@ return function (
 				}
 				?>
 
-				<input type="hidden" name="myvideoroom_room_name" value="<?php echo esc_attr( $room_name ); ?>" />
-				<input type="hidden" name="myvideoroom_user_id" value="<?php echo esc_attr( $user_id ); ?>" />
+				<input name="myvideoroom_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
+				<input name="myvideoroom_user_id" type="hidden" value="
+					<?php
+						$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
+						echo esc_html( $user_id );
+					?>
+					"/>
 
 				<?php
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

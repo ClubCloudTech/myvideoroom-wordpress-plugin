@@ -36,7 +36,7 @@ class TemplateIcons {
 		$custom_video                   = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_video_enabled' );
 		$icon_output                    = null;
 
-		if ( ! $video_default_settings_applied ){
+		if ( ! $video_default_settings_applied ) {
 			$icon_output .= $this->create_icon(
 				'warning',
 				__( 'Default Video Settings are being Applied at the site level as you haven\'t set any preferences yet.', 'myvideoroom' )

@@ -10,6 +10,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Settings\Field as InputField;
 
@@ -49,13 +50,6 @@ return function (
 			echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 			?>
 				<form method="post" action="">
-				<input name="myvideoroom_security_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
-				<input name="myvideoroom_security_user_id" type="hidden" value="
-					<?php
-						$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
-						echo esc_html( $user_id );
-					?>
-					" />
 					<br>
 					<h2 class="mvr-title-header"><?php esc_html_e( 'Override User preferences', 'my-video-room' ); ?></h2>
 					<input
@@ -128,7 +122,6 @@ return function (
 				<select multiple="multiple"
 						class="myvideoroom_security_allowed_roles_preference"
 						name="myvideoroom_security_allowed_roles_preference[]"
-						style="width:50%"
 						id="myvideoroom_security_allowed_roles_preference">
 					<?php
 					//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
@@ -158,11 +151,22 @@ return function (
 					echo '<br />';
 				}
 				?>
-				<?php wp_nonce_field( 'myvideoroom_update_security_video_preference', 'nonce' ); ?>
-				<hr>
-				<input type="submit" name="submit" id="submit" class="button button-primary" value="Save Changes"  />
+
+				<input name="myvideoroom_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
+				<input name="myvideoroom_user_id" type="hidden" value="
+					<?php
+						$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
+						echo esc_html( $user_id );
+					?>
+					" />
+				<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( HttpPost::class )->create_form_submit(
+					'update_security_video_preference',
+					\esc_html__( 'Save changes', 'myvideoroom' )
+				);
+				?>
 			</form>
-			<hr>
 </div>
 
 	<?php
