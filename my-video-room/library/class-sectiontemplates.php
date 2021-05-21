@@ -28,8 +28,6 @@ class SectionTemplates extends Shortcode {
 	 * @return string The completed Formatted Template.
 	 */
 	public function shortcode_template_wrapper( string $header, array $inbound_tabs, int $user_id = null, string $room_name = null, bool $host_status = false ) {
-		wp_enqueue_script( 'myvideoroom-admin-tabs' );
-		wp_enqueue_style( 'myvideoroom-menutab-header' );
 		ob_start();
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
 		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
