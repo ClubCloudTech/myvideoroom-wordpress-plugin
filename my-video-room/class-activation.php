@@ -53,7 +53,7 @@ class Activation {
 		Module::load_built_in_modules();
 		\do_action( 'myvideoroom_init' );
 		$active_modules = Factory::get_instance( Module::class )->get_all_modules();
-		
+
 		foreach ( $active_modules as $active_module ) {
 			$active_module->uninstall();
 		}

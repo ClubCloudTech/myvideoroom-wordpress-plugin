@@ -201,7 +201,7 @@ class MVRSiteVideo extends Shortcode {
 			} else {
 				$room_settings = Factory::get_instance( UserVideoPreference::class )->choose_settings(
 					SiteDefaults::USER_ID_SITE_DEFAULTS,
-					MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+					self::ROOM_NAME_SITE_VIDEO,
 					array( 'basic', 'premium' )
 				);
 			}
@@ -225,7 +225,7 @@ class MVRSiteVideo extends Shortcode {
 			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Escaped.
 			echo Factory::get_instance( UserVideoPreference::class )->choose_settings(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+				self::ROOM_NAME_SITE_VIDEO,
 				array( 'basic', 'premium' )
 			);
 		}

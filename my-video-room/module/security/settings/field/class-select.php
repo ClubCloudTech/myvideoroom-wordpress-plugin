@@ -43,7 +43,7 @@ class Select extends Field {
 	 */
 	public function __construct( string $key, string $label, string $description, array $options = array(), string $selected_value = null ) {
 		parent::__construct( $key, $label, $description );
-		$this->options = $options;
+		$this->options        = $options;
 		$this->selected_value = $selected_value;
 	}
 
