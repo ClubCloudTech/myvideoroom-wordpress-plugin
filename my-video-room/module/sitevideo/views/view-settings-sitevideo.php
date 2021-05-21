@@ -62,9 +62,11 @@ return function ( string $settings = null, bool $deleted = false ): string {
 			<?php
 			//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a superglobal not user input.
 			$slug = admin_url( 'admin.php?page=' . esc_textarea( wp_unslash( $_GET['page'] ) ) );
-			echo '<a href="#" class="dashicons mvr-icons dashicons-cover-image myvideoroom-sitevideo-settings" title="' . esc_html__( 'Manage Default Video Room Appearance Settings', 'my-video-room' ) . '" data-post-id="' . esc_attr( MyVideoRoomPluginSiteDefaults::USER_ID_SITE_DEFAULTS ) . '" data-input-type="admin"></a>';
+			echo '<a href="#" class="myvideoroom-sitevideo-settings" title="' . esc_html__( 'Manage Default Video Room Appearance Settings', 'my-video-room' ) . '" data-room-id="' . esc_attr( MyVideoRoomPluginSiteDefaults::USER_ID_SITE_DEFAULTS ) . '">
+				<i class="dashicons mvr-icons dashicons-cover-image"></i>
+				' . esc_html__( 'Default Room Settings', 'my-video-room' ) . '
+</a>';
 			?>
-				<?php esc_html_e( 'Default Room Settings', 'my-video-room' ); ?>
 		</div>
 
 		<div class="mvr-add-page myvideoroom-sitevideo-add-room-button" tabindex="1">

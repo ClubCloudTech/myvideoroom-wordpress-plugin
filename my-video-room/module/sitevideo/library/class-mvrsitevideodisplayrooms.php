@@ -111,7 +111,6 @@ class MVRSiteVideoDisplayRooms extends Shortcode {
 						href="<?php echo esc_url( $settings_url ); ?>"
 						class="dashicons mvr-icons dashicons-admin-generic myvideoroom-sitevideo-settings"
 						data-room-id="<?php echo esc_attr( $room_id ); ?>"
-						data-input-type="normal"
 						title="<?php esc_html_e( 'View settings', 'myvideoroom' ); ?>"
 					></a>
 
