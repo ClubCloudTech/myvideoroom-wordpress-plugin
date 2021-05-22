@@ -82,6 +82,7 @@ return function ( \stdClass $room ): string {
 				[<?php echo esc_html( MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $room->id ); ?>]
 			</code>
 		</td>
+		<td class="plugin-title column-primary"><?php echo esc_html( $room->type ); ?></td>
 		<td>
 			<?php
 			foreach ( $edit_actions as $action ) {

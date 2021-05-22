@@ -11,6 +11,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\HttpGet;
+use MyVideoRoomPlugin\Library\VideoHelpers;
 
 /**
  * Class ModuleConfig
@@ -303,9 +304,11 @@ class ModuleConfig {
 		switch ( $module_status ) {
 			case self::ACTION_ENABLE:
 				$this->update_enabled_status( $module_id, true );
+				Factory::get_instance( VideoHelpers::class )->admin_page_refresh();
 				break;
 			case self::ACTION_DISABLE:
 				$this->update_enabled_status( $module_id, false );
+				Factory::get_instance( VideoHelpers::class )->admin_page_refresh();
 				break;
 		}
 

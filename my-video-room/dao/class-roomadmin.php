@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
  * Class RoomAdmin
@@ -55,13 +56,16 @@ class RoomAdmin extends Shortcode {
 				return $post_slug;
 			case 'slug':
 				return $post_id;
+			case 'type':
+					$room = Factory::get_instance( RoomMap::class )->get_room_info( $room_post_id );
+				return $this->conference_room_friendly_name( $room->room_type );
 			case 'post_id':
 				return $post_id;
 			case 'title':
 				return $post_title;
 			case 'url':
 				// rooms which are no longer published should no longer have urls.
-				if ( 'publish' !== $post->post_status) {
+				if ( 'publish' !== $post->post_status ) {
 					return null;
 				}
 				return get_site_url() . '/' . $post_slug . '/';
@@ -139,5 +143,24 @@ class RoomAdmin extends Shortcode {
 		);
 
 		return (bool) $current_user_setting;
+	}
+
+	/**
+	 * Room Type Friendly Name
+	 *
+	 * @param string $room_type .
+	 * @return string name.
+	 */
+	public function conference_room_friendly_name( string $room_type ): string {
+		switch ( $room_type ) {
+			case MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO:
+				if ( ! Factory::get_instance( ModuleConfig::class )->read_enabled_status( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
+					return esc_html__( 'Module Disabled', 'myvideoroom' );
+				} else {
+					return MVRSiteVideo::ROOM_NAME_TABLE;
+				}
+		}
+
+		return $room_type;
 	}
 }

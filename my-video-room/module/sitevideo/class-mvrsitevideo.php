@@ -22,7 +22,7 @@ use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
-use MyVideoRoomPlugin\SiteDefaults;
+
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -45,6 +45,7 @@ class MVRSiteVideo extends Shortcode {
 	const ROOM_TITLE_SITE_VIDEO            = 'Main Conference Room';
 	const ROOM_SLUG_SITE_VIDEO             = 'conference';
 	const ROOM_SHORTCODE_SITE_VIDEO        = 'myvideoroom_sitevideoroom';
+	const ROOM_NAME_TABLE                  = 'Conference Center Room';
 
 	/**
 	 * Initialise On Module Activation
@@ -121,7 +122,7 @@ class MVRSiteVideo extends Shortcode {
 				$add_to_menu(
 					new Page(
 						self::PAGE_SLUG_SITE_CONFERENCE,
-						\esc_html__( 'Site Conference', 'myvideoroom' ),
+						\esc_html__( 'Room Manager', 'myvideoroom' ),
 						array( $this, 'create_site_conference_page' ),
 					),
 					1
@@ -129,6 +130,8 @@ class MVRSiteVideo extends Shortcode {
 			},
 			9
 		);
+		// Add Config Filter to Main Room Manager.
+		add_filter( 'myvideoroom_room_manager_menu', array( $this, 'render_sitevideo_admin_settings_page' ), 10, 1 );
 	}
 
 	/**
@@ -270,6 +273,8 @@ class MVRSiteVideo extends Shortcode {
 
 				$room->url = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room->room_name, 'url' );
 
+				$room->type = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room->room_name, 'type' );
+
 				return $room;
 			},
 			$available_rooms
@@ -323,6 +328,33 @@ class MVRSiteVideo extends Shortcode {
 		);
 		array_push( $input, $base_menu );
 		return $input;
+	}
+
+	/**
+	 * Render Site Video Admin Settings Page
+	 *
+	 * @param  array $input - the inbound menu.
+	 * @return array - outbound menu.
+	 */
+	public function render_sitevideo_admin_settings_page( $input = array() ): array {
+
+		$admin_tab = new MenuTabDisplay(
+			esc_html__( 'Conference Center', 'my-video-room' ),
+			'conferencecenter',
+			fn() => Factory::get_instance( self::class )->get_sitevideo_admin_page()
+		);
+		array_push( $input, $admin_tab );
+		return $input;
+	}
+
+	/**
+	 * Get_sitevideo_admin_page - returns admin page
+	 *
+	 * @return string
+	 */
+	private function get_sitevideo_admin_page() {
+		$page = require __DIR__ . '/views/module-admin.php';
+		return $page();
 	}
 }
 
