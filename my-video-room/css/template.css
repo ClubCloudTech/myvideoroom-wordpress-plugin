@@ -193,10 +193,7 @@ ul {
 	margin-left: auto;
 }
 
-.nav-tab-active {
-	border: 2px solid #000!important;
-	border-bottom: none!important;
-}
+
 .mvr-hide {
 	display: none;
   }

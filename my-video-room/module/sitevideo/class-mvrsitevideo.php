@@ -116,7 +116,23 @@ class MVRSiteVideo extends Shortcode {
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
 
+
 		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'render_sitevideo_roomsetting_tab' ), 21, 2 );
+
+		\add_action(
+			'wp_enqueue_scripts',
+			function () {
+				\wp_enqueue_style(
+					'myvideoroom-frontend-css',
+					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
+					false,
+					Factory::get_instance( Version::class )->get_plugin_version(),
+				);
+			},
+		);
+
+
+		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_sitevideo_roomsetting_tab' ), 21, 2 );
 
 		\add_action(
 			'myvideoroom_admin_menu',
