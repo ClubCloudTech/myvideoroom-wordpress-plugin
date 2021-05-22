@@ -30,12 +30,12 @@ class RoomAdmin extends RoomAdminSetup {
 	 * @param string  $display_title Title of Page.
 	 * @param string  $slug          WordPress Slug to assign page.
 	 * @param string  $room_type     Type of Room in DB.
-	 * @param  ?string $old_post_id   Type Old Room in DB to update the value to the new post..
 	 * @param  ?string $shortcode    Shortcode to store for room.
+	 * @param  ?string $old_post_id   Type Old Room in DB to update the value to the new post..
 	 *
 	 * @return integer
 	 */
-	public function create_and_check_page( string $room_name, string $display_title, string $slug, string $room_type, string $shortcode = null, string $old_post_id = null ): ?int {
+	public function create_and_check_sitevideo_page( string $room_name, string $display_title, string $slug, string $room_type, string $shortcode = null, string $old_post_id = null ): ?int {
 		// Check Page Doesn't already Exist in Database and hasn't been deleted if it does.
 		$check_page_exists = Factory::get_instance( RoomMap::class )->check_page_exists( $room_name );
 

@@ -57,7 +57,7 @@ class RoomAdmin extends Shortcode {
 				return $post_id;
 			case 'type':
 					$room = Factory::get_instance( RoomMap::class )->get_room_info( $room_post_id );
-				return \apply_filters( 'mvr_room_type_display_override', $room->room_type );
+				return \apply_filters( 'myvideoroom_room_type_display_override', $room->room_type );
 			case 'post_id':
 				return $post_id;
 			case 'title':
@@ -79,8 +79,8 @@ class RoomAdmin extends Shortcode {
 	 * @param  string  $display_title    Title of Page.
 	 * @param  string  $slug             Worpress Slug to assign page.
 	 * @param  string  $room_type        Type of Room in DB.
-	 * @param  ?string $old_post_id     Type Old Room in DB to update the value to the new post..
 	 * @param  ?string $shortcode    Shortcode to store for room.
+	 * @param  ?string $old_post_id     Type Old Room in DB to update the value to the new post..
 	 *
 	 * @return null  - page executes database functions doesn't return to user.
 	 */
@@ -105,7 +105,7 @@ class RoomAdmin extends Shortcode {
 		);
 		$post_content = array(
 			'ID'           => $post_id,
-			'post_content' => $room_type,
+			'post_content' => $shortcode,
 		);
 
 		wp_update_post( $post_content );

@@ -134,7 +134,7 @@ class MVRSiteVideo extends Shortcode {
 		// Add Config Filter to Main Room Manager.
 		add_filter( 'myvideoroom_room_manager_menu', array( $this, 'render_sitevideo_admin_settings_page' ), 10, 1 );
 		// Name Override Filter for Room Manager Table.
-		add_filter( 'mvr_room_type_display_override', array( Factory::get_instance( MVRSiteVideoViews::class ), 'conference_room_friendly_name' ), 10, 1 );
+		add_filter( 'myvideoroom_room_type_display_override', array( Factory::get_instance( MVRSiteVideoViews::class ), 'conference_room_friendly_name' ), 10, 1 );
 	}
 
 	/**
@@ -147,21 +147,21 @@ class MVRSiteVideo extends Shortcode {
 	 */
 	public function create_site_videoroom_page( int $original_room_id = null, \stdClass $room_object = null ): int {
 		if ( ! $room_object || self::ROOM_NAME_SITE_VIDEO === $room_object->room_name ) {
-			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_page(
+			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
 				self::ROOM_NAME_SITE_VIDEO,
 				get_bloginfo( 'name' ) . ' ' . self::ROOM_TITLE_SITE_VIDEO,
 				self::ROOM_SLUG_SITE_VIDEO,
-				self::ROOM_SHORTCODE_SITE_VIDEO,
-				null,
+				self::ROOM_NAME_SITE_VIDEO,
+				'[' . self::ROOM_SHORTCODE_SITE_VIDEO . ' id="' . $post_id . '"]',
 				$original_room_id,
 			);
 		} else {
-			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_page(
+			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
 				$room_object->room_name,
 				$room_object->display_name,
 				$room_object->slug,
+				self::ROOM_NAME_SITE_VIDEO,
 				self::ROOM_SHORTCODE_SITE_VIDEO,
-				null,
 				$original_room_id
 			);
 		}
@@ -186,10 +186,11 @@ class MVRSiteVideo extends Shortcode {
 			$display_title = $http_post_library->get_string_parameter( 'site_conference_center_new_room_title' );
 			$room_slug     = $http_post_library->get_string_parameter( 'site_conference_center_new_room_slug' );
 
-			$room_id = Factory::get_instance( RoomAdmin::class )->create_and_check_page(
+			$room_id = Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
 				strtolower( str_replace( ' ', '-', trim( $display_title ) ) ),
 				$display_title,
 				$room_slug,
+				self::ROOM_NAME_SITE_VIDEO,
 				self::ROOM_SHORTCODE_SITE_VIDEO
 			);
 		}
@@ -246,8 +247,13 @@ class MVRSiteVideo extends Shortcode {
 	 * @return integer
 	 */
 	private function regenerate_room( int $room_id, \stdClass $room_object ): int {
-		Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_object->room_name );
-		return $this->create_site_videoroom_page( $room_id, $room_object );
+		apply_filters( 'myvideoroom_room_manager_regenerate', '', $room_id, $room_object );
+		/*if ( $regenerate_callback ) {
+			return $regenerate_callback();
+		} else {
+			return $this->create_site_videoroom_page( $room_id, $room_object );
+		}*/
+		return true;
 	}
 
 	/**

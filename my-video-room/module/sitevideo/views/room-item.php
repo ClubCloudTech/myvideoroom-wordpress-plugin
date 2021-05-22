@@ -81,11 +81,7 @@ return function ( \stdClass $room ): string {
 			<code class="myvideoroom-shortcode-example-inline">
 				[
 				<?php
-				$starting_input   = null;
-				$room_type        = $room->type;
-				$room_id          = $room->id;
-				echo $room_type;
-				$shortcode_filter = apply_filters( 'mvr_room_manager_shortcode_display', $starting_input, $room_type, $room_id );
+				$shortcode_filter = apply_filters( 'myvideoroom_room_manager_shortcode_display', null, $room->room_type, $room->id );
 				if ( $shortcode_filter ) {
 					echo esc_html( $shortcode_filter );
 				} else {
@@ -103,7 +99,7 @@ return function ( \stdClass $room ): string {
 				<a href="<?php echo esc_url( $action[1] ); ?>"
 					class="mvr-icons <?php echo esc_attr( $action[2] ); ?>"
 					data-room-id="<?php echo esc_attr( $room->id ); ?>"
-					title="<?php echo esc_attr( $action[0] ); ?>"
+					title="<?php echo esc_attr( $action[0] ); ?>" 
 					<?php
 					foreach ( $actions[3] ?? array() as $key => $value ) {
 						echo esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';

@@ -254,6 +254,34 @@ class ModuleConfig {
 	}
 
 	/**
+	 * Delete a Room Record Mapping to a URL in Database
+	 *
+	 *  This function will delete the room number in the database with the parameter
+	 *
+	 * @param int $room_id - ID of room to delete.
+	 * @return bool
+	 */
+	public function delete_room_mapping_by_id( int $room_id ): bool {
+		global $wpdb;
+
+		if ( ! $room_id ) {
+			return false;
+		}
+
+		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
+		$prepared_query = $wpdb->prepare(
+			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
+			'DELETE FROM ' . $table_name_sql . ' WHERE post_id = %s',
+			$room_id
+		);
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$wpdb->query( $prepared_query );
+
+		return true;
+	}
+
+	/**
 	 * Check a Page Exists
 	 *
 	 * @param  string $room_name - Room Name.
