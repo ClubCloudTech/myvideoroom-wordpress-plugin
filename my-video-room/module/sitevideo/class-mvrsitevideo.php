@@ -20,6 +20,7 @@ use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 
@@ -132,6 +133,8 @@ class MVRSiteVideo extends Shortcode {
 		);
 		// Add Config Filter to Main Room Manager.
 		add_filter( 'myvideoroom_room_manager_menu', array( $this, 'render_sitevideo_admin_settings_page' ), 10, 1 );
+		// Name Override Filter for Room Manager Table.
+		add_filter( 'mvr_room_type_display_override', array( Factory::get_instance( MVRSiteVideoViews::class ), 'conference_room_friendly_name' ), 10, 1 );
 	}
 
 	/**
@@ -265,7 +268,7 @@ class MVRSiteVideo extends Shortcode {
 	 * @return array
 	 */
 	private function get_rooms(): array {
-		$available_rooms = Factory::get_instance( RoomMap::class )->get_room_list( self::ROOM_SHORTCODE_SITE_VIDEO );
+		$available_rooms = Factory::get_instance( RoomMap::class )->get_room_list();
 
 		return array_map(
 			function ( $room_id ) {
