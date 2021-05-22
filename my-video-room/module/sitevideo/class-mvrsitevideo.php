@@ -131,9 +131,6 @@ class MVRSiteVideo extends Shortcode {
 			},
 		);
 
-
-		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_sitevideo_roomsetting_tab' ), 21, 2 );
-
 		\add_action(
 			'myvideoroom_admin_menu',
 			function ( callable $add_to_menu ) {
