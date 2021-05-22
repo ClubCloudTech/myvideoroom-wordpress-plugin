@@ -73,7 +73,7 @@ return function ( \stdClass $room ): string {
 			if ( $room->url ) {
 				echo '<a href="' . esc_url_raw( $room->url ) . '" target="_blank">' . esc_url_raw( $room->url ) . '</a>';
 			} else {
-				echo '<a href="' . esc_url_raw( $regenerate_url ) . '">' . esc_html__( 'Regenerate room', 'myvideoroom' ) . '</a>';
+				echo '<a href="' . esc_url_raw( $regenerate_url ) . '">' . esc_html__( 'Regenerate room', 'myvideoroom' ) . '<i class="dashicons dashicons-image-rotate"></i></a>';
 			}
 			?>
 		</td>
@@ -81,7 +81,7 @@ return function ( \stdClass $room ): string {
 			<code class="myvideoroom-shortcode-example-inline">
 				[
 				<?php
-				$shortcode_filter = apply_filters( 'myvideoroom_room_manager_shortcode_display', null, $room->room_type, $room->id );
+				$shortcode_filter = apply_filters( 'myvideoroom_room_manager_shortcode_display', null, $room->room_type, $room->id, $room );
 				if ( $shortcode_filter ) {
 					echo esc_html( $shortcode_filter );
 				} else {

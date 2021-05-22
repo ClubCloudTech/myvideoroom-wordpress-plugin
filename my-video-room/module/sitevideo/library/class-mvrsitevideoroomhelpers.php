@@ -44,9 +44,11 @@ class MVRSiteVideoRoomHelpers {
 	 * @param ?string $input .
 	 * @param ?string $room_type .
 	 * @param int     $room_id - the room id.
+	 * @param Object  $room_object .
+	 *
 	 * @return string name.
 	 */
-	public function conference_change_shortcode( ?string $input = null, ?string $room_type, int $room_id = null ): ?string {
+	public function conference_change_shortcode( ?string $input = null, ?string $room_type, int $room_id = null, $room_object ): ?string {
 		if ( ! $room_type ) {
 			return $input;
 		}
@@ -54,8 +56,11 @@ class MVRSiteVideoRoomHelpers {
 			case MVRSiteVideo::ROOM_NAME_SITE_VIDEO:
 				if ( ! Factory::get_instance( ModuleConfig::class )->read_enabled_status( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
 					return esc_html__( 'Module Disabled', 'myvideoroom' );
+				} elseif ( null === $room_object->url ){
+					return 'Page Has Been Deleted - Please Regenerate';
 				}
 		}
+
 		return $input;
 	}
 	/**

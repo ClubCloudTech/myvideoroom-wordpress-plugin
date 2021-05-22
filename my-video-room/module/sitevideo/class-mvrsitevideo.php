@@ -137,7 +137,7 @@ class MVRSiteVideo extends Shortcode {
 		
 		// Filters for Room Manager Table.
 		add_filter( 'myvideoroom_room_type_display_override', array( Factory::get_instance( MVRSiteVideoViews::class ), 'conference_room_friendly_name' ), 10, 1 );
-		add_filter( 'myvideoroom_room_manager_shortcode_display', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'conference_change_shortcode' ), 10, 3 );
+		add_filter( 'myvideoroom_room_manager_shortcode_display', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'conference_change_shortcode' ), 10, 4 );
 
 		// Regenerate Filter.
 		add_filter( 'myvideoroom_room_manager_regenerate', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'regenerate_sitevideo_meeting_room' ), 10, 3 );
