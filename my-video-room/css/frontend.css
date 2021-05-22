@@ -1,0 +1,9 @@
+/**
+ * The frontend css for MyVideoRoom
+ *
+ * @package MyVideoRoomPlugin
+ */
+.nav-tab-active {
+	border: 2px solid #000!important;
+	border-bottom: none!important;
+}

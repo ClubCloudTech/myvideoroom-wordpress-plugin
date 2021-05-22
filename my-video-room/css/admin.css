@@ -80,6 +80,19 @@
 		border-bottom: none;
 	}
 
+	.myvideoroom-admin .nav-tab-wrapper:after {
+		content: '';
+		display: block;
+		border-bottom: 1px solid #c3c4c7;
+		left: 0;
+		right: 0;
+		bottom: 4px;
+		height: 0;
+		position: relative;
+		clear: both;
+		z-index: 1;
+	}
+
 	.myvideoroom-admin .nav-tab-wrapper ul {
 		white-space: nowrap;
 	}
@@ -89,6 +102,7 @@
 		display: inline-block;
 		border-bottom: 1px solid #c3c4c7;
 		position: relative;
+		z-index: 2;
 	}
 
 	.myvideoroom-admin .nav-tab-wrapper li:after {
