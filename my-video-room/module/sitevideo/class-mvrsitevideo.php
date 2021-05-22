@@ -152,6 +152,7 @@ class MVRSiteVideo extends Shortcode {
 				get_bloginfo( 'name' ) . ' ' . self::ROOM_TITLE_SITE_VIDEO,
 				self::ROOM_SLUG_SITE_VIDEO,
 				self::ROOM_SHORTCODE_SITE_VIDEO,
+				null,
 				$original_room_id,
 			);
 		} else {
@@ -160,6 +161,7 @@ class MVRSiteVideo extends Shortcode {
 				$room_object->display_name,
 				$room_object->slug,
 				self::ROOM_SHORTCODE_SITE_VIDEO,
+				null,
 				$original_room_id
 			);
 		}

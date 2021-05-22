@@ -65,7 +65,7 @@ class RoomMap {
 	 *
 	 * @return string|int|false
 	 */
-	public function register_room_in_db( string $room_name, int $post_id, string $room_type, string $display_name, string $slug ) {
+	public function register_room_in_db( string $room_name, int $post_id, string $room_type, string $display_name, string $slug, string $shortcode = null ) {
 		global $wpdb;
 		// Empty input exit.
 		if ( ! $room_name || ! $post_id ) {
@@ -81,6 +81,7 @@ class RoomMap {
 				'room_type'    => $room_type,
 				'display_name' => $display_name,
 				'slug'         => $slug,
+				'shortcode'    => $shortcode,
 			)
 		);
 
@@ -150,8 +151,8 @@ class RoomMap {
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$raw_sql,
 			array(
-				$room_name,
 				$post_id,
+				$room_name,
 			)
 		);
 

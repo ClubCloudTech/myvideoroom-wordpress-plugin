@@ -26,7 +26,7 @@ return function (
 	$tabs         = apply_filters( 'myvideoroom_room_manager_menu', $inbound_tabs );
 	?>
 <h2><?php esc_html_e( 'Room Manager', 'my-video-room' ); ?></h2>
-<p><?php esc_html_e( 'This section allows you manage the configuration of permanent rooms that you have added, or installed modules have created for you.', 'myvideoroom' ); ?>
+<p><?php esc_html_e( 'This section allows you manage the configuration of permanent rooms that you or your modules have created.', 'myvideoroom' ); ?>
 </p>
 <div aria-label="button" class="button button-primary myvideoroom-sitevideo-add-room-button">
 	<i class="dashicons dashicons-plus-alt"></i>

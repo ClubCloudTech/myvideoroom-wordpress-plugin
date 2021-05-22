@@ -80,10 +80,11 @@ class RoomAdmin extends Shortcode {
 	 * @param  string  $slug             Worpress Slug to assign page.
 	 * @param  string  $room_type        Type of Room in DB.
 	 * @param  ?string $old_post_id     Type Old Room in DB to update the value to the new post..
+	 * @param  ?string $shortcode    Shortcode to store for room.
 	 *
 	 * @return null  - page executes database functions doesn't return to user.
 	 */
-	public function create_and_check_page( string $room_name, string $display_title, string $slug, string $room_type, string $old_post_id = null ) {
+	public function create_and_check_page( string $room_name, string $display_title, string $slug, string $room_type, string $shortcode = null, string $old_post_id = null ) {
 		// Check Page Doesn't already Exist in Database and hasn't been deleted if it does.
 		$check_page_exists = Factory::get_instance( RoomMap::class )->check_page_exists( $room_name );
 
@@ -119,7 +120,7 @@ class RoomAdmin extends Shortcode {
 		}
 		// Insert into DB as Page Didn't Exist.
 		if ( RoomMap::PAGE_STATUS_NOT_EXISTS === $check_page_exists ) {
-			Factory::get_instance( RoomMap::class )->register_room_in_db( $room_name, $post_id, $room_type, $display_title, $slug );
+			Factory::get_instance( RoomMap::class )->register_room_in_db( $room_name, $post_id, $room_type, $display_title, $slug, $shortcode );
 			return null;
 		} elseif ( RoomMap::PAGE_STATUS_ORPHANED === $check_page_exists ) {
 			// Update the DB if Orphan.

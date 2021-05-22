@@ -79,7 +79,20 @@ return function ( \stdClass $room ): string {
 		</td>
 		<td>
 			<code class="myvideoroom-shortcode-example-inline">
-				[<?php echo esc_html( MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $room->id ); ?>]
+				[
+				<?php
+				$starting_input   = null;
+				$room_type        = $room->type;
+				$room_id          = $room->id;
+				echo $room_type;
+				$shortcode_filter = apply_filters( 'mvr_room_manager_shortcode_display', $starting_input, $room_type, $room_id );
+				if ( $shortcode_filter ) {
+					echo esc_html( $shortcode_filter );
+				} else {
+					echo esc_html( MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $room->id );
+				}
+				?>
+				]
 			</code>
 		</td>
 		<td class="plugin-title column-primary"><?php echo esc_html( $room->type ); ?></td>
