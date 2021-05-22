@@ -50,7 +50,7 @@
 }
 
 .myvideoroom-nav-tab-wrapper {
-	display: inline-flex;
+	clear: both;
 }
 
 .mvr-nav-shortcode-outer-wrap {
