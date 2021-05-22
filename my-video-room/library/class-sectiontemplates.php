@@ -41,45 +41,45 @@ class SectionTemplates extends Shortcode {
 				echo $header;
 		?>
 	</div>
-
-	<nav class="myvideoroom-nav-tab-wrapper ">
-		<ul class="mvr-ul-header">
-			<?php
-			$active    = 'nav-tab-active';
+	<?php
 			$tab_count = \count( $tabs );
 			if ( $tab_count <= 1 ) {
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode already properly escaped.
 				echo $tabs[0]->get_function_callback();
 			} else {
-				foreach ( $tabs as $menu_output ) {
-					$tab_display_name = $menu_output->get_tab_display_name();
-					$tab_slug         = $menu_output->get_tab_slug();
-					?>
-			<li class="mvr-title-header"><a
-					class="mvr-menu-shortcode-button nav-tab <?php echo esc_attr( $active ); ?>"
+	?>
+	<nav class="myvideoroom-nav-tab-wrapper ">
+		<ul class="mvr-ul-header">
+			<?php
+			$active    = 'nav-tab-active';
+			foreach ( $tabs as $menu_output ) {
+				$tab_display_name = $menu_output->get_tab_display_name();
+				$tab_slug         = $menu_output->get_tab_slug();
+				?>
+			<li class="mvr-title-header"><a class="mvr-menu-shortcode-button nav-tab <?php echo esc_attr( $active ); ?>"
 					href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>"><?php echo esc_html( $tab_display_name ); ?></a>
 			</li>
-					<?php
-						$active = null;
-				}
-				?>
-		</ul>
-	</nav>
 				<?php
-				foreach ( $tabs as $article_output ) {
-					$function_callback = $article_output->get_function_callback();
-					$tab_slug          = $article_output->get_tab_slug();
-					?>
-	<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-					<?php
-						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-						echo $function_callback;
-					?>
-	</article>
-					<?php
-				}
+						$active = null;
 			}
 			?>
+		</ul>
+	</nav>
+			<?php
+			foreach ( $tabs as $article_output ) {
+				$function_callback = $article_output->get_function_callback();
+				$tab_slug          = $article_output->get_tab_slug();
+				?>
+	<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+				<?php
+						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
+						echo $function_callback;
+				?>
+	</article>
+				<?php
+			}
+		}
+		?>
 </div>
 		<?php
 		return \ob_get_clean();
