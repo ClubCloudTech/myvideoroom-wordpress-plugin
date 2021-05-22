@@ -27,9 +27,7 @@ return function (): string {
 
 	<?php
 		// Activation/module.
-	if ( ! Factory::get_instance( ModuleConfig::class )->module_activation_button( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
-		
-	}
+		Factory::get_instance( ModuleConfig::class )->module_activation_button( MVRSiteVideo::MODULE_SITE_VIDEO_ID );
 	?>
 
 	<p>
