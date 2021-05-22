@@ -10,7 +10,7 @@
 	$( '.myvideoroom-sitevideo-settings' ).on(
 		'click',
 		function (e) {
-			var room_id    = $( this ).data( 'roomId' );
+			var room_id = $( this ).data( 'roomId' );
 
 			var $container   = $( '.mvr-security-room-host' );
 			var loading_text = $container.data( 'loadingText' );
@@ -54,4 +54,3 @@
 		}
 	);
 })( jQuery );
-

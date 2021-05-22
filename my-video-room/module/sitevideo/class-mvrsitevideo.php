@@ -291,7 +291,8 @@ class MVRSiteVideo extends Shortcode {
 		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
 
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - View already escaped.
+
+		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, $input_type );
 
 		die();
@@ -304,7 +305,7 @@ class MVRSiteVideo extends Shortcode {
 	 * @param  int   $room_id - the room identifier.
 	 * @return array - outbound menu.
 	 */
-	public function render_sitevideo_roomsetting_tab( $input = array(), int $room_id ): array {
+	public function render_sitevideo_roomsetting_tab( array $input, int $room_id ): array {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 		$room_name   = $room_object->room_name;
 		if ( ! $room_object ) {

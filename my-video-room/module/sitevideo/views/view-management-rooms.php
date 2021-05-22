@@ -17,7 +17,6 @@ return function (
 	$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 	ob_start();
 
-
 	$base_option  = array();
 	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_object->id );
 	?>

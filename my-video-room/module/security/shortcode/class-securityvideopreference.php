@@ -129,7 +129,6 @@ class SecurityVideoPreference extends Shortcode {
 				$security_preference_dao->create( $current_user_setting );
 			}
 
-
 			/**
 			 * Update the current user setting
 			 *
@@ -164,7 +163,7 @@ class SecurityVideoPreference extends Shortcode {
 			$user_id,
 			$room_name
 		);
-		
+
 		// Type of Shortcode to render.
 		switch ( $type ) {
 			case 'admin':

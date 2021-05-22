@@ -181,7 +181,7 @@ ul {
 	text-decoration: none;
 }
 .mvr-ul-header {
-	display: inline!important;
+	display: inline;
 	margin-top: 10px;
 	margin-bottom: 0px;
 	margin-left: auto;
