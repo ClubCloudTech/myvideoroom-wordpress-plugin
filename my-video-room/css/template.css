@@ -18,6 +18,12 @@ ul {
 	margin-bottom: 0px;
 }
 
+.mvr-admin-page-wrap {
+	border: 1px solid #c3c4c7;
+	padding: 8px;
+	margin-top: 10px;
+}
+
 .mvr-preferences-paragraph {
 	font-size: 13px;
 	font-weight: 500;
@@ -112,7 +118,7 @@ ul {
 	text-align: -webkit-center;
 	font-size: 14px;
 	font-weight: 400;
-	background-color: rgb(15 144 15);
+	background-color:rgb(41, 22, 150);
 	display: inline;
 	padding: 8px;
 	border-radius: 3px;

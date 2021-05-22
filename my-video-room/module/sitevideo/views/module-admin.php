@@ -17,22 +17,17 @@ use MyVideoRoomPlugin\SiteDefaults as MyVideoRoomPluginSiteDefaults;
  * @return string
  */
 return function (): string {
-	wp_enqueue_style( 'myvideoroom-template' );
-	wp_enqueue_style( 'myvideoroom-menutab-header' );
-	wp_enqueue_script( 'myvideoroom-protect-input' );
 	ob_start();
 
 	?>
-
+<div class="mvr-admin-page-wrap">
 	<h2>
 		<?php esc_html_e( 'Site Conference Center Settings', 'my-video-room' ); ?>
 	</h2>
 
 	<?php
 		// Activation/module.
-		if ( ! Factory::get_instance( ModuleConfig::class )->module_activation_button( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
-			return '';
-		}
+		Factory::get_instance( ModuleConfig::class )->module_activation_button( MVRSiteVideo::MODULE_SITE_VIDEO_ID );
 	?>
 
 	<p>
@@ -49,18 +44,17 @@ return function (): string {
 		$site_conference_url = \menu_page_url( MVRSiteVideo::PAGE_SLUG_SITE_CONFERENCE, false );
 		printf(
 			/* translators: %s is a link to the site conference center */
-			esc_html__( 'To get started please create your first room in the %s', 'myvideoroom' ),
-			'<a href="' . esc_url_raw( $site_conference_url ) . '">' . esc_html__( 'Site conference center', 'myvideoroom' ) . '</a>'
+			esc_html__( 'To add additional rooms, click add new room above', 'myvideoroom' )
 		);
 		?>
 	</p>
 
 	<hr />
 	<h3>
-		<?php esc_html_e( 'Default settings', 'my-video-room' ); ?>
+		<?php esc_html_e( 'Module settings', 'my-video-room' ); ?>
 	</h3>
 	<p>
-		<?php esc_html_e( 'These will be the default settings used for all site conference rooms.', 'my-video-room' ); ?>
+		<?php esc_html_e( 'These settings govern the default appearance of all Site Conference Rooms.', 'my-video-room' ); ?>
 	</p>
 	<?php
 
@@ -70,6 +64,8 @@ return function (): string {
 		esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ),
 		array( 'basic', 'premium' )
 	);
-
+	?>
+</div>
+	<?php
 	return ob_get_clean();
 };

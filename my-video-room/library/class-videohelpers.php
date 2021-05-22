@@ -359,4 +359,19 @@ class VideoHelpers extends Shortcode {
 			return null;
 		}
 	}
+
+	/**
+	 * Renders a Top level Refresh Page stripping out options from the Admin Page
+	 *
+	 * @return void
+	 */
+	public function admin_page_refresh() {
+		$server_path = '';
+		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+			$server_path = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+		}
+		$clean_path = substr( $server_path, 0, strpos( $server_path, '&' ) );
+		\wp_safe_redirect( \get_site_url() . $clean_path );
+		die();
+	}
 }

@@ -55,13 +55,16 @@ class RoomAdmin extends Shortcode {
 				return $post_slug;
 			case 'slug':
 				return $post_id;
+			case 'type':
+					$room = Factory::get_instance( RoomMap::class )->get_room_info( $room_post_id );
+				return \apply_filters( 'myvideoroom_room_type_display_override', $room->room_type );
 			case 'post_id':
 				return $post_id;
 			case 'title':
 				return $post_title;
 			case 'url':
 				// rooms which are no longer published should no longer have urls.
-				if ( 'publish' !== $post->post_status) {
+				if ( 'publish' !== $post->post_status ) {
 					return null;
 				}
 				return get_site_url() . '/' . $post_slug . '/';
@@ -76,11 +79,12 @@ class RoomAdmin extends Shortcode {
 	 * @param  string  $display_title    Title of Page.
 	 * @param  string  $slug             Worpress Slug to assign page.
 	 * @param  string  $room_type        Type of Room in DB.
+	 * @param  ?string $shortcode    Shortcode to store for room.
 	 * @param  ?string $old_post_id     Type Old Room in DB to update the value to the new post..
 	 *
 	 * @return null  - page executes database functions doesn't return to user.
 	 */
-	public function create_and_check_page( string $room_name, string $display_title, string $slug, string $room_type, string $old_post_id = null ) {
+	public function create_and_check_page( string $room_name, string $display_title, string $slug, string $room_type, string $shortcode = null, string $old_post_id = null ) {
 		// Check Page Doesn't already Exist in Database and hasn't been deleted if it does.
 		$check_page_exists = Factory::get_instance( RoomMap::class )->check_page_exists( $room_name );
 
@@ -101,7 +105,7 @@ class RoomAdmin extends Shortcode {
 		);
 		$post_content = array(
 			'ID'           => $post_id,
-			'post_content' => $room_type,
+			'post_content' => $shortcode,
 		);
 
 		wp_update_post( $post_content );
@@ -116,7 +120,7 @@ class RoomAdmin extends Shortcode {
 		}
 		// Insert into DB as Page Didn't Exist.
 		if ( RoomMap::PAGE_STATUS_NOT_EXISTS === $check_page_exists ) {
-			Factory::get_instance( RoomMap::class )->register_room_in_db( $room_name, $post_id, $room_type, $display_title, $slug );
+			Factory::get_instance( RoomMap::class )->register_room_in_db( $room_name, $post_id, $room_type, $display_title, $slug, $shortcode );
 			return null;
 		} elseif ( RoomMap::PAGE_STATUS_ORPHANED === $check_page_exists ) {
 			// Update the DB if Orphan.

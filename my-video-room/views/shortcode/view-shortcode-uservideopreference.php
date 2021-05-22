@@ -35,7 +35,7 @@ return function (
 				$reception_enabled = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
 				$floorplan_enabled = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
 				if ( $reception_enabled || $floorplan_enabled ) {
-					$output .= '<p class="mvr-main-button-enabled" title="' . esc_html__( 'Your Guests will see the Reception Template of your choice and will not be admitted into the room until you drag their icon in.', 'myvideoroom' ) . '">' . esc_html__( 'Reception Enabled', 'myvideoroom' ) . '</p>';
+					$output .= '<p class="button button-primary" title="' . esc_html__( 'Your Guests will see the Reception Template of your choice and will not be admitted into the room until you drag their icon in.', 'myvideoroom' ) . '">' . esc_html__( 'Reception Enabled', 'myvideoroom' ) . '</p>';
 				}
 				if ( $floorplan_enabled ) {
 					$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Your Guests will not see the Image of the Room Floorplan and only have a classic Video Experience', 'myvideoroom' ) . '">' . esc_html__( 'Guest Template Disabled', 'myvideoroom' ) . '</p>';

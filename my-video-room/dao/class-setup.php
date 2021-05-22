@@ -90,6 +90,7 @@ class Setup {
 			`room_name` VARCHAR(255) NOT NULL,
 			`post_id` BIGINT UNSIGNED NOT NULL,
 			`room_type` VARCHAR(255) NOT NULL,
+			`shortcode` VARCHAR(255) NULL,
 			`display_name` VARCHAR(255) NOT NULL,
 			`slug` VARCHAR(255) NOT NULL,
 			PRIMARY KEY (`record_id`)

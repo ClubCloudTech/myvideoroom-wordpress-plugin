@@ -65,7 +65,7 @@ class RoomMap {
 	 *
 	 * @return string|int|false
 	 */
-	public function register_room_in_db( string $room_name, int $post_id, string $room_type, string $display_name, string $slug ) {
+	public function register_room_in_db( string $room_name, int $post_id, string $room_type, string $display_name, string $slug, string $shortcode = null ) {
 		global $wpdb;
 		// Empty input exit.
 		if ( ! $room_name || ! $post_id ) {
@@ -81,6 +81,7 @@ class RoomMap {
 				'room_type'    => $room_type,
 				'display_name' => $display_name,
 				'slug'         => $slug,
+				'shortcode'    => $shortcode,
 			)
 		);
 
@@ -150,8 +151,8 @@ class RoomMap {
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$raw_sql,
 			array(
-				$room_name,
 				$post_id,
+				$room_name,
 			)
 		);
 
@@ -228,15 +229,22 @@ class RoomMap {
 	 *
 	 * @return array
 	 */
-	public function get_room_list( string $room_type ): array {
+	public function get_room_list( string $room_type = null ): array {
 		global $wpdb;
-
-		$raw_sql = '
+		if ( ! $room_type ){
+			$raw_sql = '
+			SELECT post_id
+			FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+			ORDER BY room_type ASC
+		';
+		} else {
+			$raw_sql = '
 			SELECT post_id
 			FROM ' . $wpdb->prefix . self::TABLE_NAME . '
 			WHERE room_type = %s
+			ORDER BY room_type ASC
 		';
-
+		}
 		$prepared_query = $wpdb->prepare(
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$raw_sql,

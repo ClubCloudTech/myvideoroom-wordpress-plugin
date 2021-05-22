@@ -6,10 +6,7 @@
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
-use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Library\HTML as HTML;
-use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 return function (
 	\stdClass $room_object
