@@ -143,7 +143,7 @@ return function (
 					</div>
 				</td>
 
-				<td class="column-description desc">
+				<td class="column-description">
 					<div class="plugin-description">
 						<?php
 						foreach ( $module->get_description_array() as $description ) {

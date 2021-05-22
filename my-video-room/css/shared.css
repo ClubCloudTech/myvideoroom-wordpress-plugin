@@ -4,11 +4,20 @@
  * @package MyVideoRoomPlugin
  */
 
-code.myvideoroom-shortcode-example {
-	display: block;
-	padding: 16px 8px 16px calc(1.5em + 8px);
+code.myvideoroom-shortcode-example,
+code.myvideoroom-shortcode-example-inline {
 	text-indent: -1.5em;
 	user-select: all;
 	overflow: auto;
 	font-family: monospace;
+}
+
+code.myvideoroom-shortcode-example-inline {
+	display: inline-block;
+	padding: 4px 4px 4px calc(1.5em + 4px)
+}
+
+code.myvideoroom-shortcode-example {
+	display: block;
+	padding: 16px 8px 16px calc(1.5em + 8px);
 }

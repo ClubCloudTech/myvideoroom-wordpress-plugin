@@ -114,6 +114,7 @@ class RoomMap {
 		$row = $wpdb->get_row( $prepared_query );
 
 		if ( $row ) {
+			$row->id = $row->post_id;
 			return $row;
 		}
 

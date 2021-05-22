@@ -29,7 +29,6 @@ return function (
 ): string {
 	\ob_start();
 	?>
-<div class="mvr-outer-box-wrap">
 	<header>
 		<h1 class="myvideoroom-header-config-title">
 			<?php \esc_html_e( 'MyVideoRoom Settings and Configuration', 'myvideoroom' ); ?>
@@ -105,7 +104,7 @@ return function (
 			?>
 		</ul>
 	</nav>
-</div>
+
 	<?php
 	return \ob_get_clean();
 

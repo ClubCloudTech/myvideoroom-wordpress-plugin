@@ -57,7 +57,7 @@ class RoomAdmin extends RoomAdminSetup {
 			'ID'           => $post_id,
 			'post_content' => '[' . MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO . ' id="' . $post_id . '"]',
 		);
-		$new_post_id  = wp_update_post( $post_content );
+		wp_update_post( $post_content );
 
 		if ( $old_post_id ) {
 			// Update Database References to New Post IDs to ensure Room Permissions and Settings stay intact with New Pages.
@@ -77,7 +77,7 @@ class RoomAdmin extends RoomAdminSetup {
 			Factory::get_instance( RoomMap::class )->update_room_post_id( $room_name, $post_id, $room_type, $display_title, $slug );
 		}
 
-		return $new_post_id;
+		return $post_id;
 	}
 	/**
 	 * Initialise Room Category Default Settings for Site Video.

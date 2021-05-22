@@ -22,7 +22,7 @@ return function (
 	$delete_url   = \add_query_arg(
 		array(
 			'room_id'  => $room_object->post_id,
-			'delete'   => 'true',
+			'action'   => 'delete',
 			'confirm'  => 'true',
 			'_wpnonce' => $delete_nonce,
 		),
@@ -32,7 +32,7 @@ return function (
 	$cancel_url = \add_query_arg(
 		array(
 			'room_id'  => $room_object->post_id,
-			'delete'   => null,
+			'action'   => null,
 			'confirm'  => null,
 			'_wpnonce' => null,
 		),
