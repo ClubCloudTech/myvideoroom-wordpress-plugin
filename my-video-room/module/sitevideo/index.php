@@ -11,13 +11,14 @@ namespace MyVideoRoomPlugin\Module\SiteVideo;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 \add_action(
 	'myvideoroom_init',
 	function () {
 		Module::register(
-			'siteconference',
+			MVRSiteVideo::MODULE_SITE_VIDEO_NAME,
 			\esc_html__( 'Site Conference Center', 'myvideoroom' ),
 			array(
 				\esc_html__(

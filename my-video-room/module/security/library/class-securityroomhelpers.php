@@ -7,19 +7,11 @@
 
 namespace MyVideoRoomPlugin\Module\Security\Library;
 
-use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Plugin;
-use MyVideoRoomPlugin\Shortcode as Shortcode;
-use MyVideoRoomPlugin\SiteDefaults;
-use MyVideoRoomPlugin\DAO\RoomMap;
-use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
-use MyVideoRoomPlugin\Library\Dependencies;
-use MyVideoRoomPlugin\Library\UserRoles;
-use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\Security\Security;
-use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
-use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 
 /**
  * PageFilters - Security Filter Defaults for Renderblock Function.
@@ -27,7 +19,7 @@ use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 class SecurityRoomHelpers  {
 
 	/**
-	 * Render Site Video Admin Settings Page
+	 * Render Security Admin Settings Page
 	 *
 	 * @param  array $input - the inbound menu.
 	 * @return array - outbound menu.
@@ -37,20 +29,62 @@ class SecurityRoomHelpers  {
 		$admin_tab = new MenuTabDisplay(
 			esc_html__( 'Security and Permissions', 'my-video-room' ),
 			'securityperms',
-			fn() => Factory::get_instance( self::class )->get_security_admin_page()
+			fn() => $this->get_security_admin_page()
 		);
 		array_push( $input, $admin_tab );
 		return $input;
 	}
 
 	/**
-	 * Get_sitevideo_admin_page - returns admin page
+	 * Get Security - returns admin page
 	 *
 	 * @return string
 	 */
 	private function get_security_admin_page() {
 		$page = require __DIR__ . '/../views/view-settings-security.php';
 		return $page();
+	}
+
+	/**
+	 * Get Security Header- returns Security Header page
+	 *
+	 * @return string
+	 */
+	public function get_security_header_page() {
+		$page = require __DIR__ . '/../views/view-settings-securityheader.php';
+		return $page();
+	}
+
+	/**
+	 * Security Plugin Module Enable.
+	 *
+	 *  @param  int $module_id - the module ID of the Feature Database.
+	 *  @return bool
+	 */
+	public function security_enable_feature_module( int $module_id ) {
+		if ( Security::MODULE_SECURITY_ID !== $module_id ) {
+			return false;
+		}
+		$module_slug     = Security::MODULE_SECURITY_NAME;
+		$security_module = Factory::get_instance( Module::class )->get_module( $module_slug );
+		Factory::get_instance( Modules::class )->activate_module( $security_module );
+		return true;
+	}
+
+	/**
+	 * Security Plugin Module Disable.
+	 *
+	 *  @param  int $module_id - the module ID of the Feature Database.
+	 *  @return bool
+	 */
+	public function security_disable_feature_module( int $module_id ) {
+		if ( Security::MODULE_SECURITY_ID !== $module_id ) {
+			return false;
+		}
+		$module_slug     = Security::MODULE_SECURITY_NAME;
+		$security_module = Factory::get_instance( Module::class )->get_module( $module_slug );
+		Factory::get_instance( Modules::class )->deactivate_module( $security_module );
+		return true;
 	}
 
 }

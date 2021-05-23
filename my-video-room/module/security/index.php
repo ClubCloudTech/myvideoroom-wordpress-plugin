@@ -15,8 +15,8 @@ add_action(
 	'myvideoroom_init',
 	function () {
 		Module::register(
-			'advancedpermissions',
-			'Advanced Room Permissions',
+			Security::MODULE_SECURITY_NAME,
+			'Room Hosting and Security Permissions',
 			array(
 				esc_html__(
 					'MyVideoRoom includes a Security and Permissions module which allows users, to precisely control the type of permissions they would like for their room. For example

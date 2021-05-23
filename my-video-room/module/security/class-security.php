@@ -97,9 +97,11 @@ class Security {
 		\add_filter( 'myvideoroom_security_roomhosts_preference_buttons', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_roomhosts_status' ), 10, 3 );
 		\add_filter( 'myvideoroom_sitevideo_control_panel_view', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_sitewide_status' ), 10, 1 );
 
-		// Add Management Page to Permissions Section.
 		// Add Config Page to Main Room Manager.
 		add_filter( 'myvideoroom_permissions_manager_menu', array( Factory::get_instance( SecurityRoomHelpers::class ), 'render_security_admin_settings_page' ), 10, 1 );
+
+		// Actions for Disable Feature Module (Enable is in Defaults as it wont run if module is off).
+		\add_action( 'myvideoroom_disable_feature_module', array( Factory::get_instance( SecurityRoomHelpers::class ), 'security_disable_feature_module' ) );
 	}
 
 	/**
