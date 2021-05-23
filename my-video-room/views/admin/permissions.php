@@ -22,15 +22,55 @@ return function (
 ): string {
 	\ob_start();
 
-	$html_lib = Factory::get_instance( HTML::class, array( 'permissions' ) );
+	$html_library = Factory::get_instance( HTML::class, array( 'permissions' ) );
+	$html_lib     = $html_library;
 
+	$inbound_tabs = array();
+	$tabs         = apply_filters( 'myvideoroom_permissions_manager_menu', $inbound_tabs );
 	?>
-	<h2><?php \esc_html_e( 'Default room permissions', 'myvideoroom' ); ?></h2>
+<h2><?php esc_html_e( 'Permissions and Room Access Control', 'my-video-room' ); ?></h2>
+<p><?php esc_html_e( 'This section allows you manage the permissions, guest/host decisions, and room security settings across your rooms.', 'myvideoroom' ); ?>
+</p>
+<nav class="myvideoroom-outer-nav-tab-wrapper">
+	<ul class="mvr-ul-header myvideoroom-outer-nav-tab-wrapper">
+		<?php
+		$active = ' outer-nav-tab-active';
+		foreach ( $tabs as $menu_output ) {
+			$tab_display_name = $menu_output->get_tab_display_name();
+			$tab_slug         = $menu_output->get_tab_slug();
+		?>
+
+		<li class="mvr-title-header"><a class="mvr-menu-shortcode-button nav-tab <?php echo \esc_textarea( $active ); ?>"
+		href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>"><?php echo esc_html( $tab_display_name ); ?></a></li>
+			<?php
+			$active = null;
+		}
+		?>
+		<li class="mvr-title-header"><a class="nav-tab"	href="#defaulthost"><?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?></a></li>
+	</ul>
+</nav><br>
+
+	<?php
+	foreach ( $tabs as $article_output ) {
+
+		$tab_slug = $article_output->get_tab_slug();
+		?>
+			<?php
+						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
+						echo '<article id="' . esc_attr( $html_library->get_id( $tab_slug ) ) . '">' . $article_output->get_function_callback() . '</article>';
+			?>
+
+			<?php
+
+	}
+	?>
+<article class ="mvr-admin-page-wrap" id="defaulthost">
+<h2><?php \esc_html_e( 'Site Level Default Hosts', 'myvideoroom' ); ?></h2>
 
 	<p>
 		<?php
 		\esc_html_e(
-			'You can either generate two shortcodes where one is for the host, and one for guest. Alternatively you can generate a single shortcode, and use these setting to configure who the video engine will treat as a host. This section allows you to add and remove WordPress roles to your host permissions matrix.',
+			'This setting governs who is a host and who is not in shortcodes, where you do not supply that information, or your module is unsure how to treat a host. You can either generate two shortcodes where one is for the host, and one for guest. Alternatively you can generate a single shortcode, and use these setting to configure who the video engine will treat as a host. This section allows you to add and remove WordPress roles to your host permissions matrix.',
 			'myvideoroom'
 		);
 		?>
@@ -83,7 +123,7 @@ return function (
 		echo Factory::get_instance( HttpPost::class )->create_admin_form_submit( 'update_permissions' );
 		?>
 	</form>
-
+</article>
 	<?php
 	return \ob_get_clean();
 };

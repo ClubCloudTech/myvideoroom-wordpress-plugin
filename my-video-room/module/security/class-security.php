@@ -15,6 +15,7 @@ use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityNotifications;
+use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 
 /**
@@ -96,6 +97,9 @@ class Security {
 		\add_filter( 'myvideoroom_security_roomhosts_preference_buttons', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_roomhosts_status' ), 10, 3 );
 		\add_filter( 'myvideoroom_sitevideo_control_panel_view', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_sitewide_status' ), 10, 1 );
 
+		// Add Management Page to Permissions Section.
+		// Add Config Page to Main Room Manager.
+		add_filter( 'myvideoroom_permissions_manager_menu', array( Factory::get_instance( SecurityRoomHelpers::class ), 'render_security_admin_settings_page' ), 10, 1 );
 	}
 
 	/**

@@ -18,26 +18,18 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 
-return function (
-	array $messages = array()
-	): string {
-	wp_enqueue_style( 'myvideoroom-template' );
-	wp_enqueue_style( 'myvideoroom-menutab-header' );
-	ob_start(); ?>
-<div class="wrap">
-
-		<div class="mvr-outer-box-wrap">
+return function() {
+	wp_enqueue_script( 'myvideoroom-outer-tabs' );
+ob_start();
+	?>
+		<div class="mvr-admin-page-wrap">
 		<h1><?php esc_html_e( 'Advanced Room Permissions Control', 'my-video-room' ); ?></h1>
 		<?php
-		$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
-		if ( $security_enabled ) {
-			echo esc_html( Factory::get_instance( SecurityButtons::class )->site_wide_enabled() );
-		}
+		Factory::get_instance( SecurityButtons::class )->site_wide_enabled();
 		?>
 		<p>
 		<?php
@@ -49,39 +41,36 @@ return function (
 			);
 		?>
 		<br></p>
-
 		<?php
 				// Activation/module.
-		if ( ! Factory::get_instance( ModuleConfig::class )->module_activation_button( Security::MODULE_SECURITY_ID ) ) {
-			return '';
-		}
+			Factory::get_instance( ModuleConfig::class )->module_activation_button( Security::MODULE_SECURITY_ID );
 		?>
 		</div>
-		<div class="mvr-outer-box-wrap">
-		<div class="mvr-nav-shortcode-outer-wrap">
-			<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
+		<div class="mvr-admin-page-wrap">
+			<nav class="myvideoroom-nav-tab-wrapper">
 				<ul>
 					<li>
-						<a class="nav-tab nav-tab-active" href="#page1">
+						<a class="nav-tab nav-tab-active" href="#page4231">
 							<?php esc_html_e( 'Default Permissions', 'my-video-room' ); ?>
 						</a>
 					</li>
 
 					<li>
-						<a class="nav-tab" href="#page2">
+						<a class="nav-tab" href="#page4312">
 							<?php esc_html_e( 'Override Permissions', 'my-video-room' ); ?>
 						</a>
 					</li>
 
 					<li>
-						<a class="nav-tab" href="#page4">
+						<a class="nav-tab" href="#page434">
 							<?php esc_html_e( 'Security Shortcodes', 'my-video-room' ); ?>
 						</a>
 					</li>
 				</ul>
 			</nav>
-				<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
-					<article id="page1" style>
+			<br><br>
+				<div id="video-host-wrap" class="mvr-admin-page-wrap">
+					<div id="page4231">
 						<p>
 						<?php
 						esc_html_e(
@@ -101,8 +90,8 @@ return function (
 							echo $default_setting;
 						?>
 						</p>
-					</article>
-					<article id="page2" style>
+						</div>
+					<div id="page4312" >
 					<br>
 					<?php
 						esc_html_e(
@@ -124,11 +113,10 @@ return function (
 						echo $override_setting;
 							?>
 							</p>
-					</article>
-					<article id="page4"></article>
+						</div>
+					<div id="page434">Content</div>
 				</div>
-			</div>
-		</div>
+
 		<?php
 		return ob_get_clean();
 };
