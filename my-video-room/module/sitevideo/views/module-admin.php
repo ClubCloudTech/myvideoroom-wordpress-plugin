@@ -51,10 +51,10 @@ return function (): string {
 
 	<hr />
 	<h3>
-		<?php esc_html_e( 'Module settings', 'my-video-room' ); ?>
+		<?php esc_html_e( 'Module Default Settings', 'my-video-room' ); ?>
 	</h3>
 	<p>
-		<?php esc_html_e( 'These settings govern the default appearance of all Site Conference Rooms.', 'my-video-room' ); ?>
+		<?php esc_html_e( 'These settings govern the default appearance of all Site Conference Rooms. They can be overriden at the user and room level.', 'my-video-room' ); ?>
 	</p>
 	<?php
 

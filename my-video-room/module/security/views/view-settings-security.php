@@ -24,9 +24,7 @@ use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 return function() {
 	wp_enqueue_script( 'myvideoroom-outer-tabs' );
 	ob_start();
-	$page = require __DIR__ . '/../views/view-settings-securityheader.php';
-	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- View is already escaped and sanitised.
-	echo $page();
+
 	?>
 		</div>
 		<div class="mvr-admin-page-wrap">
