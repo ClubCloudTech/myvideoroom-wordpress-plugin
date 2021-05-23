@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin\Module\SiteVideo;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 \add_action(
