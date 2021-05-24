@@ -7,7 +7,6 @@
 
 namespace MyVideoRoomPlugin;
 
-use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Library\UserRoles;

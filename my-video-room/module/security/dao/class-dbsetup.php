@@ -7,9 +7,7 @@
 
 namespace MyVideoRoomPlugin\Module\Security\DAO;
 
-use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\Security\Security;
-use MyVideoRoomPlugin\DAO\ModuleConfig;
 
 /**
  * Class ModuleConfig
@@ -21,15 +19,12 @@ class DBSetup {
 	 * @return bool
 	 */
 	public static function install_security_config_table(): bool {
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		global $wpdb;
-		$table_name = Security::TABLE_NAME_SECURITY_CONFIG;
 
-		// Check if Exists.
-		if ( Factory::get_instance( ModuleConfig::class )->check_table_exists( $table_name ) ) {
-			return true;
-		}
+		$table_name = $wpdb->prefix . Security::TABLE_NAME_SECURITY_CONFIG;
 
-		$sql = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . $table_name . '` (
+		$sql_create = 'CREATE TABLE IF NOT EXISTS `' . $table_name . '` (
 			`record_id` int NOT NULL AUTO_INCREMENT,
 			`user_id` BIGINT NOT NULL,
 			`room_name` VARCHAR(255) NOT NULL,
@@ -49,9 +44,6 @@ class DBSetup {
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		\dbDelta( $sql );
-
-		return true;
+		return maybe_create_table( $table_name, $sql_create );
 	}
 }
