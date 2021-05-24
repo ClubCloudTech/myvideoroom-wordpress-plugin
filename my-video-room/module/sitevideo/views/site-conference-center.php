@@ -63,7 +63,7 @@ return function (
 		?>
 	</ul>
 </nav>
-<br>
+
 		<?php
 		foreach ( $tabs as $article_output ) {
 			$function_callback = $article_output->get_function_callback();

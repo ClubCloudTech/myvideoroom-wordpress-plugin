@@ -15,13 +15,13 @@ ul.myvideoroom-outer-nav-tab-wrapper {
 .mvr-ul-header {
 	display: inline!important;
 	margin-top: 10px;
-	margin-bottom: 0px;
+	margin-bottom: 0;
 }
 
 .mvr-admin-page-wrap {
 	border: 1px solid #c3c4c7;
 	padding: 8px;
-	margin-top: 10px;
+	margin-top: 0;
 }
 
 .mvr-preferences-paragraph {
