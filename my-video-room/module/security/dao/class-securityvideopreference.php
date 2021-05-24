@@ -17,6 +17,15 @@ class SecurityVideoPreference {
 
 	const TABLE_NAME = Security::TABLE_NAME_SECURITY_CONFIG;
 
+	/**
+	 * Get the table name for this DAO.
+	 *
+	 * @return string
+	 */
+	private function get_table_name(): string {
+		global $wpdb;
+		return $wpdb->prefix . self::TABLE_NAME;
+	}
 
 	/**
 	 * Save a User Video Preference into the database
@@ -30,16 +39,14 @@ class SecurityVideoPreference {
 	public function create( SecurityVideoPreferenceEntity $user_video_preference ): ?SecurityVideoPreferenceEntity {
 		global $wpdb;
 
-		/*
 		$cache_key = $this->create_cache_key(
 			$user_video_preference->get_user_id(),
-			$user_video_preference->get_room_name());
-
-		*/
+			$user_video_preference->get_room_name()
+		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$result = $wpdb->insert(
-			$wpdb->prefix . self::TABLE_NAME,
+		$wpdb->insert(
+			$this->get_table_name(),
 			array(
 				'user_id'                           => $user_video_preference->get_user_id(),
 				'room_name'                         => $user_video_preference->get_room_name(),
@@ -49,20 +56,18 @@ class SecurityVideoPreference {
 				'anonymous_enabled'                 => $user_video_preference->is_anonymous_enabled(),
 				'allow_role_control_enabled'        => $user_video_preference->is_allow_role_control_enabled(),
 				'block_role_control_enabled'        => $user_video_preference->is_block_role_control_enabled(),
-				'restrict_group_to_members_enabled' => $user_video_preference->check_restrict_group_to_members_setting(),
-				'site_override_enabled'             => $user_video_preference->check_site_override_setting(),
-				'bp_friends_setting'                => $user_video_preference->check_bp_friends_setting(),
+				'restrict_group_to_members_enabled' => $user_video_preference->is_restricted_to_group_to_members(),
+				'site_override_enabled'             => $user_video_preference->is_site_override_enabled(),
+				'bp_friends_setting'                => $user_video_preference->is_bp_friends_setting_enabled(),
 
 			)
 		);
 
 		$user_video_preference->set_id( $wpdb->insert_id );
 
-		if ( ! $result ) {
-			throw new \Exception();
-		}
-		// Removing cache as conflict happening in rooms - to test
-		// wp_cache_set( $cache_key, $user_video_preference );
+		\wp_cache_set( $cache_key, $user_video_preference->to_json(), implode( '::', array( __CLASS__, 'get_by_id' ) ) );
+		\wp_cache_delete( $user_video_preference->get_user_id(), implode( '::', array( __CLASS__, 'get_by_user_id' ) ) );
+
 		return $user_video_preference;
 	}
 
@@ -74,34 +79,46 @@ class SecurityVideoPreference {
 	 *
 	 * @return SecurityVideoPreferenceEntity|null
 	 */
-	public function read( int $user_id, string $room_name ): ?SecurityVideoPreferenceEntity {
+	public function get_by_id( int $user_id, string $room_name ): ?SecurityVideoPreferenceEntity {
 		global $wpdb;
-		/*
-		$cache_key     = $this->create_cache_key( $user_id, $room_name );
-		$cached_result = wp_cache_get( $cache_key );
 
-		if ( $cached_result && $cached_result instanceof SecurityVideoPreferenceEntity ) {
-			return $cached_result;
-		}
-		*/
-
-		$raw_sql = '
-				SELECT record_id, user_id, room_name, allowed_roles, blocked_roles, room_disabled, anonymous_enabled, allow_role_control_enabled, block_role_control_enabled, site_override_enabled, restrict_group_to_members_enabled, bp_friends_setting
-				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-				WHERE user_id = %d AND room_name = %s;
-			';
-
-		$prepared_query = $wpdb->prepare(
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$user_id,
-				$room_name,
-			)
+		$cache_key = $this->create_cache_key(
+			$user_id,
+			$room_name
 		);
 
+		$result = \wp_cache_get( $cache_key, __METHOD__ );
+
+		if ( $result ) {
+			return SecurityVideoPreferenceEntity::from_json( $result );
+		}
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$row = $wpdb->get_row( $prepared_query );
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				'
+				SELECT 
+			       record_id, 
+			       user_id, 
+			       room_name,
+			       allowed_roles,
+			       blocked_roles, 
+			       room_disabled, 
+			       anonymous_enabled,
+			       allow_role_control_enabled,
+			       block_role_control_enabled, 
+			       site_override_enabled, 
+			       restrict_group_to_members_enabled,
+			       bp_friends_setting
+				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
+				WHERE user_id = %d AND room_name = %s;
+			',
+				array(
+					$user_id,
+					$room_name,
+				)
+			)
+		);
 
 		$result = null;
 
@@ -120,43 +137,72 @@ class SecurityVideoPreference {
 				$row->restrict_group_to_members_enabled,
 				$row->bp_friends_setting,
 			);
+			wp_cache_set( $cache_key, __METHOD__, $result->to_json() );
+		} else {
+			wp_cache_set( $cache_key, __METHOD__, null );
 		}
 
-		// wp_cache_set( $cache_key, $result );
 		return $result;
 	}
+
+
+
+	/**
+	 * Get a User Video Preference from the database
+	 *
+	 * @param int $user_id The user id.
+	 *
+	 * @return SecurityVideoPreferenceEntity[]
+	 */
+	public function get_by_user_id( int $user_id ): array {
+		global $wpdb;
+
+		$results = array();
+
+		$room_names = \wp_cache_get( $user_id, __METHOD__ );
+
+		if ( false === $room_names ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$room_names = $wpdb->get_col(
+				$wpdb->prepare(
+					'
+						SELECT room_name
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
+						WHERE user_id = %d;
+					',
+					$user_id,
+				)
+			);
+
+			\wp_cache_set( $user_id, __METHOD__, $room_names );
+		}
+
+		foreach ( $room_names as $room_name ) {
+			$results[] = $this->get_by_id( $user_id, $room_name );
+		}
+
+		return $results;
+	}
+
 
 	/**
 	 * Update Database Post ID.
 	 * This function updates the Post ID of the Security Entity Table so that new pages can pick up settings of deleted pages.
 	 *
-	 * @param  int $new_post_id - new post_id to update preference table with.
-	 * @param  int $old_post_id - the old post that was deleted.
-	 * @return void|null
+	 * @param  int $new_user_id New post_id to update preference table with.
+	 * @param  int $old_user_id The old post that was deleted.
+	 *
+	 * @return bool
 	 */
-	public function update_post_id( int $new_post_id, int $old_post_id ) {
-		global $wpdb;
-		/*
-		$cache_key = $this->create_cache_key(
-			$user_video_preference->get_user_id(),
-			$user_video_preference->get_room_name()
-		);
-		*/
+	public function update_user_id( int $new_user_id, int $old_user_id ): bool {
+		$preferences = $this->get_by_user_id( $old_user_id );
 
-		$wpdb->show_errors();
+		foreach ( $preferences as $preference ) {
+			$preference->set_user_id( $new_user_id );
+			$this->update( $preference );
+		}
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$result = $wpdb->update(
-			$wpdb->prefix . self::TABLE_NAME,
-			array(
-				'user_id' => $new_post_id,
-			),
-			array(
-				'user_id' => $old_post_id,
-			)
-		);
-		// wp_cache_set( $cache_key, $user_video_preference );
-		return $result;
+		return true;
 	}
 
 
@@ -171,26 +217,26 @@ class SecurityVideoPreference {
 	 */
 	public function update( SecurityVideoPreferenceEntity $user_video_preference ): ?SecurityVideoPreferenceEntity {
 		global $wpdb;
-		/*
+
 		$cache_key = $this->create_cache_key(
 			$user_video_preference->get_user_id(),
 			$user_video_preference->get_room_name()
 		);
-		*/
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$result = $wpdb->update(
 			$wpdb->prefix . self::TABLE_NAME,
 			array(
+				'user_id'                           => $user_video_preference->get_user_id(),
 				'allowed_roles'                     => $user_video_preference->get_allowed_roles(),
 				'blocked_roles'                     => $user_video_preference->get_blocked_roles(),
 				'room_disabled'                     => $user_video_preference->is_room_disabled(),
 				'anonymous_enabled'                 => $user_video_preference->is_anonymous_enabled(),
 				'allow_role_control_enabled'        => $user_video_preference->is_allow_role_control_enabled(),
 				'block_role_control_enabled'        => $user_video_preference->is_block_role_control_enabled(),
-				'site_override_enabled'             => $user_video_preference->check_site_override_setting(),
-				'restrict_group_to_members_enabled' => $user_video_preference->check_restrict_group_to_members_setting(),
-				'bp_friends_setting'                => $user_video_preference->check_bp_friends_setting(),
+				'site_override_enabled'             => $user_video_preference->is_site_override_enabled(),
+				'restrict_group_to_members_enabled' => $user_video_preference->is_restricted_to_group_to_members(),
+				'bp_friends_setting'                => $user_video_preference->is_bp_friends_setting_enabled(),
 
 			),
 			array(
@@ -199,73 +245,10 @@ class SecurityVideoPreference {
 			)
 		);
 
-		if ( false === $result ) {
-			throw new \Exception();
-		}
+		\wp_cache_set( $cache_key, $user_video_preference->to_json(), implode( '::', array( __CLASS__, 'get_by_id' ) ) );
+		\wp_cache_delete( $user_video_preference->get_user_id(), implode( '::', array( __CLASS__, 'get_by_user_id' ) ) );
 
-		// wp_cache_set( $cache_key, $user_video_preference );
 		return $user_video_preference;
-	}
-	/**
-	 * Reads WordPress Roles, and Merges with Security Settings stored in DB to render Multi-Select Dialog Boxes
-	 *
-	 * @param  int    $user_id - The User_ID.
-	 * @param  string $room_name - Name of Room.
-	 * @param  string $return_type = Type of Info Required.
-	 * @return string
-	 */
-	public function read_multi_checkbox_admin_roles( int $user_id, string $room_name, string $return_type ): string {
-		// Setup.
-		global $wp_roles;
-		$all_roles = $wp_roles->roles;
-		$output    = null;
-
-		// Get Settings in Database - return type - matches the field in the database - return it on top.
-		$db_setting = $this->read_security_settings( $user_id, $room_name, $return_type );
-		// Add Clear Option to Select Box if there are parameters Stored.
-		if ( $db_setting ) {
-			$clear_option = '<option value="">' . esc_html__( '(Clear Selections - Remove Stored Roles)', 'myvideoroom' ) . '</option>';
-		}
-		$db_array  = explode( '|', $db_setting );
-		$db_output = null;
-		foreach ( $db_array as $setting_returned ) {
-			$db_output .= '<option value="' . esc_attr( $setting_returned ) . '" selected>' . esc_html( $setting_returned ) . '</option>';
-		}
-		// Now need to exclude a setting if already returned above.
-		foreach ( $all_roles as $key ) {
-			if ( strpos( $db_setting, $key['name'] ) === false ) {
-				if ( $current_user_setting &&
-							$current_user_setting->get_allowed_roles() === $key['name']
-						) {
-					$output .= '<option value="' . esc_attr( $key['name'] ) . '" selected>' . esc_html( $key['name'] ) . '</option>';
-				} else {
-					$output .= '<option value="' . esc_attr( $key['name'] ) . '">' . esc_html( $key['name'] ) . '</option>';
-				}
-			}
-		}
-		return $clear_option . $db_output . $output;
-	}
-
-	/**
-	 * Reads Database Stored Roles and returns an array of roles
-	 *
-	 * @param  int    $user_id - The UserID.
-	 * @param  string $room_name - Name of Room to check.
-	 * @param  string $return_type - Type of Return.
-	 * @return string
-	 */
-	public function read_db_wordpress_roles( int $user_id, string $room_name, $return_type ) {
-
-		// Get Settings in Database - return type - matches the field in the database - return it on top.
-		$db_setting = $this->read_security_settings( $user_id, $room_name, $return_type );
-		// Return blank if nothing set.
-		if ( ! $db_setting ) {
-			return null;
-		}
-
-		$db_array = explode( '|', $db_setting );
-
-		return $db_array;
 	}
 
 
@@ -281,26 +264,22 @@ class SecurityVideoPreference {
 	public function delete( SecurityVideoPreferenceEntity $user_video_preference ) {
 		global $wpdb;
 
-		/*
 		$cache_key = $this->create_cache_key(
 			$user_video_preference->get_user_id(),
 			$user_video_preference->get_room_name()
 		);
-		*/
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$result = $wpdb->delete(
-			$wpdb->prefix . self::TABLE_NAME,
+		$wpdb->delete(
+			$this->get_table_name(),
 			array(
 				'user_id'   => $user_video_preference->get_user_id(),
 				'room_name' => $user_video_preference->get_room_name(),
 			)
 		);
 
-		if ( $result ) {
-			throw new \Exception();
-		}
-		// wp_cache_delete( $cache_key );
+		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_by_id' ) ) );
+		\wp_cache_delete( $user_video_preference->get_user_id(), implode( '::', array( __CLASS__, 'get_by_user_id' ) ) );
 
 		return null;
 	}
@@ -314,11 +293,13 @@ class SecurityVideoPreference {
 	 * @return string
 	 */
 	private function create_cache_key( int $user_id, string $room_name ): string {
-		return self::class . "::read:user_id:${user_id}:room_name:${room_name}:1";
+		return "user_id:${user_id}:room_name:${room_name}";
 	}
 
 	/**
 	 * Get a Just Preference Data from the database
+	 *
+	 * @deprecated Call self::get_by_id instead
 	 *
 	 * @param int    $user_id The user id.
 	 * @param string $room_name The room name.
@@ -328,34 +309,49 @@ class SecurityVideoPreference {
 	 *
 	 * Returns layout ID, Reception ID, or Reception Enabled Status
 	 */
-	public static function read_security_settings( int $user_id, string $room_name, string $return_type ) {
-		global $wpdb;
+	public function read_security_settings( int $user_id, string $room_name, string $return_type ) {
+
 		if ( ! $return_type ) {
 			return null;
 		}
 
-		$raw_sql = '
-		SELECT user_id, room_name, ' . $return_type . '
-		FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-		WHERE user_id = %d AND room_name = %s;
-	';
+		$preference = $this->get_by_id( $user_id, $room_name );
 
-		$prepared_query = $wpdb->prepare(
-											// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$user_id,
-				$room_name,
-			)
-		);
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$row = $wpdb->get_row( $prepared_query );
-
-		if ( $row ) {
-			return $row->$return_type;
+		if ( ! $preference ) {
+			return null;
 		}
-		return null;
+
+		switch ( $return_type ) {
+			case 'site_override_enabled':
+				return $preference->is_site_override_enabled();
+
+			case 'room_name':
+				return $preference->get_room_name();
+
+			case 'allow_role_control_enabled':
+				return $preference->is_allow_role_control_enabled();
+
+			case 'anonymous_enabled':
+				return $preference->is_anonymous_enabled();
+
+			case 'block_role_control_enabled':
+				return $preference->is_block_role_control_enabled();
+
+			case 'room_disabled':
+				return $preference->is_room_disabled();
+
+			case 'bp_friends_setting':
+				return $preference->is_bp_friends_setting_enabled();
+
+			case 'restrict_group_to_members_enabled':
+				return $preference->is_restricted_to_group_to_members();
+
+			case 'allowed_roles':
+				return $preference->get_allowed_roles();
+
+			default:
+				return null;
+		}
 	}
 
 

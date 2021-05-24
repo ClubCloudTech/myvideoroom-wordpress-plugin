@@ -66,7 +66,7 @@ class RoomAdmin extends RoomAdminSetup {
 
 			$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( SiteDefaults::MODULE_SECURITY_ID );
 			if ( $security_enabled ) {
-				Factory::get_instance( \MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference::class )->update_post_id( $post_id, $old_post_id );
+				Factory::get_instance( \MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference::class )->update_user_id( $post_id, $old_post_id );
 			}
 		}
 

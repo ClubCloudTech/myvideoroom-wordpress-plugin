@@ -46,7 +46,8 @@ class RoomMap {
 			$row = $wpdb->get_row(
 				$wpdb->prepare(
 					'
-						SELECT post_id FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
+						SELECT post_id 
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
 						WHERE room_name = %s
 					',
 					$room_name,

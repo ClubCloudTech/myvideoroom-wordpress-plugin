@@ -142,6 +142,61 @@ class SecurityVideoPreference {
 	}
 
 	/**
+	 * Create from a JSON object
+	 *
+	 * @param string $json The JSON representation of the object.
+	 *
+	 * @return ?\MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference
+	 */
+	public static function from_json( string $json ): ?self {
+		$data = json_decode( $json );
+
+		if ( $data ) {
+			return new self(
+				$data->id,
+				$data->user_id,
+				$data->room_name,
+				$data->allowed_roles,
+				$data->blocked_roles,
+				$data->room_disabled,
+				$data->anonymous_enabled,
+				$data->allow_role_control_enabled,
+				$data->block_role_control_enabled,
+				$data->site_override_enabled,
+				$data->restrict_group_to_members_enabled,
+				$data->bp_friends_setting,
+			);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Convert to JSON
+	 * Used for caching.
+	 *
+	 * @return string
+	 */
+	public function to_json(): string {
+		return wp_json_encode(
+			array(
+				'id'                                => $this->id,
+				'user_id'                           => $this->user_id,
+				'room_name'                         => $this->room_name,
+				'allowed_roles'                     => $this->allowed_roles,
+				'blocked_roles'                     => $this->blocked_roles,
+				'room_disabled'                     => $this->room_disabled,
+				'anonymous_enabled'                 => $this->anonymous_enabled,
+				'allow_role_control_enabled'        => $this->allow_role_control_enabled,
+				'block_role_control_enabled'        => $this->block_role_control_enabled,
+				'site_override_enabled'             => $this->site_override_enabled,
+				'restrict_group_to_members_enabled' => $this->restrict_group_to_members_enabled,
+				'bp_friends_setting'                => $this->bp_friends_setting,
+			)
+		);
+	}
+
+	/**
 	 * Get the record id
 	 *
 	 * @return ?int
@@ -172,6 +227,18 @@ class SecurityVideoPreference {
 	}
 
 	/**
+	 * Set the user ID
+	 *
+	 * @param int $user_id The new user id.
+	 *
+	 * @return $this
+	 */
+	public function set_user_id( int $user_id ): self {
+		$this->user_id = $user_id;
+		return $this;
+	}
+
+	/**
 	 * Gets Room Name.
 	 *
 	 * @return string
@@ -183,10 +250,21 @@ class SecurityVideoPreference {
 	/**
 	 * Gets Allowed Roles.
 	 *
+	 * @deprecated Get the array from self::get_allowed_roles_array
+	 *
 	 * @return string
 	 */
 	public function get_allowed_roles(): ?string {
 		return $this->allowed_roles;
+	}
+
+	/**
+	 * Gets Allowed Roles.
+	 *
+	 * @return string
+	 */
+	public function get_allowed_roles_array(): ?string {
+		return explode('|', $this->allowed_roles);
 	}
 
 	/**
@@ -311,7 +389,7 @@ class SecurityVideoPreference {
 	 *
 	 * @return bool
 	 */
-	public function check_site_override_setting(): bool {
+	public function is_site_override_enabled(): bool {
 		return $this->site_override_enabled;
 	}
 
@@ -332,7 +410,7 @@ class SecurityVideoPreference {
 	 *
 	 * @return ?bool
 	 */
-	public function check_restrict_group_to_members_setting(): ?bool {
+	public function is_restricted_to_group_to_members(): ?bool {
 		return $this->restrict_group_to_members_enabled;
 	}
 
@@ -353,7 +431,7 @@ class SecurityVideoPreference {
 	 *
 	 * @return bool
 	 */
-	public function check_bp_friends_setting(): ?bool {
+	public function is_bp_friends_setting_enabled(): ?bool {
 		return $this->bp_friends_setting;
 	}
 

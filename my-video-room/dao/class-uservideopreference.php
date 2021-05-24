@@ -88,7 +88,7 @@ class UserVideoPreference {
 
 		$result = \wp_cache_get( $cache_key, __METHOD__ );
 
-		if ( false !== $result ) {
+		if ( $result ) {
 			return UserVideoPreferenceEntity::from_json( $result );
 		}
 
@@ -180,8 +180,6 @@ class UserVideoPreference {
 			$user_video_preference->get_user_id(),
 			$user_video_preference->get_room_name()
 		);
-
-		$wpdb->show_errors();
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->update(
@@ -277,7 +275,7 @@ class UserVideoPreference {
 	 * Get a Just Preference Data from the database
 	 * Returns layout ID, Reception ID, or Reception Enabled Status.
 	 *
-	 * @deprecated - use get_by_id instead.
+	 * @deprecated - use self::get_by_id instead.
 	 *
 	 * @param int    $user_id     The user id.
 	 * @param string $room_name   The room name.

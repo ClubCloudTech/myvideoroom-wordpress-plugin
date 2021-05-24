@@ -69,7 +69,7 @@ class SecurityVideoPreference extends Shortcode {
 
 			$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
 
-			$current_user_setting = $security_preference_dao->read(
+			$current_user_setting = $security_preference_dao->get_by_id(
 				$user_id,
 				$room_name
 			);
@@ -139,8 +139,8 @@ class SecurityVideoPreference extends Shortcode {
 		$user_id = apply_filters( 'myvideoroom_security_choosesettings_change_user_id', $user_id );
 
 		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
-		$roles_output            = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_multi_checkbox_admin_roles( $user_id, $room_name, 'allowed_roles' );
-		$current_user_setting    = $security_preference_dao->read(
+		$roles_output            = $this->read_multi_checkbox_admin_roles( $user_id, $room_name );
+		$current_user_setting    = $security_preference_dao->get_by_id(
 			$user_id,
 			$room_name
 		);
@@ -158,5 +158,51 @@ class SecurityVideoPreference extends Shortcode {
 		}
 
 		return $render( $current_user_setting, $room_name, self::$id_index++, $roles_output, $user_id, $group_name );
+	}
+
+
+
+	/**
+	 * Reads WordPress Roles, and Merges with Security Settings stored in DB to render Multi-Select Dialog Boxes
+	 *
+	 * @param  int    $user_id - The User_ID.
+	 * @param  string $room_name - Name of Room.
+*
+	 * @return string
+	 */
+	public function read_multi_checkbox_admin_roles( int $user_id, string $room_name ): string {
+		// Setup.
+		global $wp_roles;
+		$all_roles = $wp_roles->roles;
+		$output    = null;
+
+		// Get Settings in Database - return type - matches the field in the database - return it on top.
+		$preference = Factory::get_instance( SecurityVideoPreferenceDao::class )->get_by_id( $user_id, $room_name );
+
+		$allowed_roles = array();
+
+		if ( $preference ) {
+			$allowed_roles = explode( '|', $preference->get_allowed_roles() );
+		}
+
+		// Add Clear Option to Select Box if there are parameters Stored.
+		$clear_option = '';
+		if ( $allowed_roles ) {
+			$clear_option = '<option value="">' . esc_html__( '(Clear Selections - Remove Stored Roles)', 'myvideoroom' ) . '</option>';
+		}
+
+		$db_output = null;
+		foreach ( $allowed_roles as $setting_returned ) {
+			$db_output .= '<option value="' . esc_attr( $setting_returned ) . '" selected>' . esc_html( $setting_returned ) . '</option>';
+		}
+
+		// Now need to exclude a setting if already returned above.
+		foreach ( $all_roles as $key ) {
+			if ( strpos( $allowed_roles, $key['name'] ) === false ) {
+				$output .= '<option value="' . esc_attr( $key['name'] ) . '">' . esc_html( $key['name'] ) . '</option>';
+			}
+		}
+
+		return $clear_option . $db_output . $output;
 	}
 }

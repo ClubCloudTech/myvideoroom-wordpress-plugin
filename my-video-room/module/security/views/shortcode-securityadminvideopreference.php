@@ -57,7 +57,7 @@ return function (
 					class="myvideoroom_override_all_preferences"
 					name="myvideoroom_override_all_preferences"
 					id="myvideoroom_override_all_preferences_<?php echo esc_attr( $id_index ); ?>"
-					<?php echo $current_user_setting && $current_user_setting->check_site_override_setting() ? 'checked' : ''; ?> />
+					<?php echo $current_user_setting && $current_user_setting->is_site_override_enabled() ? 'checked' : ''; ?> />
 
 					<p><?php esc_html_e( 'Use this setting to ignore user and group individual room settings and enforce security settings across all of', 'my-video-room' ); ?>
 					<?php
