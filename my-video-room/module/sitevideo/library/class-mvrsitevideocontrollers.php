@@ -79,7 +79,7 @@ class MVRSiteVideoControllers {
 		}
 
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
-		if ( Factory::get_instance( ModuleConfig::class )->read_enabled_status( Dependencies::MODULE_SECURITY_ID ) ) {
+		if ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SECURITY_ID ) ) {
 			$render_block = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Library\SecurityEngine::class )->render_block( $post_id, 'sitevideohost', MVRSiteVideo::MODULE_SITE_VIDEO_ID, $room_name );
 			if ( $render_block ) {
 				return $render_block;
@@ -136,7 +136,7 @@ class MVRSiteVideoControllers {
 		$display_name = $room_object->display_name;
 
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
-		if ( Factory::get_instance( ModuleConfig::class )->read_enabled_status( Dependencies::MODULE_SECURITY_ID ) ) {
+		if ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SECURITY_ID ) ) {
 			$render_block = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Library\SecurityEngine::class )->render_block( $room_id, 'sitevideoguest', MVRSiteVideo::MODULE_SITE_VIDEO_ID, $room_name );
 			if ( $render_block ) {
 				return $render_block;

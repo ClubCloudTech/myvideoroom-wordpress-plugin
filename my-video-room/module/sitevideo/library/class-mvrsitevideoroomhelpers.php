@@ -54,7 +54,7 @@ class MVRSiteVideoRoomHelpers {
 		}
 		switch ( $room_type ) {
 			case MVRSiteVideo::ROOM_NAME_SITE_VIDEO:
-				if ( ! Factory::get_instance( ModuleConfig::class )->read_enabled_status( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
+				if ( ! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
 					return esc_html__( 'Module Disabled', 'myvideoroom' );
 				} elseif ( null === $room_object->url ) {
 					return 'Page Has Been Deleted - Please Regenerate';

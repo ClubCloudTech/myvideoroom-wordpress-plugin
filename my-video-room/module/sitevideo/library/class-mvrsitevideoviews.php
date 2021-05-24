@@ -82,7 +82,7 @@ class MVRSiteVideoViews extends Shortcode {
 	public function conference_room_friendly_name( string $room_type ): string {
 		switch ( $room_type ) {
 			case MVRSiteVideo::ROOM_NAME_SITE_VIDEO:
-				if ( ! Factory::get_instance( ModuleConfig::class )->read_enabled_status( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
+				if ( ! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
 					return esc_html__( 'Module Disabled', 'myvideoroom' );
 				} else {
 					return MVRSiteVideo::ROOM_NAME_TABLE;

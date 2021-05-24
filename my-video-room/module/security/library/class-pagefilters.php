@@ -46,7 +46,7 @@ class PageFilters extends Shortcode {
 		}
 
 		// Normal Check.
-		$is_module_enabled = Factory::get_instance( ModuleConfig::class )->read_enabled_status( $module_id );
+		$is_module_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( $module_id );
 
 		if ( ! $is_module_enabled ) {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
