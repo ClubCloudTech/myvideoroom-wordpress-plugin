@@ -55,6 +55,12 @@
 	clear: both;
 }
 
+.myvideoroom-nav-tab-wrapper:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+
 .mvr-nav-shortcode-outer-wrap {
 	background-color: white;
 	padding: 10px 10px 10px 10px;
