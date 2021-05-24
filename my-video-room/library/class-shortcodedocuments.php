@@ -51,16 +51,21 @@ class ShortcodeDocuments {
 			);
 			?>
 			<br />
+
 			<?php
-				echo esc_html__(
-					'Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- www.c.com/jones has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room Type (url) - returns URL of room. <br>Usage - ',
+			\sprintf(
+				/* translators: %s is the site URL */
+				esc_html__(
+					'Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- %s has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room Type (url) - returns URL of room. <br>Usage - ',
 					'my-video-room'
-				);
+				),
+				get_site_url() . '/jones'
+			);
 			?>
 			<br />
 			<?php
 				echo esc_html__(
-					'<strong>[getvideo_room_info room="bookings-center" type = "url"]</strong> will return the URL of the Bookings Center]',
+					'<strong>[getvideo_room_info room="bookings-center" type = "url"]</strong> will return the URL of the Bookings Center',
 					'my-video-room'
 				);
 			?>
@@ -95,11 +100,7 @@ class ShortcodeDocuments {
 				<p>
 				<?php
 				esc_html_e(
-					'This Shortcode is designed to be used in BuddyPress profile pages. It is not
-					available outside of the BuddyPress profile loop environment. It handles everything in the context of whose profile you are viewing
-					If you are viewing your own profile, then you get a host video experience, if you are looking at someone elses profile (or are signed out)
-					then the guest page for that profile is rendered. The room that is rendered is the same as the Personal Video Room - and seamlessly
-					works with a Personal Video Room used in a non BuddyPress environment.
+					'This Shortcode is designed to be used in BuddyPress profile pages. It is not available outside of the BuddyPress profile loop environment. It handles everything in the context of whose profile you are viewing If you are viewing your own profile, then you get a host video experience, if you are looking at someone elses profile (or are signed out) then the guest page for that profile is rendered. The room that is rendered is the same as the Personal Video Room - and seamlessly works with a Personal Video Room used in a non BuddyPress environment.
 					',
 					'my-video-room'
 				);
@@ -108,8 +109,7 @@ class ShortcodeDocuments {
 				<p>
 				<?php
 				echo esc_html__(
-					'There are no Guest Shortcodes needed, as normal room shortcodes work correctly for users who are signed out and thus
-					not in the BuddyPress loop. Normal meeting invites, links, guest reception settings are available for rooms whose hosts
+					'There are no Guest Shortcodes needed, as normal room shortcodes work correctly for users who are signed out and thus not in the BuddyPress loop. Normal meeting invites, links, guest reception settings are available for rooms whose hosts
 					enter via BuddyPress.',
 					'my-video-room'
 				);
