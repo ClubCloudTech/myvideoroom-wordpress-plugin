@@ -116,7 +116,6 @@ class MVRSiteVideo extends Shortcode {
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
 
-
 		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'render_sitevideo_roomsetting_tab' ), 21, 2 );
 
 		\add_action(
@@ -147,7 +146,7 @@ class MVRSiteVideo extends Shortcode {
 		);
 		// Add Config Page to Main Room Manager.
 		add_filter( 'myvideoroom_room_manager_menu', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'render_sitevideo_admin_settings_page' ), 10, 1 );
-		
+
 		// Filters for Room Manager Table.
 		add_filter( 'myvideoroom_room_type_display_override', array( Factory::get_instance( MVRSiteVideoViews::class ), 'conference_room_friendly_name' ), 10, 1 );
 		add_filter( 'myvideoroom_room_manager_shortcode_display', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'conference_change_shortcode' ), 10, 4 );
