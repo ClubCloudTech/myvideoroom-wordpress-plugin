@@ -4,8 +4,7 @@
  * @package MyVideoRoomPlugin
  */
 
- (function ($) {
-
+(function ($) {
 	/**
 	 * Hide all non active pages
 	 */
@@ -25,7 +24,7 @@
 	 *
 	 * @param {JQuery} $parent
 	 */
-	var init = function ( $parent ) {
+	var init = function ($parent) {
 		hide_all_non_active();
 
 		var $tabs = $( '.myvideoroom-outer-nav-tab-wrapper a', $parent );
@@ -47,7 +46,7 @@
 				);
 			}
 		);
-	}
+	};
 
 	init( $( document ) );
 

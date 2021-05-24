@@ -167,7 +167,7 @@ class SecurityVideoPreference extends Shortcode {
 	 *
 	 * @param  int    $user_id - The User_ID.
 	 * @param  string $room_name - Name of Room.
-*
+	 *
 	 * @return string
 	 */
 	public function read_multi_checkbox_admin_roles( int $user_id, string $room_name ): string {

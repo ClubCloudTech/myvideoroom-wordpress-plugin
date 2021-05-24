@@ -127,7 +127,6 @@ class UserVideoPreference extends Shortcode {
 		$user_id              = apply_filters( 'myvideoroom_video_choosesettings_change_user_id', $user_id );
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 
-
 		$current_user_setting = $video_preference_dao->get_by_id(
 			$user_id,
 			$room_name
