@@ -19,9 +19,7 @@ add_action(
 			'Advanced Room Permissions',
 			array(
 				esc_html__(
-					'MyVideoRoom includes a Security and Permissions module which allows users, to precisely control the type of permissions they would like for their room. For example
-					users can select logged in users, specific site roles, disable rooms entirely, or work in conjunction with other modules (like groups and friends in Buddypress). The module also
-					provides central enforcement and override capability which allows central control of specific room settings, and configuration.',
+					'MyVideoRoom includes a Security and Permissions module which allows users, to precisely control the type of permissions they would like for their room. For example users can select logged in users, specific site roles, disable rooms entirely, or work in conjunction with other modules (like groups and friends in Buddypress). The module also provides central enforcement and override capability which allows central control of specific room settings, and configuration.',
 					'myvideoroom'
 				),
 			),

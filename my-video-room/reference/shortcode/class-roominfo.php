@@ -72,7 +72,16 @@ class RoomInfo {
 								<dd>' . \esc_html__( 'Room Name (with spaces)', 'myvideoroom' ) . '</dd>
 								
 								<dt>slug</dt>
-								<dd>' . \esc_html__( 'The post slug (eg- www.c.com/jones has slug of Jones)', 'myvideoroom' ) . '</dd>
+								
+								<dd>' . \sprintf(
+									/* translators: %s is the site URL */
+									esc_html__(
+										'The post slug (eg- %s has slug of Jones)',
+										'myvideoroom'
+									),
+									get_site_url() . '/jones'
+								)
+									. '</dd>
 								
 								<dt>post_id</dt>
 								<dd>' . \esc_html__( 'The WordPress Post ID of a room', 'myvideoroom' ) . '</dd>
