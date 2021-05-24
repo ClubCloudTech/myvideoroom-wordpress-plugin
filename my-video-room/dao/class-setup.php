@@ -94,10 +94,11 @@ class Setup {
 			`display_name` VARCHAR(255) NOT NULL,
 			`slug` VARCHAR(255) NOT NULL,
 			PRIMARY KEY (`record_id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
-			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-			dbDelta( $sql2 );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+		dbDelta( $sql2 );
+
 		return true;
 	}
 

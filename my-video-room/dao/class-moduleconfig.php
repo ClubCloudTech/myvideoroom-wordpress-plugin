@@ -63,9 +63,10 @@ class ModuleConfig {
 		$table_name_sql = $wpdb->prefix . $table_name;
 
 		try {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-			$row = $wpdb->get_row( 'SELECT 1 FROM ' . $table_name_sql . ' LIMIT 1' );
-			if ( $row ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$results = $wpdb->get_row( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table_name_sql ), 'ARRAY_A' );
+
+			if ( $results && 1 === count( $results ) ) {
 				return true;
 			}
 
