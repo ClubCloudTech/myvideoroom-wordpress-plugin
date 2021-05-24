@@ -194,8 +194,7 @@ class MVRSiteVideoControllers {
 			<p>
 				<?php
 				esc_html_e(
-					'The Site Video Room is available for Team wide meetings at the website level. It is created automatically by the plugin, at activation. It can be secured such that any normal
-					site administrator is an owner of the room',
+					'The Site Video Room is available for Team wide meetings at the website level. It is created automatically by the plugin, at activation. It can be secured such that any normal	site administrator is an owner of the room',
 					'my-video-room'
 				);
 				?>
