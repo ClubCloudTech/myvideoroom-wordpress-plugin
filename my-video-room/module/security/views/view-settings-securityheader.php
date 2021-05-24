@@ -32,10 +32,7 @@ return function() {
 	<p>
 		<?php
 			esc_html_e(
-				'The host and room permissions control module allows users, to precisely control the type of room access permissions they would like for their room. For example
-				users can select logged in users, specific site roles, disable rooms entirely, or work in conjunction with other modules (like groups and friends in Buddypress). The module also
-				provides central enforcement and override capability which allows central control of specific room settings, and configuration. Most settings are in the rooms and modules
-				themselves and not in this section.',
+				'The host and room permissions control module allows users, to precisely control the type of room access permissions they would like for their room. For example users can select logged in users, specific site roles, disable rooms entirely, or work in conjunction with other modules (like groups and friends in Buddypress). The module also provides central enforcement and override capability which allows central control of specific room settings, and configuration. Most settings are in the rooms and modules themselves and not in this section.',
 				'my-video-room'
 			);
 		?>

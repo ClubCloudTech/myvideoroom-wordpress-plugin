@@ -51,8 +51,7 @@ return function() {
 						<p>
 						<?php
 						esc_html_e(
-							'These are the Default Room Permissions. These settings will be used by the Room, if the user has not yet set up a permissions preference.
-							Users\' preferences override these defaults if they choose them. To enforce settings use the Override Permissions tab.',
+							'These are the Default Room Permissions. These settings will be used by the Room, if the user has not yet set up a permissions preference. Users\' preferences override these defaults if they choose them. To enforce settings use the Override Permissions tab.',
 							'my-video-room'
 						);
 						?>
@@ -72,8 +71,7 @@ return function() {
 						<br>
 						<?php
 							esc_html_e(
-								'These are the enforced/mandatory room permissions. These settings will be used by the Room regardless of the User\'s preference.
-								To allow the settings to be overriden please use the Default Permissions tab.',
+								'These are the enforced/mandatory room permissions. These settings will be used by the Room regardless of the User\'s preference. To allow the settings to be overriden please use the Default Permissions tab.',
 								'my-video-room'
 							);
 						?>

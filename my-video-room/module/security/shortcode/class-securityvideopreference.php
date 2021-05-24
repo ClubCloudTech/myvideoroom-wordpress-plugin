@@ -11,7 +11,6 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Library\WordPressUser;
-use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 
@@ -149,13 +148,8 @@ class SecurityVideoPreference extends Shortcode {
 	 * @return string
 	 */
 	public function choose_settings( int $user_id, string $room_name, string $group_name = null, string $type = null ): string {
-		// Trap BuddyPress Environment and send Group ID as the USer ID for storage in DB.
-		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
-			if ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() ) {
-				global $bp;
-				$user_id = $bp->groups->current_group->creator_id;
-			}
-		}
+		// User ID Transformation for plugins.
+		$user_id = apply_filters( 'myvideoroom_security_choosesettings_change_user_id', $user_id );
 
 		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
 		$roles_output            = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_multi_checkbox_admin_roles( $user_id, $room_name, 'allowed_roles' );

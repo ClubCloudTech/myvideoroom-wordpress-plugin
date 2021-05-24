@@ -108,7 +108,6 @@ return function (
 	</form>
 </article>
 	<?php
-	$output = null;
 	foreach ( $tabs as $article_output ) {
 
 		$tab_slug = $article_output->get_tab_slug();

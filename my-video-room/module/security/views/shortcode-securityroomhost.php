@@ -56,12 +56,7 @@ return function (
 				/>
 				<br>
 				<p class="mvr-preferences-paragraph">
-				<?php
-				esc_html_e(
-					'Please select the User Role Groups you would like to be able to host your room. Anyone not setup here will be a guest of your room.',
-					'my-video-room'
-				);
-				?>
+				<?php esc_html_e( 'Please select the User Role Groups you would like to be able to host your room. Anyone not setup here will be a guest of your room.', 'my-video-room' ); ?>
 				</p><br>
 
 			<label for="myvideoroom_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
@@ -92,13 +87,7 @@ return function (
 				<br>
 				<br>
 				<p class="mvr-preferences-paragraph">
-					<?php
-					esc_html_e(
-						'Use this setting to determine what group roles you want to explicitly allow to host your room or - the reverse (block all users but a specific role from hosting). Please Note: 
-						If you choose to Block a Role, you must still decide if you would like Anonymous Users to host the room separately below.',
-						'my-video-room'
-					);
-					?>
+					<?php esc_html_e( 'Use this setting to determine what group roles you want to explicitly allow to host your room or - the reverse (block all users but a specific role from hosting). Please Note: If you choose to Block a Role, you must still decide if you would like Anonymous Users to host the room separately below.', 'my-video-room' ); ?>
 				</p>
 			<hr>
 			<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
@@ -112,12 +101,7 @@ return function (
 				<?php echo $current_user_setting && $current_user_setting->is_anonymous_enabled() ? 'checked' : ''; ?>
 			/>
 			<p class="mvr-preferences-paragraph">
-			<?php
-			esc_html_e(
-				'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please consider the security ramifications of this setting. ',
-				'my-video-room'
-			);
-			?>
+			<?php esc_html_e( 'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please consider the security ramifications of this setting. ', 'my-video-room' ); ?>
 			</p>
 			<hr />
 			<input type="hidden" name="myvideoroom_room_name" value="<?php echo esc_attr( $room_name ); ?>" />

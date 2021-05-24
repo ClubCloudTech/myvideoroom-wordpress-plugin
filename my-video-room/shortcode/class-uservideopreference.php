@@ -119,12 +119,8 @@ class UserVideoPreference extends Shortcode {
 	 * @throws \Exception When the update fails.
 	 */
 	public function choose_settings( int $user_id, string $room_name, array $allowed_tags = array() ): string {
-		// Trap BuddyPress Environment and send Group ID as the User ID for storage in DB.
-		// phpcs:ignore MyVideoRoomPlugin\Shortcode\bp_is_groups_component() is a Buddypress function.
-		if ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() ) {
-			global $bp;
-			$user_id = $bp->groups->current_group->creator_id;
-		}
+		// User ID Transformation for plugins.
+		$user_id              = apply_filters( 'myvideoroom_video_choosesettings_change_user_id', $user_id );
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 
 		$current_user_setting = $video_preference_dao->read(
