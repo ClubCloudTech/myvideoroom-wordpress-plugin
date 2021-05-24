@@ -33,37 +33,20 @@ return function (
 </p>
 <nav class="myvideoroom-outer-nav-tab-wrapper">
 	<ul class="mvr-ul-header myvideoroom-outer-nav-tab-wrapper">
+	<li class="mvr-title-header"><a class="nav-tab outer-nav-tab-active"	href="#defaulthost"><?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?></a></li>
 		<?php
-		$active = ' outer-nav-tab-active';
 		foreach ( $tabs as $menu_output ) {
 			$tab_display_name = $menu_output->get_tab_display_name();
 			$tab_slug         = $menu_output->get_tab_slug();
-		?>
-
-		<li class="mvr-title-header"><a class="mvr-menu-shortcode-button nav-tab <?php echo \esc_textarea( $active ); ?>"
-		href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>"><?php echo esc_html( $tab_display_name ); ?></a></li>
-			<?php
-			$active = null;
-		}
-		?>
-		<li class="mvr-title-header"><a class="nav-tab"	href="#defaulthost"><?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?></a></li>
-	</ul>
-</nav><br>
-
-	<?php
-	foreach ( $tabs as $article_output ) {
-
-		$tab_slug = $article_output->get_tab_slug();
-		?>
-			<?php
-						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-						echo '<article id="' . esc_attr( $html_library->get_id( $tab_slug ) ) . '">' . $article_output->get_function_callback() . '</article>';
 			?>
 
+		<li class="mvr-title-header"><a class="mvr-menu-shortcode-button nav-tab"
+		href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>"><?php echo esc_html( $tab_display_name ); ?></a></li>
 			<?php
-
-	}
-	?>
+		}
+		?>
+	</ul>
+</nav><br>
 <article class ="mvr-admin-page-wrap" id="defaulthost">
 <h2><?php \esc_html_e( 'Site Level Default Hosts', 'myvideoroom' ); ?></h2>
 
@@ -125,5 +108,21 @@ return function (
 	</form>
 </article>
 	<?php
+	$output = null;
+	foreach ( $tabs as $article_output ) {
+
+		$tab_slug = $article_output->get_tab_slug();
+		?>
+			<?php
+				$output .= '<article id="' . esc_attr( $html_library->get_id( $tab_slug ) ) . '">';
+				$output .= $article_output->get_function_callback();
+				$output .= '</article>';
+			?>
+
+			<?php
+
+	}
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo $output;
 	return \ob_get_clean();
 };

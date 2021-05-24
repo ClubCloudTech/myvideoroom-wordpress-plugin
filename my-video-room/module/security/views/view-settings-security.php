@@ -24,10 +24,10 @@ use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 return function() {
 	wp_enqueue_script( 'myvideoroom-outer-tabs' );
 	ob_start();
-
+	$page = require __DIR__ . '/../views/view-settings-securityheader.php';
+	echo $page();
 	?>
-		</div>
-		<div class="mvr-admin-page-wrap">
+		<div id="outer" class="mvr-admin-page-wrap">
 			<nav class="myvideoroom-nav-tab-wrapper">
 				<ul>
 					<li>
@@ -51,7 +51,7 @@ return function() {
 			</nav>
 			<br><br>
 				<div id="video-host-wrap" class="mvr-admin-page-wrap">
-					<div id="page4231">
+					<article id="page4231">
 						<p>
 						<?php
 						esc_html_e(
@@ -71,31 +71,31 @@ return function() {
 							echo $default_setting;
 						?>
 						</p>
-						</div>
-					<div id="page4312" >
-					<br>
-					<?php
-						esc_html_e(
-							'These are the enforced/mandatory room permissions. These settings will be used by the Room regardless of the User\'s preference.
-							To allow the settings to be overriden please use the Default Permissions tab.',
-							'my-video-room'
-						);
-					?>
-							<br>
-							<p>
-							<?php
-							$override_setting = Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
-								SiteDefaults::USER_ID_SITE_DEFAULTS,
-								SiteDefaults::ROOM_NAME_SITE_DEFAULT,
-								null,
-								'admin'
+						</article>
+						<article id="page4312" >
+						<br>
+						<?php
+							esc_html_e(
+								'These are the enforced/mandatory room permissions. These settings will be used by the Room regardless of the User\'s preference.
+								To allow the settings to be overriden please use the Default Permissions tab.',
+								'my-video-room'
 							);
-						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
-						echo $override_setting;
-							?>
-							</p>
-						</div>
-					<div id="page434">Content</div>
+						?>
+								<br>
+								<p>
+								<?php
+								$override_setting = Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
+									SiteDefaults::USER_ID_SITE_DEFAULTS,
+									SiteDefaults::ROOM_NAME_SITE_DEFAULT,
+									null,
+									'admin'
+								);
+							// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
+							echo $override_setting;
+								?>
+								</p>
+						</article>
+					<article id="page434">Content</article>
 				</div>
 
 		<?php

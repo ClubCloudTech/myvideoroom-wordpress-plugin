@@ -16,7 +16,7 @@ use MyVideoRoomPlugin\Module\Security\Security;
 /**
  * PageFilters - Security Filter Defaults for Renderblock Function.
  */
-class SecurityRoomHelpers  {
+class SecurityRoomHelpers {
 
 	/**
 	 * Render Security Admin Settings Page

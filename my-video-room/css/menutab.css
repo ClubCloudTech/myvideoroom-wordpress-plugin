@@ -1,3 +1,9 @@
+
+ul {
+	list-style: none;
+	padding: 0;
+	margin: 0!important;
+}
 #wpfooter {
 	position: sticky;
 	display: none;
@@ -57,6 +63,12 @@
 	background-color: white;
 	padding: 10px 10px 10px 10px;
 	border: 1px solid #c3c4c7;
+}
+
+.mvr-shortcode-tab-wrap {
+	border: 1px solid #c3c4c7;
+	border-top: none;
+	padding: 8px;
 }
 
 .mvr-nav-shortcode-outer-wrap-clean {
