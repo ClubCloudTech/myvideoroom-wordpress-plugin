@@ -21,15 +21,8 @@ return function (): string {
 
 	?>
 <div class="mvr-admin-page-wrap">
-	<h2>
-		<?php esc_html_e( 'Site Conference Center Settings', 'my-video-room' ); ?>
-	</h2>
-
-	<?php
-		// Activation/module.
-		Factory::get_instance( ModuleConfig::class )->module_activation_button( MVRSiteVideo::MODULE_SITE_VIDEO_ID );
-	?>
-
+	<h2><?php esc_html_e( 'Site Conference Center Settings', 'my-video-room' ); ?></h2>
+<?php Factory::get_instance( ModuleConfig::class )->module_activation_button( MVRSiteVideo::MODULE_SITE_VIDEO_ID ); ?>
 	<p>
 		<?php
 		esc_html_e(

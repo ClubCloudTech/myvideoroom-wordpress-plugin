@@ -31,6 +31,18 @@ ul.myvideoroom-outer-nav-tab-wrapper {
 	margin-bottom: 10px!important;
 }
 
+.mvr-icons-enabled {
+	font-size: 18px;
+	text-decoration: none;
+	color: green;
+}
+
+.mvr-icons-disabled {
+	font-size: 18px;
+	text-decoration: none;
+	color: red;
+}
+
 .mvr-user-image {
 	z-index: 1;
 	color: #fff;

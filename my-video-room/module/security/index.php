@@ -16,7 +16,7 @@ add_action(
 	function () {
 		Module::register(
 			Security::MODULE_SECURITY_NAME,
-			'Room Permissions and Hosts',
+			\esc_html__( 'Room Permissions and Hosts', 'myvideoroom' ),
 			array(
 				esc_html__(
 					'The Room Permissions and Hosts module allows users, to precisely control the type of access permissions they would like for their room. For example room owners can select anonymous/logged in users, specific site roles, disable rooms entirely, or work in conjunction with other modules (like groups and friends in Buddypress). The module also provides central enforcement and override capability which allows central control of specific room settings, availability and configuration.',

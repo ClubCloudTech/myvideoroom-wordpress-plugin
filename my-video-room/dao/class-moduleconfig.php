@@ -332,15 +332,17 @@ class ModuleConfig {
 
 		if ( $is_module_enabled ) {
 			$action      = self::ACTION_DISABLE;
-			$type        = 'positive';
-			$main_text   = __( 'Enabled', 'myvideoroom' );
-			$action_text = __( 'Disable module', 'myvideoroom' );
+			$type        = 'dashicons-plugins-checked';
+			$description = esc_html__( 'This scenario is currently enabled and its rooms are accepting meetings.', 'myvideoroom' );
+			$status      = 'mvr-icons-enabled';
+			$main_text   = __( 'Active', 'myvideoroom' );
 			$result      = true;
 		} else {
 			$action      = self::ACTION_ENABLE;
-			$type        = 'negative';
-			$main_text   = __( 'Disabled', 'myvideoroom' );
-			$action_text = __( 'Enable module', 'myvideoroom' );
+			$type        = 'dashicons-admin-plugins';
+			$description = esc_html__( 'This scenario is currently disabled and its rooms are offline', 'myvideoroom' );
+			$status      = 'mvr-icons-disabled';
+			$main_text   = __( 'Inactive', 'myvideoroom' );
 			$result      = false;
 		}
 
@@ -359,13 +361,13 @@ class ModuleConfig {
 		);
 
 		?>
-		<div style="display: flex; justify-content: space-between; width: 50%;">
-			<a href="<?php echo esc_url( $url ); ?>" class="button button-primary <?php echo esc_attr( $type ); ?>">
-				<?php echo esc_html( $main_text ); ?>
-			</a>
-			<a href="<?php echo esc_url( $sub_tab_url ); ?>" class="button button-primary">
-				<?php echo esc_html( $action_text ); ?>
-			</a>
+		<div>
+			<a href="<?php echo esc_url( $url ); ?>"
+			class="<?php echo esc_html( $status ); ?>"
+			title="<?php echo esc_html( $description ); ?>"
+			>
+			<i class="dashicons <?php echo esc_html( $type ) . ' ' . esc_html( $status ); ?>"></i>
+			<?php echo esc_html( $main_text ); ?></a>
 		</div>
 		<?php
 
