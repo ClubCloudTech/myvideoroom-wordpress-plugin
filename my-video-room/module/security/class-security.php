@@ -142,22 +142,24 @@ class Security {
 	 * @param  int   $room_id - the room identifier.
 	 * @return array - outbound menu.
 	 */
-	public function render_security_sitevideo_tabs( $input = array(), int $room_id ): array {
+	public function render_security_sitevideo_tabs( array $input, int $room_id ): array {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 		$room_name   = $room_object->room_name;
+
 		// Host Menu Tab - rendered in Security as its a module feature of Security.
 		$host_menu = new MenuTabDisplay(
 			esc_html__( 'Room Hosts', 'my-video-room' ),
 			'roomhosts',
 			fn() => Factory::get_instance( SecurityVideoPreference::class )
-			->choose_settings(
-				$room_id,
-				$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
-				null,
-				'roomhost'
-			)
+				->choose_settings(
+					$room_id,
+					$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
+					null,
+					'roomhost'
+				)
 		);
 		array_push( $input, $host_menu );
+
 		// Permissions Default Tab - rendered in Security as its a module feature of Security.
 		$base_menu = new MenuTabDisplay(
 			esc_html__( 'Room Permissions', 'my-video-room' ),
