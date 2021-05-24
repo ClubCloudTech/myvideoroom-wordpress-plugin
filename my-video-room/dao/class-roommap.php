@@ -7,7 +7,6 @@
 
 namespace MyVideoRoomPlugin\DAO;
 
-use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\SiteDefaults;
 
 /**
@@ -19,13 +18,6 @@ class RoomMap {
 	const PAGE_STATUS_EXISTS     = 'page-exists';
 	const PAGE_STATUS_NOT_EXISTS = 'page-not-exists';
 	const PAGE_STATUS_ORPHANED   = 'page-not-exists-but-has-reference';
-
-	/**
-	 * Get the cache key
-	 */
-	private function get_cache_group(): string {
-		return Plugin::PLUGIN_NAMESPACE . '_room_map';
-	}
 
 	/**
 	 * Get the table name for this DAO.
@@ -47,9 +39,7 @@ class RoomMap {
 	public function get_post_id_by_room_name( string $room_name ): ?int {
 		global $wpdb;
 
-		$cache_group = $this->get_cache_group() . '::' . __FUNCTION__;
-
-		$result = \wp_cache_get( $room_name, $cache_group );
+		$result = \wp_cache_get( $room_name, __METHOD__ );
 
 		if ( false === $result ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -67,7 +57,7 @@ class RoomMap {
 				$result = (int) $row->post_id;
 			}
 
-			\wp_cache_set( $room_name, $result, $cache_group );
+			\wp_cache_set( $room_name, $result, __METHOD__ );
 		}
 
 		return $result;
@@ -105,10 +95,10 @@ class RoomMap {
 			)
 		);
 
-		\wp_cache_delete( $room_name, $this->get_cache_group() . '::get_post_id_by_room_name' );
-		\wp_cache_delete( $room_type, $this->get_cache_group() . '::get_all_post_ids_of_rooms' );
-		\wp_cache_delete( $post_id, $this->get_cache_group() . '::get_room_info' );
-		\wp_cache_delete( '__ALL__', $this->get_cache_group() . '::get_all_post_ids_of_rooms' );
+		\wp_cache_delete( $room_name, __CLASS__ . '::get_post_id_by_room_name' );
+		\wp_cache_delete( $room_type, __CLASS__ . '::get_all_post_ids_of_rooms' );
+		\wp_cache_delete( $post_id, __CLASS__ . '::get_room_info' );
+		\wp_cache_delete( '__ALL__', __CLASS__ . '::get_all_post_ids_of_rooms' );
 
 		return $result;
 	}
@@ -123,9 +113,7 @@ class RoomMap {
 	public function get_room_info( int $post_id ): ?\stdClass {
 		global $wpdb;
 
-		$cache_group = $this->get_cache_group() . '::' . __FUNCTION__;
-
-		$result = \wp_cache_get( $post_id, $cache_group );
+		$result = \wp_cache_get( $post_id, __METHOD__ );
 
 		if ( false === $result ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -144,7 +132,7 @@ class RoomMap {
 				$result->id = (int) $result->post_id;
 			}
 
-			\wp_cache_set( $post_id, $result, $cache_group );
+			\wp_cache_set( $post_id, $result, __METHOD__ );
 		}
 
 		return $result;
@@ -182,8 +170,8 @@ class RoomMap {
 			)
 		);
 
-		\wp_cache_delete( $room_name, $this->get_cache_group() . '::get_post_id_by_room_name' );
-		\wp_cache_delete( $post_id, $this->get_cache_group() . '::get_room_info' );
+		\wp_cache_delete( $room_name, __CLASS__ . '::get_post_id_by_room_name' );
+		\wp_cache_delete( $post_id, __CLASS__ . '::get_room_info' );
 
 		return null;
 	}
@@ -228,10 +216,10 @@ class RoomMap {
 			)
 		);
 
-		\wp_cache_delete( $room_name, $this->get_cache_group() . '::get_post_id_by_room_name' );
-		\wp_cache_delete( $room_info->room_type, $this->get_cache_group() . '::get_all_post_ids_of_rooms' );
-		\wp_cache_delete( $post_id, $this->get_cache_group() . '::get_room_info' );
-		\wp_cache_delete( '__ALL__', $this->get_cache_group() . '::get_all_post_ids_of_rooms' );
+		\wp_cache_delete( $room_name, __CLASS__ . '::get_post_id_by_room_name' );
+		\wp_cache_delete( $room_info->room_type, __CLASS__ . '::get_all_post_ids_of_rooms' );
+		\wp_cache_delete( $post_id, __CLASS__ . '::get_room_info' );
+		\wp_cache_delete( '__ALL__', __CLASS__ . '::get_all_post_ids_of_rooms' );
 
 		return true;
 	}
@@ -274,15 +262,12 @@ class RoomMap {
 	public function get_all_post_ids_of_rooms( string $room_type = null ): array {
 		global $wpdb;
 
-		$table_name  = $wpdb->prefix . self::TABLE_NAME;
-		$cache_group = $this->get_cache_group() . '::' . __FUNCTION__;
-
 		$cache_key = $room_type;
 		if ( ! $room_type ) {
 			$cache_key = '__ALL__';
 		}
 
-		$result = \wp_cache_get( $cache_key, $cache_group );
+		$result = \wp_cache_get( $cache_key, __METHOD__ );
 
 		if ( false === $result ) {
 			if ( $room_type ) {
@@ -318,7 +303,7 @@ class RoomMap {
 				$rows
 			);
 
-			\wp_cache_set( $cache_key, $result, $cache_group );
+			\wp_cache_set( $cache_key, $result, __METHOD__ );
 		}
 
 		return $result;

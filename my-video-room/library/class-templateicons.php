@@ -30,7 +30,7 @@ class TemplateIcons {
 		}
 
 		$user_video_dao                 = Factory::get_instance( UserVideoPreferenceDAO::class );
-		$video_default_settings_applied = Factory::get_instance( UserVideoPreferenceDAO::class )->read( $user_id, $room_name );
+		$video_default_settings_applied = Factory::get_instance( UserVideoPreferenceDAO::class )->get_by_id( $user_id, $room_name );
 		$reception_enabled              = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
 		$floorplan_enabled              = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
 		$custom_video                   = $user_video_dao->read_user_video_settings( $user_id, $room_name, 'reception_video_enabled' );

@@ -19,6 +19,16 @@ class UserVideoPreference {
 	const TABLE_NAME = SiteDefaults::TABLE_NAME_USER_VIDEO_PREFERENCE;
 
 	/**
+	 * Get the table name for this DAO.
+	 *
+	 * @return string
+	 */
+	private function get_table_name(): string {
+		global $wpdb;
+		return $wpdb->prefix . self::TABLE_NAME;
+	}
+
+	/**
 	 * Save a User Video Preference into the database
 	 *
 	 * @param UserVideoPreferenceEntity $user_video_preference The video preference to save.
@@ -30,34 +40,33 @@ class UserVideoPreference {
 	public function create( UserVideoPreferenceEntity $user_video_preference ): ?UserVideoPreferenceEntity {
 		global $wpdb;
 
-		/*
 		$cache_key = $this->create_cache_key(
 			$user_video_preference->get_user_id(),
 			$user_video_preference->get_room_name()
 		);
-		*/
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$result = $wpdb->insert(
-			$wpdb->prefix . self::TABLE_NAME,
+			$this->get_table_name(),
 			array(
 				'user_id'                 => $user_video_preference->get_user_id(),
 				'room_name'               => $user_video_preference->get_room_name(),
 				'layout_id'               => $user_video_preference->get_layout_id(),
 				'reception_id'            => $user_video_preference->get_reception_id(),
 				'reception_enabled'       => $user_video_preference->is_reception_enabled(),
-				'reception_video_enabled' => $user_video_preference->get_reception_video_enabled_setting(),
+				'reception_video_enabled' => $user_video_preference->is_reception_video_enabled(),
 				'reception_video_url'     => $user_video_preference->get_reception_video_url_setting(),
-				'show_floorplan'          => $user_video_preference->get_show_floorplan_setting(),
+				'show_floorplan'          => $user_video_preference->is_floorplan_enabled(),
 			)
 		);
+
+		\wp_cache_set( $cache_key, $user_video_preference->to_json(), implode( '::', array( __CLASS__, 'get_by_id' ) ) );
+		\wp_cache_delete( $user_video_preference->get_user_id(), implode( '::', array( __CLASS__, 'get_by_user_id' ) ) );
 
 		if ( ! $result ) {
 			return null;
 		}
 
-		// Removing cache as conflict happening in rooms - to test.
-		// wp_cache_set( $cache_key, $user_video_preference );.
 		return $user_video_preference;
 	}
 
@@ -69,35 +78,33 @@ class UserVideoPreference {
 	 *
 	 * @return UserVideoPreferenceEntity|null
 	 */
-	public function read( int $user_id, string $room_name ): ?UserVideoPreferenceEntity {
+	public function get_by_id( int $user_id, string $room_name ): ?UserVideoPreferenceEntity {
 		global $wpdb;
 
-		/*
-		$cache_key     = $this->create_cache_key( $user_id, $room_name );
-		$cached_result = wp_cache_get( $cache_key );
+		$cache_key = $this->create_cache_key(
+			$user_id,
+			$room_name
+		);
 
-		if ( $cached_result && $cached_result instanceof UserVideoPreferenceEntity ) {
-			return $cached_result;
+		$result = \wp_cache_get( $cache_key, __METHOD__ );
+
+		if ( false !== $result ) {
+			return UserVideoPreferenceEntity::from_json( $result );
 		}
-		*/
 
-		$raw_sql = '
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				'
 				SELECT user_id, room_name, layout_id, reception_id, reception_enabled, reception_video_enabled, reception_video_url, show_floorplan
-				FROM ' . $wpdb->prefix . self::TABLE_NAME . '
+				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
 				WHERE user_id = %d AND room_name = %s;
-			';
-
-		$prepared_query = $wpdb->prepare(
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
+			',
 				$user_id,
 				$room_name,
 			)
 		);
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$row    = $wpdb->get_row( $prepared_query );
 		$result = null;
 
 		if ( $row ) {
@@ -111,10 +118,50 @@ class UserVideoPreference {
 				$row->reception_video_url,
 				(bool) $row->show_floorplan,
 			);
+
+			wp_cache_set( $cache_key, __METHOD__, $result->to_json() );
+		} else {
+			wp_cache_set( $cache_key, __METHOD__, null );
 		}
 
-		// wp_cache_set( $cache_key, $result );.
 		return $result;
+	}
+
+	/**
+	 * Get a User Video Preference from the database
+	 *
+	 * @param int $user_id The user id.
+	 *
+	 * @return UserVideoPreferenceEntity[]
+	 */
+	public function get_by_user_id( int $user_id ): array {
+		global $wpdb;
+
+		$results = array();
+
+		$room_names = \wp_cache_get( $user_id, __METHOD__ );
+
+		if ( false === $room_names ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$room_names = $wpdb->get_col(
+				$wpdb->prepare(
+					'
+						SELECT room_name
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
+						WHERE user_id = %d;
+					',
+					$user_id,
+				)
+			);
+
+			\wp_cache_set( $user_id, __METHOD__, $room_names );
+		}
+
+		foreach ( $room_names as $room_name ) {
+			$results[] = $this->get_by_id( $user_id, $room_name );
+		}
+
+		return $results;
 	}
 
 	/**
@@ -128,25 +175,25 @@ class UserVideoPreference {
 	 */
 	public function update( UserVideoPreferenceEntity $user_video_preference ): ?UserVideoPreferenceEntity {
 		global $wpdb;
-		/*
+
 		$cache_key = $this->create_cache_key(
 			$user_video_preference->get_user_id(),
 			$user_video_preference->get_room_name()
 		);
-		*/
 
 		$wpdb->show_errors();
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$result = $wpdb->update(
-			$wpdb->prefix . self::TABLE_NAME,
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->update(
+			$this->get_table_name(),
 			array(
+				'user_id'                 => $user_video_preference->get_user_id(),
 				'layout_id'               => $user_video_preference->get_layout_id(),
 				'reception_id'            => $user_video_preference->get_reception_id(),
 				'reception_enabled'       => $user_video_preference->is_reception_enabled(),
-				'reception_video_enabled' => $user_video_preference->get_reception_video_enabled_setting(),
+				'reception_video_enabled' => $user_video_preference->is_reception_video_enabled(),
 				'reception_video_url'     => $user_video_preference->get_reception_video_url_setting(),
-				'show_floorplan'          => $user_video_preference->get_show_floorplan_setting(),
+				'show_floorplan'          => $user_video_preference->is_floorplan_enabled(),
 			),
 			array(
 				'user_id'   => $user_video_preference->get_user_id(),
@@ -154,7 +201,9 @@ class UserVideoPreference {
 			)
 		);
 
-		// wp_cache_set( $cache_key, $user_video_preference );.
+		\wp_cache_set( $cache_key, $user_video_preference->to_json(), implode( '::', array( __CLASS__, 'get_by_id' ) ) );
+		\wp_cache_delete( $user_video_preference->get_user_id(), implode( '::', array( __CLASS__, 'get_by_user_id' ) ) );
+
 		return $user_video_preference;
 	}
 
@@ -170,27 +219,22 @@ class UserVideoPreference {
 	public function delete( UserVideoPreferenceEntity $user_video_preference ) {
 		global $wpdb;
 
-		/*
 		$cache_key = $this->create_cache_key(
 			$user_video_preference->get_user_id(),
 			$user_video_preference->get_room_name()
 		);
-		*/
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$result = $wpdb->delete(
-			$wpdb->prefix . self::TABLE_NAME,
+		$wpdb->delete(
+			$this->get_table_name(),
 			array(
 				'user_id'   => $user_video_preference->get_user_id(),
 				'room_name' => $user_video_preference->get_room_name(),
 			)
 		);
 
-		if ( $result ) {
-			throw new \Exception();
-		}
-
-		// wp_cache_delete( $cache_key );.
+		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_by_id' ) ) );
+		\wp_cache_delete( $user_video_preference->get_user_id(), implode( '::', array( __CLASS__, 'get_by_user_id' ) ) );
 
 		return null;
 	}
@@ -199,35 +243,20 @@ class UserVideoPreference {
 	 * Update Database Post ID.
 	 * This function updates the Post ID of the User Entity Table so that new pages can pick up settings of deleted pages.
 	 *
-	 * @param  int $new_post_id - new post_id to update preference table with.
-	 * @param  int $old_post_id - the old post that was deleted.
+	 * @param  int $new_user_id New post_id to update preference table with.
+	 * @param  int $old_user_id The old post that was deleted.
 	 *
-	 * @return bool|int
+	 * @return bool
 	 */
-	public function update_post_id( int $new_post_id, int $old_post_id ) {
-		global $wpdb;
-		/*
-		$cache_key = $this->create_cache_key(
-			$user_video_preference->get_user_id(),
-			$user_video_preference->get_room_name()
-		);
-		*/
+	public function update_user_id( int $new_user_id, int $old_user_id ): bool {
+		$preferences = $this->get_by_user_id( $old_user_id );
 
-		$wpdb->show_errors();
+		foreach ( $preferences as $preference ) {
+			$preference->set_user_id( $new_user_id );
+			$this->update( $preference );
+		}
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-		$result = $wpdb->update(
-			$wpdb->prefix . self::TABLE_NAME,
-			array(
-				'user_id' => $new_post_id,
-			),
-			array(
-				'user_id' => $old_post_id,
-			)
-		);
-
-		// wp_cache_set( $cache_key, $user_video_preference );.
-		return $result;
+		return true;
 	}
 
 	// ---
@@ -241,102 +270,44 @@ class UserVideoPreference {
 	 * @return string
 	 */
 	private function create_cache_key( int $user_id, string $room_name ): string {
-		return self::class . "::read:user_id:${user_id}:room_name:${room_name}:1";
+		return "user_id:${user_id}:room_name:${room_name}:1";
 	}
 
 	/**
 	 * Get a Just Preference Data from the database
 	 * Returns layout ID, Reception ID, or Reception Enabled Status.
 	 *
+	 * @deprecated - use get_by_id instead.
+	 *
 	 * @param int    $user_id     The user id.
 	 * @param string $room_name   The room name.
 	 * @param string $return_type The return type.
 	 *
-	 * @return string|bool
+	 * @return string|bool|null
 	 */
 	public function read_user_video_settings( int $user_id, string $room_name, string $return_type ) {
-		global $wpdb;
+		$preference = $this->get_by_id( $user_id, $room_name );
 
-		$raw_sql = '
-			SELECT user_id, room_name, layout_id, reception_id, reception_enabled, reception_video_enabled, reception_video_url, show_floorplan
-			FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-			WHERE user_id = %d AND room_name = %s;
-		';
-
-		$prepared_query = $wpdb->prepare(
-            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$user_id,
-				$room_name,
-			)
-		);
-
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$row = $wpdb->get_row( $prepared_query );
-
-		if ( ! $row ) {
+		if ( ! $preference ) {
 			return null;
 		}
 
 		// Return Data.
 		switch ( $return_type ) {
 			case 'layout_id':
-				return $row->layout_id;
+				return $preference->get_layout_id();
 			case 'reception_id':
-				return $row->reception_id;
+				return $preference->get_reception_id();
 			case 'reception_enabled':
-				return (bool) $row->reception_enabled;
-
+				return $preference->is_reception_enabled();
 			case 'reception_video_enabled':
-				return (bool) $row->reception_video_enabled;
-
+				return $preference->is_reception_video_enabled();
 			case 'reception_video_url':
-				return (bool) $row->reception_video_url;
-
+				return $preference->get_reception_video_url_setting();
 			case 'show_floorplan':
-				return (bool) $row->show_floorplan;
+				return $preference->is_floorplan_enabled();
+			default:
+				return null;
 		}
-	}
-
-	/**
-	 * Get Preference Data from the database
-	 * Returns layout ID, Reception ID, or Reception Enabled Status.
-	 *
-	 * @param int    $user_id       The user id.
-	 * @param string $room_name     The room name.
-	 * @param string $return_type   The room name.
-	 *
-	 * @return string|null
-	 */
-	public function read_user_settings( int $user_id, string $room_name, string $return_type ) {
-		global $wpdb;
-		if ( ! $return_type ) {
-			return null;
-		}
-
-		$raw_sql = '
-			SELECT user_id, room_name, ' . $return_type . '
-			FROM ' . $wpdb->prefix . self::TABLE_NAME . '
-			WHERE user_id = %d AND room_name = %s;
-		';
-
-		$prepared_query = $wpdb->prepare(
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-			$raw_sql,
-			array(
-				$user_id,
-				$room_name,
-			)
-		);
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$row = $wpdb->get_row( $prepared_query );
-
-		if ( $row && $row->$return_type ) {
-			return $row->$return_type;
-		}
-
-		return null;
 	}
 }

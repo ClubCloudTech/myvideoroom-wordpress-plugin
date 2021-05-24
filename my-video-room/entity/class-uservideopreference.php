@@ -102,12 +102,71 @@ class UserVideoPreference {
 	}
 
 	/**
+	 * Create from a JSON object
+	 *
+	 * @param string $json The JSON representation of the object.
+	 *
+	 * @return ?\MyVideoRoomPlugin\Entity\UserVideoPreference
+	 */
+	public static function from_json( string $json ): ?self {
+		$data = json_decode( $json );
+
+		if ( $data ) {
+			return new self(
+				$data->user_id,
+				$data->room_name,
+				$data->layout_id,
+				$data->reception_id,
+				$data->reception_enabled,
+				$data->reception_video_enabled,
+				$data->reception_video_url,
+				$data->show_floorplan,
+			);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Convert to JSON
+	 * Used for caching.
+	 *
+	 * @return string
+	 */
+	public function to_json(): string {
+		return wp_json_encode(
+			array(
+				'user_id'                 => $this->user_id,
+				'room_name'               => $this->room_name,
+				'layout_id'               => $this->layout_id,
+				'reception_id'            => $this->reception_id,
+				'reception_enabled'       => $this->reception_enabled,
+				'reception_video_enabled' => $this->reception_video_enabled,
+				'reception_video_url'     => $this->reception_video_url,
+				'show_floorplan'          => $this->show_floorplan,
+			)
+		);
+	}
+
+	/**
 	 * Gets User ID.
 	 *
 	 * @return int
 	 */
 	public function get_user_id(): int {
 		return $this->user_id;
+	}
+
+	/**
+	 * Set the user ID
+	 *
+	 * @param int $user_id The new user id.
+	 *
+	 * @return $this
+	 */
+	public function set_user_id( int $user_id ): self {
+		$this->user_id = $user_id;
+		return $this;
 	}
 
 	/**
@@ -186,7 +245,7 @@ class UserVideoPreference {
 	 *
 	 * @return bool
 	 */
-	public function get_reception_video_enabled_setting(): bool {
+	public function is_reception_video_enabled(): bool {
 		return $this->reception_video_enabled;
 	}
 
@@ -228,7 +287,7 @@ class UserVideoPreference {
 	 *
 	 * @return bool
 	 */
-	public function get_show_floorplan_setting(): bool {
+	public function is_floorplan_enabled(): bool {
 		return $this->show_floorplan;
 	}
 

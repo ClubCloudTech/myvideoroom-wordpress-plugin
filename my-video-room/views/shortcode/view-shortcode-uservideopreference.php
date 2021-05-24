@@ -107,7 +107,7 @@ return function (
 						class="myvideoroom_user_show_floorplan_preference"
 						name="myvideoroom_user_show_floorplan_preference"
 						id="myvideoroom_user_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
-						<?php echo $current_user_setting && $current_user_setting->get_show_floorplan_setting() ? 'checked' : ''; ?>
+						<?php echo $current_user_setting && $current_user_setting->is_floorplan_enabled() ? 'checked' : ''; ?>
 					/>
 					<p class="mvr-preferences-paragraph">
 						<?php
@@ -222,7 +222,7 @@ return function (
 						class="myvideoroom_user_reception_video_enabled_preference"
 						name="myvideoroom_user_reception_video_enabled_preference"
 						id="myvideoroom_user_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-						<?php echo $current_user_setting && $current_user_setting->get_reception_video_enabled_setting() ? 'checked' : ''; ?>
+						<?php echo $current_user_setting && $current_user_setting->is_reception_video_enabled() ? 'checked' : ''; ?>
 					/>
 <br>
 					<label for="myvideoroom_user_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>" class="mvr-preferences-paragraph">
@@ -233,7 +233,7 @@ return function (
 								id="myvideoroom_user_reception_waiting_video_url"
 								name="myvideoroom_user_reception_waiting_video_url"
 								class="mvr-roles-multiselect mvr-select-box"
-								value="<?php /* phpcs:ignore -- is escaped properly.*/ echo trim( esc_url_raw( Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_settings( $user_id, $room_name, 'reception_video_url' ) ) ); ?>">
+								value="<?php /* phpcs:ignore -- is escaped properly.*/ echo trim( esc_url_raw( Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'reception_video_url' ) ) ); ?>">
 
 					<br><br>
 					<p class="mvr-preferences-paragraph">
