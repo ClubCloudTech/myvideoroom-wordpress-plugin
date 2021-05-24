@@ -46,9 +46,23 @@ class ShortcodeDocuments {
 			<td style="width:75%; text-align: left;">
 			<?php
 			echo esc_html__(
-				'Returns a Variety of useful Information about a room that you can place in your pages<br>Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- www.c.com/jones has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room Type (url) - returns URL of room. <br>Usage - <b>[getvideo_room_info room="bookings-center" type = "url"]</b> will return the URL of the Bookings Center]',
+				'Returns a Variety of useful Information about a room that you can place in your pages',
 				'my-video-room'
 			);
+			?>
+			<br />
+			<?php
+				echo esc_html__(
+					'Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- www.c.com/jones has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room Type (url) - returns URL of room. <br>Usage - ',
+					'my-video-room'
+				);
+			?>
+			<br />
+			<?php
+				echo esc_html__(
+					'<strong>[getvideo_room_info room="bookings-center" type = "url"]</strong> will return the URL of the Bookings Center]',
+					'my-video-room'
+				);
 			?>
 			</td>
 			</tr>
@@ -78,9 +92,25 @@ class ShortcodeDocuments {
 				<tr>
 				<td style="width:25%; text-align: left;"><h2>[ccbpboardroomswitch]</h2></td>
 				<td style="width:75%; text-align: left;">
+				<p>
 				<?php
 				esc_html_e(
-					'This Shortcode is designed to be used in BuddyPress profile pages. It is not available outside of the BuddyPress profile loop environment. It handles everything in the context of whose profile you are viewing. If you are viewing your own profile, then you get a host video experience, if you are looking at someone elses profile (or are signed out) then the guest page for that profile is rendered. The room that is rendered is the same as the Personal Video Room - and seamlessly works with a Personal Video Room used in a non BuddyPress environment. <p>There are no Guest Shortcodes needed, as normal room shortcodes work correctly for users who are signed out and thus not in the BuddyPress loop. Normal meeting invites, links, guest reception settings are available for rooms whose hosts enter via BuddyPress.',
+					'This Shortcode is designed to be used in BuddyPress profile pages. It is not
+					available outside of the BuddyPress profile loop environment. It handles everything in the context of whose profile you are viewing
+					If you are viewing your own profile, then you get a host video experience, if you are looking at someone elses profile (or are signed out)
+					then the guest page for that profile is rendered. The room that is rendered is the same as the Personal Video Room - and seamlessly
+					works with a Personal Video Room used in a non BuddyPress environment.
+					',
+					'my-video-room'
+				);
+				?>
+				</p>
+				<p>
+				<?php
+				echo esc_html__(
+					'There are no Guest Shortcodes needed, as normal room shortcodes work correctly for users who are signed out and thus
+					not in the BuddyPress loop. Normal meeting invites, links, guest reception settings are available for rooms whose hosts
+					enter via BuddyPress.',
 					'my-video-room'
 				);
 				?>
@@ -201,7 +231,7 @@ class ShortcodeDocuments {
 			<td style="width:75%; text-align: left;">
 			<?php
 			esc_html_e(
-				'This shortcode will render only the <strong>settings </strong>page of the <strong>Host</strong>. This is useful if you just want to edit the room settings without launching the full room. This shortcode determines its host from the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will return blank. <strong>Please note</strong> admin settings for personal rooms are shared between BuddyPress Profile Rooms and Personal Video Rooms as they are effectively the same room, with multiple entrances ',
+				'This shortcode will render only the <strong>settings</strong> page of the <strong>Host</strong>. This is useful if you just want to edit the room settings without launching the full room. This shortcode determines its host from the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will return blank. <strong>Please note</strong> admin settings for personal rooms are shared between BuddyPress Profile Rooms and Personal Video Rooms as they are effectively the same room, with multiple entrances ',
 				'my-video-room'
 			);
 			?>
