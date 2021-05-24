@@ -53,13 +53,20 @@ class ShortcodeDocuments {
 			<br />
 
 			<?php
-			\sprintf(
+			\printf(
 				/* translators: %s is the site URL */
 				esc_html__(
-					'Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- %s has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room Type (url) - returns URL of room. <br>Usage - ',
+					'Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- %s has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room Type (url) - returns URL of room.',
 					'my-video-room'
 				),
 				get_site_url() . '/jones'
+			);
+			?>
+			<br />
+			<?php
+			echo esc_html__(
+				'Usage -',
+				'my-video-room'
 			);
 			?>
 			<br />
