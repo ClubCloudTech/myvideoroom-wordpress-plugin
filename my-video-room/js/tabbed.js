@@ -9,8 +9,8 @@
 	/**
 	 * Hide all non active pages
 	 */
-	var hide_all_non_active = function () {
-		var $tabs = $( '.myvideoroom-nav-tab-wrapper a:not(.nav-tab-active)' );
+	var hide_all_non_active = function ( $nav_section ) {
+		var $tabs = $( 'a.nav-tab:not(.nav-tab-active)', $nav_section );
 
 		$tabs.each(
 			function () {
@@ -26,27 +26,35 @@
 	 * @param {JQuery} $parent
 	 */
 	var init = function ( $parent ) {
-		hide_all_non_active();
+		var $tabbed_sections = $( '.myvideoroom-nav-tab-wrapper', $parent );
 
-		var $tabs = $( '.myvideoroom-nav-tab-wrapper a', $parent );
-		$tabs.each(
+		$tabbed_sections.each(
 			function () {
-				var $tab = $( this );
-				$tab.on(
-					'click',
-					function (event) {
-						$tabs.removeClass( 'nav-tab-active' );
-						hide_all_non_active();
+				var $nav_section = $( this );
+				hide_all_non_active( $nav_section );
 
-						$tab.addClass( 'nav-tab-active' );
-						$( $tab.attr( 'href' ) ).show();
+				var $tabs = $( 'a.nav-tab', $nav_section );
+				$tabs.each(
+					function () {
+						var $tab = $( this );
+						$tab.on(
+							'click',
+							function (event) {
+								$tabs.removeClass( 'nav-tab-active' );
+								hide_all_non_active( $nav_section );
 
-						event.preventDefault();
-						return false;
+								$tab.addClass( 'nav-tab-active' );
+								$( $tab.attr( 'href' ) ).show();
+
+								event.preventDefault();
+								return false;
+							}
+						);
 					}
 				);
 			}
 		);
+
 	}
 
 	init( $( document ) );

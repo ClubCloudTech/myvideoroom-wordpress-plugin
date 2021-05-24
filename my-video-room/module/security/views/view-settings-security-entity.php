@@ -18,16 +18,15 @@ return function (): string {
 	wp_enqueue_style( 'myvideoroom-menutab-header' );
 	ob_start();
 
-	if ( null !== ( sanitize_text_field( wp_unslash( $_GET['id'] ) ) ) ) {
-		//phpcs:ignore --WordPress.Security.NonceVerification.Recommended . Its a superglobal not user input.
-		$room_id_string = esc_textarea( wp_unslash( $_GET['id'] ) );
-		$room_id        = intval( $room_id_string );
+	$http_get_library = Factory::get_instance( \MyVideoRoomPlugin\Library\HttpGet::class );
+	$room_id          = $http_get_library->get_integer_parameter( 'id' );
 
-	} else {
+	if ( ! $room_id ) {
 		echo 'No Room ID Provided - exiting';
 		wp_safe_redirect( get_site_url() );
 		exit;
 	}
+
 	$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 	$room_name   = $room_object->room_name . Security::MULTI_ROOM_HOST_SUFFIX;
 	if ( ! $room_name ) {
