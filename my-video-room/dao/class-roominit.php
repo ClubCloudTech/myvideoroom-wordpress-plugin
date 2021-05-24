@@ -33,7 +33,7 @@ class RoomInit {
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 
 		// Check Exists.
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			$user_id,
 			$room_name
 		);

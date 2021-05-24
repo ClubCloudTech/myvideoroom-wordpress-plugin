@@ -35,7 +35,7 @@ class VideoHelpers extends Shortcode {
 	public function get_videoroom_template( int $user_id, string $room_name, bool $multi_owner = false ): ?string {
 		// First try the User's Value.
 		$video_preference_dao = factory::get_instance( UserVideoPreferenceDao::class );
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			$user_id,
 			$room_name
 		);
@@ -45,7 +45,7 @@ class VideoHelpers extends Shortcode {
 		}
 		// Now Try the Category Preference.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			$room_name
 		);
@@ -56,7 +56,7 @@ class VideoHelpers extends Shortcode {
 		// Multi-Owner Case in SiteVideo.
 		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
-			$current_user_setting = $video_preference_dao->read(
+			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
 				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
@@ -67,7 +67,7 @@ class VideoHelpers extends Shortcode {
 
 		// Now Try the Main Site Default.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
@@ -92,7 +92,7 @@ class VideoHelpers extends Shortcode {
 	public function get_video_reception_url( int $user_id, string $room_name, bool $multi_owner = false ): ?string {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			$user_id,
 			$room_name
 		);
@@ -102,7 +102,7 @@ class VideoHelpers extends Shortcode {
 		}
 		// Now Try the Category Preference.
 
-			$current_user_setting = $video_preference_dao->read(
+			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
 				$room_name
 			);
@@ -113,7 +113,7 @@ class VideoHelpers extends Shortcode {
 		// Multi-Owner Case in SiteVideo.
 		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
-			$current_user_setting = $video_preference_dao->read(
+			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
 				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
@@ -123,7 +123,7 @@ class VideoHelpers extends Shortcode {
 		}
 		// Now Try the Main Site Default.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
@@ -149,45 +149,45 @@ class VideoHelpers extends Shortcode {
 	public function get_video_reception_state( int $user_id, string $room_name, bool $multi_owner = false ): ?bool {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			$user_id,
 			$room_name
 		);
 
 		if ( $current_user_setting ) {
-			return $current_user_setting->get_reception_video_enabled_setting();
+			return $current_user_setting->is_reception_video_enabled();
 		}
 		// Now Try the Category Preference.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			$room_name
 		);
 
 		if ( $current_user_setting ) {
-			return $current_user_setting->get_reception_video_enabled_setting();
+			return $current_user_setting->is_reception_video_enabled();
 		}
 
 		// Multi-Owner Case in SiteVideo.
 		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
-			$current_user_setting = $video_preference_dao->read(
+			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
 				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
-			if ( $current_user_setting && $current_user_setting->get_reception_video_enabled_setting() ) {
-				return $current_user_setting->get_reception_video_enabled_setting();
+			if ( $current_user_setting && $current_user_setting->is_reception_video_enabled() ) {
+				return $current_user_setting->is_reception_video_enabled();
 			}
 		}
 		// Now Try the Main Site Default.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
 
 		if ( $current_user_setting ) {
-			return $current_user_setting->get_reception_video_enabled_setting();
+			return $current_user_setting->is_reception_video_enabled();
 		} else {
 			return null;
 		}
@@ -206,7 +206,7 @@ class VideoHelpers extends Shortcode {
 	public function get_reception_template( int $user_id, string $room_name, bool $multi_owner = false ): ?string {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			$user_id,
 			$room_name
 		);
@@ -216,7 +216,7 @@ class VideoHelpers extends Shortcode {
 		}
 		// Now Try the Category Preference.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			$room_name
 		);
@@ -227,7 +227,7 @@ class VideoHelpers extends Shortcode {
 		// Multi-Owner Case in SiteVideo.
 		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
-			$current_user_setting = $video_preference_dao->read(
+			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
 				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
@@ -237,7 +237,7 @@ class VideoHelpers extends Shortcode {
 		}
 		// Now Try the Main Site Default.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
@@ -261,7 +261,7 @@ class VideoHelpers extends Shortcode {
 	public function get_enable_reception_state( int $user_id, string $room_name, bool $multi_owner = false ): ?bool {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			$user_id,
 			$room_name
 		);
@@ -271,7 +271,7 @@ class VideoHelpers extends Shortcode {
 		}
 		// Now Try the Category Preference.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			$room_name
 		);
@@ -281,7 +281,7 @@ class VideoHelpers extends Shortcode {
 		// Multi-Owner Case in SiteVideo.
 		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
-			$current_user_setting = $video_preference_dao->read(
+			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
 				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
@@ -291,7 +291,7 @@ class VideoHelpers extends Shortcode {
 		}
 		// Now Try the Main Site Default.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
@@ -316,45 +316,45 @@ class VideoHelpers extends Shortcode {
 	public function get_show_floorplan( int $user_id, string $room_name, bool $multi_owner = false ): ?bool {
 		// First try the User's Value.
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			$user_id,
 			$room_name
 		);
 
 		if ( $current_user_setting ) {
-			return $current_user_setting->get_show_floorplan_setting();
+			return $current_user_setting->is_floorplan_enabled();
 		}
 		// Now Try the Category Preference.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			$room_name
 		);
 
 		if ( $current_user_setting ) {
-			return $current_user_setting->get_show_floorplan_setting();
+			return $current_user_setting->is_floorplan_enabled();
 		}
 
 		// Multi-Owner Case in SiteVideo.
 		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
-			$current_user_setting = $video_preference_dao->read(
+			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
 				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
-			if ( $current_user_setting && $current_user_setting->get_show_floorplan_setting() ) {
-				return $current_user_setting->get_show_floorplan_setting();
+			if ( $current_user_setting && $current_user_setting->is_floorplan_enabled() ) {
+				return $current_user_setting->is_floorplan_enabled();
 			}
 		}
 		// Now Try the Main Site Default.
 
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
 
 		if ( $current_user_setting ) {
-			return $current_user_setting->get_show_floorplan_setting();
+			return $current_user_setting->is_floorplan_enabled();
 		} else {
 			return null;
 		}

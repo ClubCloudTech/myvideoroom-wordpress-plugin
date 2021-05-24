@@ -111,7 +111,7 @@ class RoomAdmin extends Shortcode {
 		wp_update_post( $post_content );
 		if ( $old_post_id ) {
 			// Update Database References to New Post IDs to ensure Room Permissions and Settings stay intact with New Pages.
-			Factory::get_instance( UserVideoPreferenceDao::class )->update_post_id( $post_id, $old_post_id );
+			Factory::get_instance( UserVideoPreferenceDao::class )->update_user_id( $post_id, $old_post_id );
 
 			$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SECURITY_ID );
 			if ( $security_enabled ) {
@@ -137,7 +137,7 @@ class RoomAdmin extends Shortcode {
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 
 		// Check Exists.
-		$current_user_setting = $video_preference_dao->read(
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
