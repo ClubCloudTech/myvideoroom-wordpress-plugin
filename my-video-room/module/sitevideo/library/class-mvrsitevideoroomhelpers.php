@@ -227,7 +227,7 @@ class MVRSiteVideoRoomHelpers {
 	 * @return array
 	 */
 	private function get_rooms(): array {
-		$available_rooms = Factory::get_instance( RoomMap::class )->get_room_list();
+		$available_rooms = Factory::get_instance( RoomMap::class )->get_all_post_ids_of_rooms();
 
 		return array_map(
 			function ( $room_id ) {

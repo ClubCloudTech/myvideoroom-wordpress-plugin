@@ -271,7 +271,7 @@ class ModuleConfig {
 		}
 
 		// First Check Database for Room and Post ID - return No if blank.
-		$post_id_check = Factory::get_instance( RoomMap::class )->read( $room_name );
+		$post_id_check = Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
 		if ( ! $post_id_check ) {
 			return self::PAGE_STATUS_NOT_EXISTS;
 		}
