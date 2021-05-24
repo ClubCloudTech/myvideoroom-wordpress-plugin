@@ -139,7 +139,7 @@ class ModuleConfig {
 	 *
 	 * @return string
 	 */
-	public function get_module_admin_path( string $module_name ): string {
+	public function get_module_admin_path( string $module_name ): ?string {
 		global $wpdb;
 
 		$found  = false;
@@ -159,7 +159,7 @@ class ModuleConfig {
 			);
 
 			if ( $row ) {
-				$result = $row->module_enabled;
+				$result = $row->module_admin_path;
 			}
 
 			\wp_cache_set( $module_name, $result, __METHOD__ );
