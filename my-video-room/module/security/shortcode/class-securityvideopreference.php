@@ -60,8 +60,7 @@ class SecurityVideoPreference extends Shortcode {
 
 		if ( $http_post_library->is_post_request( 'update_security_video_preference' ) ) {
 			if ( ! $http_post_library->is_nonce_valid( 'update_security_video_preference' ) ) {
-				// @TODO - FIX ME/HANDLE ME/...
-				throw new \Exception( 'Invalid nonce' );
+				return;
 			}
 
 			$room_name = $http_post_library->get_string_parameter( 'room_name' );

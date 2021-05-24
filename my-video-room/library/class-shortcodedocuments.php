@@ -67,7 +67,7 @@ class ShortcodeDocuments {
 						'Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- %s has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room Type (url) - returns URL of room.',
 						'my-video-room'
 					),
-					get_site_url() . '/jones'
+					esc_url_raw( get_site_url() . '/jones' )
 				);
 			?>
 			<br />
