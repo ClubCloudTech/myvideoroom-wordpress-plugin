@@ -214,13 +214,22 @@ class PageFilters extends Shortcode {
 			return false;
 		}
 		// Get List of Allowed/Blocked Roles from DB.
-		if ( ! $does_room_record_exist ) {
-			$allowed_db_roles_configuration = Factory::get_instance( SecurityVideoPreferenceDAO::class )
-				->read_db_wordpress_roles( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE, 'allowed_roles' );
 
+		if ( ! $does_room_record_exist ) {
+			$preference = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id(
+				SiteDefaults::USER_ID_SITE_DEFAULTS,
+				Security::PERMISSIONS_TABLE
+			);
 		} else {
-			$allowed_db_roles_configuration = Factory::get_instance( SecurityVideoPreferenceDAO::class )
-				->read_db_wordpress_roles( $owner_id, $room_name, 'allowed_roles' );
+			$preference = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id(
+				$owner_id,
+				$room_name
+			);
+		}
+
+		$allowed_db_roles_configuration = array();
+		if ( $preference ) {
+			$allowed_db_roles_configuration = $preference->get_allowed_roles_array();
 		}
 
 		if ( ( ! $allowed_db_roles_configuration ) && ( ! $allow_to_block_switch ) ) {
@@ -309,13 +318,21 @@ class PageFilters extends Shortcode {
 			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
 		}
 
-		// Get List of Allowed/Blocked Roles from DB.
 		if ( ! $does_room_record_exist ) {
-			$allowed_db_roles_configuration = Factory::get_instance( SecurityVideoPreferenceDAO::class )
-				->read_db_wordpress_roles( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE, 'allowed_roles' );
+			$preference = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id(
+				SiteDefaults::USER_ID_SITE_DEFAULTS,
+				Security::PERMISSIONS_TABLE
+			);
 		} else {
-			$allowed_db_roles_configuration = Factory::get_instance( SecurityVideoPreferenceDAO::class )
-				->read_db_wordpress_roles( $owner_id, $room_name, 'allowed_roles' );
+			$preference = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id(
+				$owner_id,
+				$room_name
+			);
+		}
+
+		$allowed_db_roles_configuration = array();
+		if ( $preference ) {
+			$allowed_db_roles_configuration = $preference->get_allowed_roles_array();
 		}
 
 		if ( ( ! $allowed_db_roles_configuration ) && ( ! $allow_to_block_switch ) ) {
