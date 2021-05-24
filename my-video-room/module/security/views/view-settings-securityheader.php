@@ -24,12 +24,12 @@ return function() {
 	wp_enqueue_script( 'myvideoroom-outer-tabs' );
 	ob_start();
 	?>
-		<div class="mvr-admin-page-wrap">
-		<h1><?php esc_html_e( 'Room Permissions Control', 'my-video-room' ); ?></h1>
-		<?php
+<div class="mvr-admin-page-wrap">
+	<h1><?php esc_html_e( 'Room Permissions Control', 'my-video-room' ); ?></h1>
+	<?php
 		Factory::get_instance( SecurityButtons::class )->site_wide_enabled();
-		?>
-		<p>
+	?>
+	<p>
 		<?php
 			esc_html_e(
 				'The host and room permissions control module allows users, to precisely control the type of room access permissions they would like for their room. For example
@@ -39,13 +39,14 @@ return function() {
 				'my-video-room'
 			);
 		?>
-		<br></p>
-		<?php
+		<br>
+	</p>
+	<?php
 				// Activation/module.
 			Factory::get_instance( ModuleConfig::class )->module_activation_button( Security::MODULE_SECURITY_ID );
-		?>
-		</div>
+	?>
+</div>
 
-		<?php
+	<?php
 		return ob_get_clean();
 };

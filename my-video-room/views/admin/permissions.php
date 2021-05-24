@@ -32,8 +32,9 @@ return function (
 <p><?php esc_html_e( 'This section allows you manage the permissions, guest/host decisions, and room security settings across your rooms.', 'myvideoroom' ); ?>
 </p>
 <nav class="myvideoroom-outer-nav-tab-wrapper">
-	<ul class="mvr-ul-header myvideoroom-outer-nav-tab-wrapper">
-	<li class="mvr-title-header"><a class="nav-tab outer-nav-tab-active"	href="#defaulthost"><?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?></a></li>
+	<ul class="mvr-ul-header">
+		<li class="mvr-title-header"><a class="nav-tab outer-nav-tab-active"
+				href="#defaulthost"><?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?></a></li>
 		<?php
 		foreach ( $tabs as $menu_output ) {
 			$tab_display_name = $menu_output->get_tab_display_name();
@@ -41,14 +42,15 @@ return function (
 			?>
 
 		<li class="mvr-title-header"><a class="mvr-menu-shortcode-button nav-tab"
-		href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>"><?php echo esc_html( $tab_display_name ); ?></a></li>
+				href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>"><?php echo esc_html( $tab_display_name ); ?></a>
+		</li>
 			<?php
 		}
 		?>
 	</ul>
 </nav><br>
-<article class ="mvr-admin-page-wrap" id="defaulthost">
-<h2><?php \esc_html_e( 'Site Level Default Hosts', 'myvideoroom' ); ?></h2>
+<article class="mvr-admin-page-wrap" id="defaulthost">
+	<h2><?php \esc_html_e( 'Site Level Default Hosts', 'myvideoroom' ); ?></h2>
 
 	<p>
 		<?php
@@ -63,21 +65,21 @@ return function (
 		<fieldset>
 			<table class="myvideoroom-permissions widefat" role="presentation">
 				<thead>
-				<tr>
-					<th><?php \esc_html_e( 'WordPress role', 'myvideoroom' ); ?></th>
-					<th><?php \esc_html_e( 'Has default host permission', 'myvideoroom' ); ?></th>
-				</tr>
+					<tr>
+						<th><?php \esc_html_e( 'WordPress role', 'myvideoroom' ); ?></th>
+						<th><?php \esc_html_e( 'Has default host permission', 'myvideoroom' ); ?></th>
+					</tr>
 				</thead>
 				<tbody>
-			<?php
-			$index = 0;
-			foreach ( $all_wp_roles as $role_name => $role_details ) {
-				++$index;
+					<?php
+					$index = 0;
+					foreach ( $all_wp_roles as $role_name => $role_details ) {
+						++$index;
 
-				$role         = \get_role( $role_name );
-				$has_host_cap = $role->has_cap( Plugin::CAP_GLOBAL_HOST );
+						$role         = \get_role( $role_name );
+						$has_host_cap = $role->has_cap( Plugin::CAP_GLOBAL_HOST );
 
-				?>
+						?>
 					<tr<?php echo $index % 2 ? ' class="alternate"' : ''; ?>>
 						<th scope="row">
 							<label for="<?php echo \esc_attr( $html_lib->get_id( 'role_' . $role_name ) ); ?>">
@@ -89,14 +91,12 @@ return function (
 							<input class="myvideoroom-admin-table-format"
 								id="<?php echo \esc_attr( $html_lib->get_id( 'role_' . $role_name ) ); ?>"
 								name="<?php echo \esc_attr( $html_lib->get_field_name( 'role_' . $role_name ) ); ?>"
-								type="checkbox"<?php echo $has_host_cap ? ' checked="checked" ' : ''; ?>"
-								value="on"
-							/>
+								type="checkbox" <?php echo $has_host_cap ? ' checked="checked" ' : ''; ?>" value="on" />
 						</td>
-					</tr>
-				<?php
-			}
-			?>
+						</tr>
+						<?php
+					}
+					?>
 				</tbody>
 			</table>
 		</fieldset>
@@ -113,16 +113,13 @@ return function (
 
 		$tab_slug = $article_output->get_tab_slug();
 		?>
-			<?php
-				$output .= '<article id="' . esc_attr( $html_library->get_id( $tab_slug ) ) . '">';
-				$output .= $article_output->get_function_callback();
-				$output .= '</article>';
-			?>
-
-			<?php
-
+		<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+		<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $article_output->get_function_callback();
+		?>
+	</article>
+		<?php
 	}
-	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo $output;
 	return \ob_get_clean();
 };

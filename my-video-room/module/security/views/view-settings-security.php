@@ -32,13 +32,13 @@ return function() {
 			<nav class="myvideoroom-nav-tab-wrapper">
 				<ul>
 					<li>
-						<a class="nav-tab nav-tab-active" href="#page4231">
+						<a class="nav-tab nav-tab-active" href="#defaultperms">
 							<?php esc_html_e( 'Default Permissions', 'my-video-room' ); ?>
 						</a>
 					</li>
 
 					<li>
-						<a class="nav-tab" href="#page4312">
+						<a class="nav-tab" href="#overrideperms">
 							<?php esc_html_e( 'Override Permissions', 'my-video-room' ); ?>
 						</a>
 					</li>
@@ -47,7 +47,7 @@ return function() {
 			</nav>
 			<br><br>
 				<div id="video-host-wrap" class="mvr-admin-page-wrap">
-					<article id="page4231">
+					<article id="defaultperms">
 						<p>
 						<?php
 						esc_html_e(
@@ -68,7 +68,7 @@ return function() {
 						?>
 						</p>
 						</article>
-						<article id="page4312" >
+						<article id="overrideperms" >
 						<br>
 						<?php
 							esc_html_e(
