@@ -9,14 +9,11 @@ namespace MyVideoRoomPlugin\Module\SiteVideo;
 
 use MyVideoRoomPlugin\Admin\Page;
 use MyVideoRoomPlugin\Admin\PageList;
-use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
-use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
-use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;

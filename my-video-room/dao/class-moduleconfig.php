@@ -52,30 +52,6 @@ class ModuleConfig {
 	}
 
 	/**
-	 * Check Table Exists
-	 *
-	 * @param string $table_name - name of table to check.
-	 *
-	 * @return bool
-	 */
-	public function check_table_exists( string $table_name ): bool {
-		global $wpdb;
-		$table_name_sql = $wpdb->prefix . $table_name;
-
-		try {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-			$row = $wpdb->get_row( 'SELECT 1 FROM ' . $table_name_sql . ' LIMIT 1' );
-			if ( $row ) {
-				return true;
-			}
-
-			return false;
-		} catch ( \Throwable $e ) {
-			return false;
-		}
-	}
-
-	/**
 	 * Check Module Exists in Database
 	 *
 	 * @param  int $module_id - The module ID.
@@ -331,10 +307,12 @@ class ModuleConfig {
 
 		switch ( $module_status ) {
 			case self::ACTION_ENABLE:
+				\do_action( 'myvideoroom_enable_feature_module', $module_id );
 				$this->update_enabled_status( $module_id, true );
 				Factory::get_instance( VideoHelpers::class )->admin_page_refresh();
 				break;
 			case self::ACTION_DISABLE:
+				\do_action( 'myvideoroom_disable_feature_module', $module_id );
 				$this->update_enabled_status( $module_id, false );
 				Factory::get_instance( VideoHelpers::class )->admin_page_refresh();
 				break;
@@ -392,86 +370,6 @@ class ModuleConfig {
 		<?php
 
 		return $result;
-
-	}
-
-
-	/**
-	 * Sub_module_activation_button.
-	 *
-	 * @param int $module_id Module.
-	 *
-	 * @return string
-	 */
-	public function sub_module_activation_button( int $module_id ): string {
-		$module_id_by_url = null;
-		$module_status    = null;
-
-		// Listening for Input.
-		if ( isset( $_GET['subaction'] ) ) {
-			$module_status = $params['subaction'] ?? htmlspecialchars( sanitize_textarea_field( wp_unslash( $_GET['subaction'] ) ) ?? '' );
-		}
-		if ( isset( $_GET['submoduleid'] ) ) {
-			$module_id_by_url = $params['submoduleid'] ?? htmlspecialchars( sanitize_textarea_field( wp_unslash( $_GET['submoduleid'] ) ) ?? '' );
-		}
-		// Replace Module ID from URL post if one exists.
-		if ( $module_id_by_url ) {
-			$module_id = $module_id_by_url;
-		}
-		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-			$server_path = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
-		}
-
-		// Check Modules State.
-		if ( $module_status ) {
-			// Case Disable State Change.
-			if ( 'disable' === $module_status ) {
-				$this->update_enabled_status( $module_id, false );
-
-			} elseif ( 'enable' === $module_status ) {
-				$this->update_enabled_status( $module_id, true );
-			}
-		}
-
-		// Processing Link for Button.
-		if ( $module_id_by_url ) {
-			$original_url = home_url( $server_path );
-			// Strip out anything after &action which is done by plugin.
-			$original_url = substr( $original_url, 0, strpos( $original_url, '&subaction' ) );
-			wp_safe_redirect( $original_url );
-			exit();
-		}
-
-		// Check enabled status to see which button to render.
-					$is_module_enabled = $this->read_enabled_status( $module_id );
-					// Check if is sub tab to mark as such to strip out extra data in URL when called back.
-
-					$sub_tab_tag = '&subtab=1';
-
-					// Build URL.
-					$current_url = home_url( $server_path );
-		if ( ! $is_module_enabled ) {
-
-			$current_url .= '&subaction=enable&submoduleid=' . $module_id;
-			$output_link  = '<div id="ccbutton-array" style="display: flex;	justify-content: space-between; width: 50%;">
-			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" style="background-color:red" >' . esc_html__( 'Disabled', 'myvideoroom' ) . '</a>
-			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" >' . esc_html__( 'Enable Module', 'myvideoroom' ) . '</a>
-			</div>';
-			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  output already formatted without user input.
-			echo $output_link;
-			return false;
-
-		} else {
-			$current_url .= '&subaction=disable&submoduleid=' . $module_id;
-			$output_link  = '<div id="ccbutton-array" style= "display: flex;	justify-content: space-between; width: 50%;">
-			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary" style="background-color:green" >' . esc_html__( 'Enabled', 'myvideoroom' ) . '</a>
-			<a href="' . $current_url . $sub_tab_tag . '" class="button button-primary"  >' . esc_html__( 'Disable Module', 'myvideoroom' ) . '</a>
-			</div>';
-		}
-		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  output already formatted without user input.
-		echo $output_link;
-		// Exit if both action and module were in URL (as it can only happen when sub features were called ) - Need to strip out action parameters and refresh page to allow child modules to not display incorrectly.
-		return true;
 	}
 
 	/**

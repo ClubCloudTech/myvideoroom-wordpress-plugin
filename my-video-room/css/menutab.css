@@ -1,3 +1,5 @@
+
+
 #wpfooter {
 	position: sticky;
 	display: none;
@@ -56,10 +58,13 @@
 .mvr-nav-shortcode-outer-wrap {
 	background-color: white;
 	padding: 10px 10px 10px 10px;
-	border: rgb(68, 68, 68);
-	border:solid;
-	border-width: 1px;
-	display: flow-root;
+	border: 1px solid #c3c4c7;
+}
+
+.mvr-shortcode-tab-wrap {
+	border: 1px solid #c3c4c7;
+	border-top: none;
+	padding: 8px;
 }
 
 .mvr-nav-shortcode-outer-wrap-clean {
@@ -74,9 +79,7 @@
 .mvr-nav-settingstabs-outer-wrap{
 	background-color: #f0f0f0;
 	padding: 10px 10px 0px 10px;
-	border: rgb(68, 68, 68);
-	border:solid;
-	border-width: 1px;
+	border: 1px solid #c3c4c7;
 }
 
 .mvr-shortcode-menu {

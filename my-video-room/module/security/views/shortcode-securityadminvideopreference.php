@@ -90,9 +90,7 @@ return function (
 				<p>
 					<?php
 					esc_html_e(
-						'If you enable this setting, anonymous users from the Internet WILL NOT be able to enter your room. The only way
-						someone can enter your room is if they have an account on your website. This means that external users, will have 
-						to go through whatever registration process exists for your website. Default is disabled, which means anonymous access is allowed.',
+						'If you enable this setting, anonymous users from the Internet WILL NOT be able to enter your room. The only way someone can enter your room is if they have an account on your website. This means that external users, will have to go through whatever registration process exists for your website. Default is disabled, which means anonymous access is allowed.',
 						'my-video-room'
 					);
 					?>
@@ -108,13 +106,7 @@ return function (
 					<?php echo $current_user_setting && $current_user_setting->is_allow_role_control_enabled() ? 'checked' : ''; ?>	/>
 					<br>
 					<p>
-						<?php
-						esc_html_e(
-							"If you enable this setting only the following roles will be allowed to access your rooms. If you want to reverse the setting, then click 
-							'block these roles instead' which will allow all roles - except for the ones you select. ",
-							'my-video-room'
-						);
-						?>
+						<?php esc_html_e( 'If you enable this setting only the following roles will be allowed to access your rooms. If you want to reverse the setting, then click \'block these roles instead\' which will allow all roles - except for the ones you select. ', 'my-video-room' ); ?>
 					</p>
 				<label for="myvideoroom_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>">
 					<?php esc_html_e( 'Allowed Roles setting: ', 'my-video-room' ); ?>

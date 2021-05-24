@@ -56,6 +56,11 @@ class UserVideoPreference extends Shortcode {
 		return $this->choose_settings( $user_id, $room_name, $allowed_tags );
 	}
 
+	/**
+	 * Check for updating the user video preference
+	 *
+	 * @throws \Exception @TODO - remove me!.
+	 */
 	public function check_for_update_request() {
 		$http_post_library = Factory::get_instance( HttpPost::class );
 
@@ -75,13 +80,12 @@ class UserVideoPreference extends Shortcode {
 				$room_name
 			);
 
-			$layout_id               = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_layout_id_preference'] ?? null ) );
-			$reception_id            = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_reception_id_preference'] ?? null ) );
-			$reception_enabled       = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_reception_enabled_preference'] ?? '' ) ) === 'on';
-			$reception_video_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_reception_video_enabled_preference'] ?? '' ) ) === 'on';
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, - esc_url raw does the appropriate sanitisation.
-			$reception_video_url = esc_url_raw( $_POST['myvideoroom_user_reception_waiting_video_url'] );
-			$show_floorplan      = sanitize_text_field( wp_unslash( $_POST['myvideoroom_user_show_floorplan_preference'] ?? '' ) ) === 'on';
+			$layout_id               = $http_post_library->get_string_parameter( 'user_layout_id_preference' );
+			$reception_id            = $http_post_library->get_string_parameter( 'user_reception_id_preference' );
+			$reception_enabled       = $http_post_library->get_checkbox_parameter( 'user_reception_enabled_preference' );
+			$reception_video_enabled = $http_post_library->get_checkbox_parameter( 'user_reception_video_enabled_preference' );
+			$reception_video_url     = $http_post_library->get_string_parameter( 'user_reception_waiting_video_url' );
+			$show_floorplan          = $http_post_library->get_checkbox_parameter( 'user_show_floorplan_preference' );
 
 			if ( $current_user_setting ) {
 				$current_user_setting->set_layout_id( $layout_id )
@@ -119,13 +123,10 @@ class UserVideoPreference extends Shortcode {
 	 * @throws \Exception When the update fails.
 	 */
 	public function choose_settings( int $user_id, string $room_name, array $allowed_tags = array() ): string {
-		// Trap BuddyPress Environment and send Group ID as the User ID for storage in DB.
-		// phpcs:ignore MyVideoRoomPlugin\Shortcode\bp_is_groups_component() is a Buddypress function.
-		if ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() ) {
-			global $bp;
-			$user_id = $bp->groups->current_group->creator_id;
-		}
+		// User ID Transformation for plugins.
+		$user_id              = apply_filters( 'myvideoroom_video_choosesettings_change_user_id', $user_id );
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
+
 
 		$current_user_setting = $video_preference_dao->read(
 			$user_id,

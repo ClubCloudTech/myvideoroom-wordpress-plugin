@@ -21,6 +21,7 @@ return function (
 	int $user_id = null
 ): string {
 	ob_start();
+
 	?>
 	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
 				<h1><?php esc_html_e( 'Video Host Settings for ', 'my-video-room' ); ?>

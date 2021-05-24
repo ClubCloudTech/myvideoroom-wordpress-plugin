@@ -116,7 +116,7 @@ class Modules {
 	 *
 	 * @return boolean
 	 */
-	private function deactivate_module( ModuleInstance $module ): bool {
+	public function deactivate_module( ModuleInstance $module ): bool {
 		$all_modules         = Factory::get_instance( Module::class )->get_all_modules();
 		$deactivation_status = $module->deactivate();
 

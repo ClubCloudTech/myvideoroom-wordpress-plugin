@@ -11,7 +11,7 @@ namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Library\Host;
-use MyVideoRoomPlugin\Library\Version;
+
 use function defined;
 
 /**

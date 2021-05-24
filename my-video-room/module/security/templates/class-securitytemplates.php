@@ -9,7 +9,6 @@ namespace MyVideoRoomPlugin\Module\Security\Templates;
 
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 
-
 /**
  * Class Security Templates
  * This class holds templates for Blocked Access requests.
@@ -122,8 +121,10 @@ class SecurityTemplates extends Shortcode {
 					$nicename   = $new_user->user_nicename;
 					if ( $first_name ) {
 						echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
-					} else {
+					} elseif ( $nicename ) {
 						echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
+					} else {
+						echo '<strong>' . esc_html_e( 'Site Policy', 'myvideoroom' ) . '</strong>';
 					}
 					esc_html_e(
 						' only allows signed in/registered users to access their video room. To be able to access this room,
@@ -184,8 +185,10 @@ class SecurityTemplates extends Shortcode {
 					);
 					if ( $first_name ) {
 						echo \esc_attr( ucfirst( $first_name ) );
-					} else {
+					} elseif ( $nicename ) {
 						echo esc_attr( ucfirst( $nicename ) );
+					} else {
+						esc_html_e( 'the site administrators', 'my-video-room' );
 					}
 					esc_html_e( ' for more assistance.', 'myvideoroom' );
 					?>

@@ -25,7 +25,7 @@ return function (
 	\ob_start();
 	?>
 
-	<h2><?php \esc_html_e( 'Additional Modules', 'myvideoroom' ); ?></h2>
+	<h2><?php \esc_html_e( 'Additional Modules and MyVideoRoom Plugins', 'myvideoroom' ); ?></h2>
 
 	<p>
 		<?php

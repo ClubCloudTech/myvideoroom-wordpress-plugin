@@ -53,7 +53,7 @@ class UserVideoPreference {
 		);
 
 		if ( ! $result ) {
-			throw new \Exception();
+			return null;
 		}
 
 		// Removing cache as conflict happening in rooms - to test.

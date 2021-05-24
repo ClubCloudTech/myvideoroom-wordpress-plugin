@@ -15,6 +15,7 @@ use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityNotifications;
+use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 
 /**
@@ -96,6 +97,11 @@ class Security {
 		\add_filter( 'myvideoroom_security_roomhosts_preference_buttons', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_roomhosts_status' ), 10, 3 );
 		\add_filter( 'myvideoroom_sitevideo_control_panel_view', array( Factory::get_instance( SecurityNotifications::class ), 'show_security_sitewide_status' ), 10, 1 );
 
+		// Add Config Page to Main Room Manager.
+		add_filter( 'myvideoroom_permissions_manager_menu', array( Factory::get_instance( SecurityRoomHelpers::class ), 'render_security_admin_settings_page' ), 10, 1 );
+
+		// Actions for Disable Feature Module (Enable is in Defaults as it wont run if module is off).
+		\add_action( 'myvideoroom_disable_feature_module', array( Factory::get_instance( SecurityRoomHelpers::class ), 'security_disable_feature_module' ) );
 	}
 
 	/**
@@ -136,22 +142,24 @@ class Security {
 	 * @param  int   $room_id - the room identifier.
 	 * @return array - outbound menu.
 	 */
-	public function render_security_sitevideo_tabs( $input = array(), int $room_id ): array {
+	public function render_security_sitevideo_tabs( array $input, int $room_id ): array {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 		$room_name   = $room_object->room_name;
+
 		// Host Menu Tab - rendered in Security as its a module feature of Security.
 		$host_menu = new MenuTabDisplay(
 			esc_html__( 'Room Hosts', 'my-video-room' ),
 			'roomhosts',
 			fn() => Factory::get_instance( SecurityVideoPreference::class )
-			->choose_settings(
-				$room_id,
-				$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
-				null,
-				'roomhost'
-			)
+				->choose_settings(
+					$room_id,
+					$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
+					null,
+					'roomhost'
+				)
 		);
 		array_push( $input, $host_menu );
+
 		// Permissions Default Tab - rendered in Security as its a module feature of Security.
 		$base_menu = new MenuTabDisplay(
 			esc_html__( 'Room Permissions', 'my-video-room' ),

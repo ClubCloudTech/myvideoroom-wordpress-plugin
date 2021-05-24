@@ -11,7 +11,6 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Library\WordPressUser;
-use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 
@@ -75,30 +74,17 @@ class SecurityVideoPreference extends Shortcode {
 				$room_name
 			);
 
-			$blocked_roles              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_blocked_roles_preference'] ?? null ) );
-			$room_disabled              = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_room_disabled_preference'] ?? '' ) ) === 'on';
-			$anonymous_enabled          = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_anonymous_enabled_preference'] ?? '' ) ) === 'on';
-			$allow_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_allow_role_control_enabled_preference'] ?? '' ) ) === 'on';
-			$block_role_control_enabled = sanitize_text_field( wp_unslash( $_POST['myvideoroom_security_block_role_control_enabled_preference'] ?? '' ) ) === 'on';
-			$site_override_enabled      = sanitize_text_field( wp_unslash( $_POST['myvideoroom_override_all_preferences'] ?? '' ) ) === 'on';
+			$blocked_roles              = $http_post_library->get_string_parameter( 'security_blocked_roles_preference' );
+			$room_disabled              = $http_post_library->get_checkbox_parameter( 'security_room_disabled_preference' );
+			$anonymous_enabled          = $http_post_library->get_checkbox_parameter( 'security_anonymous_enabled_preference' );
+			$allow_role_control_enabled = $http_post_library->get_checkbox_parameter( 'security_allow_role_control_enabled_preference' );
+			$block_role_control_enabled = $http_post_library->get_checkbox_parameter( 'security_block_role_control_enabled_preference' );
+			$site_override_enabled      = $http_post_library->get_checkbox_parameter( 'override_all_preferences' );
 
 			// Handle Multi_box array and change it to a Database compatible string.
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized  --  Sanitised in function below (post MultiBox Array dissasembly that is destroyed by WP sanitising functions).
-			$inbound_multibox = $_POST['myvideoroom_security_allowed_roles_preference'] ?? null;
-			if ( $inbound_multibox ) {
-				$output_data = array_unique( $inbound_multibox ); // ensure there are no duplicated roles.
-				sort( $output_data );
+			$allowed_roles_list = $http_post_library->get_string_list_parameter( 'security_allowed_roles_preference' );
+			$allowed_roles      = implode( '|', $allowed_roles_list );
 
-				$sanitized_output_data = array_map(
-					function ( $item ) {
-						return sanitize_text_field( wp_unslash( $item ) );
-					},
-					$output_data
-				);
-				$allowed_roles         = implode( '|', $sanitized_output_data );
-			}
-			// now sanitise.
-			$allowed_roles = sanitize_text_field( wp_unslash( $allowed_roles ) );
 			if ( $current_user_setting ) {
 
 				$current_user_setting
@@ -149,13 +135,8 @@ class SecurityVideoPreference extends Shortcode {
 	 * @return string
 	 */
 	public function choose_settings( int $user_id, string $room_name, string $group_name = null, string $type = null ): string {
-		// Trap BuddyPress Environment and send Group ID as the USer ID for storage in DB.
-		if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
-			if ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() ) {
-				global $bp;
-				$user_id = $bp->groups->current_group->creator_id;
-			}
-		}
+		// User ID Transformation for plugins.
+		$user_id = apply_filters( 'myvideoroom_security_choosesettings_change_user_id', $user_id );
 
 		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
 		$roles_output            = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_multi_checkbox_admin_roles( $user_id, $room_name, 'allowed_roles' );
