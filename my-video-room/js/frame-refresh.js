@@ -3,4 +3,5 @@
  *
  * @package MyVideoRoomPlugin
  */
-	window.top.location.reload();
+
+window.top.location.reload();

@@ -94,15 +94,16 @@ class SiteDefaults extends Shortcode {
 	public function core_menu_setup() {
 		add_action( 'mvr_module_submenu_add', array( $this, 'core_menu_button' ) );
 	}
+
 	/**
 	 * Render Module Menu.
 	 */
 	public function core_menu_button() {
-		$name = esc_html__( 'Video Default Settings', 'my-video-room' );
-		$slug = self::MODULE_DEFAULT_VIDEO_NAME;
-		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
-		$display = esc_html__( $name, 'myvideoroom' );
-		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $display ) . '</a>';
+		?>
+		<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=<?php echo esc_attr( self::MODULE_DEFAULT_VIDEO_NAME ); ?>">
+			<?php esc_html_e( 'Video Default Settings', 'my-video-room' ); ?>
+		</a>
+		<?php
 	}
 
 	/**

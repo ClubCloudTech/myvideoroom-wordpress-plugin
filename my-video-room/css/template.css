@@ -1,104 +1,108 @@
 ul.myvideoroom-outer-nav-tab-wrapper {
 	list-style: none;
-	padding: 0;
 	margin: 0;
+	padding: 0;
 }
+
 .menu {
 	display: flex;
 }
 
 .mvr-title-header {
-	display: inline!important;
-	margin-top: 10px;
+	display: inline !important;
 	margin-bottom: 10px;
-}
-.mvr-ul-header {
-	display: inline!important;
 	margin-top: 10px;
+}
+
+.mvr-ul-header {
+	display: inline !important;
 	margin-bottom: 0;
+	margin-top: 10px;
 }
 
 .mvr-admin-page-wrap {
 	border: 1px solid #c3c4c7;
-	padding: 8px;
 	margin-top: 0;
+	padding: 8px;
 }
 
 .mvr-preferences-paragraph {
+	color: rgb(32, 32, 32);
 	font-size: 13px;
 	font-weight: 500;
-	color: rgb(32, 32, 32);
-	margin-bottom: 10px!important;
+	margin-bottom: 10px !important;
 }
 
 .mvr-icons-enabled {
+	color: green;
 	font-size: 18px;
 	text-decoration: none;
-	color: green;
 }
 
 .mvr-icons-disabled {
+	color: red;
 	font-size: 18px;
 	text-decoration: none;
-	color: red;
 }
 
 .mvr-user-image {
-	z-index: 1;
 	color: #fff;
 	display: table;
 	font-size: 0;
-	position: relative;
-	width:  150px;
 	height: 150px;
+	position: relative;
+	width: 150px;
+	z-index: 1;
 }
 
 .mvr-template-image {
-	z-index: 1;
 	color: #fff;
 	display: table;
 	font-size: 0;
-	position: relative;
-	width:  350px;
 	height: 350px;
+	position: relative;
+	width: 350px;
+	z-index: 1;
 }
 
 .mvr-access-image {
-	z-index: 1;
+	border-radius: 50px;
 	color: #fff;
 	display: table;
 	font-size: 0;
-	position: relative;
-	border-radius: 50px;
-	place-self: center;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	width:  200px;
 	height: 200px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	place-self: center;
+	position: relative;
+	width: 200px;
+	z-index: 1;
 }
 
 .mvr-table {
+	border-color: #C6C0AD;
 	border-style: solid;
 	border-width: 2px 2px 2px 2px;
-	border-color: #C6C0AD;
 	box-shadow: 0px 0px 5px 4px rgb(0 0 0 / 30%);
+	display: grid;
+	margin: 10px 10px 10px 10px;
+	padding: 10px 10px 10px 10px;
 	transition: background 0.3s,
 	border 0.3s, border-radius 0.3s,
 	box-shadow 0.3s;
-	margin: 10px 10px 10px 10px;
-	padding: 10px 10px 10px 10px;
-	display: grid;
 }
+
 .mvr-row {
+	border-color: #C6C0AD;
 	border-style: solid;
 	border-width: 2px 2px 2px 2px;
-	border-color: #C6C0AD;
 	box-shadow: 0px 0px 5px 4px rgb(0 0 0 / 30%);
-	transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+	display: grid;
 	margin: 10px 10px 10px 10px;
 	padding: 10px 10px 10px 10px;
-	display: grid;
+	transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
 }
+
 .mvr-header-text {
 	font-size: 18px;
 	font-weight: 400;
@@ -106,147 +110,148 @@ ul.myvideoroom-outer-nav-tab-wrapper {
 }
 
 .mvr-button-table {
-	margin-top: 15px;
 	margin-bottom: 10px;
+	margin-top: 15px;
 
 }
 
 .mvr-template-table {
-	width: 50%;
-	vertical-align: middle;
 	text-align: -webkit-center;
+	vertical-align: middle;
+	width: 50%;
 
 }
 
 .mvr-template-text {
-	vertical-align: middle;
-	text-align: -webkit-center;
 	font-size: 14px;
 	font-weight: 400;
+	text-align: -webkit-center;
+	vertical-align: middle;
 }
 
 .mvr-main-button-enabled {
-	vertical-align: middle;
-	text-align: -webkit-center;
+	background-color: rgb(41, 22, 150);
+	border-radius: 3px;
+	color: rgb(255 255 255) !important;
+	display: inline;
 	font-size: 14px;
 	font-weight: 400;
-	background-color:rgb(41, 22, 150);
-	display: inline;
+	margin-left: 2px !important;
 	padding: 8px;
-	border-radius: 3px;
-	margin-left: 2px!important;
-	color: rgb(255 255 255)!important;
+	text-align: -webkit-center;
+	vertical-align: middle;
 }
 
 
 .mvr-main-button-disabled {
-	vertical-align: middle;
-	text-align: -webkit-center;
+	background-color: rgb(221, 6, 6);
+	border-radius: 3px;
+	color: rgb(255 255 255) !important;
+	display: inline;
 	font-size: 14px;
 	font-weight: 400;
-	border-radius: 3px;
-	background-color:rgb(221, 6, 6);
-	display: inline;
+	margin-left: 2px !important;
 	padding: 8px;
-	margin-left: 2px!important;
-	color: rgb(255 255 255)!important;
+	text-align: -webkit-center;
+	vertical-align: middle;
 }
 
-.mvr-main-button-notice{
-	vertical-align: middle;
-	text-align: -webkit-center;
+.mvr-main-button-notice {
+	background-color: rgb(12, 0, 173);
+	border-radius: 3px;
+	color: rgb(255 255 255) !important;
+	display: inline;
 	font-size: 14px;
 	font-weight: 400;
-	border-radius: 3px;
-	background-color:rgb(12, 0, 173);
-	display: inline;
+	margin-left: 2px !important;
 	padding: 8px;
-	margin-left: 2px!important;
-	color: rgb(255 255 255)!important;
+	text-align: -webkit-center;
+	vertical-align: middle;
 }
 
 .mvr-select-box {
-	vertical-align: middle;
+	background-color: rgb(253, 253, 253) !important;
+	border: 1px solid #6d6d6d !important;
+	color: rgb(0, 0, 0);
 	font-size: 14px;
 	font-weight: 500;
-	background-color:rgb(253, 253, 253)!important;
-	width: 60%!important;
 	padding: 8px;
-	color:rgb(0, 0, 0) ;
-	border: 1px solid #6d6d6d!important;
+	vertical-align: middle;
+	width: 60% !important;
 }
 
 .mvr-select-box-small {
-	vertical-align: middle;
+	background-color: rgb(253, 253, 253) !important;
+	border: 1px solid #6d6d6d !important;
+	color: rgb(0, 0, 0);
 	font-size: 14px;
 	font-weight: 500;
-	background-color:rgb(253, 253, 253)!important;
 	padding: 8px;
-	color:rgb(0, 0, 0) ;
-	border: 1px solid #6d6d6d!important;
+	vertical-align: middle;
 
 }
 
 .mvr-menu-shortcode-button {
-	display: inline;
-	border: 1px solid #afafaf;
-	padding: 5px 10px;
-	font-size: 14px;
-	line-height: 1.71428571;
-	font-weight: 600;
 	background: #c7c7c7;
+	border: 1px solid #afafaf;
 	color: #555;
+	display: inline;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.71428571;
+	padding: 5px 10px;
 	text-decoration: none;
 }
+
 .mvr-ul-header {
 	display: inline;
-	margin-top: 10px;
 	margin-bottom: 0px;
 	margin-left: auto;
+	margin-top: 10px;
 }
 
 
 .mvr-hide {
 	display: none;
-  }
+}
 
-  .mvr-reception-image:hover + .mvr-hide {
+.mvr-reception-image:hover + .mvr-hide {
+	background-color: rgb(253, 253, 253) !important;
+	border: 3px solid #d2d2d2;
+	color: rgb(41, 41, 41);
+	display: block;
 	font-size: 14px;
 	font-weight: 500;
-	background-color:rgb(253, 253, 253)!important;
-	border: 3px solid #d2d2d2;
-	width: 70%!important;
 	padding: 8px;
 	position: absolute;
-	display: block;
-	color: rgb(41, 41, 41);
-  }
+	width: 70% !important;
+}
 
-  .mvr-video-template:hover + .mvr-hide {
+.mvr-video-template:hover + .mvr-hide {
+	background-color: rgb(253, 253, 253) !important;
+	border: 3px solid #d2d2d2;
+	color: rgb(41, 41, 41);
+	display: block;
 	font-size: 14px;
 	font-weight: 500;
-	background-color:rgb(253, 253, 253)!important;
-	border: 3px solid #d2d2d2;
-	width: 70%!important;
 	padding: 8px;
 	position: absolute;
-	display: block;
-	color: rgb(41, 41, 41);
-  }
+	width: 70% !important;
+}
 
-  .mvr-custom-video:hover + .mvr-hide {
+.mvr-custom-video:hover + .mvr-hide {
+	background-color: rgb(253, 253, 253) !important;
+	border: 3px solid #d2d2d2;
+	color: rgb(41, 41, 41);
+	display: block;
 	font-size: 14px;
 	font-weight: 500;
-	background-color:rgb(253, 253, 253)!important;
-	border: 3px solid #d2d2d2;
-	width: 70%!important;
 	padding: 8px;
 	position: absolute;
-	display: block;
-	color: rgb(41, 41, 41);
-  }
+	width: 70% !important;
+}
 
-  .mvr-title-label {
+.mvr-title-label {
 	color: #848B92;
 	font-family: "Montserrat", Sans-serif;
 	font-size: 14px;
@@ -255,15 +260,15 @@ ul.myvideoroom-outer-nav-tab-wrapper {
 }
 
 .mvr-add-page {
+	background-color: rgb(253, 253, 253) !important;
+	border: 2px solid #d2d2d2;
+	color: rgb(41, 41, 41);
+	cursor: pointer;
+	display: inline-block;
 	font-size: 14px;
 	font-weight: 500;
-	background-color:rgb(253, 253, 253)!important;
-	border: 2px solid #d2d2d2;
-	padding: 4px;
 	margin: 1px;
-	color: rgb(41, 41, 41);
-	display: inline-block;
-	cursor: pointer;
+	padding: 4px;
 }
 
 .myvideoroom-sitevideo-add-room-button {
@@ -271,30 +276,30 @@ ul.myvideoroom-outer-nav-tab-wrapper {
 }
 
 .mvr-add-page-form {
-	position: relative;
+	background-color: rgb(253, 253, 253) !important;
+	border: 3px solid #d2d2d2;
+	color: rgb(41, 41, 41);
 	display: block;
 	font-size: 14px;
 	font-weight: 500;
-	background-color:rgb(253, 253, 253)!important;
-	border: 3px solid #d2d2d2;
-	width: 70%!important;
 	padding: 8px;
-	color: rgb(41, 41, 41);
+	position: relative;
+	width: 70% !important;
 }
 
 .mvr-add-page-form .close {
-	position: absolute;
-	top: -15px;
-	right: -15px;
-	border-radius: 50%;
-	line-height: 30px;
-	font-size: 20px;
-	width: 30px;
-	text-align: center;
-	display: block;
-	cursor: pointer;
 	background-color: #FFFFFF;
 	border: 1px solid #000000;
+	border-radius: 50%;
+	cursor: pointer;
+	display: block;
+	font-size: 20px;
+	line-height: 30px;
+	position: absolute;
+	right: -15px;
+	text-align: center;
+	top: -15px;
+	width: 30px;
 }
 
 .mvr-add-page-form .close:hover {
