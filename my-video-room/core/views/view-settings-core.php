@@ -44,7 +44,7 @@ return function (
 		}
 		echo '<p>';
 		esc_html_e(
-			'The Following Settings define site wide video default parameters in case other modules have not set parameters there. These defaults will be used 
+			'The following settings define site wide video default parameters in case other modules have not set parameters there. These defaults will be used 
 			if a user has not selected a setting for the room configuration, or it hasnt been defined at the module level. You can use the Template Browser tab
 			to view room selection templates.',
 			'my-video-room'
