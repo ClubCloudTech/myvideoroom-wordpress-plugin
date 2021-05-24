@@ -58,7 +58,7 @@ class Setup {
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
-		return maybe_create_table( $table_name, $sql_create );
+		return \maybe_create_table( $table_name, $sql_create );
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Setup {
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
-		return maybe_create_table( $table_name, $sql_create );
+		return \maybe_create_table( $table_name, $sql_create );
 	}
 
 	/**
@@ -108,7 +108,7 @@ class Setup {
 			PRIMARY KEY (`module_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
-		return maybe_create_table( $table_name, $sql_create );
+		return \maybe_create_table( $table_name, $sql_create );
 	}
 }
 
