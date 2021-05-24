@@ -64,7 +64,7 @@ class RoomAdmin extends RoomAdminSetup {
 			// Update Database References to New Post IDs to ensure Room Permissions and Settings stay intact with New Pages.
 			Factory::get_instance( UserVideoPreferenceDao::class )->update_user_id( $post_id, $old_post_id );
 
-			$security_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( SiteDefaults::MODULE_SECURITY_ID );
+			$security_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( SiteDefaults::MODULE_SECURITY_ID );
 			if ( $security_enabled ) {
 				Factory::get_instance( \MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference::class )->update_user_id( $post_id, $old_post_id );
 			}

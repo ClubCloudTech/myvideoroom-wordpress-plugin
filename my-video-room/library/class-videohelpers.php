@@ -54,7 +54,7 @@ class VideoHelpers extends Shortcode {
 			return $current_user_setting->get_layout_id();
 		}
 		// Multi-Owner Case in SiteVideo.
-		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
@@ -111,7 +111,7 @@ class VideoHelpers extends Shortcode {
 			return $current_user_setting->get_reception_video_url_setting();
 		}
 		// Multi-Owner Case in SiteVideo.
-		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
@@ -169,7 +169,7 @@ class VideoHelpers extends Shortcode {
 		}
 
 		// Multi-Owner Case in SiteVideo.
-		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
@@ -225,7 +225,7 @@ class VideoHelpers extends Shortcode {
 			return $current_user_setting->get_reception_id();
 		}
 		// Multi-Owner Case in SiteVideo.
-		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
@@ -279,7 +279,7 @@ class VideoHelpers extends Shortcode {
 			return $current_user_setting->is_reception_enabled();
 		}
 		// Multi-Owner Case in SiteVideo.
-		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
@@ -336,7 +336,7 @@ class VideoHelpers extends Shortcode {
 		}
 
 		// Multi-Owner Case in SiteVideo.
-		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->module_activation_status( Dependencies::MODULE_SITE_VIDEO_ID );
+		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
@@ -358,20 +358,5 @@ class VideoHelpers extends Shortcode {
 		} else {
 			return null;
 		}
-	}
-
-	/**
-	 * Renders a Top level Refresh Page stripping out options from the Admin Page
-	 *
-	 * @return void
-	 */
-	public function admin_page_refresh() {
-		$server_path = '';
-		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-			$server_path = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
-		}
-		$clean_path = substr( $server_path, 0, strpos( $server_path, '&' ) );
-		\wp_safe_redirect( \get_site_url() . $clean_path );
-		die();
 	}
 }

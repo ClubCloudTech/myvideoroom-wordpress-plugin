@@ -33,7 +33,7 @@ class SecurityEngine {
 	 */
 	public function render_block( ?int $host_id, string $room_type, int $module_id = null, string $room_name = null ): ?string {
 		// Activation/module.
-		if ( ! Factory::get_instance( ModuleConfig::class )->module_activation_status( Security::MODULE_SECURITY_ID ) ) {
+		if ( ! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Security::MODULE_SECURITY_ID ) ) {
 			return null;
 		}
 

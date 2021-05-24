@@ -28,58 +28,13 @@ class ModuleConfig {
 	const PAGE_STATUS_ORPHANED   = 'page-not-exists-but-has-reference';
 
 	/**
-	 * Get a User Video Preference from the database
+	 * Get the table name for this DAO.
 	 *
-	 * @param string $room_name The Room Name.
-	 *
-	 * @return ?int Post ID or Null.
+	 * @return string
 	 */
-	public function read( string $room_name ): ?int {
+	private function get_table_name(): string {
 		global $wpdb;
-		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
-		$prepared_query = $wpdb->prepare(
-			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
-			'SELECT post_id FROM ' . $table_name_sql . ' WHERE room_name = %s',
-			$room_name
-		);
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-		$row = $wpdb->get_row( $prepared_query );
-		if ( $row ) {
-			$result = (int) $row->post_id;
-		}
-		return $result;
-	}
-
-	/**
-	 * Check Module Exists in Database
-	 *
-	 * @param  int $module_id - The module ID.
-	 *
-	 * @return bool
-	 */
-	public function check_module_exists( int $module_id ): bool {
-		global $wpdb;
-
-		// First Check Database for ModuleID - return No if blank.
-		if ( ! $module_id ) {
-			return false;
-		}
-
-		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
-		$prepared_query = $wpdb->prepare(
-			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
-			'SELECT 1 FROM ' . $table_name_sql . ' WHERE module_id = %d',
-			$module_id
-		);
-
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- already prepared above.
-		$row = $wpdb->get_row( $prepared_query );
-		if ( $row ) {
-			return true;
-		} else {
-			return false;
-		}
+		return $wpdb->prefix . self::TABLE_NAME;
 	}
 
 	/**
@@ -90,29 +45,68 @@ class ModuleConfig {
 	 * @param  bool    $module_has_admin_page   Whether module has admin page.
 	 * @param  ?string $module_admin_path       Path to location of admin page.
 	 *
-	 * @return string|int|null
+	 * @return bool
 	 */
-	public function register_module_in_db( string $module_name, int $module_id, bool $module_has_admin_page = null, string $module_admin_path = null ) {
+	public function register_module_in_db( string $module_name, int $module_id, bool $module_has_admin_page = null, string $module_admin_path = null ): bool {
 		global $wpdb;
-		// Empty input exit.
-		if ( ! $module_name || ! $module_id ) {
-			return 'Invalid Entry need Module ID and Name';
-		}
-		// Exit if Module already Exists.
-		if ( $this->check_module_exists( $module_id ) ) {
-			return true;
-		}
 
-		// Create Post.
-		return $wpdb->insert(
-			$wpdb->prefix . self::TABLE_NAME,
-			array(
-				'module_name'           => $module_name,
-				'module_id'             => $module_id,
-				'module_has_admin_page' => $module_has_admin_page,
-				'module_admin_path'     => $module_admin_path,
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->query(
+			$wpdb->prepare(
+				'
+					INSERT IGNORE INTO ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
+					(module_name, module_id, module_has_admin_page, module_admin_path) 
+					VALUES( %s, %d, %d, %s )
+				',
+				$module_name,
+				$module_id,
+				$module_has_admin_page,
+				$module_admin_path
 			)
 		);
+
+		\wp_cache_delete( $module_name, implode( '::', array( __CLASS__, 'is_module_activation_enabled' ) ) );
+		\wp_cache_delete( $module_id, implode( '::', array( __CLASS__, 'get_module_admin_path' ) ) );
+
+		return true;
+	}
+
+
+	/**
+	 * This function renders the activate/deactivate button for a give module
+	 * Used only in admin pages of plugin
+	 *
+	 * @param int $module_id - The module ID.
+	 *
+	 * @return bool
+	 */
+	public function is_module_activation_enabled( int $module_id ): bool {
+		global $wpdb;
+
+		$found  = false;
+		$result = \wp_cache_get( $module_id, __METHOD__, $found );
+
+		if ( ! $found ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					'
+						SELECT module_enabled 
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . ' 
+						WHERE module_id = %d
+					',
+					$module_id
+				)
+			);
+
+			if ( $row ) {
+				$result = (bool) $row->module_enabled;
+			}
+
+			\wp_cache_set( $module_id, $result, __METHOD__ );
+		}
+
+		return (bool) $result;
 	}
 
 	/**
@@ -121,144 +115,65 @@ class ModuleConfig {
 	 * @param  int  $module_id      ID of module.
 	 * @param  bool $module_enabled Is module enabled.
 	 *
-	 * @return bool|int
+	 * @return bool
 	 */
-	public function update_enabled_status( int $module_id, bool $module_enabled ) {
-		global $wpdb;
-		// First Check Database for Room and Post ID - return No if blank.
-
-		if ( ! $module_id ) {
-			return false;
-		}
-		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
-		$prepared_query = $wpdb->prepare(
-			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
-			'UPDATE ' . $table_name_sql . ' SET module_enabled = %d WHERE module_id = %d',
-			$module_enabled,
-			$module_id,
-		);
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- already prepared above.
-		$result = $wpdb->query( $prepared_query );
-		return $result;
-	}
-
-	/**
-	 * Read Enabled Module Status in Database
-	 *
-	 * @param  int $module_id The module ID.
-	 *
-	 * @return string
-	 */
-	public function read_enabled_status( int $module_id ) {
+	public function update_enabled_status( int $module_id, bool $module_enabled ): bool {
 		global $wpdb;
 
-		// First Check Database for ModuleID - return No if blank.
-		if ( ! $module_id ) {
-			return false;
-		}
-		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
-		$prepared_query = $wpdb->prepare(
-		// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
-			'SELECT module_enabled FROM ' . $table_name_sql . ' WHERE module_id = %d',
-			$module_id
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->update(
+			$this->get_table_name(),
+			array( 'module_enabled' => (int) $module_enabled ),
+			array( 'module_id' => $module_id )
 		);
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$result = null;
+		\wp_cache_set( $module_id, $module_enabled, implode( '::', array( __CLASS__, 'is_module_activation_enabled' ) ) );
 
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$row = $wpdb->get_row( $prepared_query );
-		if ( $row ) {
-			$result = $row->module_enabled;
-		}
-
-		return $result;
+		return true;
 	}
 
 	/**
 	 * Get Admin URL of Page
 	 *
-	 * @param  string $module_name - the listed name of the module thats been added.
+	 * @param  string $module_name - the listed name of the module that's been added.
+	 *
 	 * @return string
 	 */
-	public function get_module_admin_path( string $module_name ) {
+	public function get_module_admin_path( string $module_name ): string {
 		global $wpdb;
 
-		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
-		$prepared_query = $wpdb->prepare(
-			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
-			'SELECT module_admin_path FROM ' . $table_name_sql . ' WHERE module_name = %s',
-			$module_name
-		);
+		$found  = false;
+		$result = \wp_cache_get( $module_name, __METHOD__, $found );
 
-		$result = null;
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$row = $wpdb->get_row( $prepared_query );
-		if ( $row ) {
-			$result = $row->module_admin_path;
+		if ( false === $found ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					'
+						SELECT module_admin_path 
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . ' 
+						WHERE module_name = %s
+					',
+					$module_name
+				)
+			);
+
+			if ( $row ) {
+				$result = $row->module_enabled;
+			}
+
+			\wp_cache_set( $module_name, $result, __METHOD__ );
 		}
+
 		return $result;
 	}
 
-	/**
-	 * Delete a Room Record Mapping to a URL in Database
-	 *
-	 *  This function will delete the room name in the database with the parameter
-	 *
-	 * @param string $room_name - both needed.
-	 *
-	 * @return bool
-	 */
-	public function delete_room_mapping( string $room_name ): bool {
-		global $wpdb;
-
-		if ( ! $room_name ) {
-			return false;
-		}
-
-		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
-		$prepared_query = $wpdb->prepare(
-			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
-			'DELETE FROM ' . $table_name_sql . ' WHERE room_name = %s',
-			$room_name
-		);
-
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$wpdb->query( $prepared_query );
-
-		return true;
-	}
-
-	/**
-	 * Delete a Room Record Mapping to a URL in Database
-	 *
-	 *  This function will delete the room number in the database with the parameter
-	 *
-	 * @param int $room_id - ID of room to delete.
-	 * @return bool
-	 */
-	public function delete_room_mapping_by_id( int $room_id ): bool {
-		global $wpdb;
-
-		if ( ! $room_id ) {
-			return false;
-		}
-
-		$table_name_sql = $wpdb->prefix . self::TABLE_NAME;
-		$prepared_query = $wpdb->prepare(
-			// phpcs:ignore -- WordPress.DB.PreparedSQL.InterpolatedNotPrepared - false positive due to table constant.
-			'DELETE FROM ' . $table_name_sql . ' WHERE post_id = %s',
-			$room_id
-		);
-
-		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		$wpdb->query( $prepared_query );
-
-		return true;
-	}
+	// ---
 
 	/**
 	 * Check a Page Exists
+	 *
+	 * @TODO - Move this somewhere more appropriate
 	 *
 	 * @param  string $room_name - Room Name.
 	 *
@@ -290,6 +205,8 @@ class ModuleConfig {
 	 * This function renders the activate/deactivate button for a given module
 	 * Used only in admin pages of plugin
 	 *
+	 * @TODO - Move this somewhere more appropriate, it should also return a string, not output directly
+	 *
 	 * @param int $module_id Module ID.
 	 *
 	 * @return string  Button with link
@@ -309,17 +226,15 @@ class ModuleConfig {
 			case self::ACTION_ENABLE:
 				\do_action( 'myvideoroom_enable_feature_module', $module_id );
 				$this->update_enabled_status( $module_id, true );
-				Factory::get_instance( VideoHelpers::class )->admin_page_refresh();
 				break;
 			case self::ACTION_DISABLE:
 				\do_action( 'myvideoroom_disable_feature_module', $module_id );
 				$this->update_enabled_status( $module_id, false );
-				Factory::get_instance( VideoHelpers::class )->admin_page_refresh();
 				break;
 		}
 
 		// Check enabled status to see which button to render.
-		$is_module_enabled = $this->read_enabled_status( $module_id );
+		$is_module_enabled = $this->is_module_activation_enabled( $module_id );
 
 		// Check if is sub tab to mark as such to strip out extra data in URL when called back.
 
@@ -353,13 +268,6 @@ class ModuleConfig {
 			$base_url
 		);
 
-		$sub_tab_url = \add_query_arg(
-			array(
-				'subtab' => 1,
-			),
-			$url
-		);
-
 		?>
 		<div>
 			<a href="<?php echo esc_url( $url ); ?>"
@@ -372,17 +280,5 @@ class ModuleConfig {
 		<?php
 
 		return $result;
-	}
-
-	/**
-	 * This function renders the activate/deactivate button for a give module
-	 * Used only in admin pages of plugin
-	 *
-	 * @param int $module_id - The module ID.
-	 *
-	 * @return bool
-	 */
-	public function module_activation_status( int $module_id ): bool {
-		return (bool) $this->read_enabled_status( $module_id );
 	}
 }
