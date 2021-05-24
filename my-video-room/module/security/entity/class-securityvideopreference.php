@@ -261,10 +261,10 @@ class SecurityVideoPreference {
 	/**
 	 * Gets Allowed Roles.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function get_allowed_roles_array(): ?string {
-		return explode('|', $this->allowed_roles);
+	public function get_allowed_roles_array(): array {
+		return explode( '|', $this->allowed_roles );
 	}
 
 	/**
