@@ -145,8 +145,8 @@ class Admin {
 
 		if ( empty( $admin_page_hooks[ PageList::PAGE_SLUG_GETTING_STARTED ] ) ) {
 			\add_menu_page(
-				\esc_html__( 'MyVideoRoom', 'myvideoroom' ),
-				\esc_html__( 'MyVideoRoom', 'myvideoroom' ),
+				'MyVideoRoom',
+				'MyVideoRoom',
 				'manage_options',
 				PageList::PAGE_SLUG_GETTING_STARTED,
 				array( $this, 'create_getting_started_page' ),
