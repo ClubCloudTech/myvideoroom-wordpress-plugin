@@ -25,6 +25,7 @@ return function() {
 	wp_enqueue_script( 'myvideoroom-outer-tabs' );
 	ob_start();
 	$page = require __DIR__ . '/../views/view-settings-securityheader.php';
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Page already Escaped in view.
 	echo $page();
 	?>
 		<div id="outer" class="mvr-admin-page-wrap">
@@ -42,11 +43,6 @@ return function() {
 						</a>
 					</li>
 
-					<li>
-						<a class="nav-tab" href="#page434">
-							<?php esc_html_e( 'Security Shortcodes', 'my-video-room' ); ?>
-						</a>
-					</li>
 				</ul>
 			</nav>
 			<br><br>
@@ -95,7 +91,6 @@ return function() {
 								?>
 								</p>
 						</article>
-					<article id="page434">Content</article>
 				</div>
 
 		<?php
