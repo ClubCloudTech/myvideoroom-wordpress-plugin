@@ -113,7 +113,6 @@ class MVRSiteVideo extends Shortcode {
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
 
-
 		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'render_sitevideo_roomsetting_tab' ), 21, 2 );
 
 		\add_action(
