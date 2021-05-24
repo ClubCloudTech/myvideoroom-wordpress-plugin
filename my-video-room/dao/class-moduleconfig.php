@@ -362,7 +362,12 @@ class ModuleConfig {
 
 		?>
 		<div>
-			<a href="<?php echo esc_url( $url ); ?>" class="<?php echo esc_html( $status ); ?>" title="<?php echo esc_html( $description ); ?>"><i class="dashicons <?php echo esc_html( $type ) . ' ' . esc_html( $status ); ?>"></i> <?php echo esc_html( $main_text ); ?></a>
+			<a href="<?php echo esc_url( $url ); ?>"
+			class="<?php echo esc_html( $status ); ?>"
+			title="<?php echo esc_html( $description ); ?>"
+			>
+			<i class="dashicons <?php echo esc_html( $type ) . ' ' . esc_html( $status ); ?>"></i>
+			<?php echo esc_html( $main_text ); ?></a>
 		</div>
 		<?php
 
