@@ -74,7 +74,7 @@ SQL;
 	public function get_by_id( int $id ): ?Settings {
 		global $wpdb;
 
-		$result = wp_cache_get( $id, $this->get_cache_group() );
+		$result = \wp_cache_get( $id, $this->get_cache_group() );
 
 		if ( false === $result ) {
 			$table_name = $this->get_table_name();
