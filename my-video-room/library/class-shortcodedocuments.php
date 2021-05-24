@@ -30,9 +30,7 @@ class ShortcodeDocuments {
 				<th style="width:75%; text-align: left;"><p>
 				<?php
 				esc_html_e(
-					'This Shortcode renders the site default room configuration
-					in the frontend of the site. Please be careful with the placement of this shortcode as it allows site
-					default settings to be edited, so care must be taken its placement.',
+					'This Shortcode renders the site default room configuration in the frontend of the site. Please be careful with the placement of this shortcode as it allows site default settings to be edited, so care must be taken its placement.',
 					'my-video-room'
 				);
 				?>
@@ -48,11 +46,7 @@ class ShortcodeDocuments {
 			<td style="width:75%; text-align: left;">
 			<?php
 			echo esc_html__(
-				'Returns a Variety of useful Information about a room that you can place in your pages<br>
-				Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>
-				Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- www.c.com/jones has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room
-				Type (url) - returns URL of room. <BR>
-				Usage - <b>[getvideo_room_info room="bookings-center" type = "url"]</b> will return the URL of the Bookings Center]',
+				'Returns a Variety of useful Information about a room that you can place in your pages<br>Room=(one of the following - meet-center, bookings-center, site-video-room) - selects the auto generated room type to query. This is required.<br>Type (title) - Room Name (with spaces) - Type (slug) - returns the post slug (eg- www.c.com/jones has slug of Jones) - Type (post_id) - returns the WordPress Post ID of a room Type (url) - returns URL of room. <br>Usage - <b>[getvideo_room_info room="bookings-center" type = "url"]</b> will return the URL of the Bookings Center]',
 				'my-video-room'
 			);
 			?>
