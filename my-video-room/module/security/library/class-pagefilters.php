@@ -13,7 +13,6 @@ use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\UserRoles;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Module\Security\Security;
@@ -40,27 +39,17 @@ class PageFilters extends Shortcode {
 	 * @return string|null depending on status.
 	 */
 	public function block_disabled_module_video_render( int $module_id ) {
-		// Check BuddyPress as both itself and Personal Video Scenarios.
+		// Check Actions.
+		$module_block = do_action( 'myvideoroom_security_block_disabled_module', $module_id );
+		if ( $module_block ) {
+			return $module_block;
+		}
 
-		if (
-			Factory::get_instance( ModuleConfig::class )->read_enabled_status( Dependencies::MODULE_BUDDYPRESS_ID ) &&
-			Factory::get_instance( Dependencies::class )->is_buddypress_active()
-		) {
-			if ( Dependencies::MODULE_BUDDYPRESS_ID === $module_id ) {
-				$is_module_enabled = Factory::get_instance( ModuleConfig::class )->read_enabled_status( $module_id );
+		// Normal Check.
+		$is_module_enabled = Factory::get_instance( ModuleConfig::class )->read_enabled_status( $module_id );
 
-				if ( ! $is_module_enabled ) {
-					return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
-				} else {
-					$module_id = Dependencies::MODULE_PERSONAL_MEETING_ID;
-				}
-			}
-			// Normal Check.
-			$is_module_enabled = Factory::get_instance( ModuleConfig::class )->read_enabled_status( $module_id );
-
-			if ( ! $is_module_enabled ) {
-				return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
-			}
+		if ( ! $is_module_enabled ) {
+			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
 		}
 	}
 
