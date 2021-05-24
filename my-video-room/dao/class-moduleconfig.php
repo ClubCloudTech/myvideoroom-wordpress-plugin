@@ -331,10 +331,12 @@ class ModuleConfig {
 
 		switch ( $module_status ) {
 			case self::ACTION_ENABLE:
+				\do_action( 'myvideoroom_enable_feature_module', $module_id );
 				$this->update_enabled_status( $module_id, true );
 				Factory::get_instance( VideoHelpers::class )->admin_page_refresh();
 				break;
 			case self::ACTION_DISABLE:
+				\do_action( 'myvideoroom_disable_feature_module', $module_id );
 				$this->update_enabled_status( $module_id, false );
 				Factory::get_instance( VideoHelpers::class )->admin_page_refresh();
 				break;
