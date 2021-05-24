@@ -52,30 +52,6 @@ class ModuleConfig {
 	}
 
 	/**
-	 * Check Table Exists
-	 *
-	 * @param string $table_name - name of table to check.
-	 *
-	 * @return bool
-	 */
-	public function check_table_exists( string $table_name ): bool {
-		global $wpdb;
-		$table_name_sql = $wpdb->prefix . $table_name;
-
-		try {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
-			$row = $wpdb->get_row( 'SELECT 1 FROM ' . $table_name_sql . ' LIMIT 1' );
-			if ( $row ) {
-				return true;
-			}
-
-			return false;
-		} catch ( \Throwable $e ) {
-			return false;
-		}
-	}
-
-	/**
 	 * Check Module Exists in Database
 	 *
 	 * @param  int $module_id - The module ID.
