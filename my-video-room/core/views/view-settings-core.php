@@ -31,7 +31,7 @@ return function (
 	$path   = '/core/views/header/header.php';
 	$render = require WP_PLUGIN_DIR . '/my-video-room' . $path;
 	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Output already rendered safe upstream.
-	echo $render( $messages, $module_tabs );
+	echo $render( $messages );
 	ob_start();
 
 	?>

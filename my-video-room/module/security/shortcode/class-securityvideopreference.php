@@ -194,11 +194,12 @@ class SecurityVideoPreference extends Shortcode {
 		foreach ( $allowed_roles as $setting_returned ) {
 			$db_output .= '<option value="' . esc_attr( $setting_returned ) . '" selected>' . esc_html( $setting_returned ) . '</option>';
 		}
-
 		// Now need to exclude a setting if already returned above.
-		foreach ( $all_roles as $key ) {
-			if ( strpos( $allowed_roles, $key['name'] ) === false ) {
-				$output .= '<option value="' . esc_attr( $key['name'] ) . '">' . esc_html( $key['name'] ) . '</option>';
+		foreach ( $allowed_roles as $setting_returned ) {
+			foreach ( $all_roles as $key ) {
+				if ( strpos( $setting_returned, $key['name'] ) === false ) {
+					$output .= '<option value="' . esc_attr( $key['name'] ) . '">' . esc_html( $key['name'] ) . '</option>';
+				}
 			}
 		}
 
