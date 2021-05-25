@@ -270,42 +270,4 @@ class UserVideoPreference {
 	private function create_cache_key( int $user_id, string $room_name ): string {
 		return "user_id:${user_id}:room_name:${room_name}:1";
 	}
-
-	/**
-	 * Get a Just Preference Data from the database
-	 * Returns layout ID, Reception ID, or Reception Enabled Status.
-	 *
-	 * @deprecated - use self::get_by_id instead.
-	 *
-	 * @param int    $user_id     The user id.
-	 * @param string $room_name   The room name.
-	 * @param string $return_type The return type.
-	 *
-	 * @return string|bool|null
-	 */
-	public function read_user_video_settings( int $user_id, string $room_name, string $return_type ) {
-		$preference = $this->get_by_id( $user_id, $room_name );
-
-		if ( ! $preference ) {
-			return null;
-		}
-
-		// Return Data.
-		switch ( $return_type ) {
-			case 'layout_id':
-				return $preference->get_layout_id();
-			case 'reception_id':
-				return $preference->get_reception_id();
-			case 'reception_enabled':
-				return $preference->is_reception_enabled();
-			case 'reception_video_enabled':
-				return $preference->is_reception_video_enabled();
-			case 'reception_video_url':
-				return $preference->get_reception_video_url_setting();
-			case 'show_floorplan':
-				return $preference->is_floorplan_enabled();
-			default:
-				return null;
-		}
-	}
 }

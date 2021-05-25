@@ -7,12 +7,12 @@
 
 namespace MyVideoRoomPlugin\Module\SiteVideo\Setup;
 
+use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\DAO\RoomInit;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
@@ -79,21 +79,31 @@ class RoomAdmin {
 
 		return $post_id;
 	}
+
 	/**
 	 * Initialise Room Category Default Settings for Site Video.
 	 *
 	 * @return bool
 	 */
 	public function initialise_default_sitevideo_settings(): bool {
-		// Site Default - Entire Site.
-		Factory::get_instance( RoomInit::class )->room_default_settings_install(
+		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
+
+		// Check Exists.
+		$current_user_setting = $video_preference_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-			'boardroom',
-			'default',
-			false,
-			false
 		);
+
+		if ( ! $current_user_setting ) {
+			$current_user_setting = new UserVideoPreferenceEntity(
+				SiteDefaults::USER_ID_SITE_DEFAULTS,
+				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+				'boardroom',
+				'default',
+				false,
+			);
+			$video_preference_dao->create( $current_user_setting );
+		}
 
 		return true;
 	}
