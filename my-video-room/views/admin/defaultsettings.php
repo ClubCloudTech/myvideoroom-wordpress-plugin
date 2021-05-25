@@ -23,7 +23,6 @@ return function (
 	\ob_start();
 	$string_randomizer_input = 'defaulthosts';
 	$html_library            = Factory::get_instance( HTML::class, array( $string_randomizer_input ) );
-	$html_lib                = $html_library;
 	$inbound_tabs            = array();
 	$tabs                    = apply_filters( 'myvideoroom_permissions_manager_menu', $inbound_tabs );
 	$tab_count               = count( $tabs );
@@ -36,7 +35,7 @@ return function (
 <nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 	<ul>
 		<li>
-			<a class="nav-tab nav-tab-active" href="#defaulthost<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
+			<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
 				<?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?>
 			</a>
 		</li>
@@ -59,7 +58,7 @@ return function (
 		<?php
 	}
 	?>
-<article class="mvr-admin-page-wrap" id="defaulthost<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
+<article class="mvr-admin-page-wrap" id="<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
 	<h2><?php \esc_html_e( 'Site Level Default Hosts', 'myvideoroom' ); ?></h2>
 
 	<p>

@@ -140,6 +140,7 @@
 	background: #e7e7e7;
 	padding: 12px;
 	margin: 5px;
+	clear:both;
 }
 .mvr-outer-tab-active {
 	border: 1px solid #8f8f8f;
