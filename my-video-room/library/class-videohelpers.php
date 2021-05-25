@@ -12,7 +12,6 @@ namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Library\Dependencies;

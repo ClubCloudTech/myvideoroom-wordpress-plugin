@@ -22,7 +22,7 @@ use MyVideoRoomPlugin\Shortcode\App;
  * Class SiteDefaults
  */
 class SiteDefaults {
-	const SHORTCODE_TAG_INVITE_MENU = App::SHORTCODE_TAG . '_invitemenu';
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_invitemenu';
 	// All Up Site Default Master Setting.
 	const ROOM_NAME_SITE_DEFAULT = 'site-default-settings';
 
@@ -74,13 +74,12 @@ class SiteDefaults {
 		wp_enqueue_style( 'myvideoroom-menutab-header' );
 		Factory::get_instance( Setup::class )->initialise_default_video_settings();
 
-		add_shortcode( self::SHORTCODE_TAG_INVITE_MENU, array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
+		add_shortcode( self::SHORTCODE_TAG, array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
 
 		// Add Icons to Video Headers of Room Video Status.
 		\add_filter( 'myvideoroom_template_icon_section', array( Factory::get_instance( TemplateIcons::class ), 'add_default_video_icons_to_header' ), 10, 4 );
 
 		// Security module placeholder in case module disabled.
-		\add_filter( 'myvideoroom_permissions_manager_menu', array( Factory::get_instance( Dependencies::class ), 'render_security_disabled_settings_page' ), 10, 1 );
 		\add_action( 'myvideoroom_enable_feature_module', array( Factory::get_instance( SecurityRoomHelpers::class ), 'security_enable_feature_module' ) );
 	}
 

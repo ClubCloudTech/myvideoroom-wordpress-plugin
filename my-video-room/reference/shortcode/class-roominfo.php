@@ -9,12 +9,9 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Reference\Shortcode;
 
-use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Reference\Option;
 use MyVideoRoomPlugin\Reference\Section;
 use MyVideoRoomPlugin\Reference\Shortcode;
-use MyVideoRoomPlugin\Shortcode\App as AppShortcode;
 use MyVideoRoomPlugin\Shortcode\RoomInfo as RoomInfoShortcode;
 
 /**

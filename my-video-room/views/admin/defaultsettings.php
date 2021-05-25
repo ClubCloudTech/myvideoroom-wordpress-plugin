@@ -13,7 +13,7 @@ use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\HttpPost;
 
 /**
- * Render the Room Permissions Admin page
+ * Render the Default Settings Admin page
  *
  * @param array $all_wp_roles A list of WordPress roles. @see global $wp_roles->roles.
  */
@@ -27,9 +27,12 @@ return function (
 
 	$inbound_tabs = array();
 	$tabs         = apply_filters( 'myvideoroom_permissions_manager_menu', $inbound_tabs );
-	?>
-<h2><?php esc_html_e( 'Permissions and Room Access Control', 'my-video-room' ); ?></h2>
-<p><?php esc_html_e( 'This section allows you manage the permissions, guest/host decisions, and room security settings across your rooms.', 'myvideoroom' ); ?>
+	$tab_count    = count( $tabs );
+
+	if ( $tab_count >= 1 ) {
+		?>
+<h2><?php esc_html_e( 'MyVideoRoom Default Settings', 'my-video-room' ); ?></h2>
+<p><?php esc_html_e( 'This section allows you manage the default room appearance as well as permissions, guest/host decisions, and room security settings across all of your rooms.', 'myvideoroom' ); ?>
 </p>
 <nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 	<ul>
@@ -53,7 +56,10 @@ return function (
 		}
 		?>
 	</ul>
-</nav><br>
+</nav>
+		<?php
+	}
+	?>
 <article class="mvr-admin-page-wrap" id="defaulthost">
 	<h2><?php \esc_html_e( 'Site Level Default Hosts', 'myvideoroom' ); ?></h2>
 

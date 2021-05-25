@@ -54,7 +54,7 @@ class PageList {
 
 			self::PAGE_SLUG_PERMISSIONS     => new Page(
 				self::PAGE_SLUG_PERMISSIONS,
-				\esc_html__( 'Room Permissions', 'myvideoroom' ),
+				\esc_html__( 'Default Settings', 'myvideoroom' ),
 				array( $admin_manager, 'create_permissions_page' )
 			),
 
