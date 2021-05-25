@@ -122,14 +122,6 @@ class SiteDefaults {
 		);
 
 		wp_register_script(
-			'myvideoroom-frame-refresh',
-			plugins_url( '/js/frame-refresh.js', __FILE__ ),
-			null,
-			$plugin_version,
-			true
-		);
-
-		wp_register_script(
 			'myvideoroom-admin-tabs',
 			plugins_url( '/js/tabbed.js', __FILE__ ),
 			array( 'jquery' ),

@@ -350,3 +350,7 @@
 	clear: both;
 	display: block;
 }
+
+.myvideoroom-sitevideo-add-room-button {
+	display: none;
+}
