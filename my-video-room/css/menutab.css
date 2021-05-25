@@ -190,9 +190,16 @@
 	width: 100%;
 	position: relative;
 }
+
+.mvr-header-section:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+
 .mvr-header-title {
 	color: #848B92;
-	font-family: "Montserrat", Sans-serif;
+	font-family: "Montserrat", sans-serif;
 	font-size: 18px;
 	font-weight: 500;
 	text-transform: uppercase;
@@ -202,7 +209,7 @@
 
 .mvr-header-label {
 	color: #848B92;
-	font-family: "Montserrat", Sans-serif;
+	font-family: "Montserrat", sans-serif;
 	font-size: 14px;
 	font-weight: 500;
 	text-transform: uppercase;

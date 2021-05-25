@@ -29,13 +29,13 @@
 	clear: both;
 	z-index: 1;
 	position: absolute;
-	bottom: 1px;
+	bottom: 0;
 	margin-left: -1px;
 	padding-right: 2px;
 }
 
 .myvideoroom-nav-tab-wrapper li:last-child:after {
-	width: 100%;
+	width: 1000%;
 }
 
 .myvideoroom-nav-tab-wrapper li {
@@ -46,10 +46,11 @@
 .myvideoroom-nav-tab-wrapper li a {
 	padding: 4px 12px;
 	border: 1px solid #c3c4c7;
+	display: inline-block;
 }
 
 .myvideoroom-nav-tab-wrapper li a.nav-tab-active {
-	border-bottom: none;
+	border-bottom: 1px solid transparent;
 }
 
 .myvideoroom-nav-tab-wrapper li a:not(.nav-tab-active) {
