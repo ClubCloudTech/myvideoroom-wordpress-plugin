@@ -141,14 +141,6 @@ class SiteDefaults extends Shortcode {
 			true
 		);
 
-		wp_register_script(
-			'myvideoroom-outer-tabs',
-			plugins_url( '/js/outer-tabbed.js', __FILE__ ),
-			array( 'jquery' ),
-			$plugin_version,
-			true
-		);
-
 		// --
 		// css
 
