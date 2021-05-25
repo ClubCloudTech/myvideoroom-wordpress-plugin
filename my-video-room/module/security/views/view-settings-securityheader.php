@@ -21,7 +21,6 @@ use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 
 return function() {
-	wp_enqueue_script( 'myvideoroom-outer-tabs' );
 	ob_start();
 	?>
 <div class="mvr-admin-page-wrap">

@@ -31,9 +31,9 @@ return function (
 <h2><?php esc_html_e( 'Permissions and Room Access Control', 'my-video-room' ); ?></h2>
 <p><?php esc_html_e( 'This section allows you manage the permissions, guest/host decisions, and room security settings across your rooms.', 'myvideoroom' ); ?>
 </p>
-<nav class="myvideoroom-outer-nav-tab-wrapper">
+<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 	<ul class="mvr-ul-header">
-		<li class="mvr-title-header"><a class="nav-tab outer-nav-tab-active"
+		<li class="mvr-title-header"><a class="nav-tab nav-tab-active"
 				href="#defaulthost"><?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?></a></li>
 		<?php
 		foreach ( $tabs as $menu_output ) {
@@ -41,8 +41,10 @@ return function (
 			$tab_slug         = $menu_output->get_tab_slug();
 			?>
 
-		<li class="mvr-title-header"><a class="mvr-menu-shortcode-button nav-tab"
-				href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>"><?php echo esc_html( $tab_display_name ); ?></a>
+		<li class="mvr-title-header">
+			<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+				<?php echo esc_html( $tab_display_name ); ?>
+			</a>
 		</li>
 			<?php
 		}

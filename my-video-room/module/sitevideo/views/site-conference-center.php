@@ -54,11 +54,12 @@ return function (
 			$tab_display_name = $menu_output->get_tab_display_name();
 			$tab_slug         = $menu_output->get_tab_slug();
 			?>
-		<li class="mvr-title-header"><a class="mvr-menu-shortcode-button nav-tab"
-				href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>"><?php echo esc_html( $tab_display_name ); ?></a>
+		<li class="mvr-title-header">
+			<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+				<?php echo esc_html( $tab_display_name ); ?>
+			</a>
 		</li>
 			<?php
-					$active = null;
 		}
 		?>
 	</ul>
