@@ -148,7 +148,6 @@ class MVRSiteVideoRoomHelpers {
 
 					default:
 						$details_section = ( require __DIR__ . '/../views/view-management-rooms.php' )( $room_object, 'normal' );
-
 				}
 			}
 		}
