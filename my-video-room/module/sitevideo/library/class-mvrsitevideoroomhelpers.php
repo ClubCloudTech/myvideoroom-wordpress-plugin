@@ -112,7 +112,7 @@ class MVRSiteVideoRoomHelpers {
 				$display_title,
 				$room_slug,
 				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-				MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO
+				MVRSiteVideo::SHORTCODE_SITE_VIDEO
 			);
 		}
 
@@ -199,7 +199,7 @@ class MVRSiteVideoRoomHelpers {
 				get_bloginfo( 'name' ) . ' ' . MVRSiteVideo::ROOM_TITLE_SITE_VIDEO,
 				MVRSiteVideo::ROOM_SLUG_SITE_VIDEO,
 				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-				MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO,
+				MVRSiteVideo::SHORTCODE_SITE_VIDEO,
 				$original_room_id,
 			);
 		} else {
@@ -208,7 +208,7 @@ class MVRSiteVideoRoomHelpers {
 				$room_object->display_name,
 				$room_object->slug,
 				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-				MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO,
+				MVRSiteVideo::SHORTCODE_SITE_VIDEO,
 				$original_room_id
 			);
 		}

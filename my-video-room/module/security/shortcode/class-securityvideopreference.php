@@ -9,15 +9,16 @@ namespace MyVideoRoomPlugin\Module\Security\Shortcode;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HttpPost;
-use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
+use MyVideoRoomPlugin\Shortcode\App;
 
 /**
  * Class SecurityVideoPreference
  */
-class SecurityVideoPreference extends Shortcode {
+class SecurityVideoPreference {
+	const SHORTCODE_TAG_CHOOSE_SECURITY = App::SHORTCODE_TAG . '_choose_security_settings';
 	/**
 	 * A increment in case the same element is placed on the page twice
 	 *
@@ -29,7 +30,7 @@ class SecurityVideoPreference extends Shortcode {
 	 * Provide Runtime
 	 */
 	public function init() {
-		$this->add_shortcode( 'choose_security_settings', array( $this, 'choose_security_settings_shortcode' ) );
+		add_shortcode( self::SHORTCODE_TAG_CHOOSE_SECURITY, array( $this, 'choose_security_settings_shortcode' ) );
 	}
 
 	/**

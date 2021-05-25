@@ -100,7 +100,6 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	private ?string $error = null;
 
 	// --
-
 	/**
 	 * MyVideoRoomApp constructor.
 	 */

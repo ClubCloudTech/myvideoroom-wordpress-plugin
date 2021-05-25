@@ -17,7 +17,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
  */
-class MVRSiteVideoViews extends Shortcode {
+class MVRSiteVideoViews {
 
 	// ---
 	// Site Video Room Templates.

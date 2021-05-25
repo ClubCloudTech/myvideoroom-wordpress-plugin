@@ -13,7 +13,7 @@ use MyVideoRoomPlugin\Shortcode as Shortcode;
 /**
  * Class SectionTemplate
  */
-class SectionTemplates extends Shortcode {
+class SectionTemplates {
 
 	/**
 	 * Render a Template to Automatically Wrap the Video Shortcode with additional tabs to add more functionality

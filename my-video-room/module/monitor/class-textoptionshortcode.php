@@ -9,20 +9,21 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\Monitor;
 
-use MyVideoRoomPlugin\Shortcode;
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Shortcode\App;
+use MyVideoRoomPlugin\Library\Logger;
 
 /**
  * Class TextOptionShortcode
  */
-class TextOptionShortcode extends Shortcode {
-	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_text_option';
+class TextOptionShortcode {
+	const SHORTCODE_TAG_TEXT_OPTION = App::SHORTCODE_TAG . '_text_option';
 
 	/**
 	 * Install the shortcode
 	 */
 	public function init() {
-		\add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG_TEXT_OPTION, array( $this, 'output_shortcode' ) );
 	}
 
 	/**
@@ -38,7 +39,7 @@ class TextOptionShortcode extends Shortcode {
 			Module::SHORTCODE_TAG
 		);
 
-		return $this->return_error( $message );
+		return Factory::get_instance( Logger::class )->return_error( $message );
 	}
 
 }

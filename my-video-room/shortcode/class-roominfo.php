@@ -12,19 +12,18 @@ namespace MyVideoRoomPlugin\Shortcode;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
-use MyVideoRoomPlugin\Shortcode;
 
 /**
  * Class RoomInfo
  */
-class RoomInfo extends Shortcode {
-	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_info';
+class RoomInfo {
+	const SHORTCODE_TAG_INFO = App::SHORTCODE_TAG . '_info';
 
 	/**
 	 * Install the shortcode
 	 */
 	public function init() {
-		\add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG_INFO, array( $this, 'output_shortcode' ) );
 	}
 
 	/**

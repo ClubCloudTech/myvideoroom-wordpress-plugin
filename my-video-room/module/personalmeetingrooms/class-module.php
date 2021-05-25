@@ -24,8 +24,8 @@ use WP_Error;
  */
 class Module {
 
-	const SETTING_URL_PARAM = Plugin::PLUGIN_NAMESPACE . '_url_param';
-	const SHORTCODE_TAG     = App::SHORTCODE_TAG . '_personal_invite';
+	const SETTING_URL_PARAM             = Plugin::PLUGIN_NAMESPACE . '_url_param';
+	const SHORTCODE_TAG_PERSONAL_INVITE = App::SHORTCODE_TAG . '_personal_invite';
 
 	const INVITE_EMAIL_ACTION = 'personalmeetingrooms_invite';
 
@@ -33,7 +33,7 @@ class Module {
 	 * MonitorShortcode constructor.
 	 */
 	public function __construct() {
-		\add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG_PERSONAL_INVITE, array( $this, 'output_shortcode' ) );
 
 		\add_action( 'wp_ajax_myvideroom_personalmeetingrooms_invite', array( $this, 'process_ajax_request' ) );
 
