@@ -9,9 +9,6 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\RoomBuilder;
 
-use function do_shortcode;
-use function do_action;
-
 /**
  * Class Admin
  */

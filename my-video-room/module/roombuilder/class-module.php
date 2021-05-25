@@ -24,14 +24,15 @@ use MyVideoRoomPlugin\ValueObject\GettingStarted;
  */
 class Module {
 
-	const SHORTCODE_TAG_ROOM_BUILDER = App::SHORTCODE_TAG . '_room_builder';
-	const PAGE_SLUG_BUILDER          = PageList::PAGE_SLUG_DEFAULT . '-room-builder';
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_room_builder';
+
+	const PAGE_SLUG_BUILDER = PageList::PAGE_SLUG_DEFAULT . '-room-builder';
 
 	/**
 	 * Install the shortcode
 	 */
 	public function __construct() {
-		\add_shortcode( self::SHORTCODE_TAG_ROOM_BUILDER, array( $this, 'output_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 
 		\add_action(
 			'wp_enqueue_scripts',
@@ -291,10 +292,6 @@ class Module {
 
 		$host_shortcode_text_constructor  = ( clone $host_shortcode_constructor );
 		$guest_shortcode_text_constructor = ( clone $guest_shortcode_constructor );
-
-		if ( $shortcode_constructor->is_host() ) {
-			$guest_shortcode_text_constructor->set_as_guest();
-		}
 
 		// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.
 		return ( require __DIR__ . '/views/preview.php' )(
