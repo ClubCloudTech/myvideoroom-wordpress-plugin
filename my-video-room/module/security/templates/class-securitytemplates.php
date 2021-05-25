@@ -69,23 +69,33 @@ class SecurityTemplates {
 
 	<p class="mvr-template-text">
 					<?php
-					$new_user   = get_userdata( $user_id );
-					$first_name = $new_user->user_firstname;
-					$nicename   = $new_user->user_nicename;
-					if ( $first_name ) {
-						echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
-					} elseif ( $nicename ) {
-						echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
-					} else {
-						esc_html_e( 'The Administrator', 'my-video-room' );
+					$new_user           = get_userdata( $user_id );
+					$first_display_name = esc_html__( 'Site Policy', 'my-video-room' );
+					if ( $new_user ) {
+						$first_name = $new_user->user_firstname;
+						$nicename   = $new_user->user_nicename;
+						if ( $first_name ) {
+							$first_display_name = '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
+						} elseif ( $nicename ) {
+							$first_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
+						}
 					}
-					esc_html_e( ' has disabled this room. Please contact the site owner, or ', 'myvideoroom' );
-					if ( $first_name ) {
-						echo \esc_attr( ucfirst( $first_name ) );
-					} else {
-						echo esc_attr( ucfirst( $nicename ) );
+					$second_display_name = esc_html__( 'the site administrators', 'my-video-room' );
+					if ( $new_user ) {
+						$first_name = $new_user->user_firstname;
+						$nicename   = $new_user->user_nicename;
+						if ( $first_name ) {
+							$second_display_name = '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
+						} elseif ( $nicename ) {
+							$second_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
+						}
 					}
-					esc_html_e( ' for more assistance.', 'myvideoroom' );
+					echo sprintf(
+					/* translators: %1s is the text "Site Policy" and %2s is "the site administrators" */
+						esc_html__( ' %1$s  has disabled this room. Please contact the site owner, or  %2$s for more assistance.', 'myvideoroom' ),
+						esc_attr( $first_display_name ),
+						esc_attr( $second_display_name )
+					);
 					?>
 	</p>
 
@@ -116,29 +126,33 @@ class SecurityTemplates {
 
 	<p class="mvr-template-text">
 					<?php
-					$new_user   = get_userdata( $user_id );
-					$first_name = $new_user->user_firstname;
-					$nicename   = $new_user->user_nicename;
-					if ( $first_name ) {
-						echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
-					} elseif ( $nicename ) {
-						echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
-					} else {
-						echo '<strong>' . esc_html_e( 'Site Policy', 'myvideoroom' ) . '</strong>';
+					$new_user           = get_userdata( $user_id );
+					$first_display_name = esc_html__( 'Site Policy', 'my-video-room' );
+					if ( $new_user ) {
+						$first_name = $new_user->user_firstname;
+						$nicename   = $new_user->user_nicename;
+						if ( $first_name ) {
+							$first_display_name = '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
+						} elseif ( $nicename ) {
+							$first_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
+						}
 					}
-					esc_html_e(
-						' only allows signed in/registered users to access their video room. To be able to access this room,
-					you must have an account on this site. Please Register for access or ask ',
-						'myvideoroom'
+					$second_display_name = esc_html__( 'the site administrators', 'my-video-room' );
+					if ( $new_user ) {
+						$first_name = $new_user->user_firstname;
+						$nicename   = $new_user->user_nicename;
+						if ( $first_name ) {
+							$second_display_name = '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
+						} elseif ( $nicename ) {
+							$second_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
+						}
+					}
+					echo sprintf(
+					/* translators: %1s is the text "Site Policy" and %2s is "the site administrators" */
+						esc_html__( ' %1$s  only allows signed in/registered users to access a video room. To be able to access this room, you must have an account on this site. Please Register for access or ask  %2$s for more assistance.', 'myvideoroom' ),
+						esc_attr( $first_display_name ),
+						esc_attr( $second_display_name )
 					);
-					if ( $first_name ) {
-						echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
-					} elseif ( $nicename ) {
-						echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
-					} else {
-						esc_html_e( 'The Administrator', 'my-video-room' );
-					}
-					esc_html_e( ' for more assistance.', 'myvideoroom' );
 					?>
 	</p>
 </div>
@@ -169,28 +183,33 @@ class SecurityTemplates {
 
 	<p class="mvr-template-text">
 					<?php
-					$new_user   = get_userdata( $user_id );
-					$first_name = $new_user->user_firstname;
-					$nicename   = $new_user->user_nicename;
-					if ( $first_name ) {
-						echo '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
-					} elseif ( $nicename ) {
-						echo '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
-					} else {
-						esc_html_e( 'The Administrator', 'my-video-room' );
+					$new_user           = get_userdata( $user_id );
+					$first_display_name = esc_html__( 'The Administrator', 'my-video-room' );
+					if ( $new_user ) {
+						$first_name = $new_user->user_firstname;
+						$nicename   = $new_user->user_nicename;
+						if ( $first_name ) {
+							$first_display_name = '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
+						} elseif ( $nicename ) {
+							$first_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
+						}
 					}
-					esc_html_e(
-						' has enabled this room only for specific roles of users. You are not in a group that has been given access. Please contact the site owner or ',
-						'myvideoroom'
+					$second_display_name = esc_html__( 'the site administrators', 'my-video-room' );
+					if ( $new_user ) {
+						$first_name = $new_user->user_firstname;
+						$nicename   = $new_user->user_nicename;
+						if ( $first_name ) {
+							$second_display_name = '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
+						} elseif ( $nicename ) {
+							$second_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
+						}
+					}
+					echo sprintf(
+					/* translators: %1s is the text "The Administrator" and %2s is "the site administrators" */
+						esc_html__( ' %1$s has enabled this room only for specific roles of users. You are not in a group that has been given access. Please contact the site owner or %2$s for more assistance.', 'myvideoroom' ),
+						esc_attr( $first_display_name ),
+						esc_attr( $second_display_name )
 					);
-					if ( $first_name ) {
-						echo \esc_attr( ucfirst( $first_name ) );
-					} elseif ( $nicename ) {
-						echo esc_attr( ucfirst( $nicename ) );
-					} else {
-						esc_html_e( 'the site administrators', 'my-video-room' );
-					}
-					esc_html_e( ' for more assistance.', 'myvideoroom' );
 					?>
 	</p>
 		<?php

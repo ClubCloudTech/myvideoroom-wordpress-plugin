@@ -66,6 +66,7 @@ class PageFilters {
 		// Check Module Override State.
 		$user_permissions          = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $user_id, $room_name );
 		$site_override_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
+
 		// Override Control Check.
 		if ( $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $user_id );
@@ -75,6 +76,7 @@ class PageFilters {
 		$does_room_record_exist = $user_permissions->get_room_name();
 		if ( ! $does_room_record_exist ) {
 			$is_room_disabled = $site_override_permissions->is_room_disabled();
+
 		} else {
 			$is_room_disabled = $user_permissions->is_room_disabled();
 		}
@@ -87,6 +89,7 @@ class PageFilters {
 					$user_id,
 					$room_name
 				);
+
 			} else {
 				// For guests return the blocked template.
 				return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $user_id );
@@ -105,17 +108,21 @@ class PageFilters {
 	 */
 	public function block_anonymous_room_video_render( int $user_id, string $room_name ): ?string {
 		// Check Module Override State.
-		$user_permissions          = Factory::get_instance( SecurityVideoPreferenceDAO::class )->check_security_settings( $user_id, $room_name );
-		$site_override_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->check_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
+		$user_permissions          = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $user_id, $room_name );
+		$site_override_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
+
 		// Override Control Check.
+
 		if ( $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
 			return Factory::get_instance( SecurityTemplates::class )->anonymous_blocked_by_user( $user_id );
 		}
 
 		// Site Default Settings Section.
 		$does_room_record_exist = $user_permissions->get_room_name();
+
 		if ( ! $does_room_record_exist ) {
 			$is_room_disabled = $site_override_permissions->is_anonymous_enabled();
+
 		} else {
 			$is_room_disabled = $user_permissions->is_anonymous_enabled();
 		}
@@ -141,13 +148,13 @@ class PageFilters {
 
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $owner_id );
 		if ( $room_object ) {
-			$room_name = $room_object->get_room_name() . Security::MULTI_ROOM_HOST_SUFFIX;
+			$room_name = $room_object->room_name . Security::MULTI_ROOM_HOST_SUFFIX;
 		}
 
 		// Check Module Override State.
-		$user_permissions             = Factory::get_instance( SecurityVideoPreferenceDAO::class )->check_security_settings( $owner_id, $room_name );
-		$site_override_permissions    = Factory::get_instance( SecurityVideoPreferenceDAO::class )->check_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
-		$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->check_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
+		$user_permissions             = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $owner_id, $room_name );
+		$site_override_permissions    = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
+		$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
 		// Override Control Check.
 		if ( $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $owner_id );
@@ -158,15 +165,17 @@ class PageFilters {
 
 		if ( ! $does_room_record_exist ) {
 			$room_control_enabled_state = $security_default_permissions->is_allow_role_control_enabled();
+
 		} else {
 			$room_control_enabled_state = $user_permissions->is_allow_role_control_enabled();
 		}
 
 		// Handling Anonymous Users.
-		$anonymous_hosts_allowed = $user_permissions->anonymous_enabled;
+		$anonymous_hosts_allowed = $user_permissions->is_anonymous_enabled();
 
 		if ( $anonymous_hosts_allowed && ! \is_user_logged_in() ) {
 			return true;
+
 		} elseif ( ! $anonymous_hosts_allowed && ! is_user_logged_in() ) {
 			return false;
 		}
@@ -181,9 +190,10 @@ class PageFilters {
 			}
 		}
 		// Decide whether to allow or block.
-		// Site Default Settings Section.
+		// With Blank Record check for Default Security Config.
 		if ( ! $does_room_record_exist ) {
 			$allow_to_block_switch = $security_default_permissions->is_block_role_control_enabled();
+
 		} else {
 			$allow_to_block_switch = $user_permissions->is_block_role_control_enabled();
 		}
@@ -196,11 +206,13 @@ class PageFilters {
 
 		if ( ! $does_room_record_exist ) {
 			$preference = $security_default_permissions;
+
 		} else {
 			$preference = $user_permissions;
 		}
 
 		$allowed_db_roles_configuration = array();
+
 		if ( $preference ) {
 			$allowed_db_roles_configuration = $preference->get_allowed_roles_array();
 		}
@@ -228,10 +240,13 @@ class PageFilters {
 		// Fire Block if Flag to block is on.
 		if ( ! $role_match && $allow_to_block_switch ) {
 			return true;
+
 		} elseif ( ! $role_match && ! $allow_to_block_switch ) {
 			return false;
+
 		} elseif ( $role_match && ! $allow_to_block_switch ) {
 			return true;
+
 		} else {
 			return false;
 		}
@@ -249,41 +264,50 @@ class PageFilters {
 	 * @return null|string depending.
 	 */
 	public function allowed_roles_room_video_render( int $owner_id, string $room_name, string $host_status, string $room_type = null ) {
+		// Exit if Host.
+		if ( $host_status ) {
+			return null;
+		}
 		// Check Module Override State.
-		$site_override = Factory::get_instance( SecurityVideoPreferenceDao::class )
-			->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, 'site_override_enabled' );
+		$site_override_permissions    = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
+		$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
+
+		// Override Anonymous Control Check.
+		if ( $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
+			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
+		}
+
+		// Check Module Override State.
+		$site_override = $site_override_permissions->is_site_override_enabled();
 
 		// Override Control Check.
 		if ( $site_override ) {
 			$owner_id  = SiteDefaults::USER_ID_SITE_DEFAULTS;
 			$room_name = SiteDefaults::ROOM_NAME_SITE_DEFAULT;
 		}
-		// Site Default Settings Section.
+		$user_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $owner_id, $room_name );
 
-		$does_room_record_exist = Factory::get_instance( SecurityVideoPreferenceDAO::class )
-			->read_security_settings( $owner_id, $room_name, 'room_name' );
+		// Site Default Settings Section.
+		$does_room_record_exist = $user_permissions->get_room_name();
 
 		if ( ! $does_room_record_exist ) {
-			$room_control_enabled_state = Factory::get_instance( SecurityVideoPreferenceDAO::class )
-				->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE, 'allow_role_control_enabled' );
-		} else {
-			$room_control_enabled_state = Factory::get_instance( SecurityVideoPreferenceDAO::class )
-				->read_security_settings( $owner_id, $room_name, 'allow_role_control_enabled' );
-		}
+			$room_control_enabled_state = $security_default_permissions->is_allow_role_control_enabled();
 
-		// Exit Filter if calling from Host Functions ( that pass host in as variable ) or if Module is Disabled.
-		if ( ! $room_control_enabled_state || ( $host_status ) ) {
+		} else {
+			$room_control_enabled_state = $user_permissions->is_allow_role_control_enabled();
+		}
+		// Exit if Module is Disabled.
+		if ( ! $room_control_enabled_state ) {
 			return null;
 		}
 
 		// Decide whether to allow or block.
 		// Site Default Settings Section.
 		if ( ! $does_room_record_exist ) {
-			$allow_to_block_switch = Factory::get_instance( SecurityVideoPreferenceDAO::class )
-				->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE, 'block_role_control_enabled' );
+			$allow_to_block_switch = $security_default_permissions->is_block_role_control_enabled();
+
 		} else {
-			$allow_to_block_switch = Factory::get_instance( SecurityVideoPreferenceDAO::class )
-				->read_security_settings( $owner_id, $room_name, 'block_role_control_enabled' );
+			$allow_to_block_switch = $user_permissions->is_block_role_control_enabled();
 		}
 
 		// Reject Anonymous Users ( as have no role ).
@@ -292,15 +316,10 @@ class PageFilters {
 		}
 
 		if ( ! $does_room_record_exist ) {
-			$preference = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id(
-				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				Security::PERMISSIONS_TABLE
-			);
+			$preference = $security_default_permissions;
+
 		} else {
-			$preference = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id(
-				$owner_id,
-				$room_name
-			);
+			$preference = $user_permissions;
 		}
 
 		$allowed_db_roles_configuration = array();
@@ -334,10 +353,13 @@ class PageFilters {
 		// Fire Block if Flag to block is on.
 		if ( ! $role_match && $allow_to_block_switch ) {
 			return null;
+
 		} elseif ( ! $role_match && ! $allow_to_block_switch ) {
 			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
+
 		} elseif ( $role_match && ! $allow_to_block_switch ) {
 			return null;
+
 		} else {
 			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
 		}
