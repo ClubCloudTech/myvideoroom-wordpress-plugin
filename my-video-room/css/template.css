@@ -1,16 +1,11 @@
 .menu {
+	/* @TODO Namespace or remove this rule */
 	display: flex;
 }
 
 .mvr-title-header {
 	display: inline !important;
 	margin-bottom: 10px;
-	margin-top: 10px;
-}
-
-.mvr-ul-header {
-	display: inline !important;
-	margin-bottom: 0;
 	margin-top: 10px;
 }
 
@@ -27,26 +22,19 @@
 	margin-bottom: 10px !important;
 }
 
-.mvr-icons-enabled {
-	color: green;
+
+.mvr-icons-enabled,
+.mvr-icons-disabled {
 	font-size: 18px;
 	text-decoration: none;
+}
+
+.mvr-icons-enabled {
+	color: green;
 }
 
 .mvr-icons-disabled {
 	color: red;
-	font-size: 18px;
-	text-decoration: none;
-}
-
-.mvr-user-image {
-	color: #fff;
-	display: table;
-	font-size: 0;
-	height: 150px;
-	position: relative;
-	width: 150px;
-	z-index: 1;
 }
 
 .mvr-template-image {
@@ -73,24 +61,11 @@
 	z-index: 1;
 }
 
-.mvr-table {
-	border-color: #C6C0AD;
-	border-style: solid;
-	border-width: 2px 2px 2px 2px;
-	box-shadow: 0px 0px 5px 4px rgb(0 0 0 / 30%);
-	display: grid;
-	margin: 10px 10px 10px 10px;
-	padding: 10px 10px 10px 10px;
-	transition: background 0.3s,
-	border 0.3s, border-radius 0.3s,
-	box-shadow 0.3s;
-}
-
 .mvr-row {
 	border-color: #C6C0AD;
 	border-style: solid;
 	border-width: 2px 2px 2px 2px;
-	box-shadow: 0px 0px 5px 4px rgb(0 0 0 / 30%);
+	box-shadow: 0 0 5px 4px rgb(0 0 0 / 30%);
 	display: grid;
 	margin: 10px 10px 10px 10px;
 	padding: 10px 10px 10px 10px;
@@ -174,24 +149,6 @@
 	width: 60% !important;
 }
 
-.mvr-select-box-small {
-	background-color: rgb(253, 253, 253) !important;
-	border: 1px solid #6d6d6d !important;
-	color: rgb(0, 0, 0);
-	font-size: 14px;
-	font-weight: 500;
-	padding: 8px;
-	vertical-align: middle;
-}
-
-.mvr-ul-header {
-	display: inline;
-	margin-bottom: 0px;
-	margin-left: auto;
-	margin-top: 10px;
-}
-
-
 .mvr-hide {
 	display: none;
 }
@@ -230,59 +187,4 @@
 	padding: 8px;
 	position: absolute;
 	width: 70% !important;
-}
-
-.mvr-title-label {
-	color: #848B92;
-	font-family: "Montserrat", Sans-serif;
-	font-size: 14px;
-	font-weight: 500;
-	letter-spacing: -0.7px;
-}
-
-.mvr-add-page {
-	background-color: rgb(253, 253, 253) !important;
-	border: 2px solid #d2d2d2;
-	color: rgb(41, 41, 41);
-	cursor: pointer;
-	display: inline-block;
-	font-size: 14px;
-	font-weight: 500;
-	margin: 1px;
-	padding: 4px;
-}
-
-.myvideoroom-sitevideo-add-room-button {
-	display: none;
-}
-
-.mvr-add-page-form {
-	background-color: rgb(253, 253, 253) !important;
-	border: 3px solid #d2d2d2;
-	color: rgb(41, 41, 41);
-	display: block;
-	font-size: 14px;
-	font-weight: 500;
-	padding: 8px;
-	position: relative;
-	width: 70% !important;
-}
-
-.mvr-add-page-form .close {
-	background-color: #FFFFFF;
-	border: 1px solid #000000;
-	border-radius: 50%;
-	cursor: pointer;
-	display: block;
-	font-size: 20px;
-	line-height: 30px;
-	position: absolute;
-	right: -15px;
-	text-align: center;
-	top: -15px;
-	width: 30px;
-}
-
-.mvr-add-page-form .close:hover {
-	background-color: #CCCCCC;
 }

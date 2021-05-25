@@ -36,14 +36,14 @@ class MenuTabDisplay {
 	/**
 	 * MenuTabDisplay constructor.
 	 *
-	 * @param string   $tab_display_name   Description of Tab.
-	 * @param string   $tab_slug           Identifier of Tab for navigation.
-	 * @param callable $function_callback  Function to display content.
+	 * @param string   $tab_display_name  Description of Tab.
+	 * @param string   $tab_slug          Identifier of Tab for navigation.
+	 * @param callable $function_callback Function to display content.
 	 */
 	public function __construct(
 		string $tab_display_name,
 		string $tab_slug,
-		$function_callback
+		callable $function_callback
 	) {
 		$this->tab_display_name  = $tab_display_name;
 		$this->tab_slug          = $tab_slug;

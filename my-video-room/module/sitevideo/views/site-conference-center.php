@@ -23,7 +23,14 @@ return function (
 	ob_start();
 	$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 	$inbound_tabs = array();
-	$tabs         = apply_filters( 'myvideoroom_room_manager_menu', $inbound_tabs );
+
+	/**
+	 * A list of tabs to show
+	 *
+	 * @var \MyVideoRoomPlugin\Entity\MenuTabDisplay[] $tabs
+	 */
+	$tabs = apply_filters( 'myvideoroom_room_manager_menu', $inbound_tabs );
+
 	?>
 <h2><?php esc_html_e( 'Room Manager', 'my-video-room' ); ?></h2>
 <p><?php esc_html_e( 'This section allows you manage the configuration of permanent rooms that you or your modules have created.', 'myvideoroom' ); ?>
