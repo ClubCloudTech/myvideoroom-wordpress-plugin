@@ -11,7 +11,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\Dependencies;
-use MyVideoRoomPlugin\Module\Security\DAO\DBSetup;
+use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityNotifications;
@@ -42,7 +42,7 @@ class Security {
 	 */
 	public function activate_module() {
 		// Install Room Security Config table.
-		Factory::get_instance( DBSetup::class )->install_security_config_table();
+		Factory::get_instance( SecurityVideoPreferenceDao::class )->install_security_config_table();
 
 		// Register and Activate Module In Module Table.
 		$module_config = Factory::get_instance( ModuleConfig::class );

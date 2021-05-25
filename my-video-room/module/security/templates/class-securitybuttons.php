@@ -27,13 +27,12 @@ class SecurityButtons {
 	public static function site_wide_enabled( string $input_type = null ): ?string {
 		$security_video_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
 
-		$site_override = $security_video_dao->read_security_settings(
+		$site_override = $security_video_dao->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
-			SiteDefaults::ROOM_NAME_SITE_DEFAULT,
-			'site_override_enabled'
+			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
 
-		if ( ! $site_override ) {
+		if ( ! $site_override || ! $site_override->is_site_override_enabled() ) {
 			return null;
 		}
 		// Format Plugin Base Link to Security Center.
@@ -43,23 +42,9 @@ class SecurityButtons {
 
 		// get Site Override Status.
 
-		$room_disabled = $security_video_dao->read_security_settings(
-			SiteDefaults::USER_ID_SITE_DEFAULTS,
-			SiteDefaults::ROOM_NAME_SITE_DEFAULT,
-			'room_disabled'
-		);
-
-		$room_anonymous = $security_video_dao->read_security_settings(
-			SiteDefaults::USER_ID_SITE_DEFAULTS,
-			SiteDefaults::ROOM_NAME_SITE_DEFAULT,
-			'anonymous_enabled'
-		);
-
-		$roles = $security_video_dao->read_security_settings(
-			SiteDefaults::USER_ID_SITE_DEFAULTS,
-			SiteDefaults::ROOM_NAME_SITE_DEFAULT,
-			'allow_role_control_enabled'
-		);
+		$room_disabled  = $site_override->is_room_disabled();
+		$room_anonymous = $site_override->is_anonymous_enabled();
+		$roles          = $site_override->is_allow_role_control_enabled();
 
 		// Rendering for NO URL Option buttons.
 		if ( 'nourl' === $input_type ) {

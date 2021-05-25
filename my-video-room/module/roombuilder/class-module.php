@@ -51,8 +51,8 @@ class Module {
 		$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
 
 		\wp_enqueue_style(
-			'myvideoroom-room-builder-css',
-			\plugins_url( '/css/roombuilder.css', \realpath( __FILE__ ) ),
+			'myvideoroom-room-builder-shared-css',
+			\plugins_url( '/css/shared.css', \realpath( __FILE__ ) ),
 			false,
 			$plugin_version,
 		);
@@ -75,14 +75,14 @@ class Module {
 		if ( $admin ) {
 			\wp_enqueue_style(
 				'myvideoroom-room-builder-admin-css',
-				\plugins_url( '/css/roombuilder-admin.css', \realpath( __FILE__ ) ),
+				\plugins_url( '/css/admin.css', \realpath( __FILE__ ) ),
 				false,
 				$plugin_version,
 			);
 		} else {
 			wp_enqueue_style(
-				'myvideoroom-room-builder-public-css',
-				plugins_url( '/css/roombuilder-public.css', realpath( __FILE__ ) ),
+				'myvideoroom-room-builder-frontend-css',
+				plugins_url( '/css/frontend.css', realpath( __FILE__ ) ),
 				false,
 				$plugin_version,
 			);

@@ -14,9 +14,6 @@ use MyVideoRoomPlugin\Module\Security\Security;
  * Class SecurityVideoPreference
  */
 class SecurityVideoPreference {
-
-	const TABLE_NAME = Security::TABLE_NAME_SECURITY_CONFIG;
-
 	/**
 	 * Get the table name for this DAO.
 	 *
@@ -24,7 +21,38 @@ class SecurityVideoPreference {
 	 */
 	private function get_table_name(): string {
 		global $wpdb;
-		return $wpdb->prefix . self::TABLE_NAME;
+		return $wpdb->prefix . Security::TABLE_NAME_SECURITY_CONFIG;
+	}
+
+	/**
+	 * Install Module Security Config Table.
+	 *
+	 * @return bool
+	 */
+	public function install_security_config_table(): bool {
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		$sql_create = 'CREATE TABLE IF NOT EXISTS `' . $this->get_table_name() . '` (
+			`record_id` int NOT NULL AUTO_INCREMENT,
+			`user_id` BIGINT NOT NULL,
+			`room_name` VARCHAR(255) NOT NULL,
+			`room_disabled` BOOLEAN,
+			`anonymous_enabled` BOOLEAN,
+			`allow_role_control_enabled` BOOLEAN,
+			`block_role_control_enabled` BOOLEAN,
+			`site_override_enabled` BOOLEAN,
+			`restrict_group_to_members_enabled` VARCHAR(255) NULL,
+			`allowed_roles` VARCHAR(255) NULL,
+			`blocked_roles` VARCHAR(255) NULL,
+			`allowed_users` VARCHAR(255) NULL,
+			`blocked_users` VARCHAR(255) NULL,
+			`bp_friends_setting` VARCHAR(255) NULL,
+			`allowed_template_id` BIGINT UNSIGNED NULL,
+			`blocked_template_id` BIGINT UNSIGNED NULL,
+			PRIMARY KEY (`record_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
+
+		return \maybe_create_table( $this->get_table_name(), $sql_create );
 	}
 
 	/**
@@ -224,8 +252,8 @@ class SecurityVideoPreference {
 		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$result = $wpdb->update(
-			$wpdb->prefix . self::TABLE_NAME,
+		$wpdb->update(
+			$this->get_table_name(),
 			array(
 				'user_id'                           => $user_video_preference->get_user_id(),
 				'allowed_roles'                     => $user_video_preference->get_allowed_roles(),

@@ -219,7 +219,7 @@ class SecurityNotifications {
 			}
 		} else {
 			$output .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled( 'nourl' );
-			$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'An Administrator is overriding your settings with ones applied centrally. Certains Settings stored here may not be applied', 'my-video-room' ) . '</p>';
+			$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'An Administrator is overriding your settings with ones applied centrally. Certain settings stored here may not be applied', 'my-video-room' ) . '</p>';
 		}
 		return $output;
 	}
