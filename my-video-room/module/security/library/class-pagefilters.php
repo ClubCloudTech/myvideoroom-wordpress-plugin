@@ -57,18 +57,16 @@ class PageFilters {
 	 * This function Checks a Module is Active to allow it to render Video
 	 * Used only in admin pages of plugin
 	 *
-	 * @param  int     $user_id      UserID.
-	 * @param  string  $room_name    The room name.
-	 * @param  bool    $host_status  If used.
-	 * @param  ?string $room_type    Class of room.
+	 * @param  int    $user_id      UserID.
+	 * @param  string $room_name    The room name.
+	 * @param  bool   $host_status  If used.
 	 *
 	 * @return null|string depending.
 	 */
-	public function block_disabled_room_video_render( int $user_id, string $room_name, bool $host_status, string $room_type = null ) {
+	public function block_disabled_room_video_render( int $user_id, string $room_name, bool $host_status ) {
 		// Check Module Override State.
 		$permissions   = Factory::get_instance( SecurityVideoPreferenceDAO::class )->check_security_settings( $user_id, $room_name );
 		$site_override = $permissions['sitedefault']->site_override_enabled;
-		echo \var_dump( $permissions );
 		// Override Control Check.
 		if ( $site_override && true === $permissions['sitedefault']->room_disabled ) {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $user_id );
