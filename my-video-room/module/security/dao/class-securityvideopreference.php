@@ -9,6 +9,7 @@ namespace MyVideoRoomPlugin\Module\Security\DAO;
 
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\Security\Security;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class SecurityVideoPreference
@@ -382,5 +383,26 @@ class SecurityVideoPreference {
 		}
 	}
 
+	/**
+	 * Get User and Site Default Permissions from Database.
+	 *
+	 * @deprecated Call self::get_by_id instead
+	 *
+	 * @param int    $user_id The user id.
+	 * @param string $room_name The room name.
+	 *
+	 * @return object Permissions Object.
+	 *
+	 * Returns layout ID, Reception ID, or Reception Enabled Status
+	 */
+	public function check_security_settings( int $user_id, string $room_name ) {
+		$permissions_array = array();
+		$user_setting_object = $this->get_by_id( $user_id, $room_name );
+		$site_default_object = $this->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
 
+		$permissions_array['sitedefault'] = $site_default_object;
+		$permissions_array['user']        = $user_setting_object;
+
+		return $permissions_array;
+	}
 }
