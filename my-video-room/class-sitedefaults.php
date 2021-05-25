@@ -8,7 +8,6 @@
 namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Library\UserRoles;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Library\WordPressUser;
@@ -74,10 +73,8 @@ class SiteDefaults extends Shortcode {
 		$this->core_menu_setup();
 		wp_enqueue_script( 'myvideoroom-admin-tabs' );
 		wp_enqueue_style( 'myvideoroom-menutab-header' );
-		// Check to see if Default settings exist on entry- reinitialise if missing.
-		if ( ! Factory::get_instance( RoomAdmin::class )->check_default_settings_exist() ) {
-			Factory::get_instance( Setup::class )->initialise_default_video_settings();
-		}
+		Factory::get_instance( Setup::class )->initialise_default_video_settings();
+
 		$this->add_shortcode( 'invitemenu', array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
 
 		// Add Icons to Video Headers of Room Video Status.
