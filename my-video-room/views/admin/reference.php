@@ -41,7 +41,7 @@ return function (
 		?>
 	</p>
 
-	<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
+	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 		<ul>
 			<?php
 			$active_class = ' nav-tab-active';

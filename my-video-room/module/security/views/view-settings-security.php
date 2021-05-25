@@ -28,7 +28,7 @@ return function() {
 	echo $page();
 	?>
 		<div id="outer" class="mvr-admin-page-wrap">
-			<nav class="myvideoroom-nav-tab-wrapper">
+			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 				<ul>
 					<li>
 						<a class="nav-tab nav-tab-active" href="#defaultperms">

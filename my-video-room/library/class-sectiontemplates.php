@@ -42,10 +42,10 @@ class SectionTemplates extends Shortcode {
 		?>
 	</div>
 
-	<nav class="myvideoroom-nav-tab-wrapper ">
-		<ul class="mvr-ul-header">
+	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
+		<ul>
 			<?php
-			$active    = 'nav-tab-active';
+			$active    = ' nav-tab-active';
 			$tab_count = \count( $tabs );
 			if ( $tab_count <= 1 ) {
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode already properly escaped.
@@ -55,8 +55,8 @@ class SectionTemplates extends Shortcode {
 					$tab_display_name = $menu_output->get_tab_display_name();
 					$tab_slug         = $menu_output->get_tab_slug();
 					?>
-			<li class="mvr-title-header">
-				<a class="<?php echo esc_attr( $active ); ?>" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+			<li>
+				<a class="nav-tab<?php echo esc_attr( $active ); ?>" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 					<?php echo esc_html( $tab_display_name ); ?>
 				</a>
 			</li>
