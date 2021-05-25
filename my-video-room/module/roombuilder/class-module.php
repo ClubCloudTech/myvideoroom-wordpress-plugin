@@ -24,7 +24,7 @@ use MyVideoRoomPlugin\ValueObject\GettingStarted;
  */
 class Module {
 
-	const SHORTCODE_TAG     = App::SHORTCODE_TAG . '_room_builder';
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_room_builder';
 	const PAGE_SLUG_BUILDER = PageList::PAGE_SLUG_DEFAULT . '-room-builder';
 
 	/**
@@ -291,10 +291,6 @@ class Module {
 
 		$host_shortcode_text_constructor  = ( clone $host_shortcode_constructor );
 		$guest_shortcode_text_constructor = ( clone $guest_shortcode_constructor );
-
-		if ( $shortcode_constructor->is_host() ) {
-			$guest_shortcode_text_constructor->set_as_guest();
-		}
 
 		// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.
 		return ( require __DIR__ . '/views/preview.php' )(
