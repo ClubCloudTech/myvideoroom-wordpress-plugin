@@ -11,12 +11,11 @@ namespace MyVideoRoomPlugin\Shortcode;
 
 use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Shortcode;
 
 /**
  * Class RoomInfo
  */
-class RoomInfo extends Shortcode {
+class RoomInfo {
 	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_info';
 
 	/**

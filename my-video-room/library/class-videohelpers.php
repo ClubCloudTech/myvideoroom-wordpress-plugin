@@ -20,7 +20,7 @@ use MyVideoRoomPlugin\Library\Dependencies;
 /**
  * Class Template
  */
-class VideoHelpers extends Shortcode {
+class VideoHelpers {
 
 	/**
 	 * For Video Room Template - Order of Preference Function.

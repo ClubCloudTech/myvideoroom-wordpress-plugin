@@ -11,14 +11,13 @@ use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Library\Dependencies;
-use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 
 /**
  * Class RoomAdmin
  */
-class RoomAdmin extends Shortcode {
+class RoomAdmin {
 
 	const TABLE_NAME = SiteDefaults::TABLE_NAME_ROOM_MAP;
 

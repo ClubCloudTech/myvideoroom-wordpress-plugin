@@ -13,7 +13,7 @@ use MyVideoRoomPlugin\Shortcode as Shortcode;
  * Class Security Templates
  * This class holds templates for Blocked Access requests.
  */
-class SecurityTemplates extends Shortcode {
+class SecurityTemplates {
 
 	/**
 	 * Blocked By Site Offline Template.

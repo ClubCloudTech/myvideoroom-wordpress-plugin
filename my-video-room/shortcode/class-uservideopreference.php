@@ -2,7 +2,7 @@
 /**
  * Allow user to change video preferences
  *
- * @package MyVideoRoomExtrasPlugin\Modules\BuddyPress
+ * @package MyVideoRoomExtrasPlugin\Module\UserVideoPreference
  */
 
 namespace MyVideoRoomPlugin\Shortcode;
@@ -13,13 +13,13 @@ use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Shortcode;
 
 /**
  * Class UserVideoPreference
  * Allows the user to select their room display parameters and persist those settings.
  */
-class UserVideoPreference extends Shortcode {
+class UserVideoPreference {
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_';
 	/**
 	 * A increment in case the same element is placed on the page twice
 	 *
@@ -31,7 +31,7 @@ class UserVideoPreference extends Shortcode {
 	 * Provide Runtime
 	 */
 	public function init() {
-		$this->add_shortcode( '_choose_settings', array( $this, 'choose_settings_shortcode' ) );
+		add_shortcode( self::SHORTCODE_TAG . 'choose_settings', array( $this, 'choose_settings_shortcode' ) );
 	}
 
 	/**

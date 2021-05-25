@@ -22,7 +22,7 @@ use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 /**
  * PageFilters - Security Filter Defaults for Renderblock Function.
  */
-class PageFilters extends Shortcode {
+class PageFilters {
 	/**
 	 * Runtime Filters- Provides Execution and Registration of default MVR Room Filters.
 	 *

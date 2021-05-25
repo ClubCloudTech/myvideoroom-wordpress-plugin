@@ -20,15 +20,13 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
-use MyVideoRoomPlugin\Shortcode as Shortcode;
-
+use MyVideoRoomPlugin\Shortcode\App;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
  */
-class MVRSiteVideo extends Shortcode {
-
-
+class MVRSiteVideo {
+	const SHORTCODE_TAG             = App::SHORTCODE_TAG . '_';
 	const PAGE_SLUG_SITE_CONFERENCE = PageList::PAGE_SLUG_DEFAULT . '-site-conference';
 
 	// Constants For Site Video Module.
@@ -79,7 +77,7 @@ class MVRSiteVideo extends Shortcode {
 	 */
 	public function init() {
 		$site_video_controller = Factory::get_instance( MVRSiteVideoControllers::class );
-		$this->add_shortcode( 'sitevideoroom', array( $site_video_controller, 'sitevideo_shortcode' ) );
+		add_shortcode( self::SHORTCODE_TAG . 'sitevideoroom', array( $site_video_controller, 'sitevideo_shortcode' ) );
 
 		\add_action(
 			'myvideoroom_admin_init',

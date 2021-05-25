@@ -11,15 +11,16 @@ namespace MyVideoRoomPlugin\Module\Monitor;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Endpoints;
+use MyVideoRoomPlugin\Library\Host;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Library\Logger;
 use MyVideoRoomPlugin\Plugin;
-use MyVideoRoomPlugin\Shortcode;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
  * Class Module
  */
-class Module extends Shortcode {
+class Module {
 
 	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_monitor';
 
@@ -121,7 +122,7 @@ class Module extends Shortcode {
 			}
 		}
 
-		$host = $this->get_host();
+		$host = Factory::get_instance( Host::class )->get_host();
 
 		$room_name = \sanitize_text_field( $params['name'] ?? get_bloginfo( 'name' ) );
 		$type      = \sanitize_key( $params['type'] ?? 'reception' );
@@ -150,7 +151,7 @@ class Module extends Shortcode {
 		);
 
 		if ( ! \openssl_sign( $message, $signature, $private_key, OPENSSL_ALGO_SHA256 ) ) {
-			return $this->return_error( \esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
+			return Factory::get_instance( Logger::class )->return_error( \esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
 		}
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript

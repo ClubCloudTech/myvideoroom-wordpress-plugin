@@ -12,15 +12,16 @@ namespace MyVideoRoomPlugin\Shortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\Endpoints;
+use MyVideoRoomPlugin\Library\Host;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Library\Logger;
 use MyVideoRoomPlugin\Plugin;
-use MyVideoRoomPlugin\Shortcode;
 use WP_User;
 
 /**
  * Class App
  */
-class App extends Shortcode {
+class App {
 	const SHORTCODE_TAG = 'myvideoroom';
 
 	/**
@@ -113,7 +114,7 @@ class App extends Shortcode {
 		}
 
 		if ( ! $this->private_key ) {
-			return $this->return_error(
+			return Factory::get_instance( Logger::class )->return_error(
 				'<div>' . \esc_html__(
 					'MyVideoRoom is currently unlicensed.',
 					'myvideoroom'
@@ -121,10 +122,10 @@ class App extends Shortcode {
 			);
 		}
 
-		$hostname = $this->get_host();
+		$hostname = Factory::get_instance( Host::class )->get_host();
 
 		if ( ! $hostname ) {
-			return $this->return_error(
+			return Factory::get_instance( Logger::class )->return_error(
 				'<div>' . \esc_html__(
 					'MyVideoRoom cannot find the host that it is currently running on.',
 					'myvideoroom'
@@ -238,7 +239,7 @@ class App extends Shortcode {
 		);
 
 		if ( ! \openssl_sign( $message, $signature, $this->private_key, OPENSSL_ALGO_SHA256 ) ) {
-			return $this->return_error( \esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
+			return Factory::get_instance( Logger::class )->return_error( \esc_html__( 'MyVideoRoom was unable to sign the data.', 'myvideoroom' ) );
 		}
 
 		// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- Used for passing data to javascript
@@ -255,7 +256,7 @@ class App extends Shortcode {
 			$user_name = \esc_attr( $attr['user-name'] );
 		} elseif ( $current_user ) {
 			$user_name  = $current_user->display_name;
-			$avatar_url = $this->getAvatar( $current_user );
+			$avatar_url = $this->get_avatar( $current_user );
 		}
 
 		$custom_jitsi_server = true;
@@ -303,7 +304,7 @@ class App extends Shortcode {
 	 *
 	 * @return string|null
 	 */
-	private function getAvatar( WP_User $user = null ): ?string {
+	private function get_avatar( WP_User $user = null ): ?string {
 		if ( $user && \get_avatar_url( $user ) ) {
 			return \get_avatar_url( $user );
 		}

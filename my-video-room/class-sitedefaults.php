@@ -13,20 +13,19 @@ use MyVideoRoomPlugin\Library\UserRoles;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
-use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Library\TemplateIcons;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
+use MyVideoRoomPlugin\Shortcode\App;
 
 /**
  * Class SiteDefaults
  */
-class SiteDefaults extends Shortcode {
-
+class SiteDefaults {
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_';
 	// All Up Site Default Master Setting.
 	const ROOM_NAME_SITE_DEFAULT = 'site-default-settings';
-	const SHORTCODE_PREFIXES     = array( 'cc', 'myvideoroom_' );
 
 	// Default User ID to Use for Room Site Defaults .
 	const USER_ID_SITE_DEFAULTS = -1;
@@ -78,7 +77,7 @@ class SiteDefaults extends Shortcode {
 		if ( ! Factory::get_instance( RoomAdmin::class )->check_default_settings_exist() ) {
 			Factory::get_instance( Setup::class )->initialise_default_video_settings();
 		}
-		$this->add_shortcode( 'invitemenu', array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
+		add_shortcode( self::SHORTCODE_TAG . 'invitemenu', array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
 
 		// Add Icons to Video Headers of Room Video Status.
 		\add_filter( 'myvideoroom_template_icon_section', array( Factory::get_instance( TemplateIcons::class ), 'add_default_video_icons_to_header' ), 10, 4 );
