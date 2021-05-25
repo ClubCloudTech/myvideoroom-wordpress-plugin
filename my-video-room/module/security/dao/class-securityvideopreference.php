@@ -395,7 +395,7 @@ class SecurityVideoPreference {
 	 *
 	 * Returns layout ID, Reception ID, or Reception Enabled Status
 	 */
-	public function check_security_settings( int $user_id, string $room_name ) {
+	public function check_security_settings( int $user_id, string $room_name ): ?SecurityVideoPreferenceEntity {
 		return $this->get_by_id( $user_id, $room_name );
 	}
 }
