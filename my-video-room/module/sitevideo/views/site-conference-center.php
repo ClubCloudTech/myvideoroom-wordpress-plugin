@@ -43,10 +43,12 @@ return function (
 	<hr />
 </div>
 
-<nav class="myvideoroom-nav-tab-wrapper ">
-	<ul class="mvr-ul-header">
-		<li class="mvr-title-header"><a class="nav-tab nav-tab-active"
-				href="#base"><?php esc_html_e( 'Room Manager', 'myvideoroom' ); ?></a>
+<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
+	<ul>
+		<li>
+			<a class="nav-tab nav-tab-active" href="#base">
+				<?php esc_html_e( 'Room Manager', 'myvideoroom' ); ?>
+			</a>
 		</li>
 
 		<?php
@@ -54,7 +56,7 @@ return function (
 			$tab_display_name = $menu_output->get_tab_display_name();
 			$tab_slug         = $menu_output->get_tab_slug();
 			?>
-		<li class="mvr-title-header">
+		<li>
 			<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 				<?php echo esc_html( $tab_display_name ); ?>
 			</a>
