@@ -213,6 +213,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 * @return $this
 	 */
 	public function set_as_host(): self {
+		unset( $this->custom_settings['host'] );
 		$this->host = true;
 
 		return $this;
@@ -224,6 +225,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 * @return $this
 	 */
 	public function set_as_guest(): self {
+		unset( $this->custom_settings['host'] );
 		$this->host = false;
 
 		return $this;
