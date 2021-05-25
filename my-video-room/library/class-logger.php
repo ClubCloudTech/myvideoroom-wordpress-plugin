@@ -12,7 +12,7 @@ namespace MyVideoRoomPlugin\Library;
 /**
  * Class Logger
  */
-abstract class Logger {
+class Logger {
 
 	/**
 	 * Log and return an error message depending on debug settings

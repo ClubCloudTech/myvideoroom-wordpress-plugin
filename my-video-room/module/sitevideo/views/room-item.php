@@ -85,7 +85,7 @@ return function ( \stdClass $room ): string {
 				if ( $shortcode_filter ) {
 					echo esc_html( $shortcode_filter );
 				} else {
-					echo esc_html( MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $room->id );
+					echo esc_html( MVRSiteVideo::SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $room->id );
 				}
 				?>
 				]

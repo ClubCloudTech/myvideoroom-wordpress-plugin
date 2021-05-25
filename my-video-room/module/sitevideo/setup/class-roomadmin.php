@@ -56,7 +56,7 @@ class RoomAdmin extends RoomAdminSetup {
 		);
 		$post_content = array(
 			'ID'           => $post_id,
-			'post_content' => '[' . MVRSiteVideo::ROOM_SHORTCODE_SITE_VIDEO . ' id="' . $post_id . '"]',
+			'post_content' => '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $post_id . '"]',
 		);
 		wp_update_post( $post_content );
 

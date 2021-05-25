@@ -18,7 +18,7 @@ use MyVideoRoomPlugin\Shortcode\App;
  * Class SecurityVideoPreference
  */
 class SecurityVideoPreference {
-	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_';
+	const SHORTCODE_TAG_CHOOSE_SECURITY = App::SHORTCODE_TAG . '_choose_security_settings';
 	/**
 	 * A increment in case the same element is placed on the page twice
 	 *
@@ -30,7 +30,7 @@ class SecurityVideoPreference {
 	 * Provide Runtime
 	 */
 	public function init() {
-		add_shortcode( self::SHORTCODE_TAG . 'choose_security_settings', array( $this, 'choose_security_settings_shortcode' ) );
+		add_shortcode( self::SHORTCODE_TAG_CHOOSE_SECURITY, array( $this, 'choose_security_settings_shortcode' ) );
 	}
 
 	/**

@@ -23,7 +23,7 @@ use MyVideoRoomPlugin\Shortcode\App;
  * Class SiteDefaults
  */
 class SiteDefaults {
-	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_';
+	const SHORTCODE_TAG_INVITE_MENU = App::SHORTCODE_TAG . '_invitemenu';
 	// All Up Site Default Master Setting.
 	const ROOM_NAME_SITE_DEFAULT = 'site-default-settings';
 
@@ -77,7 +77,7 @@ class SiteDefaults {
 		if ( ! Factory::get_instance( RoomAdmin::class )->check_default_settings_exist() ) {
 			Factory::get_instance( Setup::class )->initialise_default_video_settings();
 		}
-		add_shortcode( self::SHORTCODE_TAG . 'invitemenu', array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
+		add_shortcode( self::SHORTCODE_TAG_INVITE_MENU, array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
 
 		// Add Icons to Video Headers of Room Video Status.
 		\add_filter( 'myvideoroom_template_icon_section', array( Factory::get_instance( TemplateIcons::class ), 'add_default_video_icons_to_header' ), 10, 4 );

@@ -19,7 +19,7 @@ use MyVideoRoomPlugin\Factory;
  * Allows the user to select their room display parameters and persist those settings.
  */
 class UserVideoPreference {
-	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_';
+	const SHORTCODE_TAG_VIDEO_CHOOSE_SETTINGS = App::SHORTCODE_TAG . '_choose_settings';
 	/**
 	 * A increment in case the same element is placed on the page twice
 	 *
@@ -31,7 +31,7 @@ class UserVideoPreference {
 	 * Provide Runtime
 	 */
 	public function init() {
-		add_shortcode( self::SHORTCODE_TAG . 'choose_settings', array( $this, 'choose_settings_shortcode' ) );
+		add_shortcode( self::SHORTCODE_TAG_VIDEO_CHOOSE_SETTINGS, array( $this, 'choose_settings_shortcode' ) );
 	}
 
 	/**
