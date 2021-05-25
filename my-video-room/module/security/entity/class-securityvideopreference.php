@@ -17,84 +17,84 @@ class SecurityVideoPreference {
 	 *
 	 * @var ?int
 	 */
-	public ?int $id;
+	private ?int $id;
 
 	/**
 	 * User_id
 	 *
 	 * @var int
 	 */
-	public int $user_id;
+	private int $user_id;
 
 	/**
 	 * Room_name
 	 *
 	 * @var string
 	 */
-	public string $room_name;
+	private string $room_name;
 
 	/**
 	 * Allowed_roles
 	 *
 	 * @var ?string
 	 */
-	public ?string $allowed_roles;
+	private ?string $allowed_roles;
 
 	/**
 	 * Blocked_roles
 	 *
 	 * @var ?string
 	 */
-	public ?string $blocked_roles;
+	private ?string $blocked_roles;
 
 	/**
 	 * Room_disabled
 	 *
 	 * @var bool
 	 */
-	public bool $room_disabled;
+	private bool $room_disabled;
 
 	/**
 	 * Site_override_enabled
 	 *
 	 * @var bool
 	 */
-	public bool $site_override_enabled;
+	private bool $site_override_enabled;
 
 	/**
 	 * Anonymous_enabled
 	 *
 	 * @var bool
 	 */
-	public bool $anonymous_enabled;
+	private bool $anonymous_enabled;
 
 	/**
 	 * Allow_role_control_enabled
 	 *
 	 * @var bool
 	 */
-	public bool $allow_role_control_enabled;
+	private bool $allow_role_control_enabled;
 
 	/**
 	 * User_id
 	 *
 	 * @var bool
 	 */
-	public bool $block_role_control_enabled;
+	private bool $block_role_control_enabled;
 
 	/**
 	 * Restrict_group_to_members_setting
 	 *
 	 * @var ?bool
 	 */
-	public ?bool $restrict_group_to_members_enabled;
+	private ?bool $restrict_group_to_members_enabled;
 
 	/**
 	 * Bp_friends_setting
 	 *
 	 * @var ?string
 	 */
-	public ?string $bp_friends_setting;
+	private ?string $bp_friends_setting;
 
 	/**
 	 * SecurityVideoPreference constructor.
