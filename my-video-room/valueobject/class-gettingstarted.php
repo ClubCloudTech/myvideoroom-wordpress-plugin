@@ -11,7 +11,6 @@ namespace MyVideoRoomPlugin\ValueObject;
 
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\ValueObject\GettingStarted\Step;
-use function do_action;
 
 /**
  * Class GettingStarted

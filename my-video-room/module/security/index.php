@@ -10,9 +10,10 @@ declare( strict_types=1 );
 use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Plugin;
 
 add_action(
-	'myvideoroom_init',
+	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
 			Security::MODULE_SECURITY_NAME,

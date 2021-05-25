@@ -79,7 +79,7 @@ return function (
 		echo $html_lib->render_code_block(
 			"
 			\add_action(
-				'myvideoroom_init',
+				'" . \esc_attr( Plugin::ACTION_INIT ) . "',
 				function () {
 					\MyVideoRoomPlugin\Library\Module::register(
 						'my-custom-module', // " . \esc_html__( 'a unique slug for for the module', 'myvideoroom' ) . "'
@@ -111,7 +111,7 @@ return function (
 			</p>
 
 			<dl>
-				<dt>myvideoroom_init</dt>
+				<dt><?php echo \esc_attr( Plugin::ACTION_INIT ); ?></dt>
 				<dd>
 					<p><?php \esc_html_e( 'Called once the core of MyVideoRoom is loaded.', 'myvideoroom' ); ?></p>
 					<p>

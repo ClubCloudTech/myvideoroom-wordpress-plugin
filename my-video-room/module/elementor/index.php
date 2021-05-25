@@ -12,9 +12,10 @@ namespace MyVideoRoomPlugin\Module\Elementor;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\Elementor\Module as Elementor;
+use MyVideoRoomPlugin\Plugin;
 
 \add_action(
-	'myvideoroom_init',
+	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
 			'elementor',

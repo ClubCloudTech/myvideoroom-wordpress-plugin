@@ -11,9 +11,10 @@ namespace MyVideoRoomPlugin\Module\CustomPermissions;
 
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\CustomPermissions\Module as CustomPermissions;
+use MyVideoRoomPlugin\Plugin;
 
 \add_action(
-	'myvideoroom_init',
+	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
 			'custompermissions',
