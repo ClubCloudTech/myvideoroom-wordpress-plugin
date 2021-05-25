@@ -11,6 +11,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
+use MyVideoRoomPlugin\Library\RoomAdmin as RoomAdminLibrary;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\HttpGet;
@@ -233,9 +234,8 @@ class MVRSiteVideoRoomHelpers {
 			function ( $room_id ) {
 				$room = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 
-				$room->url = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room->room_name, 'url' );
-
-				$room->type = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room->room_name, 'type' );
+				$room->url  = Factory::get_instance( RoomAdminLibrary::class )->get_room_url( $room->room_name );
+				$room->type = Factory::get_instance( RoomAdminLibrary::class )->get_room_type( $room->room_name );
 
 				return $room;
 			},

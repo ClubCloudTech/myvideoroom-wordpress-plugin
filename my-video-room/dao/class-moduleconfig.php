@@ -171,37 +171,6 @@ class ModuleConfig {
 	// ---
 
 	/**
-	 * Check a Page Exists
-	 *
-	 * @TODO - Move this somewhere more appropriate
-	 *
-	 * @param  string $room_name - Room Name.
-	 *
-	 * @return string  Yes, No, Orphan (database exists but page deleted ).
-	 */
-	public function check_page_exists( string $room_name ) {
-		// empty input exit.
-		if ( ! $room_name ) {
-			return false;
-		}
-
-		// First Check Database for Room and Post ID - return No if blank.
-		$post_id_check = Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
-		if ( ! $post_id_check ) {
-			return self::PAGE_STATUS_NOT_EXISTS;
-		}
-
-		// Second Check Post Actually Exists in WP still (user hasn't deleted page).
-		$post_object = get_post( $post_id_check );
-
-		if ( ! $post_object ) {
-			return self::PAGE_STATUS_ORPHANED;
-		} else {
-			return self::PAGE_STATUS_EXISTS;
-		}
-	}
-
-	/**
 	 * This function renders the activate/deactivate button for a given module
 	 * Used only in admin pages of plugin
 	 *

@@ -9,9 +9,9 @@ namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\DAO\RoomMap;
-use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
@@ -46,7 +46,7 @@ class MVRSiteVideoViews extends Shortcode {
 		$render        = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
 		$name_output   = esc_html__( 'Hosting ', 'my-video-room' );
 		$is_guest      = false;
-		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room_name, 'url' );
+		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_room_url( $room_name );
 
 		return $render( $module_id, $name_output, $room_id, $room_name, $is_guest, $meeting_link, $module_suffix );
 
@@ -68,7 +68,7 @@ class MVRSiteVideoViews extends Shortcode {
 		$render        = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
 		$name_output   = esc_html__( 'Visiting ', 'my-video-room' );
 		$is_guest      = true;
-		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room_name, 'url' );
+		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_room_url( $room_name );
 
 		return $render( $module_id, $name_output, $host_id, $room_name, $is_guest, $meeting_link, $module_suffix );
 

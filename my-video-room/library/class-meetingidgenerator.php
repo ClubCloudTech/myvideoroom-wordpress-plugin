@@ -7,7 +7,6 @@
 
 namespace MyVideoRoomPlugin\Library;
 
-use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Factory;
 
 /**
@@ -188,7 +187,7 @@ class MeetingIdGenerator {
 		//phpcs:ignore -- WordPress.Security.NonceVerification.Recommended - not needed as data is lookup and transient only.
 		$invite   = $params['invite'] ?? htmlspecialchars( sanitize_text_field( wp_unslash( $_GET['invite'] ?? '' ) ) );
 		$user_id  = $params['user_id'] ?? '';
-		$meet_url = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( Dependencies::ROOM_NAME_PERSONAL_MEETING, 'url' );
+		$meet_url = Factory::get_instance( RoomAdmin::class )->get_room_url( Dependencies::ROOM_NAME_PERSONAL_MEETING );
 
 		if ( 'host' === $type ) {
 			if ( ! $user_id ) {

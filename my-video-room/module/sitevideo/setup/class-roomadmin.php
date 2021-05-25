@@ -12,14 +12,13 @@ use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\DAO\RoomAdmin as RoomAdminSetup;
 use MyVideoRoomPlugin\DAO\RoomInit;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
  * Class RoomAdmin
  */
-class RoomAdmin extends RoomAdminSetup {
+class RoomAdmin {
 
 	const TABLE_NAME = SiteDefaults::TABLE_NAME_ROOM_MAP;
 
@@ -83,18 +82,19 @@ class RoomAdmin extends RoomAdminSetup {
 	/**
 	 * Initialise Room Category Default Settings for Site Video.
 	 *
-	 * @return string - message and changes to db.
+	 * @return bool
 	 */
-	public function initialise_default_sitevideo_settings(): string {
+	public function initialise_default_sitevideo_settings(): bool {
 		// Site Default - Entire Site.
 		Factory::get_instance( RoomInit::class )->room_default_settings_install(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
 			'boardroom',
 			'default',
+			false,
 			false
 		);
 
-		return '';
+		return true;
 	}
 }

@@ -9,8 +9,9 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Shortcode;
 
-use MyVideoRoomPlugin\DAO\RoomAdmin;
+use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Shortcode;
 
 /**
@@ -35,9 +36,37 @@ class RoomInfo extends Shortcode {
 	 */
 	public function output_shortcode( $attributes = array() ) {
 		$room_name = $attributes['room'] ?? '';
-		$room_type = $attributes['type'] ?? '';
+		$data_type = $attributes['type'] ?? '';
 
-		return Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room_name, $room_type );
+		$room_admin_library = Factory::get_instance( RoomAdmin::class );
+
+		switch ( $data_type ) {
+			case 'url':
+				$value = $room_admin_library->get_room_url( $room_name );
+				break;
+			case 'name':
+			case 'slug':
+				$post  = $room_admin_library->get_post( $room_name );
+				$value = $post ? $post->post_name : '';
+				break;
+			case 'post_id':
+				$value = Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
+				break;
+			case 'type':
+				$value = $room_admin_library->get_room_type( $room_name );
+				break;
+			case 'title':
+				$post  = $room_admin_library->get_post( $room_name );
+				$value = $post ? $post->post_title : '';
+				break;
+			default:
+				$value = sprintf(
+					/* translators: %s is the data type string */
+					esc_html__( 'Unknown data type "%s"' ),
+					$data_type
+				);
+		}
+
+		return "<span>${value}</span>";
 	}
-
 }

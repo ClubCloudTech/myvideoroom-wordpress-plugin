@@ -19,19 +19,20 @@ class Setup {
 	/**
 	 * Initialise_default_video_settings - adds default settings to the main room table on Plugin setup.
 	 *
-	 * @return string - message and changes to db.
+	 * @return bool
 	 */
-	public function initialise_default_video_settings(): string {
+	public function initialise_default_video_settings(): bool {
 		// Site Default - Entire Site.
 		Factory::get_instance( RoomInit::class )->room_default_settings_install(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT,
 			'boardroom',
 			'default',
+			false,
 			false
 		);
 
-		return '';
+		return true;
 	}
 
 	/**
