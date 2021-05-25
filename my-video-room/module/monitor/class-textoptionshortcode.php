@@ -17,13 +17,13 @@ use MyVideoRoomPlugin\Library\Logger;
  * Class TextOptionShortcode
  */
 class TextOptionShortcode {
-	const SHORTCODE_TAG_TEXT_OPTION = App::SHORTCODE_TAG . '_text_option';
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_text_option';
 
 	/**
 	 * Install the shortcode
 	 */
 	public function init() {
-		\add_shortcode( self::SHORTCODE_TAG_TEXT_OPTION, array( $this, 'output_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 	}
 
 	/**

@@ -295,7 +295,7 @@ class Admin {
 		global $wp_roles;
 		$all_roles = $wp_roles->roles;
 
-		return ( require __DIR__ . '/views/admin/permissions.php' )( $all_roles );
+		return ( require __DIR__ . '/views/admin/defaultsettings.php' )( $all_roles );
 	}
 
 	/**

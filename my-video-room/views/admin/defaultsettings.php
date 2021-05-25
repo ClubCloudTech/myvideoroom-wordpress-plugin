@@ -13,7 +13,7 @@ use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\HttpPost;
 
 /**
- * Render the Room Permissions Admin page
+ * Render the Default Settings Admin page
  *
  * @param array $all_wp_roles A list of WordPress roles. @see global $wp_roles->roles.
  */
@@ -21,20 +21,21 @@ return function (
 	array $all_wp_roles = array()
 ): string {
 	\ob_start();
+	$string_randomizer_input = 'defaulthosts';
+	$html_library            = Factory::get_instance( HTML::class, array( $string_randomizer_input ) );
+	$inbound_tabs            = array();
+	$tabs                    = apply_filters( 'myvideoroom_permissions_manager_menu', $inbound_tabs );
+	$tab_count               = count( $tabs );
 
-	$html_library = Factory::get_instance( HTML::class, array( 'permissions' ) );
-	$html_lib     = $html_library;
-
-	$inbound_tabs = array();
-	$tabs         = apply_filters( 'myvideoroom_permissions_manager_menu', $inbound_tabs );
-	?>
-<h2><?php esc_html_e( 'Permissions and Room Access Control', 'my-video-room' ); ?></h2>
-<p><?php esc_html_e( 'This section allows you manage the permissions, guest/host decisions, and room security settings across your rooms.', 'myvideoroom' ); ?>
+	if ( $tab_count >= 1 ) {
+		?>
+<h2><?php esc_html_e( 'MyVideoRoom Default Settings', 'my-video-room' ); ?></h2>
+<p><?php esc_html_e( 'This section allows you manage the default room appearance as well as permissions, guest/host decisions, and room security settings across all of your rooms.', 'myvideoroom' ); ?>
 </p>
 <nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 	<ul>
 		<li>
-			<a class="nav-tab nav-tab-active" href="#defaulthost">
+			<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
 				<?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?>
 			</a>
 		</li>
@@ -53,8 +54,11 @@ return function (
 		}
 		?>
 	</ul>
-</nav><br>
-<article class="mvr-admin-page-wrap" id="defaulthost">
+</nav>
+		<?php
+	}
+	?>
+<article class="mvr-admin-page-wrap" id="<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
 	<h2><?php \esc_html_e( 'Site Level Default Hosts', 'myvideoroom' ); ?></h2>
 
 	<p>
@@ -117,12 +121,12 @@ return function (
 
 		$tab_slug = $article_output->get_tab_slug();
 		?>
-		<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 		<?php
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $article_output->get_function_callback();
 		?>
-	</article>
+</article>
 		<?php
 	}
 	return \ob_get_clean();

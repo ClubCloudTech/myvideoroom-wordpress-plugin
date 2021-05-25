@@ -22,7 +22,7 @@ use MyVideoRoomPlugin\Shortcode\App;
  */
 class Module {
 
-	const SHORTCODE_TAG_MONITOR = App::SHORTCODE_TAG . '_monitor';
+	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_monitor';
 
 	/**
 	 * The list of endpoints for services.
@@ -44,7 +44,7 @@ class Module {
 
 		$this->endpoints = new Endpoints();
 
-		\add_shortcode( self::SHORTCODE_TAG_MONITOR, array( $this, 'output_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG, array( $this, 'output_shortcode' ) );
 
 		Factory::get_instance( TextOptionShortcode::class )->init();
 

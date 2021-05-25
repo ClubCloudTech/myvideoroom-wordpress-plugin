@@ -1,6 +1,6 @@
 <?php
 /**
- * Display Icon Templates in Header of Meetings
+ * Display Pages across modules, or needed by Site Defaults.
  *
  * @package MyVideoRoomPlugin\Library
  */
@@ -64,5 +64,4 @@ class Dependencies {
 		array_push( $input, $admin_tab );
 		return $input;
 	}
-
 }
