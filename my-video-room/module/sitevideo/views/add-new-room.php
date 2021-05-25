@@ -75,10 +75,14 @@ return function (): string {
 
 		<p id="<?php echo \esc_attr( $html_library->get_description_id( 'slug' ) ); ?>">
 			<?php
-			esc_html_e(
-				'Please select an address for your room. It will be created at %s',
-				'my-video-room'
-			) . esc_url( get_site_url() ) . '/ [ Your Room URL/Address ]';
+			printf(
+				/* translators: %s is the url for the room */
+				esc_html__(
+					'Please select an address for your room. It will be created at %s',
+					'my-video-room'
+				),
+				esc_url( get_site_url() ) . '/ [ Your Room URL/Address ]'
+			)
 			?>
 		</p>
 
