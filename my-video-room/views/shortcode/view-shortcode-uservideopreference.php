@@ -32,9 +32,19 @@ return function (
 			</h1>
 				<?php
 				// room permissions info.
-				$output            = null;
-				$reception_enabled = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'reception_enabled' );
-				$floorplan_enabled = Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'show_floorplan' );
+				$output              = null;
+				$reception_enabled   = true;
+				$floorplan_enabled   = true;
+				$reception_video_url = null;
+
+				$saved_preferences = Factory::get_instance( UserVideoPreferenceDAO::class )->get_by_id( $user_id, $room_name );
+
+				if ( $saved_preferences ) {
+					$reception_enabled   = $saved_preferences->is_reception_enabled();
+					$floorplan_enabled   = $saved_preferences->is_floorplan_enabled();
+					$reception_video_url = trim( $saved_preferences->get_reception_video_url_setting() );
+				}
+
 				if ( $reception_enabled || $floorplan_enabled ) {
 					$output .= '<p class="button button-primary" title="' . esc_html__( 'Your Guests will see the Reception Template of your choice and will not be admitted into the room until you drag their icon in.', 'myvideoroom' ) . '">' . esc_html__( 'Reception Enabled', 'myvideoroom' ) . '</p>';
 				}
@@ -233,7 +243,7 @@ return function (
 								id="myvideoroom_user_reception_waiting_video_url"
 								name="myvideoroom_user_reception_waiting_video_url"
 								class="mvr-roles-multiselect mvr-select-box"
-								value="<?php /* phpcs:ignore -- is escaped properly.*/ echo trim( esc_url_raw( Factory::get_instance( UserVideoPreferenceDAO::class )->read_user_video_settings( $user_id, $room_name, 'reception_video_url' ) ) ); ?>">
+								value="<?php echo esc_url( $reception_video_url ); ?>">
 
 					<br><br>
 					<p class="mvr-preferences-paragraph">
