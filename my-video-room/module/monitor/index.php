@@ -11,9 +11,10 @@ namespace MyVideoRoomPlugin\Module\Monitor;
 
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\Monitor\Module as Monitor;
+use MyVideoRoomPlugin\Plugin;
 
 \add_action(
-	'myvideoroom_init',
+	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
 			'monitor',

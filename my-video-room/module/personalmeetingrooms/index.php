@@ -11,9 +11,10 @@ namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
 
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Module as PersonalMeetingRooms;
+use MyVideoRoomPlugin\Plugin;
 
 \add_action(
-	'myvideoroom_init',
+	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
 			'personal-meeting-rooms',

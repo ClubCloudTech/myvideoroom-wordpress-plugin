@@ -51,7 +51,7 @@ class Activation {
 	 */
 	public static function uninstall() {
 		Module::load_built_in_modules();
-		\do_action( 'myvideoroom_init' );
+		\do_action( Plugin::ACTION_INIT );
 		$active_modules = Factory::get_instance( Module::class )->get_all_modules();
 
 		foreach ( $active_modules as $active_module ) {
@@ -72,7 +72,7 @@ class Activation {
 	 */
 	public function enable_default_modules(): self {
 		Module::load_built_in_modules();
-		\do_action( 'myvideoroom_init' );
+		\do_action( Plugin::ACTION_INIT );
 
 		$room_builder_module = Factory::get_instance( Module::class )->get_module( 'roombuilder' );
 		if ( $room_builder_module ) {

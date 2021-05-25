@@ -10,9 +10,10 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\WCFM;
 
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Plugin;
 
 \add_action(
-	'myvideoroom_init',
+	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
 			'wcfm',

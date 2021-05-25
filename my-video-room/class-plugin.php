@@ -28,6 +28,8 @@ class Plugin {
 	public const SETTING_PRIVATE_KEY       = self::PLUGIN_NAMESPACE . '_private_key';
 	public const SETTING_ACTIVATED_MODULES = self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE . '_activated_modules';
 
+	public const ACTION_INIT = self::PLUGIN_NAMESPACE . '_init';
+
 	public const CAP_GLOBAL_HOST = 'myvideoroom-global-host';
 
 	/**
@@ -35,7 +37,7 @@ class Plugin {
 	 */
 	public function __construct() {
 		$private_key = \get_option( self::SETTING_PRIVATE_KEY );
-		\do_action( 'myvideoroom_init' );
+		\do_action( self::ACTION_INIT );
 
 		$this->register_settings();
 

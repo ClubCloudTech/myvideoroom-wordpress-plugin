@@ -11,9 +11,10 @@ namespace MyVideoRoomPlugin\Module\RoomBuilder;
 
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\RoomBuilder\Module as RoomBuilder;
+use MyVideoRoomPlugin\Plugin;
 
 \add_action(
-	'myvideoroom_init',
+	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
 			'roombuilder',

@@ -11,9 +11,10 @@ namespace MyVideoRoomPlugin\Module\BuddyPress;
 
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\BuddyPress\Module as BuddyPress;
+use MyVideoRoomPlugin\Plugin;
 
 \add_action(
-	'myvideoroom_init',
+	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
 			'buddypress',
