@@ -37,7 +37,7 @@ class PageFilters {
 	 * @param  int $module_id - the Module ID from DB.
 	 * @return string|null depending on status.
 	 */
-	public function block_disabled_module_video_render( int $module_id ) {
+	public function block_disabled_module_video_render( int $module_id ): ?string {
 		// Check Actions.
 		$module_block = do_action( 'myvideoroom_security_block_disabled_module', $module_id );
 		if ( $module_block ) {
@@ -56,33 +56,32 @@ class PageFilters {
 	 * This function Checks a Module is Active to allow it to render Video
 	 * Used only in admin pages of plugin
 	 *
-	 * @param  int    $user_id      UserID.
-	 * @param  string $room_name    The room name.
-	 * @param  bool   $host_status  If used.
+	 * @param  int                     $user_id      UserID.
+	 * @param  string                  $room_name    The room name.
+	 * @param  bool                    $host_status  If used.
+	 * @param  SecurityVideoPreference $user_permissions - Object with user Permissions.
+	 * @param  SecurityVideoPreference $site_override_permissions - Object with Site Enforcement settings.
+	 * @param  SecurityVideoPreference $security_default_permissions - Object with Default (no user preference yet applied) settings.
 	 *
-	 * @return null|string depending.
+	 * @return ?string depending.
 	 */
-	public function block_disabled_room_video_render( int $user_id, string $room_name, bool $host_status ) {
-		// Check Module Override State.
-		$user_permissions          = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $user_id, $room_name );
-		$site_override_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
-
-		// Override Control Check.
-		if ( $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
-			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $user_id );
-		}
-
-		// Site Default Settings Section.
+	public function block_disabled_room_video_render( int $user_id, string $room_name, bool $host_status, SecurityVideoPreference $user_permissions, SecurityVideoPreference $site_override_permissions, SecurityVideoPreference $security_default_permissions ): ?string {
+		// Site Default Settings Flag.
 		$does_room_record_exist = $user_permissions->get_room_name();
+
 		if ( ! $does_room_record_exist ) {
-			$is_room_disabled = $site_override_permissions->is_room_disabled();
+			$room_disabled = $security_default_permissions->is_room_disabled();
 
 		} else {
-			$is_room_disabled = $user_permissions->is_room_disabled();
+			$room_disabled = $user_permissions->is_room_disabled();
+		}
+
+		if ( $site_override_permissions->is_site_override_enabled() ) {
+			$room_disabled = $site_override_permissions->is_room_disabled();
 		}
 
 		// Is Disable setting active ?
-		if ( $is_room_disabled ) {
+		if ( $room_disabled ) {
 			if ( $host_status ) {
 				// If user is a host return their control panel.
 				return Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
@@ -101,34 +100,31 @@ class PageFilters {
 	 * This function Checks The Disable Anonymous Setting is/not on - and enforces result
 	 * Used by all rooms
 	 *
-	 * @param  int    $user_id      UserID.
-	 * @param  string $room_name    The room name.
+	 * @param  int                     $user_id - the UserID.
+	 * @param  SecurityVideoPreference $user_permissions - Object with user Permissions.
+	 * @param  SecurityVideoPreference $site_override_permissions - Object with Site Enforcement settings.
+	 * @param  SecurityVideoPreference $security_default_permissions - Object with Default (no user preference yet applied) settings.
 	 *
 	 * @return null|string depending.
 	 */
-	public function block_anonymous_room_video_render( int $user_id, string $room_name ): ?string {
-		// Check Module Override State.
-		$user_permissions          = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $user_id, $room_name );
-		$site_override_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
+	public function block_anonymous_room_video_render( int $user_id, SecurityVideoPreference $user_permissions, SecurityVideoPreference $site_override_permissions, SecurityVideoPreference $security_default_permissions ): ?string {
 
-		// Override Control Check.
-
-		if ( $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
-			return Factory::get_instance( SecurityTemplates::class )->anonymous_blocked_by_user( $user_id );
-		}
-
-		// Site Default Settings Section.
+		// Site Default Settings Flag.
 		$does_room_record_exist = $user_permissions->get_room_name();
 
 		if ( ! $does_room_record_exist ) {
-			$is_room_disabled = $site_override_permissions->is_anonymous_enabled();
+			$anonymous_setting = $security_default_permissions->is_anonymous_enabled();
 
 		} else {
-			$is_room_disabled = $user_permissions->is_anonymous_enabled();
+			$anonymous_setting = $user_permissions->is_anonymous_enabled();
+		}
+
+		if ( $site_override_permissions->is_site_override_enabled() ) {
+			$anonymous_setting = $site_override_permissions->is_anonymous_enabled();
 		}
 
 		// If the restrict room setting is enabled fire the block.
-		if ( $is_room_disabled ) {
+		if ( $anonymous_setting ) {
 			return Factory::get_instance( SecurityTemplates::class )->anonymous_blocked_by_user( $user_id );
 		}
 
@@ -143,7 +139,7 @@ class PageFilters {
 	 *
 	 * @return string - host or guest status.
 	 */
-	public function allowed_roles_host( int $owner_id ): string {
+	public function allowed_roles_host( int $owner_id ): bool {
 		$room_name = '';
 
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $owner_id );
@@ -151,32 +147,42 @@ class PageFilters {
 			$room_name = $room_object->room_name . Security::MULTI_ROOM_HOST_SUFFIX;
 		}
 
-		// Check Module Override State.
+		// Get Permissions Objects (Called from Multiple places).
 		$user_permissions             = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $owner_id, $room_name );
 		$site_override_permissions    = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
 		$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
-		// Override Control Check.
-		if ( $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
-			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $owner_id );
-		}
 
-		// Site Default Settings Section.
+		// Retrieve Correct Permissions Object.
 		$does_room_record_exist = $user_permissions->get_room_name();
 
 		if ( ! $does_room_record_exist ) {
 			$room_control_enabled_state = $security_default_permissions->is_allow_role_control_enabled();
+			$anonymous_hosts_allowed    = $security_default_permissions->is_anonymous_enabled();
+			$allow_to_block_switch      = $security_default_permissions->is_block_role_control_enabled();
+			$preference                 = $security_default_permissions;
 
 		} else {
 			$room_control_enabled_state = $user_permissions->is_allow_role_control_enabled();
+			$anonymous_hosts_allowed    = $user_permissions->is_anonymous_enabled();
+			$allow_to_block_switch      = $user_permissions->is_block_role_control_enabled();
+			$preference                 = $user_permissions;
+		}
+
+		if ( $site_override_permissions->is_site_override_enabled() ) {
+			$room_control_enabled_state = $site_override_permissions->is_allow_role_control_enabled();
+			$anonymous_hosts_allowed    = $site_override_permissions->is_anonymous_enabled();
+			$allow_to_block_switch      = $site_override_permissions->is_block_role_control_enabled();
+			$preference                 = $site_override_permissions;
 		}
 
 		// Handling Anonymous Users.
-		$anonymous_hosts_allowed = $user_permissions->is_anonymous_enabled();
-
 		if ( $anonymous_hosts_allowed && ! \is_user_logged_in() ) {
 			return true;
 
 		} elseif ( ! $anonymous_hosts_allowed && ! is_user_logged_in() ) {
+			return false;
+		}
+		if ( ! is_user_logged_in() && ! $allow_to_block_switch ) {
 			return false;
 		}
 
@@ -189,27 +195,8 @@ class PageFilters {
 				return false;
 			}
 		}
-		// Decide whether to allow or block.
-		// With Blank Record check for Default Security Config.
-		if ( ! $does_room_record_exist ) {
-			$allow_to_block_switch = $security_default_permissions->is_block_role_control_enabled();
 
-		} else {
-			$allow_to_block_switch = $user_permissions->is_block_role_control_enabled();
-		}
-
-		// Reject Anonymous Users ( as have no role ).
-		if ( ! is_user_logged_in() && ! $allow_to_block_switch ) {
-			return false;
-		}
 		// Get List of Allowed/Blocked Roles from DB.
-
-		if ( ! $does_room_record_exist ) {
-			$preference = $security_default_permissions;
-
-		} else {
-			$preference = $user_permissions;
-		}
 
 		$allowed_db_roles_configuration = array();
 
