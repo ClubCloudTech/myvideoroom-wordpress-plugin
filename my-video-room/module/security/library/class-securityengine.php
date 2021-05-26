@@ -58,9 +58,8 @@ class SecurityEngine {
 			$host_status = true;
 		}
 		// Get Remaining Permissions Objects.
-		$user_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $host_id, $room_name );
+		$user_permissions             = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $host_id, $room_name );
 		$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
-
 
 		// First - Check Room Active - User Disable/Enable check.
 		$disabled_block = Factory::get_instance( PageFilters::class )->block_disabled_room_video_render( $host_id, $room_name, $host_status, $room_type, $user_permissions, $site_override_permissions );
@@ -85,7 +84,7 @@ class SecurityEngine {
 		}
 
 		// Check Allowed_Roles and Blocked Roles.
-		$allowed_roles_block = Factory::get_instance( PageFilters::class )->allowed_roles_room_video_render( $host_id, $room_name, $host_status, $room_type );
+		$allowed_roles_block = Factory::get_instance( PageFilters::class )->allowed_roles_room_video_render( $host_id, $host_status, $room_type, $user_permissions, $site_override_permissions, $security_default_permissions );
 
 		if ( $allowed_roles_block ) {
 			return $allowed_roles_block;
