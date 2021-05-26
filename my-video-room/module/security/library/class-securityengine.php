@@ -41,7 +41,7 @@ class SecurityEngine {
 
 		// Site Override Disabled Room Check.
 		$site_override_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
-		if ( $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
+		if ( $site_override_permissions && $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $host_id );
 		}
 
@@ -60,6 +60,10 @@ class SecurityEngine {
 		// Get Remaining Permissions Objects.
 		$user_permissions             = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $host_id, $room_name );
 		$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
+
+		if ( ! $user_permissions && ! $site_override_permissions && ! $security_default_permissions ) {
+			return null;
+		}
 
 		// First - Check Room Active - User Disable/Enable check.
 		$disabled_block = Factory::get_instance( PageFilters::class )->block_disabled_room_video_render( $host_id, $room_name, $host_status, $user_permissions, $site_override_permissions, $security_default_permissions );

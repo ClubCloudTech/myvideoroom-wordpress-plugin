@@ -67,9 +67,13 @@ class PageFilters {
 	 *
 	 * @return ?string depending.
 	 */
-	public function block_disabled_room_video_render( int $user_id, string $room_name, bool $host_status, SecurityVideoPreference $user_permissions, SecurityVideoPreference $site_override_permissions, SecurityVideoPreference $security_default_permissions ): ?string {
+	public function block_disabled_room_video_render( int $user_id, string $room_name, bool $host_status, SecurityVideoPreference $user_permissions = null, SecurityVideoPreference $site_override_permissions = null, SecurityVideoPreference $security_default_permissions = null ): ?string {
 		// Site Default Settings Flag.
-		$does_room_record_exist = $user_permissions->get_room_name();
+		if ( $user_permissions && $user_permissions->get_room_name() ) {
+			$does_room_record_exist = $user_permissions->get_room_name();
+		} else {
+			$does_room_record_exist = false;
+		}
 
 		if ( ! $does_room_record_exist ) {
 			$room_disabled = $security_default_permissions->is_room_disabled();
@@ -110,10 +114,17 @@ class PageFilters {
 	 *
 	 * @return null|string depending.
 	 */
-	public function block_anonymous_room_video_render( int $user_id, SecurityVideoPreference $user_permissions, SecurityVideoPreference $site_override_permissions, SecurityVideoPreference $security_default_permissions ): ?string {
-
+	public function block_anonymous_room_video_render( int $user_id, SecurityVideoPreference $user_permissions = null, SecurityVideoPreference $site_override_permissions = null, SecurityVideoPreference $security_default_permissions = null ): ?string {
+		if ( ! $user_permissions && ! $site_override_permissions && ! $security_default_permissions ) {
+			return null;
+		}
 		// Site Default Settings Flag.
-		$does_room_record_exist = $user_permissions->get_room_name();
+
+		if ( $user_permissions && $user_permissions->get_room_name() ) {
+			$does_room_record_exist = $user_permissions->get_room_name();
+		} else {
+			$does_room_record_exist = false;
+		}
 
 		if ( ! $does_room_record_exist ) {
 			$anonymous_setting = $security_default_permissions->is_anonymous_enabled();
@@ -154,10 +165,14 @@ class PageFilters {
 		$user_permissions             = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $owner_id, $room_name );
 		$site_override_permissions    = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
 		$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
+		// Exit Filter if no setting at all.
+		if ( ! $user_permissions && ! $site_override_permissions && ! $security_default_permissions ) {
+			return null;
+		}
 
 		// Retrieve Correct Permissions Object (User or Default Settings if no User setting).
 		// Override State.
-		if ( $site_override_permissions->is_site_override_enabled() ) {
+		if ( $site_override_permissions && $site_override_permissions->is_site_override_enabled() ) {
 			$room_control_enabled_state = $site_override_permissions->is_allow_role_control_enabled();
 			$anonymous_hosts_allowed    = $site_override_permissions->is_anonymous_enabled();
 			$allow_to_block_switch      = $site_override_permissions->is_block_role_control_enabled();
@@ -165,15 +180,19 @@ class PageFilters {
 
 		} else {
 
-			$does_room_record_exist = $user_permissions->get_room_name();
+			if ( $user_permissions && $user_permissions->get_room_name() ) {
+				$does_room_record_exist = $user_permissions->get_room_name();
+			} else {
+				$does_room_record_exist = false;
+			}
 
-			if ( ! $does_room_record_exist ) {
+			if ( ! $does_room_record_exist && $security_default_permissions ) {
 				$room_control_enabled_state = $security_default_permissions->is_allow_role_control_enabled();
 				$anonymous_hosts_allowed    = $security_default_permissions->is_anonymous_enabled();
 				$allow_to_block_switch      = $security_default_permissions->is_block_role_control_enabled();
 				$preference                 = $security_default_permissions;
 
-			} else {
+			} elseif ( $user_permissions ) {
 				$room_control_enabled_state = $user_permissions->is_allow_role_control_enabled();
 				$anonymous_hosts_allowed    = $user_permissions->is_anonymous_enabled();
 				$allow_to_block_switch      = $user_permissions->is_block_role_control_enabled();
@@ -257,14 +276,14 @@ class PageFilters {
 	 *
 	 * @return ?string depending.
 	 */
-	public function allowed_roles_room_video_render( int $owner_id, string $host_status, string $room_type = null, SecurityVideoPreference $user_permissions, SecurityVideoPreference $site_override_permissions, SecurityVideoPreference $security_default_permissions ): ?string {
+	public function allowed_roles_room_video_render( int $owner_id, string $host_status, string $room_type = null, SecurityVideoPreference $user_permissions = null, SecurityVideoPreference $site_override_permissions = null, SecurityVideoPreference $security_default_permissions = null ): ?string {
 		// Exit if Host.
 		if ( $host_status ) {
 			return null;
 		}
 		// Retrieve Correct Permissions Object (User or Default Settings if no User setting).
 		// Override State.
-		if ( $site_override_permissions->is_site_override_enabled() ) {
+		if ( $site_override_permissions && $site_override_permissions->is_site_override_enabled() ) {
 			$room_control_enabled_state = $site_override_permissions->is_allow_role_control_enabled();
 			$anonymous_hosts_allowed    = $site_override_permissions->is_anonymous_enabled();
 			$allow_to_block_switch      = $site_override_permissions->is_block_role_control_enabled();
@@ -272,15 +291,19 @@ class PageFilters {
 
 		} else {
 
-			$does_room_record_exist = $user_permissions->get_room_name();
+			if ( $user_permissions && $user_permissions->get_room_name() ) {
+				$does_room_record_exist = $user_permissions->get_room_name();
+			} else {
+				$does_room_record_exist = false;
+			}
 
-			if ( ! $does_room_record_exist ) {
+			if ( ! $does_room_record_exist && $security_default_permissions ) {
 				$room_control_enabled_state = $security_default_permissions->is_allow_role_control_enabled();
 				$anonymous_hosts_allowed    = $security_default_permissions->is_anonymous_enabled();
 				$allow_to_block_switch      = $security_default_permissions->is_block_role_control_enabled();
 				$preference                 = $security_default_permissions;
 
-			} else {
+			} elseif ( $user_permissions ) {
 				$room_control_enabled_state = $user_permissions->is_allow_role_control_enabled();
 				$anonymous_hosts_allowed    = $user_permissions->is_anonymous_enabled();
 				$allow_to_block_switch      = $user_permissions->is_block_role_control_enabled();
