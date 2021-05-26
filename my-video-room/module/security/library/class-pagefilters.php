@@ -14,9 +14,10 @@ use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\UserRoles;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
+use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
-use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
+use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreferenceShortcode;
 
 /**
  * PageFilters - Security Filter Defaults for Renderblock Function.
@@ -50,6 +51,7 @@ class PageFilters {
 		if ( ! $is_module_enabled ) {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
 		}
+		return null;
 	}
 
 	/**
@@ -80,11 +82,11 @@ class PageFilters {
 			$room_disabled = $site_override_permissions->is_room_disabled();
 		}
 
-		// Is Disable setting active ?
+		// Blocking Return Content Decision.
 		if ( $room_disabled ) {
 			if ( $host_status ) {
 				// If user is a host return their control panel.
-				return Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
+				return Factory::get_instance( SecurityVideoPreferenceShortcode::class )->choose_settings(
 					$user_id,
 					$room_name
 				);
@@ -94,6 +96,7 @@ class PageFilters {
 				return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $user_id );
 			}
 		}
+		return null;
 	}
 
 	/**
@@ -236,10 +239,9 @@ class PageFilters {
 
 		} elseif ( $role_match && ! $allow_to_block_switch ) {
 			return true;
-
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -339,9 +341,8 @@ class PageFilters {
 
 		} elseif ( $role_match && ! $allow_to_block_switch ) {
 			return null;
-
-		} else {
-			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
 		}
+
+		return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
 	}
 }

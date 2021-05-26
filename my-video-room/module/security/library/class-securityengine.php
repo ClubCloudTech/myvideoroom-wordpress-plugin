@@ -10,7 +10,7 @@ namespace MyVideoRoomPlugin\Module\Security\Library;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference;
+use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 use MyVideoRoomPlugin\Module\Security\Security;
@@ -62,7 +62,7 @@ class SecurityEngine {
 		$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
 
 		// First - Check Room Active - User Disable/Enable check.
-		$disabled_block = Factory::get_instance( PageFilters::class )->block_disabled_room_video_render( $host_id, $room_name, $host_status, $room_type, $user_permissions, $site_override_permissions );
+		$disabled_block = Factory::get_instance( PageFilters::class )->block_disabled_room_video_render( $host_id, $room_name, $host_status, $user_permissions, $site_override_permissions, $security_default_permissions );
 		if ( $disabled_block ) {
 			return $disabled_block;
 		}
