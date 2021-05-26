@@ -7,8 +7,6 @@
 
 namespace MyVideoRoomPlugin\Module\Security\Templates;
 
-use MyVideoRoomPlugin\Shortcode as Shortcode;
-
 /**
  * Class Security Templates
  * This class holds templates for Blocked Access requests.
@@ -70,7 +68,7 @@ class SecurityTemplates {
 	<p class="mvr-template-text">
 					<?php
 					$new_user           = get_userdata( $user_id );
-					$first_display_name = esc_html__( 'Site Policy', 'my-video-room' );
+					$first_display_name = '<strong>' . esc_html__( 'Site Policy', 'my-video-room' ) . '</strong>';
 					if ( $new_user ) {
 						$first_name = $new_user->user_firstname;
 						$nicename   = $new_user->user_nicename;
@@ -93,8 +91,10 @@ class SecurityTemplates {
 					echo sprintf(
 					/* translators: %1s is the text "Site Policy" and %2s is "the site administrators" */
 						esc_html__( ' %1$s  has disabled this room. Please contact the site owner, or  %2$s for more assistance.', 'myvideoroom' ),
-						esc_attr( $first_display_name ),
-						esc_attr( $second_display_name )
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$first_display_name,
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$second_display_name
 					);
 					?>
 	</p>
@@ -127,7 +127,7 @@ class SecurityTemplates {
 	<p class="mvr-template-text">
 					<?php
 					$new_user           = get_userdata( $user_id );
-					$first_display_name = esc_html__( 'Site Policy', 'my-video-room' );
+					$first_display_name = '<strong>' . esc_html__( 'Site Policy', 'my-video-room' ) . '</strong>';
 					if ( $new_user ) {
 						$first_name = $new_user->user_firstname;
 						$nicename   = $new_user->user_nicename;
@@ -150,8 +150,10 @@ class SecurityTemplates {
 					echo sprintf(
 					/* translators: %1s is the text "Site Policy" and %2s is "the site administrators" */
 						esc_html__( ' %1$s  only allows signed in/registered users to access a video room. To be able to access this room, you must have an account on this site. Please Register for access or ask  %2$s for more assistance.', 'myvideoroom' ),
-						esc_attr( $first_display_name ),
-						esc_attr( $second_display_name )
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$first_display_name,
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$second_display_name
 					);
 					?>
 	</p>
@@ -184,7 +186,7 @@ class SecurityTemplates {
 	<p class="mvr-template-text">
 					<?php
 					$new_user           = get_userdata( $user_id );
-					$first_display_name = esc_html__( 'The Administrator', 'my-video-room' );
+					$first_display_name = '<strong>' . esc_html__( 'The Administrator', 'my-video-room' ) . '</strong>';
 					if ( $new_user ) {
 						$first_name = $new_user->user_firstname;
 						$nicename   = $new_user->user_nicename;
@@ -206,9 +208,11 @@ class SecurityTemplates {
 					}
 					echo sprintf(
 					/* translators: %1s is the text "The Administrator" and %2s is "the site administrators" */
-						esc_html__( ' %1$s has enabled this room only for specific roles of users. You are not in a group that has been given access. Please contact the site owner or %2$s for more assistance.', 'myvideoroom' ),
-						esc_attr( $first_display_name ),
-						esc_attr( $second_display_name )
+						esc_html__( '%1$s has enabled this room only for specific roles of users. You are not in a group that has been given access. Please contact the site owner or %2$s for more assistance.', 'myvideoroom' ),
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$first_display_name,
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$second_display_name
 					);
 					?>
 	</p>
