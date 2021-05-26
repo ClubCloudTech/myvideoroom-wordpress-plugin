@@ -9,9 +9,8 @@ namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
-use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\HttpGet;
-use MyVideoRoomPlugin\Library\VideoHelpers;
+
 
 /**
  * Class ModuleConfig

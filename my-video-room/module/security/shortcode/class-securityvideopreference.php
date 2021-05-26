@@ -13,6 +13,7 @@ use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 use MyVideoRoomPlugin\Shortcode\App;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class SecurityVideoPreference
@@ -139,11 +140,18 @@ class SecurityVideoPreference {
 		$user_id = apply_filters( 'myvideoroom_security_choosesettings_change_user_id', $user_id );
 
 		$security_preference_dao = Factory::get_instance( SecurityVideoPreferenceDao::class );
-		$roles_output            = $this->read_multi_checkbox_admin_roles( $user_id, $room_name );
-		$current_user_setting    = $security_preference_dao->get_by_id(
-			$user_id,
-			$room_name
-		);
+
+		$site_override_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
+		if ( $site_override_permissions && $site_override_permissions->is_site_override_enabled() && ( 'admin' !== $type || 'roomhost' !== $type ) ) {
+			$current_user_setting = $site_override_permissions;
+			$roles_output         = $this->read_multi_checkbox_admin_roles( $site_override_permissions->get_user_id(), $site_override_permissions->get_room_name() );
+		} else {
+			$current_user_setting = $security_preference_dao->get_by_id(
+				$user_id,
+				$room_name
+			);
+			$roles_output         = $this->read_multi_checkbox_admin_roles( $user_id, $room_name );
+		}
 
 		// Type of Shortcode to render.
 		switch ( $type ) {

@@ -164,11 +164,18 @@ return function (
 					"/>
 
 				<?php
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( HttpPost::class )->create_form_submit(
-					'update_security_video_preference',
-					\esc_html__( 'Save changes', 'myvideoroom' )
-				);
+				if ( $current_user_setting && $current_user_setting->is_site_override_enabled() ) {
+					$site_override = true;
+				} else {
+					$site_override = false;
+				}
+				if ( false === $site_override ) {
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					echo Factory::get_instance( HttpPost::class )->create_form_submit(
+						'update_security_video_preference',
+						\esc_html__( 'Save changes', 'myvideoroom' )
+					);
+				}
 				?>
 			</form>
 </div>

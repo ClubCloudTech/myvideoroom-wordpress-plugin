@@ -10,7 +10,7 @@ namespace MyVideoRoomPlugin\Module\Security\Library;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference;
+use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 use MyVideoRoomPlugin\Module\Security\Security;
@@ -36,25 +36,20 @@ class SecurityEngine {
 		if ( ! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Security::MODULE_SECURITY_ID ) ) {
 			return null;
 		}
+		// Filter to Override Host ID. (Done here in case Site Override applies and needs user_id).
+		$host_id = apply_filters( 'myvideoroom_security_change_user_id', $host_id );
 
-		// Getting Master Site override state.
-		$site_override = Factory::get_instance( SecurityVideoPreference::class )
-			->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, 'site_override_enabled' );
-
-		$room_disabled = Factory::get_instance( SecurityVideoPreference::class )
-			->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, 'room_disabled' );
-
-		if ( $site_override && $room_disabled ) {
-			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
+		// Site Override Disabled Room Check.
+		$site_override_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT );
+		if ( $site_override_permissions && $site_override_permissions->is_site_override_enabled() && true === $site_override_permissions->is_room_disabled() ) {
+			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $host_id );
 		}
 
 		/*
 		Setup Environment Room Name Transformations for Special Cases.
 		* Room names need to be modified for special cases - like multi-user scenarios.
 		*/
-
-		// Filters to Modify Blocking Behaviour for default and third party blockers.
-		$host_id   = apply_filters( 'myvideoroom_security_change_user_id', $host_id );
+		// Filter to modify Room Name. (user_id done above site override).
 		$room_name = apply_filters( 'myvideoroom_security_change_room_name', $room_name );
 
 		// Trapping any Host filter to set host status.
@@ -62,9 +57,16 @@ class SecurityEngine {
 		if ( strpos( $room_type, 'host' ) !== false ) {
 			$host_status = true;
 		}
+		// Get Remaining Permissions Objects.
+		$user_permissions             = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $host_id, $room_name );
+		$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
+
+		if ( ! $user_permissions && ! $site_override_permissions && ! $security_default_permissions ) {
+			return null;
+		}
 
 		// First - Check Room Active - User Disable/Enable check.
-		$disabled_block = Factory::get_instance( PageFilters::class )->block_disabled_room_video_render( $host_id, $room_name, $host_status, $room_type );
+		$disabled_block = Factory::get_instance( PageFilters::class )->block_disabled_room_video_render( $host_id, $room_name, $host_status, $user_permissions, $site_override_permissions, $security_default_permissions );
 		if ( $disabled_block ) {
 			return $disabled_block;
 		}
@@ -79,14 +81,14 @@ class SecurityEngine {
 
 		// Check Users Signed Out Global Filter - Anonymous Check.
 		if ( ! is_user_logged_in() ) {
-			$signed_out_block = Factory::get_instance( PageFilters::class )->block_anonymous_room_video_render( $host_id, $room_name );
+			$signed_out_block = Factory::get_instance( PageFilters::class )->block_anonymous_room_video_render( $host_id, $user_permissions, $site_override_permissions, $security_default_permissions );
 			if ( $signed_out_block ) {
 				return $signed_out_block;
 			}
 		}
 
 		// Check Allowed_Roles and Blocked Roles.
-		$allowed_roles_block = Factory::get_instance( PageFilters::class )->allowed_roles_room_video_render( $host_id, $room_name, $host_status, $room_type );
+		$allowed_roles_block = Factory::get_instance( PageFilters::class )->allowed_roles_room_video_render( $host_id, $room_name, $host_status, $room_type, $user_permissions, $site_override_permissions, $security_default_permissions );
 
 		if ( $allowed_roles_block ) {
 			return $allowed_roles_block;

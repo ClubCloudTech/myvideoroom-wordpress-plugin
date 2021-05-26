@@ -88,15 +88,19 @@ class UserRoles {
 	 *
 	 * @param ?int $user_id The user id.
 	 *
-	 * @return array of roles
+	 * @return array of roles or a null array if user is not logged in.
 	 */
-	public function get_user_roles( int $user_id = null ): array {
-		if ( ! $user_id ) {
+	public function get_user_roles( int $user_id = null ): ?array {
+
+		if ( ! \is_user_logged_in() ) {
+			return array();
+
+		} elseif ( ! $user_id && \is_user_logged_in() ) {
 			$user_id = get_current_user_id();
 		}
 
 		$user_meta = get_userdata( $user_id );
-		return $user_meta->roles;
 
+		return $user_meta->roles;
 	}
 }

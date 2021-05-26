@@ -217,8 +217,15 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Render Site Video Admin Page.
 	 */
+	public function render_default_settings_admin_page() {
+		return ( require __DIR__ . '/../views/view-settings-video-default.php' )();
+	}
+
+	/**
+	 * Render Default Settings Admin Page.
+	 */
 	public function render_sitevideo_admin_page() {
-		return ( require __DIR__ . '/../views/module-admin.php' )();
+		return ( require __DIR__ . '/../views/module-admin.php')();
 	}
 
 	/**
@@ -266,5 +273,22 @@ class MVRSiteVideoRoomHelpers {
 		\wp_delete_post( $room_object->id, true );
 
 		return true;
+	}
+
+	/**
+	 * Render Default Video Settings Page
+	 *
+	 * @param  array $input - the inbound menu.
+	 * @return array - outbound menu.
+	 */
+	public function render_default_video_admin_settings_page( $input = array() ): array {
+
+		$admin_tab = new MenuTabDisplay(
+			esc_html__( 'Default Video Appearance', 'my-video-room' ),
+			'videoappearance',
+			fn() => $this->render_default_settings_admin_page()
+		);
+		array_push( $input, $admin_tab );
+		return $input;
 	}
 }

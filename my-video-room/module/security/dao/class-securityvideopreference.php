@@ -9,6 +9,7 @@ namespace MyVideoRoomPlugin\Module\Security\DAO;
 
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\Security\Security;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class SecurityVideoPreference
@@ -381,6 +382,4 @@ class SecurityVideoPreference {
 				return null;
 		}
 	}
-
-
 }
