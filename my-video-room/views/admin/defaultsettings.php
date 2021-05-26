@@ -91,15 +91,15 @@ return function (
 						?>
 					<tr<?php echo $index % 2 ? ' class="alternate"' : ''; ?>>
 						<th scope="row">
-							<label for="<?php echo \esc_attr( $html_lib->get_id( 'role_' . $role_name ) ); ?>">
+							<label for="<?php echo \esc_attr( $html_library->get_id( 'role_' . $role_name ) ); ?>">
 								<?php echo \esc_html( $role_details['name'] ); ?>
 							</label>
 						</th>
 
 						<td>
 							<input class="myvideoroom-admin-table-format"
-								id="<?php echo \esc_attr( $html_lib->get_id( 'role_' . $role_name ) ); ?>"
-								name="<?php echo \esc_attr( $html_lib->get_field_name( 'role_' . $role_name ) ); ?>"
+								id="<?php echo \esc_attr( $html_library->get_id( 'role_' . $role_name ) ); ?>"
+								name="<?php echo \esc_attr( $html_library->get_field_name( 'role_' . $role_name ) ); ?>"
 								type="checkbox" <?php echo $has_host_cap ? ' checked="checked" ' : ''; ?>" value="on" />
 						</td>
 						</tr>
