@@ -21,7 +21,7 @@ class Logger {
 	 *
 	 * @return string
 	 */
-	protected function return_error( string $message ): string {
+	public function return_error( string $message ): string {
 		if (
 			\defined( 'WP_DEBUG' ) &&
 			WP_DEBUG &&

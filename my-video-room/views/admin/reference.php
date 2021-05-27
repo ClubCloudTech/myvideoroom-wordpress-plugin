@@ -20,9 +20,6 @@ use MyVideoRoomPlugin\Reference\Shortcode;
 return function (
 	array $shortcodes = array()
 ): string {
-	$reference_section_render = require __DIR__ . '/reference-section.php';
-	$reference_sections       = array();
-
 	$html_lib = Factory::get_instance( HTML::class, array( 'reference' ) );
 
 	\ob_start();
@@ -41,33 +38,39 @@ return function (
 		?>
 	</p>
 
-	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-		<ul>
-			<?php
-			$active_class = ' nav-tab-active';
-
-			foreach ( $shortcodes as $shortcode ) {
-				$id                   = $html_lib->get_id( $shortcode->get_shortcode_tag() );
-				$reference_sections[] = $reference_section_render( $shortcode, $id );
-
-				?>
-				<li>
-					<a class="nav-tab<?php echo \esc_attr( $active_class ); ?>" href="#<?php echo \esc_attr( $id ); ?>">
-						<?php echo \esc_html( $shortcode->get_name() ); ?>
-					</a>
-				</li>
+	<?php if ( count( $shortcodes ) > 1 ) { ?>
+		<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
+			<ul>
 				<?php
+				$active_class = ' nav-tab-active';
 
-				$active_class = '';
-			}
-			?>
-		</ul>
-	</nav>
+				foreach ( $shortcodes as $shortcode ) {
+					$id = $html_lib->get_id( $shortcode->get_shortcode_tag() );
 
-	<?php
-	foreach ( $reference_sections as $reference_section ) {
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Escaping is handled by the shortcode reference render function
-		echo $reference_section;
+					?>
+					<li>
+						<a class="nav-tab<?php echo \esc_attr( $active_class ); ?>" href="#<?php echo \esc_attr( $id ); ?>">
+							<?php echo \esc_html( $shortcode->get_name() ); ?>
+						</a>
+					</li>
+					<?php
+
+					$active_class = '';
+				}
+				?>
+			</ul>
+		</nav>
+		<?php
+	} else {
+		echo '<hr />';
+	}
+
+	$reference_section_render = require __DIR__ . '/reference-section.php';
+	foreach ( $shortcodes as $shortcode ) {
+		$id = $html_lib->get_id( $shortcode->get_shortcode_tag() );
+
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Escaping is handled by the shortcode reference render function
+		echo $reference_section_render( $shortcode, $id );
 	}
 	?>
 

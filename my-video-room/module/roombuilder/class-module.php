@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\RoomBuilder;
 
+use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Admin\Page;
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Factory;
@@ -16,6 +17,7 @@ use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Module\RoomBuilder\Admin as RoomBuilderAdmin;
 use MyVideoRoomPlugin\Shortcode\App;
 use MyVideoRoomPlugin\ValueObject\GettingStarted;
 
@@ -104,7 +106,7 @@ class Module {
 					new Page(
 						self::PAGE_SLUG_BUILDER,
 						\esc_html__( 'Room Builder', 'myvideoroom' ),
-						array( new Admin(), 'create_room_builder_page' ),
+						array( new RoomBuilderAdmin(), 'create_room_builder_page' ),
 					),
 					1
 				);
@@ -130,7 +132,7 @@ class Module {
 		);
 
 		\add_action(
-			'myvideoroom_shortcode_reference',
+			Admin::ACTION_SHORTCODE_REFERENCE,
 			function ( callable $add_reference ) {
 				$add_reference( ( new Reference() )->get_shortcode_reference() );
 			}

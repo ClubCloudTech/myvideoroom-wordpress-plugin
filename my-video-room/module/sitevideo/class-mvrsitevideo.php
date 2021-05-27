@@ -7,8 +7,10 @@
 
 namespace MyVideoRoomPlugin\Module\SiteVideo;
 
+use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Admin\Page;
 use MyVideoRoomPlugin\Admin\PageList;
+use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
@@ -151,6 +153,13 @@ class MVRSiteVideo {
 
 		// Regenerate Filter.
 		add_filter( 'myvideoroom_room_manager_regenerate', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'regenerate_sitevideo_meeting_room' ), 10, 3 );
+
+		\add_action(
+			Admin::ACTION_SHORTCODE_REFERENCE,
+			function ( callable $add_reference ) {
+				$add_reference( ( new ShortcodeReference() )->get_shortcode_reference() );
+			}
+		);
 	}
 
 	/**

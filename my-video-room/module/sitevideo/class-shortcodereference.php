@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Reference\Shortcode;
+namespace MyVideoRoomPlugin\Module\SiteVideo;
 
 use MyVideoRoomPlugin\Reference\Option;
 use MyVideoRoomPlugin\Reference\Section;
@@ -15,9 +15,9 @@ use MyVideoRoomPlugin\Reference\Shortcode;
 use MyVideoRoomPlugin\Shortcode\RoomInfo as RoomInfoShortcode;
 
 /**
- * Class RoomInfo
+ * Class ShortcodeReference
  */
-class RoomInfo {
+class ShortcodeReference {
 
 	/**
 	 * Get the shortcode reference
@@ -28,7 +28,7 @@ class RoomInfo {
 		$shortcode_reference = new Shortcode(
 			RoomInfoShortcode::SHORTCODE_TAG,
 			\esc_html__( 'Room Info', 'myvideoroom' ),
-			\esc_html__( 'Returns a Variety of useful Information about a room that you can place in your pages.', 'myvideoroom' ),
+			\esc_html__( 'Returns a variety of useful Information about a room that you can place in your pages.', 'myvideoroom' ),
 			array(
 				'room' => 'meet-center',
 				'type' => 'title',

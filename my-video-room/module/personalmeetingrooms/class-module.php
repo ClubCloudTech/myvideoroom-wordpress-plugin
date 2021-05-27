@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
 
+use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
@@ -42,7 +43,7 @@ class Module {
 		\add_action( 'wp_enqueue_scripts', fn() => $this->enqueue_scripts_and_styles() );
 
 		\add_action(
-			'myvideoroom_shortcode_reference',
+			Admin::ACTION_SHORTCODE_REFERENCE,
 			function ( callable $add_reference ) {
 				$add_reference( ( new Reference() )->get_shortcode_reference() );
 			}
