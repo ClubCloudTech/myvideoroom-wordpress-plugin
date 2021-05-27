@@ -37,7 +37,7 @@ class RoomPermissions {
 						'myvideoroom'
 					),
 					'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_PERMISSIONS, false ) ) . '">' .
-					\esc_html__( 'room permissions', 'myvideoroom' ) .
+					\esc_html__( 'default settings', 'myvideoroom' ) .
 					'</a>'
 				),
 			),

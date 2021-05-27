@@ -59,7 +59,7 @@ class GettingStarted {
 				/* translators: %s is the text "Room Permissions" and links to the Permissions Section */
 					\esc_html__( 'Visit the %s page to plan how you want to give access to your rooms.', 'myvideoroom' ),
 					'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_PERMISSIONS, false ) ) . '">' .
-					\esc_html__( 'room permission', 'myvideoroom' ) . '</a>'
+					\esc_html__( 'default settings', 'myvideoroom' ) . '</a>'
 				),
 			),
 		);
