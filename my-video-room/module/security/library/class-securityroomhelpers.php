@@ -56,22 +56,6 @@ class SecurityRoomHelpers {
 	}
 
 	/**
-	 * Security Plugin Module Enable.
-	 *
-	 *  @param  int $module_id - the module ID of the Feature Database.
-	 *  @return bool
-	 */
-	public function security_enable_feature_module( int $module_id ) {
-		if ( Security::MODULE_SECURITY_ID !== $module_id ) {
-			return false;
-		}
-		$module_slug     = Security::MODULE_SECURITY_NAME;
-		$security_module = Factory::get_instance( Module::class )->get_module( $module_slug );
-		Factory::get_instance( Modules::class )->activate_module( $security_module );
-		return true;
-	}
-
-	/**
 	 * Security Plugin Module Disable.
 	 *
 	 *  @param  int $module_id - the module ID of the Feature Database.
@@ -84,6 +68,7 @@ class SecurityRoomHelpers {
 		$module_slug     = Security::MODULE_SECURITY_NAME;
 		$security_module = Factory::get_instance( Module::class )->get_module( $module_slug );
 		Factory::get_instance( Modules::class )->deactivate_module( $security_module );
+		header( 'Refresh:0' );
 		return true;
 	}
 

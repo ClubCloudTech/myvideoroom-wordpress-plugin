@@ -67,6 +67,8 @@ class MVRSiteVideoControllers {
 	 * @return string
 	 */
 	public function site_videoroom_host_function( int $post_id ) {
+		// Shortcode Initialise Hooks.
+		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
 
 		// Get Room Entity Information.
 		$room_name    = '';
@@ -131,6 +133,9 @@ class MVRSiteVideoControllers {
 	 * @since Version 1
 	 */
 	public function site_videoroom_guest_shortcode( int $room_id ) {
+		// Shortcode Initialise Hooks.
+		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
+
 		// Get Room Entity Information.
 		$room_object  = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 		$room_name    = $room_object->room_name;

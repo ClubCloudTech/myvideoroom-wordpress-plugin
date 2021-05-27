@@ -48,6 +48,7 @@ class MVRSiteVideo {
 	 * Once off functions for activating Module
 	 */
 	public function activate_module() {
+		Factory::get_instance( Setup::class )->initialise_default_video_settings();
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_SITE_VIDEO_NAME, self::MODULE_SITE_VIDEO_ID, true, self::MODULE_SITE_VIDEO_ADMIN_LOCATION );
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SITE_VIDEO_ID, true );
 

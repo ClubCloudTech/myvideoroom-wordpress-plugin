@@ -15,7 +15,6 @@ use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Library\TemplateIcons;
-use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
@@ -68,37 +67,8 @@ class SiteDefaults {
 	 * Runtime Functions.
 	 */
 	public function init() {
-		$this->register_scripts_styles();
-		$this->core_menu_setup();
-		wp_enqueue_script( 'myvideoroom-admin-tabs' );
-		wp_enqueue_style( 'myvideoroom-menutab-header' );
-		Factory::get_instance( Setup::class )->initialise_default_video_settings();
-
+		$this->register_enqueue_scripts_styles();
 		add_shortcode( self::SHORTCODE_TAG, array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
-
-		// Add Icons to Video Headers of Room Video Status.
-		\add_filter( 'myvideoroom_template_icon_section', array( Factory::get_instance( TemplateIcons::class ), 'add_default_video_icons_to_header' ), 10, 4 );
-
-		// Security module placeholder in case module disabled.
-		\add_action( 'myvideoroom_enable_feature_module', array( Factory::get_instance( SecurityRoomHelpers::class ), 'security_enable_feature_module' ) );
-	}
-
-	/**
-	 * Setup of Module Menu
-	 */
-	public function core_menu_setup() {
-		add_action( 'mvr_module_submenu_add', array( $this, 'core_menu_button' ) );
-	}
-
-	/**
-	 * Render Module Menu.
-	 */
-	public function core_menu_button() {
-		?>
-		<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=<?php echo esc_attr( self::MODULE_DEFAULT_VIDEO_NAME ); ?>">
-			<?php esc_html_e( 'Video Default Settings', 'my-video-room' ); ?>
-		</a>
-		<?php
 	}
 
 	/**
@@ -106,7 +76,7 @@ class SiteDefaults {
 	 *
 	 * @return void
 	 */
-	private function register_scripts_styles() {
+	private function register_enqueue_scripts_styles() {
 		$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
 
 		// --
@@ -155,6 +125,7 @@ class SiteDefaults {
 		\wp_enqueue_style( 'myvideoroom-template' );
 		\wp_enqueue_style( 'myvideoroom-menutab-header' );
 		\wp_enqueue_style( 'myvideoroom-admin-css' );
+		\wp_enqueue_script( 'myvideoroom-admin-tabs' );
 
 	}
 
@@ -229,5 +200,32 @@ class SiteDefaults {
 		}
 
 		return $acronym;
+	}
+
+	/**
+	 * Shortcode Initialise Filters Handler
+	 * This function initialises all filters that must be created just in time for MyVideoRoom Pages
+	 * Avoids initialising unecessary filters and hooks when our shortcodes are not on page.
+	 *
+	 * @return bool
+	 */
+	public function shortcode_initialise_filters() {
+		// Run Function only once in case called by multiple shortcodes on same page.
+		static $already_run;
+
+		if ( null !== $already_run ) {
+			return $already_run;
+		}
+		// Core Filters to add.
+
+		// Add Icons to Video Headers of Room Video Status.
+		\add_filter( 'myvideoroom_template_icon_section', array( Factory::get_instance( TemplateIcons::class ), 'add_default_video_icons_to_header' ), 10, 4 );
+
+		// Hooks for Other Modules.
+		\apply_filters( 'myvideoroom_shortcode_initialisation_filter_hook', '' );
+		\do_action( 'myvideoroom_shortcode_initialisation_action_hook' );
+
+		$already_run = true;
+		return $already_run;
 	}
 }
