@@ -117,7 +117,7 @@ class RoomMap {
 		$result = \wp_cache_get( $post_id, __METHOD__ );
 
 		if ( false === $result ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 			$result = $wpdb->get_row(
 				$wpdb->prepare(
 					'
@@ -126,20 +126,22 @@ class RoomMap {
 						WHERE post_id = %d
 					',
 					$post_id,
-				)
+				),
+				'ARRAY_A'
 			);
-
-			if ( $result ) {
-				$result->id = (int) $result->post_id;
-			}
 
 			\wp_cache_set( $post_id, $result, __METHOD__ );
 		}
 
+		if ( $result ) {
+			$result     = (object) $result;
+			$result->id = $result->post_id;
+		} else {
+			$result = null;
+		}
+
 		return $result;
 	}
-
-
 
 	/**
 	 * Update Room Post ID in Database

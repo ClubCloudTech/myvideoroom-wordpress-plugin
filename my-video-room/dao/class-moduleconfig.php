@@ -20,11 +20,8 @@ class ModuleConfig {
 
 	const TABLE_NAME = SiteDefaults::TABLE_NAME_MODULE_CONFIG;
 
-	const ACTION_ENABLE          = 'enable';
-	const ACTION_DISABLE         = 'disable';
-	const PAGE_STATUS_EXISTS     = 'page-exists';
-	const PAGE_STATUS_NOT_EXISTS = 'page-not-exists';
-	const PAGE_STATUS_ORPHANED   = 'page-not-exists-but-has-reference';
+	const ACTION_ENABLE  = 'enable';
+	const ACTION_DISABLE = 'disable';
 
 	/**
 	 * Get the table name for this DAO.

@@ -40,11 +40,21 @@ class RoomAdmin {
 
 		// Check_page_exists has three states, Yes, No, Or Orphan - if yes - exit function, if no create the room, if orphan delete room mapping in database and create room again.
 		if ( RoomMap::PAGE_STATUS_EXISTS === $check_page_exists ) {
-			return Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
+			$post_id = Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
+			wp_update_post(
+				array(
+					'ID'          => $post_id,
+					'post_author' => 1,
+					'post_name'   => strtolower( str_replace( ' ', '-', trim( $slug ) ) ),
+					'post_status' => 'publish',
+					'post_type'   => 'page',
+				)
+			);
+			return $post_id;
 		}
 
 		// Create Page in DB as Page doesn't exist.
-		$post_id      = wp_insert_post(
+		$post_id = wp_insert_post(
 			array(
 				'post_author' => 1,
 				'post_title'  => get_bloginfo( 'name' ) . ' ' . $display_title,
@@ -53,11 +63,13 @@ class RoomAdmin {
 				'post_type'   => 'page',
 			)
 		);
+
 		$post_content = array(
 			'ID'           => $post_id,
 			'post_content' => '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $post_id . '"]',
 		);
 		wp_update_post( $post_content );
+		wp_publish_post( $post_id );
 
 		if ( $old_post_id ) {
 			// Update Database References to New Post IDs to ensure Room Permissions and Settings stay intact with New Pages.

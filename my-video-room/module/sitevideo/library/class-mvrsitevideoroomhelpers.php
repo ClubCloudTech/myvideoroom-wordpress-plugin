@@ -26,16 +26,18 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Regenerate Room Helper
 	 *
-	 * @param ?string $input .
-	 * @param int     $room_id - the room id.
-	 * @param ?string $room_object . Object with preferences.
+	 * @param ?string   $input       .
+	 * @param int       $room_id     - the room id.
+	 * @param \stdClass $room_object . Object with preferences.
+	 *
 	 * @return string CallBack.
 	 */
-	public function regenerate_sitevideo_meeting_room( ?string $input = null, int $room_id, $room_object ): ?string {
+	public function regenerate_sitevideo_meeting_room( ?string $input, int $room_id, \stdClass $room_object ): ?string {
 		if ( MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room_object->room_type ) {
-			Factory::get_instance( ModuleConfig::class )->delete_room_mapping_by_id( intval( $room_object->post_id ) );
-			$this->create_site_videoroom_page( $room_id, $room_object );
+			$new_room_id = $this->create_site_videoroom_page( $room_id, $room_object );
+			Factory::get_instance( RoomMap::class )->update_room_post_id( $new_room_id, $room_object->room_name );
 		}
+
 		return $input;
 	}
 
@@ -166,10 +168,12 @@ class MVRSiteVideoRoomHelpers {
 	 */
 	public function render_sitevideo_roomsetting_tab( array $input, int $room_id ): array {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-		$room_name   = $room_object->room_name;
-		if ( ! $room_object ) {
+		if ( $room_object ) {
+			$room_name = $room_object->room_name;
+		} else {
 			$room_name = MVRSiteVideo::ROOM_NAME_SITE_VIDEO;
 		}
+
 		$base_menu = new MenuTabDisplay(
 			esc_html__( 'Video Settings', 'my-video-room' ),
 			'videosettings',

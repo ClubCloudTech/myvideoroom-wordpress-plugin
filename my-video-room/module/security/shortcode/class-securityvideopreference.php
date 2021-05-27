@@ -190,7 +190,7 @@ class SecurityVideoPreference {
 		$allowed_roles = array();
 
 		if ( $preference ) {
-			$allowed_roles = $preference->get_allowed_roles_array();
+			$allowed_roles = $preference->get_roles();
 		}
 
 		// Add Clear Option to Select Box if there are parameters Stored.

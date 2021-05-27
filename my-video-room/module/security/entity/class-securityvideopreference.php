@@ -250,7 +250,7 @@ class SecurityVideoPreference {
 	/**
 	 * Gets Allowed Roles.
 	 *
-	 * @deprecated Get the array from self::get_allowed_roles_array
+	 * @deprecated Get the array from self::get_roles
 	 *
 	 * @return string
 	 */

@@ -32,8 +32,8 @@ class Security {
 	const MODULE_SECURITY_ENTITY_ID       = Dependencies::MODULE_SECURITY_ENTITY_ID;
 	const MODULE_SECURITY_ADMIN_PAGE      = 'view-admin-settings-security';
 	const MODULE_SECURITY_DISPLAY         = ' Advanced Room Permissions';
-	const MODULE_SECURITY_ADMIN_LOCATION  = '/module/security/views/view-settings-security.php';
-	const MODULE_SECURITY_ENTITY_LOCATION = '/module/security/views/view-settings-security-entity.php';
+	const MODULE_SECURITY_ADMIN_LOCATION  = __DIR__ . '/views/view-settings-security.php';
+	const MODULE_SECURITY_ENTITY_LOCATION = __DIR__ . '/views/view-settings-security-entity.php';
 	const PERMISSIONS_TABLE               = 'security-default-permissions';
 
 	/**
@@ -103,7 +103,7 @@ class Security {
 		// Actions for Disable Feature Module (Enable is in Defaults as it wont run if module is off).
 		\add_action( 'myvideoroom_disable_feature_module', array( Factory::get_instance( SecurityRoomHelpers::class ), 'security_disable_feature_module' ) );
 
-		\add_filter( 'myvideoroom_site_video_user_host_status', array( Factory::get_instance( PageFilters::class ), 'current_user_is_host' ) );
+		\add_filter( 'myvideoroom_site_video_user_host_status', array( Factory::get_instance( PageFilters::class ), 'current_user_is_host' ), 10, 2 );
 	}
 
 	/**
@@ -146,7 +146,12 @@ class Security {
 	 */
 	public function render_security_sitevideo_tabs( array $input, int $room_id ): array {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-		$room_name   = $room_object->room_name;
+
+		if ( ! $room_object ) {
+			return $input;
+		}
+
+		$room_name = $room_object->room_name;
 
 		// Host Menu Tab - rendered in Security as its a module feature of Security.
 		$host_menu = new MenuTabDisplay(
