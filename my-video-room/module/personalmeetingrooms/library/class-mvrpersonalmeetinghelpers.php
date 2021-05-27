@@ -10,8 +10,8 @@ namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
-use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Setup\RoomAdmin as SetupRoomAdmin;
 
 /**
  * Class MVRPersonalMeetingHelpers - Functions to assist Personal Meetings Classes
@@ -77,20 +77,37 @@ class MVRPersonalMeetingHelpers {
 		}
 		return $input;
 	}
+
 	/**
-	 * Create Site VideoRoom Handler
+	 * Regenerate or create a Personal Meeting Centre page
 	 *
-	 * @return null as its a database function.
+	 * @param ?int       $original_room_id The original room id.
+	 * @param ?\stdClass $room_object      The original room object.
+	 *
+	 * @return int
 	 */
-	public function create_personal_meetingroom_page() {
-		Factory::get_instance( RoomAdmin::class )->create_and_check_page(
-			MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING,
-			MVRPersonalMeeting::ROOM_TITLE_PERSONAL_MEETING,
-			MVRPersonalMeeting::ROOM_SLUG_PERSONAL_MEETING,
-			MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME,
-			MVRPersonalMeeting::ROOM_SHORTCODE_PERSONAL_MEETING
-		);
-		return null;
+	public function create_personal_meetingroom_page( int $original_room_id = null, \stdClass $room_object = null ): int {
+		if ( ! $room_object || MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING === $room_object->room_name ) {
+			$new_id = Factory::get_instance( SetupRoomAdmin::class )->create_and_check_personal_meetingroom_page(
+				MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING,
+				get_bloginfo( 'name' ) . ' ' . MVRPersonalMeeting::ROOM_TITLE_PERSONAL_MEETING,
+				MVRPersonalMeeting::ROOM_SLUG_PERSONAL_MEETING,
+				MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME,
+				MVRPersonalMeeting::ROOM_SHORTCODE_PERSONAL_MEETING,
+				$original_room_id,
+			);
+		} else {
+			$new_id = Factory::get_instance( SetupRoomAdmin::class )->create_and_check_personal_meetingroom_page(
+				$room_object->room_name,
+				$room_object->display_name,
+				$room_object->slug,
+				MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME,
+				MVRPersonalMeeting::ROOM_SHORTCODE_PERSONAL_MEETING,
+				$original_room_id
+			);
+		}
+
+		return $new_id;
 	}
 	/**
 	 * Render Site Video Admin Settings Page
@@ -115,4 +132,5 @@ class MVRPersonalMeetingHelpers {
 	public function render_personalvideo_admin_page() {
 		return ( require __DIR__ . '/../views/view-settings-personalvideo.php' )();
 	}
+
 }

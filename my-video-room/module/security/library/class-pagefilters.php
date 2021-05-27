@@ -192,12 +192,10 @@ class PageFilters {
 		}
 
 		// Handling Anonymous Users.
-		if ( ! \is_user_logged_in() && true === $anonymous_hosts_allowed ) {
-			return true;
-
-		} else {
-			return false;
+		if ( ! \is_user_logged_in() ) {
+			return $anonymous_hosts_allowed;
 		}
+
 
 		// Get List of Allowed/Blocked Roles from DB.
 

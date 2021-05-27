@@ -1,11 +1,11 @@
 <?php
 /**
- * Room Admin Functions for MVR Site Video
+ * Room Admin Functions for MVR Personal Meetings
  *
- * @package MyVideoRoomPlugin\Module\SiteVideo\RoomAdmin
+ * @package MyVideoRoomPlugin\Module\PersonalMeetingRooms\RoomAdmin
  */
 
-namespace MyVideoRoomPlugin\Module\SiteVideo\Setup;
+namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Setup;
 
 use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Factory;
@@ -33,30 +33,26 @@ class RoomAdmin {
 	 *
 	 * @return integer
 	 */
-	public function create_and_check_sitevideo_page( string $room_name, string $display_title, string $slug, string $room_type, string $shortcode = null, string $old_post_id = null ): ?int {
+	public function create_and_check_personal_meetingroom_page( string $room_name, string $display_title, string $slug, string $room_type, string $shortcode = null, string $old_post_id = null ): ?int {
 		// Check Page Doesn't already Exist in Database and hasn't been deleted if it does.
 		$check_page_exists = Factory::get_instance( RoomMap::class )->check_page_exists( $room_name );
 
 		// Check_page_exists has three states, Yes, No, Or Orphan - if yes - exit function, if no create the room, if orphan delete room mapping in database and create room again.
-		if ( 'Yes' === $check_page_exists ) {
+		if ( RoomMap::PAGE_STATUS_EXISTS === $check_page_exists ) {
 			return Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
 		}
 
 		// Create Page in DB as Page doesn't exist.
-		$post_id      = wp_insert_post(
+		$post_id = wp_insert_post(
 			array(
-				'post_author' => 1,
-				'post_title'  => get_bloginfo( 'name' ) . ' ' . $display_title,
-				'post_name'   => strtolower( str_replace( ' ', '-', trim( $slug ) ) ),
-				'post_status' => 'publish',
-				'post_type'   => 'page',
+				'post_author'  => 1,
+				'post_title'   => get_bloginfo( 'name' ) . ' ' . $display_title,
+				'post_name'    => strtolower( str_replace( ' ', '-', trim( $slug ) ) ),
+				'post_status'  => 'publish',
+				'post_content' => $shortcode,
+				'post_type'    => 'page',
 			)
 		);
-		$post_content = array(
-			'ID'           => $post_id,
-			'post_content' => '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $post_id . '"]',
-		);
-		wp_update_post( $post_content );
 
 		if ( $old_post_id ) {
 			// Update Database References to New Post IDs to ensure Room Permissions and Settings stay intact with New Pages.
@@ -82,7 +78,7 @@ class RoomAdmin {
 	 *
 	 * @return bool
 	 */
-	public function initialise_default_sitevideo_settings(): bool {
+	public function initialise_personal_meeting_settings(): bool {
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 
 		// Check Exists.

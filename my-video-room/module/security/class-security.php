@@ -80,8 +80,9 @@ class Security {
 	 * Required for Normal Runtime.
 	 */
 	public function init() {
-		// Turn on Init Filters.
+		// Turn on Page Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
+
 		$this->security_menu_setup();
 		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_security_sitevideo_tabs' ), 20, 2 );
 
@@ -100,8 +101,11 @@ class Security {
 		// Add Config Page to Main Room Manager.
 		add_filter( 'myvideoroom_permissions_manager_menu', array( Factory::get_instance( SecurityRoomHelpers::class ), 'render_security_admin_settings_page' ), 10, 1 );
 
-		// Actions for Disable Feature Module (Enable is in Defaults as it wont run if module is off).
+		// Disable Feature Module.
 		\add_action( 'myvideoroom_disable_feature_module', array( Factory::get_instance( SecurityRoomHelpers::class ), 'security_disable_feature_module' ) );
+
+		// Listener for Page Regeneration and Refresh.
+		\add_action( 'myvideoroom_page_delete_post_number_refresh', array( Factory::get_instance( SecurityVideoPreferenceDao::class ), 'update_user_id' ), 2 );
 	}
 
 	/**
