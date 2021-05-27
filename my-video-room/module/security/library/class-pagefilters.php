@@ -151,7 +151,7 @@ class PageFilters {
 	 *
 	 * @param  int $owner_id UserID of owner.
 	 *
-	 * @return string - host or guest status.
+	 * @return bool
 	 */
 	public function allowed_roles_host( int $owner_id ): bool {
 
@@ -164,28 +164,30 @@ class PageFilters {
 		// Try User Permissions First.
 		$user_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $owner_id, $room_name );
 
+		$anonymous_hosts_allowed = false;
+
 		if ( $user_permissions ) {
-			$room_control_enabled_state = $user_permissions->is_allow_role_control_enabled();
-			$anonymous_hosts_allowed    = $user_permissions->is_anonymous_enabled();
-			$allow_to_block_switch      = $user_permissions->is_block_role_control_enabled();
-			$preference                 = $user_permissions;
+			$anonymous_hosts_allowed = $user_permissions->is_anonymous_enabled();
+			$preference              = $user_permissions;
 		}
+
 		// Trying Default Settings If No User Preference Above.
 		if ( ! $preference ) {
 
 			$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
 
+			$host = false;
+
 			if ( $security_default_permissions ) {
 				$room_control_enabled_state = $security_default_permissions->is_allow_role_control_enabled();
 				$anonymous_hosts_allowed    = $security_default_permissions->is_anonymous_enabled();
-				$allow_to_block_switch      = $security_default_permissions->is_block_role_control_enabled();
-				$preference                 = $security_default_permissions;
 				if ( false === $room_control_enabled_state ) {
 					$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
 				}
 			} else {
 				$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
 			}
+
 			if ( $host ) {
 				return true;
 			}
