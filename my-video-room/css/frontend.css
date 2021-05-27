@@ -72,7 +72,17 @@
 	display: table;
 	font-size: 0;
 	position: relative;
-	width:  250px;
-	height: 260px;
+	width:  150px;
+	height: 150px;
 }
 
+.myvideoroom-table-right-split{
+float: right;
+	max-width: 65%;
+
+}
+.myvideoroom-header-table-left {
+
+	text-align: left;
+	max-width: 35%;
+}

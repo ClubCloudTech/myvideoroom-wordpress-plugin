@@ -12,6 +12,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
+use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 
 /**
  * Class MVRPersonalMeeting - Renders the Video Plugin for SiteWide Video Room.
