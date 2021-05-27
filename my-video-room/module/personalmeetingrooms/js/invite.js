@@ -74,7 +74,7 @@
 								email: email,
 								link: link
 							},
-							success: function (response, data) {
+							success: function (response) {
 								$status.removeClass( ['error', 'success'] )
 									.addClass( 'success' )
 									.html( response.message );

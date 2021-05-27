@@ -41,17 +41,6 @@
 	border-color: #007000;
 }
 
-.myvideoroom-admin .button-primary.negative {
-	background: #D2222D;
-	color: #fff;
-	border-color: #D2222D;
-}
-
-.myvideoroom-admin .button-primary.negative:hover {
-	background: #b32d2e;
-	border-color: #b32d2e;
-}
-
 .myvideoroom-admin .nav-separate {
 	background-color: #c5d9ed;
 }

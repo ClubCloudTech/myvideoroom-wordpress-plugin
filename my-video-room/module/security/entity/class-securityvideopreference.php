@@ -250,17 +250,6 @@ class SecurityVideoPreference {
 	/**
 	 * Gets Allowed Roles.
 	 *
-	 * @deprecated Get the array from self::get_roles
-	 *
-	 * @return string
-	 */
-	public function get_allowed_roles(): ?string {
-		return $this->allowed_roles;
-	}
-
-	/**
-	 * Gets Allowed Roles.
-	 *
 	 * @return array
 	 */
 	public function get_roles(): array {

@@ -51,10 +51,18 @@ class MVRSiteVideo {
 	 */
 	public function activate_module() {
 		Factory::get_instance( Setup::class )->initialise_default_video_settings();
-		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_SITE_VIDEO_NAME, self::MODULE_SITE_VIDEO_ID, true, self::MODULE_SITE_VIDEO_ADMIN_LOCATION );
+		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
+			self::MODULE_SITE_VIDEO_NAME,
+			self::MODULE_SITE_VIDEO_ID,
+			true
+		);
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_SITE_VIDEO_ID, true );
 
-		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_ROOM_MANAGEMENT_NAME, self::MODULE_ROOM_MANAGEMENT_ID, true, self::MODULE_ROOM_MANAGEMENT_PATH );
+		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
+			self::MODULE_ROOM_MANAGEMENT_NAME,
+			self::MODULE_ROOM_MANAGEMENT_ID,
+			true
+		);
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_ROOM_MANAGEMENT_ID, true );
 
 		// Generate Site Video Room Page.

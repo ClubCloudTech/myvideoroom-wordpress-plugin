@@ -12,7 +12,6 @@ use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
-use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 use MyVideoRoomPlugin\Module\Security\Security;
 
 /**
@@ -88,7 +87,7 @@ class SecurityEngine {
 		}
 
 		// Check Allowed_Roles and Blocked Roles.
-		$allowed_roles_block = Factory::get_instance( PageFilters::class )->allowed_roles_room_video_render( $host_id, $room_name, $host_status, $room_type, $user_permissions, $site_override_permissions, $security_default_permissions );
+		$allowed_roles_block = Factory::get_instance( PageFilters::class )->allowed_roles_room_video_render( $host_id, $room_name, $host_status, $room_type );
 
 		if ( $allowed_roles_block ) {
 			return $allowed_roles_block;

@@ -34,7 +34,7 @@ class RoomInfo {
 	 *
 	 * @return string
 	 */
-	public function output_shortcode( $attributes = array() ) {
+	public function output_shortcode( $attributes = array() ): string {
 		$room_name = $attributes['room'] ?? '';
 		$data_type = $attributes['type'] ?? '';
 

@@ -85,7 +85,7 @@ class ShortcodeReference {
 							
 								<dt>url</dt>
 								<dd>' . \esc_html__( 'The full URL of the room', 'myvideoroom' ) . '</dd>
-							<dl>
+							</dl>
 						',
 					),
 					'(' . \esc_html__( 'none' ) . ')'

@@ -17,10 +17,7 @@
 	margin: 5px 5px 5px 5px!important;
 	display: inline-block!important;
 	min-width: 30px!important;
-	padding-left: 10px!important;
-	padding-right: 10px!important;
-	padding-top: 7px!important;
-	padding-bottom: 7px!important;
+	padding: 7px 10px !important;
 	text-align: center!important;
 	white-space: nowrap!important;
 }
@@ -47,21 +44,6 @@
 	border: 1px solid #c3c4c7;
 }
 
-.mvr-header-menu {
-	display: block;
-	float: left;
-	border: 1px solid #ccc;
-	margin-left: 10px;
-	margin-top: -10px;
-	padding: 5px 10px;
-	font-size: 14px;
-	line-height: 1.71428571;
-	font-weight: 600;
-	background: #e5e5e5;
-	color: #555;
-	text-decoration: none;
-}
-
 .mvr-menu-header-item {
 	display: block;
 	float: left;
@@ -75,47 +57,9 @@
 	text-decoration: none;
 }
 
-.mvr-menu-header-item-switch {
-	border: 1px solid #ccc;
-	margin-left: .5em;
-	padding: 5px 10px;
-	font-size: 14px;
-	line-height: 1.71428571;
-	font-weight: 600;
-	background: #e5e5e5;
-	color: #555;
-	text-decoration: none;
-}
-
-.mvr-outer-box-wrap {
-	border: 3px solid #d2d2d2;
-	background: #e7e7e7;
-	padding: 12px;
-	margin: 5px;
-	clear:both;
-}
-
-.mvr-visualiser-image {
-	text-align: end;
-	width:20%;
-}
-
-.mvr-visualiser-image-left {
-	text-align: -webkit-match-parent;
-	width:20%;
-}
-
-.mvr-header-table {
-	width:100%;
-}
-
 .mvr-security-room-host {
 	max-width: 1063px;
 	z-index: 99;
-}
-
-.mvr-header-config-title {
-	line-height: initial;
 }
 
 .mvr-header-outer-wrap {

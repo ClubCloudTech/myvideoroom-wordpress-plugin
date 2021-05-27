@@ -11,7 +11,6 @@ namespace MyVideoRoomPlugin\Module\Security\Settings\Field;
 
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Module\Security\Settings\Field;
-use MyVideoRoomPlugin\Module\Security\Settings\Field\SelectOption;
 
 /**
  * Class Field

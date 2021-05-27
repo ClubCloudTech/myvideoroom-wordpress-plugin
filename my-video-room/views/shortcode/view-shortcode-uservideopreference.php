@@ -15,7 +15,7 @@ use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDAO;
 return function (
 	array $available_layouts,
 	array $available_receptions,
-	UserVideoPreference $current_user_setting = null,
+	?UserVideoPreference $current_user_setting,
 	string $room_name,
 	int $id_index = 0,
 	int $user_id = null
@@ -61,9 +61,11 @@ return function (
 				<form method="post" action="">
 					<input name="myvideoroom_user_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
 
+					<h2 class ="mvr-title-header">
 					<label for="myvideoroom_user_layout_id_preference_<?php echo esc_attr( $id_index ); ?>">
-						<h2 class ="mvr-title-header"><?php esc_html_e( 'Video layout setting:', 'my-video-room' ); ?></h2>
+						<?php esc_html_e( 'Video layout setting:', 'my-video-room' ); ?>
 					</label>
+					</h2>
 					<div class="mvr-video-template mvr-title-header"><i class="dashicons mvr-icons dashicons-editor-help"></i></div>
 
 					<div class="mvr-hide mvr-template-table">
@@ -129,9 +131,11 @@ return function (
 						?>
 					</p>
 					<hr />
+					<h2 class ="mvr-title-header">
 					<label for="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"class="mvr-preferences-paragraph">
-					<h2 class ="mvr-title-header"><i class="dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'my-video-room' ); ?></h2>
+					<i class="dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'my-video-room' ); ?>
 					</label>
+					</h2>
 					<input
 						type="checkbox"
 						class="myvideoroom_user_reception_enabled_preference"

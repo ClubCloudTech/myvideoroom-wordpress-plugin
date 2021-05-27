@@ -9,7 +9,6 @@ namespace MyVideoRoomPlugin\Module\Security\DAO;
 
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\Security\Security;
-use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class SecurityVideoPreference
@@ -79,7 +78,7 @@ class SecurityVideoPreference {
 			array(
 				'user_id'                           => $user_video_preference->get_user_id(),
 				'room_name'                         => $user_video_preference->get_room_name(),
-				'allowed_roles'                     => $user_video_preference->get_allowed_roles(),
+				'allowed_roles'                     => implode( '|', $user_video_preference->get_roles() ),
 				'blocked_roles'                     => $user_video_preference->get_blocked_roles(),
 				'room_disabled'                     => $user_video_preference->is_room_disabled(),
 				'anonymous_enabled'                 => $user_video_preference->is_anonymous_enabled(),
@@ -257,7 +256,7 @@ class SecurityVideoPreference {
 			$this->get_table_name(),
 			array(
 				'user_id'                           => $user_video_preference->get_user_id(),
-				'allowed_roles'                     => $user_video_preference->get_allowed_roles(),
+				'allowed_roles'                     => implode( '|', $user_video_preference->get_roles() ),
 				'blocked_roles'                     => $user_video_preference->get_blocked_roles(),
 				'room_disabled'                     => $user_video_preference->is_room_disabled(),
 				'anonymous_enabled'                 => $user_video_preference->is_anonymous_enabled(),
@@ -376,7 +375,7 @@ class SecurityVideoPreference {
 				return $preference->is_restricted_to_group_to_members();
 
 			case 'allowed_roles':
-				return $preference->get_allowed_roles();
+				return implode( '|', $preference->get_roles() );
 
 			default:
 				return null;

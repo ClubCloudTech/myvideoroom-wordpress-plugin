@@ -34,7 +34,6 @@ return function (): string {
 
 	<p>
 		<?php
-		$site_conference_url = \menu_page_url( MVRSiteVideo::PAGE_SLUG_SITE_CONFERENCE, false );
 		printf(
 			/* translators: %s is a link to the site conference center */
 			esc_html__( 'To add additional rooms, click add new room above', 'myvideoroom' )
@@ -54,8 +53,7 @@ return function (): string {
 	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Escaped.
 	echo Factory::get_instance( UserVideoPreference::class )->choose_settings(
 		MyVideoRoomPluginSiteDefaults::USER_ID_SITE_DEFAULTS,
-		esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ),
-		array( 'basic', 'premium' )
+		esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO )
 	);
 	?>
 </div>

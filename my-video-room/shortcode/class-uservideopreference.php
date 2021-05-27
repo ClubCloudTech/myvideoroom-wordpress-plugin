@@ -37,23 +37,21 @@ class UserVideoPreference {
 	/**
 	 * Render shortcode to allow user to update their settings
 	 *
-	 * @param array $params List of shortcode params.
+	 * @param string|array $params List of shortcode params.
 	 *
 	 * @return string
 	 * @throws \Exception When the update fails.
 	 */
 	public function choose_settings_shortcode( $params = array() ): string {
-
-		$room_name    = $params['room'] ?? 'default';
-		$user_id      = $params['user'] ?? null;
-		$allowed_tags = array_map( 'trim', explode( ',', $params['tags'] ?? '' ) );
+		$room_name = $params['room'] ?? 'default';
+		$user_id   = $params['user'] ?? null;
 
 		if ( ! $user_id ) {
 			$user_id = Factory::get_instance( WordPressUser::class )->get_logged_in_wordpress_user()->ID;
 		}
 
 		$this->check_for_update_request();
-		return $this->choose_settings( $user_id, $room_name, $allowed_tags );
+		return $this->choose_settings( $user_id, $room_name );
 	}
 
 	/**
@@ -117,12 +115,11 @@ class UserVideoPreference {
 	 *
 	 * @param int    $user_id The user id to fetch.
 	 * @param string $room_name The room name to fetch.
-	 * @param array  $allowed_tags List of tags to allow.
 	 *
 	 * @return string
 	 * @throws \Exception When the update fails.
 	 */
-	public function choose_settings( int $user_id, string $room_name, array $allowed_tags = array() ): string {
+	public function choose_settings( int $user_id, string $room_name ): string {
 		// User ID Transformation for plugins.
 		$user_id              = apply_filters( 'myvideoroom_video_choosesettings_change_user_id', $user_id );
 		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );

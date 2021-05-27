@@ -1,20 +1,15 @@
 <?php
 /**
- * Renders the form for changing the user video preference.
+ * Outputs a delete confirmation
  *
- * @param string|null $current_user_setting
- * @param array       $available_layouts
- *
- * @package MyVideoRoomPlugin\Module\SiteVideo
+ * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
  */
 
-use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\DAO\RoomMap;
-use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
-use MyVideoRoomPlugin\SiteDefaults;
-use MyVideoRoomPlugin\Library\HTML as HTML;
-use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
-
+/**
+ * Renders a delete confirmation
+ *
+ * @param \stdClass $room_object The room to delete.
+ */
 return function (
 	\stdClass $room_object
 ): string {

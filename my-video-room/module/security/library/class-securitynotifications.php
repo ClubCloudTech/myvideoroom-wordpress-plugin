@@ -92,7 +92,7 @@ class SecurityNotifications {
 	/**
 	 * Filter for Adding Template Buttons to Shortcode Builder
 	 *
-	 * @param string  $template_icons The room name to use.
+	 * @param ?string $template_icons The room name to use.
 	 * @param int     $user_id The user id to construct from.
 	 * @param ?string $room_name The room name to use.
 	 *
@@ -107,13 +107,13 @@ class SecurityNotifications {
 	 * Show Security Status.
 	 * Takes UserID and Room Name from Template pages and returns formatted room information Buttons for Control Forms.
 	 *
-	 * @param  string $output Value in Filter.
-	 * @param  int    $user_id   User ID to check.
-	 * @param  string $room_name Room Name to check.
+	 * @param  ?string $output Value in Filter.
+	 * @param  int     $user_id   User ID to check.
+	 * @param  string  $room_name Room Name to check.
 	 *
 	 * @return ?string - The Buttons.
 	 */
-	public function show_security_admin_status( string $output = null, int $user_id, string $room_name ): ?string {
+	public function show_security_admin_status( ?string $output, int $user_id, string $room_name ): ?string {
 		if ( ! $user_id && ! $room_name ) {
 			return $output;
 		}
@@ -168,13 +168,13 @@ class SecurityNotifications {
 	 * Show Security Shortcode Setting Status.
 	 * Takes UserID and Room Name from Template pages and returns formatted room information Buttons for Control Forms.
 	 *
-	 * @param  string $output - filter content.
-	 * @param  int    $user_id   User ID to check.
-	 * @param  string $room_name Room Name to check.
+	 * @param  ?string $output    Filter content.
+	 * @param  int     $user_id   User ID to check.
+	 * @param  string  $room_name Room Name to check.
 	 *
 	 * @return ?string - The Buttons.
 	 */
-	public function show_security_settings_status( string $output = null, int $user_id, string $room_name ): ?string {
+	public function show_security_settings_status( ?string $output, int $user_id, string $room_name ): ?string {
 		if ( ! $user_id && ! $room_name ) {
 			return $output;
 		}
@@ -228,13 +228,13 @@ class SecurityNotifications {
 	 * Show Security Shortcode Room Hosts Status.
 	 * Takes UserID and Room Name from Template pages and returns formatted room information Buttons for Control Forms.
 	 *
-	 * @param  string $output - filter content.
-	 * @param  int    $user_id   User ID to check.
-	 * @param  string $room_name Room Name to check.
+	 * @param  ?string $output   Filter content.
+	 * @param  int     $user_id   User ID to check.
+	 * @param  string  $room_name Room Name to check.
 	 *
 	 * @return ?string - The Buttons.
 	 */
-	public function show_security_roomhosts_status( string $output = null, int $user_id, string $room_name ): ?string {
+	public function show_security_roomhosts_status( ?string $output, int $user_id, string $room_name ): ?string {
 		if ( ! $user_id && ! $room_name ) {
 			return $output;
 		}
@@ -272,7 +272,7 @@ class SecurityNotifications {
 	/**
 	 * Filter for Showing Security Sitewide Block Status
 	 *
-	 * @param string $input The inbound filter name to use.
+	 * @param ?string $input The inbound filter name to use.
 	 *
 	 * @return string
 	 */

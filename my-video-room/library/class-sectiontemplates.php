@@ -8,7 +8,6 @@
 namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Shortcode as Shortcode;
 
 /**
  * Class SectionTemplate
@@ -19,11 +18,11 @@ class SectionTemplates {
 	 * Render a Template to Automatically Wrap the Video Shortcode with additional tabs to add more functionality
 	 *  Used to add Admin Page for each Room for Hosts, Returns Header and Shortcode if no additional pages passed in
 	 *
-	 * @param string $header        The Header of the Shortcode.
-	 * @param array  $inbound_tabs  Inbound object with tabs.
-	 * @param int    $user_id       User ID for passing to other Filters.
-	 * @param string $room_name     Room Name for passing to other Filters.
-	 * @param bool   $host_status   Whether user is a host.
+	 * @param string  $header        The Header of the Shortcode.
+	 * @param array   $inbound_tabs  Inbound object with tabs.
+	 * @param ?int    $user_id       User ID for passing to other Filters.
+	 * @param ?string $room_name     Room Name for passing to other Filters.
+	 * @param bool    $host_status   Whether user is a host.
 	 *
 	 * @return string The completed Formatted Template.
 	 */

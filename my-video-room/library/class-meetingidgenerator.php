@@ -144,6 +144,8 @@ class MeetingIdGenerator {
 			return null;
 		}
 
+		$user_id = null;
+
 		if ( isset( $input ) ) {
 			$user = Factory::get_instance( WordPressUser::class )->get_wordpress_user_by_identifier_string( $input );
 
@@ -176,11 +178,11 @@ class MeetingIdGenerator {
 	 * A Shortcode to Return Header Displays and Meeting Invites correctly in Sequences for Menus
 	 * This is meant to be the new universal formatting invite list
 	 *
-	 * @param array $params - $host - the host type. $invite - the Invite Code. $user_id - the inbound user ID to convert if any.
+	 * @param string|array $params - $host - the host type. $invite - the Invite Code. $user_id - the inbound user ID to convert if any.
 	 *
 	 * @return string
 	 */
-	public function invite_menu_shortcode( $params = array() ) {
+	public function invite_menu_shortcode( $params = array() ): string {
 		$type = $params['type'] ?? 'host';
 		//phpcs:ignore -- WordPress.Security.NonceVerification.Recommended - not needed as data is lookup and transient only.
 		$host     = $params['host'] ?? htmlspecialchars( sanitize_text_field( wp_unslash( $_GET['host'] ?? '' ) ) );
@@ -194,12 +196,12 @@ class MeetingIdGenerator {
 				$user    = wp_get_current_user();
 				$user_id = $user->ID;
 			}
-			$out_meeting_id = $this->invite( $user_id, 'user', null );
+			$out_meeting_id = $this->invite( $user_id, 'user' );
 			return $meet_url . '?invite=' . $out_meeting_id;
 		}
 
 		if ( $invite && ! $user_id ) {
-			$user_id = $this->invite( $invite, 'in', null );
+			$user_id = $this->invite( $invite, 'in' );
 		}
 
 		if ( $host && ! $user_id ) {
@@ -207,7 +209,7 @@ class MeetingIdGenerator {
 			$user    = Factory::get_instance( WordPressUser::class )->get_wordpress_user_by_identifier_string( $input );
 			$user_id = $user->ID;
 		}
-			$invite      = $this->invite( $user_id, 'user', null );
+			$invite      = $this->invite( $user_id, 'user' );
 			$user_detail = Factory::get_instance( WordPressUser::class )->get_wordpress_user_by_id( $user_id );
 
 		if ( 'guestname' === $type ) {
@@ -215,5 +217,7 @@ class MeetingIdGenerator {
 		} elseif ( 'guestlink' === $type && $invite ) {
 			return $meet_url . '?invite=' . $invite;
 		}
+
+		return '';
 	}
 }

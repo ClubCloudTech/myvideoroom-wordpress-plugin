@@ -16,10 +16,9 @@ class SecurityTemplates {
 	/**
 	 * Blocked By Site Offline Template.
 	 *
-	 * @param  int $user_id - The User_id.
 	 * @return string
 	 */
-	public static function room_blocked_by_site( int $user_id = null ) {
+	public static function room_blocked_by_site(): string {
 		ob_start();
 		wp_enqueue_style( 'myvideoroom-template' );
 		?>
@@ -49,9 +48,10 @@ class SecurityTemplates {
 	 * Blocked By User Template.
 	 *
 	 * @param  int $user_id - the user ID who is blocking.
+	 *
 	 * @return string
 	 */
-	public function room_blocked_by_user( int $user_id ) {
+	public function room_blocked_by_user( int $user_id ): string {
 		ob_start();
 		wp_enqueue_style( 'myvideoroom-template' );
 		?>
@@ -110,9 +110,10 @@ class SecurityTemplates {
 	 * Blocked Anonymous User Template.
 	 *
 	 * @param  int $user_id - the user ID who is blocking.
+	 *
 	 * @return string
 	 */
-	public function anonymous_blocked_by_user( $user_id ) {
+	public function anonymous_blocked_by_user( int $user_id ): string {
 		ob_start();
 		wp_enqueue_style( 'myvideoroom-template' );
 		?>
@@ -168,9 +169,10 @@ class SecurityTemplates {
 	 * Blocked By WP Role Template.
 	 *
 	 * @param  int $user_id - the user ID who is blocking.
+	 *
 	 * @return string
 	 */
-	public function blocked_by_role_template( $user_id ) {
+	public function blocked_by_role_template( int $user_id ): string {
 		wp_enqueue_style( 'myvideoroom-template' );
 		ob_start();
 		?>

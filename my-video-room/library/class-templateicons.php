@@ -29,7 +29,6 @@ class TemplateIcons {
 			return null;
 		}
 
-		$user_video_dao                 = Factory::get_instance( UserVideoPreferenceDAO::class );
 		$video_default_settings_applied = Factory::get_instance( UserVideoPreferenceDAO::class )->get_by_id( $user_id, $room_name );
 
 		$reception_enabled = true;
@@ -96,7 +95,7 @@ class TemplateIcons {
 	/**
 	 * Filter for Adding Template Buttons to Shortcode Builder
 	 *
-	 * @param string  $template_icons The room name to use.
+	 * @param ?string $template_icons The room name to use.
 	 * @param int     $user_id The user id to construct from.
 	 * @param ?string $room_name The room name to use.
 	 * @param bool    $visitor_status - Whether guest/host.

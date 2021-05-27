@@ -11,7 +11,6 @@ namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Library\Module;
-use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class Activation

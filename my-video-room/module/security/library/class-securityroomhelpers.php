@@ -24,7 +24,7 @@ class SecurityRoomHelpers {
 	 * @param  array $input - the inbound menu.
 	 * @return array - outbound menu.
 	 */
-	public function render_security_admin_settings_page( $input = array() ): array {
+	public function render_security_admin_settings_page( array $input ): array {
 
 		$admin_tab = new MenuTabDisplay(
 			esc_html__( 'Security and Permissions', 'my-video-room' ),
@@ -40,28 +40,18 @@ class SecurityRoomHelpers {
 	 *
 	 * @return string
 	 */
-	private function get_security_admin_page() {
-		$page = require __DIR__ . '/../views/view-settings-security.php';
-		return $page();
-	}
-
-	/**
-	 * Get Security Header- returns Security Header page
-	 *
-	 * @return string
-	 */
-	public function get_security_header_page() {
-		$page = require __DIR__ . '/../views/view-settings-securityheader.php';
-		return $page();
+	private function get_security_admin_page(): string {
+		return ( require __DIR__ . '/../views/view-settings-security.php' )();
 	}
 
 	/**
 	 * Security Plugin Module Disable.
 	 *
 	 *  @param  int $module_id - the module ID of the Feature Database.
+	 *
 	 *  @return bool
 	 */
-	public function security_disable_feature_module( int $module_id ) {
+	public function security_disable_feature_module( int $module_id ): bool {
 		if ( Security::MODULE_SECURITY_ID !== $module_id ) {
 			return false;
 		}

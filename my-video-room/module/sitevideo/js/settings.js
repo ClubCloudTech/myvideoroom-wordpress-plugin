@@ -42,9 +42,6 @@
 						if ( window.myvideoroom_tabbed_init ) {
 							window.myvideoroom_tabbed_init( $container );
 						}
-					},
-					error: function (response) {
-
 					}
 				}
 			);

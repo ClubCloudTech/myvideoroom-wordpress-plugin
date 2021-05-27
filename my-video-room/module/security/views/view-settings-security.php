@@ -58,13 +58,11 @@ return function() {
 						<?php
 							$default_setting = Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
 								SiteDefaults::USER_ID_SITE_DEFAULTS,
-								Security::PERMISSIONS_TABLE,
-								null,
+								Security::PERMISSIONS_TABLE
 							);
 							// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
 							echo $default_setting;
 						?>
-						</p>
 						</article>
 						<article id="overrideperms" >
 						<br>

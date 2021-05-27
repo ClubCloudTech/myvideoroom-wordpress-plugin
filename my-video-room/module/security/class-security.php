@@ -23,18 +23,16 @@ use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
  */
 class Security {
 
-	const TABLE_NAME_SECURITY_CONFIG      = 'myvideoroom_security_config';
-	const MODULE_SECURITY_NAME            = 'security-module';
-	const MODULE_SECURITY_ENTITY          = 'security-entity';
-	const HOST_TABLE_SUFFIX               = 'host-permission';
-	const MULTI_ROOM_HOST_SUFFIX          = Dependencies::MULTI_ROOM_HOST_SUFFIX;
-	const MODULE_SECURITY_ID              = Dependencies::MODULE_SECURITY_ID; // Proxied to Main Core so Activation state can be queried by Core Modules.
-	const MODULE_SECURITY_ENTITY_ID       = Dependencies::MODULE_SECURITY_ENTITY_ID;
-	const MODULE_SECURITY_ADMIN_PAGE      = 'view-admin-settings-security';
-	const MODULE_SECURITY_DISPLAY         = ' Advanced Room Permissions';
-	const MODULE_SECURITY_ADMIN_LOCATION  = __DIR__ . '/views/view-settings-security.php';
-	const MODULE_SECURITY_ENTITY_LOCATION = __DIR__ . '/views/view-settings-security-entity.php';
-	const PERMISSIONS_TABLE               = 'security-default-permissions';
+	const TABLE_NAME_SECURITY_CONFIG = 'myvideoroom_security_config';
+	const MODULE_SECURITY_NAME       = 'security-module';
+	const MODULE_SECURITY_ENTITY     = 'security-entity';
+	const HOST_TABLE_SUFFIX          = 'host-permission';
+	const MULTI_ROOM_HOST_SUFFIX     = Dependencies::MULTI_ROOM_HOST_SUFFIX;
+	const MODULE_SECURITY_ID         = Dependencies::MODULE_SECURITY_ID; // Proxied to Main Core so Activation state can be queried by Core Modules.
+	const MODULE_SECURITY_ENTITY_ID  = Dependencies::MODULE_SECURITY_ENTITY_ID;
+	const MODULE_SECURITY_ADMIN_PAGE = 'view-admin-settings-security';
+	const MODULE_SECURITY_DISPLAY    = ' Advanced Room Permissions';
+	const PERMISSIONS_TABLE          = 'security-default-permissions';
 
 	/**
 	 * Initialise On Module Activation.
@@ -50,15 +48,13 @@ class Security {
 		$module_config->register_module_in_db(
 			self::MODULE_SECURITY_NAME,
 			self::MODULE_SECURITY_ID,
-			true,
-			self::MODULE_SECURITY_ADMIN_LOCATION
+			true
 		);
 
 		$module_config->register_module_in_db(
 			self::MODULE_SECURITY_ENTITY,
 			self::MODULE_SECURITY_ENTITY_ID,
-			true,
-			self::MODULE_SECURITY_ENTITY_LOCATION
+			true
 		);
 
 		$module_config->update_enabled_status( self::MODULE_SECURITY_ID, true );
@@ -126,15 +122,11 @@ class Security {
 
 	/**
 	 * Render Security Admin Page.
+	 *
+	 * @return string
 	 */
-	public function render_security_admin_page() {
-		$active_tab = self::MODULE_SECURITY_NAME;
-		$path       = Factory::get_instance( ModuleConfig::class )->get_module_admin_path( $active_tab );
-		$render     = require WP_PLUGIN_DIR . '/my-video-room/' . $path;
-		$messages   = array();
-		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Items already Sanitised.
-		echo $render( $messages );
-		return 'Powered by MyVideoRoom';
+	public function render_security_admin_page(): string {
+		return ( require __DIR__ . '/views/view-settings-security.php' )();
 	}
 
 	/**
@@ -180,42 +172,6 @@ class Security {
 	}
 
 	/**
-	 * Render Security Admin Tabs.
-	 *
-	 * @param  array $input - the inbound menu.
-	 * @param  int   $room_id - the room identifier.
-	 * @return array - outbound menu.
-	 */
-	public function render_security_shortcode_tabs( $input = array(), int $room_id ): array {
-		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-		$room_name   = $room_object->room_name;
-		// Host Menu Tab - rendered in Security as its a module feature of Security.
-		$host_menu = new MenuTabDisplay(
-			esc_html__( 'Room Hosts', 'my-video-room' ),
-			'roomhosts',
-			fn() => Factory::get_instance( SecurityVideoPreference::class )
-			->choose_settings(
-				$room_id,
-				$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
-				null,
-				'roomhost'
-			)
-		);
-		array_push( $input, $host_menu );
-		// Permissions Default Tab - rendered in Security as its a module feature of Security.
-		$base_menu = new MenuTabDisplay(
-			esc_html__( 'Room Permissions', 'my-video-room' ),
-			'roompermissions',
-			fn() => Factory::get_instance( SecurityVideoPreference::class )
-			->choose_settings( $room_id, esc_textarea( $room_name ), 'roomhost' )
-		);
-
-		array_push( $input, $base_menu );
-
-		return $input;
-	}
-
-	/**
 	 * Render Security Admin Tabs in Main Shortcode.
 	 *
 	 * @param  array  $input - the inbound menu.
@@ -224,7 +180,7 @@ class Security {
 	 * @param  bool   $host_status - whether function is for a host type.
 	 * @return array - outbound menu.
 	 */
-	public function render_shortcode_security_permissions_tab( $input = array(), int $post_id, string $room_name, bool $host_status ): array {
+	public function render_shortcode_security_permissions_tab( array $input, int $post_id, string $room_name, bool $host_status ): array {
 		if ( ! $host_status ) {
 			return $input;
 		}

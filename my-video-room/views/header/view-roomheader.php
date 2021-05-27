@@ -12,7 +12,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 
 return function (
-	string $module_name = null,
+	?string $module_name,
 	string $name_output,
 	int $user_id = null,
 	string $room_name = null,
@@ -24,8 +24,7 @@ return function (
 
 	if ( $visitor_status ) {
 
-		$invite_menu = Factory::get_instance( MeetingIdGenerator::class )->
-		invite_menu_shortcode(
+		$invite_menu = Factory::get_instance( MeetingIdGenerator::class )->invite_menu_shortcode(
 			array(
 				'type'    => 'guestlink',
 				'user_id' => $user_id,

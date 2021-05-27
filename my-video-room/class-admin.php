@@ -19,7 +19,6 @@ use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Reference\Shortcode\App as AppShortcodeReference;
-use MyVideoRoomPlugin\Reference\Shortcode\RoomInfo as RoomInfoReference;
 use MyVideoRoomPlugin\ValueObject\GettingStarted;
 use MyVideoRoomPlugin\ValueObject\Notice;
 
@@ -239,7 +238,7 @@ class Admin {
 		);
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-		echo "<div class=\"wrap myvideoroom-admin\">${header}<main>{$page_contents}</main></div>";
+		echo "<div class=\"wrap myvideoroom-admin\">${header}<main>${page_contents}</main></div>";
 	}
 
 	/**

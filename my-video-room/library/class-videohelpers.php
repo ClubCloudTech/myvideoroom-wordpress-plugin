@@ -14,7 +14,6 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\SiteDefaults;
-use MyVideoRoomPlugin\Library\Dependencies;
 
 /**
  * Class Template

@@ -59,11 +59,11 @@ class SecurityButtons {
 			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:Red">' . esc_html__( 'Site Video Disabled', 'my-video-room' ) . '</a>';
 		}
 
-		if ( ( $room_anonymous || $roles ) && $site_override ) {
+		if ( $room_anonymous || $roles ) {
 			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:blue">' . esc_html__( 'Site Mandatory Settings Applied', 'my-video-room' ) . '</a>';
 		}
 
-		if ( $room_anonymous && $site_override ) {
+		if ( $room_anonymous ) {
 				$output .= '<a ' . $path . ' class="button button-primary" style="background-color:blue">' . esc_html__( 'Site Anonymous Block Applied', 'my-video-room' ) . '</a>';
 		}
 

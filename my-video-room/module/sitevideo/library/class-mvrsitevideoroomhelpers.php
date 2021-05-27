@@ -44,14 +44,14 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Room Shortcode Transform
 	 *
-	 * @param ?string  $input       .
-	 * @param ?string  $room_type   .
-	 * @param int|null $room_id     - the room id.
-	 * @param Object   $room_object .
+	 * @param ?string   $input       .
+	 * @param ?string   $room_type   .
+	 * @param int|null  $room_id     - the room id.
+	 * @param \stdClass $room_object .
 	 *
 	 * @return string name.
 	 */
-	public function conference_change_shortcode( ?string $input = null, ?string $room_type, int $room_id = null, $room_object ): ?string {
+	public function conference_change_shortcode( ?string $input, ?string $room_type, ?int $room_id, \stdClass $room_object ): ?string {
 		if ( ! $room_type ) {
 			return $input;
 		}
@@ -72,25 +72,24 @@ class MVRSiteVideoRoomHelpers {
 	 * @param  array $input - the inbound menu.
 	 * @return array - outbound menu.
 	 */
-	public function render_sitevideo_admin_settings_page( $input = array() ): array {
+	public function render_sitevideo_admin_settings_page( array $input ): array {
 
 		$admin_tab = new MenuTabDisplay(
 			esc_html__( 'Conference Center', 'my-video-room' ),
 			'conferencecenter',
-			fn() => Factory::get_instance( self::class )->get_sitevideo_admin_page()
+			fn() => $this->get_sitevideo_admin_page()
 		);
 		array_push( $input, $admin_tab );
 		return $input;
 	}
 
 	/**
-	 * Get_sitevideo_admin_page - returns admin page
+	 * Get sitevideo admin page - returns admin page
 	 *
 	 * @return string
 	 */
-	private function get_sitevideo_admin_page() {
-		$page = require __DIR__ . '/../views/module-admin.php';
-		return $page();
+	private function get_sitevideo_admin_page(): string {
+		return ( require __DIR__ . '/../views/module-admin.php' )();
 	}
 	/**
 	 * Create the site conference page
@@ -180,8 +179,7 @@ class MVRSiteVideoRoomHelpers {
 			fn() => Factory::get_instance( UserVideoPreference::class )
 			->choose_settings(
 				$room_id,
-				$room_name,
-				array( 'basic', 'premium' )
+				$room_name
 			)
 		);
 		array_push( $input, $base_menu );
@@ -285,7 +283,7 @@ class MVRSiteVideoRoomHelpers {
 	 * @param  array $input - the inbound menu.
 	 * @return array - outbound menu.
 	 */
-	public function render_default_video_admin_settings_page( $input = array() ): array {
+	public function render_default_video_admin_settings_page( array $input ): array {
 
 		$admin_tab = new MenuTabDisplay(
 			esc_html__( 'Default Video Appearance', 'my-video-room' ),

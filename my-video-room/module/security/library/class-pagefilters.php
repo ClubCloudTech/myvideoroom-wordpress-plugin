@@ -8,8 +8,6 @@
 namespace MyVideoRoomPlugin\Module\Security\Library;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Library\Module;
-use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
@@ -41,10 +39,7 @@ class PageFilters {
 	 */
 	public function block_disabled_module_video_render( int $module_id ): ?string {
 		// Check Actions.
-		$module_block = do_action( 'myvideoroom_security_block_disabled_module', $module_id );
-		if ( $module_block ) {
-			return $module_block;
-		}
+		\do_action( 'myvideoroom_security_block_disabled_module', $module_id );
 
 		// Normal Check.
 		$is_module_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( $module_id );
@@ -59,12 +54,12 @@ class PageFilters {
 	 * This function Checks a Module is Active to allow it to render Video
 	 * Used only in admin pages of plugin
 	 *
-	 * @param  int                     $user_id      UserID.
-	 * @param  string                  $room_name    The room name.
-	 * @param  bool                    $host_status  If used.
-	 * @param  SecurityVideoPreference $user_permissions - Object with user Permissions.
-	 * @param  SecurityVideoPreference $site_override_permissions - Object with Site Enforcement settings.
-	 * @param  SecurityVideoPreference $security_default_permissions - Object with Default (no user preference yet applied) settings.
+	 * @param int                      $user_id                      UserID.
+	 * @param string                   $room_name                    The room name.
+	 * @param bool                     $host_status                  If used.
+	 * @param ?SecurityVideoPreference $user_permissions             - Object with user Permissions.
+	 * @param ?SecurityVideoPreference $site_override_permissions    - Object with Site Enforcement settings.
+	 * @param ?SecurityVideoPreference $security_default_permissions - Object with Default (no user preference yet applied) settings.
 	 *
 	 * @return ?string depending.
 	 */
@@ -108,10 +103,10 @@ class PageFilters {
 	 * This function Checks The Disable Anonymous Setting is/not on - and enforces result
 	 * Used by all rooms
 	 *
-	 * @param  int                     $user_id - the UserID.
-	 * @param  SecurityVideoPreference $user_permissions - Object with user Permissions.
-	 * @param  SecurityVideoPreference $site_override_permissions - Object with Site Enforcement settings.
-	 * @param  SecurityVideoPreference $security_default_permissions - Object with Default (no user preference yet applied) settings.
+	 * @param  int                      $user_id - the UserID.
+	 * @param  ?SecurityVideoPreference $user_permissions - Object with user Permissions.
+	 * @param  ?SecurityVideoPreference $site_override_permissions - Object with Site Enforcement settings.
+	 * @param  ?SecurityVideoPreference $security_default_permissions - Object with Default (no user preference yet applied) settings.
 	 *
 	 * @return null|string depending.
 	 */
@@ -278,17 +273,16 @@ class PageFilters {
 		// Handling Anonymous Users.
 
 		if ( true === $anonymous_hosts_blocked && ! is_user_logged_in() ) {
-			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
+			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id );
 		}
 		if ( ! is_user_logged_in() && false === $allow_to_block_switch && true === $room_control_enabled_state ) {
-			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
+			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id );
 		}
 
 		// Exit if No Room Control is Enabled.
 		if ( false === $room_control_enabled_state ) {
 			return null;
 		}
-		$no_allowed_roles_configuration = false;
 		if ( $preference ) {
 			$allowed_db_roles_configuration = $preference->get_roles();
 			$no_allowed_roles_configuration = false;
@@ -298,7 +292,7 @@ class PageFilters {
 		}
 
 		if ( ( true === $no_allowed_roles_configuration ) && ( false === $allow_to_block_switch ) ) {
-			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
+			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id );
 		}
 
 		// Retrieve Users Roles.
@@ -325,12 +319,12 @@ class PageFilters {
 			return null;
 
 		} elseif ( ! $role_match && false === $allow_to_block_switch ) {
-			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
+			return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id );
 
 		} elseif ( $role_match && false === $allow_to_block_switch ) {
 			return null;
 		}
 
-		return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id, $room_type );
+		return Factory::get_instance( SecurityTemplates::class )->blocked_by_role_template( $owner_id );
 	}
 }

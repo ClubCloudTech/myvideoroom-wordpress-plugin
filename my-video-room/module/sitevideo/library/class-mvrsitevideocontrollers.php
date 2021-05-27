@@ -9,7 +9,7 @@ namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
 use MyVideoRoomPlugin\Plugin;
-use \MyVideoRoomPlugin\SiteDefaults;
+use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
@@ -18,7 +18,6 @@ use MyVideoRoomPlugin\Library\VideoHelpers;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\SectionTemplates;
-use MyVideoRoomPlugin\Module\Security\Library\PageFilters as PageFiltersLibrary;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\Dependencies;
@@ -47,9 +46,10 @@ class MVRSiteVideoControllers {
 	 * Auto Switching Function for Site Video Room to Host and Guests
 	 *
 	 * @param int $id - the Room ID to access.
+	 *
 	 * @return string the correct template.
 	 */
-	public function sitevideo_switch( int $id ) {
+	public function sitevideo_switch( int $id ): string {
 
 		if ( ! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
@@ -73,9 +73,10 @@ class MVRSiteVideoControllers {
 	 * This is used for the Member admin entry pages to access their preferred Video Layout - it is paired with the sitevideoroomguest function and accessed by the relevant video switch
 	 *
 	 * @param  int $post_id - Post ID of DB.
+	 *
 	 * @return string
 	 */
-	public function site_videoroom_host_function( int $post_id ) {
+	public function site_videoroom_host_function( int $post_id ): string {
 		// Shortcode Initialise Hooks.
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
 
@@ -122,8 +123,7 @@ class MVRSiteVideoControllers {
 				//phpcs:ignore PEAR.Functions.FunctionCallSignature.Indent - indent is correct.
 				Factory::get_instance( UserVideoPreference::class )->choose_settings(
 					$post_id,
-					$room_name,
-					array( 'basic', 'premium' )
+					$room_name
 				)
 			)
 		);
@@ -195,35 +195,5 @@ class MVRSiteVideoControllers {
 		);
 		array_push( $output_object, $host_menu );
 		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $room_id, $room_name, $host_status );
-	}
-
-	/**
-	 * Provides Shortcode for Site Video Room Settings.
-	 */
-	public function sitevideo_settings_shortcode() {
-
-		?>
-		<table style="width:70%; border: 1px solid black;"  >
-		</table>
-			<h1><?php esc_html_e( 'Site Video Room Settings', 'my-video-room' ); ?></h1>
-			<p>
-				<?php
-				esc_html_e(
-					'The Site Video Room is available for Team wide meetings at the website level. It is created automatically by the plugin, at activation. It can be secured such that any normal	site administrator is an owner of the room',
-					'my-video-room'
-				);
-				?>
-			<br>	</p>
-				<?php
-				$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
-					SiteDefaults::USER_ID_SITE_DEFAULTS,
-					MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-					array( 'basic', 'premium' )
-				);
-				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
-				echo $layout_setting;
-				?>
-		</table>
-		<?php
 	}
 }

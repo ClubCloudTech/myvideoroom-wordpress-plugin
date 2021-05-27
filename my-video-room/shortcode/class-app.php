@@ -108,7 +108,7 @@ class App {
 	 *
 	 * @return string
 	 */
-	public function output_shortcode( $attr = array() ) {
+	public function output_shortcode( $attr = array() ): string {
 		if ( ! $attr ) {
 			$attr = array();
 		}
@@ -167,9 +167,9 @@ class App {
 			$host = ( 'true' === $attr['host'] );
 		}
 
-		if ( true === $host ) {
+		if ( $host ) {
 			$shortcode_constructor->set_as_host();
-		} elseif ( false === $host ) {
+		} else {
 			$shortcode_constructor->set_as_guest();
 		}
 

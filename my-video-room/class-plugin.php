@@ -75,7 +75,7 @@ class Plugin {
 	 *
 	 * @return \MyVideoRoomPlugin\Plugin
 	 */
-	public static function init() {
+	public static function init(): Plugin {
 		return Factory::get_instance( self::class );
 	}
 

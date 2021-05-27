@@ -152,7 +152,7 @@ class RoomMap {
 	 *
 	 * @return bool|null
 	 */
-	public function update_room_post_id( string $post_id, string $room_name ) {
+	public function update_room_post_id( string $post_id, string $room_name ): ?bool {
 		global $wpdb;
 
 		// Empty input exit.

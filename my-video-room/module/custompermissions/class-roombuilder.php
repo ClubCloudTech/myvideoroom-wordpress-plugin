@@ -26,8 +26,8 @@ class RoomBuilder {
 	 * RoomBuilder constructor.
 	 */
 	public function __construct() {
-		\add_action( 'wp_enqueue_scripts', fn() => $this->enqueue_scripts_and_styles(), );
-		\add_action( 'admin_enqueue_scripts', fn() => $this->enqueue_scripts_and_styles(), );
+		\add_action( 'wp_enqueue_scripts', fn() => $this->enqueue_scripts_and_styles() );
+		\add_action( 'admin_enqueue_scripts', fn() => $this->enqueue_scripts_and_styles() );
 
 		\add_filter(
 			'myvideoroom_roombuilder_create_shortcode',

@@ -40,8 +40,7 @@ return function (): string {
 	<?php
 	$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
 		SiteDefaults::USER_ID_SITE_DEFAULTS,
-		SiteDefaults::ROOM_NAME_SITE_DEFAULT,
-		array( 'basic', 'premium' )
+		SiteDefaults::ROOM_NAME_SITE_DEFAULT
 	);
 	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
 	echo $layout_setting;

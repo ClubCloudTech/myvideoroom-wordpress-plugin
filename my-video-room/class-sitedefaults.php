@@ -60,8 +60,7 @@ class SiteDefaults {
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
 			self::MODULE_DEFAULT_VIDEO_NAME,
 			self::MODULE_DEFAULT_VIDEO_ID,
-			true,
-			self::MODULE_CORE_PATH
+			true
 		);
 
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status(
@@ -75,7 +74,7 @@ class SiteDefaults {
 	 */
 	public function init() {
 		$this->register_enqueue_scripts_styles();
-		add_shortcode( self::SHORTCODE_TAG, array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
+		\add_shortcode( self::SHORTCODE_TAG, array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
 	}
 
 	/**
@@ -154,7 +153,7 @@ class SiteDefaults {
 
 				$displayid    = $user_field->display_name;
 				$output       = preg_replace( '/[^A-Za-z0-9\-]/', '', $displayid ); // remove special characters from username.
-				$outmeetingid = Factory::get_instance( MeetingIdGenerator::class )->invite( $input_id, 'user', null );
+				$outmeetingid = Factory::get_instance( MeetingIdGenerator::class )->invite( $input_id, 'user' );
 
 				return 'Space-' . $output . '-' . $outmeetingid;
 
@@ -167,6 +166,8 @@ class SiteDefaults {
 				$user       = Factory::get_instance( WordPressUser::class )->get_wordpress_user_by_id( (int) $input_id );
 				$user_roles = Factory::get_instance( UserRoles::class, array( $user ) );
 
+				$output = '';
+
 				// IF staff member - then replace the ID with Owner ID.
 				if ( $user && $user_roles->is_wcfm_shop_staff() ) {
 					$parent_id = $user->_wcfm_vendor;
@@ -174,10 +175,11 @@ class SiteDefaults {
 					$user_field = Factory::get_instance( WordPressUser::class )->get_wordpress_user_by_id( $parent_id );
 
 					$input_id = $parent_id;
+
+					$displayid = $user_field->display_name;
+					$output    = preg_replace( '/[^A-Za-z0-9\-]/', '', $displayid ); // remove special characters from username.
 				}
-				$displayid    = $user_field->display_name;
-				$output       = preg_replace( '/[^A-Za-z0-9\-]/', '', $displayid ); // remove special characters from username.
-				$outmeetingid = Factory::get_instance( MeetingIdGenerator::class )->invite( $input_id, 'user', null );
+				$outmeetingid = Factory::get_instance( MeetingIdGenerator::class )->invite( $input_id, 'user' );
 
 				return 'Space-' . $output . '-' . $outmeetingid;
 

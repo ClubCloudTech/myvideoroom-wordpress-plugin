@@ -36,14 +36,13 @@ class ModuleConfig {
 	/**
 	 * Register a given room in the Database, and ensure it does not already exist
 	 *
-	 * @param  string  $module_name             Name of module to register.
-	 * @param  int     $module_id               ID of module to register.
-	 * @param  bool    $module_has_admin_page   Whether module has admin page.
-	 * @param  ?string $module_admin_path       Path to location of admin page.
+	 * @param  string $module_name             Name of module to register.
+	 * @param  int    $module_id               ID of module to register.
+	 * @param  bool   $module_has_admin_page   Whether module has admin page.
 	 *
 	 * @return bool
 	 */
-	public function register_module_in_db( string $module_name, int $module_id, bool $module_has_admin_page = null, string $module_admin_path = null ): bool {
+	public function register_module_in_db( string $module_name, int $module_id, bool $module_has_admin_page = null ): bool {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -51,18 +50,16 @@ class ModuleConfig {
 			$wpdb->prepare(
 				'
 					INSERT IGNORE INTO ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
-					(module_name, module_id, module_has_admin_page, module_admin_path) 
-					VALUES( %s, %d, %d, %s )
+					(module_name, module_id, module_has_admin_page) 
+					VALUES( %s, %d, %d )
 				',
 				$module_name,
 				$module_id,
-				$module_has_admin_page,
-				$module_admin_path
+				$module_has_admin_page
 			)
 		);
 
 		\wp_cache_delete( $module_name, implode( '::', array( __CLASS__, 'is_module_activation_enabled' ) ) );
-		\wp_cache_delete( $module_id, implode( '::', array( __CLASS__, 'get_module_admin_path' ) ) );
 
 		return true;
 	}
@@ -126,42 +123,6 @@ class ModuleConfig {
 		\wp_cache_set( $module_id, $module_enabled, implode( '::', array( __CLASS__, 'is_module_activation_enabled' ) ) );
 
 		return true;
-	}
-
-	/**
-	 * Get Admin URL of Page
-	 *
-	 * @param  string $module_name - the listed name of the module that's been added.
-	 *
-	 * @return string
-	 */
-	public function get_module_admin_path( string $module_name ): ?string {
-		global $wpdb;
-
-		$found  = false;
-		$result = \wp_cache_get( $module_name, __METHOD__, $found );
-
-		if ( false === $found ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			$row = $wpdb->get_row(
-				$wpdb->prepare(
-					'
-						SELECT module_admin_path 
-						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . ' 
-						WHERE module_name = %s
-					',
-					$module_name
-				)
-			);
-
-			if ( $row ) {
-				$result = $row->module_admin_path;
-			}
-
-			\wp_cache_set( $module_name, $result, __METHOD__ );
-		}
-
-		return $result;
 	}
 
 	// ---
