@@ -27,6 +27,9 @@ use MyVideoRoomPlugin\ValueObject\Notice;
  * Class Admin
  */
 class Admin {
+
+	public const ACTION_SHORTCODE_REFERENCE = Plugin::PLUGIN_NAMESPACE . '_shortcode_reference';
+
 	/**
 	 * A list of message to show
 	 *
@@ -273,11 +276,10 @@ class Admin {
 	public function create_shortcode_reference_page(): string {
 		$shortcodes = array(
 			( new AppShortcodeReference() )->get_shortcode_reference(),
-			( new RoomInfoReference() )->get_shortcode_reference(),
 		);
 
 		\do_action(
-			'myvideoroom_shortcode_reference',
+			self::ACTION_SHORTCODE_REFERENCE,
 			function ( \MyVideoRoomPlugin\Reference\Shortcode $new_shortcode ) use ( &$shortcodes ) {
 				$shortcodes[] = $new_shortcode;
 			}

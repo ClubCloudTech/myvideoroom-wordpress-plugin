@@ -36,7 +36,7 @@ class Module {
 	 */
 	public function __construct() {
 		\add_action(
-			'myvideoroom_shortcode_reference',
+			Admin::ACTION_SHORTCODE_REFERENCE,
 			function ( callable $add_reference ) {
 				$add_reference( ( new Reference() )->get_shortcode_reference() );
 			}

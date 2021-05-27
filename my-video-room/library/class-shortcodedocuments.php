@@ -46,7 +46,7 @@ class ShortcodeDocuments {
 			<td style="width:75%; text-align: left;">
 			<?php
 			echo esc_html__(
-				'Returns a Variety of useful Information about a room that you can place in your pages',
+				'Returns a variety of useful Information about a room that you can place in your pages',
 				'my-video-room'
 			);
 			?>

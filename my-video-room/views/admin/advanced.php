@@ -173,7 +173,7 @@ return function (
 					</p>
 				</dd>
 
-				<dt>myvideoroom_shortcode_reference</dt>
+				<dt><?php echo esc_html( Admin::ACTION_SHORTCODE_REFERENCE ); ?>></dt>
 				<dd>
 					<p><?php \esc_html_e( 'Called when MyVideoRoom is preparing the shortcode reference', 'myvideoroom' ); ?></p>
 					<?php
