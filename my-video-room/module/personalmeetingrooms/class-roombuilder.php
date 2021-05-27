@@ -60,7 +60,7 @@ class RoomBuilder {
 			$use_personal_meeting_rooms,
 			\esc_html__( 'Use personal meeting rooms', 'myvideoroom' ),
 			\esc_html__(
-				'Personal meeting rooms allows every WordPress user to be host of their own room.',
+				'Personal meeting rooms allows any WordPress user to be host of their own room.',
 				'myvideoroom'
 			),
 		);
