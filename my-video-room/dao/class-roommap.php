@@ -289,13 +289,11 @@ class RoomMap {
 			} else {
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 				$rows = $wpdb->get_results(
-					$wpdb->prepare(
-						'
-							SELECT post_id
-							FROM ' . /*phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared*/$this->get_table_name() . '
-							ORDER BY room_type ASC
-						'
-					)
+					'
+                        SELECT post_id
+                        FROM ' . /*phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared*/$this->get_table_name() . '
+                        ORDER BY room_type ASC
+                    '
 				);
 			}
 
