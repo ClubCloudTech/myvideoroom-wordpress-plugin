@@ -12,7 +12,6 @@ namespace MyVideoRoomPlugin;
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Shortcode\App;
-use MyVideoRoomPlugin\Shortcode\RoomInfo;
 
 /**
  * Class Plugin
@@ -68,8 +67,6 @@ class Plugin {
 		}
 
 		Factory::get_instance( App::class, array( $private_key ) )->init();
-
-		Factory::get_instance( RoomInfo::class )->init();
 		Factory::get_instance( SiteDefaults::class )->init();
 	}
 
