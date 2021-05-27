@@ -6,35 +6,35 @@
 
 /*global myvideroom_personalmeetingrooms_invite*/
 
-(function ( $ ) {
+(function ($) {
 	var $link_containers = $( '.myvideoroom-personalmeetingrooms-invite .link' );
 
 	$link_containers.each(
 		function () {
 			var $link_container = $( this );
-			var link_url 		= $link_container.html().trim();
+			var link_url        = $link_container.html().trim();
 
 			$( '<input type="button" value="' + $link_container.data( 'copyText' ) + '" />' )
-			.appendTo( $link_container ).on(
-				'click',
-				function () {
-					var $copy_button = $( this );
-					navigator.clipboard.writeText( link_url ).then(
-						function () {
-							$copy_button.val( $link_container.data( 'copiedText' ) )
-								.addClass( 'success' );
+				.appendTo( $link_container ).on(
+					'click',
+					function () {
+						var $copy_button = $( this );
+						navigator.clipboard.writeText( link_url ).then(
+							function () {
+								$copy_button.val( $link_container.data( 'copiedText' ) )
+									.addClass( 'success' );
 
-							setTimeout(
-								function () {
-									$copy_button.val( $link_container.data( 'copyText' ) )
-										.removeClass( 'success' );
-								},
-								1500
-							);
-						}
-					);
-				}
-			);
+								setTimeout(
+									function () {
+										$copy_button.val( $link_container.data( 'copyText' ) )
+											.removeClass( 'success' );
+									},
+									1500
+								);
+							}
+						);
+					}
+				);
 
 			var $invite_form = $( '.myvideoroom-personalmeetingrooms-invite form' );
 			var ajax_url     = myvideroom_personalmeetingrooms_invite.ajax_url;

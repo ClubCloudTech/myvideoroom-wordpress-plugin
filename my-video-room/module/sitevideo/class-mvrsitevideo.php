@@ -31,19 +31,16 @@ class MVRSiteVideo {
 	const PAGE_SLUG_SITE_CONFERENCE = PageList::PAGE_SLUG_DEFAULT . '-site-conference';
 
 	// Constants For Site Video Module.
-	const MODULE_SITE_VIDEO_NAME           = 'site-video-module';
-	const ROOM_NAME_SITE_VIDEO             = 'site-conference-room';
-	const MODULE_SITE_VIDEO_ID             = \MyVideoRoomPlugin\Library\Dependencies::MODULE_SITE_VIDEO_ID;
-	const MODULE_SITE_VIDEO_ADMIN_LOCATION = '/module/sitevideo/views/view-settings-sitevideo.php';
-	const MODULE_ROOM_MANAGEMENT_NAME      = 'site-video-multi-room-module';
-	const MODULE_ROOM_MANAGEMENT_ID        = 435;
-	const MODULE_ROOM_MANAGEMENT_PATH      = '/module/sitevideo/views/view-management-rooms.php';
-	const MODULE_SITE_VIDEO_DISPLAY        = 'Site Conference Rooms';
-	const MODULE_SITE_VIDEO_DESCRIPTION    = 'Meeting Center';
-	const ROOM_TITLE_SITE_VIDEO            = 'Main Conference Room';
-	const ROOM_SLUG_SITE_VIDEO             = 'conference';
-	const SHORTCODE_SITE_VIDEO             = App::SHORTCODE_TAG . '_sitevideoroom';
-	const ROOM_NAME_TABLE                  = 'Conference Center Room';
+	const MODULE_SITE_VIDEO_NAME        = 'site-video-module';
+	const ROOM_NAME_SITE_VIDEO          = 'site-conference-room';
+	const MODULE_SITE_VIDEO_ID          = \MyVideoRoomPlugin\Library\Dependencies::MODULE_SITE_VIDEO_ID;
+	const MODULE_ROOM_MANAGEMENT_NAME   = 'site-video-multi-room-module';
+	const MODULE_ROOM_MANAGEMENT_ID     = 435;
+	const MODULE_SITE_VIDEO_DESCRIPTION = 'Meeting Center';
+	const ROOM_TITLE_SITE_VIDEO         = 'Main Conference Room';
+	const ROOM_SLUG_SITE_VIDEO          = 'conference';
+	const SHORTCODE_SITE_VIDEO          = App::SHORTCODE_TAG . '_sitevideoroom';
+	const ROOM_NAME_TABLE               = 'Conference Center Room';
 
 	/**
 	 * Initialise On Module Activation
@@ -72,6 +69,7 @@ class MVRSiteVideo {
 		Factory::get_instance( RoomAdmin::class )->initialise_default_sitevideo_settings();
 
 	}
+
 	/**
 	 * De-Initialise On Module De-activation.
 	 * Once off functions for activating Module.
@@ -124,7 +122,15 @@ class MVRSiteVideo {
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
 
-		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'render_sitevideo_roomsetting_tab' ), 21, 2 );
+		add_filter(
+			'myvideoroom_sitevideo_admin_page_menu',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'render_sitevideo_roomsetting_tab',
+			),
+			21,
+			2
+		);
 
 		\add_action(
 			'wp_enqueue_scripts',
@@ -153,17 +159,57 @@ class MVRSiteVideo {
 			9
 		);
 		// Add Config Page to Main Room Manager.
-		add_filter( 'myvideoroom_room_manager_menu', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'render_sitevideo_admin_settings_page' ), 10, 1 );
+		add_filter(
+			'myvideoroom_room_manager_menu',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'render_sitevideo_admin_settings_page',
+			),
+			10,
+			1
+		);
 
 		// Add Config Page to Default Settings.
-		add_filter( 'myvideoroom_permissions_manager_menu', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'render_default_video_admin_settings_page' ), 10, 1 );
+		add_filter(
+			'myvideoroom_permissions_manager_menu',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'render_default_video_admin_settings_page',
+			),
+			10,
+			1
+		);
 
 		// Filters for Room Manager Table.
-		add_filter( 'myvideoroom_room_type_display_override', array( Factory::get_instance( MVRSiteVideoViews::class ), 'conference_room_friendly_name' ), 10, 1 );
-		add_filter( 'myvideoroom_room_manager_shortcode_display', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'conference_change_shortcode' ), 10, 4 );
+		add_filter(
+			'myvideoroom_room_type_display_override',
+			array(
+				Factory::get_instance( MVRSiteVideoViews::class ),
+				'conference_room_friendly_name',
+			),
+			10,
+			1
+		);
+		add_filter(
+			'myvideoroom_room_manager_shortcode_display',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'conference_change_shortcode',
+			),
+			10,
+			4
+		);
 
 		// Regenerate Filter.
-		add_filter( 'myvideoroom_room_manager_regenerate', array( Factory::get_instance( MVRSiteVideoRoomHelpers::class ), 'regenerate_sitevideo_meeting_room' ), 10, 3 );
+		add_filter(
+			'myvideoroom_room_manager_regenerate',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'regenerate_sitevideo_meeting_room',
+			),
+			10,
+			3
+		);
 
 		\add_action(
 			Admin::ACTION_SHORTCODE_REFERENCE,

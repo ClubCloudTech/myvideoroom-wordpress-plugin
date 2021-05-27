@@ -46,7 +46,7 @@ return function (
 		<?php
 		$output = null;
 		$output = apply_filters( 'myvideoroom_security_admin_preference_buttons', $output, $user_id, $room_name );
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 		?>
 		<form method="post" action="">
@@ -61,8 +61,8 @@ return function (
 
 			<p><?php esc_html_e( 'Use this setting to ignore user and group individual room settings and enforce security settings across all of', 'my-video-room' ); ?>
 				<?php
-                // phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - get-bloginfo is a core function already escaped.
-                echo get_bloginfo( 'name' ) . '.' . esc_html__( 'If you do not enable this setting, the below options have no effect.', 'my-video-room' );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - get-bloginfo is a core function already escaped.
+				echo get_bloginfo( 'name' ) . '.' . esc_html__( 'If you do not enable this setting, the below options have no effect.', 'my-video-room' );
 				?>
 			</p>
 			<hr>
@@ -123,8 +123,8 @@ return function (
 				name="myvideoroom_security_allowed_roles_preference[]"
 				id="myvideoroom_security_allowed_roles_preference">
 				<?php
-                //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
-                echo $roles_output;
+				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
+				echo $roles_output;
 				?>
 			</select>
 			<label
@@ -146,7 +146,7 @@ return function (
 			do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting );
 
 			foreach ( $fields as $field ) {
-                //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $field->to_string( $html_library );
 				echo '<br />';
 			}
@@ -160,7 +160,7 @@ return function (
 					?>
 					" />
 			<?php
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo Factory::get_instance( HttpPost::class )->create_form_submit(
 				'update_security_video_preference',
 				\esc_html__( 'Save changes', 'myvideoroom' )

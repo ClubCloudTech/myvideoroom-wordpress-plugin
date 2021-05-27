@@ -24,7 +24,7 @@ class Module {
 		\add_filter( 'myvideoroom_shortcode_constructor', array( $this, 'modify_shortcode_constructor' ), 0, 2 );
 
 		$roombuilder_is_active = Factory::get_instance( \MyVideoRoomPlugin\Library\Module::class )
-			->is_module_active( 'roombuilder' );
+										->is_module_active( 'roombuilder' );
 
 		if ( $roombuilder_is_active ) {
 			new RoomBuilder();

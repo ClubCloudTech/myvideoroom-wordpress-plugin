@@ -9,7 +9,7 @@
 	/**
 	 * Hide all non active pages
 	 */
-	var hide_all_non_active = function ( $nav_section ) {
+	var hide_all_non_active = function ($nav_section) {
 		var $tabs = $( 'a.nav-tab:not(.nav-tab-active)', $nav_section );
 
 		$tabs.each(
@@ -25,7 +25,7 @@
 	 *
 	 * @param {JQuery} $parent
 	 */
-	var init = function ( $parent ) {
+	var init = function ($parent) {
 		var $tabbed_sections = $( '.myvideoroom-nav-tab-wrapper', $parent );
 
 		$tabbed_sections.each(
@@ -58,7 +58,7 @@
 			}
 		);
 
-	}
+	};
 
 	init( $( document ) );
 

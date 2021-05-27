@@ -42,6 +42,38 @@ class MVRSiteVideoRoomHelpers {
 	}
 
 	/**
+	 * Regenerate a page
+	 *
+	 * @param ?int       $original_room_id The original room id.
+	 * @param ?\stdClass $room_object      The original room object.
+	 *
+	 * @return int
+	 */
+	public function create_site_videoroom_page( int $original_room_id = null, \stdClass $room_object = null ): int {
+		if ( ! $room_object || MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room_object->room_name ) {
+			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
+				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+				get_bloginfo( 'name' ) . ' ' . MVRSiteVideo::ROOM_TITLE_SITE_VIDEO,
+				MVRSiteVideo::ROOM_SLUG_SITE_VIDEO,
+				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+				MVRSiteVideo::SHORTCODE_SITE_VIDEO,
+				$original_room_id,
+			);
+		} else {
+			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
+				$room_object->room_name,
+				$room_object->display_name,
+				$room_object->slug,
+				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+				MVRSiteVideo::SHORTCODE_SITE_VIDEO,
+				$original_room_id
+			);
+		}
+
+		return $new_id;
+	}
+
+	/**
 	 * Room Shortcode Transform
 	 *
 	 * @param ?string   $input       .
@@ -66,10 +98,12 @@ class MVRSiteVideoRoomHelpers {
 
 		return $input;
 	}
+
 	/**
 	 * Render Site Video Admin Settings Page
 	 *
-	 * @param  array $input - the inbound menu.
+	 * @param array $input - the inbound menu.
+	 *
 	 * @return array - outbound menu.
 	 */
 	public function render_sitevideo_admin_settings_page( array $input ): array {
@@ -80,6 +114,7 @@ class MVRSiteVideoRoomHelpers {
 			fn() => $this->get_sitevideo_admin_page()
 		);
 		array_push( $input, $admin_tab );
+
 		return $input;
 	}
 
@@ -91,6 +126,7 @@ class MVRSiteVideoRoomHelpers {
 	private function get_sitevideo_admin_page(): string {
 		return ( require __DIR__ . '/../views/module-admin.php' )();
 	}
+
 	/**
 	 * Create the site conference page
 	 *
@@ -135,6 +171,7 @@ class MVRSiteVideoRoomHelpers {
 							$details_section = ( require __DIR__ . '/../views/room-deleted.php' )( $room_object, 'normal' );
 						} else {
 							\check_admin_referer( 'delete_room_' . $room_id );
+
 							return ( require __DIR__ . '/../views/room-delete-confirmation.php' )( $room_object );
 						}
 						break;
@@ -158,76 +195,34 @@ class MVRSiteVideoRoomHelpers {
 			$details_section
 		);
 	}
-	/**
-	 * Render Site Video Room Setting Tab.
-	 *
-	 * @param  array $input - the inbound menu.
-	 * @param  int   $room_id - the room identifier.
-	 * @return array - outbound menu.
-	 */
-	public function render_sitevideo_roomsetting_tab( array $input, int $room_id ): array {
-		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-		if ( $room_object ) {
-			$room_name = $room_object->room_name;
-		} else {
-			$room_name = MVRSiteVideo::ROOM_NAME_SITE_VIDEO;
-		}
 
-		$base_menu = new MenuTabDisplay(
-			esc_html__( 'Video Settings', 'my-video-room' ),
-			'videosettings',
-			fn() => Factory::get_instance( UserVideoPreference::class )
-			->choose_settings(
-				$room_id,
-				$room_name
-			)
-		);
-		array_push( $input, $base_menu );
-		return $input;
-	}
 	/**
-	 * Regenerate a page
+	 * Delete the room and the associated post
 	 *
-	 * @param ?int       $original_room_id The original room id.
-	 * @param ?\stdClass $room_object      The original room object.
+	 * @param \stdClass $room_object The room object to delete.
 	 *
-	 * @return int
+	 * @return bool
 	 */
-	public function create_site_videoroom_page( int $original_room_id = null, \stdClass $room_object = null ): int {
-		if ( ! $room_object || MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room_object->room_name ) {
-			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-				get_bloginfo( 'name' ) . ' ' . MVRSiteVideo::ROOM_TITLE_SITE_VIDEO,
-				MVRSiteVideo::ROOM_SLUG_SITE_VIDEO,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-				MVRSiteVideo::SHORTCODE_SITE_VIDEO,
-				$original_room_id,
-			);
-		} else {
-			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
-				$room_object->room_name,
-				$room_object->display_name,
-				$room_object->slug,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-				MVRSiteVideo::SHORTCODE_SITE_VIDEO,
-				$original_room_id
-			);
-		}
+	private function delete_room_and_post( \stdClass $room_object ): bool {
+		Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_object->room_name );
+		\wp_delete_post( $room_object->id, true );
 
-		return $new_id;
-	}
-	/**
-	 * Render Site Video Admin Page.
-	 */
-	public function render_default_settings_admin_page() {
-		return ( require __DIR__ . '/../views/view-settings-video-default.php' )();
+		return true;
 	}
 
 	/**
-	 * Render Default Settings Admin Page.
+	 * Regenerate a deleted room
+	 *
+	 * @param int       $room_id     The room id.
+	 * @param \stdClass $room_object The room object.
+	 *
+	 * @return integer
 	 */
-	public function render_sitevideo_admin_page() {
-		return ( require __DIR__ . '/../views/module-admin.php' )();
+	private function regenerate_room( int $room_id, \stdClass $room_object ): int {
+		// Modules Register this Filter to Handle Regeneration as per their logic.
+		apply_filters( 'myvideoroom_room_manager_regenerate', '', $room_id, $room_object );
+
+		return true;
 	}
 
 	/**
@@ -250,37 +245,49 @@ class MVRSiteVideoRoomHelpers {
 			$available_rooms
 		);
 	}
-	/**
-	 * Regenerate a deleted room
-	 *
-	 * @param int       $room_id     The room id.
-	 * @param \stdClass $room_object The room object.
-	 *
-	 * @return integer
-	 */
-	private function regenerate_room( int $room_id, \stdClass $room_object ): int {
-		// Modules Register this Filter to Handle Regeneration as per their logic.
-		apply_filters( 'myvideoroom_room_manager_regenerate', '', $room_id, $room_object );
-		return true;
-	}
-	/**
-	 * Delete the room and the associated post
-	 *
-	 * @param \stdClass $room_object The room object to delete.
-	 *
-	 * @return bool
-	 */
-	private function delete_room_and_post( \stdClass $room_object ): bool {
-		Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_object->room_name );
-		\wp_delete_post( $room_object->id, true );
 
-		return true;
+	/**
+	 * Render Site Video Room Setting Tab.
+	 *
+	 * @param array $input   - the inbound menu.
+	 * @param int   $room_id - the room identifier.
+	 *
+	 * @return array - outbound menu.
+	 */
+	public function render_sitevideo_roomsetting_tab( array $input, int $room_id ): array {
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+		if ( $room_object ) {
+			$room_name = $room_object->room_name;
+		} else {
+			$room_name = MVRSiteVideo::ROOM_NAME_SITE_VIDEO;
+		}
+
+		$base_menu = new MenuTabDisplay(
+			esc_html__( 'Video Settings', 'my-video-room' ),
+			'videosettings',
+			fn() => Factory::get_instance( UserVideoPreference::class )
+						->choose_settings(
+							$room_id,
+							$room_name
+						)
+		);
+		array_push( $input, $base_menu );
+
+		return $input;
+	}
+
+	/**
+	 * Render Default Settings Admin Page.
+	 */
+	public function render_sitevideo_admin_page() {
+		return ( require __DIR__ . '/../views/module-admin.php' )();
 	}
 
 	/**
 	 * Render Default Video Settings Page
 	 *
-	 * @param  array $input - the inbound menu.
+	 * @param array $input - the inbound menu.
+	 *
 	 * @return array - outbound menu.
 	 */
 	public function render_default_video_admin_settings_page( array $input ): array {
@@ -291,6 +298,14 @@ class MVRSiteVideoRoomHelpers {
 			fn() => $this->render_default_settings_admin_page()
 		);
 		array_push( $input, $admin_tab );
+
 		return $input;
+	}
+
+	/**
+	 * Render Site Video Admin Page.
+	 */
+	public function render_default_settings_admin_page() {
+		return ( require __DIR__ . '/../views/view-settings-video-default.php' )();
 	}
 }

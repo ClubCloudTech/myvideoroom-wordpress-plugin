@@ -32,7 +32,7 @@ class SelectOption {
 	 * SelectOption constructor.
 	 *
 	 * @param string $value - value.
-	 * @param string $name - name.
+	 * @param string $name  - name.
 	 */
 	public function __construct( string $value, string $name ) {
 		$this->value = $value;

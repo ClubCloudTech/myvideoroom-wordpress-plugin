@@ -50,7 +50,7 @@ class Module {
 		);
 
 		$roombuilder_is_active = Factory::get_instance( \MyVideoRoomPlugin\Library\Module::class )
-			->is_module_active( 'roombuilder' );
+										->is_module_active( 'roombuilder' );
 		if ( $roombuilder_is_active ) {
 			new RoomBuilder();
 		}
@@ -138,7 +138,7 @@ class Module {
 	private function process_email_send(): ?array {
 		$post_library = Factory::get_instance( HttpPost::class );
 		if (
-			$post_library->is_post_request( self::INVITE_EMAIL_ACTION )
+		$post_library->is_post_request( self::INVITE_EMAIL_ACTION )
 		) {
 			if ( $post_library->is_nonce_valid( self::INVITE_EMAIL_ACTION ) ) {
 				return array(

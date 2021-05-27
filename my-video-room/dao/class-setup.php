@@ -19,33 +19,6 @@ use MyVideoRoomPlugin\SiteDefaults;
 class Setup {
 
 	/**
-	 * Initialise_default_video_settings - adds default settings to the main room table on Plugin setup.
-	 *
-	 * @return bool
-	 */
-	public function initialise_default_video_settings(): bool {
-		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
-
-		// Check Exists.
-		$current_user_setting = $video_preference_dao->get_by_id(
-			SiteDefaults::USER_ID_SITE_DEFAULTS,
-			SiteDefaults::ROOM_NAME_SITE_DEFAULT
-		);
-
-		if ( ! $current_user_setting ) {
-			$current_user_setting = new UserVideoPreferenceEntity(
-				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				SiteDefaults::ROOM_NAME_SITE_DEFAULT,
-				'boardroom',
-				'default',
-				false,
-			);
-			$video_preference_dao->create( $current_user_setting );
-		}
-		return true;
-	}
-
-	/**
 	 * Install_user_video_preference_table - this is the main table for all User Room Config
 	 *
 	 * @return bool
@@ -119,6 +92,34 @@ class Setup {
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
 		return \maybe_create_table( $table_name, $sql_create );
+	}
+
+	/**
+	 * Initialise_default_video_settings - adds default settings to the main room table on Plugin setup.
+	 *
+	 * @return bool
+	 */
+	public function initialise_default_video_settings(): bool {
+		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
+
+		// Check Exists.
+		$current_user_setting = $video_preference_dao->get_by_id(
+			SiteDefaults::USER_ID_SITE_DEFAULTS,
+			SiteDefaults::ROOM_NAME_SITE_DEFAULT
+		);
+
+		if ( ! $current_user_setting ) {
+			$current_user_setting = new UserVideoPreferenceEntity(
+				SiteDefaults::USER_ID_SITE_DEFAULTS,
+				SiteDefaults::ROOM_NAME_SITE_DEFAULT,
+				'boardroom',
+				'default',
+				false,
+			);
+			$video_preference_dao->create( $current_user_setting );
+		}
+
+		return true;
 	}
 }
 

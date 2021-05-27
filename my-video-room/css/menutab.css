@@ -1,59 +1,59 @@
 .mvr-form-button {
-	font-size: 17px;
-	line-height: 1.52947;
-	font-weight: 400;
-	letter-spacing: -.021em;
-	font-family: "SF Pro Text","Myriad Set Pro",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","SF Pro Icons","Apple Legacy Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
-	background-color: #0070c9;
 	background: -webkit-gradient(linear, left top, left bottom, from(#42a1ec), to(#0070c9));
 	background: -webkit-linear-gradient(#42a1ec, #0070c9);
 	background: linear-gradient(#42a1ec, #0070c9);
+	background-color: #0070c9;
 	border-color: #07c;
-	border-width: 1px;
-	border-style: solid;
 	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
 	color: #fff;
 	cursor: pointer;
-	margin: 5px 5px 5px 5px!important;
-	display: inline-block!important;
-	min-width: 30px!important;
+	display: inline-block !important;
+	font-family: "SF Pro Text", "Myriad Set Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Icons", "Apple Legacy Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	font-size: 17px;
+	font-weight: 400;
+	letter-spacing: -.021em;
+	line-height: 1.52947;
+	margin: 5px 5px 5px 5px !important;
+	min-width: 30px !important;
 	padding: 7px 10px !important;
-	text-align: center!important;
-	white-space: nowrap!important;
+	text-align: center !important;
+	white-space: nowrap !important;
 }
 
 .mvr-form-button-max {
-	max-width: 125px;
 	max-height: 30px;
+	max-width: 125px;
 }
 
 .mvr-nav-shortcode-outer-wrap {
 	background-color: white;
-	padding: 10px 10px 10px 10px;
 	border: 1px solid #c3c4c7;
+	padding: 10px 10px 10px 10px;
 }
 
 .mvr-nav-shortcode-outer-wrap-clean {
-	padding: 10px 10px 10px 10px;
 	display: flow-root;
+	padding: 10px 10px 10px 10px;
 }
 
 .mvr-nav-settingstabs-outer-wrap {
 	background-color: #f0f0f0;
-	padding: 10px 10px 0 10px;
 	border: 1px solid #c3c4c7;
+	padding: 10px 10px 0 10px;
 }
 
 .mvr-menu-header-item {
+	background: #c7c7c7;
+	border: 1px solid #afafaf;
+	color: #555;
 	display: block;
 	float: left;
-	border: 1px solid #afafaf;
-	padding: 5px 10px;
 	font-size: 14px;
-	line-height: 1.71428571;
 	font-weight: 600;
-	background: #c7c7c7;
-	color: #555;
+	line-height: 1.71428571;
+	padding: 5px 10px;
 	text-decoration: none;
 }
 
@@ -68,14 +68,14 @@
 }
 
 .mvr-header-section {
-	width: 100%;
 	position: relative;
+	width: 100%;
 }
 
 .mvr-header-section:after {
+	clear: both;
 	content: '';
 	display: block;
-	clear: both;
 }
 
 .mvr-header-title {
@@ -83,9 +83,9 @@
 	font-family: "Montserrat", sans-serif;
 	font-size: 18px;
 	font-weight: 500;
-	text-transform: uppercase;
-	margin-bottom: 9px;
 	letter-spacing: -0.7px;
+	margin-bottom: 9px;
+	text-transform: uppercase;
 }
 
 .mvr-header-title:before {
@@ -93,26 +93,26 @@
 }
 
 .mvr-header-table-right {
-	float:right;
+	float: right;
 	text-align: right;
-	width:65%
+	width: 65%
 }
 
 .mvr-header-table-left {
-	width: 35%;
-	float:left;
+	float: left;
 	text-align: left;
+	width: 35%;
 }
 
 .mvr-icons {
-	font-size: 23px!important;
+	background-color: #fff;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
 	color: #797156;
-	vertical-align: middle;
+	font-size: 23px !important;
+	height: 20px;
 	margin-bottom: 8px;
-	background-color:#fff;
-	height:20px;
-	border-radius:50%;
-	-moz-border-radius:50%;
-	-webkit-border-radius:50%;
-	width:25px;
+	vertical-align: middle;
+	width: 25px;
 }

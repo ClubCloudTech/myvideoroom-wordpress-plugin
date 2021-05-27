@@ -71,14 +71,14 @@ class UserVideoPreference {
 	/**
 	 * UserVideoPreference constructor.
 	 *
-	 * @param int     $user_id                  Userid.
-	 * @param string  $room_name                Room Name.
-	 * @param ?string $layout_id                Video Template.
-	 * @param ?string $reception_id             Reception Template.
-	 * @param bool    $reception_enabled        Reception Status.
-	 * @param bool    $reception_video_enabled  Reception Video Status.
-	 * @param ?string $reception_video_url      Reception Video Path.
-	 * @param bool    $show_floorplan           Show Video Template to Guests Status.
+	 * @param int     $user_id                 Userid.
+	 * @param string  $room_name               Room Name.
+	 * @param ?string $layout_id               Video Template.
+	 * @param ?string $reception_id            Reception Template.
+	 * @param bool    $reception_enabled       Reception Status.
+	 * @param bool    $reception_video_enabled Reception Video Status.
+	 * @param ?string $reception_video_url     Reception Video Path.
+	 * @param bool    $show_floorplan          Show Video Template to Guests Status.
 	 */
 	public function __construct(
 		int $user_id,
@@ -166,6 +166,7 @@ class UserVideoPreference {
 	 */
 	public function set_user_id( int $user_id ): self {
 		$this->user_id = $user_id;
+
 		return $this;
 	}
 
@@ -196,6 +197,7 @@ class UserVideoPreference {
 	 */
 	public function set_layout_id( string $layout_id = null ): UserVideoPreference {
 		$this->layout_id = $layout_id;
+
 		return $this;
 	}
 
@@ -217,6 +219,7 @@ class UserVideoPreference {
 	 */
 	public function set_reception_id( string $reception_id = null ): UserVideoPreference {
 		$this->reception_id = $reception_id;
+
 		return $this;
 	}
 
@@ -238,8 +241,10 @@ class UserVideoPreference {
 	 */
 	public function set_reception_enabled( bool $reception_enabled ): UserVideoPreference {
 		$this->reception_enabled = $reception_enabled;
+
 		return $this;
 	}
+
 	/**
 	 * Gets Reception Video Enabled State.
 	 *
@@ -258,6 +263,7 @@ class UserVideoPreference {
 	 */
 	public function set_reception_video_enabled_setting( bool $reception_video_enabled ): UserVideoPreference {
 		$this->reception_video_enabled = $reception_video_enabled;
+
 		return $this;
 	}
 
@@ -270,6 +276,7 @@ class UserVideoPreference {
 	 */
 	public function set_reception_video_url_setting( string $reception_video_url = null ): UserVideoPreference {
 		$this->reception_video_url = $reception_video_url;
+
 		return $this;
 	}
 

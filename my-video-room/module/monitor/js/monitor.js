@@ -6,7 +6,7 @@
 
 /*global myvideoroom_monitor_texts*/
 
-(function ( $ ) {
+(function ($) {
 
 	var $elements = $( '.myvideoroom-monitor' );
 

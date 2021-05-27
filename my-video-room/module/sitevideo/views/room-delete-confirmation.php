@@ -56,7 +56,8 @@ return function (
 			value="<?php esc_html_e( 'Yes, delete room', 'myvideoroom' ); ?>"
 		/>
 		<a href="<?php echo esc_url_raw( $cancel_url ); ?>">
-			<input type="text" class="button button-primary negative" value="<?php esc_html_e( 'Cancel', 'myvideoroom' ); ?>">
+			<input type="text" class="button button-primary negative"
+				value="<?php esc_html_e( 'Cancel', 'myvideoroom' ); ?>">
 		</a>
 	</form>
 

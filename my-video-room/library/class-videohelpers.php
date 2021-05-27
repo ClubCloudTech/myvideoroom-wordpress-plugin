@@ -24,9 +24,9 @@ class VideoHelpers {
 	 * For Video Room Template - Order of Preference Function.
 	 * This function will try to get the Video Room Template from locally defined up to module level and then site default
 	 *
-	 * @param  int    $user_id - userid.
-	 * @param  string $room_name = the room name to check.
-	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
+	 * @param int    $user_id     - userid.
+	 * @param string $room_name   = the room name to check.
+	 * @param bool   $multi_owner = Flag for Site Video Multi-tenanted case.
 	 *
 	 * @return ?string Video Room Template if any.
 	 */
@@ -81,9 +81,9 @@ class VideoHelpers {
 	 * For Video Reception URL - Order of Preference Function.
 	 * This function will try to get the reception URL status from locally defined up to module level and then site default
 	 *
-	 * @param  int    $user_id - userid.
-	 * @param  string $room_name = the room name to check.
-	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
+	 * @param int    $user_id     - userid.
+	 * @param string $room_name   = the room name to check.
+	 * @param bool   $multi_owner = Flag for Site Video Multi-tenanted case.
 	 *
 	 * @return ?string url if any.
 	 */
@@ -100,10 +100,10 @@ class VideoHelpers {
 		}
 		// Now Try the Category Preference.
 
-			$current_user_setting = $video_preference_dao->get_by_id(
-				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				$room_name
-			);
+		$current_user_setting = $video_preference_dao->get_by_id(
+			SiteDefaults::USER_ID_SITE_DEFAULTS,
+			$room_name
+		);
 
 		if ( $current_user_setting ) {
 			return $current_user_setting->get_reception_video_url_setting();
@@ -138,9 +138,9 @@ class VideoHelpers {
 	 * For Video Reception State - Order of Preference Function.
 	 * This function will try the reception status from locally defined up to modeule level and then site default
 	 *
-	 * @param  int    $user_id - userid.
-	 * @param  string $room_name = the room name to check.
-	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
+	 * @param int    $user_id     - userid.
+	 * @param string $room_name   = the room name to check.
+	 * @param bool   $multi_owner = Flag for Site Video Multi-tenanted case.
 	 *
 	 * @return bool Video Reception State.
 	 */
@@ -195,9 +195,9 @@ class VideoHelpers {
 	 * For Video Reception Template - Order of Preference Function.
 	 * This function will try to get the reception Template from locally defined up to module level and then site default
 	 *
-	 * @param  int    $user_id - userid.
-	 * @param  string $room_name = the room name to check.
-	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
+	 * @param int    $user_id     - userid.
+	 * @param string $room_name   = the room name to check.
+	 * @param bool   $multi_owner = Flag for Site Video Multi-tenanted case.
 	 *
 	 * @return ?string Reception template
 	 */
@@ -246,13 +246,14 @@ class VideoHelpers {
 			return null;
 		}
 	}
+
 	/**
 	 * For Video Reception Enabled State - Order of Preference Function.
 	 * This function will try to get the reception status from locally defined up to module level and then site default
 	 *
-	 * @param  int    $user_id - userid.
-	 * @param  string $room_name = the room name to check.
-	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
+	 * @param int    $user_id     - userid.
+	 * @param string $room_name   = the room name to check.
+	 * @param bool   $multi_owner = Flag for Site Video Multi-tenanted case.
 	 *
 	 * @return ?bool - Video Reception State.
 	 */
@@ -305,9 +306,9 @@ class VideoHelpers {
 	 * Show Floorplan Function
 	 * Gets the floorplan setting for a user
 	 *
-	 * @param  int    $user_id - required.
-	 * @param  string $room_name - required.
-	 * @param  bool   $multi_owner = Flag for Site Video Multi-tenanted case.
+	 * @param int    $user_id     - required.
+	 * @param string $room_name   - required.
+	 * @param bool   $multi_owner = Flag for Site Video Multi-tenanted case.
 	 *
 	 * @return ?bool Floorplan status.
 	 */

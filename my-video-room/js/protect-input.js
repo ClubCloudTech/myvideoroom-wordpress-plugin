@@ -9,7 +9,7 @@
 	$inputs.on(
 		'keyup keydown',
 		function (e) {
-			return ! ! ( /[a-z0-9]$/i.test( e.key ) );
+			return ! ! (/[a-z0-9]$/i.test( e.key ));
 		}
-	)
+	);
 })( jQuery );

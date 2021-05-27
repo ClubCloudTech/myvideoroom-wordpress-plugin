@@ -6,7 +6,7 @@
 
 /*global myvideoroom_sitevideo_settings*/
 
-(function ( $ ) {
+(function ($) {
 	$( '.myvideoroom-sitevideo-settings' ).on(
 		'click',
 		function (e) {
@@ -30,7 +30,7 @@
 					},
 					success: function (response) {
 						if ('URLSearchParams' in window) {
-							var searchParams = new URLSearchParams( window.location.search )
+							var searchParams = new URLSearchParams( window.location.search );
 							searchParams.set( 'room_id', room_id );
 
 							var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
@@ -39,7 +39,7 @@
 
 						$container.html( response );
 
-						if ( window.myvideoroom_tabbed_init ) {
+						if (window.myvideoroom_tabbed_init) {
 							window.myvideoroom_tabbed_init( $container );
 						}
 					}

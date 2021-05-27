@@ -1,10 +1,10 @@
 .myvideoroom-room-builder-settings .custom-permissions select {
-	width: 100%;
 	display: block;
+	width: 100%;
 }
 
 .myvideoroom-room-builder-settings .custom-permissions strong {
 	display: block;
-	margin: 0 0 16px 0;
 	font-weight: normal;
+	margin: 0 0 16px 0;
 }

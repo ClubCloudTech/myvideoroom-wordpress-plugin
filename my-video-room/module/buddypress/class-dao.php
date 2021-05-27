@@ -17,23 +17,6 @@ use MyVideoRoomPlugin\Plugin;
 class Dao {
 
 	/**
-	 * Get the table name
-	 *
-	 * @return string
-	 */
-	private function get_table_name(): string {
-		global $wpdb;
-		return $wpdb->prefix . Plugin::PLUGIN_NAMESPACE . '_buddypress';
-	}
-
-	/**
-	 * Get the cache key
-	 */
-	private function get_cache_group(): string {
-		return Plugin::PLUGIN_NAMESPACE . '_buddypress';
-	}
-
-	/**
 	 * Create the table
 	 */
 	public function create_table() {
@@ -49,6 +32,17 @@ SQL;
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		\dbDelta( $sql );
+	}
+
+	/**
+	 * Get the table name
+	 *
+	 * @return string
+	 */
+	private function get_table_name(): string {
+		global $wpdb;
+
+		return $wpdb->prefix . Plugin::PLUGIN_NAMESPACE . '_buddypress';
 	}
 
 	/**
@@ -99,6 +93,13 @@ SQL;
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get the cache key
+	 */
+	private function get_cache_group(): string {
+		return Plugin::PLUGIN_NAMESPACE . '_buddypress';
 	}
 
 	/**

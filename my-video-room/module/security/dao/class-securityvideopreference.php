@@ -15,16 +15,6 @@ use MyVideoRoomPlugin\Module\Security\Security;
  */
 class SecurityVideoPreference {
 	/**
-	 * Get the table name for this DAO.
-	 *
-	 * @return string
-	 */
-	private function get_table_name(): string {
-		global $wpdb;
-		return $wpdb->prefix . Security::TABLE_NAME_SECURITY_CONFIG;
-	}
-
-	/**
 	 * Install Module Security Config Table.
 	 *
 	 * @return bool
@@ -56,13 +46,23 @@ class SecurityVideoPreference {
 	}
 
 	/**
+	 * Get the table name for this DAO.
+	 *
+	 * @return string
+	 */
+	private function get_table_name(): string {
+		global $wpdb;
+
+		return $wpdb->prefix . Security::TABLE_NAME_SECURITY_CONFIG;
+	}
+
+	/**
 	 * Save a User Video Preference into the database
 	 *
 	 * @param SecurityVideoPreferenceEntity $user_video_preference The video preference to save.
 	 *
-	 * @throws \Exception When failing to insert, most likely a duplicate key.
-	 *
 	 * @return SecurityVideoPreferenceEntity|null
+	 * @throws \Exception When failing to insert, most likely a duplicate key.
 	 */
 	public function create( SecurityVideoPreferenceEntity $user_video_preference ): ?SecurityVideoPreferenceEntity {
 		global $wpdb;
@@ -93,16 +93,104 @@ class SecurityVideoPreference {
 
 		$user_video_preference->set_id( $wpdb->insert_id );
 
-		\wp_cache_set( $cache_key, $user_video_preference->to_json(), implode( '::', array( __CLASS__, 'get_by_id' ) ) );
-		\wp_cache_delete( $user_video_preference->get_user_id(), implode( '::', array( __CLASS__, 'get_by_user_id' ) ) );
+		\wp_cache_set(
+			$cache_key,
+			$user_video_preference->to_json(),
+			implode(
+				'::',
+				array(
+					__CLASS__,
+					'get_by_id',
+				)
+			)
+		);
+		\wp_cache_delete(
+			$user_video_preference->get_user_id(),
+			implode(
+				'::',
+				array(
+					__CLASS__,
+					'get_by_user_id',
+				)
+			)
+		);
 
 		return $user_video_preference;
 	}
 
 	/**
+	 * Create a cache key
+	 *
+	 * @param int    $user_id   The user id.
+	 * @param string $room_name The room name.
+	 *
+	 * @return string
+	 */
+	private function create_cache_key( int $user_id, string $room_name ): string {
+		return "user_id:${user_id}:room_name:${room_name}";
+	}
+
+	/**
+	 * Update Database Post ID.
+	 * This function updates the Post ID of the Security Entity Table so that new pages can pick up settings of deleted pages.
+	 *
+	 * @param int $new_user_id New post_id to update preference table with.
+	 * @param int $old_user_id The old post that was deleted.
+	 *
+	 * @return bool
+	 */
+	public function update_user_id( int $new_user_id, int $old_user_id ): bool {
+		$preferences = $this->get_by_user_id( $old_user_id );
+
+		foreach ( $preferences as $preference ) {
+			$preference->set_user_id( $new_user_id );
+			$this->update( $preference );
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get a User Video Preference from the database
 	 *
-	 * @param int    $user_id The user id.
+	 * @param int $user_id The user id.
+	 *
+	 * @return SecurityVideoPreferenceEntity[]
+	 */
+	public function get_by_user_id( int $user_id ): array {
+		global $wpdb;
+
+		$results = array();
+
+		$room_names = \wp_cache_get( $user_id, __METHOD__ );
+
+		if ( false === $room_names ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$room_names = $wpdb->get_col(
+				$wpdb->prepare(
+					'
+						SELECT room_name
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
+						WHERE user_id = %d;
+					',
+					$user_id,
+				)
+			);
+
+			\wp_cache_set( $user_id, __METHOD__, $room_names );
+		}
+
+		foreach ( $room_names as $room_name ) {
+			$results[] = $this->get_by_id( $user_id, $room_name );
+		}
+
+		return $results;
+	}
+
+	/**
+	 * Get a User Video Preference from the database
+	 *
+	 * @param int    $user_id   The user id.
 	 * @param string $room_name The room name.
 	 *
 	 * @return SecurityVideoPreferenceEntity|null
@@ -138,7 +226,7 @@ class SecurityVideoPreference {
 			       site_override_enabled, 
 			       restrict_group_to_members_enabled,
 			       bp_friends_setting
-				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
+				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
 				WHERE user_id = %d AND room_name = %s;
 			',
 				array(
@@ -173,75 +261,13 @@ class SecurityVideoPreference {
 		return $result;
 	}
 
-
-
-	/**
-	 * Get a User Video Preference from the database
-	 *
-	 * @param int $user_id The user id.
-	 *
-	 * @return SecurityVideoPreferenceEntity[]
-	 */
-	public function get_by_user_id( int $user_id ): array {
-		global $wpdb;
-
-		$results = array();
-
-		$room_names = \wp_cache_get( $user_id, __METHOD__ );
-
-		if ( false === $room_names ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			$room_names = $wpdb->get_col(
-				$wpdb->prepare(
-					'
-						SELECT room_name
-						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
-						WHERE user_id = %d;
-					',
-					$user_id,
-				)
-			);
-
-			\wp_cache_set( $user_id, __METHOD__, $room_names );
-		}
-
-		foreach ( $room_names as $room_name ) {
-			$results[] = $this->get_by_id( $user_id, $room_name );
-		}
-
-		return $results;
-	}
-
-
-	/**
-	 * Update Database Post ID.
-	 * This function updates the Post ID of the Security Entity Table so that new pages can pick up settings of deleted pages.
-	 *
-	 * @param  int $new_user_id New post_id to update preference table with.
-	 * @param  int $old_user_id The old post that was deleted.
-	 *
-	 * @return bool
-	 */
-	public function update_user_id( int $new_user_id, int $old_user_id ): bool {
-		$preferences = $this->get_by_user_id( $old_user_id );
-
-		foreach ( $preferences as $preference ) {
-			$preference->set_user_id( $new_user_id );
-			$this->update( $preference );
-		}
-
-		return true;
-	}
-
-
 	/**
 	 * Update a User Video Preference into the database
 	 *
 	 * @param SecurityVideoPreferenceEntity $user_video_preference The updated user video preference.
 	 *
-	 * @throws \Exception When failing to update.
-	 *
 	 * @return SecurityVideoPreferenceEntity|null
+	 * @throws \Exception When failing to update.
 	 */
 	public function update( SecurityVideoPreferenceEntity $user_video_preference ): ?SecurityVideoPreferenceEntity {
 		global $wpdb;
@@ -273,21 +299,38 @@ class SecurityVideoPreference {
 			)
 		);
 
-		\wp_cache_set( $cache_key, $user_video_preference->to_json(), implode( '::', array( __CLASS__, 'get_by_id' ) ) );
-		\wp_cache_delete( $user_video_preference->get_user_id(), implode( '::', array( __CLASS__, 'get_by_user_id' ) ) );
+		\wp_cache_set(
+			$cache_key,
+			$user_video_preference->to_json(),
+			implode(
+				'::',
+				array(
+					__CLASS__,
+					'get_by_id',
+				)
+			)
+		);
+		\wp_cache_delete(
+			$user_video_preference->get_user_id(),
+			implode(
+				'::',
+				array(
+					__CLASS__,
+					'get_by_user_id',
+				)
+			)
+		);
 
 		return $user_video_preference;
 	}
-
 
 	/**
 	 * Delete a User Video Preference from the database
 	 *
 	 * @param SecurityVideoPreferenceEntity $user_video_preference The user video preference to delete.
 	 *
-	 * @throws \Exception When failing to delete.
-	 *
 	 * @return null
+	 * @throws \Exception When failing to delete.
 	 */
 	public function delete( SecurityVideoPreferenceEntity $user_video_preference ) {
 		global $wpdb;
@@ -307,35 +350,31 @@ class SecurityVideoPreference {
 		);
 
 		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_by_id' ) ) );
-		\wp_cache_delete( $user_video_preference->get_user_id(), implode( '::', array( __CLASS__, 'get_by_user_id' ) ) );
+		\wp_cache_delete(
+			$user_video_preference->get_user_id(),
+			implode(
+				'::',
+				array(
+					__CLASS__,
+					'get_by_user_id',
+				)
+			)
+		);
 
 		return null;
 	}
 
 	/**
-	 * Create a cache key
-	 *
-	 * @param int    $user_id The user id.
-	 * @param string $room_name The room name.
-	 *
-	 * @return string
-	 */
-	private function create_cache_key( int $user_id, string $room_name ): string {
-		return "user_id:${user_id}:room_name:${room_name}";
-	}
-
-	/**
 	 * Get a Just Preference Data from the database
 	 *
-	 * @deprecated Call self::get_by_id instead
-	 *
-	 * @param int    $user_id The user id.
-	 * @param string $room_name The room name.
+	 * @param int    $user_id     The user id.
+	 * @param string $room_name   The room name.
 	 * @param string $return_type - The field to return.
 	 *
 	 * @return null
 	 *
 	 * Returns layout ID, Reception ID, or Reception Enabled Status
+	 * @deprecated Call self::get_by_id instead
 	 */
 	public function read_security_settings( int $user_id, string $room_name, string $return_type ) {
 

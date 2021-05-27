@@ -21,7 +21,8 @@ class SecurityRoomHelpers {
 	/**
 	 * Render Security Admin Settings Page
 	 *
-	 * @param  array $input - the inbound menu.
+	 * @param array $input - the inbound menu.
+	 *
 	 * @return array - outbound menu.
 	 */
 	public function render_security_admin_settings_page( array $input ): array {
@@ -32,6 +33,7 @@ class SecurityRoomHelpers {
 			fn() => $this->get_security_admin_page()
 		);
 		array_push( $input, $admin_tab );
+
 		return $input;
 	}
 
@@ -47,9 +49,9 @@ class SecurityRoomHelpers {
 	/**
 	 * Security Plugin Module Disable.
 	 *
-	 *  @param  int $module_id - the module ID of the Feature Database.
+	 * @param int $module_id - the module ID of the Feature Database.
 	 *
-	 *  @return bool
+	 * @return bool
 	 */
 	public function security_disable_feature_module( int $module_id ): bool {
 		if ( Security::MODULE_SECURITY_ID !== $module_id ) {
@@ -59,6 +61,7 @@ class SecurityRoomHelpers {
 		$security_module = Factory::get_instance( Module::class )->get_module( $module_slug );
 		Factory::get_instance( Modules::class )->deactivate_module( $security_module );
 		header( 'Refresh:0' );
+
 		return true;
 	}
 

@@ -3,7 +3,7 @@
  * Renders the form for changing the user video preference.
  *
  * @param string|null $current_user_setting
- * @param array $available_layouts
+ * @param array       $available_layouts
  *
  * @package MyVideoRoomExtrasPlugin\Views\Public
  */

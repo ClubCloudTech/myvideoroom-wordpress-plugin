@@ -24,32 +24,22 @@ class ModuleConfig {
 	const ACTION_DISABLE = 'disable';
 
 	/**
-	 * Get the table name for this DAO.
-	 *
-	 * @return string
-	 */
-	private function get_table_name(): string {
-		global $wpdb;
-		return $wpdb->prefix . self::TABLE_NAME;
-	}
-
-	/**
 	 * Register a given room in the Database, and ensure it does not already exist
 	 *
-	 * @param  string $module_name             Name of module to register.
-	 * @param  int    $module_id               ID of module to register.
-	 * @param  bool   $module_has_admin_page   Whether module has admin page.
+	 * @param string $module_name           Name of module to register.
+	 * @param int    $module_id             ID of module to register.
+	 * @param bool   $module_has_admin_page Whether module has admin page.
 	 *
 	 * @return bool
 	 */
 	public function register_module_in_db( string $module_name, int $module_id, bool $module_has_admin_page = null ): bool {
 		global $wpdb;
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->query(
 			$wpdb->prepare(
 				'
-					INSERT IGNORE INTO ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
+					INSERT IGNORE INTO ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
 					(module_name, module_id, module_has_admin_page) 
 					VALUES( %s, %d, %d )
 				',
@@ -64,68 +54,16 @@ class ModuleConfig {
 		return true;
 	}
 
-
 	/**
-	 * This function renders the activate/deactivate button for a give module
-	 * Used only in admin pages of plugin
+	 * Get the table name for this DAO.
 	 *
-	 * @param int $module_id - The module ID.
-	 *
-	 * @return bool
+	 * @return string
 	 */
-	public function is_module_activation_enabled( int $module_id ): bool {
+	private function get_table_name(): string {
 		global $wpdb;
 
-		$found  = false;
-		$result = \wp_cache_get( $module_id, __METHOD__, $found );
-
-		if ( ! $found ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			$row = $wpdb->get_row(
-				$wpdb->prepare(
-					'
-						SELECT module_enabled 
-						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . ' 
-						WHERE module_id = %d
-					',
-					$module_id
-				)
-			);
-
-			if ( $row ) {
-				$result = (bool) $row->module_enabled;
-			}
-
-			\wp_cache_set( $module_id, $result, __METHOD__ );
-		}
-
-		return (bool) $result;
+		return $wpdb->prefix . self::TABLE_NAME;
 	}
-
-	/**
-	 * Update Enabled Module Status in Database.
-	 *
-	 * @param  int  $module_id      ID of module.
-	 * @param  bool $module_enabled Is module enabled.
-	 *
-	 * @return bool
-	 */
-	public function update_enabled_status( int $module_id, bool $module_enabled ): bool {
-		global $wpdb;
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-		$wpdb->update(
-			$this->get_table_name(),
-			array( 'module_enabled' => (int) $module_enabled ),
-			array( 'module_id' => $module_id )
-		);
-
-		\wp_cache_set( $module_id, $module_enabled, implode( '::', array( __CLASS__, 'is_module_activation_enabled' ) ) );
-
-		return true;
-	}
-
-	// ---
 
 	/**
 	 * This function renders the activate/deactivate button for a given module
@@ -197,14 +135,86 @@ class ModuleConfig {
 		?>
 		<div>
 			<a href="<?php echo esc_url( $url ); ?>"
-			class="<?php echo esc_html( $status ); ?>"
-			title="<?php echo esc_html( $description ); ?>"
+				class="<?php echo esc_html( $status ); ?>"
+				title="<?php echo esc_html( $description ); ?>"
 			>
-			<i class="dashicons <?php echo esc_html( $type ) . ' ' . esc_html( $status ); ?>"></i>
-			<?php echo esc_html( $main_text ); ?></a>
+				<i class="dashicons <?php echo esc_html( $type ) . ' ' . esc_html( $status ); ?>"></i>
+				<?php echo esc_html( $main_text ); ?></a>
 		</div>
 		<?php
 
 		return $result;
+	}
+
+	/**
+	 * Update Enabled Module Status in Database.
+	 *
+	 * @param int  $module_id      ID of module.
+	 * @param bool $module_enabled Is module enabled.
+	 *
+	 * @return bool
+	 */
+	public function update_enabled_status( int $module_id, bool $module_enabled ): bool {
+		global $wpdb;
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->update(
+			$this->get_table_name(),
+			array( 'module_enabled' => (int) $module_enabled ),
+			array( 'module_id' => $module_id )
+		);
+
+		\wp_cache_set(
+			$module_id,
+			$module_enabled,
+			implode(
+				'::',
+				array(
+					__CLASS__,
+					'is_module_activation_enabled',
+				)
+			)
+		);
+
+		return true;
+	}
+
+	// ---
+
+	/**
+	 * This function renders the activate/deactivate button for a give module
+	 * Used only in admin pages of plugin
+	 *
+	 * @param int $module_id - The module ID.
+	 *
+	 * @return bool
+	 */
+	public function is_module_activation_enabled( int $module_id ): bool {
+		global $wpdb;
+
+		$found  = false;
+		$result = \wp_cache_get( $module_id, __METHOD__, $found );
+
+		if ( ! $found ) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					'
+						SELECT module_enabled 
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . ' 
+						WHERE module_id = %d
+					',
+					$module_id
+				)
+			);
+
+			if ( $row ) {
+				$result = (bool) $row->module_enabled;
+			}
+
+			\wp_cache_set( $module_id, $result, __METHOD__ );
+		}
+
+		return (bool) $result;
 	}
 }

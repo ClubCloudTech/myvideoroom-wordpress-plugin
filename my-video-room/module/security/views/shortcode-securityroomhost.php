@@ -33,17 +33,14 @@ return function (
 		<?php
 		$output = null;
 		$output = apply_filters( 'myvideoroom_security_roomhosts_preference_buttons', $output, $user_id, $room_name );
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
+
+		$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
 		?>
 		<form method="post" action="">
 			<input name="myvideoroom_security_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
-			<input name="myvideoroom_security_user_id" type="hidden" value="
-				<?php
-				$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
-				echo esc_html( $user_id );
-				?>
-				" />
+			<input name="myvideoroom_security_user_id" type="hidden" value="<?php echo esc_html( $user_id ); ?>" />
 			<h2 class="mvr-title-header">
 				<label
 					for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
@@ -71,8 +68,8 @@ return function (
 				name="myvideoroom_security_allowed_roles_preference[]"
 				id="myvideoroom_security_allowed_roles_preference">
 				<?php
-                //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already escapes HTML properly upstream.
-                echo $roles_output;
+				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already escapes HTML properly upstream.
+				echo $roles_output;
 				?>
 			</select>
 			<br>
@@ -115,7 +112,7 @@ return function (
 			<input type="hidden" name="myvideoroom_user_id" value="<?php echo esc_attr( $user_id ); ?>" />
 
 			<?php
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo Factory::get_instance( \MyVideoRoomPlugin\Library\HttpPost::class )->create_form_submit(
 				'update_security_video_preference',
 				\esc_html__( 'Save changes', 'myvideoroom' )

@@ -26,7 +26,8 @@ return function (
 				$tab_slug         = $menu_output->get_tab_slug();
 				?>
 				<li>
-					<a class="nav-tab<?php echo esc_attr( $active ); ?>" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+					<a class="nav-tab<?php echo esc_attr( $active ); ?>"
+						href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 						<?php echo esc_html( $tab_display_name ); ?>
 					</a>
 				</li>

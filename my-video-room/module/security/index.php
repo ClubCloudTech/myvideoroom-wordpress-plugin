@@ -26,15 +26,15 @@ add_action(
 			),
 			fn() => Factory::get_instance( Security::class )->init()
 		)
-		->add_activation_hook(
-			fn () => Factory::get_instance( Security::class )->activate_module()
-		)
-		->add_admin_page_hook(
-			fn () => Factory::get_instance( Security::class )->render_security_admin_page()
-		)
-		->add_deactivation_hook(
-			fn () => Factory::get_instance( Security::class )->de_activate_module()
-		);
+			->add_activation_hook(
+				fn() => Factory::get_instance( Security::class )->activate_module()
+			)
+			->add_admin_page_hook(
+				fn() => Factory::get_instance( Security::class )->render_security_admin_page()
+			)
+			->add_deactivation_hook(
+				fn() => Factory::get_instance( Security::class )->de_activate_module()
+			);
 
 		/**
 		 * Example of adding hooks

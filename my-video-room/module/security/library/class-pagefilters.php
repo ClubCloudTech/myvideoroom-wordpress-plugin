@@ -30,11 +30,13 @@ class PageFilters {
 	public function runtime_filters() {
 
 	}
+
 	/**
 	 * This function Checks a Module is Active to allow it to render Video
 	 * Used only in admin pages of plugin
 	 *
-	 * @param  int $module_id - the Module ID from DB.
+	 * @param int $module_id - the Module ID from DB.
+	 *
 	 * @return string|null depending on status.
 	 */
 	public function block_disabled_module_video_render( int $module_id ): ?string {
@@ -47,6 +49,7 @@ class PageFilters {
 		if ( ! $is_module_enabled ) {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
 		}
+
 		return null;
 	}
 
@@ -96,6 +99,7 @@ class PageFilters {
 				return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $user_id );
 			}
 		}
+
 		return null;
 	}
 
@@ -103,9 +107,9 @@ class PageFilters {
 	 * This function Checks The Disable Anonymous Setting is/not on - and enforces result
 	 * Used by all rooms
 	 *
-	 * @param  int                      $user_id - the UserID.
-	 * @param  ?SecurityVideoPreference $user_permissions - Object with user Permissions.
-	 * @param  ?SecurityVideoPreference $site_override_permissions - Object with Site Enforcement settings.
+	 * @param int                      $user_id                      - the UserID.
+	 * @param  ?SecurityVideoPreference $user_permissions             - Object with user Permissions.
+	 * @param  ?SecurityVideoPreference $site_override_permissions    - Object with Site Enforcement settings.
 	 * @param  ?SecurityVideoPreference $security_default_permissions - Object with Default (no user preference yet applied) settings.
 	 *
 	 * @return null|string depending.
@@ -219,10 +223,10 @@ class PageFilters {
 	 * * This function Checks The Role Based Configuration Settings - and enforces result
 	 * Used by all rooms
 	 *
-	 * @param  int     $owner_id     UserID of owner.
-	 * @param  string  $room_name    Name of Room to filter.
-	 * @param  string  $host_status  If used.
-	 * @param  ?string $room_type    Class of room.
+	 * @param int     $owner_id    UserID of owner.
+	 * @param string  $room_name   Name of Room to filter.
+	 * @param string  $host_status If used.
+	 * @param  ?string $room_type   Class of room.
 	 *
 	 * @return ?string depending.
 	 */

@@ -6,7 +6,7 @@
 
 /*global myvideroom_sitevideo_settings*/
 
-(function ( $ ) {
+(function ($) {
 	$( '.myvideoroom-sitevideo-add-room' ).each(
 		function () {
 			var $add_room = $( this );
@@ -18,7 +18,7 @@
 				.appendTo( $( 'form', $add_room ) )
 				.on(
 					'click',
-					function ( e ) {
+					function (e) {
 						$button.show();
 						$add_room.hide();
 						e.stopPropagation();
@@ -31,10 +31,10 @@
 				.on(
 					'click',
 					function () {
-						$( this ) .hide();
+						$( this ).hide();
 						$add_room.show();
 					}
-				)
+				);
 		}
-	)
+	);
 })( jQuery );

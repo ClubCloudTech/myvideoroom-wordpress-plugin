@@ -198,17 +198,6 @@ class Module {
 	}
 
 	/**
-	 * Mark the module as active
-	 *
-	 * @return $this
-	 */
-	public function set_as_active(): self {
-		$this->active = true;
-
-		return $this;
-	}
-
-	/**
 	 * Add an activation hook
 	 *
 	 * @param callable $activation_hook Add a callback to call when the module is activated.
@@ -238,6 +227,17 @@ class Module {
 		$this->set_as_active();
 
 		return true;
+	}
+
+	/**
+	 * Mark the module as active
+	 *
+	 * @return $this
+	 */
+	public function set_as_active(): self {
+		$this->active = true;
+
+		return $this;
 	}
 
 	/**
@@ -273,6 +273,17 @@ class Module {
 	}
 
 	/**
+	 * Mark the module as inactive
+	 *
+	 * @return $this
+	 */
+	public function set_as_inactive(): self {
+		$this->active = false;
+
+		return $this;
+	}
+
+	/**
 	 * Add an uninstall hook
 	 *
 	 * @param callable $uninstall_hook Add a callback to call when the module is uninstalled.
@@ -303,16 +314,6 @@ class Module {
 	}
 
 	/**
-	 * Mark the module as inactive
-	 *
-	 * @return $this
-	 */
-	public function set_as_inactive(): self {
-		$this->active = false;
-		return $this;
-	}
-
-	/**
 	 * Mark the module as hidden
 	 * If the module is active then it will still be active, but not shown on the modules page.
 	 * If the module is inactive then it will be shown on the modules page to allow the user to activate it.
@@ -321,6 +322,7 @@ class Module {
 	 */
 	public function set_as_hidden(): self {
 		$this->hidden = true;
+
 		return $this;
 	}
 
@@ -335,21 +337,21 @@ class Module {
 	}
 
 	/**
-	 * Is the module published
-	 *
-	 * @return bool
-	 */
-	public function is_published(): bool {
-		return ! ! $this->instantiation_hook;
-	}
-
-	/**
 	 * Is the module active?
 	 *
 	 * @return bool
 	 */
 	public function is_active(): bool {
 		return $this->active;
+	}
+
+	/**
+	 * Is the module published
+	 *
+	 * @return bool
+	 */
+	public function is_published(): bool {
+		return ! ! $this->instantiation_hook;
 	}
 
 }

@@ -26,15 +26,6 @@ class AvailableScenes {
 	}
 
 	/**
-	 * Get a list of available receptions from MyVideoRoom
-	 *
-	 * @return array
-	 */
-	public function get_available_receptions(): array {
-		return \apply_filters( 'myvideoroom_available_receptions', $this->get_available_scenes( 'receptions' ) );
-	}
-
-	/**
 	 * Get a list of available scenes from MyVideoRoom
 	 *
 	 * @param string $uri The type of scene (layouts/receptions).
@@ -65,5 +56,14 @@ class AvailableScenes {
 		}
 
 		return $scenes;
+	}
+
+	/**
+	 * Get a list of available receptions from MyVideoRoom
+	 *
+	 * @return array
+	 */
+	public function get_available_receptions(): array {
+		return \apply_filters( 'myvideoroom_available_receptions', $this->get_available_scenes( 'receptions' ) );
 	}
 }

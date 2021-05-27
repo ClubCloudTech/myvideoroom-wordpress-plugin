@@ -61,7 +61,7 @@ class RoomInfo {
 				break;
 			default:
 				$value = sprintf(
-					/* translators: %s is the data type string */
+				/* translators: %s is the data type string */
 					esc_html__( 'Unknown data type "%s"' ),
 					$data_type
 				);

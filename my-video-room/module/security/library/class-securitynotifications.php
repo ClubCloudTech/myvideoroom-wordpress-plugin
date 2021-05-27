@@ -22,8 +22,8 @@ class SecurityNotifications {
 	/**
 	 * Takes UserID and Room Name from Template pages and returns formatted room information icons.
 	 *
-	 * @param  int    $user_id   User ID to check.
-	 * @param  string $room_name Room Name to check.
+	 * @param int    $user_id   User ID to check.
+	 * @param string $room_name Room Name to check.
 	 *
 	 * @return ?string - the icons.
 	 */
@@ -89,17 +89,19 @@ class SecurityNotifications {
 	private function create_icon( string $icon, string $title ): string {
 		return '<i class="card dashicons mvr-icons dashicons-' . esc_attr( $icon ) . '" title="' . esc_html( $title ) . '"></i>';
 	}
+
 	/**
 	 * Filter for Adding Template Buttons to Shortcode Builder
 	 *
 	 * @param ?string $template_icons The room name to use.
-	 * @param int     $user_id The user id to construct from.
-	 * @param ?string $room_name The room name to use.
+	 * @param int     $user_id        The user id to construct from.
+	 * @param ?string $room_name      The room name to use.
 	 *
 	 * @return string
 	 */
 	public function add_default_video_icons_to_header( ?string $template_icons, int $user_id, string $room_name ): string {
 		$template_icons .= Factory::get_instance( self::class )->show_icon( $user_id, $room_name );
+
 		return $template_icons;
 	}
 
@@ -107,9 +109,9 @@ class SecurityNotifications {
 	 * Show Security Status.
 	 * Takes UserID and Room Name from Template pages and returns formatted room information Buttons for Control Forms.
 	 *
-	 * @param  ?string $output Value in Filter.
-	 * @param  int     $user_id   User ID to check.
-	 * @param  string  $room_name Room Name to check.
+	 * @param  ?string $output    Value in Filter.
+	 * @param int     $user_id   User ID to check.
+	 * @param string  $room_name Room Name to check.
 	 *
 	 * @return ?string - The Buttons.
 	 */
@@ -161,6 +163,7 @@ class SecurityNotifications {
 			$output .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled( 'nourl' );
 			$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'You are overriding User and Room settings with ones applied centrally below.', 'my-video-room' ) . '</p>';
 		}
+
 		return $output;
 	}
 
@@ -169,8 +172,8 @@ class SecurityNotifications {
 	 * Takes UserID and Room Name from Template pages and returns formatted room information Buttons for Control Forms.
 	 *
 	 * @param  ?string $output    Filter content.
-	 * @param  int     $user_id   User ID to check.
-	 * @param  string  $room_name Room Name to check.
+	 * @param int     $user_id   User ID to check.
+	 * @param string  $room_name Room Name to check.
 	 *
 	 * @return ?string - The Buttons.
 	 */
@@ -221,6 +224,7 @@ class SecurityNotifications {
 			$output .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled( 'nourl' );
 			$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'An Administrator is overriding your settings with ones applied centrally. Certain settings stored here may not be applied', 'my-video-room' ) . '</p>';
 		}
+
 		return $output;
 	}
 
@@ -228,9 +232,9 @@ class SecurityNotifications {
 	 * Show Security Shortcode Room Hosts Status.
 	 * Takes UserID and Room Name from Template pages and returns formatted room information Buttons for Control Forms.
 	 *
-	 * @param  ?string $output   Filter content.
-	 * @param  int     $user_id   User ID to check.
-	 * @param  string  $room_name Room Name to check.
+	 * @param  ?string $output    Filter content.
+	 * @param int     $user_id   User ID to check.
+	 * @param string  $room_name Room Name to check.
 	 *
 	 * @return ?string - The Buttons.
 	 */
@@ -266,6 +270,7 @@ class SecurityNotifications {
 			$output .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled( 'nourl' );
 			$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'An Administrator is overriding your settings with ones applied centrally. Certains Settings stored here may not be applied', 'my-video-room' ) . '</p>';
 		}
+
 		return $output;
 	}
 
@@ -278,6 +283,7 @@ class SecurityNotifications {
 	 */
 	public function show_security_sitewide_status( ?string $input ): string {
 		$input .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled();
+
 		return $input;
 	}
 }

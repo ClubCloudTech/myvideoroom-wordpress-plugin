@@ -34,11 +34,11 @@ class Select extends Field {
 	/**
 	 * Checkbox constructor.
 	 *
-	 * @param string         $key               The key/slug of the field.
-	 * @param string         $label             The translated label.
-	 * @param ?string        $description       The optional description.
-	 * @param SelectOption[] $options           If the checkbox is on or off.
-	 * @param ?string        $selected_value    The currently selected value.
+	 * @param string         $key            The key/slug of the field.
+	 * @param string         $label          The translated label.
+	 * @param ?string        $description    The optional description.
+	 * @param SelectOption[] $options        If the checkbox is on or off.
+	 * @param ?string        $selected_value The currently selected value.
 	 */
 	public function __construct( string $key, string $label, string $description, array $options = array(), string $selected_value = null ) {
 		parent::__construct( $key, $label, $description );
@@ -56,27 +56,27 @@ class Select extends Field {
 	public function input_to_string( HTML $html_library ): string {
 		ob_start();
 		?>
-			<select
-				type="checkbox"
-				name="<?php echo esc_attr( $html_library->get_field_name( $this->get_key() ) ); ?>"
-				id="<?php echo esc_attr( $html_library->get_id( $this->get_key() ) ); ?>"
+		<select
+			type="checkbox"
+			name="<?php echo esc_attr( $html_library->get_field_name( $this->get_key() ) ); ?>"
+			id="<?php echo esc_attr( $html_library->get_id( $this->get_key() ) ); ?>"
 
-				<?php if ( $this->get_description() ) { ?>
+			<?php if ( $this->get_description() ) { ?>
 				aria-describedby="<?php esc_attr( $html_library->get_description_id( $this->get_key() ) ); ?>"
-				<?php } ?>
-			>
-				<?php
-				foreach ( $this->options as $option ) {
-					$selected = '';
+			<?php } ?>
+		>
+			<?php
+			foreach ( $this->options as $option ) {
+				$selected = '';
 
-					if ( $option->get_value() === $this->selected_value ) {
-						$selected = ' selected';
-					}
-
-					echo '<option value="' . esc_attr( $option->get_value() ) . '"' . esc_attr( $selected ) . '>' . esc_html( $option->get_name() ) . '</option>';
+				if ( $option->get_value() === $this->selected_value ) {
+					$selected = ' selected';
 				}
-				?>
-			</select>
+
+				echo '<option value="' . esc_attr( $option->get_value() ) . '"' . esc_attr( $selected ) . '>' . esc_html( $option->get_name() ) . '</option>';
+			}
+			?>
+		</select>
 		<?php
 		return ob_get_clean();
 	}

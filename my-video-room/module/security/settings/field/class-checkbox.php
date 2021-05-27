@@ -47,19 +47,19 @@ class Checkbox extends Field {
 	public function input_to_string( HTML $html_library ): string {
 		ob_start();
 		?>
-			<input
-				type="checkbox"
-				name="<?php echo esc_attr( $html_library->get_field_name( $this->get_key() ) ); ?>"
-				id="<?php echo esc_attr( $html_library->get_id( $this->get_key() ) ); ?>"
+		<input
+			type="checkbox"
+			name="<?php echo esc_attr( $html_library->get_field_name( $this->get_key() ) ); ?>"
+			id="<?php echo esc_attr( $html_library->get_id( $this->get_key() ) ); ?>"
 
-				<?php if ( $this->checked ) { ?>
+			<?php if ( $this->checked ) { ?>
 				checked
-				<?php } ?>
+			<?php } ?>
 
-				<?php if ( $this->get_description() ) { ?>
+			<?php if ( $this->get_description() ) { ?>
 				aria-describedby="<?php esc_attr( $html_library->get_description_id( $this->get_key() ) ); ?>"
-				<?php } ?>
-			/>
+			<?php } ?>
+		/>
 		<?php
 		return ob_get_clean();
 	}

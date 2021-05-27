@@ -23,10 +23,10 @@ class SecurityEngine {
 	 * This function is called by all video switches to determine if they can return the video room, or if a setting has blocked their rendering
 	 * It is a constructor only with other functions doing the filtering
 	 *
-	 * @param  ?int    $host_id      Host ID to Check.user_id of host to send to upstream filters.
-	 * @param  ?string $room_type    String of type of room to filter on.
-	 * @param  ?int    $module_id    ID of Module in case any active blocking by module.
-	 * @param  ?string $room_name    Name of room to filter.
+	 * @param  ?int    $host_id   Host ID to Check.user_id of host to send to upstream filters.
+	 * @param  ?string $room_type String of type of room to filter on.
+	 * @param  ?int    $module_id ID of Module in case any active blocking by module.
+	 * @param  ?string $room_name Name of room to filter.
 	 *
 	 * @return ?string  - null if nothing blocks, or template page if it does.
 	 */

@@ -51,6 +51,7 @@ class SecurityVideoPreference {
 		}
 
 		$this->check_for_update_request();
+
 		return $this->choose_settings( $user_id, $room_name );
 	}
 
@@ -128,8 +129,8 @@ class SecurityVideoPreference {
 	/**
 	 * Show drop down for user to change their settings
 	 *
-	 * @param  int         $user_id    The user id.
-	 * @param  string      $room_name  The room name.
+	 * @param int         $user_id    The user id.
+	 * @param string      $room_name  The room name.
 	 * @param  ?string     $group_name Name of group.
 	 * @param string|null $type       To return.
 	 *
@@ -165,16 +166,15 @@ class SecurityVideoPreference {
 				$render = include __DIR__ . '/../views/shortcode-securityvideopreference.php';
 		}
 
-		return $render( $current_user_setting, $room_name, self::$id_index++, $roles_output, $user_id, $group_name );
+		return $render( $current_user_setting, $room_name, self::$id_index ++, $roles_output, $user_id, $group_name );
 	}
-
 
 
 	/**
 	 * Reads WordPress Roles, and Merges with Security Settings stored in DB to render Multi-Select Dialog Boxes
 	 *
-	 * @param  int    $user_id - The User_ID.
-	 * @param  string $room_name - Name of Room.
+	 * @param int    $user_id   - The User_ID.
+	 * @param string $room_name - Name of Room.
 	 *
 	 * @return string
 	 */

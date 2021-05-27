@@ -31,6 +31,7 @@ class Dependencies {
 	 */
 	public function is_buddypress_active(): bool {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
 		return is_plugin_active( 'buddypress/bp-loader.php' );
 	}
 
@@ -41,6 +42,7 @@ class Dependencies {
 	 */
 	public function is_security_active(): bool {
 		$module_slug = Security::MODULE_SECURITY_NAME;
+
 		return Factory::get_instance( Module::class )->is_module_active( $module_slug );
 	}
 }

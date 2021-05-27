@@ -2,11 +2,11 @@
 	clip: rect(1px, 1px, 1px, 1px);
 	clip-path: inset(50%);
 	height: 1px;
-	width: 1px;
 	margin: -1px;
 	overflow: hidden;
 	padding: 0;
 	position: absolute;
+	width: 1px;
 }
 
 .myvideoroom-personalmeetingrooms-invite.icon form input {
@@ -15,12 +15,12 @@
 
 .myvideoroom-personalmeetingrooms-invite.icon form input[type=submit],
 .myvideoroom-personalmeetingrooms-invite.icon .link input {
+	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
-	background-position: center;
-	text-indent: -1000px;
 	min-width: 3.5em;
 	overflow: hidden;
+	text-indent: -1000px;
 }
 
 .myvideoroom-personalmeetingrooms-invite.icon form input[type=submit] {

@@ -71,14 +71,14 @@ class ShortcodeReference {
 								<dt>slug</dt>
 								
 								<dd>' . \sprintf(
-									/* translators: %s is the site URL */
+						/* translators: %s is the site URL */
 									esc_html__(
 										'The post slug (eg- %s has slug of Jones)',
 										'myvideoroom'
 									),
 									get_site_url() . '/jones'
 								)
-									. '</dd>
+						. '</dd>
 								
 								<dt>post_id</dt>
 								<dd>' . \esc_html__( 'The WordPress Post ID of a room', 'myvideoroom' ) . '</dd>

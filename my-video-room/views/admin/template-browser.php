@@ -14,8 +14,8 @@ use MyVideoRoomPlugin\Library\HTML;
 /**
  * Show the available layouts and receptions
  *
- * @param array   $available_layouts    The list of available layouts.
- * @param array   $available_receptions The list of available receptions.
+ * @param array $available_layouts    The list of available layouts.
+ * @param array $available_receptions The list of available receptions.
  */
 
 return function (

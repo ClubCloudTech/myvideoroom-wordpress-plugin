@@ -20,51 +20,6 @@ class RoomMap {
 	const PAGE_STATUS_ORPHANED   = 'page-not-exists-but-has-reference';
 
 	/**
-	 * Get the table name for this DAO.
-	 *
-	 * @return string
-	 */
-	private function get_table_name(): string {
-		global $wpdb;
-		return $wpdb->prefix . self::TABLE_NAME;
-	}
-
-	/**
-	 * Get a PostID from the Database for a Page
-	 *
-	 * @param string $room_name inbound room from user.
-	 *
-	 * @return ?int
-	 */
-	public function get_post_id_by_room_name( string $room_name ): ?int {
-		global $wpdb;
-
-		$result = \wp_cache_get( $room_name, __METHOD__ );
-
-		if ( false === $result ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			$row = $wpdb->get_row(
-				$wpdb->prepare(
-					'
-						SELECT post_id 
-						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
-						WHERE room_name = %s
-					',
-					$room_name,
-				)
-			);
-
-			if ( $row ) {
-				$result = (int) $row->post_id;
-			}
-
-			\wp_cache_set( $room_name, $result, __METHOD__ );
-		}
-
-		return (int) $result;
-	}
-
-	/**
 	 * Register a given room in the Database, and ensure it does not already exist
 	 *
 	 * @param string  $room_name    The Room Name.
@@ -105,42 +60,14 @@ class RoomMap {
 	}
 
 	/**
-	 * Get Room Info from Database.
+	 * Get the table name for this DAO.
 	 *
-	 * @param int $post_id The Room iD to query.
-	 *
-	 * @return ?\stdClass
+	 * @return string
 	 */
-	public function get_room_info( int $post_id ): ?\stdClass {
+	private function get_table_name(): string {
 		global $wpdb;
 
-		$result = \wp_cache_get( $post_id, __METHOD__ );
-
-		if ( false === $result ) {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-			$result = $wpdb->get_row(
-				$wpdb->prepare(
-					'
-						SELECT room_name, post_id, room_type, display_name, slug
-						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
-						WHERE post_id = %d
-					',
-					$post_id,
-				),
-				'ARRAY_A'
-			);
-
-			\wp_cache_set( $post_id, $result, __METHOD__ );
-		}
-
-		if ( $result ) {
-			$result     = (object) $result;
-			$result->id = $result->post_id;
-		} else {
-			$result = null;
-		}
-
-		return $result;
+		return $wpdb->prefix . self::TABLE_NAME;
 	}
 
 	/**
@@ -164,7 +91,7 @@ class RoomMap {
 		$wpdb->query(
 			$wpdb->prepare(
 				'
-					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
+					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
 					SET post_id = %s
 					WHERE room_name = %s
 				',
@@ -178,7 +105,6 @@ class RoomMap {
 
 		return null;
 	}
-
 
 	/**
 	 * Delete a Room Record in Database.
@@ -212,7 +138,7 @@ class RoomMap {
 		$wpdb->query(
 			$wpdb->prepare(
 				'
-					DELETE FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */$this->get_table_name() . '
+					DELETE FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
 				    WHERE room_name = %s
 			    ',
 				$room_name,
@@ -225,6 +151,80 @@ class RoomMap {
 		\wp_cache_delete( '__ALL__', __CLASS__ . '::get_all_post_ids_of_rooms' );
 
 		return true;
+	}
+
+	/**
+	 * Get a PostID from the Database for a Page
+	 *
+	 * @param string $room_name inbound room from user.
+	 *
+	 * @return ?int
+	 */
+	public function get_post_id_by_room_name( string $room_name ): ?int {
+		global $wpdb;
+
+		$result = \wp_cache_get( $room_name, __METHOD__ );
+
+		if ( false === $result ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					'
+						SELECT post_id 
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
+						WHERE room_name = %s
+					',
+					$room_name,
+				)
+			);
+
+			if ( $row ) {
+				$result = (int) $row->post_id;
+			}
+
+			\wp_cache_set( $room_name, $result, __METHOD__ );
+		}
+
+		return (int) $result;
+	}
+
+	/**
+	 * Get Room Info from Database.
+	 *
+	 * @param int $post_id The Room iD to query.
+	 *
+	 * @return ?\stdClass
+	 */
+	public function get_room_info( int $post_id ): ?\stdClass {
+		global $wpdb;
+
+		$result = \wp_cache_get( $post_id, __METHOD__ );
+
+		if ( false === $result ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$result = $wpdb->get_row(
+				$wpdb->prepare(
+					'
+						SELECT room_name, post_id, room_type, display_name, slug
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
+						WHERE post_id = %d
+					',
+					$post_id,
+				),
+				'ARRAY_A'
+			);
+
+			\wp_cache_set( $post_id, $result, __METHOD__ );
+		}
+
+		if ( $result ) {
+			$result     = (object) $result;
+			$result->id = $result->post_id;
+		} else {
+			$result = null;
+		}
+
+		return $result;
 	}
 
 	/**
@@ -279,7 +279,7 @@ class RoomMap {
 					$wpdb->prepare(
 						'
 							SELECT post_id
-							FROM ' . /*phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared*/$this->get_table_name() . '
+							FROM ' . /*phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared*/ $this->get_table_name() . '
 							WHERE room_type = %s
 							ORDER BY room_type ASC
 						',
@@ -291,7 +291,7 @@ class RoomMap {
 				$rows = $wpdb->get_results(
 					'
                         SELECT post_id
-                        FROM ' . /*phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared*/$this->get_table_name() . '
+                        FROM ' . /*phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared*/ $this->get_table_name() . '
                         ORDER BY room_type ASC
                     '
 				);

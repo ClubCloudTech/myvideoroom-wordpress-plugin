@@ -6,8 +6,7 @@
 
 /*global myVideoRoomAppEndpoint*/
 
-
-(function ( $ ) {
+(function ($) {
 	if ($( '.myvideoroom-app' ).length) {
 		// WordPress may add custom headers to the request, this is likely to trigger CORS issues, so we remove them.
 		if ($.ajaxSettings && $.ajaxSettings.headers) {

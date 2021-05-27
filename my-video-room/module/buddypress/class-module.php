@@ -70,7 +70,8 @@ class Module {
 			__( 'BuddyPress Group Member Restrictions', 'myvideoroom' ),
 			__( 'You can select if you want to make the group available to all Administrators, Moderators, Members, or normal (no access control), for example teh "Administrator Only" setting will only allow Group Administrators to enter the room, "Administrators and Moderators" will allow only group admins and moderators to enter video, and "Members" will allow admins, moderators, and members to enter.', 'myvideoroom' ),
 			array(
-				new SelectOption( self::MEMBER_OPTION_NONE, __( 'User decides', 'myvideoroom' ) ), // @FRED I assume this needs some logic around it.
+				new SelectOption( self::MEMBER_OPTION_NONE, __( 'User decides', 'myvideoroom' ) ),
+				// @FRED I assume this needs some logic around it.
 				new SelectOption( self::MEMBER_OPTION_ADMIN, __( 'Administrators only', 'myvideoroom' ) ),
 				new SelectOption( self::MEMBER_OPTION_MODERATOR, __( 'Moderators and above', 'myvideoroom' ) ),
 				new SelectOption( self::MEMBER_OPTION_MODERATOR, __( 'Members and above', 'myvideoroom' ) ),

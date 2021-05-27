@@ -76,7 +76,7 @@ return function (): string {
 		<p id="<?php echo \esc_attr( $html_library->get_description_id( 'slug' ) ); ?>">
 			<?php
 			printf(
-				/* translators: %s is the url for the room */
+			/* translators: %s is the url for the room */
 				esc_html__(
 					'Please select an address for your room. It will be created at %s',
 					'my-video-room'
@@ -89,12 +89,12 @@ return function (): string {
 		<hr />
 
 		<p>
-		<?php
-		esc_html_e(
-			'Once your room is created, you can edit its look and feel in your page editor, just ensure the shortcode remains in the page',
-			'my-video-room'
-		);
-		?>
+			<?php
+			esc_html_e(
+				'Once your room is created, you can edit its look and feel in your page editor, just ensure the shortcode remains in the page',
+				'my-video-room'
+			);
+			?>
 		</p>
 
 		<?php

@@ -6,10 +6,10 @@
 
 code.myvideoroom-shortcode-example,
 code.myvideoroom-shortcode-example-inline {
+	font-family: monospace;
+	overflow: auto;
 	text-indent: -1.5em;
 	user-select: all;
-	overflow: auto;
-	font-family: monospace;
 }
 
 code.myvideoroom-shortcode-example-inline {

@@ -19,8 +19,8 @@ class TemplateIcons {
 	/**
 	 * Takes UserID and Room Name from Template pages and returns formatted room information icons.
 	 *
-	 * @param  int    $user_id   User ID to check.
-	 * @param  string $room_name Room Name to check.
+	 * @param int    $user_id   User ID to check.
+	 * @param string $room_name Room Name to check.
 	 *
 	 * @return ?string - the icons.
 	 */
@@ -92,12 +92,13 @@ class TemplateIcons {
 	private function create_icon( string $icon, string $title ): string {
 		return '<i class="card dashicons mvr-icons dashicons-' . esc_attr( $icon ) . '" title="' . esc_html( $title ) . '"></i>';
 	}
+
 	/**
 	 * Filter for Adding Template Buttons to Shortcode Builder
 	 *
 	 * @param ?string $template_icons The room name to use.
-	 * @param int     $user_id The user id to construct from.
-	 * @param ?string $room_name The room name to use.
+	 * @param int     $user_id        The user id to construct from.
+	 * @param ?string $room_name      The room name to use.
 	 * @param bool    $visitor_status - Whether guest/host.
 	 *
 	 * @return string
@@ -108,6 +109,7 @@ class TemplateIcons {
 		} else {
 			$template_icons .= Factory::get_instance( self::class )->show_icon( $user_id, $room_name );
 		}
+
 		return $template_icons;
 	}
 

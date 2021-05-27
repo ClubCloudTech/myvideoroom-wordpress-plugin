@@ -25,9 +25,23 @@ class RoomBuilder {
 	 * RoomBuilder constructor.
 	 */
 	public function __construct() {
-		\add_filter( 'myvideoroom_roombuilder_create_shortcode', array( $this, 'generate_shortcode_constructor' ), 0, 1 );
+		\add_filter(
+			'myvideoroom_roombuilder_create_shortcode',
+			array(
+				$this,
+				'generate_shortcode_constructor',
+			),
+			0,
+			1
+		);
 		\add_filter( 'myvideoroom_roombuilder_permission_options', array( $this, 'add_permissions_option' ) );
-		\add_filter( 'myvideoroom_roombuilder_permission_options_selected', array( $this, 'ensure_correct_permission_is_selected' ) );
+		\add_filter(
+			'myvideoroom_roombuilder_permission_options_selected',
+			array(
+				$this,
+				'ensure_correct_permission_is_selected',
+			)
+		);
 	}
 
 	/**

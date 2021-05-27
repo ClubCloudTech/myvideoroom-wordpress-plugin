@@ -30,7 +30,8 @@ class MVRSiteVideoControllers {
 	/**
 	 * Provides Shortcode support for SiteVideo Conference Center Rooms.
 	 *
-	 * @param  mixed $params - ID - the PostID that comes from Shortcode.
+	 * @param mixed $params - ID - the PostID that comes from Shortcode.
+	 *
 	 * @return string
 	 */
 	public function sitevideo_shortcode( $params = array() ): string {
@@ -72,7 +73,7 @@ class MVRSiteVideoControllers {
 	 * A Shortcode for the Site Video Room - Host
 	 * This is used for the Member admin entry pages to access their preferred Video Layout - it is paired with the sitevideoroomguest function and accessed by the relevant video switch
 	 *
-	 * @param  int $post_id - Post ID of DB.
+	 * @param int $post_id - Post ID of DB.
 	 *
 	 * @return string
 	 */
@@ -120,7 +121,7 @@ class MVRSiteVideoControllers {
 			esc_html__( 'Host Settings', 'my-video-room' ),
 			'adminpage',
 			fn() => \do_shortcode(
-				//phpcs:ignore PEAR.Functions.FunctionCallSignature.Indent - indent is correct.
+			//phpcs:ignore PEAR.Functions.FunctionCallSignature.Indent - indent is correct.
 				Factory::get_instance( UserVideoPreference::class )->choose_settings(
 					$post_id,
 					$room_name
@@ -138,7 +139,8 @@ class MVRSiteVideoControllers {
 	 * A Shortcode for the Site Video Rooms - for guests
 	 * This is used for the Guest entry pages to access the Management Meeting Room - it is paired with the sitevideoroomhost shortcode
 	 *
-	 * @param  int $room_id - the ID of the Room to process.
+	 * @param int $room_id - the ID of the Room to process.
+	 *
 	 * @since Version 1
 	 */
 	public function site_videoroom_guest_shortcode( int $room_id ) {
@@ -194,6 +196,7 @@ class MVRSiteVideoControllers {
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
 		array_push( $output_object, $host_menu );
+
 		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $room_id, $room_name, $host_status );
 	}
 }

@@ -25,11 +25,11 @@ use MyVideoRoomPlugin\Plugin;
 					'myvideoroom'
 				),
 			),
-			//phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+		//phpcs:ignore Squiz.PHP.CommentedOutCode.Found
 			/* fn() => new BuddyPress() */
 		)
-			->add_compatibility_hook( fn() => true ) // @TODO - for testing - always compatible.
-			->add_activation_hook( fn() => ( new Activation() )->activate() )
-			->add_uninstall_hook( fn() => ( new Activation() )->uninstall() );
+		->add_compatibility_hook( fn() => true ) // @TODO - for testing - always compatible.
+		->add_activation_hook( fn() => ( new Activation() )->activate() )
+		->add_uninstall_hook( fn() => ( new Activation() )->uninstall() );
 	}
 );

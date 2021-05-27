@@ -64,7 +64,7 @@ class SecurityButtons {
 		}
 
 		if ( $room_anonymous ) {
-				$output .= '<a ' . $path . ' class="button button-primary" style="background-color:blue">' . esc_html__( 'Site Anonymous Block Applied', 'my-video-room' ) . '</a>';
+			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:blue">' . esc_html__( 'Site Anonymous Block Applied', 'my-video-room' ) . '</a>';
 		}
 
 		return $output;

@@ -36,35 +36,6 @@ class Activation {
 	}
 
 	/**
-	 * Remove the plugin
-	 */
-	public static function deactivate() {
-		$active_modules = Factory::get_instance( Module::class )->get_all_modules();
-		foreach ( $active_modules as $active_module ) {
-			$active_module->deactivate();
-		}
-	}
-
-	/**
-	 * Uninstall the plugin
-	 */
-	public static function uninstall() {
-		Module::load_built_in_modules();
-		\do_action( Plugin::ACTION_INIT );
-		$active_modules = Factory::get_instance( Module::class )->get_all_modules();
-
-		foreach ( $active_modules as $active_module ) {
-			$active_module->uninstall();
-		}
-
-		( new self() )
-			->delete_roles_and_permissions()
-			->delete_options();
-	}
-
-	// ---
-
-	/**
 	 * Enable default modules
 	 *
 	 * @return Activation
@@ -106,6 +77,35 @@ class Activation {
 		}
 
 		return $this;
+	}
+
+	// ---
+
+	/**
+	 * Remove the plugin
+	 */
+	public static function deactivate() {
+		$active_modules = Factory::get_instance( Module::class )->get_all_modules();
+		foreach ( $active_modules as $active_module ) {
+			$active_module->deactivate();
+		}
+	}
+
+	/**
+	 * Uninstall the plugin
+	 */
+	public static function uninstall() {
+		Module::load_built_in_modules();
+		\do_action( Plugin::ACTION_INIT );
+		$active_modules = Factory::get_instance( Module::class )->get_all_modules();
+
+		foreach ( $active_modules as $active_module ) {
+			$active_module->uninstall();
+		}
+
+		( new self() )
+			->delete_roles_and_permissions()
+			->delete_options();
 	}
 
 	/**

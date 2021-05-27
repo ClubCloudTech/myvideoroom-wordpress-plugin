@@ -42,7 +42,10 @@ return function (
 		<code class="myvideoroom-shortcode-example">
 			<?php
 			echo \esc_html(
-				Factory::get_instance( ShortcodeConstructor::class, array( $shortcode->get_shortcode_tag() ) )
+				Factory::get_instance(
+					ShortcodeConstructor::class,
+					array( $shortcode->get_shortcode_tag() )
+				)
 					->get_shortcode_text( $shortcode->get_example_shortcode_params() )
 			);
 			?>

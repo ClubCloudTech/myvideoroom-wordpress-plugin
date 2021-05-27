@@ -20,6 +20,7 @@ class WordPressUser {
 	public function get_logged_in_wordpress_user(): ?\WP_User {
 		return \wp_get_current_user();
 	}
+
 	/**
 	 * Get a WordPress by user by id
 	 *
@@ -67,25 +68,6 @@ class WordPressUser {
 	}
 
 	/**
-	 * Get a WordPress by user by slug
-	 *
-	 * @param string $slug The slug of the user.
-	 *
-	 * @return \WP_User|null
-	 */
-	public function get_wordpress_user_by_slug( string $slug ): ?\WP_User {
-		$user = \get_user_by( 'slug', $slug );
-
-		if ( ! $user ) {
-			$user = null;
-		}
-
-		return $user;
-	}
-
-	// ---
-
-	/**
 	 * Get a WordPress by user by email address
 	 *
 	 * @param string $email_address The email address of the user.
@@ -102,6 +84,8 @@ class WordPressUser {
 		return $user;
 	}
 
+	// ---
+
 	/**
 	 * Get a WordPress by user by login name
 	 *
@@ -111,6 +95,23 @@ class WordPressUser {
 	 */
 	private function get_wordpress_user_by_login( string $login_name ): ?\WP_User {
 		$user = \get_user_by( 'login', $login_name );
+
+		if ( ! $user ) {
+			$user = null;
+		}
+
+		return $user;
+	}
+
+	/**
+	 * Get a WordPress by user by slug
+	 *
+	 * @param string $slug The slug of the user.
+	 *
+	 * @return \WP_User|null
+	 */
+	public function get_wordpress_user_by_slug( string $slug ): ?\WP_User {
+		$user = \get_user_by( 'slug', $slug );
 
 		if ( ! $user ) {
 			$user = null;

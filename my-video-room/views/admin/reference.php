@@ -49,7 +49,8 @@ return function (
 
 					?>
 					<li>
-						<a class="nav-tab<?php echo \esc_attr( $active_class ); ?>" href="#<?php echo \esc_attr( $id ); ?>">
+						<a class="nav-tab<?php echo \esc_attr( $active_class ); ?>"
+							href="#<?php echo \esc_attr( $id ); ?>">
 							<?php echo \esc_html( $shortcode->get_name() ); ?>
 						</a>
 					</li>
@@ -69,7 +70,7 @@ return function (
 	foreach ( $shortcodes as $shortcode ) {
 		$id = $html_lib->get_id( $shortcode->get_shortcode_tag() );
 
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Escaping is handled by the shortcode reference render function
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --Escaping is handled by the shortcode reference render function
 		echo $reference_section_render( $shortcode, $id );
 	}
 	?>

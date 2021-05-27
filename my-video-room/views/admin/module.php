@@ -19,14 +19,5 @@ use MyVideoRoomPlugin\Module\Module;
 return function (
 	Module $module
 ): string {
-
-	\ob_start();
-	?>
-
-	<?php
-
-	//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --We want to render the HTML output from the module.
-	echo $module->get_admin_page();
-
-	return \ob_get_clean();
+	return $module->get_admin_page();
 };

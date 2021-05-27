@@ -29,7 +29,7 @@ class RoomAdmin {
 	 * @param string  $display_title Title of Page.
 	 * @param string  $slug          WordPress Slug to assign page.
 	 * @param string  $room_type     Type of Room in DB.
-	 * @param  ?string $shortcode    Shortcode to store for room.
+	 * @param  ?string $shortcode     Shortcode to store for room.
 	 * @param  ?string $old_post_id   Type Old Room in DB to update the value to the new post..
 	 *
 	 * @return integer
@@ -50,6 +50,7 @@ class RoomAdmin {
 					'post_type'   => 'page',
 				)
 			);
+
 			return $post_id;
 		}
 

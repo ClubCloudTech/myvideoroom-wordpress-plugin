@@ -51,7 +51,7 @@ return function (
 		<?php
 		$output = null;
 		$output = apply_filters( 'myvideoroom_security_settings_preference_buttons', $output, $user_id, $room_name );
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 		?>
 		<form method="post" action="">
@@ -123,8 +123,8 @@ return function (
 				name="myvideoroom_security_allowed_roles_preference[]"
 				id="myvideoroom_security_allowed_roles_preference">
 				<?php
-                //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already escapes HTML properly upstream.
-                echo $roles_output;
+				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already escapes HTML properly upstream.
+				echo $roles_output;
 				?>
 			</select>
 			<br>
@@ -157,7 +157,7 @@ return function (
 			do_action( 'myvideoroom_security_preference_form', $user_id, $room_name, $id_index, $current_user_setting );
 
 			foreach ( $fields as $field ) {
-                //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $field->to_string( $html_library );
 				echo '<br />';
 			}
@@ -178,7 +178,7 @@ return function (
 				$site_override = false;
 			}
 			if ( false === $site_override ) {
-                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( HttpPost::class )->create_form_submit(
 					'update_security_video_preference',
 					\esc_html__( 'Save changes', 'myvideoroom' )

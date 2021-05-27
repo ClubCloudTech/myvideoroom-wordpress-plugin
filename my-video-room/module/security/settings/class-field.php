@@ -51,42 +51,6 @@ abstract class Field {
 	}
 
 	/**
-	 * Get the slug/key of the field
-	 *
-	 * @return string
-	 */
-	protected function get_key(): string {
-		return $this->key;
-	}
-
-	/**
-	 * Get the translated label of the field
-	 *
-	 * @return string
-	 */
-	protected function get_label(): string {
-		return $this->label;
-	}
-
-	/**
-	 * Get the description of the field
-	 *
-	 * @return string
-	 */
-	protected function get_description(): string {
-		return $this->description;
-	}
-
-	/**
-	 * Return the input as a HTML element string
-	 *
-	 * @param \MyVideoRoomPlugin\Library\HTML $html_library The html library, used for generating unique ids.
-	 *
-	 * @return string
-	 */
-	abstract protected function input_to_string( HTML $html_library ): string;
-
-	/**
 	 * Return the input, label and description as a string
 	 *
 	 * @param \MyVideoRoomPlugin\Library\HTML $html_library The html library, used for generating unique ids.
@@ -113,5 +77,41 @@ abstract class Field {
 
 		<?php
 		return ob_get_clean();
+	}
+
+	/**
+	 * Get the slug/key of the field
+	 *
+	 * @return string
+	 */
+	protected function get_key(): string {
+		return $this->key;
+	}
+
+	/**
+	 * Get the translated label of the field
+	 *
+	 * @return string
+	 */
+	protected function get_label(): string {
+		return $this->label;
+	}
+
+	/**
+	 * Return the input as a HTML element string
+	 *
+	 * @param \MyVideoRoomPlugin\Library\HTML $html_library The html library, used for generating unique ids.
+	 *
+	 * @return string
+	 */
+	abstract protected function input_to_string( HTML $html_library ): string;
+
+	/**
+	 * Get the description of the field
+	 *
+	 * @return string
+	 */
+	protected function get_description(): string {
+		return $this->description;
 	}
 }

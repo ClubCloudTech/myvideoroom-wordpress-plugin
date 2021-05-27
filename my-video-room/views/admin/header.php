@@ -48,7 +48,8 @@ return function (
 			</p>
 		</div>
 
-		<img src="<?php echo \esc_url( \plugins_url( '/img/screen-1.png', \realpath( __DIR__ . '/../' ) ) ); ?>" alt="" />
+		<img src="<?php echo \esc_url( \plugins_url( '/img/screen-1.png', \realpath( __DIR__ . '/../' ) ) ); ?>"
+			alt="" />
 	</header>
 
 	<nav class="nav-tab-wrapper">

@@ -4,7 +4,7 @@
  * @package MyVideoRoomPlugin\Module\RoomBuilder
  */
 
-(function ( $ ) {
+(function ($) {
 	var $settings = $( '.myvideoroom-room-builder-settings' );
 
 	$settings.each(

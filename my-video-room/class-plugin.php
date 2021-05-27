@@ -71,21 +71,21 @@ class Plugin {
 	}
 
 	/**
-	 * Initializer function, returns a instance of the plugin
-	 *
-	 * @return \MyVideoRoomPlugin\Plugin
-	 */
-	public static function init(): Plugin {
-		return Factory::get_instance( self::class );
-	}
-
-	/**
 	 * Register all settings with WordPress.
 	 */
 	public function register_settings() {
 		\register_setting( self::PLUGIN_NAMESPACE . '_' . self::SETTINGS_NAMESPACE, self::SETTING_ACTIVATION_KEY );
 		\register_setting( self::PLUGIN_NAMESPACE, self::SETTING_PRIVATE_KEY );
 		\register_setting( self::PLUGIN_NAMESPACE, self::SETTING_ACCESS_TOKEN );
+	}
+
+	/**
+	 * Initializer function, returns a instance of the plugin
+	 *
+	 * @return \MyVideoRoomPlugin\Plugin
+	 */
+	public static function init(): Plugin {
+		return Factory::get_instance( self::class );
 	}
 
 	/**

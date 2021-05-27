@@ -29,11 +29,11 @@ use MyVideoRoomPlugin\Plugin;
 			fn() => Factory::get_instance( MVRSiteVideo::class )->init()
 		)
 		->add_activation_hook(
-			fn () => Factory::get_instance( MVRSiteVideo::class )->activate_module()
+			fn() => Factory::get_instance( MVRSiteVideo::class )->activate_module()
 		)
-		->add_admin_page_hook( fn () => Factory::get_instance( MVRSiteVideoRoomHelpers::class )->render_sitevideo_admin_page() )
+		->add_admin_page_hook( fn() => Factory::get_instance( MVRSiteVideoRoomHelpers::class )->render_sitevideo_admin_page() )
 		->add_deactivation_hook(
-			fn () => Factory::get_instance( MVRSiteVideo::class )->de_activate_module()
+			fn() => Factory::get_instance( MVRSiteVideo::class )->de_activate_module()
 		);
 	}
 );

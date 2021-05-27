@@ -32,7 +32,8 @@ return function (
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 		<ul>
 			<li>
-				<a class="nav-tab nav-tab-active" href="#<?php echo \esc_attr( $html_lib->get_id( 'development' ) ); ?>">
+				<a class="nav-tab nav-tab-active"
+					href="#<?php echo \esc_attr( $html_lib->get_id( 'development' ) ); ?>">
 					<?php \esc_html_e( 'Module API/Development', 'myvideoroom' ); ?>
 				</a>
 			</li>

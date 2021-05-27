@@ -21,9 +21,9 @@
 }
 
 .myvideoroom-admin .activation-key {
-	width: 60%;
 	max-width: 400px;
 	min-width: 304px;
+	width: 60%;
 }
 
 .myvideoroom-admin .button-primary i.dashicons {
@@ -32,8 +32,8 @@
 
 .myvideoroom-admin .button-primary.positive {
 	background: #238823;
-	color: #fff;
 	border-color: #238823;
+	color: #fff;
 }
 
 .myvideoroom-admin .button-primary.positive:hover {
@@ -43,8 +43,8 @@
 
 .myvideoroom-admin .button-primary.negative {
 	background: #D2222D;
-	color: #fff;
 	border-color: #D2222D;
+	color: #fff;
 }
 
 .myvideoroom-admin .button-primary.negative:hover {
@@ -66,8 +66,8 @@
 }
 
 .myvideoroom-admin .nav-tab-wrapper a {
-	text-decoration: none;
 	color: #000000;
+	text-decoration: none;
 }
 
 .myvideoroom-admin .nav-tab-wrapper a:hover {
@@ -76,20 +76,20 @@
 
 @media screen and (min-width: 600px) {
 	.myvideoroom-admin .nav-tab-wrapper {
-		overflow-x: auto;
 		border-bottom: none;
+		overflow-x: auto;
 	}
 
 	.myvideoroom-admin .nav-tab-wrapper:after {
+		border-bottom: 1px solid #c3c4c7;
+		clear: both;
 		content: '';
 		display: block;
-		border-bottom: 1px solid #c3c4c7;
+		height: 0;
 		left: 0;
+		position: relative;
 		right: 0;
 		top: -17px;
-		height: 0;
-		position: relative;
-		clear: both;
 		z-index: 1;
 	}
 
@@ -99,20 +99,20 @@
 
 
 	.myvideoroom-admin .nav-tab-wrapper li {
-		display: inline-block;
 		border-bottom: 1px solid #c3c4c7;
+		display: inline-block;
 		position: relative;
 		z-index: 2;
 	}
 
 	.myvideoroom-admin .nav-tab-wrapper li:after {
+		border-bottom: 1px solid #c3c4c7;
+		bottom: -1px;
 		content: ' ';
 		display: block;
 		position: absolute;
-		border-bottom: 1px solid #c3c4c7;
-		width: 5px;
 		right: -5px;
-		bottom: -1px;
+		width: 5px;
 	}
 }
 
@@ -120,8 +120,8 @@
 
 /*region Header */
 .myvideoroom-admin header div.overview {
-	vertical-align: top;
 	display: inline-block;
+	vertical-align: top;
 }
 
 .myvideoroom-admin header div.overview strong {
@@ -130,8 +130,8 @@
 
 .myvideoroom-admin header div.overview em {
 	display: block;
-	margin-top: 8px;
 	font-size: 1.1em;
+	margin-top: 8px;
 }
 
 .myvideoroom-admin header div.overview h1 {
@@ -139,8 +139,8 @@
 }
 
 .myvideoroom-admin header p.notice {
-	max-width: 500px;
 	margin: 8px 0 0 0;
+	max-width: 500px;
 	padding: 8px;
 }
 
@@ -150,15 +150,15 @@
 }
 
 .myvideoroom-admin header:after {
-	display: block;
-	content: "";
 	clear: both;
+	content: "";
+	display: block;
 }
 
 @media only screen and (min-width: 1034px) {
 	.myvideoroom-admin header div.overview {
-		padding-top: 72px;
 		min-width: 300px;
+		padding-top: 72px;
 		width: calc(100% - 293px);
 	}
 
@@ -173,8 +173,8 @@
 /*region Room Templates*/
 .myvideoroom-admin #myvideoroom-how-to-use-templates div.view {
 	display: inline-block;
-	width: calc(50% - 2px);
 	max-width: 500px;
+	width: calc(50% - 2px);
 }
 
 .myvideoroom-admin #myvideoroom-how-to-use-templates div.view img {
@@ -187,51 +187,51 @@
 /*region Getting Started - Three Step Getting Started */
 .myvideoroom-admin ol.getting-started-steps {
 	counter-reset: item;
+	display: block;
+	margin: 16px 0;
 	max-width: 800px;
 	padding: 0;
-	margin: 16px 0;
-	display: block;
 }
 
 .myvideoroom-admin ol.getting-started-steps:after {
-	display: block;
-	content: "";
 	clear: both;
+	content: "";
+	display: block;
 }
 
 .myvideoroom-admin ol.getting-started-steps li {
+	box-sizing: border-box;
 	counter-increment: item;
 	display: block;
 	padding: 16px;
-	box-sizing: border-box;
 }
 
 .myvideoroom-admin ol.getting-started-steps li:before {
-	content: counter(item);
 	background: #327EAC;
 	border-radius: 100%;
 	color: white;
-	width: 72px;
-	line-height: 72px;
+	content: counter(item);
+	float: left;
 	font-size: 40px;
 	font-weight: bold;
-	text-align: center;
-	float: left;
+	line-height: 72px;
 	margin: 0 8px 8px 0;
+	text-align: center;
+	width: 72px;
 }
 
 .myvideoroom-admin ol.getting-started-steps li h4 {
 	font-size: 24px;
-	margin: 0;
 	line-height: 1.1em;
+	margin: 0;
 	min-height: 80px;
 	width: 100%;
 }
 
 @media only screen and (min-width: 600px) {
 	.myvideoroom-admin ol.getting-started-steps li {
-		width: 33%;
 		float: left;
+		width: 33%;
 	}
 }
 
@@ -239,12 +239,12 @@
 
 .myvideoroom-admin .reception-card,
 .myvideoroom-admin .layout-card {
-	display: inline-block;
-	margin-right: 20px;
-	width: calc(100% - 50px);
-	height: 238px;
 	box-sizing: content-box;
+	display: inline-block;
+	height: 238px;
+	margin-right: 20px;
 	text-align: center;
+	width: calc(100% - 50px);
 }
 
 .myvideoroom-admin .reception-card h3,
@@ -254,11 +254,11 @@
 
 .myvideoroom-admin .reception-card img,
 .myvideoroom-admin .layout-card img {
-	display: block;
 	border-radius: 4px;
-	max-width: calc(80% - 16px);
-	max-height: 128px;
+	display: block;
 	margin: 16px auto 0 auto;
+	max-height: 128px;
+	max-width: calc(80% - 16px);
 }
 
 @media only screen and (min-width: 690px) {
@@ -306,28 +306,28 @@
 }
 
 .myvideoroom-api-reference dd {
-	padding: 0;
 	margin: 0 0 24px 16px;
+	padding: 0;
 
 }
 
 .myvideoroom-api-reference code {
-	white-space: pre;
-	tab-size: 4;
 	display: block;
-	padding: 8px;
 	overflow: scroll;
+	padding: 8px;
+	tab-size: 4;
+	white-space: pre;
 }
 
 .myvideoroom-api-reference code.inline {
 	display: inline-block;
-	padding: 0 4px;
 	overflow: visible;
+	padding: 0 4px;
 }
 
 .myvideoroom-reference ul {
-	margin: 16px;
 	list-style: disc;
+	margin: 16px;
 }
 
 .myvideoroom-reference dt,
@@ -346,8 +346,8 @@
 }
 
 .myvideoroom-reference dd:after {
-	content: '';
 	clear: both;
+	content: '';
 	display: block;
 }
 

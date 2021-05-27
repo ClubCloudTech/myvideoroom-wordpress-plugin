@@ -146,8 +146,10 @@ class HttpPost {
 	 * @return bool
 	 */
 	public function is_post_request( string $action ): bool {
-		return ( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false ) &&
-			$this->get_string_parameter( 'action' ) === $action;
+		return (
+			( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false ) &&
+			$this->get_string_parameter( 'action' ) === $action
+		);
 	}
 
 	/**

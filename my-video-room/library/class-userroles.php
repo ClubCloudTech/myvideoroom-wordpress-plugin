@@ -46,6 +46,17 @@ class UserRoles {
 	}
 
 	/**
+	 * Does the user have a certain role
+	 *
+	 * @param string $role The role to check.
+	 *
+	 * @return bool
+	 */
+	private function user_has_role( string $role ): bool {
+		return ( $this->user && in_array( $role, $this->user->roles, true ) );
+	}
+
+	/**
 	 * Is the current WordPress user a WCFM Vendor?
 	 *
 	 * @return bool
@@ -70,17 +81,6 @@ class UserRoles {
 	 */
 	public function is_wcfm_store_manager(): bool {
 		return $this->user_has_role( 'store_manager' );
-	}
-
-	/**
-	 * Does the user have a certain role
-	 *
-	 * @param string $role The role to check.
-	 *
-	 * @return bool
-	 */
-	private function user_has_role( string $role ): bool {
-		return ( $this->user && in_array( $role, $this->user->roles, true ) );
 	}
 
 	/**

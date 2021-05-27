@@ -26,7 +26,7 @@ class SiteDefaults {
 	const ROOM_NAME_SITE_DEFAULT = 'site-default-settings';
 
 	// Default User ID to Use for Room Site Defaults .
-	const USER_ID_SITE_DEFAULTS = -1;
+	const USER_ID_SITE_DEFAULTS = - 1;
 
 	// Default Database Table Names.
 	const TABLE_NAME_MODULE_CONFIG         = 'myvideoroom_module_config';
@@ -36,7 +36,6 @@ class SiteDefaults {
 	// Module Names and IDs.
 	const MODULE_DEFAULT_VIDEO_NAME = 'default-video-module';
 	const MODULE_DEFAULT_VIDEO_ID   = 1;
-	const MODULE_CORE_PATH          = '/core/views/view-settings-core.php';
 
 	// Listing Security Module ID in Core, so it can be checked for in Core Class to exit gracefully.
 	const MODULE_SECURITY_ID = Dependencies::MODULE_SECURITY_ID;
@@ -74,7 +73,13 @@ class SiteDefaults {
 	 */
 	public function init() {
 		$this->register_enqueue_scripts_styles();
-		\add_shortcode( self::SHORTCODE_TAG, array( Factory::get_instance( MeetingIdGenerator::class ), 'invite_menu_shortcode' ) );
+		\add_shortcode(
+			self::SHORTCODE_TAG,
+			array(
+				Factory::get_instance( MeetingIdGenerator::class ),
+				'invite_menu_shortcode',
+			)
+		);
 	}
 
 	/**
@@ -139,7 +144,7 @@ class SiteDefaults {
 	 * Generates all default Room Names for All Functions that use Video Rooms
 	 * Video functions call this function to get default room names to ensure all generate consistently
 	 *
-	 * @param string $type - type of room to name.
+	 * @param string $type     - type of room to name.
 	 * @param mixed  $input_id - optional ID to pass for usage.
 	 *
 	 * @return string
@@ -228,7 +233,15 @@ class SiteDefaults {
 		// Core Filters to add.
 
 		// Add Icons to Video Headers of Room Video Status.
-		\add_filter( 'myvideoroom_template_icon_section', array( Factory::get_instance( TemplateIcons::class ), 'add_default_video_icons_to_header' ), 10, 4 );
+		\add_filter(
+			'myvideoroom_template_icon_section',
+			array(
+				Factory::get_instance( TemplateIcons::class ),
+				'add_default_video_icons_to_header',
+			),
+			10,
+			4
+		);
 
 		// Hooks for Other Modules.
 		\apply_filters( 'myvideoroom_shortcode_initialisation_filter_hook', '' );

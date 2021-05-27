@@ -51,6 +51,7 @@ class UserVideoPreference {
 		}
 
 		$this->check_for_update_request();
+
 		return $this->choose_settings( $user_id, $room_name );
 	}
 
@@ -113,7 +114,7 @@ class UserVideoPreference {
 	/**
 	 * Show drop down for user to change their settings
 	 *
-	 * @param int    $user_id The user id to fetch.
+	 * @param int    $user_id   The user id to fetch.
 	 * @param string $room_name The room name to fetch.
 	 *
 	 * @return string
@@ -139,6 +140,7 @@ class UserVideoPreference {
 		}
 
 		$render = require __DIR__ . '/../views/shortcode/view-shortcode-uservideopreference.php';
-		return $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index++, $user_id );
+
+		return $render( $available_layouts, $available_receptions, $current_user_setting, $room_name, self::$id_index ++, $user_id );
 	}
 }

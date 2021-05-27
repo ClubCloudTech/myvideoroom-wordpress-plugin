@@ -72,10 +72,12 @@ class MVRSiteVideoViews {
 		return $render( $module_id, $name_output, $host_id, $room_name, $is_guest, $meeting_link, $module_suffix );
 
 	}
+
 	/**
 	 * Room Type Friendly Name
 	 *
 	 * @param string $room_type .
+	 *
 	 * @return string name.
 	 */
 	public function conference_room_friendly_name( string $room_type ): string {
@@ -87,6 +89,7 @@ class MVRSiteVideoViews {
 					return MVRSiteVideo::ROOM_NAME_TABLE;
 				}
 		}
+
 		return $room_type;
 	}
 }
