@@ -12,12 +12,13 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\SectionTemplates;
+use MyVideoRoomPlugin\Library\UserRoles;
 use MyVideoRoomPlugin\Library\VideoHelpers;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
-use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingViews;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeetingViews;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityEngine;
 
@@ -45,7 +46,7 @@ class MVRPersonalMeetingControllers {
 		// Reject Invalid Users or Hosts not found/logged it etc.
 		if ( ! $user_id ) {
 			echo 'User Not Logged In - Can not host meeting <br>';
-			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_guest_template();
+			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_signed_out_page_template();
 		}
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
 
@@ -117,7 +118,7 @@ class MVRPersonalMeetingControllers {
 
 		// Reject Blank Input.
 		if ( ! ( $host ) && ! ( $invite ) ) {
-			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_select_host_reception_template();
+			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_guest_reception_template();
 		}
 		// Establish who is host.
 		if ( $invite ) {
@@ -129,7 +130,7 @@ class MVRPersonalMeetingControllers {
 		// Filter out invalid users.
 		if ( ! $user_id ) {
 			echo 'No Such User or Invite - Please Try Again<br>';
-			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_select_host_reception_template();
+			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_guest_reception_template();
 		}
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
 		$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $user_id, 'pbrguest', MVRPersonalMeeting::MODULE_PERSONAL_MEETING_ID, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
@@ -189,11 +190,21 @@ class MVRPersonalMeetingControllers {
 	 */
 	public function meet_switch_shortcode() {
 
-		if ( is_user_logged_in() ) {
-			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_host_template();
-		} else {
-			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_guest_template();
+		// handle signed out users and return signed out templates.
+		if ( ! is_user_logged_in() ) {
+			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_signed_out_page_template();
 		}
+
+		// Fetch User Parameters and Roles.
+		$user       = wp_get_current_user();
+		$user_roles = Factory::get_instance( UserRoles::class, array( $user ) );
+
+		// Handling Store Owner Roles - sending them to Store Owner Template.
+		if ( $user_roles->is_wordpress_administrator() ) {
+			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_signed_in_page_template();
+		}
+
+		return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_signed_in_page_template();
 	}
 	/**
 	 * Personal_meeting_settings_shortcode - Renders a control setting for Personal Meeting rooms For the current user.

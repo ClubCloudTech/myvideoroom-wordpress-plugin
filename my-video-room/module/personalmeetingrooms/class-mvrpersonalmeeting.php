@@ -27,7 +27,7 @@ class MVRPersonalMeeting {
 		const ROOM_NAME_PERSONAL_MEETING              = Dependencies::ROOM_NAME_PERSONAL_MEETING;
 		const ROOM_NAME_PERSONAL_MEETING_SITE_DEFAULT = 'site-default-personal-boardroom';
 		const MODULE_PERSONAL_MEETING_ID              = Dependencies::MODULE_PERSONAL_MEETING_ID;
-		const MODULE_PERSONAL_MEETING_ADMIN_LOCATION  = '/module/personalmeetingrooms/views/view-settings-personalvideo.php';
+		const MODULE_PERSONAL_MEETING_ADMIN_LOCATION  = '/modules/mvrpersonalmeeting/view-settings-personalvideo.php';
 		const MODULE_PERSONAL_MEETING_DISPLAY         = 'Personal Meeting Room';
 		const MODULE_PERSONAL_MEETING_TABLE_DISPLAY   = 'Personal Meeting Room Reception';
 		const ROOM_TITLE_PERSONAL_MEETING             = ' Video Meetings';
@@ -42,7 +42,7 @@ class MVRPersonalMeeting {
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db( self::MODULE_PERSONAL_MEETING_NAME, self::MODULE_PERSONAL_MEETING_ID, true, self::MODULE_PERSONAL_MEETING_ADMIN_LOCATION );
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_PERSONAL_MEETING_ID, true );
 
-		// Generate Personal Meeting Room Centre.
+		// Generate Site Video Room Page.
 		Factory::get_instance( MVRPersonalMeetingHelpers::class )->create_personal_meetingroom_page();
 	}
 	/**
