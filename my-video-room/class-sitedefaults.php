@@ -42,6 +42,13 @@ class SiteDefaults {
 	const MODULE_SECURITY_ID = Dependencies::MODULE_SECURITY_ID;
 
 	/**
+	 * If the initialised function already been run.
+	 *
+	 * @var bool
+	 */
+	private static bool $has_initialised = false;
+
+	/**
 	 * Initialise On Module Activation
 	 * Once off functions for activating Module
 	 */
@@ -205,17 +212,17 @@ class SiteDefaults {
 	/**
 	 * Shortcode Initialise Filters Handler
 	 * This function initialises all filters that must be created just in time for MyVideoRoom Pages
-	 * Avoids initialising unecessary filters and hooks when our shortcodes are not on page.
+	 * Avoids initialising unnecessary filters and hooks when our shortcodes are not on page.
 	 *
 	 * @return bool
 	 */
-	public function shortcode_initialise_filters() {
-		// Run Function only once in case called by multiple shortcodes on same page.
-		static $already_run;
-
-		if ( null !== $already_run ) {
-			return $already_run;
+	public function shortcode_initialise_filters(): bool {
+		if ( self::$has_initialised ) {
+			return true;
 		}
+
+		self::$has_initialised = true;
+
 		// Core Filters to add.
 
 		// Add Icons to Video Headers of Room Video Status.
@@ -225,7 +232,6 @@ class SiteDefaults {
 		\apply_filters( 'myvideoroom_shortcode_initialisation_filter_hook', '' );
 		\do_action( 'myvideoroom_shortcode_initialisation_action_hook' );
 
-		$already_run = true;
-		return $already_run;
+		return true;
 	}
 }

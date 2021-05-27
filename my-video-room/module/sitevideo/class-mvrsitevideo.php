@@ -80,8 +80,8 @@ class MVRSiteVideo {
 	public function init() {
 		$site_video_controller = Factory::get_instance( MVRSiteVideoControllers::class );
 
-        Factory::get_instance( RoomInfo::class )->init();
-        
+		Factory::get_instance( RoomInfo::class )->init();
+
 		add_shortcode( self::SHORTCODE_SITE_VIDEO, array( $site_video_controller, 'sitevideo_shortcode' ) );
 
 		\add_action(
