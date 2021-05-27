@@ -124,8 +124,7 @@ class ShortcodeDocuments {
 				<p>
 				<?php
 				echo esc_html__(
-					'There are no Guest Shortcodes needed, as normal room shortcodes work correctly for users who are signed out and thus not in the BuddyPress loop. Normal meeting invites, links, guest reception settings are available for rooms whose hosts
-					enter via BuddyPress.',
+					'There are no Guest Shortcodes needed, as normal room shortcodes work correctly for users who are signed out and thus not in the BuddyPress loop. Normal meeting invites, links, guest reception settings are available for rooms whose hosts enter via BuddyPress.',
 					'my-video-room'
 				);
 				?>
