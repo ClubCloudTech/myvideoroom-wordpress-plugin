@@ -24,7 +24,7 @@ use MyVideoRoomPlugin\ValueObject\GettingStarted;
  */
 class Module {
 
-	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_room_builder';
+	const SHORTCODE_TAG     = App::SHORTCODE_TAG . '_room_builder';
 	const PAGE_SLUG_BUILDER = PageList::PAGE_SLUG_DEFAULT . '-room-builder';
 
 	/**

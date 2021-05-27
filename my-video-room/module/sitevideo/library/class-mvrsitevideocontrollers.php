@@ -108,6 +108,7 @@ class MVRSiteVideoControllers {
 			esc_html__( 'Host Settings', 'my-video-room' ),
 			'adminpage',
 			fn() => \do_shortcode(
+				//phpcs:ignore PEAR.Functions.FunctionCallSignature.Indent - indent is correct.
 				Factory::get_instance( UserVideoPreference::class )->choose_settings(
 					$post_id,
 					$room_name,

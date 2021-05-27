@@ -151,12 +151,12 @@ class Security {
 			esc_html__( 'Room Hosts', 'my-video-room' ),
 			'roomhosts',
 			fn() => Factory::get_instance( SecurityVideoPreference::class )
-				->choose_settings(
-					$room_id,
-					$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
-					null,
-					'roomhost'
-				)
+			->choose_settings(
+				$room_id,
+				$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
+				null,
+				'roomhost'
+			)
 		);
 		array_push( $input, $host_menu );
 

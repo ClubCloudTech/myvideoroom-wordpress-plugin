@@ -225,7 +225,7 @@ class MVRSiteVideoRoomHelpers {
 	 * Render Default Settings Admin Page.
 	 */
 	public function render_sitevideo_admin_page() {
-		return ( require __DIR__ . '/../views/module-admin.php')();
+		return ( require __DIR__ . '/../views/module-admin.php' )();
 	}
 
 	/**
