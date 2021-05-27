@@ -12,7 +12,7 @@ namespace MyVideoRoomPlugin\Module\SiteVideo;
 use MyVideoRoomPlugin\Reference\Option;
 use MyVideoRoomPlugin\Reference\Section;
 use MyVideoRoomPlugin\Reference\Shortcode;
-use MyVideoRoomPlugin\Shortcode\RoomInfo as RoomInfoShortcode;
+use MyVideoRoomPlugin\Module\SiteVideo\RoomInfo as RoomInfoShortcode;
 
 /**
  * Class ShortcodeReference

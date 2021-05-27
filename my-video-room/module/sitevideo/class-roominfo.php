@@ -2,16 +2,17 @@
 /**
  * Short code for showing room info
  *
- * @package MyVideoRoomPlugin
+ * @package MyVideoRoomPlugin\Module\SiteVideo
  */
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Shortcode;
+namespace MyVideoRoomPlugin\Module\SiteVideo;
 
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
+use MyVideoRoomPlugin\Shortcode\App;
 
 /**
  * Class RoomInfo
