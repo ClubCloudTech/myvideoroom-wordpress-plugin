@@ -8,6 +8,7 @@
 namespace MyVideoRoomPlugin\Module\Security\Library;
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
@@ -146,119 +147,91 @@ class PageFilters {
 	}
 
 	/**
-	 * This function Checks The Role Based Configuration Settings of a Given Room- and Returns Host or Guest Status for the Room.
-	 * Used by all rooms
+	 * Is the current user a host or a guest
 	 *
-	 * @param  int $owner_id UserID of owner.
+	 * @param bool $default_value The default setting for the user a host or guest.
+	 * @param int  $owner_id      UserID of owner.
 	 *
 	 * @return bool
 	 */
-	public function allowed_roles_host( int $owner_id ): bool {
-
-		// Get Permissions Objects.
+	public function current_user_is_host( bool $default_value, int $owner_id ): bool {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $owner_id );
-		if ( $room_object ) {
-			$room_name = $room_object->room_name . Security::MULTI_ROOM_HOST_SUFFIX;
-		}
-		$preference = null;
-		// Try User Permissions First.
-		$user_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $owner_id, $room_name );
 
-		$anonymous_hosts_allowed = false;
-		$allow_to_block_switch   = false;
-
-		if ( $user_permissions ) {
-			$anonymous_hosts_allowed = $user_permissions->is_anonymous_enabled();
-			$preference              = $user_permissions;
-			$allow_to_block_switch   = $user_permissions->is_block_role_control_enabled();
+		if ( ! $room_object ) {
+			return $default_value;
 		}
 
-		// Trying Default Settings If No User Preference Above.
-		if ( ! $preference ) {
+		$room_name = $room_object->room_name . Security::MULTI_ROOM_HOST_SUFFIX;
 
-			$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
+		$room_custom_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id(
+			$owner_id,
+			$room_name
+		);
 
-			$host = false;
-
-			if ( $security_default_permissions ) {
-				$room_control_enabled_state = $security_default_permissions->is_allow_role_control_enabled();
-				$anonymous_hosts_allowed    = $security_default_permissions->is_anonymous_enabled();
-				$allow_to_block_switch      = $security_default_permissions->is_block_role_control_enabled();
-				if ( false === $room_control_enabled_state ) {
-					$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
-				}
-			} else {
-				$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
-			}
-
-			if ( $host ) {
-				return true;
-			}
+		if ( ! $room_custom_permissions ) {
+			return $default_value;
 		}
 
-		// Handling Anonymous Users.
 		if ( ! \is_user_logged_in() ) {
-			return $anonymous_hosts_allowed;
+			return $room_custom_permissions->is_anonymous_enabled();
 		}
 
-		// Get List of Allowed/Blocked Roles from DB.
+		$target_roles          = $room_custom_permissions->get_roles();
+		$target_roles_are_host = $room_custom_permissions->is_block_role_control_enabled();
 
-		if ( $preference ) {
-			$allowed_db_roles_configuration = $preference->get_allowed_roles_array();
-			$no_allowed_roles_configuration = false;
+		if ( ! $target_roles && $target_roles_are_host ) {
+			return true;
+		}
+
+		$roles_intersect = $this->do_roles_intersect(
+			Factory::get_instance( UserRoles::class )->get_user_roles(),
+			$target_roles
+		);
+
+		if ( $target_roles_are_host ) {
+			return $roles_intersect;
 		} else {
-			$allowed_db_roles_configuration = array();
-			$no_allowed_roles_configuration = true;
+			return ! $roles_intersect;
 		}
+	}
 
-		if ( $no_allowed_roles_configuration && ! $allow_to_block_switch ) {
-			return false;
-		}
-
-		// Retrieve Users Roles.
+	/**
+	 * Do the roles intersect?
+	 *
+	 * @param array    $user_roles   The list of WordPress user roles.
+	 * @param string[] $target_roles An array of role slugs.
+	 *
+	 * @return bool
+	 */
+	private function do_roles_intersect( array $user_roles, array $target_roles ): bool {
 		global $wp_roles;
-		$user_roles = Factory::get_instance( UserRoles::class )->get_user_roles();
 
-		// Retrieve Allowed/Blocked Roles.
-		// User Roles May be multiple ( so check each role ).
-		$role_match = false;
+		$roles_intersect = false;
+
 		foreach ( $user_roles as $user_role ) {
 			$role_name = translate_user_role( $wp_roles->roles[ $user_role ]['name'] );
-			foreach ( $allowed_db_roles_configuration as $db_role ) {
+			foreach ( $target_roles as $db_role ) {
 				if ( $db_role === $role_name ) {
-					$role_match = true;
+					$roles_intersect = true;
 				}
 			}
-		}// End per role Check.
-
-		// Fire Block if Flag to block is on.
-		if ( ! $role_match && $allow_to_block_switch ) {
-			return true;
-
-		} elseif ( ! $role_match && ! $allow_to_block_switch ) {
-			return false;
-
-		} elseif ( $role_match && ! $allow_to_block_switch ) {
-			return true;
 		}
-		return false;
+
+		return $roles_intersect;
 	}
 
 	/**
 	 * * This function Checks The Role Based Configuration Settings - and enforces result
 	 * Used by all rooms
 	 *
-	 * @param  int                     $owner_id     UserID of owner.
-	 * @param  string                  $room_name  Name of Room to filter.
-	 * @param  string                  $host_status  If used.
-	 * @param  string                  $room_type    Class of room.
-	 * @param  SecurityVideoPreference $user_permissions - Object with user Permissions.
-	 * @param  SecurityVideoPreference $site_override_permissions - Object with Site Enforcement settings.
-	 * @param  SecurityVideoPreference $security_default_permissions - Object with Default (no user preference yet applied) settings.
+	 * @param  int     $owner_id     UserID of owner.
+	 * @param  string  $room_name    Name of Room to filter.
+	 * @param  string  $host_status  If used.
+	 * @param  ?string $room_type    Class of room.
 	 *
 	 * @return ?string depending.
 	 */
-	public function allowed_roles_room_video_render( int $owner_id, string $room_name, string $host_status, string $room_type = null, SecurityVideoPreference $user_permissions = null, SecurityVideoPreference $site_override_permissions = null, SecurityVideoPreference $security_default_permissions = null ): ?string {
+	public function allowed_roles_room_video_render( int $owner_id, string $room_name, string $host_status, string $room_type = null ): ?string {
 		// Exit if Host.
 		if ( $host_status ) {
 			return null;
@@ -273,8 +246,8 @@ class PageFilters {
 			$anonymous_hosts_blocked    = $site_override_permissions->is_anonymous_enabled();
 			$allow_to_block_switch      = $site_override_permissions->is_block_role_control_enabled();
 			$preference                 = $site_override_permissions;
-
 		}
+
 		// Try User Permissions if set.
 		if ( ! $preference ) {
 			$user_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $owner_id, $room_name );
@@ -285,6 +258,7 @@ class PageFilters {
 				$preference                 = $user_permissions;
 			}
 		}
+
 		// Try Default Security Permissions if Set.
 		if ( ! $preference ) {
 			$security_default_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( SiteDefaults::USER_ID_SITE_DEFAULTS, Security::PERMISSIONS_TABLE );
@@ -295,6 +269,7 @@ class PageFilters {
 				$preference                 = $security_default_permissions;
 			}
 		}
+
 		// If there is no setting exit.
 		if ( ! $preference ) {
 			return null;
@@ -315,7 +290,7 @@ class PageFilters {
 		}
 		$no_allowed_roles_configuration = false;
 		if ( $preference ) {
-			$allowed_db_roles_configuration = $preference->get_allowed_roles_array();
+			$allowed_db_roles_configuration = $preference->get_roles();
 			$no_allowed_roles_configuration = false;
 		} else {
 			$allowed_db_roles_configuration = array();

@@ -28,6 +28,6 @@ class Version {
 			$plugin_version .= '-' . MYVIDEOROOM_STATIC_CACHE_SUFFIX;
 		}
 
-		return $plugin_version;
+		return $plugin_version . time();
 	}
 }

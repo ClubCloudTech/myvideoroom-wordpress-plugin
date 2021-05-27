@@ -8,6 +8,7 @@
 namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
+use MyVideoRoomPlugin\Plugin;
 use \MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
@@ -54,10 +55,13 @@ class MVRSiteVideoControllers {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
 		}
 
-		// Fetch User Parameters and Roles...
-		$host_status = Factory::get_instance( PageFiltersLibrary::class )->allowed_roles_host( $id );
+		$current_user_is_host = apply_filters(
+			'myvideoroom_site_video_user_host_status',
+			current_user_can( Plugin::CAP_GLOBAL_HOST ),
+			$id
+		);
 
-		if ( $host_status ) {
+		if ( $current_user_is_host ) {
 			return $this->site_videoroom_host_function( $id );
 		} else {
 			return $this->site_videoroom_guest_shortcode( $id );

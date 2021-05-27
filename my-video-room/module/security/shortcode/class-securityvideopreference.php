@@ -190,7 +190,7 @@ class SecurityVideoPreference {
 		$allowed_roles = array();
 
 		if ( $preference ) {
-			$allowed_roles = explode( '|', $preference->get_allowed_roles() );
+			$allowed_roles = $preference->get_allowed_roles_array();
 		}
 
 		// Add Clear Option to Select Box if there are parameters Stored.
@@ -199,19 +199,14 @@ class SecurityVideoPreference {
 			$clear_option = '<option value="">' . esc_html__( '(Clear Selections - Remove Stored Roles)', 'myvideoroom' ) . '</option>';
 		}
 
-		$db_output = null;
-		foreach ( $allowed_roles as $setting_returned ) {
-			$db_output .= '<option value="' . esc_attr( $setting_returned ) . '" selected>' . esc_html( $setting_returned ) . '</option>';
-		}
-		// Now need to exclude a setting if already returned above.
-		foreach ( $allowed_roles as $setting_returned ) {
-			foreach ( $all_roles as $key ) {
-				if ( strpos( $setting_returned, $key['name'] ) === false ) {
-					$output .= '<option value="' . esc_attr( $key['name'] ) . '">' . esc_html( $key['name'] ) . '</option>';
-				}
+		foreach ( $all_roles as $key => $value ) {
+			if ( in_array( $key, $allowed_roles, true ) ) {
+				$output .= '<option value="' . esc_attr( $key ) . '" selected>' . esc_html( $value['name'] ) . '</option>';
+			} else {
+				$output .= '<option value="' . esc_attr( $key ) . '">' . esc_html( $value['name'] ) . '</option>';
 			}
 		}
 
-		return $clear_option . $db_output . $output;
+		return $clear_option . $output;
 	}
 }

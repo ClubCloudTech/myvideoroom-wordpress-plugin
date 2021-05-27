@@ -42,28 +42,31 @@ class SectionTemplates {
 		?>
 	</div>
 
+		<?php
+		$tab_count = \count( $tabs );
+		if ( $tab_count <= 1 ) {
+			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode already properly escaped.
+			echo $tabs[0]->get_function_callback();
+		} else {
+			?>
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 		<ul>
 			<?php
-			$active    = ' nav-tab-active';
-			$tab_count = \count( $tabs );
-			if ( $tab_count <= 1 ) {
-				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode already properly escaped.
-				echo $tabs[0]->get_function_callback();
-			} else {
-				foreach ( $tabs as $menu_output ) {
-					$tab_display_name = $menu_output->get_tab_display_name();
-					$tab_slug         = $menu_output->get_tab_slug();
-					?>
+			$active = ' nav-tab-active';
+
+			foreach ( $tabs as $menu_output ) {
+				$tab_display_name = $menu_output->get_tab_display_name();
+				$tab_slug         = $menu_output->get_tab_slug();
+				?>
 			<li>
 				<a class="nav-tab<?php echo esc_attr( $active ); ?>" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 					<?php echo esc_html( $tab_display_name ); ?>
 				</a>
 			</li>
 					<?php
-						$active = null;
-				}
-				?>
+					$active = null;
+			}
+			?>
 		</ul>
 	</nav>
 				<?php
@@ -79,8 +82,8 @@ class SectionTemplates {
 	</article>
 					<?php
 				}
-			}
-			?>
+		}
+		?>
 </div>
 		<?php
 		return \ob_get_clean();

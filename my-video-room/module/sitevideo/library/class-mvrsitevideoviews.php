@@ -43,7 +43,7 @@ class MVRSiteVideoViews {
 
 		$module_suffix = ' ' . MVRSiteVideo::MODULE_SITE_VIDEO_DESCRIPTION;
 		$module_id     = $display_name;
-		$render        = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
+		$render        = require __DIR__ . '/../../../views/header/view-roomheader.php';
 		$name_output   = esc_html__( 'Hosting ', 'my-video-room' );
 		$is_guest      = false;
 		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_room_url( $room_name );
@@ -65,7 +65,7 @@ class MVRSiteVideoViews {
 		$room_name     = $room_object->room_name;
 		$module_suffix = ' ' . MVRSiteVideo::MODULE_SITE_VIDEO_DESCRIPTION;
 		$module_id     = $display_name;
-		$render        = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
+		$render        = require __DIR__ . '/../../../views/header/view-roomheader.php';
 		$name_output   = esc_html__( 'Visiting ', 'my-video-room' );
 		$is_guest      = true;
 		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_room_url( $room_name );

@@ -61,7 +61,7 @@ class RoomMap {
 			\wp_cache_set( $room_name, $result, __METHOD__ );
 		}
 
-		return $result;
+		return (int) $result;
 	}
 
 	/**

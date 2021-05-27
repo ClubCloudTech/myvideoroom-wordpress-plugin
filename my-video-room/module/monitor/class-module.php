@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\Monitor;
 
+use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Library\Host;

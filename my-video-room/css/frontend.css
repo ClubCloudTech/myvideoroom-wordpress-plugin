@@ -20,6 +20,8 @@
 	display: inline-block;
 	position: relative;
 	z-index: 2;
+	margin: 0;
+	padding: 0;
 }
 
 .myvideoroom-nav-tab-wrapper li:after {
@@ -36,11 +38,6 @@
 
 .myvideoroom-nav-tab-wrapper li:last-child:after {
 	width: 1000%;
-}
-
-.myvideoroom-nav-tab-wrapper li {
-	margin: 0;
-	padding: 0;
 }
 
 .myvideoroom-nav-tab-wrapper li a {

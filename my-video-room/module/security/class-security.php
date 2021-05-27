@@ -102,6 +102,8 @@ class Security {
 
 		// Actions for Disable Feature Module (Enable is in Defaults as it wont run if module is off).
 		\add_action( 'myvideoroom_disable_feature_module', array( Factory::get_instance( SecurityRoomHelpers::class ), 'security_disable_feature_module' ) );
+
+		\add_filter( 'myvideoroom_site_video_user_host_status', array( Factory::get_instance( PageFilters::class ), 'current_user_is_host' ) );
 	}
 
 	/**
