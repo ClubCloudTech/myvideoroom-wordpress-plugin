@@ -6,8 +6,8 @@
 
 .myvideoroom-nav-tab-wrapper {
 	clear: both;
-	margin-bottom: 16px;
 	overflow: hidden;
+	margin-bottom: 4px;
 }
 
 .myvideoroom-nav-tab-wrapper ul {
@@ -49,6 +49,7 @@
 
 .myvideoroom-nav-tab-wrapper li a.nav-tab-active {
 	border-bottom: 1px solid transparent;
+	font-weight: 500;
 }
 
 .myvideoroom-nav-tab-wrapper li a:not(.nav-tab-active) {
@@ -63,4 +64,25 @@
 .myvideoroom-nav-tab-wrapper li a.nav-tab-active:hover,
 .myvideoroom-nav-tab-wrapper li a:not(.nav-tab-active):hover {
 	text-decoration: underline;
+}
+
+.myvideoroom-user-image {
+	z-index: 1;
+	color: #fff;
+	display: table;
+	font-size: 0;
+	position: relative;
+	width:  150px;
+	height: 150px;
+}
+
+.myvideoroom-table-right-split{
+float: right;
+	max-width: 65%;
+
+}
+.myvideoroom-header-table-left {
+
+	text-align: left;
+	max-width: 35%;
 }

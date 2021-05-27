@@ -76,8 +76,9 @@ class Security {
 	 * Required for Normal Runtime.
 	 */
 	public function init() {
-		// Turn on Init Filters.
+		// Turn on Page Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
+
 		$this->security_menu_setup();
 		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_security_sitevideo_tabs' ), 20, 2 );
 

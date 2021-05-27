@@ -54,6 +54,8 @@ class Module {
 		if ( $roombuilder_is_active ) {
 			new RoomBuilder();
 		}
+
+		Factory::get_instance( MVRPersonalMeeting::class )->init();
 	}
 
 	/**
