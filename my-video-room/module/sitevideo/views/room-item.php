@@ -79,16 +79,13 @@ return function ( \stdClass $room ): string {
 		</td>
 		<td>
 			<code class="myvideoroom-shortcode-example-inline">
-				[
 				<?php
-				$shortcode_filter = apply_filters( 'myvideoroom_room_manager_shortcode_display', null, $room->room_type, $room->id, $room );
-				if ( $shortcode_filter ) {
-					echo esc_html( $shortcode_filter );
-				} else {
-					echo esc_html( MVRSiteVideo::SHORTCODE_SITE_VIDEO ) . ' id="' . esc_html( $room->id );
-				}
+
+				$shortcode = '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $room->id . ']';
+
+				$shortcode_filter = apply_filters( 'myvideoroom_room_manager_shortcode_display', $shortcode, $room->room_type, $room->id, $room );
+				echo esc_html( $shortcode_filter );
 				?>
-				]
 			</code>
 		</td>
 		<td class="plugin-title column-primary"><?php echo esc_html( $room->type ); ?></td>
@@ -99,7 +96,7 @@ return function ( \stdClass $room ): string {
 				<a href="<?php echo esc_url( $action[1] ); ?>"
 					class="mvr-icons <?php echo esc_attr( $action[2] ); ?>"
 					data-room-id="<?php echo esc_attr( $room->id ); ?>"
-					title="<?php echo esc_attr( $action[0] ); ?>" 
+					title="<?php echo esc_attr( $action[0] ); ?>"
 					<?php
 					foreach ( $actions[3] ?? array() as $key => $value ) {
 						echo esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';

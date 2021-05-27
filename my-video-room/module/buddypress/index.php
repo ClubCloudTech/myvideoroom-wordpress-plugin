@@ -25,7 +25,8 @@ use MyVideoRoomPlugin\Plugin;
 					'myvideoroom'
 				),
 			),
-			// fn() => new BuddyPress()
+			//phpcs:ignore Squiz.PHP.CommentedOutCode.Found
+			/* fn() => new BuddyPress() */
 		)
 			->add_compatibility_hook( fn() => true ) // @TODO - for testing - always compatible.
 			->add_activation_hook( fn() => ( new Activation() )->activate() )
