@@ -165,10 +165,12 @@ class PageFilters {
 		$user_permissions = Factory::get_instance( SecurityVideoPreferenceDAO::class )->get_by_id( $owner_id, $room_name );
 
 		$anonymous_hosts_allowed = false;
+		$allow_to_block_switch   = false;
 
 		if ( $user_permissions ) {
 			$anonymous_hosts_allowed = $user_permissions->is_anonymous_enabled();
 			$preference              = $user_permissions;
+			$allow_to_block_switch   = $user_permissions->is_block_role_control_enabled();
 		}
 
 		// Trying Default Settings If No User Preference Above.
@@ -181,6 +183,7 @@ class PageFilters {
 			if ( $security_default_permissions ) {
 				$room_control_enabled_state = $security_default_permissions->is_allow_role_control_enabled();
 				$anonymous_hosts_allowed    = $security_default_permissions->is_anonymous_enabled();
+				$allow_to_block_switch      = $security_default_permissions->is_block_role_control_enabled();
 				if ( false === $room_control_enabled_state ) {
 					$host = current_user_can( Plugin::CAP_GLOBAL_HOST );
 				}
@@ -194,11 +197,8 @@ class PageFilters {
 		}
 
 		// Handling Anonymous Users.
-		if ( ! \is_user_logged_in() && true === $anonymous_hosts_allowed ) {
-			return true;
-
-		} else {
-			return false;
+		if ( ! \is_user_logged_in() ) {
+			return $anonymous_hosts_allowed;
 		}
 
 		// Get List of Allowed/Blocked Roles from DB.
@@ -211,7 +211,7 @@ class PageFilters {
 			$no_allowed_roles_configuration = true;
 		}
 
-		if ( ( true === $no_allowed_roles_configuration ) && ( false === $allow_to_block_switch ) ) {
+		if ( $no_allowed_roles_configuration && ! $allow_to_block_switch ) {
 			return false;
 		}
 
