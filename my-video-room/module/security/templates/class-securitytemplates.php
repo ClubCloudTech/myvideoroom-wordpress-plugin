@@ -26,10 +26,11 @@ class SecurityTemplates {
 
 <div class="mvr-row">
 	<h2 class="mvr-header-text">
-			<?php
-				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
-				esc_html_e( 'This Room is Offline', 'myvideoroom' ) . '</h2>';
-			?>
+		<?php
+			echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
+			esc_html_e( 'This Room is Offline', 'myvideoroom' );
+		?>
+	</h2>
 	<img class="mvr-access-image" src="
 			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
 
@@ -38,7 +39,6 @@ class SecurityTemplates {
 		esc_html_e( 'The Administrators have disabled this room. Please contact the site owner, or an admin for help.', 'myvideoroom' );
 		?>
 	</p>
-
 </div>
 		<?php
 
@@ -58,10 +58,11 @@ class SecurityTemplates {
 
 <div class="mvr-row">
 	<h2 class="mvr-header-text">
-			<?php
-				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
-				esc_html_e( 'This Room is Offline', 'myvideoroom' ) . '</h2>';
-			?>
+		<?php
+			echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
+			esc_html_e( 'This Room is Offline', 'myvideoroom' );
+		?>
+	</h2>
 	<img class="mvr-access-image" src="
 			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
 

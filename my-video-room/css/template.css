@@ -50,11 +50,10 @@
 .mvr-access-image {
 	border-radius: 50px;
 	color: #fff;
-	display: table;
+	display: block;
 	font-size: 0;
 	height: 200px;
-	margin-bottom: 20px;
-	margin-top: 20px;
+	margin: 20px auto;
 	place-self: center;
 	position: relative;
 	width: 200px;
@@ -76,6 +75,10 @@
 	font-size: 18px;
 	font-weight: 400;
 	text-align: center;
+}
+
+.mvr-header-text:before {
+	display: none;
 }
 
 .mvr-button-table {

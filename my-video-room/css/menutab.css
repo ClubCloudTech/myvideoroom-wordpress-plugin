@@ -144,6 +144,10 @@
 	letter-spacing: -0.7px;
 }
 
+.mvr-header-title:before {
+	display: none;
+}
+
 .mvr-header-table-right {
 	float:right;
 	text-align: right;

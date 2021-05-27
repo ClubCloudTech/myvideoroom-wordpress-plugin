@@ -42,10 +42,10 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Room Shortcode Transform
 	 *
-	 * @param ?string $input .
-	 * @param ?string $room_type .
-	 * @param int     $room_id - the room id.
-	 * @param Object  $room_object .
+	 * @param ?string  $input       .
+	 * @param ?string  $room_type   .
+	 * @param int|null $room_id     - the room id.
+	 * @param Object   $room_object .
 	 *
 	 * @return string name.
 	 */

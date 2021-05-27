@@ -82,7 +82,7 @@ class PageFilters {
 			$room_disabled = $user_permissions->is_room_disabled();
 		}
 
-		if ( $site_override_permissions->is_site_override_enabled() ) {
+		if ( $site_override_permissions && $site_override_permissions->is_site_override_enabled() ) {
 			$room_disabled = $site_override_permissions->is_room_disabled();
 		}
 
