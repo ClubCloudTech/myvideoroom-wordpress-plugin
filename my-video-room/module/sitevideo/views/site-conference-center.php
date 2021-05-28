@@ -7,6 +7,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
 /**
  * Render the admin page
@@ -17,7 +18,6 @@ use MyVideoRoomPlugin\Library\HTML;
  * @return string
  */
 return function (
-	array $room_list,
 	string $details_section = null
 ): string {
 	ob_start();
@@ -49,17 +49,14 @@ return function (
 		//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo ( require __DIR__ . '/add-new-room.php' )();
 		?>
-		<hr />
-	</div>
-
-	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-		<ul>
-			<li>
-				<a class="nav-tab nav-tab-active" href="#base">
-					<?php esc_html_e( 'Room Manager', 'myvideoroom' ); ?>
-				</a>
-			</li>
-
+	</ul>
+</nav>
+		<?php
+		foreach ( $tabs as $article_output ) {
+			$function_callback = $article_output->get_function_callback();
+			$tab_slug          = $article_output->get_tab_slug();
+			?>
+<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 			<?php
 			foreach ( $tabs as $menu_output ) {
 				$tab_display_name = $menu_output->get_tab_display_name();
@@ -77,6 +74,7 @@ return function (
 	</nav>
 
 	<?php
+<<<<<<< HEAD
 	foreach ( $tabs as $article_output ) {
 		$function_callback = $article_output->get_function_callback();
 		$tab_slug          = $article_output->get_tab_slug();
@@ -146,6 +144,14 @@ return function (
 		<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host"
 			data-loading-text="<?php echo esc_attr__( 'Loading...', 'myvideoroom' ); ?>">
 			<?php
+=======
+	//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - already escaped in function.
+	echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
+	?>
+	<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host"
+		data-loading-text="<?php echo esc_attr__( 'Loading...', 'myvideoroom' ); ?>">
+		<?php
+>>>>>>> changes
 			//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $details_section;
 			?>

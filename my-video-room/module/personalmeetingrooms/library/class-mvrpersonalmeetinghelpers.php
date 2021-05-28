@@ -9,6 +9,7 @@ namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Setup\RoomAdmin as SetupRoomAdmin;
@@ -72,7 +73,7 @@ class MVRPersonalMeetingHelpers {
 	 */
 	public function regenerate_personal_meeting_room( ?string $input = null, int $room_id, $room_object ): ?string {
 		if ( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME === $room_object->room_type ){
-			Factory::get_instance( ModuleConfig::class )->delete_room_mapping_by_id( intval ( $room_object->post_id ) );
+			Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_object->room_name );
 			Factory::get_instance( self::class )->create_personal_meetingroom_page();
 		}
 		return $input;

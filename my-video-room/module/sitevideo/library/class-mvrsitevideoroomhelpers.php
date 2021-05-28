@@ -190,10 +190,7 @@ class MVRSiteVideoRoomHelpers {
 			}
 		}
 
-		return ( require __DIR__ . '/../views/site-conference-center.php' )(
-			$this->get_rooms(),
-			$details_section
-		);
+		return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );
 	}
 
 	/**
@@ -228,10 +225,12 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Get the list of current rooms
 	 *
+	 * @param string $room_type     Category of Room if used.
+	 *
 	 * @return array
 	 */
-	private function get_rooms(): array {
-		$available_rooms = Factory::get_instance( RoomMap::class )->get_all_post_ids_of_rooms();
+	public function get_rooms( string $room_type = null ): array {
+		$available_rooms = Factory::get_instance( RoomMap::class )->get_all_post_ids_of_rooms( $room_type );
 
 		return array_map(
 			function ( $room_id ) {
