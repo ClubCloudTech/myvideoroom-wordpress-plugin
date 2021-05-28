@@ -191,6 +191,35 @@ class MVRSiteVideoRoomHelpers {
 		}
 
 		return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );
+<<<<<<< HEAD
+=======
+	}
+	/**
+	 * Render Site Video Room Setting Tab.
+	 *
+	 * @param  array $input - the inbound menu.
+	 * @param  int   $room_id - the room identifier.
+	 * @return array - outbound menu.
+	 */
+	public function render_sitevideo_roomsetting_tab( array $input, int $room_id ): array {
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+		$room_name   = $room_object->room_name;
+		if ( ! $room_object ) {
+			$room_name = MVRSiteVideo::ROOM_NAME_SITE_VIDEO;
+		}
+		$base_menu = new MenuTabDisplay(
+			esc_html__( 'Video Settings', 'my-video-room' ),
+			'videosettings',
+			fn() => Factory::get_instance( UserVideoPreference::class )
+			->choose_settings(
+				$room_id,
+				$room_name,
+				array( 'basic', 'premium' )
+			)
+		);
+		array_push( $input, $base_menu );
+		return $input;
+>>>>>>> b592f3274fc2fef61d065cb7cce0b94b411fe13a
 	}
 
 	/**
