@@ -191,8 +191,6 @@ class MVRSiteVideoRoomHelpers {
 		}
 
 		return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );
-<<<<<<< HEAD
-=======
 	}
 	/**
 	 * Render Site Video Room Setting Tab.
@@ -219,7 +217,6 @@ class MVRSiteVideoRoomHelpers {
 		);
 		array_push( $input, $base_menu );
 		return $input;
->>>>>>> b592f3274fc2fef61d065cb7cce0b94b411fe13a
 	}
 
 	/**

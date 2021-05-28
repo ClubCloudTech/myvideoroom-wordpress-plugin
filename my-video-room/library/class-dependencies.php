@@ -7,9 +7,7 @@
 
 namespace MyVideoRoomPlugin\Library;
 
-use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
 use MyVideoRoomPlugin\Module\Security\Security;
 
 /**
