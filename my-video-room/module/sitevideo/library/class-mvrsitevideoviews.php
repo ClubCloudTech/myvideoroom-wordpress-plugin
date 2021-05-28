@@ -10,7 +10,6 @@ namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
-use MyVideoRoomPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
@@ -89,5 +88,17 @@ class MVRSiteVideoViews {
 				}
 		}
 		return $room_type;
+	}
+
+	/**
+	 * Generate Room Table
+	 *
+	 * @param string $room_type ? all rooms.
+	 * @return string table.
+	 */
+	public function generate_room_table( string $room_type = null ): string {
+		// Returns all rooms with null roomtype, or a specific room with Room Type.
+		$rooms = Factory::get_instance( MVRSiteVideoRoomHelpers::class )->get_rooms( $room_type );
+		return ( require __DIR__ . '/../views/table-output.php' )( $rooms );
 	}
 }

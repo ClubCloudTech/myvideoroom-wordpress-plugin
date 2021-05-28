@@ -135,7 +135,9 @@ class RoomMap {
 
 			\wp_cache_set( $post_id, $result, __METHOD__ );
 		}
-
+		if ( '' === $result ) {
+			$result = null;
+		}
 		return $result;
 	}
 
@@ -264,7 +266,7 @@ class RoomMap {
 		global $wpdb;
 
 		$cache_key = $room_type;
-		if ( ! $room_type ) {
+		if ( null === $room_type ) {
 			$cache_key = '__ALL__';
 		}
 
@@ -272,6 +274,7 @@ class RoomMap {
 
 		if ( false === $result ) {
 			if ( $room_type ) {
+
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 				$rows = $wpdb->get_results(
 					$wpdb->prepare(

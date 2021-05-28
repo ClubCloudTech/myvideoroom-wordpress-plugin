@@ -38,7 +38,7 @@ class RoomAdmin {
 		$check_page_exists = Factory::get_instance( RoomMap::class )->check_page_exists( $room_name );
 
 		// Check_page_exists has three states, Yes, No, Or Orphan - if yes - exit function, if no create the room, if orphan delete room mapping in database and create room again.
-		if ( 'Yes' === $check_page_exists ) {
+		if ( RoomMap::PAGE_STATUS_EXISTS === $check_page_exists ) {
 			return Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
 		}
 

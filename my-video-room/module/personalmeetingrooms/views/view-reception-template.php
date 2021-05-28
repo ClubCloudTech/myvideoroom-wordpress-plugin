@@ -17,7 +17,7 @@ return function (): string {
 
 	<div class="mvr-header-table-left">
 		<h2 class="mvr-header-title">
-			<?php esc_html_e( 'Welcome to ', 'my-video-room' ) . esc_html( get_bloginfo( 'name' ) ); ?></h2>
+			<?php echo esc_html__( 'Welcome to ', 'my-video-room' ) . esc_html( get_bloginfo( 'name' ) ); ?></h2>
 		<img class="myvideoroom-user-image" src="
 			<?php
 			$custom_logo_id = get_theme_mod( 'custom_logo' );

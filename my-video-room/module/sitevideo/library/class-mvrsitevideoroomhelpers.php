@@ -33,7 +33,7 @@ class MVRSiteVideoRoomHelpers {
 	 */
 	public function regenerate_sitevideo_meeting_room( ?string $input = null, int $room_id, $room_object ): ?string {
 		if ( MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room_object->room_type ) {
-			Factory::get_instance( ModuleConfig::class )->delete_room_mapping_by_id( intval( $room_object->post_id ) );
+			Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_object->room_name );
 			$this->create_site_videoroom_page( $room_id, $room_object );
 		}
 		return $input;
@@ -152,10 +152,7 @@ class MVRSiteVideoRoomHelpers {
 			}
 		}
 
-		return ( require __DIR__ . '/../views/site-conference-center.php' )(
-			$this->get_rooms(),
-			$details_section
-		);
+		return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );
 	}
 	/**
 	 * Render Site Video Room Setting Tab.
@@ -231,10 +228,12 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Get the list of current rooms
 	 *
+	 * @param string $room_type     Category of Room if used.
+	 *
 	 * @return array
 	 */
-	private function get_rooms(): array {
-		$available_rooms = Factory::get_instance( RoomMap::class )->get_all_post_ids_of_rooms();
+	public function get_rooms( string $room_type = null ): array {
+		$available_rooms = Factory::get_instance( RoomMap::class )->get_all_post_ids_of_rooms( $room_type );
 
 		return array_map(
 			function ( $room_id ) {

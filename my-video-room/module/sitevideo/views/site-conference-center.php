@@ -7,6 +7,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
 /**
  * Render the admin page
@@ -17,7 +18,6 @@ use MyVideoRoomPlugin\Library\HTML;
  * @return string
  */
 return function (
-	array $room_list,
 	string $details_section = null
 ): string {
 	ob_start();
@@ -73,7 +73,6 @@ return function (
 		?>
 	</ul>
 </nav>
-
 		<?php
 		foreach ( $tabs as $article_output ) {
 			$function_callback = $article_output->get_function_callback();
@@ -90,57 +89,9 @@ return function (
 		?>
 <article id="base">
 	<?php
-	if ( $room_list ) {
-		?>
-	<table class="wp-list-table widefat plugins">
-		<thead>
-			<tr>
-				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Page Name', 'my-video-room' ); ?>
-				</th>
-
-				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Page URL', 'my-video-room' ); ?>
-				</th>
-
-				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Shortcode', 'my-video-room' ); ?>
-				</th>
-
-				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Type', 'my-video-room' ); ?>
-				</th>
-
-				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Actions', 'my-video-room' ); ?>
-				</th>
-			</tr>
-		</thead>
-
-		<tbody>
-			<?php
-			$room_item_render = require __DIR__ . '/room-item.php';
-			foreach ( $room_list as $room ) {
-				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo $room_item_render( $room );
-			}
-			?>
-		</tbody>
-	</table>
-	<?php } else { ?>
-	<p>
-		<?php
-			printf(
-			/* translators: %s is the text "Add new room" */
-				esc_html__(
-					'You don\'t current have any site conference rooms. Please click on "%s" above to get started',
-					'myvideoroom'
-				),
-				esc_html__( 'Add new room', 'my-video-room' ),
-			)
-		?>
-	</p>
-	<?php } ?>
+	//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - already escaped in function.
+	echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
+	?>
 	<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host"
 		data-loading-text="<?php echo esc_attr__( 'Loading...', 'myvideoroom' ); ?>">
 		<?php
