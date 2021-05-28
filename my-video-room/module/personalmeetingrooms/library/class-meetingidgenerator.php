@@ -5,7 +5,7 @@
  * @package MyVideoRoomExtrasPlugin\Library
  */
 
-namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
+namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
 
 /**
  * Class MeetingIdGenerator
