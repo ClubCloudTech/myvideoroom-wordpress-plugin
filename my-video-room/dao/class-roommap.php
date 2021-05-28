@@ -66,7 +66,6 @@ class RoomMap {
 	 */
 	private function get_table_name(): string {
 		global $wpdb;
-
 		return $wpdb->prefix . self::TABLE_NAME;
 	}
 
@@ -266,7 +265,7 @@ class RoomMap {
 		global $wpdb;
 
 		$cache_key = $room_type;
-		if ( ! $room_type ) {
+		if ( null === $room_type ) {
 			$cache_key = '__ALL__';
 		}
 
@@ -274,6 +273,7 @@ class RoomMap {
 
 		if ( false === $result ) {
 			if ( $room_type ) {
+
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 				$rows = $wpdb->get_results(
 					$wpdb->prepare(

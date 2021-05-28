@@ -104,6 +104,12 @@
 	width: 35%;
 }
 
+.mvr-header-table-left {
+	width: 35%;
+	float:left;
+	text-align: left;
+}
+
 .mvr-icons {
 	background-color: #fff;
 	-moz-border-radius: 50%;

@@ -1,0 +1,76 @@
+<?php
+/**
+ * Outputs Formatted Table for Site Video and Other Applications
+ *
+ * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ */
+
+/**
+ * Render the admin page
+ *
+ * @param array   $room_list        The list of rooms.
+ * @param ?string $details_section  Optional details section.
+ *
+ * @return string
+ */
+return function (
+	array $room_list
+): string {
+	ob_start();
+	?>
+
+	<?php
+	if ( $room_list ) {
+		?>
+	<table class="wp-list-table widefat plugins">
+		<thead>
+			<tr>
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php esc_html_e( 'Page Name', 'my-video-room' ); ?>
+				</th>
+
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php esc_html_e( 'Page URL', 'my-video-room' ); ?>
+				</th>
+
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php esc_html_e( 'Shortcode', 'my-video-room' ); ?>
+				</th>
+
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php esc_html_e( 'Type', 'my-video-room' ); ?>
+				</th>
+
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php esc_html_e( 'Actions', 'my-video-room' ); ?>
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<?php
+			$room_item_render = require __DIR__ . '/room-item.php';
+			foreach ( $room_list as $room ) {
+				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $room_item_render( $room );
+			}
+			?>
+		</tbody>
+	</table>
+	<?php } else { ?>
+	<p>
+		<?php
+			printf(
+			/* translators: %s is the text "Add new room" */
+				esc_html__(
+					'You don\'t current have any rooms. Please click on "%s" above to get started',
+					'myvideoroom'
+				),
+				esc_html__( 'Add new room', 'my-video-room' ),
+			)
+		?>
+	</p>
+		<?php
+	}
+	return ob_get_clean();
+};

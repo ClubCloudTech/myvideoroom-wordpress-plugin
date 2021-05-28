@@ -11,6 +11,7 @@ use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Security;
 
 /**
@@ -63,6 +64,17 @@ class SecurityRoomHelpers {
 		header( 'Refresh:0' );
 
 		return true;
+	}
+	/**
+	 * Security Update Post ID's for regeneration.
+	 *
+	 *  @param  int $post_id - the new post ID.
+	 *  @param  int $old_post_id - the old post ID.
+	 *  @return bool
+	 */
+	public function update_security_post_id( int $post_id, int $old_post_id ) {
+		
+		return Factory::get_instance( SecurityVideoPreference::class )->update_user_id( $post_id, $old_post_id );
 	}
 
 }
