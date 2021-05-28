@@ -10,7 +10,7 @@
  * Plugin URI:          https://clubcloud.tech
  * Text Domain:         myvideoroom
  * Description:         Integrates the MyVideoRoom Service into WordPress
- * Version:             3.0.0
+ * Version:             3.0.1
  * Requires PHP:        7.4
  * Requires at least:   5.6
  * Author:              ClubCloud
