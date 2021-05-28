@@ -10,7 +10,7 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\RoomBuilder\Settings;
 
 /**
- * Class Reference
+ * Class RoomPermissionsOption
  */
 class RoomPermissionsOption {
 

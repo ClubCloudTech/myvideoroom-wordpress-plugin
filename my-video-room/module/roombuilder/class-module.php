@@ -160,28 +160,29 @@ class Module {
 
 		$available_receptions = Factory::get_instance( AvailableScenes::class )->get_available_receptions();
 
-		$shortcode_constructor = null;
+		$shortcode_constructor = \apply_filters( 'myvideoroom_roombuilder_create_shortcode', $this->create_shortcode_constructor() );
 
+		$preview_constructor = null;
 		if (
 			$this->is_initial_preview_enabled( $attributes ) ||
-			$post_library->is_post_request( 'show_roombuilder_preview' )
+			$post_library->is_post_request( 'roombuilder_show_preview' )
 		) {
-			$shortcode_constructor = \apply_filters( 'myvideoroom_roombuilder_create_shortcode', $this->create_shortcode_constructor() );
+			$preview_constructor = $shortcode_constructor;
 		}
 
 		$output = ( require __DIR__ . '/views/settings.php' )(
 			$available_layouts,
 			$available_receptions,
-			$shortcode_constructor
+			$preview_constructor
 		);
 
 		// --
 		// If we have a config, then use it to render out the preview.
 
-		if ( $shortcode_constructor ) {
+		if ( $preview_constructor ) {
 			if (
-				$post_library->is_post_request( 'show_roombuilder_preview' ) &&
-				! $post_library->is_nonce_valid( 'show_roombuilder_preview' )
+				$post_library->is_post_request( 'roombuilder_show_preview' ) &&
+				! $post_library->is_nonce_valid( 'roombuilder_show_preview' )
 			) {
 				$output .= $this->generate_nonce_error();
 			} else {

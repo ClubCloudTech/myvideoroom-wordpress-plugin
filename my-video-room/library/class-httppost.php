@@ -75,7 +75,7 @@ class HttpPost {
 	 * @return bool
 	 */
 	public function is_nonce_valid( string $action ): bool {
-		$nonce = $this->get_string_parameter( 'nonce' );
+		$nonce = $this->get_string_parameter( 'nonce_' . $action );
 
 		return (bool) \wp_verify_nonce( $nonce, $action );
 	}
@@ -131,7 +131,7 @@ class HttpPost {
 	 */
 	public function is_admin_post_request( string $action ): bool {
 		if ( $this->is_post_request( $action ) ) {
-			return (bool) \check_admin_referer( $action, 'myvideoroom_nonce' );
+			return (bool) \check_admin_referer( $action, 'myvideoroom_nonce_' . $action );
 		}
 
 		return false;
@@ -148,7 +148,7 @@ class HttpPost {
 	public function is_post_request( string $action ): bool {
 		return (
 			( 'POST' === $_SERVER['REQUEST_METHOD'] ?? false ) &&
-			$this->get_string_parameter( 'action' ) === $action
+			! ! $this->get_string_parameter( 'action_' . $action )
 		);
 	}
 
@@ -160,7 +160,7 @@ class HttpPost {
 	 * @return string
 	 */
 	public function create_admin_form_submit( string $action ): string {
-		$output  = \wp_nonce_field( $action, 'myvideoroom_nonce', true, false );
+		$output  = \wp_nonce_field( $action, 'myvideoroom_nonce_' . $action, true, false );
 		$output .= '<input type="hidden" value="' . $action . '" name="myvideoroom_action" />';
 		$output .= \get_submit_button();
 
@@ -172,20 +172,20 @@ class HttpPost {
 	 *
 	 * @param string $action      The action.
 	 * @param string $submit_text The translated text for the submit button.
+	 * @param string $type        The type of the button.
 	 *
 	 * @return string
 	 */
-	public function create_form_submit( string $action, string $submit_text ): string {
+	public function create_form_submit( string $action, string $submit_text, string $type = 'primary' ): string {
 		\ob_start();
 		?>
 
-		<?php \wp_nonce_field( $action, 'myvideoroom_nonce' ); ?>
-		<input type="hidden" value="<?php echo \esc_attr( $action ); ?>" name="myvideoroom_action" />
+		<?php \wp_nonce_field( $action, 'myvideoroom_nonce_' . $action ); ?>
 
 		<input type="submit"
-			name="submit"
+			name="myvideoroom_action_<?php echo esc_attr( $action ); ?>"
 			id="submit"
-			class="button button-primary"
+			class="button button-<?php echo esc_attr( $type ); ?>"
 			value="<?php echo \esc_html( $submit_text ); ?>"
 		/>
 		<?php

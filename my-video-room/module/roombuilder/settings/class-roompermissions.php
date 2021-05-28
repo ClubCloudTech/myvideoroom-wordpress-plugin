@@ -13,7 +13,7 @@ use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 
 /**
- * Class Reference
+ * Class RoomPermissions
  */
 class RoomPermissions {
 

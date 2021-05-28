@@ -81,7 +81,7 @@ class RoomBuilder {
 	 */
 	public function add_permissions_option( array $options ): array {
 		$post_library = Factory::get_instance( HttpPost::class );
-		if ( $post_library->is_post_request( 'show_roombuilder_preview' ) ) {
+		if ( $post_library->is_post_request( 'roombuilder_show_preview' ) ) {
 			$permissions_preference = $post_library->get_radio_parameter( 'room_builder_room_permissions_preference' );
 			$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 		} else {
@@ -111,7 +111,7 @@ class RoomBuilder {
 	public function ensure_correct_permission_is_selected( array $options ): array {
 
 		$post_library = Factory::get_instance( HttpPost::class );
-		if ( $post_library->is_post_request( 'show_roombuilder_preview' ) ) {
+		if ( $post_library->is_post_request( 'roombuilder_show_preview' ) ) {
 			$permissions_preference = Factory::get_instance( HttpPost::class )->get_radio_parameter( 'room_builder_room_permissions_preference' );
 			$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 		} else {
@@ -136,7 +136,7 @@ class RoomBuilder {
 	 */
 	public function generate_shortcode_constructor( AppShortcodeConstructor $shortcode_constructor ): AppShortcodeConstructor {
 		$post_library = Factory::get_instance( HttpPost::class );
-		if ( $post_library->is_post_request( 'show_roombuilder_preview' ) ) {
+		if ( $post_library->is_post_request( 'roombuilder_show_preview' ) ) {
 			$permissions_preference = $post_library->get_radio_parameter( 'room_builder_room_permissions_preference' );
 			$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 

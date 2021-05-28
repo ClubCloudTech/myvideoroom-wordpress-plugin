@@ -338,7 +338,7 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 			$shortcode_array[ $key ] = $custom_setting;
 		}
 
-		$shortcode_array = \apply_filters( 'myvideoroom_appshortcode_output', $shortcode_array );
+		$shortcode_array = \apply_filters( 'myvideoroom_appshortcode_output', $shortcode_array, $this );
 
 		return $this->get_shortcode_text( $shortcode_array );
 	}

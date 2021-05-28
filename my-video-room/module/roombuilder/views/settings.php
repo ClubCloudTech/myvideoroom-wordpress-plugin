@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\RoomBuilder\Settings\RoomPermissions;
+use MyVideoRoomPlugin\Module\RoomBuilder\Settings\Actions;
 
 /**
  * Output the settings page for the Room Builder
@@ -314,11 +315,12 @@ return function (
 		</div>
 
 		<?php
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo Factory::get_instance( HttpPost::class )->create_form_submit(
-			'show_roombuilder_preview',
-			\esc_html__( 'Preview room and shortcode', 'myvideoroom' )
-		);
+		$submit_buttons = ( new Actions() )->get_settings_actions( $app_config );
+
+		foreach ( $submit_buttons as $submit_button ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $submit_button->get_html();
+		}
 		?>
 	</form>
 
