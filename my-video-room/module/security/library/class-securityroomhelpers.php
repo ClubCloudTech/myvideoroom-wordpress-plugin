@@ -73,7 +73,7 @@ class SecurityRoomHelpers {
 	 *  @return bool
 	 */
 	public function update_security_post_id( int $post_id, int $old_post_id ) {
-		
+
 		return Factory::get_instance( SecurityVideoPreference::class )->update_user_id( $post_id, $old_post_id );
 	}
 

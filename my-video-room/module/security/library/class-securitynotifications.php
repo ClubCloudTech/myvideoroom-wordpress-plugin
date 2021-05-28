@@ -287,7 +287,7 @@ class SecurityNotifications {
 		return $input;
 	}
 	/**
-	 * Action for Listening for Security Delete Updates, and executing them. 
+	 * Action for Listening for Security Delete Updates, and executing them.
 	 *
 	 * @param string $input The inbound filter name to use.
 	 *

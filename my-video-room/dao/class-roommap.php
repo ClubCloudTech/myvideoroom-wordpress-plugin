@@ -265,7 +265,7 @@ class RoomMap {
 		global $wpdb;
 
 		$cache_key = $room_type;
-		if ( null === $room_type ) {
+		if ( $room_type ) {
 			$cache_key = '__ALL__';
 		}
 

@@ -12,7 +12,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 /**
  * Render the admin page
  *
- * @param ?string $details_section  Optional details section.
+ * @param ?string $details_section Optional details section.
  *
  * @return string
  */
@@ -31,74 +31,78 @@ return function (
 	$tabs = apply_filters( 'myvideoroom_room_manager_menu', $inbound_tabs );
 
 	?>
-<h2><?php esc_html_e( 'Room Manager', 'my-video-room' ); ?></h2>
-<p><?php esc_html_e( 'This section allows you manage the configuration of permanent rooms that you or your modules have created.', 'myvideoroom' ); ?>
-</p>
-<div aria-label="button" class="button button-primary myvideoroom-sitevideo-add-room-button">
-	<i class="dashicons dashicons-plus-alt"></i>
-	<?php esc_html_e( 'Add new room', 'my-video-room' ); ?>
-</div>
+	<h2><?php esc_html_e( 'Room Manager', 'my-video-room' ); ?></h2>
+	<p>
+		<?php esc_html_e( 'This section allows you manage the configuration of permanent rooms that you or your modules have created.', 'myvideoroom' ); ?>
+	</p>
 
-<hr />
+	<div aria-label="button" class="button button-primary myvideoroom-sitevideo-add-room-button">
+		<i class="dashicons dashicons-plus-alt"></i>
+		<?php esc_html_e( 'Add new room', 'my-video-room' ); ?>
+	</div>
 
-<div class="myvideoroom-sitevideo-add-room">
-	<?php
-		//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo ( require __DIR__ . '/add-new-room.php')();
-	?>
 	<hr />
-</div>
 
-<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-	<ul>
-		<li>
-			<a class="nav-tab nav-tab-active" href="#base">
-				<?php esc_html_e( 'Room Manager', 'myvideoroom' ); ?>
-			</a>
-		</li>
+	<div class="myvideoroom-sitevideo-add-room">
+		<?php
+		//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo ( require __DIR__ . '/add-new-room.php' )();
+		?>
+		<hr />
+	</div>
 
-		<?php
-		foreach ( $tabs as $menu_output ) {
-			$tab_display_name = $menu_output->get_tab_display_name();
-			$tab_slug         = $menu_output->get_tab_slug();
-			?>
-		<li>
-			<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-				<?php echo esc_html( $tab_display_name ); ?>
-			</a>
-		</li>
+	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
+		<ul>
+			<li>
+				<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
+					<?php esc_html_e( 'Room Manager', 'myvideoroom' ); ?>
+				</a>
+			</li>
 			<?php
-		}
-		?>
-	</ul>
-</nav>
-		<?php
-		foreach ( $tabs as $article_output ) {
-			$function_callback = $article_output->get_function_callback();
-			$tab_slug          = $article_output->get_tab_slug();
+			foreach ( $tabs as $menu_output ) {
+				$tab_display_name = $menu_output->get_tab_display_name();
+				$tab_slug         = $menu_output->get_tab_slug();
+				?>
+				<li>
+					<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+						<?php echo esc_html( $tab_display_name ); ?>
+					</a>
+				</li>
+				<?php
+			}
 			?>
-<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-			<?php
-						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-						echo $function_callback;
-			?>
-</article>
-			<?php
-		}
-		?>
-<article id="base">
+		</ul>
+	</nav>
+
 	<?php
-	//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - already escaped in function.
-	echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
-	?>
-	<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host"
-		data-loading-text="<?php echo esc_attr__( 'Loading...', 'myvideoroom' ); ?>">
+	foreach ( $tabs as $article_output ) {
+		$function_callback = $article_output->get_function_callback();
+		$tab_slug          = $article_output->get_tab_slug();
+		?>
+		<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+			<?php
+			//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $function_callback;
+			?>
+		</article>
 		<?php
+	}
+	?>
+
+	<article id="<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
+
+		<?php
+		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
+		?>
+		<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host"
+			data-loading-text="<?php echo esc_attr__( 'Loading...', 'myvideoroom' ); ?>">
+			<?php
 			//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $details_section;
-		?>
-	</div>
-</article>
+			?>
+		</div>
+	</article>
 	<?php
 	return ob_get_clean();
 };
