@@ -1,5 +1,5 @@
 === MyVideoRoom  ===
-Stable tag: 3.0.0-rc.1
+Stable tag: 3.0.0
 Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 5.7
@@ -161,6 +161,9 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 
 == Changelog ==
 
+= 3.0.0 =
+* Adds site video, and customisable rooms.
+
 = 2.1.0 =
 * Adds personal meeting rooms and invites
 
@@ -198,11 +201,14 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 
 == Upgrade Notice ==
 
+= 3.* =
+If updating from a version less than version 3 this will require you to de-activate, and then re-activate the plugin. There are a number of new tables created on activation that are required for the plugin to work correctly.
+
 = 2.1.* =
 New modules are available! Check out the modules tab in the admin pages.
 
 = 2.0.* =
-This updated changes the roles that are added to WordPress. Although you should have no problems it may be wise to remove the plugin and re-install to ensure you have no issues.
+This update changes the roles that are added to WordPress. Although you should have no problems it may be wise to remove the plugin and re-install to ensure you have no issues.
 
 = 1.5.* =
 No manual changes are needed for these changes
