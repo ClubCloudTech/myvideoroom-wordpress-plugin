@@ -86,7 +86,7 @@ class MVRSiteVideoViews {
 				if ( ! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
 					return esc_html__( 'Module Disabled', 'myvideoroom' );
 				} else {
-					return MVRSiteVideo::ROOM_NAME_TABLE;
+					return esc_html__( 'Conference Center Room', 'myvideoroom' );
 				}
 		}
 

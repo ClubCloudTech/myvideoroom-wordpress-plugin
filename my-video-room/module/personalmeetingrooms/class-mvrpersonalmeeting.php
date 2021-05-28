@@ -26,7 +26,7 @@ class MVRPersonalMeeting {
 		const SITE_PAGE_MEETING_CENTER                = 'meet-center';
 		const ROOM_NAME_PERSONAL_MEETING              = Dependencies::ROOM_NAME_PERSONAL_MEETING;
 		const ROOM_NAME_PERSONAL_MEETING_SITE_DEFAULT = 'site-default-personal-boardroom';
-		const MODULE_PERSONAL_MEETING_ID              = Dependencies::MODULE_PERSONAL_MEETING_ID;
+		const MODULE_PERSONAL_MEETING_ID              = 1065;
 		const MODULE_PERSONAL_MEETING_ADMIN_LOCATION  = '/module/personalmeetingrooms/views/view-settings-personalvideo.php';
 		const MODULE_PERSONAL_MEETING_DISPLAY         = 'Personal Meeting Room';
 		const MODULE_PERSONAL_MEETING_TABLE_DISPLAY   = 'Personal Meeting Room Reception';

@@ -40,7 +40,6 @@ class MVRSiteVideo {
 	const ROOM_TITLE_SITE_VIDEO         = 'Main Conference Room';
 	const ROOM_SLUG_SITE_VIDEO          = 'conference';
 	const SHORTCODE_SITE_VIDEO          = App::SHORTCODE_TAG . '_sitevideoroom';
-	const ROOM_NAME_TABLE               = 'Conference Center Room';
 
 	/**
 	 * Initialise On Module Activation
