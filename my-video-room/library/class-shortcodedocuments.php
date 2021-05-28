@@ -14,7 +14,7 @@ class ShortcodeDocuments {
 
 
 	/**
-	 * Render all General Shortcodes that are published for User usage.
+	 * Render all General Shortcodes that are published for User usages.
 	 */
 	public function render_general_shortcode_docs() {
 
