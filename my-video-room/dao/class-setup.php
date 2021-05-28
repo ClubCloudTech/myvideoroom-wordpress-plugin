@@ -87,7 +87,7 @@ class Setup {
 			`module_enabled` BOOLEAN,
 			`module_status` VARCHAR(255) NULL,
 			`module_param` VARCHAR(255) NULL,
-			`module_has_admin_page` BOOLEAN
+			`module_has_admin_page` BOOLEAN,
 			PRIMARY KEY (`module_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
