@@ -16,7 +16,9 @@ use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
+use MyVideoRoomPlugin\Module\Monitor\Module;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -243,6 +245,23 @@ class MVRSiteVideoRoomHelpers {
 			},
 			$available_rooms
 		);
+	}
+
+	/**
+	 * Get the list of current rooms
+	 *
+	 * @param string    $room_type     Category of Room if used.
+	 * @param \stdClass $room The room object.
+	 *
+	 * @return ?string
+	 */
+	public function conference_check_reception_status( string $room_type = null, \stdClass $room ): ?string {
+		$room_name   = Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $room->display_name );
+		$text_single = 'One Guest Waiting';
+		$text_plural = 'Guests Waiting';
+		$monitor     = \do_shortcode( '[myvideoroom_monitor name="' . $room_name . '" text-single="' . $text_single . '" text-plural="' . $text_plural . '" ]' );
+
+		return $monitor;
 	}
 
 	/**

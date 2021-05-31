@@ -11,10 +11,14 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
  * Render the admin page
  *
  * @param \stdClass $room The room
+ * @param ?string $room_type  Category of Room to Filter.
  *
  * @return string
  */
-return function ( \stdClass $room ): string {
+return function (
+	\stdClass $room,
+	$room_type = null
+): string {
 	ob_start();
 
 	$edit_actions = array(
@@ -29,30 +33,31 @@ return function ( \stdClass $room ): string {
 	// Add any extra options.
 	$edit_actions = \apply_filters( 'myvideoroom_sitevideo_edit_actions', $edit_actions, $room->id );
 
-	$settings_url   = \add_query_arg( array( 'room_id' => $room->id ), \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
-	$edit_actions[] = array(
-		__( 'View settings' ),
-		$settings_url,
-		'dashicons dashicons-admin-generic myvideoroom-sitevideo-settings',
-	);
+	if ( MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room_type) {
+		$settings_url   = \add_query_arg( array( 'room_id' => $room->id ), \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
+		$edit_actions[] = array(
+			__( 'View settings' ),
+			$settings_url,
+			'dashicons dashicons-admin-generic myvideoroom-sitevideo-settings',
+		);
 
-	$delete_nonce   = wp_create_nonce( 'delete_room_' . $room->id );
-	$delete_url     = \add_query_arg(
-		array(
-			'room_id'  => $room->id,
-			'confirm'  => null,
-			'action'   => 'delete',
-			'_wpnonce' => $delete_nonce,
-		),
-		\esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) )
-	);
-	$edit_actions[] = array(
-		__( 'Delete room' ),
-		$delete_url,
-		'dashicons dashicons-dismiss myvideoroom-sitevideo-delete',
-		array( 'data-nonce' => $delete_nonce ),
-	);
-
+		$delete_nonce   = wp_create_nonce( 'delete_room_' . $room->id );
+		$delete_url     = \add_query_arg(
+			array(
+				'room_id'  => $room->id,
+				'confirm'  => null,
+				'action'   => 'delete',
+				'_wpnonce' => $delete_nonce,
+			),
+			\esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) )
+		);
+		$edit_actions[] = array(
+			__( 'Delete room' ),
+			$delete_url,
+			'dashicons dashicons-dismiss myvideoroom-sitevideo-delete',
+			array( 'data-nonce' => $delete_nonce ),
+		);
+	}
 	// ---
 
 	$regenerate_nonce = wp_create_nonce( 'regenerate_room_' . $room->id );
@@ -88,7 +93,8 @@ return function ( \stdClass $room ): string {
 				?>
 			</code>
 		</td>
-		<td class="plugin-title column-primary"><?php echo esc_html( $room->type ); ?></td>
+		<td class="plugin-title column-primary">
+			<?php echo apply_filters( 'myvideoroom_conference_room_type_column_field', $room->type, $room ) ; ?></td>
 		<td>
 			<?php
 			foreach ( $edit_actions as $action ) {

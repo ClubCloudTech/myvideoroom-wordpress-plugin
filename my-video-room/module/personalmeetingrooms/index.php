@@ -12,7 +12,7 @@ namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingHelpers;
-use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Module as PersonalMeetingRooms;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\Module as PersonalMeetingRooms;
 use MyVideoRoomPlugin\Plugin;
 
 \add_action(

@@ -32,7 +32,7 @@ class MVRPersonalMeeting {
 		const MODULE_PERSONAL_MEETING_TABLE_DISPLAY   = 'Personal Meeting Room Reception';
 		const ROOM_TITLE_PERSONAL_MEETING             = ' Video Meetings';
 		const ROOM_SLUG_PERSONAL_MEETING              = 'meet';
-		const ROOM_SHORTCODE_PERSONAL_MEETING         = '[myvideoroom_meetswitch]';
+		const ROOM_SHORTCODE_PERSONAL_MEETING         = 'myvideoroom_meetswitch';
 
 	/**
 	 * Initialise On Module Activation

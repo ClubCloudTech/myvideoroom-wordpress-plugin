@@ -55,7 +55,7 @@ class MVRPersonalMeetingHelpers {
 				if ( ! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_ID ) ) {
 					return esc_html__( 'Module Disabled', 'myvideoroom' );
 				} else {
-					$shortcode = preg_replace( '/[^a-zA-Z0-9\s_]/', '', MVRPersonalMeeting::ROOM_SHORTCODE_PERSONAL_MEETING );
+					$shortcode = '[' . preg_replace( '/[^a-zA-Z0-9\s_]/', '', MVRPersonalMeeting::ROOM_SHORTCODE_PERSONAL_MEETING ) . ']';
 					return $shortcode;
 				}
 		}

@@ -9,7 +9,7 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\HttpPost;
-use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Module;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\Module;
 
 
 /**

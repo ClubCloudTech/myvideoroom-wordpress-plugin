@@ -70,6 +70,7 @@ class Module {
 					true
 				);
 
+
 				\wp_localize_script(
 					'myvideoroom-monitor',
 					'myvideoroom_monitor_texts',

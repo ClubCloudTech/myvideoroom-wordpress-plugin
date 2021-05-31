@@ -49,7 +49,7 @@ class RoomAdmin {
 				'post_title'   => get_bloginfo( 'name' ) . ' ' . $display_title,
 				'post_name'    => strtolower( str_replace( ' ', '-', trim( $slug ) ) ),
 				'post_status'  => 'publish',
-				'post_content' => $shortcode,
+				'post_content' => '[' . $shortcode . ']',
 				'post_type'    => 'page',
 			)
 		);

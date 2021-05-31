@@ -8,12 +8,22 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML as HTML;
 
+/**
+ * Render the Room Management Ajax Frame page
+ * This view redners the main Conference Room Properties configuration page - with Video Settings, and if security enabled, hosting, and room permissions.
+ *
+ * @param stdClass $room_object - Room Object for Display if relevant.
+ * @param ?string  $input_type - Room Type for special content render.
+ *
+ * @return string
+ */
 return function (
-	\stdClass $room_object
+	\stdClass $room_object,
+	?string $input_type = null
 ): string {
+
 	$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 	ob_start();
-
 	$base_option  = array();
 	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_object->id );
 	?>
@@ -52,6 +62,5 @@ return function (
 
 		<?php
 	}
-
 	return ob_get_clean();
 };

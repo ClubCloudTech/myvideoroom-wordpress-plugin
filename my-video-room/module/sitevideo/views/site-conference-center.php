@@ -19,6 +19,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 return function (
 	string $details_section = null
 ): string {
+	\wp_enqueue_script( 'myvideoroom-monitor' );
 	ob_start();
 	$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 	$inbound_tabs = array();
@@ -31,31 +32,16 @@ return function (
 	$tabs = apply_filters( 'myvideoroom_room_manager_menu', $inbound_tabs );
 
 	?>
-	<h2><?php esc_html_e( 'Room Manager', 'my-video-room' ); ?></h2>
+	<h2><?php esc_html_e( 'Room Management and Control', 'my-video-room' ); ?></h2>
 	<p>
 		<?php esc_html_e( 'This section allows you manage the configuration of permanent rooms that you or your modules have created.', 'myvideoroom' ); ?>
 	</p>
-
-	<div aria-label="button" class="button button-primary myvideoroom-sitevideo-add-room-button">
-		<i class="dashicons dashicons-plus-alt"></i>
-		<?php esc_html_e( 'Add new room', 'my-video-room' ); ?>
-	</div>
-
-	<hr />
-
-	<div class="myvideoroom-sitevideo-add-room">
-		<?php
-		//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo ( require __DIR__ . '/add-new-room.php' )();
-		?>
-		<hr />
-	</div>
 
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 		<ul>
 			<li>
 				<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
-					<?php esc_html_e( 'Room Manager', 'myvideoroom' ); ?>
+					<?php esc_html_e( 'Room Summary', 'myvideoroom' ); ?>
 				</a>
 			</li>
 			<?php
@@ -95,13 +81,7 @@ return function (
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
 		?>
-		<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host"
-			data-loading-text="<?php echo esc_attr__( 'Loading...', 'myvideoroom' ); ?>">
-			<?php
-			//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo $details_section;
-			?>
-		</div>
+
 	</article>
 	<?php
 	return ob_get_clean();

@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
+namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;

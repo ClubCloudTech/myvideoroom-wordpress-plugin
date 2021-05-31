@@ -11,6 +11,7 @@
 		'click',
 		function (e) {
 			var room_id = $( this ).data( 'roomId' );
+			var input_type = $( this ).data( 'inputType' );
 
 			var $container   = $( '.mvr-security-room-host' );
 			var loading_text = $container.data( 'loadingText' );
@@ -26,7 +27,8 @@
 					url: ajax_url,
 					data: {
 						action: 'myvideoroom_sitevideo_settings',
-						roomId: room_id
+						roomId: room_id,
+						inputType: input_type
 					},
 					success: function (response) {
 						if ('URLSearchParams' in window) {

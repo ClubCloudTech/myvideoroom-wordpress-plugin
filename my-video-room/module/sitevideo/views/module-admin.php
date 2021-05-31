@@ -7,18 +7,20 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
-use MyVideoRoomPlugin\Shortcode\UserVideoPreference as UserVideoPreference;
-use MyVideoRoomPlugin\SiteDefaults as MyVideoRoomPluginSiteDefaults;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Render the admin page
  *
  * @return string
  */
-return function (): string {
+return function (
+	$details_section = null
+): string {
 	ob_start();
-
+	$settings_url = \add_query_arg( \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
 	?>
 	<div class="mvr-admin-page-wrap">
 		<h2><?php esc_html_e( 'Site Conference Center Settings', 'my-video-room' ); ?></h2>
@@ -36,26 +38,43 @@ return function (): string {
 			<?php
 			printf(
 			/* translators: %s is a link to the site conference center */
-				esc_html__( 'To add additional rooms, click add new room above', 'myvideoroom' )
+				esc_html__( 'To add additional rooms, click add new room', 'myvideoroom' )
 			);
 			?>
 		</p>
+		<div aria-label="button" class="button button-primary myvideoroom-sitevideo-add-room-button">
+		<i class="dashicons dashicons-plus-alt"></i>
+		<?php esc_html_e( 'Add new room', 'my-video-room' ); ?>
+	</div>
 
-		<hr />
-		<h3>
-			<?php esc_html_e( 'Module Default Settings', 'my-video-room' ); ?>
-		</h3>
-		<p>
-			<?php esc_html_e( 'These settings govern the default appearance of all Site Conference Rooms. They can be overriden at the user and room level.', 'my-video-room' ); ?>
-		</p>
+	<div aria-label="button" class="button button-primary">
+	<a href="<?php echo esc_url_raw( $settings_url ) . '&room_id=' . esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>" data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>" data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>" class="myvideoroom-sitevideo-settings myvideoroom-button-link">
+	<i class="dashicons dashicons-admin-settings"></i>
+	<?php esc_html_e( 'Default Site Conference Appearance', 'my-video-room' ); ?></a>
+	</div>
+
+	<hr />
+
+	<div class="myvideoroom-sitevideo-add-room">
 		<?php
-
-		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Escaped.
-		echo Factory::get_instance( UserVideoPreference::class )->choose_settings(
-			MyVideoRoomPluginSiteDefaults::USER_ID_SITE_DEFAULTS,
-			esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO )
-		);
+		//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo ( require __DIR__ . '/add-new-room.php' )();
 		?>
+		<hr />
+	</div>
+
+	<?php
+		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO );
+	?>
+		<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host"
+			data-loading-text="<?php echo esc_attr__( 'Loading...', 'myvideoroom' ); ?>">
+			<?php
+			//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $details_section;
+			?>
+		</div>
+		<hr />
 	</div>
 	<?php
 	return ob_get_clean();

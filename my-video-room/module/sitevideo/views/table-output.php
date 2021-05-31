@@ -9,12 +9,13 @@
  * Render the admin page
  *
  * @param array   $room_list        The list of rooms.
- * @param ?string $details_section  Optional details section.
+ * @param ?string $room_type  Category of Room to Filter.
  *
  * @return string
  */
 return function (
-	array $room_list
+	array $room_list,
+	string $room_type = null
 ): string {
 	ob_start();
 	?>
@@ -52,7 +53,7 @@ return function (
 			$room_item_render = require __DIR__ . '/room-item.php';
 			foreach ( $room_list as $room ) {
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo $room_item_render( $room );
+				echo $room_item_render( $room, $room_type );
 			}
 			?>
 		</tbody>
