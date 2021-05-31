@@ -132,6 +132,8 @@ class Module {
 		$video_server_endpoint = $this->endpoints->get_video_endpoint();
 		$state_server_endpoint = $this->endpoints->get_state_endpoint();
 
+		$seed = $params['seed'] ?? null;
+
 		$room_hash = md5(
 			\wp_json_encode(
 				array(
@@ -139,6 +141,7 @@ class Module {
 					'roomName'            => $room_name,
 					'videoServerEndpoint' => $video_server_endpoint,
 					'host'                => $host,
+					'seed'                => $seed,
 				)
 			)
 		);
