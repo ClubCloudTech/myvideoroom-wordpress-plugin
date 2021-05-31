@@ -8,6 +8,7 @@
 namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Plugin;
 
 /**
  * Class MeetingIdGenerator
@@ -148,7 +149,7 @@ class MeetingIdGenerator {
 	 */
 	private static function get_meeting_nonce(): int {
 		return (int) substr(
-			base_convert( md5( NONCE_SALT ), 16, 10 ),
+			base_convert( \get_option( Plugin::SETTING_NONCE ), 16, 10 ),
 			0,
 			11
 		);

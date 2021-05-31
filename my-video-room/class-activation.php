@@ -33,6 +33,17 @@ class Activation {
 		foreach ( $active_modules as $active_module ) {
 			$active_module->activate();
 		}
+
+		if ( ! \get_option( Plugin::SETTING_NONCE ) ) {
+			\update_option(
+				Plugin::SETTING_NONCE,
+				\base_convert(
+					(string) \wp_rand( 100000, 1000000 - 1 ),
+					10,
+					16
+				)
+			);
+		}
 	}
 
 	/**
@@ -119,6 +130,7 @@ class Activation {
 		\delete_option( Plugin::SETTING_ACTIVATED_MODULES );
 		\delete_option( Plugin::SETTING_ACCESS_TOKEN );
 		\delete_option( Plugin::SETTING_PRIVATE_KEY );
+		\delete_option( Plugin::SETTING_NONCE );
 
 		return $this;
 	}
