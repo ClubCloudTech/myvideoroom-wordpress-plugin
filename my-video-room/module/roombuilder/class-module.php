@@ -292,8 +292,13 @@ class Module {
 			->set_as_guest()
 			->set_seed( $seed );
 
-		$host_shortcode_text_constructor  = ( clone $host_shortcode_constructor );
-		$guest_shortcode_text_constructor = ( clone $guest_shortcode_constructor );
+		if ( $host_shortcode_constructor->is_host() ) {
+			$host_shortcode_text_constructor  = ( clone $host_shortcode_constructor )->set_as_host();
+			$guest_shortcode_text_constructor = ( clone $guest_shortcode_constructor )->set_as_guest();
+		} else {
+			$host_shortcode_text_constructor  = ( clone $host_shortcode_constructor );
+			$guest_shortcode_text_constructor = ( clone $guest_shortcode_constructor );
+		}
 
 		// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped  - Ignored as function does escaping in itself.
 		return ( require __DIR__ . '/views/preview.php' )(

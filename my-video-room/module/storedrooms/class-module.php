@@ -37,7 +37,7 @@ class Module {
 
 		\add_filter( 'myvideoroom_roombuilder_actions_settings', array( $this, 'add_roombuilder_submit' ), 10, 1 );
 
-		\add_filter( 'myvideoroom_appshortcode_output', array($this, 'modify_shortcode_output'), 10, 1 );
+		\add_filter( 'myvideoroom_appshortcode_output', array( $this, 'modify_shortcode_output' ), 10, 1 );
 	}
 
 	/**
@@ -74,7 +74,6 @@ class Module {
 			$_POST['myvideoroom_action_roombuilder_show_preview'] = 'true';
 			$_POST['nonce_roombuilder_show_preview']              = wp_create_nonce( 'roombuilder_show_preview' );
 
-
 			$shortcode_constructor->add_custom_string_param( 'id', '1000' );
 		}
 
@@ -84,9 +83,12 @@ class Module {
 	public function modify_shortcode_output( array $params ): array {
 		$filtered = $params;
 
-		if ($params['id'] ?? null) {
-			$filtered = array('id' => $params['id']);
-			
+		if ( $params['id'] ?? null ) {
+			$filtered = array( 'id' => $params['id'] );
+
+			if ( ($params['host'] ?? null) === true || ($params['host'] ?? null) === false ) {
+				$filtered['host'] = $params['host'];
+			}
 		}
 
 		return $filtered;
