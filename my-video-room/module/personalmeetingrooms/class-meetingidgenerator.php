@@ -7,6 +7,8 @@
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
 
+use MyVideoRoomPlugin\Plugin;
+
 /**
  * Class MeetingIdGenerator
  */
@@ -46,8 +48,10 @@ class MeetingIdGenerator {
 	 * @return int
 	 */
 	private function get_meeting_nonce(): int {
+		$nonce = \get_option( Plugin::SETTING_NONCE );
+
 		return (int) \substr(
-			\base_convert( md5( NONCE_SALT ), 16, 10 ),
+			\base_convert( $nonce, 16, 10 ),
 			0,
 			11
 		);

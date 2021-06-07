@@ -30,13 +30,6 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	private ?string $layout = null;
 
 	/**
-	 * Is this user a video host?
-	 *
-	 * @var bool
-	 */
-	private ?bool $host = null;
-
-	/**
 	 * Is the reception enabled
 	 *
 	 * @var bool
@@ -70,6 +63,15 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	 * @var ?string
 	 */
 	private ?string $reception_video = null;
+
+	// ---
+
+	/**
+	 * Is this user a video host?
+	 *
+	 * @var bool
+	 */
+	private ?bool $host = null;
 
 	/**
 	 * The name of the user, defaults to the WordPress name
