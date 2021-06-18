@@ -23,6 +23,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
+use MyVideoRoomPlugin\Module\SiteVideo\Shortcode\Reception;
 use MyVideoRoomPlugin\Shortcode\App;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -42,6 +43,7 @@ class MVRSiteVideo {
 	const ROOM_TITLE_SITE_VIDEO         = 'Main Conference Room';
 	const ROOM_SLUG_SITE_VIDEO          = 'conference';
 	const SHORTCODE_SITE_VIDEO          = App::SHORTCODE_TAG . '_sitevideoroom';
+	const RECEPTION_ROOM_FLAG           = 'reception_room';
 
 	/**
 	 * Initialise On Module Activation
@@ -88,6 +90,7 @@ class MVRSiteVideo {
 		$site_video_controller = Factory::get_instance( MVRSiteVideoControllers::class );
 
 		Factory::get_instance( RoomInfo::class )->init();
+		Factory::get_instance( Reception::class )->init();
 
 		add_shortcode( self::SHORTCODE_SITE_VIDEO, array( $site_video_controller, 'sitevideo_shortcode' ) );
 
@@ -269,12 +272,20 @@ class MVRSiteVideo {
 	 * Get Site Video Ajax Data
 	 */
 	public function get_ajax_page_settings() {
+
 		$room_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
 		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
 
-		if ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && self::ROOM_NAME_SITE_VIDEO === $input_type ) {
+		// Case Room Render for Reception Shortcode.
+
+		if ( self::RECEPTION_ROOM_FLAG === $input_type ) {
+			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped.
+			echo Factory::get_instance( MVRSiteVideoControllers::class )->site_videoroom_host_function( $room_id );
+
+		} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && self::ROOM_NAME_SITE_VIDEO === $input_type ) {
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo ( require __DIR__ . '/views/view-settings-conference-center-default.php' )();
+
 		} else {
 			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Addon functionality for Personal Meetings.
  *

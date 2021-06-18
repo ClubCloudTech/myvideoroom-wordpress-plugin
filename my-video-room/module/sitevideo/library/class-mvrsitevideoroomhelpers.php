@@ -112,7 +112,7 @@ class MVRSiteVideoRoomHelpers {
 
 		$admin_tab = new MenuTabDisplay(
 			esc_html__( 'Conference Center', 'my-video-room' ),
-			'conferencecenter',
+			MVRSiteVideo::ROOM_SLUG_SITE_VIDEO,
 			fn() => $this->get_sitevideo_admin_page()
 		);
 		array_push( $input, $admin_tab );
@@ -134,7 +134,7 @@ class MVRSiteVideoRoomHelpers {
 	 *
 	 * @return string
 	 */
-	public function create_site_conference_page(): string {
+	public function create_site_conference_page( bool $shortcode = null ): string {
 		$details_section = null;
 
 		$http_post_library = Factory::get_instance( HttpPost::class );
@@ -191,8 +191,11 @@ class MVRSiteVideoRoomHelpers {
 				}
 			}
 		}
-
-		return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );
+		if ( $shortcode ){
+			return ( require __DIR__ . '/../views/shortcode/shortcode-reception.php' )( $details_section );
+		} else {
+			return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );
+		}
 	}
 
 	/**

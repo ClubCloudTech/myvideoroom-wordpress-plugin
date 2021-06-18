@@ -36,6 +36,7 @@ class MVRSiteVideoControllers {
 	 */
 	public function sitevideo_shortcode( $params = array() ): string {
 		$id = $params['id'] ?? null;
+		$id = \intval( $id );
 
 		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
 		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();

@@ -97,11 +97,13 @@ class MVRSiteVideoViews {
 	 * Generate Room Table
 	 *
 	 * @param string $room_type ? all rooms.
-	 * @return string table.
+	 * @param bool   $shortcode ? whether its a shortcode call.
+	 *
+	 *  @return string table.
 	 */
-	public function generate_room_table( string $room_type = null ): string {
+	public function generate_room_table( string $room_type = null, bool $shortcode = false ): string {
 		// Returns all rooms with null roomtype, or a specific room with Room Type.
 		$rooms = Factory::get_instance( MVRSiteVideoRoomHelpers::class )->get_rooms( $room_type );
-		return ( require __DIR__ . '/../views/table-output.php' )( $rooms, $room_type );
+		return ( require __DIR__ . '/../views/table-output.php' )( $rooms, $room_type, $shortcode );
 	}
 }
