@@ -29,7 +29,7 @@ echo "
 You probably want to do something like this:
 
 cd svn
-svn ci -m '<message>'
+svn ci -m '<message>' --username=clubcloud
 svn cp trunk tags/<tag>
-svn ci -m 'Tag <tag>'
+svn ci -m 'Tag <tag>' --username=clubcloud
 "
