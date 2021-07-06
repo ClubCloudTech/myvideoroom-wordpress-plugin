@@ -1,5 +1,5 @@
 === MyVideoRoom  ===
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 5.7
@@ -11,7 +11,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Video meeting for your site. Allows you to embed highly configurable and secure video chat/meeting functions into any site.
 
 == Description ==
-Integrate Video with E-Commerce, Social Networking and Bookings. ClubCloud brings to market a novel video conferencing plugin that allows for diverse integration with, otherwise quite separated, website functionality. The MyVideoRoom Plugin enables you to not just add video chat or meeting functionality to a website but to fully embed it into the wider functions of any platform.
+Integrate video with E-Commerce, Social Networking and Bookings. ClubCloud brings to market a novel video conferencing plugin that allows for diverse integration with, otherwise quite separated, website functionality. The MyVideoRoom Plugin enables you to not just add video chat or meeting functionality to a website but to fully embed it into the wider functions of any platform.
 
 Features include:
 
