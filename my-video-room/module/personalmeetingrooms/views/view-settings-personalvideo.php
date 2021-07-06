@@ -33,9 +33,7 @@ return function (): string {
 		<p>
 		<?php
 		esc_html_e(
-			'A Personal Meeting Room is an individually controlled meeting room with its own Reception Area, Room Layout Selection, Privacy, and Room Permissions.
-			A Reception page is created automatically with the module to handle Guest Arrival. A user is the host of their own room, and everyone else is a guest.
-			Users can send invites by email, or by special unique invite code.',
+			'A Personal Meeting Room is an individually controlled meeting room with its own Reception Area, Room Layout Selection, Privacy, and Room Permissions. A Reception page is created automatically with the module to handle Guest Arrival. A user is the host of their own room, and everyone else is a guest. Users can send invites by email, or by special unique invite code.',
 			'my-video-room'
 		);
 		?>
@@ -50,17 +48,15 @@ return function (): string {
 		<h2><?php esc_html_e( 'Current Room Information', 'my-video-room' ); ?></h2>
 			<?php
 			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function already escaped above.
-			echo factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
+			echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
 			?>
 
 			<h2><?php esc_html_e( 'Customizing the Room', 'my-video-room' ); ?></h2>
-			<p><?php esc_html_e( 'You can edit your room look and feel with any page editor of your choice - the page must contain the shortcode ', 'my-video-room' ); ?> <strong> [ccmeetswitch]</strong>	</p>
+			<p><?php esc_html_e( 'You can edit your room look and feel with any page editor of your choice - the page must contain the shortcode ', 'my-video-room' ); ?> <strong> [myvideoroom_meetswitch]</strong>	</p>
 			<p>
 			<?php
 			esc_html_e(
-				"You can change the room name, its URL, and its parent page in the normal pages interface of WordPress. Please note whilst the system updates its internal
-				links if you change the meeting page URL external emails, or other invites may not be updated by your users' guests. Its a good idea to link to reception page from the 
-				main area of your site.",
+				"You can change the room name, its URL, and its parent page in the normal pages interface of WordPress. Please note whilst the system updates its internal links if you change the meeting page URL external emails, or other invites may not be updated by your users' guests. Its a good idea to link to reception page from the main area of your site.",
 				'my-video-room'
 			);
 			?>
@@ -68,8 +64,7 @@ return function (): string {
 			<p>
 			<?php
 			esc_html_e(
-				'This room will allow any site user to be a Host of their own room, and everyone else will be a guest. Users can change their privacy, as well as room and reception
-				layout templates by accessing their own room, and clicking on the Host tab. This will take affect at the next page refresh.',
+				'This room will allow any site user to be a Host of their own room, and everyone else will be a guest. Users can change their privacy, as well as room and reception layout templates by accessing their own room, and clicking on the Host tab. This will take affect at the next page refresh.',
 				'my-video-room'
 			);
 			?>
@@ -80,8 +75,7 @@ return function (): string {
 			<p>
 			<?php
 			esc_html_e(
-				'These settings determine the default settings a room of this type will use. Once a user has made a choice as to room type, privacy, and template these default settings 
-				are no longer used. Can be left blank to allow site master default settings to apply.',
+				'These settings determine the default settings a room of this type will use. Once a user has made a choice as to room type, privacy, and template these default settings are no longer used. Can be left blank to allow site master default settings to apply.',
 				'my-video-room'
 			);
 			?>
@@ -90,8 +84,7 @@ return function (): string {
 					<?php
 						$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
 							SiteDefaults::USER_ID_SITE_DEFAULTS,
-							MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING,
-							array( 'basic', 'premium' )
+							MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING
 						);
 						//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  - Layout Setting already Escaped in function.
 						echo $layout_setting;

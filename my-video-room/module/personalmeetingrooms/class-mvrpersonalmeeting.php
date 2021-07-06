@@ -88,7 +88,6 @@ class MVRPersonalMeeting {
 		$name = self::MODULE_PERSONAL_MEETING_DISPLAY;
 		$slug = self::MODULE_PERSONAL_MEETING_NAME;
 		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
-		$display = esc_html__( $name, 'myvideoroom' );
-		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $display ) . '</a>';
+		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $name ) . '</a>';
 	}
 }

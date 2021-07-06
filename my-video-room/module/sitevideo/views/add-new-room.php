@@ -33,7 +33,7 @@ return function (): string {
 	<p>
 		<?php
 		esc_html_e(
-			'Use this section to add a Conference Room to your site. It will remain available permanently, and can be configured to your needs.',
+			'Use this section to add a Conference Room to your site. It will remain available permanently, and can be configured as you wish',
 			'my-video-room'
 		);
 		?>

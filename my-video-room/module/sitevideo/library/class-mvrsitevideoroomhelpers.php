@@ -132,6 +132,7 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Create the site conference page
 	 *
+	 * @param bool $shortcode - inbound shortcode name to use if needed.
 	 * @return string
 	 */
 	public function create_site_conference_page( bool $shortcode = null ): string {
@@ -260,8 +261,8 @@ class MVRSiteVideoRoomHelpers {
 	 */
 	public function conference_check_reception_status( string $room_type = null, \stdClass $room ): ?string {
 		$room_name   = Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $room->display_name );
-		$text_single = 'One Guest Waiting';
-		$text_plural = 'Guests Waiting';
+		$text_single = esc_html__( 'One Guest Waiting' , 'myvideoroom' );
+		$text_plural = esc_html__( 'Guests Waiting' , 'myvideoroom' );
 		$monitor     = \do_shortcode( '[myvideoroom_monitor name="' . $room_name . '" text-single="' . $text_single . '" text-plural="' . $text_plural . '" ]' );
 
 		return $monitor;
