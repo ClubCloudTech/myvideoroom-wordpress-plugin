@@ -59,7 +59,7 @@ class RoomAdmin {
 			Factory::get_instance( UserVideoPreferenceDao::class )->update_user_id( $post_id, $old_post_id );
 
 			// Handle case if other modules have tables to update.
-			do_action( 'myvideoroom_page_delete_post_number_refresh', $post_id, $old_post_id );
+			\do_action( 'myvideoroom_page_delete_post_number_refresh', $post_id, $old_post_id );
 		}
 
 		// Insert into DB as Page Didn't Exist.
