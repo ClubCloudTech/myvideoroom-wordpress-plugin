@@ -12,7 +12,6 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
-use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
@@ -78,12 +77,6 @@ class RoomAdmin {
 
 			// Handle case if other modules have tables to update.
 			\do_action( 'myvideoroom_page_delete_post_number_refresh', $post_id, $old_post_id );
-
-			// this might be duplicated with the above.
-			$security_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( SiteDefaults::MODULE_SECURITY_ID );
-			if ( $security_enabled ) {
-				Factory::get_instance( \MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference::class )->update_user_id( $post_id, $old_post_id );
-			}
 		}
 
 		// Insert into DB as Page Didn't Exist.

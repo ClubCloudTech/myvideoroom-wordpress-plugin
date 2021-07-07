@@ -65,15 +65,16 @@ class SecurityRoomHelpers {
 
 		return true;
 	}
+	
 	/**
 	 * Security Update Post ID's for regeneration.
 	 *
 	 *  @param  int $post_id - the new post ID.
 	 *  @param  int $old_post_id - the old post ID.
+	 *
 	 *  @return bool
 	 */
-	public function update_security_post_id( int $post_id, int $old_post_id ) {
-
+	public function update_security_post_id( int $post_id, int $old_post_id ): bool {
 		return Factory::get_instance( SecurityVideoPreference::class )->update_user_id( $post_id, $old_post_id );
 	}
 
