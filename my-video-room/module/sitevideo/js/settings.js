@@ -44,6 +44,14 @@
 						if (window.myvideoroom_tabbed_init) {
 							window.myvideoroom_tabbed_init( $container );
 						}
+
+						if (window.myvideoroom_app_init) {
+							window.myvideoroom_app_init( $container[0] );
+						}
+
+						if (window.myvideoroom_app_load) {
+							window.myvideoroom_app_load();
+						}
 					}
 				}
 			);
