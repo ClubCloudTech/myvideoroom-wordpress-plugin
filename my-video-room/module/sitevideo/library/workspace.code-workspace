@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../.."
+		},
+		{
+			"path": "../../../../../myvideoroom-extras-wordpress-plugin/myvideoroom-extras-plugin"
+		},
+		{
+			"path": "../../../../../myvideroom-extras-parking-lot/myvideoroom-extras-parking"
+		}
+	],
+	"settings": {}
+}
