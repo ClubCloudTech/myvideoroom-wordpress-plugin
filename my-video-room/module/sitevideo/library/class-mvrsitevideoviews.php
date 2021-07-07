@@ -86,10 +86,24 @@ class MVRSiteVideoViews {
 				if ( ! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
 					return esc_html__( 'Module Disabled', 'myvideoroom' );
 				} else {
-					return MVRSiteVideo::ROOM_NAME_TABLE;
+					return esc_html__( 'Conference Center Room', 'myvideoroom' );
 				}
 		}
 
 		return $room_type;
+	}
+
+	/**
+	 * Generate Room Table
+	 *
+	 * @param string $room_type ? all rooms.
+	 * @param bool   $shortcode ? whether its a shortcode call.
+	 *
+	 *  @return string table.
+	 */
+	public function generate_room_table( string $room_type = null, bool $shortcode = false ): string {
+		// Returns all rooms with null roomtype, or a specific room with Room Type.
+		$rooms = Factory::get_instance( MVRSiteVideoRoomHelpers::class )->get_rooms( $room_type );
+		return ( require __DIR__ . '/../views/table-output.php' )( $rooms, $room_type, $shortcode );
 	}
 }

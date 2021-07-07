@@ -21,3 +21,12 @@ code.myvideoroom-shortcode-example {
 	display: block;
 	padding: 16px 8px 16px calc(1.5em + 8px);
 }
+
+.myvideoroom-button-link {
+    color: white;
+    text-decoration: none;
+}
+.myvideoroom-button-link a:hover, .myvideoroom-button-link a:visited, .myvideoroom-button-link a:active {
+    color: white;
+    text-decoration: none;
+}

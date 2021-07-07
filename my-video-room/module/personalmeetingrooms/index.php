@@ -9,8 +9,10 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
 
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
-use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Module as PersonalMeetingRooms;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingHelpers;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\Module as PersonalMeetingRooms;
 use MyVideoRoomPlugin\Plugin;
 
 \add_action(
@@ -26,6 +28,10 @@ use MyVideoRoomPlugin\Plugin;
 				),
 			),
 			fn() => new PersonalMeetingRooms(),
+		)->add_activation_hook(
+			fn () => Factory::get_instance( MVRPersonalMeeting::class )->activate_module()
+		)->add_admin_page_hook(
+			fn () => Factory::get_instance( MVRPersonalMeetingHelpers::class )->render_personalvideo_admin_page()
 		);
 	}
 );

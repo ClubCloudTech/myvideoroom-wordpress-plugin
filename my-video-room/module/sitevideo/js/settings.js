@@ -11,6 +11,7 @@
 		'click',
 		function (e) {
 			var room_id = $( this ).data( 'roomId' );
+			var input_type = $( this ).data( 'inputType' );
 
 			var $container   = $( '.mvr-security-room-host' );
 			var loading_text = $container.data( 'loadingText' );
@@ -26,7 +27,8 @@
 					url: ajax_url,
 					data: {
 						action: 'myvideoroom_sitevideo_settings',
-						roomId: room_id
+						roomId: room_id,
+						inputType: input_type
 					},
 					success: function (response) {
 						if ('URLSearchParams' in window) {
@@ -41,6 +43,14 @@
 
 						if (window.myvideoroom_tabbed_init) {
 							window.myvideoroom_tabbed_init( $container );
+						}
+
+						if (window.myvideoroom_app_init) {
+							window.myvideoroom_app_init( $container[0] );
+						}
+
+						if (window.myvideoroom_app_load) {
+							window.myvideoroom_app_load();
 						}
 					}
 				}

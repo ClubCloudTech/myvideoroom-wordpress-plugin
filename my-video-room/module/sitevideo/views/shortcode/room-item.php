@@ -1,6 +1,6 @@
 <?php
 /**
- * Shows a single row in the conference center rooms table
+ * Shows a single row in the conference center rooms table - Used for Front ends as it doesn't display shortcode text.
  *
  * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
  */
@@ -23,15 +23,16 @@ return function (
 
 	$edit_actions = array(
 		array(
-			__( 'Edit in WordPress' ),
+			__( 'Enter Room / Greet Guest' ),
 			get_site_url() . '/wp-admin/post.php?post=' . esc_textarea( $room->id ) . '&action=edit',
-			'dashicons dashicons-wordpress',
+			'dashicons dashicons-megaphone myvideoroom-sitevideo-settings',
+			array( 'data-input-type' => MVRSiteVideo::RECEPTION_ROOM_FLAG ),
 			array( 'target' => '_blank' ),
 		),
 	);
 
 	// Add any extra options.
-	$edit_actions = \apply_filters( 'myvideoroom_sitevideo_edit_actions', $edit_actions, $room->id );
+	$edit_actions = \apply_filters( 'myvideoroom_sitevideo_shortcode_edit_actions', $edit_actions, $room->id );
 
 	if ( MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room_type) {
 		$settings_url   = \add_query_arg( array( 'room_id' => $room->id ), \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
@@ -82,19 +83,9 @@ return function (
 			}
 			?>
 		</td>
-		<td>
-			<code class="myvideoroom-shortcode-example-inline">
-				<?php
 
-				$shortcode = '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $room->id . ']';
-
-				$shortcode_filter = apply_filters( 'myvideoroom_room_manager_shortcode_display', $shortcode, $room->room_type, $room->id, $room );
-				echo esc_html( $shortcode_filter );
-				?>
-			</code>
-		</td>
 		<td class="plugin-title column-primary">
-			<?php echo apply_filters( 'myvideoroom_conference_room_type_column_field', $room->type, $room ) ; ?></td>
+			<?php echo apply_filters( 'myvideoroom_conference_room_type_column_field', $room->type, $room ); ?></td>
 		<td>
 			<?php
 			foreach ( $edit_actions as $action ) {
@@ -104,7 +95,10 @@ return function (
 					data-room-id="<?php echo esc_attr( $room->id ); ?>"
 					title="<?php echo esc_attr( $action[0] ); ?>"
 					<?php
-					foreach ( $actions[3] ?? array() as $key => $value ) {
+					foreach ( $action[3] ?? array() as $key => $value ) {
+						echo esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
+					}
+					foreach ( $action[4] ?? array() as $key => $value ) {
 						echo esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
 					}
 					?>

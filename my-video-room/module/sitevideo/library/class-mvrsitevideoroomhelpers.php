@@ -17,6 +17,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -110,7 +111,7 @@ class MVRSiteVideoRoomHelpers {
 
 		$admin_tab = new MenuTabDisplay(
 			esc_html__( 'Conference Center', 'my-video-room' ),
-			'conferencecenter',
+			MVRSiteVideo::ROOM_SLUG_SITE_VIDEO,
 			fn() => $this->get_sitevideo_admin_page()
 		);
 		array_push( $input, $admin_tab );
@@ -130,9 +131,10 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Create the site conference page
 	 *
+	 * @param bool $shortcode - inbound shortcode name to use if needed.
 	 * @return string
 	 */
-	public function create_site_conference_page(): string {
+	public function create_site_conference_page( bool $shortcode = null ): string {
 		$details_section = null;
 
 		$http_post_library = Factory::get_instance( HttpPost::class );
@@ -189,11 +191,11 @@ class MVRSiteVideoRoomHelpers {
 				}
 			}
 		}
-
-		return ( require __DIR__ . '/../views/site-conference-center.php' )(
-			$this->get_rooms(),
-			$details_section
-		);
+		if ( $shortcode ) {
+			return ( require __DIR__ . '/../views/shortcode/shortcode-reception.php' )( $details_section );
+		} else {
+			return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );
+		}
 	}
 
 	/**
@@ -228,10 +230,12 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Get the list of current rooms
 	 *
+	 * @param string $room_type     Category of Room if used.
+	 *
 	 * @return array
 	 */
-	private function get_rooms(): array {
-		$available_rooms = Factory::get_instance( RoomMap::class )->get_all_post_ids_of_rooms();
+	public function get_rooms( string $room_type = null ): array {
+		$available_rooms = Factory::get_instance( RoomMap::class )->get_all_post_ids_of_rooms( $room_type );
 
 		return array_map(
 			function ( $room_id ) {
@@ -244,6 +248,23 @@ class MVRSiteVideoRoomHelpers {
 			},
 			$available_rooms
 		);
+	}
+
+	/**
+	 * Get the list of current rooms
+	 *
+	 * @param string    $room_type     Category of Room if used.
+	 * @param \stdClass $room The room object.
+	 *
+	 * @return ?string
+	 */
+	public function conference_check_reception_status( string $room_type = null, \stdClass $room ): ?string {
+		$room_name   = Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $room->display_name );
+		$text_single = esc_html__( 'One Guest Waiting', 'myvideoroom' );
+		$text_plural = esc_html__( 'Guests Waiting', 'myvideoroom' );
+		$monitor     = \do_shortcode( '[myvideoroom_monitor name="' . $room_name . '" text-single="' . $text_single . '" text-plural="' . $text_plural . '" ]' );
+
+		return $monitor;
 	}
 
 	/**

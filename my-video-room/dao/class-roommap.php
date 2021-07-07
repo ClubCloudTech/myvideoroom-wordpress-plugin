@@ -66,7 +66,6 @@ class RoomMap {
 	 */
 	private function get_table_name(): string {
 		global $wpdb;
-
 		return $wpdb->prefix . self::TABLE_NAME;
 	}
 

@@ -286,4 +286,16 @@ class SecurityNotifications {
 
 		return $input;
 	}
+	/**
+	 * Action for Listening for Security Delete Updates, and executing them.
+	 *
+	 * @param string $input The inbound filter name to use.
+	 *
+	 * @return string
+	 */
+	public function security_update_table_delete_refresh( ?string $input ): string {
+		$input .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled();
+		return $input;
+	}
+
 }

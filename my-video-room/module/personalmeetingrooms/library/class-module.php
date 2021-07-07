@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
+namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
 
 use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Factory;
@@ -15,7 +15,9 @@ use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
+use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\Shortcode\App;
 use WP_Error;
@@ -54,6 +56,8 @@ class Module {
 		if ( $roombuilder_is_active ) {
 			new RoomBuilder();
 		}
+
+		Factory::get_instance( MVRPersonalMeeting::class )->init();
 	}
 
 	/**
@@ -64,14 +68,14 @@ class Module {
 
 		\wp_enqueue_style(
 			'myvideoroom-personalmeetingrooms-invite-css',
-			\plugins_url( '/css/invite.css', \realpath( __FILE__ ) ),
+			\plugins_url( '/../css/invite.css', \realpath( __FILE__ ) ),
 			false,
 			$plugin_version,
 		);
 
 		\wp_enqueue_script(
 			'myvideoroom-personalmeetingrooms-invite-js',
-			\plugins_url( '/js/invite.js', \realpath( __FILE__ ) ),
+			\plugins_url( '/../js/invite.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
 			$plugin_version,
 			true
@@ -121,7 +125,7 @@ class Module {
 		$params   = array( $url_param => $meeting_hash );
 		$url      = \add_query_arg( $params, $base_url );
 
-		return ( require __DIR__ . '/views/invite.php' )(
+		return ( require __DIR__ . '/../views/invite.php' )(
 			$url,
 			$show_icons,
 			$invert_icon_colors,

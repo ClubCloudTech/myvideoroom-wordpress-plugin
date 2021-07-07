@@ -17,12 +17,15 @@ use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Module\Monitor\Module;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
+use MyVideoRoomPlugin\Module\SiteVideo\Shortcode\Reception;
 use MyVideoRoomPlugin\Shortcode\App;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -40,7 +43,7 @@ class MVRSiteVideo {
 	const ROOM_TITLE_SITE_VIDEO         = 'Main Conference Room';
 	const ROOM_SLUG_SITE_VIDEO          = 'conference';
 	const SHORTCODE_SITE_VIDEO          = App::SHORTCODE_TAG . '_sitevideoroom';
-	const ROOM_NAME_TABLE               = 'Conference Center Room';
+	const RECEPTION_ROOM_FLAG           = 'reception_room';
 
 	/**
 	 * Initialise On Module Activation
@@ -87,6 +90,7 @@ class MVRSiteVideo {
 		$site_video_controller = Factory::get_instance( MVRSiteVideoControllers::class );
 
 		Factory::get_instance( RoomInfo::class )->init();
+		Factory::get_instance( Reception::class )->init();
 
 		add_shortcode( self::SHORTCODE_SITE_VIDEO, array( $site_video_controller, 'sitevideo_shortcode' ) );
 
@@ -98,7 +102,7 @@ class MVRSiteVideo {
 			}
 		);
 
-		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ) );
+		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ), 10, 2 );
 
 		\wp_enqueue_script(
 			'myvideoroom-sitevideo-settings-js',
@@ -199,7 +203,15 @@ class MVRSiteVideo {
 			10,
 			4
 		);
-
+		add_filter(
+			'myvideoroom_conference_room_type_column_field',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'conference_check_reception_status',
+			),
+			10,
+			2
+		);
 		// Regenerate Filter.
 		add_filter(
 			'myvideoroom_room_manager_regenerate',
@@ -217,20 +229,68 @@ class MVRSiteVideo {
 				$add_reference( ( new ShortcodeReference() )->get_shortcode_reference() );
 			}
 		);
+		\wp_enqueue_script( 'jquery' );
+		\wp_enqueue_script(
+			'socket-io-3.1.0',
+			\plugins_url( '/../monitor/third-party/socket.io.js', __FILE__ ),
+			array(),
+			'3.1.0',
+			true
+		);
+
+		\wp_enqueue_script(
+			'myvideoroom-monitor',
+			\plugins_url( '/../monitor/js/monitor.js', __FILE__ ),
+			array( 'jquery', 'socket-io-3.1.0' ),
+			Factory::get_instance( Version::class )->get_plugin_version(),
+			true
+		);
+		\wp_localize_script(
+			'myvideoroom-monitor',
+			'myvideoroom_monitor_texts',
+			array(
+				'reception' => array(
+					'textEmpty'  => \esc_html__( 'Nobody is currently waiting', 'myvideoroom' ),
+					'textSingle' => \esc_html__( 'One person is waiting in reception', 'myvideoroom' ),
+					'textPlural' => \esc_html__( '{{count}} people are waiting in reception', 'myvideoroom' ),
+				),
+				'seated'    => array(
+					'textEmpty'  => \esc_html__( 'Nobody is currently seated', 'myvideoroom' ),
+					'textSingle' => \esc_html__( 'One person is seated', 'myvideoroom' ),
+					'textPlural' => \esc_html__( '{{count}} people are seated', 'myvideoroom' ),
+				),
+				'all'       => array(
+					'textEmpty'  => \esc_html__( 'Nobody is currently in this room', 'myvideoroom' ),
+					'textSingle' => \esc_html__( 'One person is currently in this room', 'myvideoroom' ),
+					'textPlural' => \esc_html__( '{{count}} people are currently in this room', 'myvideoroom' ),
+				),
+			)
+		);
 	}
 
 	/**
 	 * Get Site Video Ajax Data
 	 */
 	public function get_ajax_page_settings() {
+
 		$room_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
 		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
 
-		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+		// Case Room Render for Reception Shortcode.
 
-		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, $input_type );
+		if ( self::RECEPTION_ROOM_FLAG === $input_type ) {
+			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped.
+			echo Factory::get_instance( MVRSiteVideoControllers::class )->site_videoroom_host_function( $room_id );
 
+		} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && self::ROOM_NAME_SITE_VIDEO === $input_type ) {
+			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo ( require __DIR__ . '/views/view-settings-conference-center-default.php' )();
+
+		} else {
+			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, $input_type );
+		}
 		die();
 	}
 }
