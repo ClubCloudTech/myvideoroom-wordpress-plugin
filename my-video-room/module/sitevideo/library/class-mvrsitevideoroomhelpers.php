@@ -16,7 +16,6 @@ use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
-use MyVideoRoomPlugin\Module\Monitor\Module;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -192,7 +191,7 @@ class MVRSiteVideoRoomHelpers {
 				}
 			}
 		}
-		if ( $shortcode ){
+		if ( $shortcode ) {
 			return ( require __DIR__ . '/../views/shortcode/shortcode-reception.php' )( $details_section );
 		} else {
 			return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );
@@ -261,8 +260,8 @@ class MVRSiteVideoRoomHelpers {
 	 */
 	public function conference_check_reception_status( string $room_type = null, \stdClass $room ): ?string {
 		$room_name   = Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $room->display_name );
-		$text_single = esc_html__( 'One Guest Waiting' , 'myvideoroom' );
-		$text_plural = esc_html__( 'Guests Waiting' , 'myvideoroom' );
+		$text_single = esc_html__( 'One Guest Waiting', 'myvideoroom' );
+		$text_plural = esc_html__( 'Guests Waiting', 'myvideoroom' );
 		$monitor     = \do_shortcode( '[myvideoroom_monitor name="' . $room_name . '" text-single="' . $text_single . '" text-plural="' . $text_plural . '" ]' );
 
 		return $monitor;
