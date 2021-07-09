@@ -39,6 +39,7 @@ return function (
 			?>
 		</h3>
 		<p><?php echo \esc_html( $shortcode->get_description() ); ?></p>
+
 		<code class="myvideoroom-shortcode-example">
 			<?php
 			echo \esc_html(

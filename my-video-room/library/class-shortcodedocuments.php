@@ -203,7 +203,7 @@ class ShortcodeDocuments {
 					<td style="width:75%; text-align: left;"><strong>
 							<?php
 							esc_html_e(
-								'Use this Shortcode wherever possible to render Personal Meetings </strong>. Renders the Main Site Meeting Center Reception page for users. This page is automatically created by the plugin in the details above, but can also be added anywhere on the site. Please note that this switch automatically changes the host and guest context depending on user state (logged on/off/admins etc). Take special care when using this page with regards to emails- invites etc. The page contains filters in the host for anonymous meeting invites, querying users etc. We recommend using the default Meeting Center location for emails, invites etc. The plugins own template and widgets always use the default location of the Meeting Center, which you can change on this tab without issue.',
+								'Use this Shortcode wherever possible to render <strong>Personal Meetings</strong>. Renders the Main Site Meeting Center Reception page for users. This page is automatically created by the plugin in the details above, but can also be added anywhere on the site. Please note that this switch automatically changes the host and guest context depending on user state (logged on/off/admins etc). Take special care when using this page with regards to emails- invites etc. The page contains filters in the host for anonymous meeting invites, querying users etc. We recommend using the default Meeting Center location for emails, invites etc. The plugins own template and widgets always use the default location of the Meeting Center, which you can change on this tab without issue.',
 								'my-video-room'
 							);
 							?>
