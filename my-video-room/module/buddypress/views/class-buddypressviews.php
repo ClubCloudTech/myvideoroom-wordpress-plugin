@@ -2,12 +2,11 @@
 /**
  * Addon functionality for BuddyPress - Template Views
  *
- * @package MyVideoRoomExtrasPlugin\Modules\BuddyPress
+ * @package MyVideoRoomPlugin\Modules\BuddyPress
  */
 
-namespace MyVideoRoomExtrasPlugin\Modules\BuddyPress\Views;
+namespace MyVideoRoomPlugin\Module\BuddyPress\Views;
 
-use MyVideoRoomExtrasPlugin\Shortcode as Shortcode;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
 

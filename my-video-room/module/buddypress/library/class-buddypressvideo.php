@@ -11,7 +11,7 @@ use \MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Library\VideoHelpers;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
-use MyVideoRoomExtrasPlugin\Modules\BuddyPress\Views\BuddyPressViews;
+use MyVideoRoomPlugin\Module\BuddyPress\Views\BuddyPressViews;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
@@ -204,8 +204,11 @@ class BuddyPressVideo {
 		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 
 		if ( Factory::get_instance( BuddyPress::class )->bp_can_host_group( get_current_user_id() ) ) {
+			
 			return Factory::get_instance( self::class )->bp_group_video_host();
+			
 		} else {
+			
 			return Factory::get_instance( self::class )->bp_group_video_guest();
 		}
 	}
@@ -226,7 +229,7 @@ class BuddyPressVideo {
 
 		// Shortcode Initialise Hooks/Filters.
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
-		
+
 		// Establish who is host -set group creator as base Group ID for Room - Security Check already done in Switch that calls this function.
 		$user_id    = $bp->groups->current_group->creator_id;
 		$my_user_id = get_current_user_id();
@@ -258,7 +261,7 @@ class BuddyPressVideo {
 		}
 
 		// Construct Shortcode Template - and execute.
-		$header        = Factory::get_instance( MVRPersonalMeetingViews::class )->bp_group_host_template( $user_id );
+		$header        = Factory::get_instance( BuddyPressViews::class )->bp_group_host_template( $user_id );
 		$output_object = array();
 		$host_status   = true;
 		$host_menu     = new MenuTabDisplay(
@@ -266,6 +269,9 @@ class BuddyPressVideo {
 			'videoroom',
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
+		
+		echo do_shortcode( $myvideoroom_app->output_shortcode_text() );
+		
 		array_push( $output_object, $host_menu );
 			$admin_menu = new MenuTabDisplay(
 				esc_html__( 'Host Settings', 'my-video-room' ),

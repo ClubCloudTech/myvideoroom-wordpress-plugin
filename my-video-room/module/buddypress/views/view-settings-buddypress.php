@@ -22,27 +22,13 @@ use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 
-return function (
-	array $messages = array(),
-	array $module_tabs = array()
-	): string {
-	wp_enqueue_style( 'mvr-template' );
-	wp_enqueue_style( 'mvr-menutab-header' );
-	$path   = '/core/views/header/header.php';
-	$render = require WP_PLUGIN_DIR . '/my-video-room' . $path;
-	//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Output already rendered safe upstream.
-	echo $render( $messages, $module_tabs );
+return function (): string {
 	ob_start(); ?>
 <div class="wrap">
 
 		<div class="mvr-outer-box-wrap">
 		<h1><?php esc_html_e( 'BuddyPress Integration and Video Rooms', 'my-video-room' ); ?></h1>
-		<?php
-		$security_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( SiteDefaults::MODULE_SECURITY_ID );
-		if ( $security_enabled ) {
-			echo esc_html( Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons::class )->site_wide_enabled() );
-		}
-		?>
+
 		<p> 
 		<?php
 			esc_html_e(

@@ -12,7 +12,6 @@ use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\SiteDefaults;
-use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Module\Security\Security;
@@ -32,7 +31,7 @@ class BuddyPressSecurity {
 	 * @return null|string
 	 */
 	public function mvrbp_security_menu_hook( int $user_id, string $room_name, int $id_index ) {
-		if ( ! Factory::get_instance( Dependencies::class )->is_buddypress_active() ||
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
 		! function_exists( 'bp_is_active' ) || ! bp_is_active( 'groups' ) ||
 		! ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() )
 		) {
@@ -66,7 +65,7 @@ class BuddyPressSecurity {
 	 * @return int
 	 */
 	public function mvrbp_change_user_id( int $user_id ): int {
-		if ( ! Factory::get_instance( Dependencies::class )->is_buddypress_active() ||
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
 		! function_exists( 'bp_is_active' ) || ! bp_is_active( 'groups' ) ||
 		! ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() )
 		) {
@@ -83,7 +82,7 @@ class BuddyPressSecurity {
 	 *  @return string
 	 */
 	public function mvrbp_change_room_name( string $room_name ): string {
-		if ( ! Factory::get_instance( Dependencies::class )->is_buddypress_active() ||
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
 		! function_exists( 'bp_is_active' ) || ! bp_is_active( 'groups' ) ||
 		! ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() )
 		) {
@@ -103,7 +102,7 @@ class BuddyPressSecurity {
 	 * @return null|string
 	 */
 	public function mvrbp_security_friends_group_filter_hook( string $input, int $user_id, string $room_name, string $host_status, string $room_type ) {
-		if ( ! Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
 			return null;
 		}
 		// Check BuddyPress Group Membership - and other related if module enabled.
@@ -181,8 +180,8 @@ class BuddyPressSecurity {
 	public function block_bp_non_group_member_video_render( string $room_name, string $room_type = null ) {
 		// Exit for Non Groups.
 		if (
-			! Factory::get_instance( Dependencies::class )->is_buddypress_active() ||
-			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_BUDDYPRESS_ID ) ||
+			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
+			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ||
 			! bp_is_active( 'groups' ) ||
 			! bp_is_groups_component()
 		) {
@@ -251,10 +250,10 @@ class BuddyPressSecurity {
 	 */
 	public function mvrbp_disabled_module_block( int $module_id ) {
 		if (
-			Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_BUDDYPRESS_ID ) &&
-			Factory::get_instance( Dependencies::class )->is_buddypress_active()
+			Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) &&
+			Factory::get_instance( BuddyPress::class )->is_buddypress_active()
 		) {
-			if ( Dependencies::MODULE_BUDDYPRESS_ID === $module_id ) {
+			if ( BuddyPress::MODULE_BUDDYPRESS_ID === $module_id ) {
 				$is_module_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( $module_id );
 
 				if ( ! $is_module_enabled ) {
@@ -276,8 +275,8 @@ class BuddyPressSecurity {
 	 */
 	public function block_bp_friend_video_render( int $user_id, string $room_name, string $room_type = null ) {
 		if (
-			! Factory::get_instance( Dependencies::class )->is_buddypress_active() ||
-			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_BUDDYPRESS_ID ) ||
+			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
+			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ||
 			! bp_is_active( 'friends' ) ||
 			! bp_is_groups_component()
 		) {

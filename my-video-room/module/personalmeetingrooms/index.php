@@ -19,7 +19,7 @@ use MyVideoRoomPlugin\Plugin;
 	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
-			'personal-meeting-rooms',
+			MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME,
 			\esc_html__( 'Personal Meeting Rooms', 'myvideoroom' ),
 			array(
 				\esc_html__(

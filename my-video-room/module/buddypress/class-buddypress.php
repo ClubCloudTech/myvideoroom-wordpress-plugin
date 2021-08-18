@@ -77,14 +77,12 @@ class BuddyPress {
 		add_shortcode( self::SHORTCODE_TAG . 'bpgroupname', array( $this, 'bp_groupname_shortcode' ) );
 		$is_user_module_enabled  = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_USER_ID );
 		$is_group_module_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_GROUP_ID );
-
 		if ( $is_module_enabled && $is_buddypress_enabled ) {
 			if ( $is_user_module_enabled ) {
-				add_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
+				$this->setup_root_nav_action();
 			}
-
 			if ( $is_group_module_enabled ) {
-				add_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
+				$this->setup_group_nav_action();
 			}
 		}
 		// Register Menu for modules.
@@ -92,7 +90,6 @@ class BuddyPress {
 
 		// Render Other BuddyPress Shortcodes.
 		Factory::get_instance( BuddyPressVideo::class )->init();
-
 		// Action Hooks for Security.
 		add_action( 'myvideoroom_security_preference_form', array( Factory::get_instance( BuddyPressSecurity::class ), 'mvrbp_security_menu_hook' ), 10, 3 );
 		add_filter( 'myvideoroom_security_render_block', array( Factory::get_instance( BuddyPressSecurity::class ), 'mvrbp_security_friends_group_filter_hook' ), 10, 5 );
@@ -117,12 +114,24 @@ class BuddyPress {
 		\add_filter( 'myvideoroom_security_admin_preference_user_id_intercept', array( Factory::get_instance( BuddyPressHelpers::class ), 'modify_user_id_for_groups' ), 10, 1 );
 
 	}
+
+
 	/**
 	 * Setup of Module Menu
 	 */
 	public function buddypress_menu_setup() {
 		add_action( 'mvr_module_submenu_add', array( $this, 'buddypress_menu_button' ) );
 	}
+
+	/**
+	 * Render BuddyPress Admin Page.
+	 *
+	 * @return string
+	 */
+	public function render_buddypress_admin_page(): string {
+		return ( require __DIR__ . '/views/view-settings-buddypress.php' )();
+	}
+
 	/**
 	 * Render Module Menu.
 	 */
@@ -139,8 +148,8 @@ class BuddyPress {
 	 * @return void
 	 */
 	public function enable() {
-		add_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
-		add_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
+		//add_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
+		//add_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
 	}
 	/**
 	 * Disable- disables BuddyPress initialisation actions.
@@ -148,8 +157,8 @@ class BuddyPress {
 	 * @return void
 	 */
 	public function disable() {
-		remove_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
-		remove_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
+		//remove_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
+		//remove_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
 	}
 
 	/**
@@ -352,6 +361,8 @@ class BuddyPress {
 	 * You can add tabs, and sub tabs here - The parent slug defines if it is a sub navigation item, or a navigation item
 	 */
 	public function setup_root_nav_action() {
+		global $bp;
+		
 		$hide_tab_from_user = Factory::get_instance( BuddyPressSecurity::class )->block_friends_display();
 		if ( ! $hide_tab_from_user ) {
 
@@ -448,8 +459,7 @@ class BuddyPress {
 		);
 		$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
 			$user_id,
-			$group_id,
-			array( 'basic', 'premium' )
+			$group_id
 		); ?>
 		<ul class="menu">
 			<div style="display: flex!important;	justify-content: space-between!important; width: 50%;">
@@ -468,9 +478,9 @@ class BuddyPress {
 				echo $security_tab;
 			?>
 			</div>
-			<div id="page6" style="display: none;">
+			<div id="page6" style="display: block;">
 			<?php
-				$layout_setting;
+				echo $layout_setting;
 			?>
 			</div>
 		</div>

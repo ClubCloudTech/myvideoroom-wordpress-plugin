@@ -14,7 +14,7 @@ use MyVideoRoomPlugin\Module\Module as ModuleInstance;
 use MyVideoRoomPlugin\Plugin;
 
 /**
- * Class Modules
+ * Class Module
  */
 class Module {
 
