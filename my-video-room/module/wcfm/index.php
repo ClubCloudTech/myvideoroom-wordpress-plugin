@@ -1,6 +1,6 @@
 <?php
 /**
- * WCFM Module for MyVideoRoom
+ * WooCommerce Module for MyVideoRoom
  *
  * @package MyVideoRoomPlugin/Module/WCFM
  */
