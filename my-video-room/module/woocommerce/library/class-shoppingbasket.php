@@ -22,6 +22,10 @@ class ShoppingBasket {
 	 * @return Void
 	 */
 	public function render_basket( bool $host_status ) {
+			?>
+		<div class="widget_shopping_cart_content"><?php woocommerce_mini_cart(); ?></div>
+
+		<?php
 		return 'basket';
 	}
 }

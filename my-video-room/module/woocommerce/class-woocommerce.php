@@ -151,7 +151,7 @@ class WooCommerce {
 	}
 
 	/**
-	 * Render Shopping Basket in Main Shortcode.
+	 * Controller Function to Render Shopping Basket in Main Shortcode.
 	 *
 	 * @param array  $input       - the inbound menu.
 	 * @param int    $post_id     - the user or entity identifier.
