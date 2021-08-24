@@ -65,7 +65,7 @@ return function () {
 				'my-video-room'
 			);
 			?>
-			<br>
+			<br><br>
 			<?php Factory::get_instance( ModuleConfig::class )->module_activation_button( WooCommerce::MODULE_WOOCOMMERCE_BASKET_ID ); ?>
 		</article>
 	</div>

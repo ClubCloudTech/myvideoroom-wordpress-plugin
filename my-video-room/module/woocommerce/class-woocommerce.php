@@ -7,12 +7,14 @@
 
 namespace MyVideoRoomPlugin\Module\WooCommerce;
 
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 
 /**
  * Class WooCommerce- Provides the WooCommerce Integration Features for MyVideoRoom.
@@ -49,18 +51,17 @@ class WooCommerce {
 
 		// add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_security_sitevideo_tabs' ), 20, 2 );
 
-		/*
-		Add Permissions Menu to Main Frontend Template.
+		// Add Permissions Menu to Main Frontend Template.
 		add_filter(
 			'myvideoroom_main_template_render',
 			array(
 				$this,
-				'render_shortcode_security_permissions_tab',
+				'render_shortcode_basket_tab',
 			),
 			40,
 			4
 		);
-		*/
+		
 		// Add Config Page to Main Room Manager.
 		add_filter(
 			'myvideoroom_permissions_manager_menu',
@@ -150,7 +151,7 @@ class WooCommerce {
 	}
 
 	/**
-	 * Render Security Admin Tabs in Main Shortcode.
+	 * Render Shopping Basket in Main Shortcode.
 	 *
 	 * @param array  $input       - the inbound menu.
 	 * @param int    $post_id     - the user or entity identifier.
@@ -159,20 +160,23 @@ class WooCommerce {
 	 *
 	 * @return array - outbound menu.
 	 */
-	public function render_shortcode_security_permissions_tab( array $input, int $post_id, string $room_name, bool $host_status ): array {
-		if ( ! $host_status ) {
+	public function render_shortcode_basket_tab( array $input, int $post_id, string $room_name, bool $host_status ): array {
+
+		// Check Activation Status of Basket Module.
+		$module_id     = self::MODULE_WOOCOMMERCE_BASKET_ID;
+		$module_status = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( $module_id );
+
+		if ( ! $module_status ) {
 			return $input;
 		}
-		$permissions_menu = new MenuTabDisplay(
-			esc_html__( 'Room Permissions', 'my-video-room' ),
-			'roompermissions',
-			fn() => Factory::get_instance( SecurityVideoPreference::class )
-				->choose_settings(
-					$post_id,
-					$room_name,
-				)
+
+		$basket_menu = new MenuTabDisplay(
+			esc_html__( 'Shopping Basket', 'my-video-room' ),
+			'shoppingbasket',
+			fn() => Factory::get_instance( ShoppingBasket::class )
+				->render_basket( $host_status )
 		);
-		array_push( $input, $permissions_menu );
+		array_push( $input, $basket_menu );
 
 		return $input;
 	}
