@@ -58,19 +58,8 @@ class WooCommerce {
 				$this,
 				'render_shortcode_basket_tab',
 			),
-			40,
+			50,
 			4
-		);
-		
-		// Add Config Page to Main Room Manager.
-		add_filter(
-			'myvideoroom_permissions_manager_menu',
-			array(
-				Factory::get_instance( SecurityRoomHelpers::class ),
-				'render_security_admin_settings_page',
-			),
-			10,
-			1
 		);
 
 		// Listener for Page Regeneration and Refresh.
@@ -104,51 +93,6 @@ class WooCommerce {
 		return ( require __DIR__ . '/views/view-settings-woocommerce.php' )();
 	}
 
-	/**
-	 * Render Security Admin Tabs.
-	 *
-	 * @param array $input   - the inbound menu.
-	 * @param int   $room_id - the room identifier.
-	 *
-	 * @return array - outbound menu.
-	 */
-	public function render_security_sitevideo_tabs( array $input, int $room_id ): array {
-		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-
-		if ( ! $room_object ) {
-			return $input;
-		}
-
-		$room_name = $room_object->room_name;
-
-		// Host Menu Tab - rendered in Security as its a module feature of Security.
-		$host_menu = new MenuTabDisplay(
-			esc_html__( 'Room Hosts', 'my-video-room' ),
-			'roomhosts',
-			fn() => Factory::get_instance( SecurityVideoPreference::class )
-						->choose_settings(
-							$room_id,
-							$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
-							null,
-							'roomhost'
-						)
-		);
-		array_push( $input, $host_menu );
-
-		// Permissions Default Tab - rendered in Security as its a module feature of Security.
-		$base_menu = new MenuTabDisplay(
-			esc_html__( 'Room Permissions', 'my-video-room' ),
-			'roompermissions',
-			fn() => Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
-				$room_id,
-				esc_textarea( $room_name ),
-				'roomhost'
-			)
-		);
-		array_push( $input, $base_menu );
-
-		return $input;
-	}
 
 	/**
 	 * Controller Function to Render Shopping Basket in Main Shortcode.

@@ -18,8 +18,6 @@
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
-use MyVideoRoomPlugin\Module\Security\Security;
-use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 return function () {
