@@ -2,7 +2,7 @@
 /**
  * Addon functionality for Site Video Room. Support Room Creation and Management.
  *
- * @package MyVideoRoomExtrasPlugin\Modules\SiteVideo\Library\RoomHelpers
+ * @package MyVideoRoomPlugin\Modules\SiteVideo\Library\RoomHelpers
  */
 
 namespace MyVideoRoomPlugin\Module\SiteVideo\Library;

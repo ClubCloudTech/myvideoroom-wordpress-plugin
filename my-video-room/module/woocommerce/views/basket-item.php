@@ -5,7 +5,6 @@
  * @package MyVideoRoomPlugin\Modules\WooCommerce\Views\Basket-Item.php
  */
 
-use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
@@ -17,7 +16,8 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
  * @return string
  */
 return function (
-	array $item
+	array $item,
+	string $room_name
 ): string {
 	ob_start();
 
@@ -29,19 +29,6 @@ return function (
 			array( 'target' => '_blank' ),
 		),
 	);*/
-
-//var_dump( $item );
-//return ob_get_clean();
-
-	$regenerate_nonce = wp_create_nonce( 'regenerate_room_' . $item['product_id'] );
-	$regenerate_url   = \add_query_arg(
-		array(
-			'room_id'  => $item['product_id'],
-			'action'   => 'regenerate',
-			'_wpnonce' => $regenerate_nonce,
-		),
-		\esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) )
-	);
 
 	?>
 	<tr class="active" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
@@ -61,6 +48,7 @@ return function (
 					class="mvr-icons dashicons dashicons-dismiss myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT ); ?>"
+					data-room-name="<?php echo esc_attr( $room_name ); ?>"
 					title="<?php esc_html_e( 'Delete this item from Basket', 'my-video-room' ); ?>"
 					target="_blank"
 

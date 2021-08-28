@@ -12,6 +12,7 @@
 				var input_type  = $( this ).data( 'inputType' );
 				var host_status = $( this ).data( 'hostStatus' );
 				var auth_nonce  = $( this ).data( 'authNonce' );
+				var room_name   = $( this ).data( 'roomName' );
 	
 				var $container   = $( '.mvr-woocommerce-basket' );
 				var loading_text = $container.data( 'loadingText' );
@@ -30,7 +31,8 @@
 							productId: product_id,
 							inputType: input_type,
 							hostStatus: host_status,
-							authNonce: auth_nonce
+							authNonce: auth_nonce,
+							roomName: room_name
 						},
 						success: function (response) {
 							$container.html( response );

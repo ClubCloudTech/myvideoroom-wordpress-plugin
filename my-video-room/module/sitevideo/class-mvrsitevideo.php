@@ -2,7 +2,7 @@
 /**
  * Addon functionality for Site Video Room.
  *
- * @package MyVideoRoomExtrasPlugin\Modules\SiteVideo
+ * @package MyVideoRoomPlugin\Modules\SiteVideo
  */
 
 namespace MyVideoRoomPlugin\Module\SiteVideo;
@@ -17,7 +17,6 @@ use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\Version;
-use MyVideoRoomPlugin\Module\Monitor\Module;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;

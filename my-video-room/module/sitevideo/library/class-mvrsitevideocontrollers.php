@@ -2,7 +2,7 @@
 /**
  * Addon functionality for Site Video Room.
  *
- * @package MyVideoRoomExtrasPlugin\Modules\SiteVideo
+ * @package MyVideoRoomPlugin\Modules\SiteVideo
  */
 
 namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
@@ -192,7 +192,7 @@ class MVRSiteVideoControllers {
 		$host_status   = false;
 		$output_object = array();
 		$host_menu     = new MenuTabDisplay(
-			esc_html__( 'Video Room', 'my-video-room' ),
+			esc_html__( 'Video Room', 'myvideoroom' ),
 			'videoroom',
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);

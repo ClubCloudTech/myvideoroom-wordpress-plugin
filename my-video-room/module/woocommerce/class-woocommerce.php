@@ -12,6 +12,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
+use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 
 /**
@@ -27,12 +28,18 @@ class WooCommerce {
 	const SETTING_DELETE_BASKET           = 'woocommerce-delete-basket';
 	const SETTING_DELETE_BASKET_CONFIRMED = 'woocommerce-delete-basket-confirmed';
 	const TEXT_DELETE_BASKET              = 'clear your basket ?';
+	const TABLE_NAME_WOOCOMMERCE_CART     = 'myvideoroom_wocommerce_cart_sync';
+	const TABLE_NAME_WOOCOMMERCE_ROOM     = 'myvideoroom_wocommerce_room_presence';
 
 	/**
 	 * Initialise On Module Activation.
 	 * Once off functions for activating Module.
 	 */
 	public function activate_module() {
+
+		// Create Tables in Database.
+		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_room_presence_table();
+		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
 
 	}
 
@@ -65,6 +72,7 @@ class WooCommerce {
 
 		// Ajax Handler for Basket.
 		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( $this, 'get_ajax_page_basketwc' ), 10, 2 );
+		\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( $this, 'get_ajax_page_basketwc' ), 10, 2 );
 
 		\wp_enqueue_script(
 			'myvideoroom-woocommerce-basket-js',
@@ -80,8 +88,10 @@ class WooCommerce {
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
 
+		// Initialise PHPSESSION to track logged out users.
+		$this->start_php_session();
 
-		// Listener for Page Regeneration and Refresh.
+		// Listener for Page Regeneration and Refresh TODO DELETE.
 		\add_action( 'myvideoroom_page_delete_post_number_refresh', array( Factory::get_instance( SecurityRoomHelpers::class ), 'update_security_post_id' ), 10, 2 );
 	}
 
@@ -119,7 +129,7 @@ class WooCommerce {
 			esc_html__( 'Shopping Basket', 'my-video-room' ),
 			'shoppingbasket',
 			fn() => Factory::get_instance( ShoppingBasket::class )
-				->render_basket( $host_status )
+				->render_basket( $room_name, $host_status )
 		);
 
 /*
@@ -145,28 +155,47 @@ class WooCommerce {
 		$input_type  = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
 		$host_status = Factory::get_instance( Ajax::class )->get_text_parameter( 'hostStatus' );
 		$auth_nonce  = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
+		$room_name   = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
 
-		// Case Delete a Product from a Basket.
+			// Case Delete a Product from a Basket - no Confirmation.
 
 		if ( self::SETTING_DELETE_PRODUCT === $input_type ) {
 			Factory::get_instance( ShoppingBasket::class )->delete_product_from_cart( $product_id );
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status );
 
+			// Case Delete Entire Basket - With Confirmation.
+
 		} elseif ( self::SETTING_DELETE_BASKET === $input_type ) {
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $auth_nonce );
+			echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce );
+
 		} elseif ( self::SETTING_DELETE_BASKET_CONFIRMED === $input_type && wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_BASKET_CONFIRMED ) ) {
 			wc()->cart->empty_cart();
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status );
+
 		} else {
 
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status );
+			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status, $room_name );
 		}
 		die();
 	}
 
+
+	/**
+	 * Start PHP Session
+	 * Starts PHP Session Cookie in case user is signed out.
+	 *
+	 * @return void
+	 */
+	public function start_php_session() {
+
+		if ( ! session_id() ) {
+			session_start();
+			echo 'session start';
+		}
+	}
 
 }
