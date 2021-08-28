@@ -5,6 +5,10 @@
  * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
  */
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
+use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
+
 /**
  * Render the WooCommerce Basket Render Page
  *
@@ -17,11 +21,22 @@ return function (
 	array $basket_list
 ): string {
 	ob_start();
+
 	?>
-<div id="security-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
+<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket">
 	<?php
 	if ( $basket_list ) {
 		?>
+	<div class="mvr-header-table-left">
+				<?php
+				$delete_basket_nonce = wp_create_nonce( WooCommerce::SETTING_DELETE_BASKET );
+				$nav_button_filter   = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ) );
+				$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'my-video-room' ), $delete_basket_nonce );
+				//$nav_button_filter = apply_filters( 'myvideoroom_template_icon_section', $nav_button_filter, $user_id, $room_name, $visitor_status );
+				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+				echo $nav_button_filter;
+				?>
+	</div>
 	<table class="wp-list-table widefat plugins">
 		<thead>
 			<tr>
@@ -64,7 +79,9 @@ return function (
 				esc_html_e(
 					'You don\'t have anything in your basket.',
 					'myvideoroom'
-				)
+				);
+				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ) );
 		?>
 	</p>
 </div>

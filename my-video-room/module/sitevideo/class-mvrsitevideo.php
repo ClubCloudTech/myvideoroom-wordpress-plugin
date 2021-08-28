@@ -102,6 +102,7 @@ class MVRSiteVideo {
 			}
 		);
 
+		// Ajax Handler for SiteVideo Room.
 		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ), 10, 2 );
 
 		\wp_enqueue_script(
@@ -112,18 +113,18 @@ class MVRSiteVideo {
 			true
 		);
 
+		\wp_localize_script(
+			'myvideoroom-sitevideo-settings-js',
+			'myvideoroom_sitevideo_settings',
+			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
+		);
+
 		\wp_enqueue_script(
 			'myvideoroom-sitevideo-add-room-js',
 			\plugins_url( '/js/add-room.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
 			Factory::get_instance( Version::class )->get_plugin_version(),
 			true
-		);
-
-		\wp_localize_script(
-			'myvideoroom-sitevideo-settings-js',
-			'myvideoroom_sitevideo_settings',
-			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
 
 		add_filter(

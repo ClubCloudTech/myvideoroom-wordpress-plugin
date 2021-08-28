@@ -9,11 +9,9 @@ namespace MyVideoRoomPlugin\Module\WooCommerce;
 
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\DAO\RoomMap;
-use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
+use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
-use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 
 /**
@@ -21,11 +19,14 @@ use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
  */
 class WooCommerce {
 
-	const MODULE_WOOCOMMERCE_BASKET_ID = 10561;
-	const MODULE_WOOCOMMERCE_NAME      = 'woocommerce-module';
-	const MODULE_WOOCOMMERCE_BASKET    = 'woocommerce-basket';
-	const MODULE_SECURITY_ADMIN_PAGE   = 'view-admin-settings-security';
-	const MODULE_SECURITY_DISPLAY      = ' Advanced Room Permissions';
+	const MODULE_WOOCOMMERCE_BASKET_ID    = 10561;
+	const MODULE_WOOCOMMERCE_NAME         = 'woocommerce-module';
+	const MODULE_WOOCOMMERCE_BASKET       = 'woocommerce-basket';
+	const SETTING_REFRESH_BASKET          = 'woocommerce-refresh-basket';
+	const SETTING_DELETE_PRODUCT          = 'woocommerce-delete-product';
+	const SETTING_DELETE_BASKET           = 'woocommerce-delete-basket';
+	const SETTING_DELETE_BASKET_CONFIRMED = 'woocommerce-delete-basket-confirmed';
+	const TEXT_DELETE_BASKET              = 'clear your basket ?';
 
 	/**
 	 * Initialise On Module Activation.
@@ -62,30 +63,30 @@ class WooCommerce {
 			4
 		);
 
+		// Ajax Handler for Basket.
+		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( $this, 'get_ajax_page_basketwc' ), 10, 2 );
+
+		\wp_enqueue_script(
+			'myvideoroom-woocommerce-basket-js',
+			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			23,
+			true
+		);
+
+		\wp_localize_script(
+			'myvideoroom-woocommerce-basket-js',
+			'myvideoroom_woocommerce_basket',
+			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
+		);
+
+
 		// Listener for Page Regeneration and Refresh.
 		\add_action( 'myvideoroom_page_delete_post_number_refresh', array( Factory::get_instance( SecurityRoomHelpers::class ), 'update_security_post_id' ), 10, 2 );
 	}
 
 	/**
-	 * Setup of Module Menu
-	 */
-	public function security_menu_setup() {
-		add_action( 'mvr_module_submenu_add', array( $this, 'security_menu_button' ) );
-	}
-
-	/**
-	 * Render Module Menu.
-	 */
-	public function security_menu_button() {
-		$name = self::MODULE_SECURITY_DISPLAY;
-		$slug = self::MODULE_SECURITY_NAME;
-		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
-		$display = esc_html__( $name, 'myvideoroom' );
-		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $display ) . '</a>';
-	}
-
-	/**
-	 * Render Security Admin Page.
+	 * Render WooCommerce Admin Page.
 	 *
 	 * @return string
 	 */
@@ -120,8 +121,52 @@ class WooCommerce {
 			fn() => Factory::get_instance( ShoppingBasket::class )
 				->render_basket( $host_status )
 		);
-		array_push( $input, $basket_menu );
 
+/*
+		$basket_menu = new MenuTabDisplay(
+			esc_html__( 'Shopping Basket', 'my-video-room' ),
+			'shoppingbasket',
+			fn() => Factory::get_instance( ShoppingBasket::class )
+			->test_render()
+		);
+*/
+		array_push( $input, $basket_menu );
 		return $input;
+
 	}
+
+	/**
+	 * Get WooCommerce Basket Ajax Data
+	 * Handles Ajax Posts for baskets and refreshes the window depending on what was passed into it
+	 */
+	public function get_ajax_page_basketwc() {
+
+		$product_id  = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'productId' );
+		$input_type  = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
+		$host_status = Factory::get_instance( Ajax::class )->get_text_parameter( 'hostStatus' );
+		$auth_nonce  = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
+
+		// Case Delete a Product from a Basket.
+
+		if ( self::SETTING_DELETE_PRODUCT === $input_type ) {
+			Factory::get_instance( ShoppingBasket::class )->delete_product_from_cart( $product_id );
+			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status );
+
+		} elseif ( self::SETTING_DELETE_BASKET === $input_type ) {
+			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $auth_nonce );
+		} elseif ( self::SETTING_DELETE_BASKET_CONFIRMED === $input_type && wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_BASKET_CONFIRMED ) ) {
+			wc()->cart->empty_cart();
+			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status );
+		} else {
+
+			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status );
+		}
+		die();
+	}
+
+
 }

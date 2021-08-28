@@ -1,5 +1,5 @@
 /**
- * Get the settings section
+ * Handle Ajax requests for Tabbed Frames
  *
  * @package MyVideoRoomPlugin\Module\SiteVideo
  */
@@ -52,6 +52,11 @@
 						if (window.myvideoroom_app_load) {
 							window.myvideoroom_app_load();
 						}
+
+						if (window.myvideoroom_shoppingbasket_init) {
+							window.myvideoroom_shoppingbasket_init();
+						}
+
 					}
 				}
 			);

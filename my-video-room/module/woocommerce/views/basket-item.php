@@ -6,6 +6,7 @@
  */
 
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
+use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
  * Render the admin page
@@ -57,9 +58,11 @@ return function (
 		</td>
 		<td>
 				<a href=""
-					class="mvr-icons dashicons dashicons-dismiss myvideoroom-sitevideo-delete"
-					data-room-id="<?php echo esc_attr( $room->id ); ?>"
-					title="<?php echo esc_attr( $action[0] ); ?>"
+					class="mvr-icons dashicons dashicons-dismiss myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
+					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
+					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT ); ?>"
+					title="<?php esc_html_e( 'Delete this item from Basket', 'my-video-room' ); ?>"
+					target="_blank"
 
 				></a>
 		</td>
