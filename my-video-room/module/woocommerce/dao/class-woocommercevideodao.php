@@ -26,7 +26,7 @@ class WooCommerceVideoDAO {
 			`record_id` int NOT NULL AUTO_INCREMENT,
 			`cart_id` VARCHAR(255) NOT NULL,
 			`room_name` VARCHAR(255) NOT NULL,
-			`cart_data` VARCHAR(16382) NULL,
+			`cart_data` VARCHAR(8192) NULL,
 			`product_id` BIGINT UNSIGNED NULL,
 			`quantity` BIGINT UNSIGNED NULL,
 			`variation_id` BIGINT UNSIGNED NULL,
@@ -47,37 +47,6 @@ class WooCommerceVideoDAO {
 		global $wpdb;
 
 		return $wpdb->prefix . WooCommerce::TABLE_NAME_WOOCOMMERCE_CART;
-	}
-
-	/**
-	 * Install WooCommerce Sync Config Table.
-	 *
-	 * @return bool
-	 */
-	public function install_woocommerce_room_presence_table(): bool {
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-		$sql_create = 'CREATE TABLE IF NOT EXISTS `' . $this->get_room_presence_table_name() . '` (
-			`record_id` int NOT NULL AUTO_INCREMENT,
-			`cart_id` VARCHAR(255) NOT NULL,
-			`room_name` VARCHAR(255) NOT NULL,
-			`timestamp` TIMESTAMP,
-			PRIMARY KEY (`record_id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
-
-		return \maybe_create_table( $this->get_room_presence_table_name(), $sql_create );
-	}
-
-
-	/**
-	 * Get the table name for MainTable DAO.
-	 *
-	 * @return string
-	 */
-	private function get_room_presence_table_name(): string {
-		global $wpdb;
-
-		return $wpdb->prefix . WooCommerce::TABLE_NAME_WOOCOMMERCE_ROOM;
 	}
 
 	/**
@@ -122,7 +91,7 @@ class WooCommerceVideoDAO {
 				'::',
 				array(
 					__CLASS__,
-					'get_by_id',
+					'get_by_id_main_table',
 				)
 			)
 		);
@@ -183,7 +152,7 @@ class WooCommerceVideoDAO {
 		}
 
 		foreach ( $room_names as $room_name ) {
-			$results[] = $this->get_by_id( $cart_id, $room_name );
+			$results[] = $this->get_by_id_main_table( $cart_id, $room_name );
 		}
 
 		return $results;
@@ -197,7 +166,7 @@ class WooCommerceVideoDAO {
 	 *
 	 * @return WooCommerceVideoCart|null
 	 */
-	public function get_by_id( int $cart_id, string $room_name ): ?WooCommerceVideoCart {
+	public function get_by_id_main_table( int $cart_id, string $room_name ): ?WooCommerceVideoCart {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
@@ -301,7 +270,7 @@ class WooCommerceVideoDAO {
 				'::',
 				array(
 					__CLASS__,
-					'get_by_id',
+					'get_by_id_main_table',
 				)
 			)
 		);
@@ -344,7 +313,7 @@ class WooCommerceVideoDAO {
 			)
 		);
 
-		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_by_id' ) ) );
+		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_by_id_main_table' ) ) );
 		\wp_cache_delete(
 			$woocommercevideocartobject->get_cart_id(),
 			implode(
@@ -357,62 +326,5 @@ class WooCommerceVideoDAO {
 		);
 
 		return null;
-	}
-
-	/**
-	 * Get a Just Preference Data from the database
-	 *
-	 * @param int    $cart_id     The user id.
-	 * @param string $room_name   The room name.
-	 * @param string $return_type - The field to return.
-	 *
-	 * @return null
-	 *
-	 * Returns layout ID, Reception ID, or Reception Enabled Status
-	 * @deprecated Call self::get_by_id instead
-	 */
-	public function read_cart_sync_settings( int $cart_id, string $room_name, string $return_type ) {
-
-		if ( ! $return_type ) {
-			return null;
-		}
-
-		$preference = $this->get_by_id( $cart_id, $room_name );
-
-		if ( ! $preference ) {
-			return null;
-		}
-
-		switch ( $return_type ) {
-			case 'cart_id':
-				return $preference->get_cart_id();
-
-			case 'room_name':
-				return $preference->get_room_name();
-
-			case 'cart_data':
-				return $preference->get_cart_data();
-
-			case 'product_id':
-				return $preference->get_product_id();
-
-			case 'quantity':
-				return $preference->get_quantity();
-
-			case 'variation_id':
-				return $preference->get_variation_id();
-
-			case 'single_product':
-				return $preference->is_single_product();
-
-			case 'timestamp':
-				return $preference->get_timestamp();
-
-			case 'record_id':
-				return $preference->get_id();
-
-			default:
-				return null;
-		}
 	}
 }

@@ -12,7 +12,9 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
+use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
+use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 
 /**
@@ -39,7 +41,7 @@ class WooCommerce {
 
 		// Create Tables in Database.
 		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_room_presence_table();
-		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
+		Factory::get_instance( WooCommerceRoomSyncDAO::class )->install_woocommerce_sync_config_table();
 
 	}
 
@@ -56,8 +58,8 @@ class WooCommerce {
 	 * Required for Normal Runtime.
 	 */
 	public function init() {
-
-		// add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_security_sitevideo_tabs' ), 20, 2 );
+		// @TODO remove before production.
+		\add_shortcode( 'ccproxytest', array( $this, 'proxy_test') );
 
 		// Add Permissions Menu to Main Frontend Template.
 		add_filter(
@@ -197,5 +199,11 @@ class WooCommerce {
 			echo 'session start';
 		}
 	}
+
+public function proxy_test() {
+	Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_room_presence_table();
+	Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
+}
+
 
 }
