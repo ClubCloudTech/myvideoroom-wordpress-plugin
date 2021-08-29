@@ -8,11 +8,12 @@
 
 (function ($) {
 	var handleEvent = function (e){
-				var product_id  = $( this ).data( 'productId' );
-				var input_type  = $( this ).data( 'inputType' );
-				var host_status = $( this ).data( 'hostStatus' );
-				var auth_nonce  = $( this ).data( 'authNonce' );
-				var room_name   = $( this ).data( 'roomName' );
+				var product_id   = $( this ).data( 'productId' );
+				var input_type   = $( this ).data( 'inputType' );
+				var host_status  = $( this ).data( 'hostStatus' );
+				var auth_nonce   = $( this ).data( 'authNonce' );
+				var room_name    = $( this ).data( 'roomName' );
+				var sync_id      = $( this ).data( 'syncId' );
 	
 				var $container   = $( '.mvr-woocommerce-basket' );
 				var loading_text = $container.data( 'loadingText' );
@@ -32,7 +33,9 @@
 							inputType: input_type,
 							hostStatus: host_status,
 							authNonce: auth_nonce,
-							roomName: room_name
+							roomName: room_name,
+							quantity: quantity,
+							variationId: variation_id 
 						},
 						success: function (response) {
 							$container.html( response );

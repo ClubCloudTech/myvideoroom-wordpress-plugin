@@ -56,6 +56,8 @@ return function (
 				<a href=""
 					class="mvr-icons dashicons dashicons-upload myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
+					data-quantity="<?php echo esc_attr( $item['quantity'] ); ?>"
+					data-variation-id="<?php echo esc_attr( $item['variation_id'] ); ?>"
 					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_BROADCAST_PRODUCT ); ?>"
 					data-room-name="<?php echo esc_attr( $room_name ); ?>"
 					data-auth-nonce="<?php echo esc_attr( wp_create_nonce( WooCommerce::SETTING_BROADCAST_PRODUCT ) ); ?>"

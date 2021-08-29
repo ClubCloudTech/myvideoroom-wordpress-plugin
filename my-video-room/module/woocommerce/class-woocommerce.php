@@ -86,7 +86,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			24,
+			27,
 			true
 		);
 
@@ -149,11 +149,13 @@ class WooCommerce {
 	 */
 	public function get_ajax_page_basketwc() {
 
-		$product_id  = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'productId' );
-		$input_type  = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
-		$host_status = Factory::get_instance( Ajax::class )->get_text_parameter( 'hostStatus' );
-		$auth_nonce  = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
-		$room_name   = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
+		$product_id   = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'productId' );
+		$input_type   = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
+		$host_status  = Factory::get_instance( Ajax::class )->get_text_parameter( 'hostStatus' );
+		$auth_nonce   = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
+		$room_name    = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
+		$quantity     = Factory::get_instance( Ajax::class )->get_text_parameter( 'quantity' );
+		$variation_id = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'variationId' );
 
 		switch ( $input_type ) {
 
@@ -193,7 +195,7 @@ class WooCommerce {
 			case self::SETTING_BROADCAST_PRODUCT:
 				$message                      = \esc_html__( 'share this product ?', 'myvideoroom' );
 				$broadcast_product_nonce      = wp_create_nonce( self::SETTING_BROADCAST_PRODUCT_CONFIRMED );
-				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( self::SETTING_BROADCAST_PRODUCT_CONFIRMED, esc_html__( 'Share Product', 'my-video-room' ), $room_name, $broadcast_product_nonce );
+				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_product_share_button( self::SETTING_BROADCAST_PRODUCT_CONFIRMED, esc_html__( 'Share Product', 'my-video-room' ), $room_name, $broadcast_product_nonce, $quantity, $product_id, $variation_id );
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $confirmation_button_approved );
 				break;
@@ -204,7 +206,7 @@ class WooCommerce {
 					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
 
 				} else {
-					//Broadcast Product Action.
+					// Broadcast Product Action.
 					echo esc_html_e( 'The Product has Been Shared', 'myvideoroom' );
 				}
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -89,7 +89,7 @@ return function (
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
 		$result = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_participants( $room_name );
-		
+
 		// TODO REMOVE
 		//echo var_dump( $result );
 		

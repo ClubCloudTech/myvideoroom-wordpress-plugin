@@ -172,7 +172,7 @@ class WooCommerceRoomSyncDAO {
 
 		$timestamp    = \current_time( 'timestamp' );
 		$allowed_time = $timestamp - SiteDefaults::DBCLEAN_TIMESTAMP;
-		
+
 		// Can't cache as query involves time.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$participants = $wpdb->get_results(

@@ -35,19 +35,20 @@ class ShoppingBasket {
 		// Loop over $cart items.
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 
-				$basket_array = array();
-
-				$basket_array['product_id'] = $product_id = $cart_item['product_id'];
-				$product                    = wc_get_product( $product_id );
-				$basket_array['quantity']   = $cart_item['quantity'];
-				$basket_array['name']       = $product->get_name();
-				$basket_array['image']      = $product->get_image();
-				$basket_array['price']      = WC()->cart->get_product_price( $product );
-				$basket_array['subtotal']   = WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] );
-				$basket_array['link']       = $product->get_permalink( $cart_item );
+				$basket_array                 = array();
+				$basket_array['product_id']   = $product_id = $cart_item['product_id'];
+				$product                      = wc_get_product( $product_id );
+				$basket_array['quantity']     = $cart_item['quantity'];
+				$basket_array['variation_id'] = $cart_item['variation_id'];
+				$basket_array['name']         = $product->get_name();
+				$basket_array['image']        = $product->get_image();
+				$basket_array['price']        = WC()->cart->get_product_price( $product );
+				$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] );
+				$basket_array['link']         = $product->get_permalink( $cart_item );
 
 				array_push( $output_array, $basket_array );
 		}
+
 		// Render View.
 		$render = require __DIR__ . '/../views/table-output.php';
 
@@ -129,6 +130,37 @@ class ShoppingBasket {
 		';
 
 	}
+
+	/**
+	 * Render the Basket Nav Bar Button
+	 *
+	 * @param string $button_type - Feedback for Ajax Post.
+	 * @param string $button_label - Label for Button.
+	 * @param string $room_name -  Name of Room.
+	 * @param string $nonce - Nonce for operation (if confirmation used).
+	 * @param int    $quantity - Product Quantity.
+	 * @param int    $product_id - Product ID.
+	 * @param int    $variation_id - Variation ID.
+	 *
+	 * @return string
+	 */
+	public function basket_product_share_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $quantity, string $product_id, string $variation_id ):string {
+
+		return '
+		<div aria-label="button" class="mvr-form-button myvideoroom-woocommerce-basket-ajax">
+		<a href="" data-input-type="' . $button_type . '" 
+		 data-auth-nonce="' . $nonce . '"
+		 data-room-name="' . $room_name . '"
+		 data-quantity="' . $quantity . '"
+		 data-variation-id="' . $variation_id . '"
+		 data-product-id="' . $product_id . '"
+		 class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
+		</div>
+		';
+
+	}
+
+
 
 	/**
 	 * Get the list of current Sync Items
