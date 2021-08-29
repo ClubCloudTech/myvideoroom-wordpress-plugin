@@ -43,21 +43,21 @@ class WooCommerceVideo {
 	/**
 	 * Product ID
 	 *
-	 * @var int product_id - the Product ID.
+	 * @var string product_id - the Product ID.
 	 */
-	private int $product_id;
+	private string $product_id;
 
 	/**
 	 * Quantity
 	 *
-	 * @var int Quantity - the Product Quantity.
+	 * @var string Quantity - the Product Quantity.
 	 */
-	private int $quantity;
+	private string $quantity;
 
 	/**
 	 * Variation ID
 	 *
-	 * @var int $variation_id - the ID of the Variation.
+	 * @var string $variation_id - the ID of the Variation.
 	 */
 	private int $variation_id;
 
@@ -71,9 +71,9 @@ class WooCommerceVideo {
 	/**
 	 * Timestamp
 	 *
-	 * @var string $timestamp - the Timestamp.
+	 * @var int $timestamp - the Timestamp.
 	 */
-	private bool $timestamp;
+	private int $timestamp;
 
 	/**
 	 * WooCommerce Video constructor.
@@ -81,22 +81,22 @@ class WooCommerceVideo {
 	 * @param string $cart_id        The User ID.
 	 * @param string $room_name      The Room Name.
 	 * @param string $cart_data      Data Object in Cart.
-	 * @param int    $product_id     Data Object in Cart.
-	 * @param int    $quantity       Data Object in Cart.
-	 * @param int    $variation_id   Data Object in Cart.
+	 * @param string $product_id     Data Object in Cart.
+	 * @param string $quantity       Data Object in Cart.
+	 * @param string $variation_id   Data Object in Cart.
 	 * @param bool   $single_product Product Single Sync Flag.
-	 * @param string $timestamp      Last Updated Timestamp.
+	 * @param int    $timestamp      Last Updated Timestamp.
 	 * @param ?int   $id             The record id.
 	 */
 	public function __construct(
 		string $cart_id,
 		string $room_name,
 		string $cart_data = null,
-		int $product_id = null,
-		int $quantity = null,
-		int $variation_id = null,
+		string $product_id = null,
+		string $quantity = null,
+		string $variation_id = null,
 		bool $single_product = null,
-		string $timestamp = null,
+		int $timestamp = null,
 		?int $id
 	) {
 		$this->cart_id        = $cart_id;
@@ -228,9 +228,9 @@ class WooCommerceVideo {
 	/**
 	 * Gets Cart Data.
 	 *
-	 * @return array
+	 * @return ?string
 	 */
-	public function get_cart_data(): string {
+	public function get_cart_data(): ?string {
 		return $this->cart_data;
 	}
 
@@ -338,20 +338,20 @@ class WooCommerceVideo {
 	/**
 	 * Gets Timestamp.
 	 *
-	 * @return bool
+	 * @return int
 	 */
-	public function get_timestamp(): bool {
+	public function get_timestamp(): int {
 		return $this->timestamp;
 	}
 
 	/**
 	 * Sets Timestamp.
 	 *
-	 * @param bool $timestamp - sets the Single Product Sync state.
+	 * @param int $timestamp - sets the Single Product Sync state.
 	 *
-	 * @return WooCommerceVideo
+	 * @return int
 	 */
-	public function set_timestamp( bool $timestamp ): WooCommerceVideo {
+	public function set_timestamp( int $timestamp ): WooCommerceVideo {
 		$this->timestamp = $timestamp;
 
 		return $this;

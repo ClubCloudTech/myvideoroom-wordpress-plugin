@@ -13,8 +13,9 @@
 				var host_status  = $( this ).data( 'hostStatus' );
 				var auth_nonce   = $( this ).data( 'authNonce' );
 				var room_name    = $( this ).data( 'roomName' );
-				var sync_id      = $( this ).data( 'syncId' );
-	
+				var quantity      = $( this ).data( 'quantity' );
+				var variation_id = $( this ).data( 'variation_id' );	
+				
 				var $container   = $( '.mvr-woocommerce-basket' );
 				var loading_text = $container.data( 'loadingText' );
 	

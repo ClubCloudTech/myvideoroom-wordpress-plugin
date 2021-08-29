@@ -86,7 +86,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			27,
+			28,
 			true
 		);
 
@@ -207,6 +207,7 @@ class WooCommerce {
 
 				} else {
 					// Broadcast Product Action.
+					Factory::get_instance( ShoppingBasket::class )->broadcast_single_product( $product_id, $room_name, $quantity, $variation_id );
 					echo esc_html_e( 'The Product has Been Shared', 'myvideoroom' );
 				}
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped

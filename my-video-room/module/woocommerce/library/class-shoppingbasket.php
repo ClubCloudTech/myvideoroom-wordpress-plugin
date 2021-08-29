@@ -11,7 +11,9 @@ namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
+use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync as WooCommerceRoomSyncEntity;
+use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo;
 
 /**
  * Class Shopping Basket
@@ -160,6 +162,38 @@ class ShoppingBasket {
 
 	}
 
+	/**
+	 * Broadcast Single Product
+	 *
+	 * @param string $product_id - Product ID.
+	 * @param string $room_name -  Name of Room.
+	 * @param string $quantity - Product Quantity.
+	 * @param string $variation_id - Variation ID.
+	 */
+	public function broadcast_single_product( string $product_id, string $room_name, string $quantity, string $variation_id ) {
+		$participants = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_participants( $room_name );
+		$timestamp    = \current_time( 'timestamp' );
+
+		foreach ( $participants as $room ) {
+
+			$register = new WooCommerceVideo(
+				$room->cart_id,
+				$room_name,
+				null,
+				$product_id,
+				$quantity,
+				$variation_id,
+				true,
+				$timestamp,
+				null
+			);
+
+			Factory::get_instance( WooCommerceVideoDAO::class )->create( $register );
+	}
+
+		// Echo \var_dump( $participants );
+		return null;
+	}
 
 
 	/**

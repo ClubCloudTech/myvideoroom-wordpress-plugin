@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\DAO;
 
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo as WooCommerceVideoCart;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
@@ -27,11 +28,11 @@ class WooCommerceVideoDAO {
 			`cart_id` VARCHAR(255) NOT NULL,
 			`room_name` VARCHAR(255) NOT NULL,
 			`cart_data` VARCHAR(8192) NULL,
-			`product_id` BIGINT UNSIGNED NULL,
-			`quantity` BIGINT UNSIGNED NULL,
-			`variation_id` BIGINT UNSIGNED NULL,
+			`product_id` VARCHAR(255) NULL,
+			`quantity` VARCHAR(255) NULL,
+			`variation_id` VARCHAR(255) NULL,
 			`single_product` BOOLEAN,
-			`timestamp` TIMESTAMP,
+			`timestamp` BIGINT UNSIGNED NULL,
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
