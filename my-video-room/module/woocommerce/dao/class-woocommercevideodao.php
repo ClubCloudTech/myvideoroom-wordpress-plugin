@@ -77,7 +77,6 @@ class WooCommerceVideoDAO {
 				'variation_id'   => $woocommercevideocartobject->get_variation_id(),
 				'single_product' => $woocommercevideocartobject->is_single_product(),
 				'timestamp'      => $woocommercevideocartobject->get_timestamp(),
-				'record_id'      => $woocommercevideocartobject->get_id(),
 
 			)
 		);
@@ -112,23 +111,23 @@ class WooCommerceVideoDAO {
 	/**
 	 * Create a cache key
 	 *
-	 * @param int    $cart_id   The user id.
+	 * @param string $cart_id   The user id.
 	 * @param string $room_name The room name.
 	 *
 	 * @return string
 	 */
-	private function create_cache_key( int $cart_id, string $room_name ): string {
+	private function create_cache_key( string $cart_id, string $room_name ): string {
 		return "cart_id:${cart_id}:room_name:${room_name}";
 	}
 
 	/**
 	 * Get a Cart Object from the database
 	 *
-	 * @param int $cart_id The Cart id.
+	 * @param string $cart_id The Cart id.
 	 *
 	 * @return WooCommerceVideoCart[]
 	 */
-	public function get_by_cart_id( int $cart_id ): array {
+	public function get_by_cart_id( string $cart_id ): array {
 		global $wpdb;
 
 		$results = array();
@@ -142,7 +141,7 @@ class WooCommerceVideoDAO {
 					'
 						SELECT room_name
 						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_main_table_name() . '
-						WHERE cart_id = %d;
+						WHERE cart_id = %s;
 					',
 					$cart_id,
 				)
@@ -166,7 +165,7 @@ class WooCommerceVideoDAO {
 	 *
 	 * @return WooCommerceVideoCart|null
 	 */
-	public function get_by_id_main_table( int $cart_id, string $room_name ): ?WooCommerceVideoCart {
+	public function get_by_id_main_table( string $cart_id, string $room_name ): ?WooCommerceVideoCart {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
@@ -196,7 +195,7 @@ class WooCommerceVideoDAO {
 			       timestamp, 
 				   record_id
 				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_main_table_name() . '
-				WHERE cart_id = %d AND room_name = %s;
+				WHERE cart_id = %s AND room_name = %s;
 			',
 				array(
 					$cart_id,
@@ -255,7 +254,6 @@ class WooCommerceVideoDAO {
 				'variation_id'   => $woocommercevideocartobject->get_variation_id(),
 				'single_product' => $woocommercevideocartobject->is_single_product(),
 				'timestamp'      => $woocommercevideocartobject->get_timestamp(),
-				'record_id'      => $woocommercevideocartobject->get_id(),
 			),
 			array(
 				'cart_id'   => $woocommercevideocartobject->get_cart_id(),

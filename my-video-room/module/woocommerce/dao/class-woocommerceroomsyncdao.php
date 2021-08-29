@@ -27,7 +27,7 @@ class WooCommerceRoomSyncDAO {
 			`record_id` int NOT NULL AUTO_INCREMENT,
 			`cart_id` VARCHAR(255) NOT NULL,
 			`room_name` VARCHAR(255) NOT NULL,
-			`timestamp` TIMESTAMP,
+			`timestamp` BIGINT UNSIGNED NULL,
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
@@ -57,9 +57,20 @@ class WooCommerceRoomSyncDAO {
 	public function create( WooCommerceRoomSync $woocommerceroomsyncobj ): ?WooCommerceRoomSync {
 		global $wpdb;
 
+		$cart_id   = $woocommerceroomsyncobj->get_cart_id();
+		$room_name = $woocommerceroomsyncobj->get_room_name();
+
+		// Check Record Doesn't already exist (update not create if it does).
+
+		$check = $this->get_by_id_sync_table( $cart_id, $room_name );
+
+		if ( $check ) {
+			return $this->update( $woocommerceroomsyncobj );
+		}
+
 		$cache_key = $this->create_cache_key(
-			$woocommerceroomsyncobj->get_cart_id(),
-			$woocommerceroomsyncobj->get_room_name()
+			$cart_id,
+			$room_name
 		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
@@ -69,8 +80,6 @@ class WooCommerceRoomSyncDAO {
 				'cart_id'   => $woocommerceroomsyncobj->get_cart_id(),
 				'room_name' => $woocommerceroomsyncobj->get_room_name(),
 				'timestamp' => $woocommerceroomsyncobj->get_timestamp(),
-				'record_id' => $woocommerceroomsyncobj->get_id(),
-
 			)
 		);
 
@@ -104,23 +113,23 @@ class WooCommerceRoomSyncDAO {
 	/**
 	 * Create a cache key
 	 *
-	 * @param int    $cart_id   The user id.
+	 * @param string $cart_id   The user id.
 	 * @param string $room_name The room name.
 	 *
 	 * @return string
 	 */
-	private function create_cache_key( int $cart_id, string $room_name ): string {
+	private function create_cache_key( string $cart_id, string $room_name ): string {
 		return "cart_id:${cart_id}:room_name:${room_name}";
 	}
 
 	/**
 	 * Get a Cart Object from the database
 	 *
-	 * @param int $cart_id The Cart id.
+	 * @param string $cart_id The Cart id.
 	 *
 	 * @return WooCommerceRoomSync[]
 	 */
-	public function get_by_cart_id( int $cart_id ): array {
+	public function get_by_cart_id( string $cart_id ): array {
 		global $wpdb;
 
 		$results = array();
@@ -134,7 +143,7 @@ class WooCommerceRoomSyncDAO {
 					'
 						SELECT room_name
 						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
-						WHERE cart_id = %d;
+						WHERE cart_id = %s;
 					',
 					$cart_id,
 				)
@@ -150,16 +159,51 @@ class WooCommerceRoomSyncDAO {
 		return $results;
 	}
 
+	/**
+	 * Get a Cart Object from the database
+	 *
+	 * @param string $room_name - The Room Name to Return Recipients for.
+	 *
+	 * @return WooCommerceRoomSync[]
+	 */
+	public function get_room_participants( string $room_name ) {
+		global $wpdb;
+
+		$results = array();
+
+		// Check Cache First.
+		$participants = \wp_cache_get( $room_name, __METHOD__ );
+
+		if ( false === $participants ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$participants = $wpdb->get_results(
+				$wpdb->prepare(
+					'
+						SELECT cart_id, room_name, timestamp, record_id
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
+						WHERE room_name = %s AND timestamp > %d;
+					',
+					$room_name,
+				)
+			);
+
+			\wp_cache_set( $room_name, __METHOD__, $participants );
+		}
+
+		return $participants;
+	}
+
+
 
 	/**
 	 * Get a Cart Object from the database
 	 *
-	 * @param int    $cart_id   The user id.
+	 * @param string $cart_id   The Cart id.
 	 * @param string $room_name The room name.
 	 *
 	 * @return WooCommerceRoomSync|null
 	 */
-	public function get_by_id_sync_table( int $cart_id, string $room_name ): ?WooCommerceRoomSync {
+	public function get_by_id_sync_table( string $cart_id, string $room_name ): ?WooCommerceRoomSync {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
@@ -183,7 +227,7 @@ class WooCommerceRoomSyncDAO {
 			       timestamp, 
 				   record_id
 				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
-				WHERE cart_id = %d AND room_name = %s;
+				WHERE cart_id = %s AND room_name = %s;
 			',
 				array(
 					$cart_id,
@@ -196,7 +240,7 @@ class WooCommerceRoomSyncDAO {
 
 		if ( $row ) {
 			$result = new WooCommerceRoomSync(
-				(int) $row->cart_id,
+				$row->cart_id,
 				$row->room_name,
 				$row->timestamp,
 				$row->id,
@@ -232,7 +276,6 @@ class WooCommerceRoomSyncDAO {
 				'cart_id'   => $woocommerceroomsyncobj->get_cart_id(),
 				'room_name' => $woocommerceroomsyncobj->get_room_name(),
 				'timestamp' => $woocommerceroomsyncobj->get_timestamp(),
-				'record_id' => $woocommerceroomsyncobj->get_id(),
 			),
 			array(
 				'cart_id'   => $woocommerceroomsyncobj->get_cart_id(),

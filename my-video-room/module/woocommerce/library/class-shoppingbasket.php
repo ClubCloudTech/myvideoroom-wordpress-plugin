@@ -10,7 +10,8 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo;
+use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
+use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync as WooCommerceRoomSyncEntity;
 
 /**
  * Class Shopping Basket
@@ -27,9 +28,8 @@ class ShoppingBasket {
 	 */
 	public function render_basket( string $room_name, $host_status = null ) {
 
-		// Initialise Function.
-
-
+		// Register Basket in Room.
+		$this->register_room_presence( $room_name );
 
 		$output_array = array();
 		// Loop over $cart items.
@@ -71,6 +71,25 @@ class ShoppingBasket {
 
 	}
 
+	/**
+	 * Register Room Presence
+	 *
+	 * @param string $room_name -  Name of Room.
+	 * @return void
+	 */
+	public function register_room_presence( string $room_name ):void {
+		$cart_session = session_id();
+		$timestamp    = \current_time( 'timestamp' );
+		$register     = new WooCommerceRoomSyncEntity(
+			$cart_session,
+			$room_name,
+			$timestamp,
+			null
+		);
+
+		Factory::get_instance( WooCommerceRoomSyncDAO::class )->create( $register );
+
+	}
 
 
 	/**
@@ -131,20 +150,5 @@ class ShoppingBasket {
 			$available_rooms
 		);
 	}
-
-
-
-	// @TODO - remove function.
-
-public function test_render() {
-	?>
-<div>
-	<div class="widget_shopping_cart_content">
-		<?php woocommerce_mini_cart(); ?>
-	</div>
-</div>
-	<?php
-	return '';
-}
 
 }

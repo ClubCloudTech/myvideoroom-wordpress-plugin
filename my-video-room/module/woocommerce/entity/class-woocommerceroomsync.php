@@ -38,20 +38,20 @@ class WooCommerceRoomSync {
 	 *
 	 * @var string $timestamp - the Timestamp.
 	 */
-	private bool $timestamp;
+	private int $timestamp;
 
 	/**
-	 * WooCommerce Video constructor.
+	 * WooCommerce Room Sync Constructor.
 	 *
 	 * @param string $cart_id        The User ID.
 	 * @param string $room_name      The Room Name.
-	 * @param string $timestamp      Last Updated Timestamp.
+	 * @param int    $timestamp      Last Updated Timestamp.
 	 * @param ?int   $id             The record id.
 	 */
 	public function __construct(
 		string $cart_id,
 		string $room_name,
-		string $timestamp = null,
+		int $timestamp = null,
 		?int $id
 	) {
 		$this->cart_id   = $cart_id;
@@ -124,9 +124,9 @@ class WooCommerceRoomSync {
 	/**
 	 * Gets Cart ID.
 	 *
-	 * @return int
+	 * @return string
 	 */
-	public function get_cart_id(): int {
+	public function get_cart_id(): string {
 		return $this->cart_id;
 	}
 
@@ -170,7 +170,7 @@ class WooCommerceRoomSync {
 	 *
 	 * @return bool
 	 */
-	public function get_timestamp(): bool {
+	public function get_timestamp(): int {
 		return $this->timestamp;
 	}
 
@@ -181,7 +181,7 @@ class WooCommerceRoomSync {
 	 *
 	 * @return WooCommerceVideo
 	 */
-	public function set_timestamp( bool $timestamp ): self {
+	public function set_timestamp( int $timestamp ): self {
 		$this->timestamp = $timestamp;
 
 		return $this;

@@ -6,6 +6,7 @@
  */
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
@@ -23,14 +24,8 @@ return function (
 	string $room_name
 ): string {
 	ob_start();
-	
-	if( isset( $_COOKIE ) ) {
-		$output = $_COOKIE;
-		var_dump( $output);
-	}
-	
-	echo $room_name;
-//echo var_dump( WC()->session );
+
+
 	?>
 <div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket">
 	<?php
@@ -93,9 +88,12 @@ return function (
 				);
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
+		$result = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_participants( $room_name );
+		echo var_dump( $result );
 		?>
 	</p>
 </div>
+
 		<?php
 	}
 

@@ -184,9 +184,9 @@ class WooCommerceVideo {
 	/**
 	 * Gets Cart ID.
 	 *
-	 * @return int
+	 * @return string
 	 */
-	public function get_cart_id(): int {
+	public function get_cart_id(): string {
 		return $this->cart_id;
 	}
 

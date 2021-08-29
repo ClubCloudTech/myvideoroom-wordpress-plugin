@@ -11,10 +11,8 @@ use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\Ajax;
-use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
-use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 
 /**
@@ -40,8 +38,15 @@ class WooCommerce {
 	public function activate_module() {
 
 		// Create Tables in Database.
-		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_room_presence_table();
-		Factory::get_instance( WooCommerceRoomSyncDAO::class )->install_woocommerce_sync_config_table();
+		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
+		Factory::get_instance( WooCommerceRoomSyncDAO::class )->install_woocommerce_room_presence_table();
+
+		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
+			self::MODULE_WOOCOMMERCE_BASKET,
+			self::MODULE_WOOCOMMERCE_BASKET_ID,
+			true
+		);
+		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_WOOCOMMERCE_BASKET_ID, true );
 
 	}
 
@@ -80,7 +85,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			23,
+			24,
 			true
 		);
 
@@ -93,8 +98,6 @@ class WooCommerce {
 		// Initialise PHPSESSION to track logged out users.
 		$this->start_php_session();
 
-		// Listener for Page Regeneration and Refresh TODO DELETE.
-		\add_action( 'myvideoroom_page_delete_post_number_refresh', array( Factory::get_instance( SecurityRoomHelpers::class ), 'update_security_post_id' ), 10, 2 );
 	}
 
 	/**
@@ -134,14 +137,6 @@ class WooCommerce {
 				->render_basket( $room_name, $host_status )
 		);
 
-/*
-		$basket_menu = new MenuTabDisplay(
-			esc_html__( 'Shopping Basket', 'my-video-room' ),
-			'shoppingbasket',
-			fn() => Factory::get_instance( ShoppingBasket::class )
-			->test_render()
-		);
-*/
 		array_push( $input, $basket_menu );
 		return $input;
 
@@ -164,7 +159,7 @@ class WooCommerce {
 		if ( self::SETTING_DELETE_PRODUCT === $input_type ) {
 			Factory::get_instance( ShoppingBasket::class )->delete_product_from_cart( $product_id );
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status );
+			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 
 			// Case Delete Entire Basket - With Confirmation.
 
@@ -175,12 +170,12 @@ class WooCommerce {
 		} elseif ( self::SETTING_DELETE_BASKET_CONFIRMED === $input_type && wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_BASKET_CONFIRMED ) ) {
 			wc()->cart->empty_cart();
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status );
+			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 
 		} else {
 
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $host_status, $room_name );
+			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 		}
 		die();
 	}
@@ -196,14 +191,13 @@ class WooCommerce {
 
 		if ( ! session_id() ) {
 			session_start();
-			echo 'session start';
 		}
 	}
 
-public function proxy_test() {
-	Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_room_presence_table();
-	Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
-}
+	public function proxy_test() {
+		Factory::get_instance( WooCommerceRoomSyncDAO::class )->install_woocommerce_room_presence_table();
+		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
+	}
 
 
 }
