@@ -20,16 +20,17 @@ use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
  */
 class WooCommerce {
 
-	const MODULE_WOOCOMMERCE_BASKET_ID    = 10561;
-	const MODULE_WOOCOMMERCE_NAME         = 'woocommerce-module';
-	const MODULE_WOOCOMMERCE_BASKET       = 'woocommerce-basket';
-	const SETTING_REFRESH_BASKET          = 'woocommerce-refresh-basket';
-	const SETTING_DELETE_PRODUCT          = 'woocommerce-delete-product';
-	const SETTING_DELETE_BASKET           = 'woocommerce-delete-basket';
-	const SETTING_DELETE_BASKET_CONFIRMED = 'woocommerce-delete-basket-confirmed';
-	const TEXT_DELETE_BASKET              = 'clear your basket ?';
-	const TABLE_NAME_WOOCOMMERCE_CART     = 'myvideoroom_wocommerce_cart_sync';
-	const TABLE_NAME_WOOCOMMERCE_ROOM     = 'myvideoroom_wocommerce_room_presence';
+	const MODULE_WOOCOMMERCE_BASKET_ID        = 10561;
+	const MODULE_WOOCOMMERCE_NAME             = 'woocommerce-module';
+	const MODULE_WOOCOMMERCE_BASKET           = 'woocommerce-basket';
+	const SETTING_REFRESH_BASKET              = 'woocommerce-refresh-basket';
+	const SETTING_DELETE_PRODUCT              = 'woocommerce-delete-product';
+	const SETTING_DELETE_BASKET               = 'woocommerce-delete-basket';
+	const SETTING_DELETE_BASKET_CONFIRMED     = 'woocommerce-delete-basket-confirmed';
+	const SETTING_BROADCAST_PRODUCT           = 'woocommerce-broadcast-single-product';
+	const SETTING_BROADCAST_PRODUCT_CONFIRMED = 'woocommerce-broadcast-single-product-confirmed';
+	const TABLE_NAME_WOOCOMMERCE_CART         = 'myvideoroom_wocommerce_cart_sync';
+	const TABLE_NAME_WOOCOMMERCE_ROOM         = 'myvideoroom_wocommerce_room_presence';
 
 	/**
 	 * Initialise On Module Activation.
@@ -154,26 +155,63 @@ class WooCommerce {
 		$auth_nonce  = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
 		$room_name   = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
 
-			// Case Delete a Product from a Basket - no Confirmation.
+		switch ( $input_type ) {
 
-		if ( self::SETTING_DELETE_PRODUCT === $input_type ) {
-			Factory::get_instance( ShoppingBasket::class )->delete_product_from_cart( $product_id );
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+			// Case Delete a Product from a Basket - has no Confirmation.
 
-			// Case Delete Entire Basket - With Confirmation.
+			case self::SETTING_DELETE_PRODUCT:
+				Factory::get_instance( ShoppingBasket::class )->delete_product_from_cart( $product_id );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
 
-		} elseif ( self::SETTING_DELETE_BASKET === $input_type ) {
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce );
+			// Case Delete Entire Basket Step1 - Pre Confirmation.
 
-		} elseif ( self::SETTING_DELETE_BASKET_CONFIRMED === $input_type && wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_BASKET_CONFIRMED ) ) {
-			wc()->cart->empty_cart();
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+			case self::SETTING_DELETE_BASKET:
+				$message                      = \esc_html__( 'clear your basket ?', 'myvideoroom' );
+				$delete_basket_nonce          = wp_create_nonce( self::SETTING_DELETE_BASKET_CONFIRMED );
+				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( self::SETTING_DELETE_BASKET_CONFIRMED, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $confirmation_button_approved );
+				break;
 
-		} else {
+			// Case Delete Entire Basket Step2 - Post Confirmation.
 
+			case self::SETTING_DELETE_BASKET_CONFIRMED:
+				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_BASKET_CONFIRMED ) ){
+					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
+
+				} else {
+					wc()->cart->empty_cart();
+				}
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
+			// Case Broadcast Single Product Step1 - Pre Confirmation.
+
+			case self::SETTING_BROADCAST_PRODUCT:
+				$message                      = \esc_html__( 'share this product ?', 'myvideoroom' );
+				$broadcast_product_nonce      = wp_create_nonce( self::SETTING_BROADCAST_PRODUCT_CONFIRMED );
+				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( self::SETTING_BROADCAST_PRODUCT_CONFIRMED, esc_html__( 'Share Product', 'my-video-room' ), $room_name, $broadcast_product_nonce );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $confirmation_button_approved );
+				break;
+
+				// Case Delete Entire Basket Step2 - Post Confirmation.
+			case self::SETTING_BROADCAST_PRODUCT_CONFIRMED:
+				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_BROADCAST_PRODUCT_CONFIRMED ) ) {
+					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
+
+				} else {
+					//Broadcast Product Action.
+					echo esc_html_e( 'The Product has Been Shared', 'myvideoroom' );
+				}
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
+			default:
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 		}

@@ -40,6 +40,11 @@ class SiteDefaults {
 	// Listing Security Module ID in Core, so it can be checked for in Core Class to exit gracefully.
 	const MODULE_SECURITY_ID = Dependencies::MODULE_SECURITY_ID;
 
+	// Time Limits- Database Cutoff and Cleanup time offset.
+	const DBCLEAN_DAYS      = 2;
+	const DBCLEAN_TIMESTAMP = self::DBCLEAN_DAYS * 24 * 60 * 60;
+
+
 	/**
 	 * If the initialised function already been run.
 	 *

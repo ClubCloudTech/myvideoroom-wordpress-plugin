@@ -9,6 +9,7 @@ namespace MyVideoRoomPlugin\Module\WooCommerce\DAO;
 
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class WooCommerceRoomSyncDAO
@@ -169,13 +170,11 @@ class WooCommerceRoomSyncDAO {
 	public function get_room_participants( string $room_name ) {
 		global $wpdb;
 
-		$results = array();
-
-		// Check Cache First.
-		$participants = \wp_cache_get( $room_name, __METHOD__ );
-
-		if ( false === $participants ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$timestamp    = \current_time( 'timestamp' );
+		$allowed_time = $timestamp - SiteDefaults::DBCLEAN_TIMESTAMP;
+		
+		// Can't cache as query involves time.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
@@ -184,11 +183,9 @@ class WooCommerceRoomSyncDAO {
 						WHERE room_name = %s AND timestamp > %d;
 					',
 					$room_name,
+					$allowed_time
 				)
 			);
-
-			\wp_cache_set( $room_name, __METHOD__, $participants );
-		}
 
 		return $participants;
 	}

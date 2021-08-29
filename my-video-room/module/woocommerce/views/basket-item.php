@@ -49,7 +49,17 @@ return function (
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT ); ?>"
 					data-room-name="<?php echo esc_attr( $room_name ); ?>"
-					title="<?php esc_html_e( 'Delete this item from Basket', 'my-video-room' ); ?>"
+					title="<?php esc_html_e( 'Delete this item from Basket', 'myvideoroom' ); ?>"
+					target="_blank"
+
+				></a>
+				<a href=""
+					class="mvr-icons dashicons dashicons-upload myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
+					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
+					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_BROADCAST_PRODUCT ); ?>"
+					data-room-name="<?php echo esc_attr( $room_name ); ?>"
+					data-auth-nonce="<?php echo esc_attr( wp_create_nonce( WooCommerce::SETTING_BROADCAST_PRODUCT ) ); ?>"
+					title="<?php esc_html_e( 'Share This Product With the Room', 'myvideoroom' ); ?>"
 					target="_blank"
 
 				></a>

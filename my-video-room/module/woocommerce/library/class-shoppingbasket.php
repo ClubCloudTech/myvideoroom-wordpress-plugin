@@ -56,18 +56,20 @@ class ShoppingBasket {
 	}
 
 	/**
-	 * Delete Product from Cart
+	 * Render Confirmation Pages
 	 *
 	 * @param  string $action_type - The type of Operation to confirm.
 	 * @param string $room_name -  Name of Room.
 	 * @param  string $auth_nonce - Authentication Nonce.
+	 * @param string $message - Message to Display.
+	 * @param string $confirmation_button_approved - Button to Display for Approved.
 	 * @return string
 	 */
-	public function cart_confirmation( string $action_type, string $room_name, string $auth_nonce ):string {
+	public function cart_confirmation( string $action_type, string $room_name, string $auth_nonce, string $message, string $confirmation_button_approved ):string {
 
 		// Render Confirmation Page View.
 		$render = require __DIR__ . '/../views/basket-confirmation.php';
-		return $render( $action_type, $room_name, $auth_nonce );
+		return $render( $action_type, $room_name, $auth_nonce, $message, $confirmation_button_approved );
 
 	}
 
