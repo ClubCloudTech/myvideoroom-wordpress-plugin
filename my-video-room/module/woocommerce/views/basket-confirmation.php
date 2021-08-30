@@ -17,16 +17,20 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
  * @param string $auth_nonce - Nonce of operation.
  * @param string $message - Message to Display.
  * @param string $confirmation_button_approved - Button to Display for Approved.
+ * @param string $data_for_nonce - Extra parameter like record id, product id etc for strengthening nonce.
  */
 return function (
 	string $operation_type,
 	string $room_name,
 	string $auth_nonce,
 	string $message = null,
-	string $confirmation_button_approved
+	string $confirmation_button_approved,
+	string $data_for_nonce = null
 ): string {
 	// Check Nonce for Operation.
-	$verify = wp_verify_nonce( $auth_nonce, $operation_type );
+	$data_to_validate = $operation_type . $data_for_nonce;
+	echo '<br>data to val' . $data_to_validate;
+	$verify = wp_verify_nonce( $auth_nonce, $data_to_validate );
 	if ( ! $verify ) {
 		esc_html_e( 'Error ! Security Mismatch - please refresh', 'myvideoroom' );
 		return '';

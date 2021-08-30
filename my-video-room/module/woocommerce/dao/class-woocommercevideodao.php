@@ -7,7 +7,6 @@
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\DAO;
 
-use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo as WooCommerceVideoCart;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
@@ -26,6 +25,7 @@ class WooCommerceVideoDAO {
 		$sql_create = 'CREATE TABLE IF NOT EXISTS `' . $this->get_main_table_name() . '` (
 			`record_id` int NOT NULL AUTO_INCREMENT,
 			`cart_id` VARCHAR(255) NOT NULL,
+			`source_cart_id` VARCHAR(255) NOT NULL,
 			`room_name` VARCHAR(255) NOT NULL,
 			`cart_data` VARCHAR(8192) NULL,
 			`product_id` VARCHAR(255) NULL,
@@ -71,6 +71,7 @@ class WooCommerceVideoDAO {
 			$this->get_main_table_name(),
 			array(
 				'cart_id'        => $woocommercevideocartobject->get_cart_id(),
+				'source_cart_id' => $woocommercevideocartobject->get_source_cart_id(),
 				'room_name'      => $woocommercevideocartobject->get_room_name(),
 				'cart_data'      => $woocommercevideocartobject->get_cart_data(),
 				'product_id'     => $woocommercevideocartobject->get_product_id(),
@@ -82,7 +83,7 @@ class WooCommerceVideoDAO {
 			)
 		);
 
-		$woocommercevideocartobject->set_id( $wpdb->insert_id );
+		$woocommercevideocartobject->set_record_id( $wpdb->insert_id );
 
 		\wp_cache_set(
 			$cache_key,
@@ -91,7 +92,7 @@ class WooCommerceVideoDAO {
 				'::',
 				array(
 					__CLASS__,
-					'get_by_id_main_table',
+					'get_record_by_cart_id',
 				)
 			)
 		);
@@ -152,7 +153,7 @@ class WooCommerceVideoDAO {
 		}
 
 		foreach ( $room_names as $room_name ) {
-			$results[] = $this->get_by_id_main_table( $cart_id, $room_name );
+			$results[] = $this->get_record_by_cart_id( $cart_id, $room_name );
 		}
 
 		return $results;
@@ -161,12 +162,12 @@ class WooCommerceVideoDAO {
 	/**
 	 * Get a Cart Object from the database
 	 *
-	 * @param int    $cart_id   The user id.
+	 * @param string $cart_id   The user id.
 	 * @param string $room_name The room name.
 	 *
 	 * @return WooCommerceVideoCart|null
 	 */
-	public function get_by_id_main_table( string $cart_id, string $room_name ): ?WooCommerceVideoCart {
+	public function get_record_by_cart_id( string $cart_id, string $room_name ): ?WooCommerceVideoCart {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
@@ -185,8 +186,8 @@ class WooCommerceVideoDAO {
 			$wpdb->prepare(
 				'
 				SELECT 
-			       cart_id, 
-			       room_name,
+			       cart_id,
+				   source_cart_id,
 			       room_name,
 			       cart_data, 
 			       product_id, 
@@ -209,7 +210,8 @@ class WooCommerceVideoDAO {
 
 		if ( $row ) {
 			$result = new WooCommerceVideoCart(
-				(int) $row->cart_id,
+				$row->cart_id,
+				$row->source_cart_id,
 				$row->room_name,
 				$row->cart_data,
 				$row->product_id,
@@ -226,6 +228,70 @@ class WooCommerceVideoDAO {
 
 		return $result;
 	}
+
+	/**
+	 * Get a Cart Object from the database by record ID.
+	 *
+	 * @param int $record_id   The record id.
+	 *
+	 * @return WooCommerceVideoCart|null
+	 */
+	public function get_record_by_record_id( int $record_id ): ?WooCommerceVideoCart {
+		global $wpdb;
+
+		$cache_key = $record_id;
+
+		$result = \wp_cache_get( $cache_key, __METHOD__ );
+
+		if ( $result ) {
+			return WooCommerceVideoCart::from_json( $result );
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+		$row = $wpdb->get_row(
+			$wpdb->prepare(
+				'
+				SELECT 
+			       cart_id,
+				   source_cart_id,
+			       room_name,
+			       cart_data, 
+			       product_id, 
+			       quantity,
+			       variation_id,
+			       single_product, 
+			       timestamp, 
+				   record_id
+				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_main_table_name() . '
+				WHERE record_id = %d;
+			',
+				$record_id
+			)
+		);
+
+		$result = null;
+
+		if ( $row ) {
+			$result = new WooCommerceVideoCart(
+				$row->cart_id,
+				$row->source_cart_id,
+				$row->room_name,
+				$row->cart_data,
+				$row->product_id,
+				$row->quantity,
+				$row->variation_id,
+				(bool) $row->single_product,
+				$row->timestamp,
+				$row->id,
+			);
+			wp_cache_set( $cache_key, __METHOD__, $result->to_json() );
+		} else {
+			wp_cache_set( $cache_key, __METHOD__, null );
+		}
+
+		return $result;
+	}
+
 
 	/**
 	 * Update a Cart Object into the database
@@ -248,6 +314,7 @@ class WooCommerceVideoDAO {
 			$this->get_main_table_name(),
 			array(
 				'cart_id'        => $woocommercevideocartobject->get_cart_id(),
+				'source_cart_id' => $woocommercevideocartobject->get_source_cart_id(),
 				'room_name'      => $woocommercevideocartobject->get_room_name(),
 				'cart_data'      => $woocommercevideocartobject->get_cart_data(),
 				'product_id'     => $woocommercevideocartobject->get_product_id(),
@@ -269,7 +336,7 @@ class WooCommerceVideoDAO {
 				'::',
 				array(
 					__CLASS__,
-					'get_by_id_main_table',
+					'get_record_by_cart_id',
 				)
 			)
 		);
@@ -312,7 +379,7 @@ class WooCommerceVideoDAO {
 			)
 		);
 
-		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_by_id_main_table' ) ) );
+		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_record_by_cart_id' ) ) );
 		\wp_cache_delete(
 			$woocommercevideocartobject->get_cart_id(),
 			implode(
@@ -325,5 +392,54 @@ class WooCommerceVideoDAO {
 		);
 
 		return null;
+	}
+
+	/**
+	 * Get Additional Rooms Installed
+	 *
+	 * @param ?string $cart_id The ID to match on.
+	 * @param ?string $room_name The room name to query.
+	 *
+	 * @return array
+	 */
+	public function get_all_queue_records( string $cart_id, string $room_name ): array {
+		global $wpdb;
+
+		$cache_key = $this->create_cache_key(
+			$cart_id,
+			$room_name
+		);
+
+		$result = \wp_cache_get( $cache_key, __METHOD__ );
+
+		if ( false === $result ) {
+
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$rows = $wpdb->get_results(
+					$wpdb->prepare(
+						'
+							SELECT record_id
+							FROM ' . /*phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared*/ $this->get_main_table_name() . '
+							WHERE room_name = %s AND cart_id =%s
+							ORDER BY record_id ASC
+						',
+						array(
+							$room_name,
+							$cart_id,
+						)
+					)
+				);
+
+			$result = array_map(
+				function ( $row ) {
+					return (int) $row->record_id;
+				},
+				$rows
+			);
+
+			\wp_cache_set( $cache_key, $result, __METHOD__ );
+		}
+
+		return $result;
 	}
 }

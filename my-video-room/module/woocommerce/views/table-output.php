@@ -13,15 +13,17 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 /**
  * Render the WooCommerce Basket Render Page
  *
- * @param array   $basket_list        The list of rooms.
+ * @param array   $basket_list   - Products in Basket.
  * @param string $room_name -  Name of Room.
+ * @param array   $inbound_queue - Products to Decide Upon.
  * @param ?string $room_type  Category of Room to Filter.
  *
  * @return string
  */
 return function (
 	array $basket_list,
-	string $room_name
+	string $room_name,
+	array $inbound_queue = null
 ): string {
 	ob_start();
 
@@ -29,7 +31,11 @@ return function (
 	?>
 <div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket">
 	<?php
-
+	//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+	echo Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name );
+	?>
+	<h1><?php esc_html_e( 'Your Basket', 'my-video-room' ); ?></h1>
+	<?php
 	if ( $basket_list ) {
 		?>
 	<div class="mvr-header-table-left">
@@ -37,11 +43,11 @@ return function (
 				$delete_basket_nonce = wp_create_nonce( WooCommerce::SETTING_DELETE_BASKET );
 				$nav_button_filter   = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
 				$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce );
-				//$nav_button_filter = apply_filters( 'myvideoroom_template_icon_section', $nav_button_filter, $user_id, $room_name, $visitor_status );
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 				echo $nav_button_filter;
 				?>
 	</div>
+
 	<table class="wp-list-table widefat plugins">
 		<thead>
 			<tr>

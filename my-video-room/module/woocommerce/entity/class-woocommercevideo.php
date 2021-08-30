@@ -27,6 +27,13 @@ class WooCommerceVideo {
 	private string $cart_id;
 
 	/**
+	 * Source Cart_id - identifies the Source Sync session.
+	 *
+	 * @var string
+	 */
+	private string $source_cart_id;
+
+	/**
 	 * Room_name
 	 *
 	 * @var string
@@ -79,6 +86,7 @@ class WooCommerceVideo {
 	 * WooCommerce Video constructor.
 	 *
 	 * @param string $cart_id        The User ID.
+	 * @param string $source_cart_id The Cart ID of the originating sync.
 	 * @param string $room_name      The Room Name.
 	 * @param string $cart_data      Data Object in Cart.
 	 * @param string $product_id     Data Object in Cart.
@@ -90,6 +98,7 @@ class WooCommerceVideo {
 	 */
 	public function __construct(
 		string $cart_id,
+		string $source_cart_id,
 		string $room_name,
 		string $cart_data = null,
 		string $product_id = null,
@@ -100,6 +109,7 @@ class WooCommerceVideo {
 		?int $id
 	) {
 		$this->cart_id        = $cart_id;
+		$this->source_cart_id = $source_cart_id;
 		$this->room_name      = $room_name;
 		$this->cart_data      = $cart_data;
 		$this->product_id     = $product_id;
@@ -123,6 +133,7 @@ class WooCommerceVideo {
 		if ( $data ) {
 			return new self(
 				$data->cart_id,
+				$data->source_cart_id,
 				$data->room_name,
 				$data->cart_data,
 				$data->product_id,
@@ -147,6 +158,7 @@ class WooCommerceVideo {
 		return wp_json_encode(
 			array(
 				'cart_id'        => $this->cart_id,
+				'source_cart_id' => $this->source_cart_id,
 				'room_name'      => $this->room_name,
 				'cart_data'      => $this->cart_data,
 				'product_id'     => $this->product_id,
@@ -164,7 +176,7 @@ class WooCommerceVideo {
 	 *
 	 * @return ?int
 	 */
-	public function get_id(): ?int {
+	public function get_record_id(): ?int {
 		return $this->id;
 	}
 
@@ -175,7 +187,7 @@ class WooCommerceVideo {
 	 *
 	 * @return $this
 	 */
-	public function set_id( int $id ): self {
+	public function set_record_id( int $id ): self {
 		$this->id = $id;
 
 		return $this;
@@ -199,6 +211,28 @@ class WooCommerceVideo {
 	 */
 	public function set_cart_id( string $cart_id ): self {
 		$this->cart_id = $cart_id;
+
+		return $this;
+	}
+
+	/**
+	 * Gets Source Cart ID.
+	 *
+	 * @return string
+	 */
+	public function get_source_cart_id(): string {
+		return $this->source_cart_id;
+	}
+
+	/**
+	 * Set the Source Cart ID
+	 *
+	 * @param string $source_cart_id The Cart id of the source cart.
+	 *
+	 * @return $this
+	 */
+	public function set_source_cart_id( string $source_cart_id ): self {
+		$this->source_cart_id = $source_cart_id;
 
 		return $this;
 	}

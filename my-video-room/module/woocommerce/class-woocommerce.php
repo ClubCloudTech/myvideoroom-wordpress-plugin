@@ -20,17 +20,19 @@ use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
  */
 class WooCommerce {
 
-	const MODULE_WOOCOMMERCE_BASKET_ID        = 10561;
-	const MODULE_WOOCOMMERCE_NAME             = 'woocommerce-module';
-	const MODULE_WOOCOMMERCE_BASKET           = 'woocommerce-basket';
-	const SETTING_REFRESH_BASKET              = 'woocommerce-refresh-basket';
-	const SETTING_DELETE_PRODUCT              = 'woocommerce-delete-product';
-	const SETTING_DELETE_BASKET               = 'woocommerce-delete-basket';
-	const SETTING_DELETE_BASKET_CONFIRMED     = 'woocommerce-delete-basket-confirmed';
-	const SETTING_BROADCAST_PRODUCT           = 'woocommerce-broadcast-single-product';
-	const SETTING_BROADCAST_PRODUCT_CONFIRMED = 'woocommerce-broadcast-single-product-confirmed';
-	const TABLE_NAME_WOOCOMMERCE_CART         = 'myvideoroom_wocommerce_cart_sync';
-	const TABLE_NAME_WOOCOMMERCE_ROOM         = 'myvideoroom_wocommerce_room_presence';
+	const MODULE_WOOCOMMERCE_BASKET_ID           = 10561;
+	const MODULE_WOOCOMMERCE_NAME                = 'woocommerce-module';
+	const MODULE_WOOCOMMERCE_BASKET              = 'woocommerce-basket';
+	const SETTING_REFRESH_BASKET                 = 'woocommerce-refresh-basket';
+	const SETTING_DELETE_PRODUCT                 = 'woocommerce-delete-product';
+	const SETTING_DELETE_PRODUCT_QUEUE           = 'woocommerce-delete-product-queue';
+	const SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED = 'woocommerce-delete-product-queue-confirmed';
+	const SETTING_DELETE_BASKET                  = 'woocommerce-delete-basket';
+	const SETTING_DELETE_BASKET_CONFIRMED        = 'woocommerce-delete-basket-confirmed';
+	const SETTING_BROADCAST_PRODUCT              = 'woocommerce-broadcast-single-product';
+	const SETTING_BROADCAST_PRODUCT_CONFIRMED    = 'woocommerce-broadcast-single-product-confirmed';
+	const TABLE_NAME_WOOCOMMERCE_CART            = 'myvideoroom_wocommerce_cart_sync';
+	const TABLE_NAME_WOOCOMMERCE_ROOM            = 'myvideoroom_wocommerce_room_presence';
 
 	/**
 	 * Initialise On Module Activation.
@@ -167,7 +169,36 @@ class WooCommerce {
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
 
-			// Case Delete Entire Basket Step1 - Pre Confirmation.
+			// Case Delete Product from Sync Queue Step1 - Pre Confirmation.
+
+			case self::SETTING_DELETE_PRODUCT_QUEUE:
+				$record_id                    = $product_id;
+				$message                      = \esc_html__( 'remove this product from your shared list (this action can not be undone) ?', 'myvideoroom' );
+				$delete_queue_hash = self::SETTING_DELETE_PRODUCT_QUEUE . $record_id;
+				echo $delete_queue_hash . $record_id;
+				$delete_queue_nonce           = wp_create_nonce( $delete_queue_hash );
+				$delete_confirmation_nonce    = wp_create_nonce( self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED . $record_id );
+				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED, esc_html__( 'Remove Product', 'my-video-room' ), $room_name, $delete_confirmation_nonce );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $delete_queue_nonce, $message, $confirmation_button_approved, $record_id );
+				break;
+
+			// Case Delete Product from Sync Queue-  Step2 - Post Confirmation.
+
+			case self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED:
+				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_BASKET_CONFIRMED ) ){
+					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
+
+				} else {
+					wc()->cart->empty_cart();
+				}
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
+			// Case Broadcast Single Product Step1 - Pre Confirmation.
+
+						// Case Delete Entire Basket Step1 - Pre Confirmation.
 
 			case self::SETTING_DELETE_BASKET:
 				$message                      = \esc_html__( 'clear your basket ?', 'myvideoroom' );

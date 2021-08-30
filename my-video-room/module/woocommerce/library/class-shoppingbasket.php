@@ -50,12 +50,10 @@ class ShoppingBasket {
 
 				array_push( $output_array, $basket_array );
 		}
-
 		// Render View.
 		$render = require __DIR__ . '/../views/table-output.php';
 
 		return $render( $output_array, $room_name );
-
 	}
 
 	/**
@@ -95,7 +93,6 @@ class ShoppingBasket {
 		Factory::get_instance( WooCommerceRoomSyncDAO::class )->create( $register );
 
 	}
-
 
 	/**
 	 * Delete Product from Cart
@@ -140,9 +137,9 @@ class ShoppingBasket {
 	 * @param string $button_label - Label for Button.
 	 * @param string $room_name -  Name of Room.
 	 * @param string $nonce - Nonce for operation (if confirmation used).
-	 * @param int    $quantity - Product Quantity.
-	 * @param int    $product_id - Product ID.
-	 * @param int    $variation_id - Variation ID.
+	 * @param string $quantity - Product Quantity.
+	 * @param string $product_id - Product ID.
+	 * @param string $variation_id - Variation ID.
 	 *
 	 * @return string
 	 */
@@ -173,50 +170,70 @@ class ShoppingBasket {
 	public function broadcast_single_product( string $product_id, string $room_name, string $quantity, string $variation_id ) {
 		$participants = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_participants( $room_name );
 		$timestamp    = \current_time( 'timestamp' );
-
+		$source_cart  = session_id();
 		foreach ( $participants as $room ) {
 
-			$register = new WooCommerceVideo(
-				$room->cart_id,
-				$room_name,
-				null,
-				$product_id,
-				$quantity,
-				$variation_id,
-				true,
-				$timestamp,
-				null
-			);
+			// Skip Cart Items Originated by this User.
+			if ( $source_cart === $room->cart_id ) {
+				continue;
+			} else {
+
+				$register = new WooCommerceVideo(
+					$room->cart_id,
+					$source_cart,
+					$room_name,
+					null,
+					$product_id,
+					$quantity,
+					$variation_id,
+					true,
+					$timestamp,
+					null
+				);
+			}
 
 			Factory::get_instance( WooCommerceVideoDAO::class )->create( $register );
-	}
+		}
 
-		// Echo \var_dump( $participants );
 		return null;
 	}
 
-
 	/**
-	 * Get the list of current Sync Items
+	 * Render Queue Table.
 	 *
-	 * @param string $room_type     Category of Room if used.
+	 * @param string $room_name -  Name of Room.
 	 *
-	 * @return array
+	 * @return string
 	 */
-	public function get_rooms( string $room_type = null ): array {
-		$available_rooms = Factory::get_instance( RoomMap::class )->get_all_post_ids_of_rooms( $room_type );
+	public function render_sync_queue_table( string $room_name ): string {
 
-		return array_map(
-			function ( $room_id ) {
-				$room = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+		$cart_id         = session_id();
+		$available_queue = Factory::get_instance( WooCommerceVideoDAO::class )->get_all_queue_records( $cart_id, $room_name );
+		$output_array    = array();
 
-				$room->url  = Factory::get_instance( RoomAdminLibrary::class )->get_room_url( $room->room_name );
-				$room->type = Factory::get_instance( RoomAdminLibrary::class )->get_room_type( $room->room_name );
+		foreach ( $available_queue as $record_id ) {
+			$cart_item                    = Factory::get_instance( WooCommerceVideoDAO::class )->get_record_by_record_id( $record_id );
+			$basket_array                 = array();
+			$product_id                   = $cart_item->get_product_id();
+			$basket_array['record_id']    = $record_id;
+			$basket_array['product_id']   = $product_id;
+			$product                      = wc_get_product( $product_id );
+			$basket_array['quantity']     = $cart_item->get_quantity();
+			$basket_array['variation_id'] = $cart_item->get_variation_id();
+			$basket_array['name']         = $product->get_name();
+			$basket_array['image']        = $product->get_image();
+			$basket_array['price']        = WC()->cart->get_product_price( $product );
+			$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item->get_quantity() );
+			$basket_array['link']         = $product->get_permalink( $cart_item );
 
-				return $room;
-			},
-			$available_rooms
-		);
+			array_push( $output_array, $basket_array );
+
+		}
+
+		// Render View.
+		$render = require __DIR__ . '/../views/sync-table-output.php';
+
+		return $render( $output_array, $room_name );
 	}
 
 }

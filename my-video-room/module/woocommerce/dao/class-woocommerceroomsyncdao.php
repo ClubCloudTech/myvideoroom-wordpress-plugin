@@ -190,8 +190,6 @@ class WooCommerceRoomSyncDAO {
 		return $participants;
 	}
 
-
-
 	/**
 	 * Get a Cart Object from the database
 	 *
