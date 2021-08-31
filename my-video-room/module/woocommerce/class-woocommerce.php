@@ -25,6 +25,7 @@ class WooCommerce {
 	const MODULE_WOOCOMMERCE_BASKET              = 'woocommerce-basket';
 	const SETTING_REFRESH_BASKET                 = 'woocommerce-refresh-basket';
 	const SETTING_DELETE_PRODUCT                 = 'woocommerce-delete-product';
+	const SETTING_ADD_PRODUCT                    = 'woocommerce-add-product';
 	const SETTING_DELETE_PRODUCT_QUEUE           = 'woocommerce-delete-product-queue';
 	const SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED = 'woocommerce-delete-product-queue-confirmed';
 	const SETTING_DELETE_BASKET                  = 'woocommerce-delete-basket';
@@ -88,7 +89,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			28,
+			94,
 			true
 		);
 
@@ -157,14 +158,32 @@ class WooCommerce {
 		$auth_nonce   = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
 		$room_name    = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
 		$quantity     = Factory::get_instance( Ajax::class )->get_text_parameter( 'quantity' );
-		$variation_id = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'variationId' );
+		$variation_id = Factory::get_instance( Ajax::class )->get_text_parameter( 'variationId' );
+		$record_id    = Factory::get_instance( Ajax::class )->get_text_parameter( 'recordId' );
+		$last_cartnum = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastCartnum' );
 
 		switch ( $input_type ) {
 
 			// Case Delete a Product from a Basket - has no Confirmation.
 
 			case self::SETTING_DELETE_PRODUCT:
+				echo '<strong>' . esc_html__( 'Product Removed From Basket', 'myvideoroom' ) . '</strong>';
 				Factory::get_instance( ShoppingBasket::class )->delete_product_from_cart( $product_id );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
+						// Case Delete a Product from a Basket - has no Confirmation.
+
+			case self::SETTING_ADD_PRODUCT:
+				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_ADD_PRODUCT . $product_id ) ) {
+					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
+
+				} else {
+					echo '<strong>' . esc_html__( 'Product Added to Basket', 'myvideoroom' ) . '</strong>';
+					Factory::get_instance( ShoppingBasket::class )->add_queued_product_to_cart( $product_id, $quantity, $variation_id, $record_id );
+
+				}
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
@@ -172,13 +191,10 @@ class WooCommerce {
 			// Case Delete Product from Sync Queue Step1 - Pre Confirmation.
 
 			case self::SETTING_DELETE_PRODUCT_QUEUE:
-				$record_id                    = $product_id;
 				$message                      = \esc_html__( 'remove this product from your shared list (this action can not be undone) ?', 'myvideoroom' );
-				$delete_queue_hash = self::SETTING_DELETE_PRODUCT_QUEUE . $record_id;
-				echo $delete_queue_hash . $record_id;
-				$delete_queue_nonce           = wp_create_nonce( $delete_queue_hash );
+				$delete_queue_nonce           = wp_create_nonce( self::SETTING_DELETE_PRODUCT_QUEUE . $record_id );
 				$delete_confirmation_nonce    = wp_create_nonce( self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED . $record_id );
-				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED, esc_html__( 'Remove Product', 'my-video-room' ), $room_name, $delete_confirmation_nonce );
+				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED, esc_html__( 'Remove Product', 'my-video-room' ), $room_name, $delete_confirmation_nonce, $record_id );
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $delete_queue_nonce, $message, $confirmation_button_approved, $record_id );
 				break;
@@ -186,11 +202,12 @@ class WooCommerce {
 			// Case Delete Product from Sync Queue-  Step2 - Post Confirmation.
 
 			case self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED:
-				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_BASKET_CONFIRMED ) ){
+				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED . $record_id ) ) {
 					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
 
 				} else {
-					wc()->cart->empty_cart();
+					esc_html_e( 'Product Removed from your shared list', 'myvideoroom' );
+					Factory::get_instance( WooCommerceVideoDAO::class )->delete_record( $record_id );
 				}
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
@@ -245,6 +262,27 @@ class WooCommerce {
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
 
+				// Case Delete Entire Basket Step2 - Post Confirmation.
+			case 'refresh':
+
+				$change_state = Factory::get_instance( ShoppingBasket::class )->check_for_user_changes( $last_cartnum, 't', $room_name );
+				$response = array();
+				if ( true === $change_state ) {
+					echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status, true );
+					$response['status'] = 'change';
+					return \wp_send_json( $response );
+				} else {
+					$response['status'] = 'nochange';
+					return \wp_send_json( $response );
+				}
+
+				echo '<strong>' . esc_html__( 'Notification Heart Beat', 'myvideoroom' ) . '</strong>';
+				//echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
+			case 'reload':
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
 			default:
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );

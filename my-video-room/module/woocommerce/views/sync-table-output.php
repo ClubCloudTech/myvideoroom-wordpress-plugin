@@ -24,14 +24,10 @@ return function (
 ): string {
 	ob_start();
 
-	?>
-<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket">
-
-	<h1><?php esc_html_e( 'Items Shared with You', 'my-video-room' ); ?></h1>
-	<?php
-
 	if ( $basket_list ) {
 		?>
+<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket">
+	<h1><?php esc_html_e( 'Items Shared with You', 'my-video-room' ); ?></h1>
 	<div class="mvr-header-table-left">
 				<?php
 				// Sync Table Buttons to Go Here
@@ -72,6 +68,8 @@ return function (
 			?>
 		</tbody>
 	</table>
+		</div>
+
 		<?php
 	}
 

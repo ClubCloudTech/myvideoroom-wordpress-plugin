@@ -23,13 +23,25 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 return function (
 	array $basket_list,
 	string $room_name,
-	array $inbound_queue = null
+	string $last_cartnum = null,
+	bool $refresh_trigger = null
 ): string {
 	ob_start();
 
-
 	?>
 <div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket">
+	<?php
+	if ( $refresh_trigger ) {
+		echo Factory::get_instance( ShoppingBasket::class )->refresh_trigger( $room_name );
+	}
+
+	?>
+	<div id="roomid" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-notification" 
+	data-room-name="<?php echo esc_attr( $room_name ); ?>" 
+	data-last-cartnum="<?php echo esc_attr( $last_cartnum ); ?>"
+	>
+	</div>
+
 	<?php
 	//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 	echo Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name );
@@ -96,9 +108,6 @@ return function (
 				echo Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
 		$result = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_participants( $room_name );
 
-		// TODO REMOVE
-		//echo var_dump( $result );
-		
 		?>
 	</p>
 </div>

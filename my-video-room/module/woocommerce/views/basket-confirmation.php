@@ -28,9 +28,7 @@ return function (
 	string $data_for_nonce = null
 ): string {
 	// Check Nonce for Operation.
-	$data_to_validate = $operation_type . $data_for_nonce;
-	echo '<br>data to val' . $data_to_validate;
-	$verify = wp_verify_nonce( $auth_nonce, $data_to_validate );
+	$verify = wp_verify_nonce( $auth_nonce, $operation_type . $data_for_nonce );
 	if ( ! $verify ) {
 		esc_html_e( 'Error ! Security Mismatch - please refresh', 'myvideoroom' );
 		return '';

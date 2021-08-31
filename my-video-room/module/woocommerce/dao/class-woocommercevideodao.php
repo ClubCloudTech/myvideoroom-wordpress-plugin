@@ -355,6 +355,43 @@ class WooCommerceVideoDAO {
 	}
 
 	/**
+	 * Delete a Sync Record from the database
+	 *
+	 * @param int $record_id - The Record ID to Delete.
+	 *
+	 * @return null
+	 * @throws \Exception When failing to delete.
+	 */
+	public function delete_record( $record_id ) {
+		global $wpdb;
+
+		$cache_key = $record_id;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->delete(
+			$this->get_main_table_name(),
+			array(
+				'record_id' => $record_id,
+			)
+		);
+
+		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_record_by_record_id' ) ) );
+		\wp_cache_delete(
+			$record_id,
+			implode(
+				'::',
+				array(
+					__CLASS__,
+					'get_record_by_record_id',
+				)
+			)
+		);
+
+		return null;
+	}
+
+
+	/**
 	 * Delete a Cart Object from the database
 	 *
 	 * @param WooCommerceVideoCart $woocommercevideocartobject The Cart Object to delete.

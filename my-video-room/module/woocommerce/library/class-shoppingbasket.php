@@ -28,10 +28,12 @@ class ShoppingBasket {
 	 * @param bool   $host_status  Whether user is a host.
 	 * @return Void
 	 */
-	public function render_basket( string $room_name, $host_status = null ) {
+	public function render_basket( string $room_name, $host_status = null, $refresh_trigger = null ) {
 
 		// Register Basket in Room.
 		$this->register_room_presence( $room_name );
+		// Add Queue Length for Sync.
+		$current_cartnum = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
 
 		$output_array = array();
 		// Loop over $cart items.
@@ -53,7 +55,21 @@ class ShoppingBasket {
 		// Render View.
 		$render = require __DIR__ . '/../views/table-output.php';
 
-		return $render( $output_array, $room_name );
+		return $render( $output_array, $room_name, $current_cartnum, $refresh_trigger );
+	}
+
+	/**
+	 * Shopping Basket Controller
+	 *
+	 * @param string $room_name -  Name of Room.
+	 * @return Void
+	 */
+	public function refresh_trigger( string $room_name ) {
+
+		// Render View.
+		$render = require __DIR__ . '/../views/refresh-trigger.php';
+
+		return $render( $room_name );
 	}
 
 	/**
@@ -64,13 +80,14 @@ class ShoppingBasket {
 	 * @param  string $auth_nonce - Authentication Nonce.
 	 * @param string $message - Message to Display.
 	 * @param string $confirmation_button_approved - Button to Display for Approved.
+	 * @param string $data_for_confirmation - Extra parameter like record id, product id etc for strengthening nonce.
 	 * @return string
 	 */
-	public function cart_confirmation( string $action_type, string $room_name, string $auth_nonce, string $message, string $confirmation_button_approved ):string {
+	public function cart_confirmation( string $action_type, string $room_name, string $auth_nonce, string $message, string $confirmation_button_approved, string $data_for_confirmation = null ):string {
 
 		// Render Confirmation Page View.
 		$render = require __DIR__ . '/../views/basket-confirmation.php';
-		return $render( $action_type, $room_name, $auth_nonce, $message, $confirmation_button_approved );
+		return $render( $action_type, $room_name, $auth_nonce, $message, $confirmation_button_approved, $data_for_confirmation );
 
 	}
 
@@ -111,20 +128,45 @@ class ShoppingBasket {
 	}
 
 	/**
+	 * Add Queued Product to Cart
+	 *
+	 * @param  string $product_id - Product ID.
+	 * @param  string $quantity - How Many Items to Add.
+	 * @param  string $variation_id - Product Variation ID.
+	 * @param  string $record_id - the record ID to delete from Sync Table.
+	 * 
+	 * @return void
+	 */
+	public function add_queued_product_to_cart( string $product_id, string $quantity, string $variation_id, string $record_id ):void {
+
+		$cart_add = wc()->cart->add_to_cart( $product_id, $quantity, $variation_id );
+
+		if ( $cart_add ) {
+			Factory::get_instance( WooCommerceVideoDAO::class )->delete_record( $record_id );
+		}
+	}
+
+	/**
 	 * Render the Basket Nav Bar Button
 	 *
 	 * @param  string $button_type - Feedback for Ajax Post.
 	 * @param  string $button_label - Label for Button.
 	 * @param string $room_name -  Name of Room.
 	 * @param  string $nonce - Nonce for operation (if confirmation used).
+	 * @param  string $product_or_id - Adds additional Data to Nonce for more security (optional).
 	 *
 	 * @return string
 	 */
-	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name, string $nonce = null ):string {
+	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $product_or_id = null ):string {
+
+		$id_text = null;
+		if ( $product_or_id ){
+			$id_text = ' data-record-id="' . $product_or_id . '" ';
+		}
 
 		return '
 		<div aria-label="button" class="mvr-form-button myvideoroom-woocommerce-basket-ajax">
-		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
+		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
 		</div>
 		';
 
@@ -197,6 +239,41 @@ class ShoppingBasket {
 
 		return null;
 	}
+
+	/**
+	 * Check for User Changes
+	 *
+	 * @param string $last_queue_ammount - The Number last recorded for Inbound Queue.
+	 * @param string $last_cart_quantity -  The Number last recorded of items in Cart.
+	 * @param string $room_name - Room Name to Check.
+	 * @param string $sync_type - the Mode the User has set of Sync.
+	 */
+	public function check_for_user_changes( string $last_queue_ammount, string $last_cart_quantity, string $room_name, string $sync_type = null ) {
+		$cart_id             = session_id();
+		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_all_queue_records( $cart_id, $room_name ) );
+
+		// Check Inbound Queue for Changes.
+		if ( intval( $last_queue_ammount ) === $count_current_queue ) {
+			return false;
+		}
+		//echo 'lqa -'. $last_queue_ammount . ' cart id -' . $cart_id . ' room name '. $room_name . ' current queue count ' . count ( $count_current_queue ) ;
+
+		return true;
+	}
+
+	/**
+	 * Get Current Cart Number
+	 *
+	 * @param string $room_name - Room Name to Check.
+	 * @param string $sync_type - the Mode the User has set of Sync.
+	 */
+	public function check_queue_length( string $room_name ) {
+		$cart_id             = session_id();
+		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_all_queue_records( $cart_id, $room_name ) );
+
+		return $count_current_queue;
+	}
+
 
 	/**
 	 * Render Queue Table.
