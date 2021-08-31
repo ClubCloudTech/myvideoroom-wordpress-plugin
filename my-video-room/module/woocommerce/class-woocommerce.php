@@ -89,7 +89,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			94,
+			104,
 			true
 		);
 
@@ -152,15 +152,16 @@ class WooCommerce {
 	 */
 	public function get_ajax_page_basketwc() {
 
-		$product_id   = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'productId' );
-		$input_type   = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
-		$host_status  = Factory::get_instance( Ajax::class )->get_text_parameter( 'hostStatus' );
-		$auth_nonce   = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
-		$room_name    = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
-		$quantity     = Factory::get_instance( Ajax::class )->get_text_parameter( 'quantity' );
-		$variation_id = Factory::get_instance( Ajax::class )->get_text_parameter( 'variationId' );
-		$record_id    = Factory::get_instance( Ajax::class )->get_text_parameter( 'recordId' );
-		$last_cartnum = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastCartnum' );
+		$product_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'productId' );
+		$input_type    = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
+		$host_status   = Factory::get_instance( Ajax::class )->get_text_parameter( 'hostStatus' );
+		$auth_nonce    = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
+		$room_name     = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
+		$quantity      = Factory::get_instance( Ajax::class )->get_text_parameter( 'quantity' );
+		$variation_id  = Factory::get_instance( Ajax::class )->get_text_parameter( 'variationId' );
+		$record_id     = Factory::get_instance( Ajax::class )->get_text_parameter( 'recordId' );
+		$last_queuenum = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastQueuenum' );
+		$last_carthash = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastCarthash' );
 
 		switch ( $input_type ) {
 
@@ -264,21 +265,15 @@ class WooCommerce {
 
 				// Case Delete Entire Basket Step2 - Post Confirmation.
 			case 'refresh':
-
-				$change_state = Factory::get_instance( ShoppingBasket::class )->check_for_user_changes( $last_cartnum, 't', $room_name );
+				$change_state = Factory::get_instance( ShoppingBasket::class )->check_for_user_changes( $last_queuenum, $last_carthash, $room_name );
 				$response = array();
 				if ( true === $change_state ) {
-					echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status, true );
 					$response['status'] = 'change';
 					return \wp_send_json( $response );
 				} else {
 					$response['status'] = 'nochange';
 					return \wp_send_json( $response );
 				}
-
-				echo '<strong>' . esc_html__( 'Notification Heart Beat', 'myvideoroom' ) . '</strong>';
-				//echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
-				break;
 
 			case 'reload':
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );

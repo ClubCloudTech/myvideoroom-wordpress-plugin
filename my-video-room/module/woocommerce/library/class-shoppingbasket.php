@@ -34,6 +34,7 @@ class ShoppingBasket {
 		$this->register_room_presence( $room_name );
 		// Add Queue Length for Sync.
 		$current_cartnum = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
+		$current_cart_data = WC()->cart->get_cart_hash();
 
 		$output_array = array();
 		// Loop over $cart items.
@@ -55,7 +56,7 @@ class ShoppingBasket {
 		// Render View.
 		$render = require __DIR__ . '/../views/table-output.php';
 
-		return $render( $output_array, $room_name, $current_cartnum, $refresh_trigger );
+		return $render( $output_array, $room_name, $current_cartnum, $current_cart_data );
 	}
 
 	/**
@@ -244,19 +245,26 @@ class ShoppingBasket {
 	 * Check for User Changes
 	 *
 	 * @param string $last_queue_ammount - The Number last recorded for Inbound Queue.
-	 * @param string $last_cart_quantity -  The Number last recorded of items in Cart.
+	 * @param string $last_carthash - The last stored cart hash.
 	 * @param string $room_name - Room Name to Check.
 	 * @param string $sync_type - the Mode the User has set of Sync.
 	 */
-	public function check_for_user_changes( string $last_queue_ammount, string $last_cart_quantity, string $room_name, string $sync_type = null ) {
+	public function check_for_user_changes( string $last_queue_ammount, string $last_carthash, string $room_name, string $sync_type = null ) {
+
+		// Initialise.
 		$cart_id             = session_id();
 		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_all_queue_records( $cart_id, $room_name ) );
+		$current_carthash = WC()->cart->get_cart_hash();
 
 		// Check Inbound Queue for Changes.
 		if ( intval( $last_queue_ammount ) === $count_current_queue ) {
 			return false;
 		}
-		//echo 'lqa -'. $last_queue_ammount . ' cart id -' . $cart_id . ' room name '. $room_name . ' current queue count ' . count ( $count_current_queue ) ;
+
+		// Check WooCommerce Cart for Changes.
+		if ( $current_carthash === $last_carthash ) {
+			return false;
+		}
 
 		return true;
 	}

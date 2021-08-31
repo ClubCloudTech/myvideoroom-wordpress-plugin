@@ -15,7 +15,7 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
  *
  * @param array   $basket_list   - Products in Basket.
  * @param string $room_name -  Name of Room.
- * @param array   $inbound_queue - Products to Decide Upon.
+ * @param array   $last_queuenum - The last number of items in queue.
  * @param ?string $room_type  Category of Room to Filter.
  *
  * @return string
@@ -23,22 +23,18 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 return function (
 	array $basket_list,
 	string $room_name,
-	string $last_cartnum = null,
-	bool $refresh_trigger = null
+	string $last_queuenum = null,
+	string $last_carthash = null
 ): string {
 	ob_start();
 
 	?>
 <div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket">
-	<?php
-	if ( $refresh_trigger ) {
-		echo Factory::get_instance( ShoppingBasket::class )->refresh_trigger( $room_name );
-	}
 
-	?>
-	<div id="roomid" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-notification" 
+	<div id="roomid" 
 	data-room-name="<?php echo esc_attr( $room_name ); ?>" 
-	data-last-cartnum="<?php echo esc_attr( $last_cartnum ); ?>"
+	data-last-queuenum="<?php echo esc_attr( $last_queuenum ); ?>"
+	data-last-carthash="<?php echo esc_attr( $last_carthash ); ?>"
 	>
 	</div>
 

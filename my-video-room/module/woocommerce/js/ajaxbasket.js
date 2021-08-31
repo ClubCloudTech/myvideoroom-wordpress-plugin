@@ -53,10 +53,10 @@
 	function refreshHeartbeat() {
 
 	var ajax_url = myvideoroom_woocommerce_basket.ajax_url;
-	var $container   = $( '.mvr-woocommerce-basket' );
 	var input_type   = 'refresh';
 	var room_name    = $( '#roomid' ).data( 'roomName' );
-	var last_cartnum = $( '#roomid' ).data( 'lastCartnum' );
+	var last_queuenum = $( '#roomid' ).data( 'lastQueuenum' );
+	var last_carthash = $( '#roomid' ).data( 'lastCarthash' );
 	
 	$.ajax(
 		{
@@ -67,13 +67,18 @@
 				action: 'myvideoroom_woocommerce_basket',
 				inputType: input_type,
 				roomName: room_name,
-				lastCartnum: last_cartnum,
+				lastQueuenum: last_queuenum,
+				lastCarthash: last_carthash,
 			},
 			success: function (response) {
 
 				var state_response = JSON.parse(response);
 				if (state_response.status == 'change') {
-					alert(state_response.status + 'change notification received');
+					triggerRefresh();
+				} 
+				
+				if (state_response.status == 'nochange') {
+
 				} 
 			}
 		}
@@ -86,10 +91,8 @@
 		var ajax_url = myvideoroom_woocommerce_basket.ajax_url;
 		var $container   = $( '.mvr-woocommerce-basket' );
 		var input_type   = 'reload';
-		var room_name    = $( '#refresh' ).data( 'roomName' );
-		var refresh      = $( '#refresh' ).data( 'reloadPage' );
-
-			if ( refresh === "refresh" ){
+		var room_name    = $( '#roomid' ).data( 'roomName' );
+			
 				$.ajax(
 					{
 						type: 'post',
@@ -102,11 +105,10 @@
 						},
 						success: function (response) {
 							$container.html( response );
+							init();
 						}
 					}
 				);
-				
-			}
 		}
 
 	var init = function(){
@@ -120,7 +122,7 @@
 		);
 	}
 init();
-setInterval( refreshHeartbeat, 7000 );
+setInterval( refreshHeartbeat, 6000 );
 
 window.myvideoroom_shoppingbasket_init=init;
 })( jQuery );
