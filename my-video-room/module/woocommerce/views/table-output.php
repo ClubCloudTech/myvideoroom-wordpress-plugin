@@ -7,6 +7,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
@@ -24,7 +25,8 @@ return function (
 	array $basket_list,
 	string $room_name,
 	string $last_queuenum = null,
-	string $last_carthash = null
+	string $last_carthash = null,
+	bool $host_status = null
 ): string {
 	ob_start();
 
@@ -37,7 +39,15 @@ return function (
 	data-last-carthash="<?php echo esc_attr( $last_carthash ); ?>"
 	>
 	</div>
+	<div id="notification" >
+		<div id="notificationleft" class="mvr-header-table-left">
+		<?php echo Factory::get_instance( HostManagement::class )->master_button( $room_name, $host_status );
+	?>
+		</div>
+		<div id="notificationright" >
 
+		</div>		
+	</div>
 	<?php
 	//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 	echo Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name );
@@ -72,7 +82,7 @@ return function (
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Quantity', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Subtotal', 'my-video-room' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
@@ -102,7 +112,6 @@ return function (
 				);
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
-		$result = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_participants( $room_name );
 
 		?>
 	</p>

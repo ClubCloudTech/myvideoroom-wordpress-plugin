@@ -29,11 +29,16 @@ class ShoppingBasket {
 	 * @return Void
 	 */
 	public function render_basket( string $room_name, $host_status = null, $refresh_trigger = null ) {
+		if ( ! $room_name ) {
+			return null;
+		}
 
-		// Register Basket in Room.
-		$this->register_room_presence( $room_name );
-		// Add Queue Length for Sync.
-		$current_cartnum = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
+		// Register this user in Room Presence Table.
+
+		$this->register_room_presence( $room_name, boolval( $host_status ) );
+
+		// Add Queue Length and Cart Hash for Sync flag.
+		$current_cartnum   = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
 		$current_cart_data = WC()->cart->get_cart_hash();
 
 		$output_array = array();
@@ -53,24 +58,11 @@ class ShoppingBasket {
 
 				array_push( $output_array, $basket_array );
 		}
+
 		// Render View.
 		$render = require __DIR__ . '/../views/table-output.php';
 
-		return $render( $output_array, $room_name, $current_cartnum, $current_cart_data );
-	}
-
-	/**
-	 * Shopping Basket Controller
-	 *
-	 * @param string $room_name -  Name of Room.
-	 * @return Void
-	 */
-	public function refresh_trigger( string $room_name ) {
-
-		// Render View.
-		$render = require __DIR__ . '/../views/refresh-trigger.php';
-
-		return $render( $room_name );
+		return $render( $output_array, $room_name, $current_cartnum, $current_cart_data, boolval( $host_status ) );
 	}
 
 	/**
@@ -96,15 +88,21 @@ class ShoppingBasket {
 	 * Register Room Presence
 	 *
 	 * @param string $room_name -  Name of Room.
+	 * @param bool   $room_host - If User is Host.
 	 * @return void
 	 */
-	public function register_room_presence( string $room_name ):void {
+	public function register_room_presence( string $room_name, bool $host_status ):void {
+		// Setup.
 		$cart_session = session_id();
 		$timestamp    = \current_time( 'timestamp' );
-		$register     = new WooCommerceRoomSyncEntity(
+
+		$am_i_master = Factory::get_instance( HostManagement::class )->initialise_master_status( $room_name, $host_status );
+		$register    = new WooCommerceRoomSyncEntity(
 			$cart_session,
 			$room_name,
 			$timestamp,
+			$host_status,
+			$am_i_master,
 			null
 		);
 
@@ -140,12 +138,52 @@ class ShoppingBasket {
 	 */
 	public function add_queued_product_to_cart( string $product_id, string $quantity, string $variation_id, string $record_id ):void {
 
-		$cart_add = wc()->cart->add_to_cart( $product_id, $quantity, $variation_id );
+		wc()->cart->add_to_cart( $product_id, $quantity, $variation_id );
+		Factory::get_instance( WooCommerceVideoDAO::class )->delete_record( $record_id );
 
-		if ( $cart_add ) {
-			Factory::get_instance( WooCommerceVideoDAO::class )->delete_record( $record_id );
-		}
 	}
+
+	/**
+	 * Add All Queued Products to Cart
+	 * Gets all Cart Items in Shared Queue and Accepts them All.
+	 *
+	 * @param  string $room_name - Room we are in.
+	 *
+	 * @return void
+	 */
+	public function add_all_queued_products_to_cart( string $room_name ):void {
+
+		$queue_objects = $this->render_sync_queue_table( $room_name, true );
+
+		foreach ( $queue_objects as $item ) {
+
+			$this->add_queued_product_to_cart( $item['product_id'], $item['quantity'], $item['variation_id'], strval( $item['record_id'] ) );
+
+		}
+
+	}
+
+	/**
+	 * Delete all Queued Items
+	 * Gets all Cart Items in Shared Queue and Accepts them All.
+	 *
+	 * @param  string $room_name - Room we are in.
+	 *
+	 * @return void
+	 */
+	public function delete_all_queued_products_from_cart( string $room_name ):void {
+
+		$queue_objects = $this->render_sync_queue_table( $room_name, true );
+
+		foreach ( $queue_objects as $item ) {
+
+			Factory::get_instance( WooCommerceVideoDAO::class )->delete_record( $item['record_id'] );
+
+		}
+
+	}
+
+
 
 	/**
 	 * Render the Basket Nav Bar Button
@@ -253,31 +291,34 @@ class ShoppingBasket {
 
 		// Initialise.
 		$cart_id             = session_id();
-		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_all_queue_records( $cart_id, $room_name ) );
+		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name ) );
 		$current_carthash = WC()->cart->get_cart_hash();
 
 		// Check Inbound Queue for Changes.
-		if ( intval( $last_queue_ammount ) === $count_current_queue ) {
-			return false;
+		if ( intval( $last_queue_ammount ) !== $count_current_queue ) {
+			$queue_changed = true;
 		}
 
 		// Check WooCommerce Cart for Changes.
-		if ( $current_carthash === $last_carthash ) {
-			return false;
+		if ( $current_carthash !== $last_carthash ) {
+			$woocart_changed = true;
 		}
 
-		return true;
+		if ( $woocart_changed || $queue_changed ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
 	 * Get Current Cart Number
 	 *
 	 * @param string $room_name - Room Name to Check.
-	 * @param string $sync_type - the Mode the User has set of Sync.
 	 */
 	public function check_queue_length( string $room_name ) {
 		$cart_id             = session_id();
-		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_all_queue_records( $cart_id, $room_name ) );
+		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name ) );
 
 		return $count_current_queue;
 	}
@@ -285,40 +326,50 @@ class ShoppingBasket {
 
 	/**
 	 * Render Queue Table.
+	 * Prepare Queue Table and Render the view, or return just Queue object to other functions.
 	 *
 	 * @param string $room_name -  Name of Room.
+	 * @param bool   $object_only -  Flag to return only the object and not render the table.
 	 *
-	 * @return string
+	 * @return string|Array depending on return flag
 	 */
-	public function render_sync_queue_table( string $room_name ): string {
+	public function render_sync_queue_table( string $room_name, bool $object_only = null ) {
+		if ( ! $room_name ){
+			return null;
+		}
 
 		$cart_id         = session_id();
-		$available_queue = Factory::get_instance( WooCommerceVideoDAO::class )->get_all_queue_records( $cart_id, $room_name );
+		$available_queue = Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name );
 		$output_array    = array();
 
 		foreach ( $available_queue as $record_id ) {
-			$cart_item                    = Factory::get_instance( WooCommerceVideoDAO::class )->get_record_by_record_id( $record_id );
-			$basket_array                 = array();
-			$product_id                   = $cart_item->get_product_id();
-			$basket_array['record_id']    = $record_id;
-			$basket_array['product_id']   = $product_id;
-			$product                      = wc_get_product( $product_id );
-			$basket_array['quantity']     = $cart_item->get_quantity();
-			$basket_array['variation_id'] = $cart_item->get_variation_id();
-			$basket_array['name']         = $product->get_name();
-			$basket_array['image']        = $product->get_image();
-			$basket_array['price']        = WC()->cart->get_product_price( $product );
-			$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item->get_quantity() );
-			$basket_array['link']         = $product->get_permalink( $cart_item );
+			$cart_item = Factory::get_instance( WooCommerceVideoDAO::class )->get_record_by_record_id( $record_id );
+			if ( $cart_item ) {
 
-			array_push( $output_array, $basket_array );
+				$basket_array                 = array();
+				$product_id                   = $cart_item->get_product_id();
+				$basket_array['record_id']    = $record_id;
+				$basket_array['product_id']   = $product_id;
+				$product                      = wc_get_product( $product_id );
+				$basket_array['quantity']     = $cart_item->get_quantity();
+				$basket_array['variation_id'] = $cart_item->get_variation_id();
+				$basket_array['name']         = $product->get_name();
+				$basket_array['image']        = $product->get_image();
+				$basket_array['price']        = WC()->cart->get_product_price( $product );
+				$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item->get_quantity() );
+				$basket_array['link']         = $product->get_permalink( $cart_item );
+				array_push( $output_array, $basket_array );
 
+			}
 		}
-
-		// Render View.
-		$render = require __DIR__ . '/../views/sync-table-output.php';
-
-		return $render( $output_array, $room_name );
+			// Return Object.
+		if ( $object_only ) {
+			return $output_array;
+		} else {
+			// Render View.
+			$render = require __DIR__ . '/../views/sync-table-output.php';
+			return $render( $output_array, $room_name );
+		}
 	}
 
 }

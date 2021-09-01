@@ -41,23 +41,43 @@ class WooCommerceRoomSync {
 	private int $timestamp;
 
 	/**
+	 * Single Room Host Switch
+	 *
+	 * @var bool $room_host - the status whether user is a host.
+	 */
+	private bool $room_host;
+
+	/**
+	 * Single Basket Master Switch
+	 *
+	 * @var bool $single_product - the ID of the Variation.
+	 */
+	private bool $current_master;
+
+	/**
 	 * WooCommerce Room Sync Constructor.
 	 *
 	 * @param string $cart_id        The User ID.
 	 * @param string $room_name      The Room Name.
 	 * @param int    $timestamp      Last Updated Timestamp.
+	 * @param bool   $room_host      User is a Room host.
+	 * @param bool   $current_master User is Current Sync Basket Source.
 	 * @param ?int   $id             The record id.
 	 */
 	public function __construct(
 		string $cart_id,
 		string $room_name,
 		int $timestamp = null,
+		bool $room_host = null,
+		bool $current_master = null,
 		?int $id
 	) {
-		$this->cart_id   = $cart_id;
-		$this->room_name = $room_name;
-		$this->timestamp = $timestamp;
-		$this->id        = $id;
+		$this->cart_id        = $cart_id;
+		$this->room_name      = $room_name;
+		$this->timestamp      = $timestamp;
+		$this->room_host      = $room_host;
+		$this->current_master = $current_master;
+		$this->id             = $id;
 	}
 
 	/**
@@ -75,6 +95,8 @@ class WooCommerceRoomSync {
 				$data->cart_id,
 				$data->room_name,
 				$data->timestamp,
+				$data->room_host,
+				$data->current_master,
 				$data->id,
 			);
 		}
@@ -91,10 +113,12 @@ class WooCommerceRoomSync {
 	public function to_json(): string {
 		return wp_json_encode(
 			array(
-				'cart_id'   => $this->cart_id,
-				'room_name' => $this->room_name,
-				'timestamp' => $this->timestamp,
-				'id'        => $this->id,
+				'cart_id'        => $this->cart_id,
+				'room_name'      => $this->room_name,
+				'timestamp'      => $this->timestamp,
+				'room_host'      => $this->room_host,
+				'current_master' => $this->current_master,
+				'id'             => $this->id,
 			)
 		);
 	}
@@ -168,7 +192,7 @@ class WooCommerceRoomSync {
 	/**
 	 * Gets Timestamp.
 	 *
-	 * @return bool
+	 * @return int
 	 */
 	public function get_timestamp(): int {
 		return $this->timestamp;
@@ -177,12 +201,56 @@ class WooCommerceRoomSync {
 	/**
 	 * Sets Timestamp.
 	 *
-	 * @param bool $timestamp - sets the Single Product Sync state.
+	 * @param int $timestamp - sets the Single Product Sync state.
 	 *
-	 * @return WooCommerceVideo
+	 * @return WooCommerceRoomSync
 	 */
 	public function set_timestamp( int $timestamp ): self {
 		$this->timestamp = $timestamp;
+
+		return $this;
+	}
+
+	/**
+	 * Gets Room Master Sync State.
+	 *
+	 * @return bool
+	 */
+	public function is_room_host(): bool {
+		return $this->room_host;
+	}
+
+	/**
+	 * Sets Room Host Sync State.
+	 *
+	 * @param bool $room_host - sets the Single Product Sync state.
+	 *
+	 * @return WooCommerceRoomSync
+	 */
+	public function set_room_host( bool $room_host ): WooCommerceRoomSync {
+		$this->room_host = $room_host;
+
+		return $this;
+	}
+
+	/**
+	 * Gets Single Product Sync State.
+	 *
+	 * @return bool
+	 */
+	public function is_current_master(): bool {
+		return $this->current_master;
+	}
+
+	/**
+	 * Sets Current Basket Master Sync State.
+	 *
+	 * @param bool $current_master - sets the Single Product Sync state.
+	 *
+	 * @return WooCommerceVideo
+	 */
+	public function set_current_master( bool $current_master ): WooCommerceRoomSync {
+		$this->current_master = $current_master;
 
 		return $this;
 	}

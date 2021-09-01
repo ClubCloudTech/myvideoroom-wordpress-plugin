@@ -58,31 +58,33 @@
 	var last_queuenum = $( '#roomid' ).data( 'lastQueuenum' );
 	var last_carthash = $( '#roomid' ).data( 'lastCarthash' );
 	
-	$.ajax(
-		{
-			type: 'post',
-			dataType: 'html',
-			url: ajax_url,
-			data: {
-				action: 'myvideoroom_woocommerce_basket',
-				inputType: input_type,
-				roomName: room_name,
-				lastQueuenum: last_queuenum,
-				lastCarthash: last_carthash,
-			},
-			success: function (response) {
+	if ( room_name ) {
+		$.ajax(
+			{
+				type: 'post',
+				dataType: 'html',
+				url: ajax_url,
+				data: {
+					action: 'myvideoroom_woocommerce_basket',
+					inputType: input_type,
+					roomName: room_name,
+					lastQueuenum: last_queuenum,
+					lastCarthash: last_carthash,
+				},
+				success: function (response) {
 
-				var state_response = JSON.parse(response);
-				if (state_response.status == 'change') {
-					triggerRefresh();
-				} 
-				
-				if (state_response.status == 'nochange') {
+					var state_response = JSON.parse(response);
+					if (state_response.status == 'change') {
+						triggerRefresh();
+					} 
+					
+					if (state_response.status == 'nochange') {
 
-				} 
+					} 
+				}
 			}
-		}
-	);
+		);
+	}
 	
 	}
 

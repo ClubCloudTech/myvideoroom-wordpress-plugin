@@ -21,15 +21,6 @@ return function (
 ): string {
 	ob_start();
 
-	/*$edit_actions = array(
-		array(
-			__( 'Edit in WordPress' ),
-			get_site_url() . '/wp-admin/post.php?post=' . esc_textarea( $room->id ) . '&action=edit',
-			'dashicons dashicons-wordpress',
-			array( 'target' => '_blank' ),
-		),
-	);*/
-
 	?>
 	<tr class="active" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
 		<td class="plugin-title column-primary mvr-icons"><?php echo $item['image']; ?></td>

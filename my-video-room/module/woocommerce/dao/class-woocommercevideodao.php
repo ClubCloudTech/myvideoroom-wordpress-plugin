@@ -9,6 +9,7 @@ namespace MyVideoRoomPlugin\Module\WooCommerce\DAO;
 
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo as WooCommerceVideoCart;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class WooCommerceVideo
@@ -434,12 +435,13 @@ class WooCommerceVideoDAO {
 	/**
 	 * Get Additional Rooms Installed
 	 *
-	 * @param ?string $cart_id The ID to match on.
-	 * @param ?string $room_name The room name to query.
+	 * @param string $cart_id The ID to match on.
+	 * @param string $room_name The room name to query.
+	 * @param int    $minute_tolerance - (optional) how many minutes back to render the table.
 	 *
 	 * @return array
 	 */
-	public function get_all_queue_records( string $cart_id, string $room_name ): array {
+	public function get_queue_records( string $cart_id, string $room_name, int $minute_tolerance = null ): array {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
@@ -448,6 +450,10 @@ class WooCommerceVideoDAO {
 		);
 
 		$result = \wp_cache_get( $cache_key, __METHOD__ );
+		
+		$current_timestamp    = \current_time( 'timestamp' );
+		$queue_view_tolerance = SiteDefaults::QUEUE_VIEW_TOLERANCE;
+		$timestamp            = $current_timestamp - $queue_view_tolerance;
 
 		if ( false === $result ) {
 
@@ -457,12 +463,13 @@ class WooCommerceVideoDAO {
 						'
 							SELECT record_id
 							FROM ' . /*phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared*/ $this->get_main_table_name() . '
-							WHERE room_name = %s AND cart_id =%s
+							WHERE room_name = %s AND cart_id =%s 
 							ORDER BY record_id ASC
 						',
 						array(
 							$room_name,
 							$cart_id,
+							$timestamp,
 						)
 					)
 				);

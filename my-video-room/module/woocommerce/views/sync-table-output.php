@@ -7,6 +7,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
+use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
  * Render the WooCommerce Sync Table for inclusion in main table
@@ -27,10 +28,14 @@ return function (
 	if ( $basket_list ) {
 		?>
 <div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket">
-	<h1><?php esc_html_e( 'Items Shared with You', 'my-video-room' ); ?></h1>
+	<h1><?php esc_html_e( 'Items Shared with You', 'myvideoroom' ); ?></h1>
 	<div class="mvr-header-table-left">
 				<?php
-				// Sync Table Buttons to Go Here
+				$accept_all_nonce   = wp_create_nonce( WooCommerce::SETTING_ADD_PRODUCT );
+				$nav_button_filter  = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ADD_PRODUCT, esc_html__( 'Accept All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_ACCEPT_ALL );
+				$nav_button_filter .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ADD_PRODUCT, esc_html__( 'Delete All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_REJECT_ALL );
+				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+				echo $nav_button_filter;
 				?>
 	</div>
 
@@ -38,23 +43,23 @@ return function (
 		<thead>
 			<tr>
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Product', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Product', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Name', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Name', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Price', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Price', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Quantity', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Subtotal', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Actions', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Actions', 'myvideoroom' ); ?>
 				</th>
 			</tr>
 		</thead>

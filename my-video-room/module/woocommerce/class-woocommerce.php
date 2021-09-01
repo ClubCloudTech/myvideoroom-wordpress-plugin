@@ -35,6 +35,12 @@ class WooCommerce {
 	const TABLE_NAME_WOOCOMMERCE_CART            = 'myvideoroom_wocommerce_cart_sync';
 	const TABLE_NAME_WOOCOMMERCE_ROOM            = 'myvideoroom_wocommerce_room_presence';
 
+	const SETTING_ACCEPT_ALL = 'accept-all';
+	const SETTING_REJECT_ALL = 'reject-all';
+
+	const SETTING_ENABLE_MASTER  = 'enable-master';
+	const SETTING_DISABLE_MASTER = 'disable-master';
+
 	/**
 	 * Initialise On Module Activation.
 	 * Once off functions for activating Module.
@@ -70,7 +76,7 @@ class WooCommerce {
 		// @TODO remove before production.
 		\add_shortcode( 'ccproxytest', array( $this, 'proxy_test') );
 
-		// Add Permissions Menu to Main Frontend Template.
+		// Add Basket Menu to Main Frontend Templates.
 		add_filter(
 			'myvideoroom_main_template_render',
 			array(
@@ -89,7 +95,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			104,
+			107,
 			true
 		);
 
@@ -174,16 +180,32 @@ class WooCommerce {
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
 
-						// Case Delete a Product from a Basket - has no Confirmation.
+						// Case Add a Product To a Basket - has no Confirmation for Individual Products - Confirmation for All Products.
 
 			case self::SETTING_ADD_PRODUCT:
+				// Clear Product add from Nonce in case its accept all.
+				if ( self::SETTING_ACCEPT_ALL === $record_id || self::SETTING_REJECT_ALL === $record_id ) {
+					$product_id = null;
+				}
 				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_ADD_PRODUCT . $product_id ) ) {
 					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
 
 				} else {
-					echo '<strong>' . esc_html__( 'Product Added to Basket', 'myvideoroom' ) . '</strong>';
-					Factory::get_instance( ShoppingBasket::class )->add_queued_product_to_cart( $product_id, $quantity, $variation_id, $record_id );
 
+					if ( self::SETTING_ACCEPT_ALL === $record_id ) {
+						Factory::get_instance( ShoppingBasket::class )->add_all_queued_products_to_cart( $room_name );
+
+						echo '<strong>' . esc_html__( 'All Products Added to Basket', 'myvideoroom' ) . '</strong>';
+
+					} elseif ( self::SETTING_REJECT_ALL === $record_id ) {
+						Factory::get_instance( ShoppingBasket::class )->delete_all_queued_products_from_cart( $room_name );
+
+							echo '<strong>' . esc_html__( 'All Products Cleared from Queue', 'myvideoroom' ) . '</strong>';	
+
+					} else {
+						echo '<strong>' . esc_html__( 'Product Added to Basket', 'myvideoroom' ) . '</strong>';
+						Factory::get_instance( ShoppingBasket::class )->add_queued_product_to_cart( $product_id, $quantity, $variation_id, $record_id );
+					}
 				}
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
@@ -274,7 +296,7 @@ class WooCommerce {
 					$response['status'] = 'nochange';
 					return \wp_send_json( $response );
 				}
-
+				break;
 			case 'reload':
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
