@@ -103,4 +103,5 @@ class UserRoles {
 
 		return $user_meta->roles;
 	}
+
 }

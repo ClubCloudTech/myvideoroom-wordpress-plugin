@@ -7,7 +7,9 @@
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\DAO;
 
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -29,7 +31,10 @@ class WooCommerceRoomSyncDAO {
 			`cart_id` VARCHAR(255) NOT NULL,
 			`room_name` VARCHAR(255) NOT NULL,
 			`timestamp` BIGINT UNSIGNED NULL,
+			`last_notification` BIGINT UNSIGNED NULL,
 			`room_host` BOOLEAN,
+			`basket_change` VARCHAR(255) NULL,
+			`sync_state` VARCHAR(255) NULL,
 			`current_master` BOOLEAN,
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
@@ -80,11 +85,14 @@ class WooCommerceRoomSyncDAO {
 		$wpdb->insert(
 			$this->get_room_presence_table_name(),
 			array(
-				'cart_id'        => $woocommerceroomsyncobj->get_cart_id(),
-				'room_name'      => $woocommerceroomsyncobj->get_room_name(),
-				'timestamp'      => $woocommerceroomsyncobj->get_timestamp(),
-				'room_host'      => $woocommerceroomsyncobj->is_room_host(),
-				'current_master' => $woocommerceroomsyncobj->is_current_master(),
+				'cart_id'           => $woocommerceroomsyncobj->get_cart_id(),
+				'room_name'         => $woocommerceroomsyncobj->get_room_name(),
+				'timestamp'         => $woocommerceroomsyncobj->get_timestamp(),
+				'last_notification' => $woocommerceroomsyncobj->get_last_notification(),
+				'room_host'         => $woocommerceroomsyncobj->is_room_host(),
+				'basket_change'     => $woocommerceroomsyncobj->get_basket_change_setting(),
+				'sync_state'        => $woocommerceroomsyncobj->get_sync_state(),
+				'current_master'    => $woocommerceroomsyncobj->is_current_master(),
 			)
 		);
 
@@ -182,9 +190,39 @@ class WooCommerceRoomSyncDAO {
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
-						SELECT cart_id, room_name, timestamp, room_host, current_master, record_id 
+						SELECT cart_id, room_name, timestamp, room_host, current_master, basket_change, record_id 
 						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
 						WHERE room_name = %s AND timestamp > %d;
+					',
+					$room_name,
+					$allowed_time
+				)
+			);
+
+		return $participants;
+	}
+
+	/**
+	 * Get all Room Hosts
+	 *
+	 * @param string $room_name - The Room Name to Return Recipients for.
+	 *
+	 * @return WooCommerceRoomSync[]
+	 */
+	public function get_room_hosts_from_db( string $room_name ) {
+		global $wpdb;
+
+		$timestamp    = \current_time( 'timestamp' );
+		$allowed_time = $timestamp - SiteDefaults::LAST_VISITED_TOLERANCE;
+
+		// Can't cache as query involves time.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			$participants = $wpdb->get_results(
+				$wpdb->prepare(
+					'
+						SELECT cart_id, room_name, timestamp, room_host, current_master, basket_change, record_id, sync_state, last_notification
+						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
+						WHERE room_name = %s AND timestamp > %d AND room_host IS TRUE;
 					',
 					$room_name,
 					$allowed_time
@@ -209,7 +247,7 @@ class WooCommerceRoomSyncDAO {
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
-						SELECT cart_id, room_name, timestamp, room_host, current_master, record_id 
+						SELECT cart_id, room_name, timestamp, room_host, current_master, record_id, sync_state
 						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
 						WHERE room_name = %s AND current_master IS TRUE 
 						ORDER BY timestamp DESC
@@ -236,7 +274,8 @@ class WooCommerceRoomSyncDAO {
 		if ( ! $cart_id || ! $room_name ) {
 			return false;
 		}
-//Flush all Other Masters.
+		// Flush all Other Masters.
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->query(
 			$wpdb->prepare(
@@ -249,7 +288,8 @@ class WooCommerceRoomSyncDAO {
 				$room_name,
 			)
 		);
-//Set New Master.
+		// Set New Master.
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->query(
 			$wpdb->prepare(
@@ -262,6 +302,8 @@ class WooCommerceRoomSyncDAO {
 				$room_name,
 			)
 		);
+		// Clear Basket Transfer State.
+		$this->update_basket_transfer_state( $room_name );
 
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 		\wp_cache_delete( $cart_id, __CLASS__ . '::get_room_info' );
@@ -269,8 +311,181 @@ class WooCommerceRoomSyncDAO {
 		return null;
 	}
 
+	/**
+	 * Notify User.
+	 *
+	 * @param string $room_name The Room Name.
+	 * @param string $new_master_id - (optional). If entered without state to set - will automatically turn on sync for this ID.
+	 *
+	 * @return bool|null
+	 */
+	public function notify_user( string $room_name, string $user_hash_id = null ): ?bool {
+		global $wpdb;
+
+		$timestamp   = current_time( 'timestamp' );
+		$am_i_host   = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+		$sync_state  = Factory::get_instance( HostManagement::class )->am_i_syncing( $room_name );
+		$am_i_master = Factory::get_instance( HostManagement::class )->am_i_master( $room_name );
+
+		// Try to Update First.
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$result = $wpdb->query(
+			$wpdb->prepare(
+				'
+					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
+					SET last_notification = %d, timestamp = %d 
+					WHERE cart_id = %s AND room_name = %s
+				',
+				$timestamp,
+				$timestamp,
+				$user_hash_id,
+				$room_name,
+			)
+		);
+		// If Record Doesn't Exist Create Record.
+		if ( ! $result ) {
+			$result = new WooCommerceRoomSync(
+				$user_hash_id,
+				$room_name,
+				current_time( 'timestamp' ),
+				current_time( 'timestamp' ),
+				$am_i_host,
+				WooCommerce::SETTING_BASKET_REQUEST_NONE,
+				$sync_state,
+				$am_i_master,
+				null
+			);
+			$this->create( $result );
+		}
+
+		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
+
+		return null;
+	}
 
 
+
+	/**
+	 * Turn Change Basket Sync.
+	 *
+	 * @param string $room_name The Room Name.
+	 * @param string $new_master_id - (optional). If entered without state to set - will automatically turn on sync for this ID.
+	 * @param string $state_to_change  - The state to set. (either one must be set).
+	 * @param string $clear_flag  - Setting to Delete Setting for Sync State
+	 *
+	 * @return bool|null
+	 */
+	public function change_basket_sync_state( string $room_name, string $new_master_id = null, string $state_to_change = null, bool $clear_flag = null ): ?bool {
+		global $wpdb;
+
+		// Handle What to Change.
+		if ( $clear_flag && $room_name && $new_master_id ) {
+			$sync_state   = null;
+			$core_room_id = $new_master_id;
+
+		} elseif ( $state_to_change ) {
+			// State Change Option requires $new_master_id - if its missing - exit.
+			if ( ! $new_master_id ) {
+				return false;
+			}
+			$sync_state   = $state_to_change;
+			$core_room_id = $new_master_id;
+		} else {
+			$sync_state   = $new_master_id;
+			$core_room_id = WooCommerce::SETTING_BASKET_REQUEST_USER;
+		}
+		$timestamp = current_time( 'timestamp' );
+
+		// Try to Update First.
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$result = $wpdb->query(
+			$wpdb->prepare(
+				'
+					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
+					SET sync_state = %s, timestamp = %d , last_notification = %d 
+					WHERE cart_id = %s AND room_name = %s
+				',
+				$sync_state,
+				$timestamp,
+				$timestamp,
+				$core_room_id,
+				$room_name,
+			)
+		);
+		// If Record Doesn't Exist Create Record.
+		if ( ! $result ) {
+			$result = new WooCommerceRoomSync(
+				WooCommerce::SETTING_BASKET_REQUEST_USER,
+				$room_name,
+				current_time( 'timestamp' ),
+				null,
+				false,
+				WooCommerce::SETTING_BASKET_REQUEST_NONE,
+				$sync_state,
+				false,
+				null
+			);
+			$this->create( $result );
+		}
+		// Return Failure if Create and Update Failed.
+		if ( ! $result ) {
+			return false;
+		}
+
+		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
+
+		return true;
+	}
+
+	/**
+	 * Update Basket Transfer State.
+	 *
+	 * @param string $room_name The Room Name.
+	 *
+	 * @return bool|null
+	 */
+	public function update_basket_transfer_state( string $room_name ): ?bool {
+		global $wpdb;
+
+		$core_room_id = WooCommerce::SETTING_BASKET_REQUEST_USER;
+
+		// Try to Update First.
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$result = $wpdb->query(
+			$wpdb->prepare(
+				'
+					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
+					SET basket_change = %s
+					WHERE cart_id = %s AND room_name = %s
+				',
+				WooCommerce::SETTING_BASKET_REQUEST_NONE,
+				$core_room_id,
+				$room_name,
+			)
+		);
+		// If Record Doesn't Exist Create Record.
+		if ( ! $result ) {
+			$result = new WooCommerceRoomSync(
+				WooCommerce::SETTING_BASKET_REQUEST_USER,
+				$room_name,
+				current_time( 'timestamp' ),
+				null,
+				false,
+				WooCommerce::SETTING_BASKET_REQUEST_NONE,
+				null,
+				false,
+				null
+			);
+			$this->create( $result );
+		}
+
+		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
+
+		return null;
+	}
 	/**
 	 * Get a Cart Object from the database
 	 *
@@ -300,10 +515,14 @@ class WooCommerceRoomSyncDAO {
 				SELECT 
 			       cart_id, 
 			       room_name,
-			       timestamp, 
+			       timestamp,
+				   last_notification,
 				   room_host,
+				   basket_change,
+				   sync_state,
 				   current_master,  
 				   record_id
+				   
 				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
 				WHERE cart_id = %s AND room_name = %s;
 			',
@@ -321,7 +540,10 @@ class WooCommerceRoomSyncDAO {
 				$row->cart_id,
 				$row->room_name,
 				$row->timestamp,
+				$row->last_notification,
 				$row->room_host,
+				$row->basket_change,
+				$row->sync_state,
 				$row->current_master,
 				$row->id,
 			);
@@ -353,11 +575,14 @@ class WooCommerceRoomSyncDAO {
 		$wpdb->update(
 			$this->get_room_presence_table_name(),
 			array(
-				'cart_id'        => $woocommerceroomsyncobj->get_cart_id(),
-				'room_name'      => $woocommerceroomsyncobj->get_room_name(),
-				'timestamp'      => $woocommerceroomsyncobj->get_timestamp(),
-				'room_host'      => $woocommerceroomsyncobj->is_room_host(),
-				'current_master' => $woocommerceroomsyncobj->is_current_master(),
+				'cart_id'           => $woocommerceroomsyncobj->get_cart_id(),
+				'room_name'         => $woocommerceroomsyncobj->get_room_name(),
+				'timestamp'         => $woocommerceroomsyncobj->get_timestamp(),
+				'last_notification' => $woocommerceroomsyncobj->get_last_notification(),
+				'room_host'         => $woocommerceroomsyncobj->is_room_host(),
+				'basket_change'     => $woocommerceroomsyncobj->get_basket_change_setting(),
+				'sync_state'        => $woocommerceroomsyncobj->get_sync_state(),
+				'current_master'    => $woocommerceroomsyncobj->is_current_master(),
 			),
 			array(
 				'cart_id'   => $woocommerceroomsyncobj->get_cart_id(),

@@ -31,9 +31,10 @@ return function (
 	<h1><?php esc_html_e( 'Items Shared with You', 'myvideoroom' ); ?></h1>
 	<div class="mvr-header-table-left">
 				<?php
-				$accept_all_nonce   = wp_create_nonce( WooCommerce::SETTING_ADD_PRODUCT );
-				$nav_button_filter  = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ADD_PRODUCT, esc_html__( 'Accept All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_ACCEPT_ALL );
-				$nav_button_filter .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ADD_PRODUCT, esc_html__( 'Delete All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_REJECT_ALL );
+				$accept_all_nonce   = wp_create_nonce( WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
+				$reject_all_nonce   = wp_create_nonce( WooCommerce::SETTING_REJECT_ALL_QUEUE );
+				$nav_button_filter  = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ACCEPT_ALL_QUEUE, esc_html__( 'Accept All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
+				$nav_button_filter .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REJECT_ALL_QUEUE, esc_html__( 'Delete All items', 'myvideoroom' ), $room_name, $reject_all_nonce, WooCommerce::SETTING_REJECT_ALL_QUEUE );
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 				echo $nav_button_filter;
 				?>

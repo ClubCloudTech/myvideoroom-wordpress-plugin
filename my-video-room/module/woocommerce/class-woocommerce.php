@@ -10,9 +10,9 @@ namespace MyVideoRoomPlugin\Module\WooCommerce;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
-use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 
 /**
@@ -21,6 +21,7 @@ use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 class WooCommerce {
 
 	const MODULE_WOOCOMMERCE_BASKET_ID           = 10561;
+	const SETTING_HEARTBEAT_THRESHOLD            = 12;
 	const MODULE_WOOCOMMERCE_NAME                = 'woocommerce-module';
 	const MODULE_WOOCOMMERCE_BASKET              = 'woocommerce-basket';
 	const SETTING_REFRESH_BASKET                 = 'woocommerce-refresh-basket';
@@ -35,11 +36,33 @@ class WooCommerce {
 	const TABLE_NAME_WOOCOMMERCE_CART            = 'myvideoroom_wocommerce_cart_sync';
 	const TABLE_NAME_WOOCOMMERCE_ROOM            = 'myvideoroom_wocommerce_room_presence';
 
-	const SETTING_ACCEPT_ALL = 'accept-all';
-	const SETTING_REJECT_ALL = 'reject-all';
+	const SETTING_ACCEPT_ALL_QUEUE           = 'accept-all';
+	const SETTING_ACCEPT_ALL_QUEUE_CONFIRMED = 'accept-all-confirmed';
+	const SETTING_REJECT_ALL_QUEUE           = 'reject-all';
+	const SETTING_REJECT_ALL_QUEUE_CONFIRMED = 'reject-all-confirmed';
 
-	const SETTING_ENABLE_MASTER  = 'enable-master';
-	const SETTING_DISABLE_MASTER = 'disable-master';
+	const SETTING_ENABLE_SYNC            = 'enable-sync';
+	const SETTING_ENABLE_SYNC_CONFIRMED  = 'enable-sync-confirmed';
+	const SETTING_DISABLE_SYNC           = 'disable-sync';
+	const SETTING_DISABLE_SYNC_CONFIRMED = 'disable-sync-confirmed';
+
+	const SETTING_REQUEST_MASTER           = 'request-master';
+	const SETTING_REQUEST_MASTER_PENDING   = 'request-master-pending';
+	const SETTING_REQUEST_MASTER_CONFIRMED = 'request-master-confirmed';
+
+	const SETTING_REQUEST_MASTER_DECLINED_PENDING = 'request-master-declined-pending';
+	const SETTING_REQUEST_MASTER_DECLINED         = 'request-master-declined';
+
+	const SETTING_REQUEST_MASTER_APPROVED_PENDING = 'request-master-approved-pending';
+	const SETTING_REQUEST_MASTER_APPROVED         = 'request-master-approved';
+
+	const SETTING_REQUEST_MASTER_WITHDRAW_PENDING = 'request-master-withdraw-pending';
+	const SETTING_REQUEST_MASTER_WITHDRAW         = 'request-master-withdraw';
+
+	const SETTING_BASKET_REQUEST_NONE     = 'br-none';
+	const SETTING_BASKET_REQUEST_PENDING  = 'br-pending';
+	const SETTING_BASKET_REQUEST_USER     = 'br-user-placeholder';
+
 
 	/**
 	 * Initialise On Module Activation.
@@ -88,8 +111,8 @@ class WooCommerce {
 		);
 
 		// Ajax Handler for Basket.
-		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( $this, 'get_ajax_page_basketwc' ), 10, 2 );
-		\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( $this, 'get_ajax_page_basketwc' ), 10, 2 );
+		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
+		\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
 
 		\wp_enqueue_script(
 			'myvideoroom-woocommerce-basket-js',
@@ -150,161 +173,6 @@ class WooCommerce {
 		array_push( $input, $basket_menu );
 		return $input;
 
-	}
-
-	/**
-	 * Get WooCommerce Basket Ajax Data
-	 * Handles Ajax Posts for baskets and refreshes the window depending on what was passed into it
-	 */
-	public function get_ajax_page_basketwc() {
-
-		$product_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'productId' );
-		$input_type    = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
-		$host_status   = Factory::get_instance( Ajax::class )->get_text_parameter( 'hostStatus' );
-		$auth_nonce    = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
-		$room_name     = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
-		$quantity      = Factory::get_instance( Ajax::class )->get_text_parameter( 'quantity' );
-		$variation_id  = Factory::get_instance( Ajax::class )->get_text_parameter( 'variationId' );
-		$record_id     = Factory::get_instance( Ajax::class )->get_text_parameter( 'recordId' );
-		$last_queuenum = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastQueuenum' );
-		$last_carthash = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastCarthash' );
-
-		switch ( $input_type ) {
-
-			// Case Delete a Product from a Basket - has no Confirmation.
-
-			case self::SETTING_DELETE_PRODUCT:
-				echo '<strong>' . esc_html__( 'Product Removed From Basket', 'myvideoroom' ) . '</strong>';
-				Factory::get_instance( ShoppingBasket::class )->delete_product_from_cart( $product_id );
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
-				break;
-
-						// Case Add a Product To a Basket - has no Confirmation for Individual Products - Confirmation for All Products.
-
-			case self::SETTING_ADD_PRODUCT:
-				// Clear Product add from Nonce in case its accept all.
-				if ( self::SETTING_ACCEPT_ALL === $record_id || self::SETTING_REJECT_ALL === $record_id ) {
-					$product_id = null;
-				}
-				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_ADD_PRODUCT . $product_id ) ) {
-					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
-
-				} else {
-
-					if ( self::SETTING_ACCEPT_ALL === $record_id ) {
-						Factory::get_instance( ShoppingBasket::class )->add_all_queued_products_to_cart( $room_name );
-
-						echo '<strong>' . esc_html__( 'All Products Added to Basket', 'myvideoroom' ) . '</strong>';
-
-					} elseif ( self::SETTING_REJECT_ALL === $record_id ) {
-						Factory::get_instance( ShoppingBasket::class )->delete_all_queued_products_from_cart( $room_name );
-
-							echo '<strong>' . esc_html__( 'All Products Cleared from Queue', 'myvideoroom' ) . '</strong>';	
-
-					} else {
-						echo '<strong>' . esc_html__( 'Product Added to Basket', 'myvideoroom' ) . '</strong>';
-						Factory::get_instance( ShoppingBasket::class )->add_queued_product_to_cart( $product_id, $quantity, $variation_id, $record_id );
-					}
-				}
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
-				break;
-
-			// Case Delete Product from Sync Queue Step1 - Pre Confirmation.
-
-			case self::SETTING_DELETE_PRODUCT_QUEUE:
-				$message                      = \esc_html__( 'remove this product from your shared list (this action can not be undone) ?', 'myvideoroom' );
-				$delete_queue_nonce           = wp_create_nonce( self::SETTING_DELETE_PRODUCT_QUEUE . $record_id );
-				$delete_confirmation_nonce    = wp_create_nonce( self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED . $record_id );
-				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED, esc_html__( 'Remove Product', 'my-video-room' ), $room_name, $delete_confirmation_nonce, $record_id );
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $delete_queue_nonce, $message, $confirmation_button_approved, $record_id );
-				break;
-
-			// Case Delete Product from Sync Queue-  Step2 - Post Confirmation.
-
-			case self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED:
-				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_PRODUCT_QUEUE_CONFIRMED . $record_id ) ) {
-					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
-
-				} else {
-					esc_html_e( 'Product Removed from your shared list', 'myvideoroom' );
-					Factory::get_instance( WooCommerceVideoDAO::class )->delete_record( $record_id );
-				}
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
-				break;
-
-			// Case Broadcast Single Product Step1 - Pre Confirmation.
-
-						// Case Delete Entire Basket Step1 - Pre Confirmation.
-
-			case self::SETTING_DELETE_BASKET:
-				$message                      = \esc_html__( 'clear your basket ?', 'myvideoroom' );
-				$delete_basket_nonce          = wp_create_nonce( self::SETTING_DELETE_BASKET_CONFIRMED );
-				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( self::SETTING_DELETE_BASKET_CONFIRMED, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce );
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $confirmation_button_approved );
-				break;
-
-			// Case Delete Entire Basket Step2 - Post Confirmation.
-
-			case self::SETTING_DELETE_BASKET_CONFIRMED:
-				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_DELETE_BASKET_CONFIRMED ) ){
-					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
-
-				} else {
-					wc()->cart->empty_cart();
-				}
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
-				break;
-
-			// Case Broadcast Single Product Step1 - Pre Confirmation.
-
-			case self::SETTING_BROADCAST_PRODUCT:
-				$message                      = \esc_html__( 'share this product ?', 'myvideoroom' );
-				$broadcast_product_nonce      = wp_create_nonce( self::SETTING_BROADCAST_PRODUCT_CONFIRMED );
-				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_product_share_button( self::SETTING_BROADCAST_PRODUCT_CONFIRMED, esc_html__( 'Share Product', 'my-video-room' ), $room_name, $broadcast_product_nonce, $quantity, $product_id, $variation_id );
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $confirmation_button_approved );
-				break;
-
-				// Case Delete Entire Basket Step2 - Post Confirmation.
-			case self::SETTING_BROADCAST_PRODUCT_CONFIRMED:
-				if ( ! wp_verify_nonce( $auth_nonce, self::SETTING_BROADCAST_PRODUCT_CONFIRMED ) ) {
-					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
-
-				} else {
-					// Broadcast Product Action.
-					Factory::get_instance( ShoppingBasket::class )->broadcast_single_product( $product_id, $room_name, $quantity, $variation_id );
-					echo esc_html_e( 'The Product has Been Shared', 'myvideoroom' );
-				}
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
-				break;
-
-				// Case Delete Entire Basket Step2 - Post Confirmation.
-			case 'refresh':
-				$change_state = Factory::get_instance( ShoppingBasket::class )->check_for_user_changes( $last_queuenum, $last_carthash, $room_name );
-				$response = array();
-				if ( true === $change_state ) {
-					$response['status'] = 'change';
-					return \wp_send_json( $response );
-				} else {
-					$response['status'] = 'nochange';
-					return \wp_send_json( $response );
-				}
-				break;
-			case 'reload':
-				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
-				break;
-			default:
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
-		}
-		die();
 	}
 
 

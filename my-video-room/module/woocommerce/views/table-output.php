@@ -6,7 +6,6 @@
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
@@ -25,8 +24,7 @@ return function (
 	array $basket_list,
 	string $room_name,
 	string $last_queuenum = null,
-	string $last_carthash = null,
-	bool $host_status = null
+	string $last_carthash = null
 ): string {
 	ob_start();
 
@@ -41,11 +39,16 @@ return function (
 	</div>
 	<div id="notification" >
 		<div id="notificationleft" class="mvr-header-table-left">
-		<?php echo Factory::get_instance( HostManagement::class )->master_button( $room_name, $host_status );
-	?>
+		<?php
+		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+		echo Factory::get_instance( HostManagement::class )->master_button( $room_name );
+		?>
 		</div>
 		<div id="notificationright" >
-
+		<?php
+		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+		echo Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name );
+		?>
 		</div>		
 	</div>
 	<?php
