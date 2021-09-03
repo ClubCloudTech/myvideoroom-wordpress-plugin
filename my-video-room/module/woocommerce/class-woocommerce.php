@@ -59,9 +59,16 @@ class WooCommerce {
 	const SETTING_REQUEST_MASTER_WITHDRAW_PENDING = 'request-master-withdraw-pending';
 	const SETTING_REQUEST_MASTER_WITHDRAW         = 'request-master-withdraw';
 
-	const SETTING_BASKET_REQUEST_NONE     = 'br-none';
-	const SETTING_BASKET_REQUEST_PENDING  = 'br-pending';
-	const SETTING_BASKET_REQUEST_USER     = 'br-user-placeholder';
+	const SETTING_ENABLE_BASKET_DOWNLOAD            = 'enable-sync-dowload';
+	const SETTING_ENABLE_BASKET_DOWNLOAD_CONFIRMED  = 'enable-sync-download-confirmed';
+	const SETTING_DISABLE_BASKET_DOWNLOAD           = 'disable-sync-download';
+	const SETTING_DISABLE_BASKET_DOWNLOAD_CONFIRMED = 'disable-sync-download-confirmed';
+
+
+	const SETTING_BASKET_REQUEST_OFF     = 'br-off';
+	const SETTING_BASKET_REQUEST_ON      = 'br-enabled-and-on';
+	const SETTING_BASKET_REQUEST_PENDING = 'br-pending';
+	const SETTING_BASKET_REQUEST_USER    = 'br-user-placeholder';
 
 
 	/**
@@ -118,7 +125,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			107,
+			122,
 			true
 		);
 

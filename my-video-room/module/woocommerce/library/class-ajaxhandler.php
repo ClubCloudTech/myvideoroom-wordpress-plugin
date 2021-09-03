@@ -228,7 +228,7 @@ class AjaxHandler {
 
 				} else {
 					// Turn On Basket Sharing Action.
-					$state = Factory::get_instance( HostManagement::class )->turn_on_basket_sync( $room_name );
+					$state = Factory::get_instance( HostManagement::class )->turn_on_basket_broadcast( $room_name );
 					if ( true === $state ){
 						echo '<strong>' . esc_html__( 'Your Basket is now being shared automatically', 'myvideoroom' ) . '</strong>';
 					} else {
@@ -255,7 +255,7 @@ class AjaxHandler {
 				} else {
 					// Turn Off Basket Sharing Action.
 
-					$state = Factory::get_instance( HostManagement::class )->turn_off_basket_sync( $room_name );
+					$state = Factory::get_instance( HostManagement::class )->turn_off_basket_broadcast( $room_name );
 					if ( true === $state ) {
 						echo '<strong>' . esc_html__( 'Your Basket is no longer being shared', 'myvideoroom' ) . '</strong>';
 					} else {
@@ -265,6 +265,63 @@ class AjaxHandler {
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
+
+			// Case Enable Basket Download- Turn on Synchronisation for Baskets and download from central.
+
+			case WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD:
+				$message         = \esc_html__( 'clear your basket and keep it synced to the room ?', 'myvideoroom' );
+				$nonce           = wp_create_nonce( WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD );
+				$approved_nonce  = wp_create_nonce( WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD_CONFIRMED );
+				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD_CONFIRMED, esc_html__( 'Turn on Basket Download Sync', 'my-video-room' ), $room_name, $approved_nonce );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $button_approved );
+				break;
+
+				// Case Turn on Basket sync - Post Confirmation.
+			case WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD_CONFIRMED:
+				if ( ! wp_verify_nonce( $auth_nonce, WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD_CONFIRMED ) ) {
+					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
+
+				} else {
+					// Turn On Basket Sharing Action.
+					$state = Factory::get_instance( HostManagement::class )->turn_on_basket_downloads( $room_name );
+					if ( true === $state ) {
+						echo '<strong>' . esc_html__( 'Your Basket is now being updated by the room automatically', 'myvideoroom' ) . '</strong>';
+					} else {
+						echo '<strong>' . esc_html__( 'There was a problem with setting up your basket synchronisation. Please refresh', 'myvideoroom' ) . '</strong>';
+					}
+				}
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
+			case WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD:
+				$message         = \esc_html__( 'stop synchronising your basket ? Note- your contents will remain after you break the sync', 'myvideoroom' );
+				$nonce           = wp_create_nonce( WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD );
+				$approved_nonce  = wp_create_nonce( WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD_CONFIRMED );
+				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD_CONFIRMED, esc_html__( 'Stop Basket Download Sync', 'my-video-room' ), $room_name, $approved_nonce );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $button_approved );
+				break;
+
+				
+			case WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD_CONFIRMED:
+				if ( ! wp_verify_nonce( $auth_nonce, WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD_CONFIRMED ) ) {
+					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
+
+				} else {
+					// Turn On Basket Sharing Action.
+					$state = Factory::get_instance( HostManagement::class )->turn_off_basket_downloads( $room_name );
+					if ( true === $state ) {
+						echo '<strong>' . esc_html__( 'Your Basket is now under your control. ', 'myvideoroom' ) . '</strong>';
+					} else {
+						echo '<strong>' . esc_html__( 'There was a problem with stopping your basket synchronisation. Please refresh', 'myvideoroom' ) . '</strong>';
+					}
+				}
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
 
 			/*
 			* Master Request Section.
@@ -297,6 +354,7 @@ class AjaxHandler {
 						echo '<strong>' . esc_html__( 'There was a problem making your request - please refresh', 'myvideoroom' ) . '</strong>';
 					}
 				}
+				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
@@ -326,6 +384,71 @@ class AjaxHandler {
 						echo '<strong>' . esc_html__( 'There was a problem making your request - please refresh', 'myvideoroom' ) . '</strong>';
 					}
 				}
+
+				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
+				// Case Decline Request for Basket Ownership.
+			case WooCommerce::SETTING_REQUEST_MASTER_DECLINED_PENDING:
+				$message         = \esc_html__( 'reject the ownership transfer request ?', 'myvideoroom' );
+				$nonce           = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_DECLINED_PENDING );
+				$declined_nonce  = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_DECLINED );
+				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REQUEST_MASTER_DECLINED, esc_html__( 'Decline Request', 'myvideoroom' ), $room_name, $declined_nonce );
+
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $nonce, $message, $button_approved );
+				break;
+
+					// Case Decline Request for Basket Ownership - Post Confirmation.
+			case WooCommerce::SETTING_REQUEST_MASTER_DECLINED:
+				if ( ! wp_verify_nonce( $auth_nonce, WooCommerce::SETTING_REQUEST_MASTER_DECLINED ) ) {
+					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
+
+				} else {
+					// Turn Off Request.
+					$state = Factory::get_instance( HostManagement::class )->decline_master_change_request( $room_name );
+					if ( true === $state ) {
+						echo '<strong>' . esc_html__( 'The User Request has been cancelled successfully', 'myvideoroom' ) . '</strong>';
+					} else {
+						echo '<strong>' . esc_html__( 'There was a problem making your request - please refresh', 'myvideoroom' ) . '</strong>';
+					}
+				}
+
+				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
+				// Case Approved Request for Basket Ownership.
+			case WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING:
+				$message         = \esc_html__( 'approve the transfer. You will no longer control the basket ?', 'myvideoroom' );
+				$nonce           = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING );
+				$declined_nonce  = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_APPROVED );
+				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REQUEST_MASTER_APPROVED, esc_html__( 'Approve Request', 'myvideoroom' ), $room_name, $declined_nonce );
+
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $nonce, $message, $button_approved );
+				break;
+
+					// Case Approve Request for Basket Ownership - Post Confirmation.
+			case WooCommerce::SETTING_REQUEST_MASTER_APPROVED:
+				if ( ! wp_verify_nonce( $auth_nonce, WooCommerce::SETTING_REQUEST_MASTER_APPROVED ) ) {
+					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
+
+				} else {
+					// Turn On Request.
+
+					$state = Factory::get_instance( HostManagement::class )->accept_master_change_request( $room_name );
+					if ( true === $state ) {
+						echo '<strong>' . esc_html__( 'Your Request has been approved successfully', 'myvideoroom' ) . '</strong>';
+					} else {
+						echo '<strong>' . esc_html__( 'There was a problem making your request - please refresh', 'myvideoroom' ) . '</strong>';
+					}
+				}
+
+				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
@@ -351,8 +474,9 @@ class AjaxHandler {
 				return \wp_send_json( $response );
 				break;
 			case 'reload':
+				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name );
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
 			default:
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped

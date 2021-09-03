@@ -310,7 +310,7 @@ class WooCommerceRoomSync {
 	 *
 	 * @return ?string
 	 */
-	public function get_basket_change_setting(): ?string {
+	public function get_basket_change(): ?string {
 		return $this->basket_change;
 	}
 

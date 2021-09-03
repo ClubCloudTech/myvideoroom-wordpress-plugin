@@ -7,7 +7,9 @@
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\DAO;
 
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo as WooCommerceVideoCart;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -229,7 +231,7 @@ class WooCommerceVideoDAO {
 
 		return $result;
 	}
-
+	
 	/**
 	 * Get a Cart Object from the database by record ID.
 	 *
@@ -433,15 +435,14 @@ class WooCommerceVideoDAO {
 	}
 
 	/**
-	 * Get Additional Rooms Installed
+	 * Get Queue Records.
 	 *
 	 * @param string $cart_id The ID to match on.
 	 * @param string $room_name The room name to query.
-	 * @param int    $minute_tolerance - (optional) how many minutes back to render the table.
 	 *
 	 * @return array
 	 */
-	public function get_queue_records( string $cart_id, string $room_name, int $minute_tolerance = null ): array {
+	public function get_queue_records( string $cart_id, string $room_name ): array {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
@@ -450,10 +451,6 @@ class WooCommerceVideoDAO {
 		);
 
 		$result = \wp_cache_get( $cache_key, __METHOD__ );
-		
-		$current_timestamp    = \current_time( 'timestamp' );
-		$queue_view_tolerance = SiteDefaults::QUEUE_VIEW_TOLERANCE;
-		$timestamp            = $current_timestamp - $queue_view_tolerance;
 
 		if ( false === $result ) {
 
@@ -469,7 +466,6 @@ class WooCommerceVideoDAO {
 						array(
 							$room_name,
 							$cart_id,
-							$timestamp,
 						)
 					)
 				);
@@ -483,7 +479,82 @@ class WooCommerceVideoDAO {
 
 			\wp_cache_set( $cache_key, $result, __METHOD__ );
 		}
-
 		return $result;
 	}
+
+	/**
+	 * Get Current Basket Sync Records
+	 *
+	 * @param ?string $room_name - The room type to query.
+	 *
+	 * @return array
+	 */
+	public function get_current_basket_sync_queue_records( string $room_name ): ?array {
+		global $wpdb;
+
+		// Exit if Sync is turned off.
+		if ( ! Factory::get_instance( HostManagement::class )->is_sync_available( $room_name ) ) {
+			return null;
+		}
+
+		$cart_id   = WooCommerce::SETTING_BASKET_REQUEST_ON;
+		$cache_key = $cart_id;
+
+		if ( ! $cart_id ) {
+			$cache_key = '__ALL__';
+		}
+
+		$result = \wp_cache_get( $cache_key, __METHOD__ );
+
+		if ( $result ) {
+			return WooCommerceVideoCart::from_json( $result );
+		}
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				'
+				SELECT 
+			       cart_id,
+				   source_cart_id,
+			       room_name,
+			       cart_data, 
+			       product_id, 
+			       quantity,
+			       variation_id,
+			       single_product, 
+			       timestamp, 
+				   record_id
+				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_main_table_name() . '
+				WHERE cart_id = %s AND room_name = %s 
+			',
+				$cart_id,
+				$room_name
+			)
+		);
+
+			$result = array_map(
+				function ( $row ) {
+					$item = new WooCommerceVideoCart(
+						$row->cart_id,
+						$row->source_cart_id,
+						$row->room_name,
+						$row->cart_data,
+						$row->product_id,
+						$row->quantity,
+						$row->variation_id,
+						(bool) $row->single_product,
+						$row->timestamp,
+						$row->id,
+					);
+					return $item;
+				},
+				$rows
+			);
+
+			\wp_cache_set( $cache_key, $result, __METHOD__ );
+
+			return $result;
+	}
+
 }

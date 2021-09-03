@@ -36,8 +36,9 @@ class ShoppingBasket {
 		}
 		// Register this user in Room Presence Table.
 		$this->register_room_presence( $room_name, boolval( $host_status ) );
-//echo Factory::get_instance( HostManagement::class )->get_my_basket_request_state( $room_name );
-echo $this->user_notification_heartbeat( $room_name, $user_hash );
+
+		echo var_dump( Factory::get_instance( WooCommerceVideoDAO::class )->get_current_basket_sync_queue_records( $room_name ) );
+
 		// Add Queue Length and Cart Hash for Sync flag.
 		$current_cartnum   = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
 		$current_cart_data = WC()->cart->get_cart_hash();
@@ -208,8 +209,6 @@ echo $this->user_notification_heartbeat( $room_name, $user_hash );
 
 	}
 
-
-
 	/**
 	 * Render the Basket Nav Bar Button
 	 *
@@ -318,7 +317,7 @@ echo $this->user_notification_heartbeat( $room_name, $user_hash );
 		$cart_id             = Factory::get_instance( HostManagement::class )->get_user_session();
 		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name ) );
 		$current_carthash    = WC()->cart->get_cart_hash();
-		//$change_heartbeat    = $this->user_notification_heartbeat( $room_name, $cart_id );
+		$change_heartbeat    = $this->user_notification_heartbeat( $room_name, $cart_id );
 
 		// Check Inbound Queue for Changes.
 		if ( intval( $last_queue_ammount ) !== $count_current_queue ) {
@@ -330,7 +329,7 @@ echo $this->user_notification_heartbeat( $room_name, $user_hash );
 			$woocart_changed = true;
 		}
 
-		if ( $woocart_changed || $queue_changed ) {
+		if ( $woocart_changed || $queue_changed || $change_heartbeat ) {
 			return true;
 		}
 
@@ -364,15 +363,16 @@ echo $this->user_notification_heartbeat( $room_name, $user_hash );
 		if ( ! $user_object ) {
 			return false;
 		}
-		$user_timestamp   = $user_object->get_last_notification();
+		$user_timestamp   = $user_object->get_last_notification() + WooCommerce::SETTING_HEARTBEAT_THRESHOLD;
 		$global_object    = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
-		$global_timestamp = $global_object->get_last_notification();
-		$current_timestamp        = \current_time( 'timestamp' ) ;
-		$adjusted_timestamp        = \current_time( 'timestamp' ) - WooCommerce::SETTING_HEARTBEAT_THRESHOLD;
-echo \var_dump( $user_object);
-echo 'Current time' . $current_timestamp . ' adjusted time ' . $adjusted_timestamp . ' user time ' . $user_timestamp;
+		$global_timestamp = $global_object->get_last_notification() + WooCommerce::SETTING_HEARTBEAT_THRESHOLD;
 
-		if ( $timestamp > $user_timestamp ) {
+		if ( ! $user_timestamp && ! $global_timestamp ) {
+			return false;
+		}
+		$timestamp = \current_time( 'timestamp' );
+
+		if ( $timestamp < $user_timestamp || $timestamp < $global_timestamp ) {
 			return true;
 		}
 

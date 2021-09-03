@@ -90,7 +90,7 @@ class WooCommerceRoomSyncDAO {
 				'timestamp'         => $woocommerceroomsyncobj->get_timestamp(),
 				'last_notification' => $woocommerceroomsyncobj->get_last_notification(),
 				'room_host'         => $woocommerceroomsyncobj->is_room_host(),
-				'basket_change'     => $woocommerceroomsyncobj->get_basket_change_setting(),
+				'basket_change'     => $woocommerceroomsyncobj->get_basket_change(),
 				'sync_state'        => $woocommerceroomsyncobj->get_sync_state(),
 				'current_master'    => $woocommerceroomsyncobj->is_current_master(),
 			)
@@ -308,7 +308,7 @@ class WooCommerceRoomSyncDAO {
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 		\wp_cache_delete( $cart_id, __CLASS__ . '::get_room_info' );
 
-		return null;
+		return true;
 	}
 
 	/**
@@ -351,7 +351,7 @@ class WooCommerceRoomSyncDAO {
 				current_time( 'timestamp' ),
 				current_time( 'timestamp' ),
 				$am_i_host,
-				WooCommerce::SETTING_BASKET_REQUEST_NONE,
+				WooCommerce::SETTING_BASKET_REQUEST_OFF,
 				$sync_state,
 				$am_i_master,
 				null
@@ -372,7 +372,7 @@ class WooCommerceRoomSyncDAO {
 	 * @param string $room_name The Room Name.
 	 * @param string $new_master_id - (optional). If entered without state to set - will automatically turn on sync for this ID.
 	 * @param string $state_to_change  - The state to set. (either one must be set).
-	 * @param string $clear_flag  - Setting to Delete Setting for Sync State
+	 * @param bool   $clear_flag  - Setting to Delete Setting for Sync State.
 	 *
 	 * @return bool|null
 	 */
@@ -404,11 +404,10 @@ class WooCommerceRoomSyncDAO {
 			$wpdb->prepare(
 				'
 					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
-					SET sync_state = %s, timestamp = %d , last_notification = %d 
+					SET sync_state = %s, last_notification = %d 
 					WHERE cart_id = %s AND room_name = %s
 				',
 				$sync_state,
-				$timestamp,
 				$timestamp,
 				$core_room_id,
 				$room_name,
@@ -420,9 +419,9 @@ class WooCommerceRoomSyncDAO {
 				WooCommerce::SETTING_BASKET_REQUEST_USER,
 				$room_name,
 				current_time( 'timestamp' ),
-				null,
+				current_time( 'timestamp' ),
 				false,
-				WooCommerce::SETTING_BASKET_REQUEST_NONE,
+				WooCommerce::SETTING_BASKET_REQUEST_OFF,
 				$sync_state,
 				false,
 				null
@@ -443,13 +442,20 @@ class WooCommerceRoomSyncDAO {
 	 * Update Basket Transfer State.
 	 *
 	 * @param string $room_name The Room Name.
+	 * @param string $user_hash  - user has to match (optional).
+	 * @param string $state_to_change - the value to set (optional).
 	 *
 	 * @return bool|null
 	 */
-	public function update_basket_transfer_state( string $room_name ): ?bool {
+	public function update_basket_transfer_state( string $room_name, string $user_hash = null, string $state_to_change = null ): ?bool {
 		global $wpdb;
-
-		$core_room_id = WooCommerce::SETTING_BASKET_REQUEST_USER;
+		if ( $user_hash && $state_to_change ) {
+			$core_room_id  = $user_hash;
+			$basket_change = $state_to_change;
+		} else {
+			$core_room_id  = WooCommerce::SETTING_BASKET_REQUEST_USER;
+			$basket_change = WooCommerce::SETTING_BASKET_REQUEST_OFF;
+		}
 
 		// Try to Update First.
 
@@ -461,7 +467,7 @@ class WooCommerceRoomSyncDAO {
 					SET basket_change = %s
 					WHERE cart_id = %s AND room_name = %s
 				',
-				WooCommerce::SETTING_BASKET_REQUEST_NONE,
+				$basket_change,
 				$core_room_id,
 				$room_name,
 			)
@@ -472,9 +478,9 @@ class WooCommerceRoomSyncDAO {
 				WooCommerce::SETTING_BASKET_REQUEST_USER,
 				$room_name,
 				current_time( 'timestamp' ),
-				null,
+				current_time( 'timestamp' ),
 				false,
-				WooCommerce::SETTING_BASKET_REQUEST_NONE,
+				WooCommerce::SETTING_BASKET_REQUEST_OFF,
 				null,
 				false,
 				null
@@ -482,9 +488,13 @@ class WooCommerceRoomSyncDAO {
 			$this->create( $result );
 		}
 
+		if ( ! $result ) {
+			return false;
+		}
+
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 
-		return null;
+		return true;
 	}
 	/**
 	 * Get a Cart Object from the database
@@ -580,7 +590,7 @@ class WooCommerceRoomSyncDAO {
 				'timestamp'         => $woocommerceroomsyncobj->get_timestamp(),
 				'last_notification' => $woocommerceroomsyncobj->get_last_notification(),
 				'room_host'         => $woocommerceroomsyncobj->is_room_host(),
-				'basket_change'     => $woocommerceroomsyncobj->get_basket_change_setting(),
+				'basket_change'     => $woocommerceroomsyncobj->get_basket_change(),
 				'sync_state'        => $woocommerceroomsyncobj->get_sync_state(),
 				'current_master'    => $woocommerceroomsyncobj->is_current_master(),
 			),
