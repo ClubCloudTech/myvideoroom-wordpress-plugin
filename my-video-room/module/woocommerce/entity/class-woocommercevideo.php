@@ -52,7 +52,7 @@ class WooCommerceVideo {
 	 *
 	 * @var string product_id - the Product ID.
 	 */
-	private string $product_id;
+	private ?string $product_id;
 
 	/**
 	 * Quantity

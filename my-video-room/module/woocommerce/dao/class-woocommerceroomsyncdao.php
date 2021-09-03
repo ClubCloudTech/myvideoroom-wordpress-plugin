@@ -324,7 +324,7 @@ class WooCommerceRoomSyncDAO {
 
 		$timestamp   = current_time( 'timestamp' );
 		$am_i_host   = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
-		$sync_state  = Factory::get_instance( HostManagement::class )->am_i_syncing( $room_name );
+		$sync_state  = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
 		$am_i_master = Factory::get_instance( HostManagement::class )->am_i_master( $room_name );
 
 		// Try to Update First.

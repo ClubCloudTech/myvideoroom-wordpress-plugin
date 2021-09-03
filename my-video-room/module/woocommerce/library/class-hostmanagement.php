@@ -93,6 +93,23 @@ class HostManagement {
 		}
 	}
 
+	/**
+	 * Notify If Broadcasting.
+	 * Sends a message to the global heartbeat if user is currently broadcasting a basket.
+	 *
+	 * @param string $room_name -  Name of Room.
+	 * @return bool
+	 */
+	public function notify_if_broadcasting( string $room_name ): bool {
+
+		$am_i_broadcasting = $this->am_i_broadcasting( $room_name );
+
+		if ( $room_name && $am_i_broadcasting ) {
+			$this->notify_user( $room_name );
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Returns if User is Currently Syncing Basket.
@@ -100,7 +117,7 @@ class HostManagement {
 	 * @param string $room_name -  Name of Room.
 	 * @return bool
 	 */
-	public function am_i_syncing( $room_name ): bool {
+	public function am_i_broadcasting( string $room_name ): bool {
 
 		$my_session  = $this->get_user_session();
 
@@ -361,6 +378,9 @@ class HostManagement {
 		// Notify Users.
 
 		if ( $success ) {
+			// Stop Sharing Basket.
+			Factory::get_instance( HostManagement::class )->turn_off_basket_broadcast( $room_name );
+			// Clear User and Master Records.
 			$my_session = $this->get_user_session();
 			$master     = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, null, true );
 			$requestor  = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $user_requestor, null, true );
@@ -490,7 +510,7 @@ class HostManagement {
 
 		$id_text        = $this->get_user_session();
 		$host_status    = $this->am_i_host( $room_name );
-		$sync_is_on     = $this->am_i_syncing( $room_name );
+		$sync_is_on     = $this->am_i_broadcasting( $room_name );
 		$master_status  = Factory::get_instance( self::class )->am_i_master( $room_name );
 		$sync_requested = $this->get_my_basket_request_state( $room_name );
 		if ( $sync_requested ) {
@@ -559,7 +579,6 @@ class HostManagement {
 					</button>
 				</div>
 				';
-				break;
 
 			case WooCommerce::SETTING_REQUEST_MASTER:
 				$id_text              = $this->get_user_session();
@@ -574,11 +593,11 @@ class HostManagement {
 				<div> <p> ' . \esc_html__( 'A request to take control of the shared basket has been received', 'myvideoroom' ) . '</p>
 
 					<button class="mvr-form-button myvideoroom-woocommerce-basket-ajax">
-					<a href="" data-input-type="' . $accept_button_type . '" data-auth-nonce="' . $accept_nonce . '" data-room-name="' . $room_name . '"data-record-id="' .  $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $accept_button_label . '</a>
+					<a href="" data-input-type="' . $accept_button_type . '" data-auth-nonce="' . $accept_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $accept_button_label . '</a>
 					</button>
 
 					<button class="mvr-form-button myvideoroom-woocommerce-basket-ajax">
-					<a href="" data-input-type="' . $decline_button_type . '" data-auth-nonce="' . $decline_nonce . '" data-room-name="' . $room_name . '"data-record-id="' .  $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $decline_button_label . '</a>
+					<a href="" data-input-type="' . $decline_button_type . '" data-auth-nonce="' . $decline_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $decline_button_label . '</a>
 					</button>
 				</div>
 				';
@@ -595,7 +614,7 @@ class HostManagement {
 			<div> <p> ' . \esc_html__( 'You are currently syncing your basket from the room automatically', 'myvideoroom' ) . '</p>
 
 				<button class="mvr-form-button myvideoroom-woocommerce-basket-ajax">
-				<a href="" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' .  $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
+				<a href="" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
 				</button>
 			</div>
 			';
@@ -611,12 +630,12 @@ class HostManagement {
 			<div> <p> ' . \esc_html__( 'A group shared basket is available - would you like to synchronise your basket to the room ?', 'myvideoroom' ) . '</p>
 
 				<button class="mvr-form-button myvideoroom-woocommerce-basket-ajax">
-				<a href="" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' .  $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
+				<a href="" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
 				</button>
 			</div>
 			';
 		}
-return '';
+		return '';
 
 	}
 
@@ -688,7 +707,7 @@ return '';
 	public function get_user_session( int $user_id = null ): string {
 
 		if ( $user_id ) {
-			return  wp_hash( $user_id );
+			return wp_hash( $user_id );
 
 		} elseif ( is_user_logged_in() ) {
 

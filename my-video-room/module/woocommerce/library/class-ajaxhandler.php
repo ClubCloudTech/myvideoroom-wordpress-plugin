@@ -52,6 +52,7 @@ class AjaxHandler {
 
 				if ( $success_state ) {
 					echo '<strong>' . esc_html__( 'Product Removed From Basket', 'myvideoroom' ) . '</strong>';
+					Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name );
 				} else {
 					echo '<strong>' . esc_html__( 'Product Removal Failed', 'myvideoroom' ) . '</strong>';
 				}
@@ -71,7 +72,8 @@ class AjaxHandler {
 				} else {
 
 					echo '<strong>' . esc_html__( 'Product Added to Basket', 'myvideoroom' ) . '</strong>';
-					Factory::get_instance( ShoppingBasket::class )->add_queued_product_to_cart( $product_id, $quantity, $variation_id, $record_id );
+					Factory::get_instance( ShoppingBasket::class )->add_queued_product_to_cart( $product_id, $quantity, $variation_id, $record_id, null, $room_name );
+					Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name );
 				}
 
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -95,7 +97,8 @@ class AjaxHandler {
 				} else {
 					$success_state = Factory::get_instance( ShoppingBasket::class )->add_all_queued_products_to_cart( $room_name );
 					if ( $success_state ) {
-						echo '<strong>' . esc_html__( 'All Products Added To Queue', 'myvideoroom' ) . '</strong>';	
+						echo '<strong>' . esc_html__( 'All Products Added To Queue', 'myvideoroom' ) . '</strong>';
+						Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name );
 					} else {
 						echo '<strong>' . esc_html__( 'There was a problem adding items to queue - please refresh page', 'myvideoroom' ) . '</strong>';	
 					}
@@ -175,7 +178,8 @@ class AjaxHandler {
 					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
 
 				} else {
-					wc()->cart->empty_cart();
+					Factory::get_instance( ShoppingBasket::class )->clear_my_cart();
+					Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name );
 				}
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
@@ -231,6 +235,7 @@ class AjaxHandler {
 					$state = Factory::get_instance( HostManagement::class )->turn_on_basket_broadcast( $room_name );
 					if ( true === $state ){
 						echo '<strong>' . esc_html__( 'Your Basket is now being shared automatically', 'myvideoroom' ) . '</strong>';
+						//Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name );
 					} else {
 						echo '<strong>' . esc_html__( 'There was a problem sharing your basket.', 'myvideoroom' ) . '</strong>';
 					}
@@ -258,6 +263,7 @@ class AjaxHandler {
 					$state = Factory::get_instance( HostManagement::class )->turn_off_basket_broadcast( $room_name );
 					if ( true === $state ) {
 						echo '<strong>' . esc_html__( 'Your Basket is no longer being shared', 'myvideoroom' ) . '</strong>';
+						Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name );
 					} else {
 						echo '<strong>' . esc_html__( 'There was a problem turning off your basket', 'myvideoroom' ) . '</strong>';
 					}
@@ -304,7 +310,6 @@ class AjaxHandler {
 				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $button_approved );
 				break;
 
-				
 			case WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD_CONFIRMED:
 				if ( ! wp_verify_nonce( $auth_nonce, WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD_CONFIRMED ) ) {
 					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
@@ -322,7 +327,6 @@ class AjaxHandler {
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
 
-
 			/*
 			* Master Request Section.
 			*
@@ -335,8 +339,8 @@ class AjaxHandler {
 				$message         = \esc_html__( 'request Master Basket Ownership ?', 'myvideoroom' );
 				$nonce           = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_CONFIRMED );
 				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REQUEST_MASTER_CONFIRMED, esc_html__( 'Request Control', 'my-video-room' ), $room_name, $nonce );
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $button_approved );
 				break;
 

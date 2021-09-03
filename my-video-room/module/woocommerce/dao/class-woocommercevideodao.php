@@ -231,7 +231,7 @@ class WooCommerceVideoDAO {
 
 		return $result;
 	}
-	
+
 	/**
 	 * Get a Cart Object from the database by record ID.
 	 *
@@ -393,6 +393,39 @@ class WooCommerceVideoDAO {
 		return null;
 	}
 
+	/**
+	 * Delete a Sync Record from the database
+	 *
+	 * @param string $room_name - The Room Name to Clear Sync on.
+	 *
+	 * @return null
+	 * @throws \Exception When failing to delete.
+	 */
+	public function delete_sync_basket( string $room_name ) {
+		global $wpdb;
+
+		$cart_id   = WooCommerce::SETTING_BASKET_REQUEST_ON;
+		$cache_key = $cart_id;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$success = $wpdb->delete(
+			$this->get_main_table_name(),
+			array(
+				'cart_id'   => $cart_id,
+				'room_name' => $room_name,
+			)
+		);
+
+		\wp_cache_delete(
+			$cart_id
+		);
+
+		if ( $success ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Delete a Cart Object from the database

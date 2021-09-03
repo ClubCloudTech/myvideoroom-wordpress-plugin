@@ -37,29 +37,13 @@ class ShoppingBasket {
 		// Register this user in Room Presence Table.
 		$this->register_room_presence( $room_name, boolval( $host_status ) );
 
-		echo var_dump( Factory::get_instance( WooCommerceVideoDAO::class )->get_current_basket_sync_queue_records( $room_name ) );
+		//echo var_dump( Factory::get_instance( WooCommerceVideoDAO::class )->get_current_basket_sync_queue_records( $room_name ) );
+		$this->basket_sync_heartbeat( $room_name );
 
 		// Add Queue Length and Cart Hash for Sync flag.
 		$current_cartnum   = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
 		$current_cart_data = WC()->cart->get_cart_hash();
-
-		$output_array = array();
-		// Loop over $cart items.
-		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
-
-				$basket_array                 = array();
-				$basket_array['product_id']   = $product_id = $cart_item['product_id'];
-				$product                      = wc_get_product( $product_id );
-				$basket_array['quantity']     = $cart_item['quantity'];
-				$basket_array['variation_id'] = $cart_item['variation_id'];
-				$basket_array['name']         = $product->get_name();
-				$basket_array['image']        = $product->get_image();
-				$basket_array['price']        = WC()->cart->get_product_price( $product );
-				$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] );
-				$basket_array['link']         = $product->get_permalink( $cart_item );
-
-				array_push( $output_array, $basket_array );
-		}
+		$output_array = $this->get_cart_objects();
 
 		// Render View.
 		$render = require __DIR__ . '/../views/table-output.php';
@@ -141,6 +125,7 @@ class ShoppingBasket {
 				}
 			}
 		}
+
 		return $success_state;
 	}
 
@@ -151,13 +136,17 @@ class ShoppingBasket {
 	 * @param  string $quantity - How Many Items to Add.
 	 * @param  string $variation_id - Product Variation ID.
 	 * @param  string $record_id - the record ID to delete from Sync Table.
-	 * 
+	 * @param  bool   $basket_sync_flag - Skips Updating Record ID (deleting from queue) if its for basket sync.
+	 *
 	 * @return bool
 	 */
-	public function add_queued_product_to_cart( string $product_id, string $quantity, string $variation_id, string $record_id ):bool {
+	public function add_queued_product_to_cart( string $product_id, string $quantity, string $variation_id, string $record_id = null, bool $basket_sync_flag = null ):bool {
 
 		$success_state = wc()->cart->add_to_cart( $product_id, $quantity, $variation_id );
-		Factory::get_instance( WooCommerceVideoDAO::class )->delete_record( $record_id );
+
+		if ( ! $basket_sync_flag ) {
+			Factory::get_instance( WooCommerceVideoDAO::class )->delete_record( $record_id );
+		} 
 
 		if ( $success_state ) {
 			return true;
@@ -165,6 +154,141 @@ class ShoppingBasket {
 			return false;
 		}
 	}
+
+
+	/**
+	 * Clear Cart
+	 * Clears all Items in WooCommerce Cart.
+	 *
+	 * @return bool
+	 */
+	public function clear_my_cart():bool {
+		$result = wc()->cart->empty_cart();
+		return true;
+	}
+
+	/**
+	 * Broadcast My Basket.
+	 * Uploads all Basket Contents to Database
+	 *
+	 * @param string $room_name - The Room Name to Clear Sync on.
+	 *
+	 * @return bool
+	 */
+	public function broadcast_basket( string $room_name ):bool {
+
+		$is_sync_available = Factory::get_instance( HostManagement::class )->is_sync_available( $room_name );
+		$am_i_master       = Factory::get_instance( HostManagement::class )->am_i_master( $room_name );
+		$am_i_broadcasting = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
+
+		if ( ! $is_sync_available || ! $am_i_master || ! $am_i_broadcasting ) {
+			return false;
+		}
+
+		// Clear Current Basket.
+		$clear = Factory::get_instance( WooCommerceVideoDAO::class )->delete_sync_basket( $room_name );
+
+		// Get Current Basket Objects.
+		$basket_array = $this->get_cart_objects();
+
+		if ( count ( $basket_array ) < 1 ) {
+			return false;
+		}
+
+		$cart_session = Factory::get_instance( HostManagement::class )->get_user_session();
+		$timestamp    = \current_time( 'timestamp' );
+
+
+		foreach ( $basket_array as $item ) {
+				$register = new WooCommerceVideo(
+					WooCommerce::SETTING_BASKET_REQUEST_ON,
+					$cart_session,
+					$room_name,
+					null,
+					strval( $item['product_id'] ),
+					strval( $item['quantity'] ),
+					strval( $item['variation_id'] ),
+					false,
+					$timestamp,
+					null
+				);
+
+			$success = Factory::get_instance( WooCommerceVideoDAO::class )->create( $register );
+			if ( $success ) {
+				// Notify Global Event.
+				//Factory::get_instance( HostManagement::class )->notify_user( $room_name );
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get Cart Objects.
+	 * Gets an array of all Shopping Cart Objects for Usage in Sync Engines and Tables.
+	 *
+	 * @return array
+	 */
+	public function get_cart_objects(): ?array {
+
+		$output_array = array();
+		// Loop over $cart items.
+		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+
+				$basket_array                 = array();
+				$product_id                   = $cart_item['product_id'];
+				$basket_array['product_id']   = $product_id;
+				$product                      = wc_get_product( $product_id );
+				$basket_array['quantity']     = $cart_item['quantity'];
+				$basket_array['variation_id'] = $cart_item['variation_id'];
+				$basket_array['name']         = $product->get_name();
+				$basket_array['image']        = $product->get_image();
+				$basket_array['price']        = WC()->cart->get_product_price( $product );
+				$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] );
+				$basket_array['link']         = $product->get_permalink( $cart_item );
+
+				array_push( $output_array, $basket_array );
+		}
+		return $output_array;
+	}
+
+	/**
+	 * Refreshes Basket for User if Sync Enabled
+	 * Gets all Cart Items in Shared Queue and Accepts them All.
+	 *
+	 * @param  string $room_name - Room we are in.
+	 *
+	 * @return bool
+	 */
+	public function basket_sync_heartbeat( string $room_name ):bool {
+
+		$is_sync_available = Factory::get_instance( HostManagement::class )->is_sync_available( $room_name );
+		$am_i_downloading  = Factory::get_instance( HostManagement::class )->am_i_downloading( $room_name );
+
+		if ( ! $is_sync_available || ! $am_i_downloading ) {
+			return false;
+		}
+
+		$this->clear_my_cart();
+		$success_state = false;
+
+		$queue_objects = Factory::get_instance( WooCommerceVideoDAO::class )->get_current_basket_sync_queue_records( $room_name );
+
+		foreach ( $queue_objects as $item ) {
+
+			$product_id   = $item->get_product_id();
+			$quantity     = $item->get_quantity();
+			$variation_id = $item->get_variation_id();
+
+			$success = $this->add_queued_product_to_cart( $product_id, $quantity, $variation_id, null );
+			if ( $success ) {
+				$success_state = true;
+			}
+		}
+
+		return $success_state;
+	}
+
 	/**
 	 * Add All Queued Products to Cart
 	 * Gets all Cart Items in Shared Queue and Accepts them All.
@@ -327,6 +451,14 @@ class ShoppingBasket {
 		// Check WooCommerce Cart for Changes.
 		if ( $current_carthash !== $last_carthash ) {
 			$woocart_changed = true;
+
+			// Update Cart if User is Broadcasting Basket.
+			$am_i_broadcasting = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
+			if ( $am_i_broadcasting ) {
+				Factory::get_instance( HostManagement::class )->notify_user( $room_name );
+				$this->broadcast_basket( $room_name );
+			}
+
 		}
 
 		if ( $woocart_changed || $queue_changed || $change_heartbeat ) {
