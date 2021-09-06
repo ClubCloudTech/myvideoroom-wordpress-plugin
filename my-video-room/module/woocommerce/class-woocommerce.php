@@ -22,6 +22,7 @@ class WooCommerce {
 
 	const MODULE_WOOCOMMERCE_BASKET_ID           = 10561;
 	const SETTING_HEARTBEAT_THRESHOLD            = 12;
+	const SETTING_TOLERANCE_FOR_LAST_ACTIVE      = 30 * 60; /* minutes x seconds */
 	const MODULE_WOOCOMMERCE_NAME                = 'woocommerce-module';
 	const MODULE_WOOCOMMERCE_BASKET              = 'woocommerce-basket';
 	const SETTING_REFRESH_BASKET                 = 'woocommerce-refresh-basket';
@@ -116,18 +117,30 @@ class WooCommerce {
 			50,
 			4
 		);
+		\wp_enqueue_script(
+			'myvideoroom-woocommerce-basket-js',
+			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			163,
+			true
+		);
+
+		wp_enqueue_script(
+			'myvideoroom-notification-buttons',
+			plugins_url( '/../../js/notification.js', __FILE__ ),
+			array( 'jquery' ),
+			117,
+			true
+		);
+
+		// Add Notification Bar to Video Call.
+		\add_action( 'myvideoroom_notification_master', array( Factory::get_instance( ShoppingBasket::class ), 'render_notification_tab' ), 10, 2 );
 
 		// Ajax Handler for Basket.
 		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
 		\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
 
-		\wp_enqueue_script(
-			'myvideoroom-woocommerce-basket-js',
-			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
-			array( 'jquery' ),
-			122,
-			true
-		);
+		\wp_enqueue_script( 'myvideoroom-admin-tabs' );
 
 		\wp_localize_script(
 			'myvideoroom-woocommerce-basket-js',

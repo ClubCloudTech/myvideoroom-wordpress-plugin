@@ -17,8 +17,8 @@
 				var quantity     = $( this ).data( 'quantity' );
 				var variation_id = $( this ).data( 'variationId' );
 				
-				var $container   = $( '.mvr-woocommerce-basket' );
-				var loading_text = $container.data( 'loadingText' );
+				var $container    = $( '.mvr-woocommerce-basket' );
+				var loading_text  = $container.data( 'loadingText' );
 	
 				$container.html( loading_text );
 	
@@ -41,13 +41,22 @@
 							recordId: record_id
 						},
 						success: function (response) {
+
+							var $response_length = response.length;
+							if ( $response_length < 40 ) {
+								triggerRefresh( room_name );
+							
+							}
 							$container.html( response );
-				init();	
+							init();	
+						},
+						error: function (){
+							setTimeout(() => {  triggerRefresh( room_name ); }, 1000);
 						}
 					}
 				);
-				e.preventDefault();
-				return false;
+		e.preventDefault();
+		return false;
 	}
 
 	function refreshHeartbeat( original_room ) {
@@ -57,6 +66,7 @@
 	var last_queuenum = $( '#roomid' ).data( 'lastQueuenum' );
 	var last_carthash = $( '#roomid' ).data( 'lastCarthash' );
 	var $container    = $( '.mvr-woocommerce-basket' );
+	var $notification = $( '.mvr-notification-master' );
 	
 	if ( typeof room_name === 'undefined' ) {
 		room_name = original_room;
@@ -77,6 +87,7 @@
 
 						var state_response = JSON.parse(response);
 						if (state_response.status == 'change') {
+							$notification.html( state_response.aas + '' );
 							triggerRefresh( room_name );
 						} 
 						
@@ -84,7 +95,7 @@
 
 						} 
 					},
-					error: function (response){
+					error: function (){
 						setTimeout(() => {  triggerRefresh( room_name ); }, 1000);
 					}
 				}
@@ -124,7 +135,7 @@
 						}
 					}
 				);
-		}
+	}
 
 	var init = function(){
 		$( '.myvideoroom-woocommerce-basket-ajax' ).on(
@@ -136,9 +147,13 @@
 			handleEvent
 		);
 	}
-init();
-var original_room = $( '#roomid' ).data( 'roomName' );
-setInterval( refreshHeartbeat, 6000, original_room );
+	
+	
 
-window.myvideoroom_shoppingbasket_init=init;
+var original_room = $( '#roomid' ).data( 'roomName' );
+
+    setInterval( refreshHeartbeat, 6000, original_room );
+	window.myvideoroom_shoppingbasket_init=init;
+	init();
+
 })( jQuery );

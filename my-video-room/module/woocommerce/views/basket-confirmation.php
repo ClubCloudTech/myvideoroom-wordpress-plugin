@@ -49,7 +49,7 @@ return function (
 		esc_html( $message )
 	);
 	// Confirmation Cancel Button.
-	$confirmation_button_cancel = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Cancel', 'my-video-room' ), $room_name );
+	$confirmation_button_cancel = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Cancel', 'my-video-room' ), $room_name, null, null, 'mvr-main-button-cancel' );
 
 	?>
 

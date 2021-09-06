@@ -10,7 +10,6 @@
 	color: #fff;
 	cursor: pointer;
 	display: inline-block !important;
-	font-family: "SF Pro Text", "Myriad Set Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Icons", "Apple Legacy Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 	font-size: 17px;
 	font-weight: 400;
 	letter-spacing: -.021em;
@@ -110,7 +109,6 @@
 }
 
 .mvr-icons {
-	background-color: #fff;
 	-moz-border-radius: 50%;
 	-webkit-border-radius: 50%;
 	border-radius: 50%;

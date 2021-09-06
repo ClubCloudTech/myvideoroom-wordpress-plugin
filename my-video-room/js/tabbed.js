@@ -53,7 +53,24 @@
 								return false;
 							}
 						);
+						$( '.mvr-notification-button').on(
+							'click',
+							function (event) {
+
+								$tab.trigger( 'focus' );
+
+								$tabs.removeClass( 'nav-tab-active' );
+								hide_all_non_active( $nav_section );
+
+								$tab.addClass( 'nav-tab-active' );
+								$( $tab.attr( 'href' ) ).show();
+
+								event.preventDefault();
+								return false;
+							}
+						);
 					}
+
 				);
 			}
 		);

@@ -143,7 +143,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-css',
 					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version(),
+					Factory::get_instance( Version::class )->get_plugin_version().'1',
 				);
 			},
 		);

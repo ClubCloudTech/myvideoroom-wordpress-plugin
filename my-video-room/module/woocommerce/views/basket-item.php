@@ -5,6 +5,8 @@
  * @package MyVideoRoomPlugin\Modules\WooCommerce\Views\Basket-Item.php
  */
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
@@ -20,12 +22,17 @@ return function (
 	string $room_name
 ): string {
 	ob_start();
-
 	?>
 	<tr class="active" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
-		<td class="plugin-title column-primary mvr-icons"><?php echo $item['image']; ?></td>
+		<td class="plugin-title column-primary myvideoroom-product-image"><?php echo $item['image'] ; ?></td>
 
-		<td><?php echo esc_attr( $item['name'] ); ?></td>
+		<td>		<a href="<?php echo $item['link'] ; ?>"
+					title="<?php esc_html_e( 'View Product', 'myvideoroom' ); ?>"
+					target="_blank"
+
+				><?php echo esc_attr( $item['name'] ); ?></a>
+
+	</td>
 
 
 		<td class="column-description">
@@ -35,8 +42,11 @@ return function (
 		<?php echo $item['subtotal'] ?>
 		</td>
 		<td>
+			<?php
+			if ( ! $item['am_i_downloading'] ) {
+				?>
 				<a href=""
-					class="mvr-icons dashicons dashicons-dismiss myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
+					class="mvr-icons dashicons dashicons-dismiss myvideoroom-woocommerce-basket-ajax"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT ); ?>"
 					data-room-name="<?php echo esc_attr( $room_name ); ?>"
@@ -45,7 +55,7 @@ return function (
 
 				></a>
 				<a href=""
-					class="mvr-icons dashicons dashicons-upload myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
+					class="mvr-icons dashicons dashicons-upload myvideoroom-woocommerce-basket-ajax"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 					data-quantity="<?php echo esc_attr( $item['quantity'] ); ?>"
 					data-variation-id="<?php echo esc_attr( $item['variation_id'] ); ?>"
@@ -56,6 +66,11 @@ return function (
 					target="_blank"
 
 				></a>
+				<?php
+			} else {
+				echo esc_html_e ('Basket is Auto Syncing');
+			}
+			?>
 		</td>
 	</tr>
 

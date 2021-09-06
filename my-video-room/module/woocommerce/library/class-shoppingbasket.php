@@ -27,28 +27,36 @@ class ShoppingBasket {
 	 *
 	 * @param string $room_name -  Name of Room.
 	 * @param bool   $host_status  Whether user is a host.
-	 * @param bool   $ajax_host  Whether user is a host from Ajax call.
+	 *
 	 * @return Void
 	 */
-	public function render_basket( string $room_name, $host_status = null, bool $ajax_host = null ) {
+	public function render_basket( string $room_name, $host_status = null ) {
 		if ( ! $room_name ) {
 			return null;
 		}
 		// Register this user in Room Presence Table.
 		$this->register_room_presence( $room_name, boolval( $host_status ) );
 
-		//echo var_dump( Factory::get_instance( WooCommerceVideoDAO::class )->get_current_basket_sync_queue_records( $room_name ) );
+		// User and Broadcast Heartbeats.
 		$this->basket_sync_heartbeat( $room_name );
+		$this->broadcast_basket( $room_name );
 
+		//echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
+
+// Add Notification Bar to Video Call.
+// \add_action( 'myvideoroom_notification_master', array( Factory::get_instance( self::class ), 'render_notification_tab' ), 10, 2 );
 		// Add Queue Length and Cart Hash for Sync flag.
 		$current_cartnum   = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
 		$current_cart_data = WC()->cart->get_cart_hash();
-		$output_array = $this->get_cart_objects();
+		$cart_objects      = $this->get_cart_objects( $room_name );
+		$download_active   = Factory::get_instance( HostManagement::class )->am_i_downloading( $room_name );
+		$master_status     = Factory::get_instance( HostManagement::class )->am_i_master( $room_name );
+		$broadcast_status  = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
 
 		// Render View.
 		$render = require __DIR__ . '/../views/table-output.php';
 
-		return $render( $output_array, $room_name, $current_cartnum, $current_cart_data );
+		return $render( $cart_objects, $room_name, $current_cartnum, $current_cart_data, $download_active, $master_status, $broadcast_status );
 	}
 
 	/**
@@ -71,6 +79,20 @@ class ShoppingBasket {
 	}
 
 	/**
+	 * Render Notification Pages
+	 *
+	 * @param string $room_name -  Name of Room.
+	 * @return string
+	 */
+	public function render_notification_tab( string $room_name ):string {
+
+		// Render Confirmation Page View.
+		$render = require __DIR__ . '/../views/notification-bar.php';
+		return $render( $room_name );
+
+	}
+
+	/**
 	 * Register Room Presence
 	 *
 	 * @param string $room_name -  Name of Room.
@@ -81,8 +103,6 @@ class ShoppingBasket {
 		// Setup.
 		$cart_session = Factory::get_instance( HostManagement::class )->get_user_session();
 		$timestamp    = \current_time( 'timestamp' );
-
-		$am_i_master = Factory::get_instance( HostManagement::class )->initialise_master_status( $room_name, $host_status );
 
 		$current_record = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( $cart_session, $room_name );
 
@@ -95,16 +115,20 @@ class ShoppingBasket {
 				$cart_session,
 				$room_name,
 				$timestamp,
-				null,
+				$timestamp,
 				$host_status,
 				null,
 				null,
-				$am_i_master,
+				$host_status,
 				null
 			);
+			// Set Last Notification Timestamp for new room.
+			Factory::get_instance( HostManagement::class )->notify_user( $room_name );
 		}
-
 		Factory::get_instance( WooCommerceRoomSyncDAO::class )->create( $current_record );
+
+		// Check and Clean Master Status.
+		Factory::get_instance( HostManagement::class )->initialise_master_status( $room_name, $host_status );
 	}
 
 	/**
@@ -189,7 +213,7 @@ class ShoppingBasket {
 		$clear = Factory::get_instance( WooCommerceVideoDAO::class )->delete_sync_basket( $room_name );
 
 		// Get Current Basket Objects.
-		$basket_array = $this->get_cart_objects();
+		$basket_array = $this->get_cart_objects( $room_name );
 
 		if ( count ( $basket_array ) < 1 ) {
 			return false;
@@ -215,21 +239,23 @@ class ShoppingBasket {
 
 			$success = Factory::get_instance( WooCommerceVideoDAO::class )->create( $register );
 			if ( $success ) {
+				return true;
 				// Notify Global Event.
 				//Factory::get_instance( HostManagement::class )->notify_user( $room_name );
 			}
 		}
+	return false;
 
-		return true;
 	}
 
 	/**
 	 * Get Cart Objects.
 	 * Gets an array of all Shopping Cart Objects for Usage in Sync Engines and Tables.
 	 *
+	 * @param string $room_name - The Room Name to render (optional).
 	 * @return array
 	 */
-	public function get_cart_objects(): ?array {
+	public function get_cart_objects( string $room_name = null ): ?array {
 
 		$output_array = array();
 		// Loop over $cart items.
@@ -246,6 +272,11 @@ class ShoppingBasket {
 				$basket_array['price']        = WC()->cart->get_product_price( $product );
 				$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] );
 				$basket_array['link']         = $product->get_permalink( $cart_item );
+			if ( $room_name ) {
+				$basket_array['am_i_host']         = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+				$basket_array['am_i_broadcasting'] = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
+				$basket_array['am_i_downloading']  = Factory::get_instance( HostManagement::class )->am_i_downloading( $room_name );
+			}
 
 				array_push( $output_array, $basket_array );
 		}
@@ -344,23 +375,27 @@ class ShoppingBasket {
 	 *
 	 * @return string
 	 */
-	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $product_or_id = null ):string {
+	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $product_or_id = null, string $style = null ):string {
 
 		$id_text = null;
 		if ( $product_or_id ){
 			$id_text = ' data-record-id="' . $product_or_id . '" ';
 		}
 
-		return '
-		<div aria-label="button" class="mvr-form-button myvideoroom-woocommerce-basket-ajax">
-		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
-		</div>
-		';
+		if ( ! $style ) {
+			$style = 'mvr-main-button-enabled';
+		}
 
+		return '
+		<button class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax">
+		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
+		</button>
+		';
 	}
 
+
 	/**
-	 * Render the Basket Nav Bar Button
+	 * Render the Product Share Nav Bar Button
 	 *
 	 * @param string $button_type - Feedback for Ajax Post.
 	 * @param string $button_label - Label for Button.
@@ -375,7 +410,7 @@ class ShoppingBasket {
 	public function basket_product_share_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $quantity, string $product_id, string $variation_id ):string {
 
 		return '
-		<div aria-label="button" class="mvr-form-button myvideoroom-woocommerce-basket-ajax">
+		<button class="mvr-form-button mvr-notification-button myvideoroom-woocommerce-basket-ajax">
 		<a href="" data-input-type="' . $button_type . '" 
 		 data-auth-nonce="' . $nonce . '"
 		 data-room-name="' . $room_name . '"
@@ -383,7 +418,7 @@ class ShoppingBasket {
 		 data-variation-id="' . $variation_id . '"
 		 data-product-id="' . $product_id . '"
 		 class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
-		</div>
+		</button>
 		';
 
 	}

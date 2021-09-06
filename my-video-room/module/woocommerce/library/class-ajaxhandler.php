@@ -290,6 +290,7 @@ class AjaxHandler {
 
 				} else {
 					// Turn On Basket Sharing Action.
+
 					$state = Factory::get_instance( HostManagement::class )->turn_on_basket_downloads( $room_name );
 					if ( true === $state ) {
 						echo '<strong>' . esc_html__( 'Your Basket is now being updated by the room automatically', 'myvideoroom' ) . '</strong>';
@@ -315,7 +316,7 @@ class AjaxHandler {
 					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
 
 				} else {
-					// Turn On Basket Sharing Action.
+					// Turn Off Basket Sharing Action.
 					$state = Factory::get_instance( HostManagement::class )->turn_off_basket_downloads( $room_name );
 					if ( true === $state ) {
 						echo '<strong>' . esc_html__( 'Your Basket is now under your control. ', 'myvideoroom' ) . '</strong>';
@@ -464,23 +465,26 @@ class AjaxHandler {
 			*/
 
 			case 'refresh':
-
 				// Cart Change Section.
 				$change_state = Factory::get_instance( ShoppingBasket::class )->check_for_user_changes( $last_queuenum, $last_carthash, $room_name );
 				$response     = array();
 
 				if ( true === $change_state ) {
 					$response['status'] = 'change';
+
 				} else {
 					$response['status'] = 'nochange';
 				}
+				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+				$response['aas'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
 
 				return \wp_send_json( $response );
-				break;
+
 			case 'reload':
 				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+
 				break;
 			default:
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped

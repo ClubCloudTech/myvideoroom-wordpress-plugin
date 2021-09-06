@@ -63,8 +63,8 @@
 .mvr-row {
 	border-color: #C6C0AD;
 	border-style: solid;
-	border-width: 2px 2px 2px 2px;
-	box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.3);
+	border-width: 1px 1px 1px 1px;
+	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
 	display: grid;
 	margin: 10px 10px 10px 10px;
 	padding: 10px 10px 10px 10px;
@@ -102,28 +102,41 @@
 }
 
 .mvr-main-button-enabled {
-	background-color: rgb(41, 22, 150);
+	background-color: rgb(15, 54, 21);
 	border-radius: 3px;
 	color: rgb(255 255 255) !important;
 	display: inline;
 	font-size: 14px;
 	font-weight: 400;
 	margin-left: 2px !important;
-	padding: 8px;
+	padding: 4px;
+	text-align: -webkit-center;
+	vertical-align: middle;
+}
+
+.mvr-main-button-cancel {
+	background-color: rgb(77, 77, 77);
+	border-radius: 3px;
+	color: rgb(255 255 255) !important;
+	display: inline;
+	font-size: 14px;
+	font-weight: 400;
+	margin-left: 2px !important;
+	padding: 4px;
 	text-align: -webkit-center;
 	vertical-align: middle;
 }
 
 
 .mvr-main-button-disabled {
-	background-color: rgb(221, 6, 6);
+	background-color: rgb(190, 21, 21);
 	border-radius: 3px;
 	color: rgb(255 255 255) !important;
 	display: inline;
 	font-size: 14px;
 	font-weight: 400;
 	margin-left: 2px !important;
-	padding: 8px;
+	padding: 4px;
 	text-align: -webkit-center;
 	vertical-align: middle;
 }

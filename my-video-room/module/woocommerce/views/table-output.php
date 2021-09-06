@@ -17,6 +17,7 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
  * @param string $room_name -  Name of Room.
  * @param array   $last_queuenum - The last number of items in queue.
  * @param ?string $room_type  Category of Room to Filter.
+ * @param bool $download_active -Autosync status.
  *
  * @return string
  */
@@ -24,7 +25,10 @@ return function (
 	array $basket_list,
 	string $room_name,
 	string $last_queuenum = null,
-	string $last_carthash = null
+	string $last_carthash = null,
+	bool $download_active = null,
+	bool $master_status = null,
+	bool $broadcast_status = null
 ): string {
 	ob_start();
 
@@ -37,35 +41,50 @@ return function (
 	data-last-carthash="<?php echo esc_attr( $last_carthash ); ?>"
 	>
 	</div>
-	<div id="notification" >
-		<div id="notificationleft" class="mvr-header-table-left">
-		<?php
-		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-		echo Factory::get_instance( HostManagement::class )->master_button( $room_name );
-		?>
-		</div>
-		<div id="notificationright" >
-		<?php
-		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-		echo Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name );
-		?>
-		</div>		
-	</div>
 	<?php
-	//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-	echo Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name );
+		echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
+
+// Render Product Broadcast Table if Autosync isnt on.
+
+if ( ! $download_active ) {
+		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+		echo Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name );
+	}
+
 	?>
-	<h1><?php esc_html_e( 'Your Basket', 'my-video-room' ); ?></h1>
+	<h1>
+		<?php
+		$prefix = esc_html__( 'Your ', 'my-video-room' );
+
+		if ( $master_status ) {
+			$main = esc_html__( ' Shareable ', 'myvideoroom' );
+		}
+		if ( $broadcast_status ) {
+			$main = esc_html__( ' Shared Room ', 'myvideoroom' );
+		}
+		if ( $download_active ) {
+			$main = esc_html__( ' Auto Updated ', 'myvideoroom' );
+		}
+		$suffix = esc_html__( 'Basket', 'my-video-room' );
+
+		echo esc_html( $prefix . $main . $suffix );
+
+		?>
+
+	</h1>
 	<?php
 	if ( $basket_list ) {
 		?>
 	<div class="mvr-header-table-left">
 				<?php
-				$delete_basket_nonce = wp_create_nonce( WooCommerce::SETTING_DELETE_BASKET );
-				$nav_button_filter   = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
-				$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce );
-				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-				echo $nav_button_filter;
+				if ( ! $download_active ) {
+					$delete_basket_nonce = wp_create_nonce( WooCommerce::SETTING_DELETE_BASKET );
+					$nav_button_filter   = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
+					$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce, null, 'mvr-main-button-cancel' );
+					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+					echo $nav_button_filter;
+				}
+
 				?>
 	</div>
 

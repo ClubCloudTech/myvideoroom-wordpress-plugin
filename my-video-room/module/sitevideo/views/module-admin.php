@@ -42,16 +42,16 @@ return function (
 			);
 			?>
 		</p>
-		<div aria-label="button" class="button button-primary myvideoroom-sitevideo-add-room-button">
+		<button class="button button-primary myvideoroom-sitevideo-add-room-button">
 		<i class="dashicons dashicons-plus-alt"></i>
 		<?php esc_html_e( 'Add new room', 'my-video-room' ); ?>
-	</div>
+		</button>
 
-	<div aria-label="button" class="button button-primary">
+	<button class="button button-primary">
 	<a href="<?php echo esc_url_raw( $settings_url ) . '&room_id=' . esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>" data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>" data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>" class="myvideoroom-sitevideo-settings myvideoroom-button-link">
 	<i class="dashicons dashicons-admin-settings"></i>
 	<?php esc_html_e( 'Default Site Conference Appearance', 'my-video-room' ); ?></a>
-	</div>
+	</button>
 
 	<hr />
 
