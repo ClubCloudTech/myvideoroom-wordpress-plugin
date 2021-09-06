@@ -44,9 +44,9 @@ return function (
 	<?php
 		echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
 
-// Render Product Broadcast Table if Autosync isnt on.
+	// Render Product Broadcast Table if Autosync isnt on.
 
-if ( ! $download_active ) {
+	if ( ! $download_active ) {
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 		echo Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name );
 	}

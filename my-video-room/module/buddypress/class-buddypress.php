@@ -148,8 +148,8 @@ class BuddyPress {
 	 * @return void
 	 */
 	public function enable() {
-		//add_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
-		//add_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
+		// add_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
+		// add_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
 	}
 	/**
 	 * Disable- disables BuddyPress initialisation actions.
@@ -157,8 +157,8 @@ class BuddyPress {
 	 * @return void
 	 */
 	public function disable() {
-		//remove_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
-		//remove_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
+		// remove_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
+		// remove_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
 	}
 
 	/**
@@ -362,7 +362,7 @@ class BuddyPress {
 	 */
 	public function setup_root_nav_action() {
 		global $bp;
-		
+
 		$hide_tab_from_user = Factory::get_instance( BuddyPressSecurity::class )->block_friends_display();
 		if ( ! $hide_tab_from_user ) {
 

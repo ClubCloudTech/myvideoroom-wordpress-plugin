@@ -65,7 +65,7 @@ class SecurityRoomHelpers {
 
 		return true;
 	}
-	
+
 	/**
 	 * Security Update Post ID's for regeneration.
 	 *

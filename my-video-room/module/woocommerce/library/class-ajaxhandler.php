@@ -100,7 +100,7 @@ class AjaxHandler {
 						echo '<strong>' . esc_html__( 'All Products Added To Queue', 'myvideoroom' ) . '</strong>';
 						Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name );
 					} else {
-						echo '<strong>' . esc_html__( 'There was a problem adding items to queue - please refresh page', 'myvideoroom' ) . '</strong>';	
+						echo '<strong>' . esc_html__( 'There was a problem adding items to queue - please refresh page', 'myvideoroom' ) . '</strong>';
 					}
 				}
 
@@ -123,7 +123,7 @@ class AjaxHandler {
 
 				} else {
 					Factory::get_instance( ShoppingBasket::class )->delete_all_queued_products_from_cart( $room_name );
-					echo '<strong>' . esc_html__( 'All Products Cleared from Queue', 'myvideoroom' ) . '</strong>';	
+					echo '<strong>' . esc_html__( 'All Products Cleared from Queue', 'myvideoroom' ) . '</strong>';
 				}
 
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -174,7 +174,7 @@ class AjaxHandler {
 			// Case Delete Entire Basket Step2 - Post Confirmation.
 
 			case WooCommerce::SETTING_DELETE_BASKET_CONFIRMED:
-				if ( ! wp_verify_nonce( $auth_nonce, WooCommerce::SETTING_DELETE_BASKET_CONFIRMED ) ){
+				if ( ! wp_verify_nonce( $auth_nonce, WooCommerce::SETTING_DELETE_BASKET_CONFIRMED ) ) {
 					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
 
 				} else {
@@ -233,9 +233,9 @@ class AjaxHandler {
 				} else {
 					// Turn On Basket Sharing Action.
 					$state = Factory::get_instance( HostManagement::class )->turn_on_basket_broadcast( $room_name );
-					if ( true === $state ){
+					if ( true === $state ) {
 						echo '<strong>' . esc_html__( 'Your Basket is now being shared automatically', 'myvideoroom' ) . '</strong>';
-						//Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name );
+						// Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name ).
 					} else {
 						echo '<strong>' . esc_html__( 'There was a problem sharing your basket.', 'myvideoroom' ) . '</strong>';
 					}
@@ -475,7 +475,7 @@ class AjaxHandler {
 				} else {
 					$response['status'] = 'nochange';
 				}
-				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+				$host_status     = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 				$response['aas'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
 
 				return \wp_send_json( $response );

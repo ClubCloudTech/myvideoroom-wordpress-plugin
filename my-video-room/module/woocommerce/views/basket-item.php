@@ -24,9 +24,9 @@ return function (
 	ob_start();
 	?>
 	<tr class="active" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
-		<td class="plugin-title column-primary myvideoroom-product-image"><?php echo $item['image'] ; ?></td>
+		<td class="plugin-title column-primary myvideoroom-product-image"><?php echo $item['image']; ?></td>
 
-		<td>		<a href="<?php echo $item['link'] ; ?>"
+		<td>		<a href="<?php echo $item['link']; ?>"
 					title="<?php esc_html_e( 'View Product', 'myvideoroom' ); ?>"
 					target="_blank"
 
@@ -39,7 +39,7 @@ return function (
 			<?php echo $item['price'] . ' x ' . $item['quantity']; ?>
 		</td>
 		<td class="plugin-title column-primary">
-		<?php echo $item['subtotal'] ?>
+		<?php echo $item['subtotal']; ?>
 		</td>
 		<td>
 			<?php
@@ -68,7 +68,7 @@ return function (
 				></a>
 				<?php
 			} else {
-				echo esc_html_e ('Basket is Auto Syncing');
+				echo esc_html_e( 'Basket is Auto Syncing' );
 			}
 			?>
 		</td>

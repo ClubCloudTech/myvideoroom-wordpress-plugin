@@ -70,9 +70,9 @@ class SectionTemplates {
 					</ul>
 				</nav>
 <div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master">
-<?php
-	echo \do_action( 'myvideoroom_notification_master', $room_name );
-?>
+				<?php
+				echo \do_action( 'myvideoroom_notification_master', $room_name );
+				?>
 </div>
 				<?php
 				foreach ( $tabs as $article_output ) {

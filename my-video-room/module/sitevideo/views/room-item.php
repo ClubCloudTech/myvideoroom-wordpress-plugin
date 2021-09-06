@@ -33,7 +33,7 @@ return function (
 	// Add any extra options.
 	$edit_actions = \apply_filters( 'myvideoroom_sitevideo_edit_actions', $edit_actions, $room->id );
 
-	if ( MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room_type) {
+	if ( MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room_type ) {
 		$settings_url   = \add_query_arg( array( 'room_id' => $room->id ), \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
 		$edit_actions[] = array(
 			__( 'View settings' ),

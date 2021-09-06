@@ -105,7 +105,7 @@ class WooCommerce {
 	 */
 	public function init() {
 		// @TODO remove before production.
-		\add_shortcode( 'ccproxytest', array( $this, 'proxy_test') );
+		\add_shortcode( 'ccproxytest', array( $this, 'proxy_test' ) );
 
 		// Add Basket Menu to Main Frontend Templates.
 		add_filter(
@@ -209,6 +209,12 @@ class WooCommerce {
 		}
 	}
 
+	/**
+	 * For Testing Purposes.
+	 * Starts PHP Session Cookie in case user is signed out.
+	 *
+	 * @return void
+	 */
 	public function proxy_test() {
 		Factory::get_instance( WooCommerceRoomSyncDAO::class )->install_woocommerce_room_presence_table();
 		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();

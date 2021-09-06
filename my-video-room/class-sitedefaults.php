@@ -116,21 +116,21 @@ class SiteDefaults {
 			true
 		);
 
-	// --
+		// --
 		// css
 
 		wp_register_style(
 			'myvideoroom-menutab-header',
 			plugins_url( '/css/menutab.css', __FILE__ ),
 			false,
-			$plugin_version.'1'
+			$plugin_version . '1'
 		);
 
 		wp_register_style(
 			'myvideoroom-template',
 			plugins_url( '/css/template.css', __FILE__ ),
 			false,
-			$plugin_version.'5'
+			$plugin_version . '5'
 		);
 
 		wp_register_style(

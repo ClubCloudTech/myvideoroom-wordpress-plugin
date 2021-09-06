@@ -16,14 +16,14 @@
 				var room_name    = $( this ).data( 'roomName' );
 				var quantity     = $( this ).data( 'quantity' );
 				var variation_id = $( this ).data( 'variationId' );
-				
-				var $container    = $( '.mvr-woocommerce-basket' );
-				var loading_text  = $container.data( 'loadingText' );
-	
+
+				var $container   = $( '.mvr-woocommerce-basket' );
+				var loading_text = $container.data( 'loadingText' );
+
 				$container.html( loading_text );
-	
+
 				var ajax_url = myvideoroom_woocommerce_basket.ajax_url;
-	
+
 				$.ajax(
 					{
 						type: 'post',
@@ -45,13 +45,13 @@
 							var $response_length = response.length;
 							if ( $response_length < 40 ) {
 								triggerRefresh( room_name );
-							
+
 							}
 							$container.html( response );
-							init();	
+							init();
 						},
 						error: function (){
-							setTimeout(() => {  triggerRefresh( room_name ); }, 1000);
+							setTimeout( () => {  triggerRefresh( room_name ); }, 1000 );
 						}
 					}
 				);
@@ -60,17 +60,17 @@
 	}
 
 	function refreshHeartbeat( original_room ) {
-	var ajax_url = myvideoroom_woocommerce_basket.ajax_url;
-	var input_type    = 'refresh';
-	var room_name     = $( '#roomid' ).data( 'roomName' );
-	var last_queuenum = $( '#roomid' ).data( 'lastQueuenum' );
-	var last_carthash = $( '#roomid' ).data( 'lastCarthash' );
-	var $container    = $( '.mvr-woocommerce-basket' );
-	var $notification = $( '.mvr-notification-master' );
-	
-	if ( typeof room_name === 'undefined' ) {
-		room_name = original_room;
-	} else {
+		var ajax_url      = myvideoroom_woocommerce_basket.ajax_url;
+		var input_type    = 'refresh';
+		var room_name     = $( '#roomid' ).data( 'roomName' );
+		var last_queuenum = $( '#roomid' ).data( 'lastQueuenum' );
+		var last_carthash = $( '#roomid' ).data( 'lastCarthash' );
+		var $container    = $( '.mvr-woocommerce-basket' );
+		var $notification = $( '.mvr-notification-master' );
+
+		if ( typeof room_name === 'undefined' ) {
+			room_name = original_room;
+		} else {
 			$.ajax(
 				{
 					type: 'post',
@@ -85,35 +85,35 @@
 					},
 					success: function (response) {
 
-						var state_response = JSON.parse(response);
+						var state_response = JSON.parse( response );
 						if (state_response.status == 'change') {
 							$notification.html( state_response.aas + '' );
 							triggerRefresh( room_name );
-						} 
-						
+						}
+
 						if (state_response.status == 'nochange') {
 
-						} 
+						}
 					},
 					error: function (){
-						setTimeout(() => {  triggerRefresh( room_name ); }, 1000);
+						setTimeout( () => {  triggerRefresh( room_name ); }, 1000 );
 					}
-				}
+					}
 			);
-		} 
+		}
 		if ( typeof room_name === 'undefined' && $container ) {
 			triggerRefresh( room_name );
 		}
 	}
 
 	function triggerRefresh( room_checksum ) {
-		
-		var ajax_url = myvideoroom_woocommerce_basket.ajax_url;
-		var $container   = $( '.mvr-woocommerce-basket' );
-		var input_type   = 'reload';
-		var room_name    = $( '#roomid' ).data( 'roomName' );
 
-		if ( typeof room_name === 'undefined' ){
+		var ajax_url   = myvideoroom_woocommerce_basket.ajax_url;
+		var $container = $( '.mvr-woocommerce-basket' );
+		var input_type = 'reload';
+		var room_name  = $( '#roomid' ).data( 'roomName' );
+
+		if ( typeof room_name === 'undefined' ) {
 			room_name = room_checksum;
 		}
 				$.ajax(
@@ -131,7 +131,7 @@
 							init();
 						},
 						error: function ( response ){
-							setTimeout(() => {  triggerRefresh; }, 1000);
+							setTimeout( () => {  triggerRefresh; }, 1000 );
 						}
 					}
 				);
@@ -143,17 +143,15 @@
 			handleEvent
 		);
 		$( document.body ).on(
-			'updated_cart_totals', 
+			'updated_cart_totals',
 			handleEvent
 		);
 	}
-	
-	
 
-var original_room = $( '#roomid' ).data( 'roomName' );
+	var original_room = $( '#roomid' ).data( 'roomName' );
 
-    setInterval( refreshHeartbeat, 6000, original_room );
-	window.myvideoroom_shoppingbasket_init=init;
+	setInterval( refreshHeartbeat, 6000, original_room );
+	window.myvideoroom_shoppingbasket_init = init;
 	init();
 
 })( jQuery );

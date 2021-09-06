@@ -41,10 +41,10 @@ class ShoppingBasket {
 		$this->basket_sync_heartbeat( $room_name );
 		$this->broadcast_basket( $room_name );
 
-		//echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
+		// echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
 
-// Add Notification Bar to Video Call.
-// \add_action( 'myvideoroom_notification_master', array( Factory::get_instance( self::class ), 'render_notification_tab' ), 10, 2 );
+		// Add Notification Bar to Video Call.
+		// \add_action( 'myvideoroom_notification_master', array( Factory::get_instance( self::class ), 'render_notification_tab' ), 10, 2 );
 		// Add Queue Length and Cart Hash for Sync flag.
 		$current_cartnum   = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
 		$current_cart_data = WC()->cart->get_cart_hash();
@@ -170,7 +170,7 @@ class ShoppingBasket {
 
 		if ( ! $basket_sync_flag ) {
 			Factory::get_instance( WooCommerceVideoDAO::class )->delete_record( $record_id );
-		} 
+		}
 
 		if ( $success_state ) {
 			return true;
@@ -215,13 +215,12 @@ class ShoppingBasket {
 		// Get Current Basket Objects.
 		$basket_array = $this->get_cart_objects( $room_name );
 
-		if ( count ( $basket_array ) < 1 ) {
+		if ( count( $basket_array ) < 1 ) {
 			return false;
 		}
 
 		$cart_session = Factory::get_instance( HostManagement::class )->get_user_session();
 		$timestamp    = \current_time( 'timestamp' );
-
 
 		foreach ( $basket_array as $item ) {
 				$register = new WooCommerceVideo(
@@ -241,10 +240,10 @@ class ShoppingBasket {
 			if ( $success ) {
 				return true;
 				// Notify Global Event.
-				//Factory::get_instance( HostManagement::class )->notify_user( $room_name );
+				// Factory::get_instance( HostManagement::class )->notify_user( $room_name );
 			}
 		}
-	return false;
+		return false;
 
 	}
 
@@ -378,7 +377,7 @@ class ShoppingBasket {
 	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $product_or_id = null, string $style = null ):string {
 
 		$id_text = null;
-		if ( $product_or_id ){
+		if ( $product_or_id ) {
 			$id_text = ' data-record-id="' . $product_or_id . '" ';
 		}
 
@@ -493,7 +492,6 @@ class ShoppingBasket {
 				Factory::get_instance( HostManagement::class )->notify_user( $room_name );
 				$this->broadcast_basket( $room_name );
 			}
-
 		}
 
 		if ( $woocart_changed || $queue_changed || $change_heartbeat ) {
@@ -556,7 +554,7 @@ class ShoppingBasket {
 	 * @return string|Array depending on return flag
 	 */
 	public function render_sync_queue_table( string $room_name, bool $object_only = null ) {
-		if ( ! $room_name ){
+		if ( ! $room_name ) {
 			return null;
 		}
 

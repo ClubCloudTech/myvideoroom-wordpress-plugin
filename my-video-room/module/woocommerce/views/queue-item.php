@@ -32,7 +32,7 @@ return function (
 			<?php echo $item['price'] . ' x ' . $item['quantity']; ?>
 		</td>
 		<td class="plugin-title column-primary">
-		<?php echo $item['subtotal'] ?>
+		<?php echo $item['subtotal']; ?>
 		</td>
 		<td>
 				<a href=""

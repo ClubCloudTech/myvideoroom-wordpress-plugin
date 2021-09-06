@@ -36,5 +36,6 @@ use MyVideoRoomPlugin\Plugin;
 		);
 	}
 );
-/*->add_compatibility_hook(
+/*
+->add_compatibility_hook(
 			fn() => Factory::get_instance( Module::class )->is_module_active( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME )*/

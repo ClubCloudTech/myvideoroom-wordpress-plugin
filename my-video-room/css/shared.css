@@ -23,10 +23,10 @@ code.myvideoroom-shortcode-example {
 }
 
 .myvideoroom-button-link {
-    color: white;
-    text-decoration: none;
+	color: white;
+	text-decoration: none;
 }
 .myvideoroom-button-link a:hover, .myvideoroom-button-link a:visited, .myvideoroom-button-link a:active {
-    color: white;
-    text-decoration: none;
+	color: white;
+	text-decoration: none;
 }

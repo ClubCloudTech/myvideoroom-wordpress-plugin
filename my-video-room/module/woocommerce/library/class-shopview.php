@@ -34,30 +34,30 @@ class ShopView {
 	 * @return string
 	 */
 	public function show_shop( string $room_name = null ): void {
-		
+
 		return null;
-		$args = array(
-			'post_type'             => 'product',
-			'post_status'           => 'publish',
-			'ignore_sticky_posts'   => 1,
-			'posts_per_page'        => '12',
-			'tax_query'             => array(
+		$args     = array(
+			'post_type'           => 'product',
+			'post_status'         => 'publish',
+			'ignore_sticky_posts' => 1,
+			'posts_per_page'      => '12',
+			'tax_query'           => array(
 				array(
-					'taxonomy'      => 'product_cat',
-					'field'         => 'term_id', 
-					'terms'         => 26,
-					'operator'      => 'IN', 
+					'taxonomy' => 'product_cat',
+					'field'    => 'term_id',
+					'terms'    => 26,
+					'operator' => 'IN',
 				),
 				array(
-					'taxonomy'      => 'product_visibility',
-					'field'         => 'slug',
-					'terms'         => 'exclude-from-catalog', // Possibly 'exclude-from-search' too
-					'operator'      => 'NOT IN'
-				)
-			)
+					'taxonomy' => 'product_visibility',
+					'field'    => 'slug',
+					'terms'    => 'exclude-from-catalog', // Possibly 'exclude-from-search' too
+					'operator' => 'NOT IN',
+				),
+			),
 		);
-		$products = new WP_Query($args);
-		var_dump($products);
+		$products = new WP_Query( $args );
+		var_dump( $products );
 
 	}
 

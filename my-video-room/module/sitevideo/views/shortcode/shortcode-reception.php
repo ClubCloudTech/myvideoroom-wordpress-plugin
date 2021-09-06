@@ -25,15 +25,15 @@ return function (
 	\wp_enqueue_script( 'myvideoroom-monitor' );
 	ob_start();
 
-	if ( ! is_user_logged_in() ){
+	if ( ! is_user_logged_in() ) {
 		?><div class="mvr-admin-page-wrap">
 		<h2><?php esc_html_e( 'Please Sign in to Access Reception', 'my-video-room' ); ?></h2>
 		<?php
 		global $wp;
 		$args = array(
-			'redirect'       => home_url( $wp->request ),
+			'redirect' => home_url( $wp->request ),
 		);
-		wp_login_form($args);
+		wp_login_form( $args );
 
 		?>
 	</div>

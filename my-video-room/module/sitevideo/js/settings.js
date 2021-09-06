@@ -10,7 +10,7 @@
 	$( '.myvideoroom-sitevideo-settings' ).on(
 		'click',
 		function (e) {
-			var room_id = $( this ).data( 'roomId' );
+			var room_id    = $( this ).data( 'roomId' );
 			var input_type = $( this ).data( 'inputType' );
 
 			var $container   = $( '.mvr-security-room-host' );

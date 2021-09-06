@@ -53,7 +53,7 @@
 								return false;
 							}
 						);
-						$( '.mvr-notification-button').on(
+						$( '.mvr-notification-button' ).on(
 							'click',
 							function (event) {
 
@@ -70,7 +70,6 @@
 							}
 						);
 					}
-
 				);
 			}
 		);
