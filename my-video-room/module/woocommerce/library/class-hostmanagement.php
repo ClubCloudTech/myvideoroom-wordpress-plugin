@@ -690,6 +690,7 @@ class HostManagement {
 				</div>
 				';
 		}
+		return '';
 	}
 
 	/**
