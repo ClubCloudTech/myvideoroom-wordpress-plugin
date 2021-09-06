@@ -105,7 +105,7 @@ class WooCommerce {
 	 */
 	public function init() {
 		// @TODO remove before production.
-		\add_shortcode( 'ccproxytest', array( $this, 'proxy_test') );
+		\add_shortcode( 'ccproxytest', array( $this, 'proxy_test' ) );
 
 		// Add Basket Menu to Main Frontend Templates.
 		add_filter(
