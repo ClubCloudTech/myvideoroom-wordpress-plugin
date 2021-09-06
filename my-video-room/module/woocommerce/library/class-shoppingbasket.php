@@ -387,7 +387,7 @@ class ShoppingBasket {
 		}
 
 		return '
-		<button class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax">
+		<button id="mvr-basket-button" onclick="opentest2()" class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax">
 		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
 		</button>
 		';

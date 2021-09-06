@@ -129,7 +129,7 @@ class WooCommerce {
 			'myvideoroom-notification-buttons',
 			plugins_url( '/../../js/notification.js', __FILE__ ),
 			array( 'jquery' ),
-			117,
+			119,
 			true
 		);
 
