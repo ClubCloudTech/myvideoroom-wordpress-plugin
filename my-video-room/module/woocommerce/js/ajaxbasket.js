@@ -142,6 +142,11 @@
 			'click',
 			handleEvent
 		);
+		$( '.myvideoroom-button-link' ).on(
+			'click',
+			opentest2
+		);
+		
 		$( document.body ).on(
 			'updated_cart_totals',
 			handleEvent

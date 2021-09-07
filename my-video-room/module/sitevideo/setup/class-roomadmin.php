@@ -40,6 +40,7 @@ class RoomAdmin {
 		// Check_page_exists has three states, Yes, No, Or Orphan - if yes - exit function, if no create the room, if orphan delete room mapping in database and create room again.
 		if ( RoomMap::PAGE_STATUS_EXISTS === $check_page_exists ) {
 			$post_id = Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
+
 			wp_update_post(
 				array(
 					'ID'          => $post_id,
@@ -49,7 +50,7 @@ class RoomAdmin {
 					'post_type'   => 'page',
 				)
 			);
-
+			\do_action( 'myvideoroom_post_room_create', $slug, $display_title );
 			return $post_id;
 		}
 
@@ -68,6 +69,8 @@ class RoomAdmin {
 			'ID'           => $post_id,
 			'post_content' => '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $post_id . '"]',
 		);
+		\do_action( 'myvideoroom_post_room_create', $slug, $display_title );
+
 		wp_update_post( $post_content );
 		wp_publish_post( $post_id );
 

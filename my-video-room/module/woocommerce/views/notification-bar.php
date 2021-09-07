@@ -7,8 +7,6 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
-use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
-use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
  * Render the WooCommerce Basket Render Page

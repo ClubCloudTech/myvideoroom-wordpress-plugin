@@ -11,7 +11,6 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo as WooCommerceVideoCart;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
-use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class WooCommerceVideo
@@ -530,7 +529,7 @@ class WooCommerceVideoDAO {
 			return null;
 		}
 
-		$cart_id   = WooCommerce::SETTING_BASKET_REQUEST_ON;
+		$cart_id   = WooCommerce::SETTING_BASKET_REQUEST_USER;
 		$cache_key = $cart_id;
 
 		if ( ! $cart_id ) {

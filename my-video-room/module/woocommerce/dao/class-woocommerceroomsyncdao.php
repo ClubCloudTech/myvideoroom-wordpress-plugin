@@ -315,7 +315,7 @@ class WooCommerceRoomSyncDAO {
 	 * Notify User.
 	 *
 	 * @param string $room_name The Room Name.
-	 * @param string $new_master_id - (optional). If entered without state to set - will automatically turn on sync for this ID.
+	 * @param string $user_hash_id - User hash to check for.
 	 *
 	 * @return bool|null
 	 */
@@ -334,10 +334,9 @@ class WooCommerceRoomSyncDAO {
 			$wpdb->prepare(
 				'
 					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
-					SET last_notification = %d, timestamp = %d 
+					SET last_notification = %d
 					WHERE cart_id = %s AND room_name = %s
 				',
-				$timestamp,
 				$timestamp,
 				$user_hash_id,
 				$room_name,
@@ -348,7 +347,7 @@ class WooCommerceRoomSyncDAO {
 			$result = new WooCommerceRoomSync(
 				$user_hash_id,
 				$room_name,
-				current_time( 'timestamp' ),
+				null,
 				current_time( 'timestamp' ),
 				$am_i_host,
 				WooCommerce::SETTING_BASKET_REQUEST_OFF,
@@ -418,7 +417,7 @@ class WooCommerceRoomSyncDAO {
 			$result = new WooCommerceRoomSync(
 				WooCommerce::SETTING_BASKET_REQUEST_USER,
 				$room_name,
-				current_time( 'timestamp' ),
+				null,
 				current_time( 'timestamp' ),
 				false,
 				WooCommerce::SETTING_BASKET_REQUEST_OFF,
@@ -477,7 +476,7 @@ class WooCommerceRoomSyncDAO {
 			$result = new WooCommerceRoomSync(
 				WooCommerce::SETTING_BASKET_REQUEST_USER,
 				$room_name,
-				current_time( 'timestamp' ),
+				null,
 				current_time( 'timestamp' ),
 				false,
 				WooCommerce::SETTING_BASKET_REQUEST_OFF,
@@ -501,10 +500,11 @@ class WooCommerceRoomSyncDAO {
 	 *
 	 * @param string $cart_id   The Cart id.
 	 * @param string $room_name The room name.
+	 * @param bool   $host_status - Optional Host Status.
 	 *
 	 * @return WooCommerceRoomSync|null
 	 */
-	public function get_by_id_sync_table( string $cart_id, string $room_name ): ?WooCommerceRoomSync {
+	public function get_by_id_sync_table( string $cart_id, string $room_name, bool $host_status = null ): ?WooCommerceRoomSync {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(

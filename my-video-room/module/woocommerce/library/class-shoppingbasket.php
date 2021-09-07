@@ -41,10 +41,9 @@ class ShoppingBasket {
 		$this->basket_sync_heartbeat( $room_name );
 		$this->broadcast_basket( $room_name );
 
+		Factory::get_instance( ShopView::class )->show_shop( $room_name );
 		// echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
 
-		// Add Notification Bar to Video Call.
-		// \add_action( 'myvideoroom_notification_master', array( Factory::get_instance( self::class ), 'render_notification_tab' ), 10, 2 );
 		// Add Queue Length and Cart Hash for Sync flag.
 		$current_cartnum   = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
 		$current_cart_data = WC()->cart->get_cart_hash();
@@ -104,7 +103,7 @@ class ShoppingBasket {
 		$cart_session = Factory::get_instance( HostManagement::class )->get_user_session();
 		$timestamp    = \current_time( 'timestamp' );
 
-		$current_record = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( $cart_session, $room_name );
+		$current_record = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( $cart_session, $room_name, $host_status );
 
 		if ( $current_record ) {
 			$current_record->set_timestamp( $timestamp );
@@ -303,7 +302,7 @@ class ShoppingBasket {
 		$success_state = false;
 
 		$queue_objects = Factory::get_instance( WooCommerceVideoDAO::class )->get_current_basket_sync_queue_records( $room_name );
-
+//echo \var_dump( $queue_objects);
 		foreach ( $queue_objects as $item ) {
 
 			$product_id   = $item->get_product_id();
@@ -386,7 +385,7 @@ class ShoppingBasket {
 		}
 
 		return '
-		<button id="mvr-basket-button" onclick="opentest2()" class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax">
+		<button id="mvr-basket-button" class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax">
 		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
 		</button>
 		';

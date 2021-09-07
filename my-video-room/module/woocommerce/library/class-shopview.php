@@ -9,13 +9,6 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
-use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
-use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
-use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync as WooCommerceRoomSyncEntity;
-use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo;
-use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
-
 /**
  * Class ShopView Basket
  * Handles all elements of rendering WooCommerce Category Related Archives
@@ -25,17 +18,13 @@ class ShopView {
 	/**
 	 * Render Confirmation Pages
 	 *
-	 * @param  string $action_type - The type of Operation to confirm.
 	 * @param string $room_name -  Name of Room.
-	 * @param  string $auth_nonce - Authentication Nonce.
-	 * @param string $message - Message to Display.
-	 * @param string $confirmation_button_approved - Button to Display for Approved.
-	 * @param string $data_for_confirmation - Extra parameter like record id, product id etc for strengthening nonce.
-	 * @return string
+	 * @return void
 	 */
 	public function show_shop( string $room_name = null ): void {
 
-		return null;
+		$this->does_category_exist( $room_name );
+
 		$args     = array(
 			'post_type'           => 'product',
 			'post_status'         => 'publish',
@@ -56,13 +45,58 @@ class ShopView {
 				),
 			),
 		);
-		$products = new WP_Query( $args );
-		var_dump( $products );
+		$products = new \WP_Query( $args );
 
 	}
 
+	/**
+	 * Check a WooCommerce Category Exists by from Room Name.
+	 *
+	 * @param string $room_name -  Name of Room.
+	 * @return ?string
+	 */
+	public function does_category_exist( string $room_name ) {
 
+		$object = get_term_by( 'slug', $room_name, 'product_cat' );
 
+		if ( $object ) {
+			return $object;
+		} else {
+			return false;
+		}
 
+		return null;
+	}
 
+	/**
+	 * Check a WooCommerce Category Exists by from Room Name.
+	 *
+	 * @param string $slug            -  Name of Room.
+	 * @param string $category_name   -  Category Name.
+	 * @return ?string
+	 */
+	public function create_product_category( string $slug, string $category_name ) {
+
+		$room_check = $this->does_category_exist( $slug );
+
+		if ( $room_check ) {
+			return null;
+		}
+
+		$category_description = \esc_html__( 'MyVideoRoom - Room Store', 'myvideoroom' );
+		$id                   = wp_insert_term(
+			$category_name,
+			'product_cat',
+			array(
+				'description' => $category_description,
+				'parent'      => 0,
+				'slug'        => $slug,
+			)
+		);
+		if ( $id ) {
+			return $id;
+		} else {
+			return null;
+		}
+	}
 }

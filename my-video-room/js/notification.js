@@ -1,9 +1,5 @@
-function opentest2() {
-	alert( Date.now() );
-
+function opentest2()
+{
+	document.getElementById('mvr-shopping-basket').click();
+	console.log('test');
 }
-
-
-
-
-  document.getElementById( 'mvr-basket-button' ).onclick = function opentest2();

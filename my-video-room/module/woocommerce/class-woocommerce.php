@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
 
 /**
  * Class WooCommerce- Provides the WooCommerce Integration Features for MyVideoRoom.
@@ -121,7 +122,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			163,
+			164,
 			true
 		);
 
@@ -129,7 +130,7 @@ class WooCommerce {
 			'myvideoroom-notification-buttons',
 			plugins_url( '/../../js/notification.js', __FILE__ ),
 			array( 'jquery' ),
-			119,
+			135,
 			true
 		);
 
@@ -147,6 +148,8 @@ class WooCommerce {
 			'myvideoroom_woocommerce_basket',
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
+
+		add_action( 'myvideoroom_post_room_create', array( Factory::get_instance( ShopView::class ) ), 10, 2 );
 
 		// Initialise PHPSESSION to track logged out users.
 		$this->start_php_session();
@@ -187,7 +190,8 @@ class WooCommerce {
 			esc_html__( 'Shopping Basket', 'my-video-room' ),
 			'shoppingbasket',
 			fn() => Factory::get_instance( ShoppingBasket::class )
-				->render_basket( $room_name, $host_status )
+				->render_basket( $room_name, $host_status ),
+			'mvr-shopping-basket'
 		);
 
 		array_push( $input, $basket_menu );
