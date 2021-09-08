@@ -31,26 +31,6 @@ class ShopView {
 		if ( ! $category_check ) {
 			return '';
 		}
-		wp_enqueue_style( 'woocommerce_frontend_styles' );
-		wp_enqueue_style( 'woocommerce_fancybox_styles' );
-		wp_enqueue_style( 'woocommerce_chosen_styles' );
-		wp_enqueue_style( 'woocommerce_prettyPhoto_css' );
-		wp_enqueue_script( 'wc_price_slider' );
-		wp_enqueue_script( 'wc-single-product' );
-		wp_enqueue_script( 'wc-add-to-cart' );
-		wp_enqueue_script( 'wc-cart-fragments' );
-		wp_enqueue_script( 'wc-checkout' );
-		wp_enqueue_script( 'wc-add-to-cart-variation' );
-		wp_enqueue_script( 'wc-single-product' );
-		wp_enqueue_script( 'wc-cart' );
-		wp_enqueue_script( 'wc-chosen' );
-		wp_enqueue_script( 'woocommerce' );
-		wp_enqueue_script( 'prettyPhoto' );
-		wp_enqueue_script( 'prettyPhoto-init' );
-		wp_enqueue_script( 'jquery-blockui' );
-		wp_enqueue_script( 'jquery-placeholder' );
-		wp_enqueue_script( 'fancybox' );
-		wp_enqueue_script( 'jqueryui' );
 
 		$category_id = Factory::get_instance( WooCategory::class )->get_category_id_by_room_name( $room_name );
 
@@ -102,7 +82,7 @@ class ShopView {
 				'status'   => 'publish',
 				'limit'    => $products_per_page,
 				'page'     => $paged,
-				'featured' => true,
+				'category' => $room_name,
 				'paginate' => true,
 				'return'   => 'ids',
 				'orderby'  => $ordering['orderby'],
@@ -123,6 +103,7 @@ ob_start();
 			foreach ( $featured_products->products as $featured_product ) {
 				$post_object = get_post( $featured_product );
 				setup_postdata( $GLOBALS['post'] =& $post_object );
+				//echo \var_dump( $post_object );
 				wc_get_template_part( 'content', 'product' );
 			}
 			wp_reset_postdata();
