@@ -13,7 +13,7 @@ use MyVideoRoomPlugin\Factory;
 
 /**
  * Class ShopView Basket
- * Handles all elements of rendering WooCommerce Category Related Archives
+ * Handles all elements of rendering WooCommerce Category Related Archives.
  */
 class ShopView {
 
@@ -54,7 +54,7 @@ class ShopView {
 				),
 			),
 		);
-/*
+		/*
 		$loop = new \WP_Query( $args );
 		if ( $loop->have_posts() ) {
 			while ( $loop->have_posts() ) : $loop->the_post();
@@ -69,7 +69,7 @@ class ShopView {
 		if ( ! function_exists( 'wc_get_products' ) ) {
 			return '';
 		}
-*/
+		*/
 		$paged               = ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
 		$ordering            = WC()->query->get_catalog_ordering_args();
 		$ordering['orderby'] = array_shift( explode( ' ', $ordering['orderby'] ) );
@@ -89,7 +89,7 @@ class ShopView {
 				'order'    => $ordering['order'],
 			)
 		);
-ob_start();
+
 		wc_set_loop_prop( 'current_page', $paged );
 		wc_set_loop_prop( 'is_paginated', wc_string_to_bool( true ) );
 		wc_set_loop_prop( 'page_template', get_page_template_slug() );
@@ -103,8 +103,14 @@ ob_start();
 			foreach ( $featured_products->products as $featured_product ) {
 				$post_object = get_post( $featured_product );
 				setup_postdata( $GLOBALS['post'] =& $post_object );
-				//echo \var_dump( $post_object );
-				wc_get_template_part( 'content', 'product' );
+				// wc_get_template_part( 'content', 'product' );
+				echo $post_object->post_title . ' id-> ' . $post_object->ID . ' Link-> ' . $post_object->guid . '<br>';
+				$image = wp_get_attachment_image_src( get_post_thumbnail_id( $post_object->ID ), 'single-post-thumbnail' );
+				?>
+				<img src="<?php echo $image[0]; ?>" data-id="<?php echo $post_object->ID; ?>">
+				<?php
+
+				// echo var_dump( $post_object );
 			}
 			wp_reset_postdata();
 			woocommerce_product_loop_end();
@@ -113,6 +119,6 @@ ob_start();
 			do_action( 'woocommerce_no_products_found' );
 		}
 
-		return \ob_get_flush();
+		return '';
 	}
 }
