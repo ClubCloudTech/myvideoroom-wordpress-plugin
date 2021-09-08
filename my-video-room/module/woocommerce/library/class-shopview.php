@@ -74,7 +74,7 @@ class ShopView {
 				),
 			),
 		);
-
+/*
 		$loop = new \WP_Query( $args );
 		if ( $loop->have_posts() ) {
 			while ( $loop->have_posts() ) : $loop->the_post();
@@ -85,11 +85,11 @@ class ShopView {
 		}
 		\wp_reset_postdata();
 		return '';
-/*
+
 		if ( ! function_exists( 'wc_get_products' ) ) {
 			return '';
 		}
-
+*/
 		$paged               = ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
 		$ordering            = WC()->query->get_catalog_ordering_args();
 		$ordering['orderby'] = array_shift( explode( ' ', $ordering['orderby'] ) );
@@ -132,7 +132,6 @@ ob_start();
 			do_action( 'woocommerce_no_products_found' );
 		}
 
-		*/
 		return \ob_get_flush();
 	}
 }
