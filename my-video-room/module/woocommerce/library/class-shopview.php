@@ -24,13 +24,33 @@ class ShopView {
 	 * @return ?string
 	 */
 	public function show_shop( string $room_name = null ): ?string {
-return '';
+
 		$room           = Factory::get_instance( WooCategory::class )->activate_product_category();
 		$category_check = Factory::get_instance( WooCategory::class )->does_category_exist( $room_name );
 
 		if ( ! $category_check ) {
 			return '';
 		}
+		wp_enqueue_style( 'woocommerce_frontend_styles' );
+		wp_enqueue_style( 'woocommerce_fancybox_styles' );
+		wp_enqueue_style( 'woocommerce_chosen_styles' );
+		wp_enqueue_style( 'woocommerce_prettyPhoto_css' );
+		wp_enqueue_script( 'wc_price_slider' );
+		wp_enqueue_script( 'wc-single-product' );
+		wp_enqueue_script( 'wc-add-to-cart' );
+		wp_enqueue_script( 'wc-cart-fragments' );
+		wp_enqueue_script( 'wc-checkout' );
+		wp_enqueue_script( 'wc-add-to-cart-variation' );
+		wp_enqueue_script( 'wc-single-product' );
+		wp_enqueue_script( 'wc-cart' );
+		wp_enqueue_script( 'wc-chosen' );
+		wp_enqueue_script( 'woocommerce' );
+		wp_enqueue_script( 'prettyPhoto' );
+		wp_enqueue_script( 'prettyPhoto-init' );
+		wp_enqueue_script( 'jquery-blockui' );
+		wp_enqueue_script( 'jquery-placeholder' );
+		wp_enqueue_script( 'fancybox' );
+		wp_enqueue_script( 'jqueryui' );
 
 		$category_id = Factory::get_instance( WooCategory::class )->get_category_id_by_room_name( $room_name );
 
@@ -54,7 +74,7 @@ return '';
 				),
 			),
 		);
-		/*
+
 		$loop = new \WP_Query( $args );
 		if ( $loop->have_posts() ) {
 			while ( $loop->have_posts() ) : $loop->the_post();
@@ -64,17 +84,17 @@ return '';
 			echo __( 'No products found' );
 		}
 		\wp_reset_postdata();
-		return '';*/
-
+		return '';
+/*
 		if ( ! function_exists( 'wc_get_products' ) ) {
 			return '';
 		}
 
-		  $paged               = ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
-		  $ordering            = WC()->query->get_catalog_ordering_args();
-		  $ordering['orderby'] = array_shift( explode( ' ', $ordering['orderby'] ) );
-		  $ordering['orderby'] = stristr( $ordering['orderby'], 'price' ) ? 'meta_value_num' : $ordering['orderby'];
-		  $products_per_page   = apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() );
+		$paged               = ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
+		$ordering            = WC()->query->get_catalog_ordering_args();
+		$ordering['orderby'] = array_shift( explode( ' ', $ordering['orderby'] ) );
+		$ordering['orderby'] = stristr( $ordering['orderby'], 'price' ) ? 'meta_value_num' : $ordering['orderby'];
+		$products_per_page   = apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() );
 
 		$featured_products = wc_get_products(
 			array(
@@ -89,7 +109,7 @@ return '';
 				'order'    => $ordering['order'],
 			)
 		);
-
+ob_start();
 		wc_set_loop_prop( 'current_page', $paged );
 		wc_set_loop_prop( 'is_paginated', wc_string_to_bool( true ) );
 		wc_set_loop_prop( 'page_template', get_page_template_slug() );
@@ -111,6 +131,8 @@ return '';
 		} else {
 			do_action( 'woocommerce_no_products_found' );
 		}
-		return '';
+
+		*/
+		return \ob_get_flush();
 	}
 }

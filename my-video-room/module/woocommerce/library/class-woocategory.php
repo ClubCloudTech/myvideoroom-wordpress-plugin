@@ -28,9 +28,8 @@ class WooCategory {
 	public function does_category_exist( string $room_name ) {
 
 		$object = get_term_by( 'slug', $room_name, 'product_cat' );
-
 		if ( $object ) {
-			return $object;
+			return true;
 		} else {
 			return false;
 		}
@@ -52,6 +51,23 @@ class WooCategory {
 	}
 
 	/**
+	 * Get Parent of Room.
+	 *
+	 * @return ?int - the category room name. or Null if no room parent category
+	 */
+	public function get_room_parent_category_id(): ?int {
+		$room_name = WooCommerce::TABLE_NAME_WOOCOMMERCE_ROOM;
+		$object    = get_term_by( 'slug', $room_name, 'product_cat' );
+		if ( $object ) {
+			return $object->term_id;
+		} else {
+			return false;
+		}
+	}
+
+
+
+	/**
 	 * Check a WooCommerce Category Exists by from Room Name.
 	 *
 	 * @param string $slug            -  Name of Room.
@@ -66,10 +82,16 @@ class WooCategory {
 		if ( $room_check ) {
 			return null;
 		}
+		// Resolve if no Parent ID what the ID is.
 		if ( $parent_id ) {
 			$parent = $parent_id;
 		} else {
-			$parent = 0;
+			$parent_category = $this->get_room_parent_category_id();
+			if ( $parent_category ) {
+				$parent = $parent_category;
+			} else {
+				$parent = 0;
+			}
 		}
 
 		$category_description = \esc_html__( 'MyVideoRoom - Room Store', 'myvideoroom' );
