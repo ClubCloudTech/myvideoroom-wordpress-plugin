@@ -41,9 +41,6 @@ class ShoppingBasket {
 		$this->basket_sync_heartbeat( $room_name );
 		$this->broadcast_basket( $room_name );
 
-		Factory::get_instance( ShopView::class )->show_shop( $room_name );
-		// echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
-
 		// Add Queue Length and Cart Hash for Sync flag.
 		$current_cartnum   = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
 		$current_cart_data = WC()->cart->get_cart_hash();
@@ -83,7 +80,7 @@ class ShoppingBasket {
 	 * @param string $room_name -  Name of Room.
 	 * @return string
 	 */
-	public function render_notification_tab( string $room_name ):string {
+	public function render_notification_tab( string $input = null, string $room_name ):string {
 
 		// Render Confirmation Page View.
 		$render = require __DIR__ . '/../views/notification-bar.php';
@@ -209,7 +206,7 @@ class ShoppingBasket {
 		}
 
 		// Clear Current Basket.
-		$clear = Factory::get_instance( WooCommerceVideoDAO::class )->delete_sync_basket( $room_name );
+		Factory::get_instance( WooCommerceVideoDAO::class )->clear_broadcast_basket_queue( $room_name );
 
 		// Get Current Basket Objects.
 		$basket_array = $this->get_cart_objects( $room_name );
@@ -235,12 +232,7 @@ class ShoppingBasket {
 					null
 				);
 
-			$success = Factory::get_instance( WooCommerceVideoDAO::class )->create( $register );
-			if ( $success ) {
-				return true;
-				// Notify Global Event.
-				// Factory::get_instance( HostManagement::class )->notify_user( $room_name );
-			}
+			Factory::get_instance( WooCommerceVideoDAO::class )->create( $register );
 		}
 		return false;
 
@@ -302,7 +294,7 @@ class ShoppingBasket {
 		$success_state = false;
 
 		$queue_objects = Factory::get_instance( WooCommerceVideoDAO::class )->get_current_basket_sync_queue_records( $room_name );
-//echo \var_dump( $queue_objects);
+
 		foreach ( $queue_objects as $item ) {
 
 			$product_id   = $item->get_product_id();

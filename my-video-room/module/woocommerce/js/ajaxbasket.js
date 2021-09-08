@@ -4,8 +4,6 @@
  * @package MyVideoRoomPlugin\Module\WooCommerce\JS\ajaxbasket.js
  */
 
-/*global myvideoroom_woocommerce_basket*/
-
 (function ($) {
 	var handleEvent = function (e){
 				var product_id   = $( this ).data( 'productId' );
@@ -104,6 +102,14 @@
 		if ( typeof room_name === 'undefined' && $container ) {
 			triggerRefresh( room_name );
 		}
+		$( '.myvideoroom-button-link' ).on(
+			'click',
+			mvrchangefocus
+		);
+		$( '.mvr-main-button-cancel' ).on(
+			'click',
+			mvrchangefocus
+		);
 	}
 
 	function triggerRefresh( room_checksum ) {
@@ -142,20 +148,22 @@
 			'click',
 			handleEvent
 		);
-		$( '.myvideoroom-button-link' ).on(
-			'click',
-			opentest2
-		);
-		
+
 		$( document.body ).on(
 			'updated_cart_totals',
 			handleEvent
 		);
 	}
 
-	var original_room = $( '#roomid' ).data( 'roomName' );
+	/* Disabling Execution outside of MVR */
+	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
 
-	setInterval( refreshHeartbeat, 6000, original_room );
+	if ( mvrIsactive.length > 0) {
+		var original_room = $( '#roomid' ).data( 'roomName' );
+		setInterval( refreshHeartbeat, 6000, original_room );
+	}
+
+	/* Initialise Runtime */
 	window.myvideoroom_shoppingbasket_init = init;
 	init();
 

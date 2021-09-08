@@ -6,7 +6,6 @@
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
@@ -42,7 +41,7 @@ return function (
 	>
 	</div>
 	<?php
-		echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
+		// echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
 
 	// Render Product Broadcast Table if Autosync isnt on.
 

@@ -92,7 +92,7 @@ class WooCommerceRoomSync {
 	public function __construct(
 		string $cart_id,
 		string $room_name,
-		int $timestamp = null,
+		?int $timestamp = null,
 		int $last_notification = null,
 		bool $room_host = null,
 		string $basket_change = null,

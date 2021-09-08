@@ -7,6 +7,8 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
+use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
  * Render the WooCommerce Basket Render Page
@@ -27,18 +29,17 @@ return function (
 	?>
 
 	<div id="notification" class="mvr-table-row">
-		<div id="notificationleft" class="mvr-left" >
+
 		<?php
+
+			$output  = Factory::get_instance( HostManagement::class )->master_button( $room_name );
+			$output .= Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name );
+			$output .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
+
 			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-			echo Factory::get_instance( HostManagement::class )->master_button( $room_name );
+			echo $output;
 		?>
-		</div>
-		<div id="notificationright" class="mvr-right">
-		<?php
-			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-			echo Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name );
-		?>
-		</div>		
+
 	</div>
 	<?php
 

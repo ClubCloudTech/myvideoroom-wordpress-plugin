@@ -15,6 +15,7 @@ use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\WooCategory;
 
 /**
  * Class WooCommerce- Provides the WooCommerce Integration Features for MyVideoRoom.
@@ -23,7 +24,7 @@ class WooCommerce {
 
 	const MODULE_WOOCOMMERCE_BASKET_ID           = 10561;
 	const SETTING_HEARTBEAT_THRESHOLD            = 12;
-	const SETTING_TOLERANCE_FOR_LAST_ACTIVE      = 30 * 60; /* minutes x seconds */
+	const SETTING_TOLERANCE_FOR_LAST_ACTIVE      = 10 * 60; /* minutes x seconds */
 	const MODULE_WOOCOMMERCE_NAME                = 'woocommerce-module';
 	const MODULE_WOOCOMMERCE_BASKET              = 'woocommerce-basket';
 	const SETTING_REFRESH_BASKET                 = 'woocommerce-refresh-basket';
@@ -37,6 +38,7 @@ class WooCommerce {
 	const SETTING_BROADCAST_PRODUCT_CONFIRMED    = 'woocommerce-broadcast-single-product-confirmed';
 	const TABLE_NAME_WOOCOMMERCE_CART            = 'myvideoroom_wocommerce_cart_sync';
 	const TABLE_NAME_WOOCOMMERCE_ROOM            = 'myvideoroom_wocommerce_room_presence';
+	const MAIN_CATEGORY_DISPLAY                  = 'MyVideoRoom Parent Store Category';
 
 	const SETTING_ACCEPT_ALL_QUEUE           = 'accept-all';
 	const SETTING_ACCEPT_ALL_QUEUE_CONFIRMED = 'accept-all-confirmed';
@@ -90,6 +92,9 @@ class WooCommerce {
 		);
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_WOOCOMMERCE_BASKET_ID, true );
 
+		// Create Product Categories for each room.
+		Factory::get_instance( WooCategory::class )->activate_product_category();
+
 	}
 
 	/**
@@ -105,10 +110,25 @@ class WooCommerce {
 	 * Required for Normal Runtime.
 	 */
 	public function init() {
+		if ( ! $this->is_woocommerce_active() ) {
+			return null;
+		}
+
 		// @TODO remove before production.
 		\add_shortcode( 'ccproxytest', array( $this, 'proxy_test' ) );
 
 		// Add Basket Menu to Main Frontend Templates.
+		add_filter(
+			'myvideoroom_main_template_render',
+			array(
+				$this,
+				'render_shortcode_store_tab',
+			),
+			51,
+			4
+		);
+
+				// Add Basket Menu to Main Frontend Templates.
 		add_filter(
 			'myvideoroom_main_template_render',
 			array(
@@ -118,11 +138,12 @@ class WooCommerce {
 			50,
 			4
 		);
+
 		\wp_enqueue_script(
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			164,
+			170,
 			true
 		);
 
@@ -130,12 +151,12 @@ class WooCommerce {
 			'myvideoroom-notification-buttons',
 			plugins_url( '/../../js/notification.js', __FILE__ ),
 			array( 'jquery' ),
-			135,
+			139,
 			true
 		);
 
 		// Add Notification Bar to Video Call.
-		\add_action( 'myvideoroom_notification_master', array( Factory::get_instance( ShoppingBasket::class ), 'render_notification_tab' ), 10, 2 );
+		\add_filter( 'myvideoroom_notification_master', array( Factory::get_instance( ShoppingBasket::class ), 'render_notification_tab' ), 100, 2 );
 
 		// Ajax Handler for Basket.
 		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
@@ -149,11 +170,22 @@ class WooCommerce {
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
 
-		add_action( 'myvideoroom_post_room_create', array( Factory::get_instance( ShopView::class ) ), 10, 2 );
+		add_action( 'myvideoroom_post_room_create', array( Factory::get_instance( WooCategory::class ), 'create_product_category' ), 10, 2 );
 
 		// Initialise PHPSESSION to track logged out users.
 		$this->start_php_session();
 
+	}
+
+	/**
+	 * Is WooCommerce Active - checks if WooCommerce is enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_woocommerce_active(): bool {
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		return is_plugin_active( 'woocommerce/woocommerce.php' );
 	}
 
 	/**
@@ -192,6 +224,39 @@ class WooCommerce {
 			fn() => Factory::get_instance( ShoppingBasket::class )
 				->render_basket( $room_name, $host_status ),
 			'mvr-shopping-basket'
+		);
+
+		array_push( $input, $basket_menu );
+		return $input;
+
+	}
+
+	/**
+	 * Controller Function to Render Shopping Store by room in Main Shortcode.
+	 *
+	 * @param array  $input       - the inbound menu.
+	 * @param int    $post_id     - the user or entity identifier.
+	 * @param string $room_name   - the room identifier.
+	 * @param bool   $host_status - whether function is for a host type.
+	 *
+	 * @return array - outbound menu.
+	 */
+	public function render_shortcode_store_tab( array $input, int $post_id = null, string $room_name, bool $host_status ): array {
+
+		// Check Activation Status of Basket Module.
+		$module_id     = self::MODULE_WOOCOMMERCE_BASKET_ID;
+		$module_status = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( $module_id );
+
+		if ( ! $module_status ) {
+			return $input;
+		}
+
+		$basket_menu = new MenuTabDisplay(
+			esc_html__( 'Storefront', 'my-video-room' ),
+			'storefront',
+			fn() => Factory::get_instance( ShopView::class )
+				->show_shop( $room_name, $host_status ),
+			'mvr-shop'
 		);
 
 		array_push( $input, $basket_menu );

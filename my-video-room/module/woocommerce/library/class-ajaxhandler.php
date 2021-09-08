@@ -476,7 +476,7 @@ class AjaxHandler {
 					$response['status'] = 'nochange';
 				}
 				$host_status     = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
-				$response['aas'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
+				$response['aas'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( null, $room_name );
 
 				return \wp_send_json( $response );
 

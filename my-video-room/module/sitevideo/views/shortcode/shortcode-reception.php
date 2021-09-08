@@ -5,9 +5,7 @@
  * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
  */
 
-use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\SiteDefaults;

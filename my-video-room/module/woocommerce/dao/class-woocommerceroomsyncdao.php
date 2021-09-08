@@ -305,8 +305,40 @@ class WooCommerceRoomSyncDAO {
 		// Clear Basket Transfer State.
 		$this->update_basket_transfer_state( $room_name );
 
+		// Flush other sync requests.
+		$this->flush_sync_state( $room_name );
+
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 		\wp_cache_delete( $cart_id, __CLASS__ . '::get_room_info' );
+
+		return true;
+	}
+
+	/**
+	 * Update Master Status in Database.
+	 *
+	 * @param string $cart_id   The New ID for the Master.
+	 * @param string $room_name The Room Name.
+	 *
+	 * @return bool|null
+	 */
+	public function flush_sync_state( string $room_name ): ?bool {
+		global $wpdb;
+
+		// Flush all Update Requests.
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->query(
+			$wpdb->prepare(
+				'
+					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
+					SET sync_state = 0
+					WHERE room_name = %s
+				',
+				$room_name,
+			)
+		);
+		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 
 		return true;
 	}
@@ -342,7 +374,8 @@ class WooCommerceRoomSyncDAO {
 				$room_name,
 			)
 		);
-		// If Record Doesn't Exist Create Record.
+		/*
+		 If Record Doesn't Exist Create Record.
 		if ( ! $result ) {
 			$result = new WooCommerceRoomSync(
 				$user_hash_id,
@@ -356,7 +389,7 @@ class WooCommerceRoomSyncDAO {
 				null
 			);
 			$this->create( $result );
-		}
+		}*/
 
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 
@@ -471,21 +504,6 @@ class WooCommerceRoomSyncDAO {
 				$room_name,
 			)
 		);
-		// If Record Doesn't Exist Create Record.
-		if ( ! $result ) {
-			$result = new WooCommerceRoomSync(
-				WooCommerce::SETTING_BASKET_REQUEST_USER,
-				$room_name,
-				null,
-				current_time( 'timestamp' ),
-				false,
-				WooCommerce::SETTING_BASKET_REQUEST_OFF,
-				null,
-				false,
-				null
-			);
-			$this->create( $result );
-		}
 
 		if ( ! $result ) {
 			return false;
