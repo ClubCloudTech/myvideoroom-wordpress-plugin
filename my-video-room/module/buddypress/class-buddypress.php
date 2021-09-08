@@ -74,6 +74,8 @@ class BuddyPress {
 		if ( ! $is_module_enabled && ! $is_buddypress_enabled ) {
 			return null;
 		}
+
+		wp_enqueue_style( 'dashicons' );
 		add_shortcode( self::SHORTCODE_TAG . 'bpgroupname', array( $this, 'bp_groupname_shortcode' ) );
 		$is_user_module_enabled  = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_USER_ID );
 		$is_group_module_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_GROUP_ID );

@@ -450,7 +450,7 @@ class WooCommerceRoomSyncDAO {
 			$result = new WooCommerceRoomSync(
 				WooCommerce::SETTING_BASKET_REQUEST_USER,
 				$room_name,
-				null,
+				current_time( 'timestamp' ),
 				current_time( 'timestamp' ),
 				false,
 				WooCommerce::SETTING_BASKET_REQUEST_OFF,

@@ -36,16 +36,16 @@ return function (
 		</td>
 		<td>
 				<a href=""
-					class="mvr-icons dashicons dashicons-dismiss myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
+					class="mvr-icons myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
 					data-record-id="<?php echo esc_attr( $item['record_id'] ); ?>"
 					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT_QUEUE ); ?>"
 					data-room-name="<?php echo esc_attr( $room_name ); ?>"
 					title="<?php esc_html_e( 'Reject Item - Do not add to your basket', 'myvideoroom' ); ?>"
 					target="_blank"
 
-				></a>
+				><span class="dashicons dashicons-dismiss"></span></a>
 				<a href=""
-					class="mvr-icons dashicons dashicons-yes-alt myvideoroom-woocommerce-basket-ajax"
+					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 					data-record-id="<?php echo esc_attr( $item['record_id'] ); ?>"
 					data-quantity="<?php echo esc_attr( $item['quantity'] ); ?>"
@@ -55,8 +55,7 @@ return function (
 					data-auth-nonce="<?php echo esc_attr( wp_create_nonce( WooCommerce::SETTING_ADD_PRODUCT . $item['product_id'] ) ); ?>"
 					title="<?php esc_html_e( 'Accept Item- add it to your basket', 'myvideoroom' ); ?>"
 					target="_blank"
-
-				></a>
+				><span class="dashicons dashicons-yes-alt"></span></a>
 		</td>
 	</tr>
 

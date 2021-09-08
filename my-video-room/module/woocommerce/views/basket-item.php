@@ -46,16 +46,17 @@ return function (
 			if ( ! $item['am_i_downloading'] ) {
 				?>
 				<a href=""
-					class="mvr-icons dashicons dashicons-dismiss myvideoroom-woocommerce-basket-ajax"
+					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
+					alt="remove"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT ); ?>"
 					data-room-name="<?php echo esc_attr( $room_name ); ?>"
 					title="<?php esc_html_e( 'Delete this item from Basket', 'myvideoroom' ); ?>"
 					target="_blank"
 
-				></a>
+				><span class="dashicons dashicons-dismiss"></span></a>
 				<a href=""
-					class="mvr-icons dashicons dashicons-upload myvideoroom-woocommerce-basket-ajax"
+					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 					data-quantity="<?php echo esc_attr( $item['quantity'] ); ?>"
 					data-variation-id="<?php echo esc_attr( $item['variation_id'] ); ?>"
@@ -65,7 +66,7 @@ return function (
 					title="<?php esc_html_e( 'Share This Product With the Room', 'myvideoroom' ); ?>"
 					target="_blank"
 
-				></a>
+				><span class="dashicons dashicons-upload"></span></a>
 				<?php
 			} else {
 				echo esc_html_e( 'Basket is Auto Syncing' );

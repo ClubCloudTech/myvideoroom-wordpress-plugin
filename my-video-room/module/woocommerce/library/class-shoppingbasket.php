@@ -400,7 +400,7 @@ class ShoppingBasket {
 	public function basket_product_share_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $quantity, string $product_id, string $variation_id ):string {
 
 		return '
-		<button class="mvr-form-button mvr-notification-button myvideoroom-woocommerce-basket-ajax">
+		<button class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax">
 		<a href="" data-input-type="' . $button_type . '" 
 		 data-auth-nonce="' . $nonce . '"
 		 data-room-name="' . $room_name . '"
