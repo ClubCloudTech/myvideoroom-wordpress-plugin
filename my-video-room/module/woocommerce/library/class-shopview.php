@@ -24,7 +24,7 @@ class ShopView {
 	 * @return ?string
 	 */
 	public function show_shop( string $room_name = null ): ?string {
-
+return '';
 		$room           = Factory::get_instance( WooCategory::class )->activate_product_category();
 		$category_check = Factory::get_instance( WooCategory::class )->does_category_exist( $room_name );
 
