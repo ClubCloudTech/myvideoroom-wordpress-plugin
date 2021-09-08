@@ -13,6 +13,7 @@ use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\CartAjax;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\WooCategory;
@@ -147,6 +148,22 @@ class WooCommerce {
 			true
 		);
 
+		\wp_enqueue_script(
+			'myvideoroom-woocommerce-carthandler',
+			\plugins_url( '/js/carthandler.js', \realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			1,
+			true
+		);
+
+		\wp_enqueue_script(
+			'myvideoroom-woocommerce-modal',
+			\plugins_url( '/js/woo-modal.js', \realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			1,
+			true
+		);
+
 		wp_enqueue_script(
 			'myvideoroom-notification-buttons',
 			plugins_url( '/../../js/notification.js', __FILE__ ),
@@ -158,9 +175,13 @@ class WooCommerce {
 		// Add Notification Bar to Video Call.
 		\add_filter( 'myvideoroom_notification_master', array( Factory::get_instance( ShoppingBasket::class ), 'render_notification_tab' ), 100, 2 );
 
-		// Ajax Handler for Basket.
+		// Ajax Handler for Basket Management.
 		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
 		\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
+
+		// Ajax Handler for Add to Basket Button.
+		add_action( 'wp_ajax_woocommerce_ajax_add_to_cart', array( Factory::get_instance( CartAjax::class ), 'woocommerce_ajax_add_to_cart' ) );
+		add_action( 'wp_ajax_nopriv_woocommerce_ajax_add_to_cart', array( Factory::get_instance( CartAjax::class ), 'woocommerce_ajax_add_to_cart' ) );
 
 		\wp_enqueue_script( 'myvideoroom-admin-tabs' );
 
