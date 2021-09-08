@@ -519,8 +519,13 @@ class ShoppingBasket {
 		if ( ! $user_object ) {
 			return false;
 		}
-		$user_timestamp   = $user_object->get_last_notification() + WooCommerce::SETTING_HEARTBEAT_THRESHOLD;
-		$global_object    = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
+		$user_timestamp = $user_object->get_last_notification() + WooCommerce::SETTING_HEARTBEAT_THRESHOLD;
+		$global_object  = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
+
+		if ( ! $global_object ) {
+			return false;
+		}
+
 		$global_timestamp = $global_object->get_last_notification() + WooCommerce::SETTING_HEARTBEAT_THRESHOLD;
 
 		if ( ! $user_timestamp && ! $global_timestamp ) {

@@ -24,7 +24,7 @@ return function (
 	ob_start();
 	?>
 	<tr class="active" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
-		<td class="plugin-title column-primary myvideoroom-product-image"><?php echo $item['image']; ?></td>
+		<td class="plugin-title column-primary mvr-icons"><?php echo $item['image']; ?></td>
 
 		<td>		<a href="<?php echo $item['link']; ?>"
 					title="<?php esc_html_e( 'View Product', 'myvideoroom' ); ?>"
