@@ -33,10 +33,11 @@ class ShopView {
 		if ( ! $category_check ) {
 			return '';
 		}
-		$output = do_shortcode( '[products category=' . $room_name . ']' );
+		$output      = do_shortcode( '[products category=' . $room_name . ']' );
+		$last_basket = Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name, null, true );
 
 		$render = require __DIR__ . '/../views/shop-output.php';
-		return $render( $output, $room_name );
+		return $render( $output, $room_name, $last_basket );
 	}
 
 	/**

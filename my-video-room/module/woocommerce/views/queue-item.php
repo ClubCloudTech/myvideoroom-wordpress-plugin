@@ -12,12 +12,14 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
  *
  * @param \stdClass $room The room
  * @param ?string $room_type  Category of Room to Filter.
+ * @param bool $room_basket_archive  Flag whether the table is a user table, or an archive table of the last shared basket.
  *
  * @return string
  */
 return function (
 	array $item,
-	string $room_name
+	string $room_name,
+	bool $room_basket_archive = null
 ): string {
 	ob_start();
 
@@ -25,7 +27,12 @@ return function (
 	<tr class="active" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
 		<td class="plugin-title column-primary mvr-icons"><?php echo $item['image']; ?></td>
 
-		<td><?php echo esc_attr( $item['name'] ); ?></td>
+		<td><a href="<?php echo $item['link']; ?>"
+					title="<?php esc_html_e( 'View Product', 'myvideoroom' ); ?>"
+					target="_blank"
+
+				><?php echo esc_attr( $item['name'] ); ?></a>
+			</td>
 
 
 		<td class="column-description">
@@ -35,6 +42,11 @@ return function (
 		<?php echo $item['subtotal']; ?>
 		</td>
 		<td>
+				<?php
+				
+				if ( ! $item['am_i_downloading'] ) {
+					if ( ! $room_basket_archive ) {
+						?>
 				<a href=""
 					class="mvr-icons myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
 					data-record-id="<?php echo esc_attr( $item['record_id'] ); ?>"
@@ -44,6 +56,10 @@ return function (
 					target="_blank"
 
 				><span class="dashicons dashicons-dismiss"></span></a>
+						<?php
+					}
+					?>
+
 				<a href=""
 					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
@@ -56,6 +72,12 @@ return function (
 					title="<?php esc_html_e( 'Accept Item- add it to your basket', 'myvideoroom' ); ?>"
 					target="_blank"
 				><span class="dashicons dashicons-yes-alt"></span></a>
+
+					<?php
+				} else {
+					echo esc_html_e( 'Basket is Auto Syncing' );
+				}
+				?>
 		</td>
 	</tr>
 

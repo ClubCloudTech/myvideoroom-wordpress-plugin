@@ -1,8 +1,8 @@
 <?php
 /**
- * Shopping Basket WooCommerce Functions
+ * WooCommerce Product Category Function Helpers for MyVideoRoom
  *
- * @package MyVideoRoomPlugin/Module/WooCommerce/ShopView.php
+ * @package MyVideoRoomPlugin/Module/WooCommerce/WooCategory.php
  */
 
 declare( strict_types=1 );
@@ -128,4 +128,24 @@ class WooCategory {
 
 		}
 	}
+
+
+	/**
+	 * Get Category Product Count. By Room Name or ID
+	 *
+	 * @param string $room_name         -  Category Name.
+	 * @param int    $category_id       -  Category Parent ID.
+	 * @return int
+	 */
+	public function get_category_count( string $room_name = null, int $category_id = null ): ?int {
+		if ( $room_name ) {
+			$category_id = $this->get_category_id_by_room_name( $room_name );
+		}
+
+		$term = get_term( $category_id, 'product_cat' ); // <--- tested in my system with this ID
+
+		return $term->count;
+
+	}
+
 }

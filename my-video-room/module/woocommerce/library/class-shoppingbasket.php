@@ -546,46 +546,78 @@ class ShoppingBasket {
 	 *
 	 * @param string $room_name -  Name of Room.
 	 * @param bool   $object_only -  Flag to return only the object and not render the table.
+	 * @param bool   $last_basket -  Flag to return the contents of the last shared basket.
 	 *
 	 * @return string|Array depending on return flag
 	 */
-	public function render_sync_queue_table( string $room_name, bool $object_only = null ) {
+	public function render_sync_queue_table( string $room_name, bool $object_only = null, bool $last_basket = null ) {
 		if ( ! $room_name ) {
 			return null;
 		}
+		// Setting as Global Cart ID in case use case is for the previous cart.
 
-		$cart_id         = Factory::get_instance( HostManagement::class )->get_user_session();
+		if ( true === $last_basket ) {
+			$cart_id = WooCommerce::SETTING_BASKET_REQUEST_ON;
+		} else {
+			$cart_id = Factory::get_instance( HostManagement::class )->get_user_session();
+		}
+
 		$available_queue = Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name );
 		$output_array    = array();
 
 		foreach ( $available_queue as $record_id ) {
-			$cart_item = Factory::get_instance( WooCommerceVideoDAO::class )->get_record_by_record_id( $record_id );
-			if ( $cart_item ) {
-
-				$basket_array                 = array();
-				$product_id                   = $cart_item->get_product_id();
-				$basket_array['record_id']    = $record_id;
-				$basket_array['product_id']   = $product_id;
-				$product                      = wc_get_product( $product_id );
-				$basket_array['quantity']     = $cart_item->get_quantity();
-				$basket_array['variation_id'] = $cart_item->get_variation_id();
-				$basket_array['name']         = $product->get_name();
-				$basket_array['image']        = $product->get_image();
-				$basket_array['price']        = WC()->cart->get_product_price( $product );
-				$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item->get_quantity() );
-				$basket_array['link']         = $product->get_permalink( $cart_item );
-				array_push( $output_array, $basket_array );
-
-			}
+			$basket_array = $this->get_individual_cart_object( $record_id, $room_name );
+			array_push( $output_array, $basket_array );
 		}
+
 			// Return Object.
 		if ( $object_only ) {
 			return $output_array;
 		} else {
 			// Render View.
 			$render = require __DIR__ . '/../views/sync-table-output.php';
-			return $render( $output_array, $room_name );
+			return $render( $output_array, $room_name, $last_basket );
 		}
 	}
 
+	/**
+	 * Get Individual Cart Object
+	 * Prepare Queue Table and Render the view, or return just Queue object to other functions.
+	 *
+	 * @param int    $record_id -  RecordID to return.
+	 * @param string $room_name -  Name of Room.
+	 *
+	 * @return string|Array depending on return flag
+	 */
+	public function get_individual_cart_object( int $record_id = null, string $room_name = null ):?array {
+
+		// Handling Object if passed in. If not getting it direct.
+		if ( $cart ) {
+			$cart_item = $cart;
+		} else {
+			$cart_item = Factory::get_instance( WooCommerceVideoDAO::class )->get_record_by_record_id( $record_id );
+		}
+
+		if ( $cart_item ) {
+
+			$basket_array                 = array();
+			$product_id                   = $cart_item->get_product_id();
+			$basket_array['record_id']    = $record_id;
+			$basket_array['product_id']   = $product_id;
+			$product                      = wc_get_product( $product_id );
+			$basket_array['quantity']     = $cart_item->get_quantity();
+			$basket_array['variation_id'] = $cart_item->get_variation_id();
+			$basket_array['name']         = $product->get_name();
+			$basket_array['image']        = $product->get_image();
+			$basket_array['price']        = WC()->cart->get_product_price( $product );
+			$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item->get_quantity() );
+			$basket_array['link']         = $product->get_permalink( $cart_item );
+		}
+		if ( $room_name ) {
+			$basket_array['am_i_host']         = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+			$basket_array['am_i_broadcasting'] = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
+			$basket_array['am_i_downloading']  = Factory::get_instance( HostManagement::class )->am_i_downloading( $room_name );
+		}
+		return $basket_array;
+	}
 }

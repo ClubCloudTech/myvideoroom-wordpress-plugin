@@ -721,7 +721,7 @@ class HostManagement {
 
 		$my_session = $this->get_user_session();
 		$state      = Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_basket_transfer_state( $room_name, $my_session, WooCommerce::SETTING_BASKET_REQUEST_ON );
-
+		$this->notify_user( $room_name );
 		if ( $state ) {
 			return true;
 		} else {
@@ -739,6 +739,7 @@ class HostManagement {
 
 		$my_session = $this->get_user_session();
 		$state      = Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_basket_transfer_state( $room_name, $my_session, WooCommerce::SETTING_BASKET_REQUEST_OFF );
+		$this->notify_user( $room_name );
 
 		if ( $state ) {
 			return true;

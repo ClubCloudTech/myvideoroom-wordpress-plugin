@@ -8,18 +8,21 @@
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\WooCategory;
 
 /**
  * Render the WooCommerce Basket Render Page
  *
  * @param array   $output   - The Product Archive.
  * @param string $room_name -  Name of Room.
+ * @param string $last_queue -  The display table with the last basket queue shared in the room.
  *
  * @return string
  */
 return function (
 	$output,
-	string $room_name = null
+	string $room_name = null,
+	string $last_queue = null
 ): string {
 	ob_start();
 
@@ -61,7 +64,7 @@ return function (
 		<?php
 
 				esc_html_e(
-					'This room has no products available in its store category and tags.',
+					'This room has no products available in its store category or tags.',
 					'myvideoroom'
 				);
 
@@ -71,6 +74,25 @@ return function (
 
 		<?php
 	}
-
+	if ( $last_queue ) {
+		?>
+				<h2>
+			<?php
+			esc_html_e( 'Previously Shared Basket', 'myvideoroom' );
+			?>
+			</h2>
+			<p>
+			<?php
+			esc_html_e( 'This room previously shared a basket. You can grab a copy of its last products here.', 'myvideoroom' );
+			?>
+			</p>
+				<div  class="mvr-woocommerce-overlay">
+				<?php
+				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - This is pre-formatted from WooCommerce no escape needed.
+				echo $last_queue;
+				?>
+				</div>
+			<?php
+	}
 	return ob_get_clean();
 };
