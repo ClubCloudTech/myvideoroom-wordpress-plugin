@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
 
 /**
  * Class Ajax Handler.
@@ -190,7 +191,7 @@ class AjaxHandler {
 			case WooCommerce::SETTING_BROADCAST_PRODUCT:
 				$message                      = \esc_html__( 'share this product ?', 'myvideoroom' );
 				$broadcast_product_nonce      = wp_create_nonce( WooCommerce::SETTING_BROADCAST_PRODUCT_CONFIRMED );
-				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_product_share_button( WooCommerce::SETTING_BROADCAST_PRODUCT_CONFIRMED, esc_html__( 'Share Product', 'my-video-room' ), $room_name, $broadcast_product_nonce, $quantity, strval( $product_id ), strval( $variation_id ) );
+				$confirmation_button_approved = Factory::get_instance( ShoppingBasket::class )->basket_product_share_button( WooCommerce::SETTING_BROADCAST_PRODUCT_CONFIRMED, esc_html__( 'Share Product', 'my-video-room' ), $room_name, $broadcast_product_nonce, $quantity, $product_id, $variation_id );
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $confirmation_button_approved );
 				break;
@@ -235,7 +236,6 @@ class AjaxHandler {
 					$state = Factory::get_instance( HostManagement::class )->turn_on_basket_broadcast( $room_name );
 					if ( true === $state ) {
 						echo '<strong>' . esc_html__( 'Your Basket is now being shared automatically', 'myvideoroom' ) . '</strong>';
-						// Factory::get_instance( HostManagement::class )->notify_if_broadcasting( $room_name ).
 					} else {
 						echo '<strong>' . esc_html__( 'There was a problem sharing your basket.', 'myvideoroom' ) . '</strong>';
 					}
@@ -434,7 +434,7 @@ class AjaxHandler {
 				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REQUEST_MASTER_APPROVED, esc_html__( 'Approve Request', 'myvideoroom' ), $room_name, $declined_nonce );
 
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $nonce, $message, $button_approved );
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $message, $nonce, $button_approved );
 				break;
 
 					// Case Approve Request for Basket Ownership - Post Confirmation.
@@ -448,6 +448,42 @@ class AjaxHandler {
 					$state = Factory::get_instance( HostManagement::class )->accept_master_change_request( $room_name );
 					if ( true === $state ) {
 						echo '<strong>' . esc_html__( 'Your Request has been approved successfully', 'myvideoroom' ) . '</strong>';
+					} else {
+						echo '<strong>' . esc_html__( 'There was a problem making your request - please refresh', 'myvideoroom' ) . '</strong>';
+					}
+				}
+
+				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				break;
+
+			/*
+			* Save Product to Store Category.
+			*
+			* These Handlers Handle the save to store category operation.
+			*/
+			// Case Save Basket to Room Category.
+			case WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY:
+				$message         = \esc_html__( 'save this product to the room ? This will add it to the room category. To undo, simply remove the category from this product to remove it from the room', 'myvideoroom' );
+				$nonce           = wp_create_nonce( WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY );
+				$confirmed_nonce = wp_create_nonce( WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY_CONFIRMED );
+				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY_CONFIRMED, esc_html__( 'Save it to Room', 'myvideoroom' ), $room_name, $confirmed_nonce, $product_id );
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $nonce, $message, $button_approved );
+				break;
+
+					// Case Approve Request for Basket Ownership - Post Confirmation.
+			case WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY_CONFIRMED:
+				if ( ! wp_verify_nonce( $auth_nonce, WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY_CONFIRMED ) ) {
+					esc_html_e( 'This Operation is Not Authorised', 'myvideoroom' );
+
+				} else {
+					// Activate Category.
+					echo 'ajax confirmed product id->' . $record_id;
+					$state = Factory::get_instance( ShopView::class )->add_category_to_product( $record_id, $room_name );
+					if ( true === $state ) {
+						echo '<strong>' . esc_html__( 'Your Request has been Completed successfully', 'myvideoroom' ) . '</strong>';
 					} else {
 						echo '<strong>' . esc_html__( 'There was a problem making your request - please refresh', 'myvideoroom' ) . '</strong>';
 					}

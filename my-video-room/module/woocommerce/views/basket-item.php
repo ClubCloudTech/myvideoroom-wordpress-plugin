@@ -43,6 +43,7 @@ return function (
 		</td>
 		<td>
 			<?php
+			echo apply_filters( 'myvideoroom_basket_buttons', $buttons, $item, $room_name );
 			if ( ! $item['am_i_downloading'] ) {
 				?>
 				<a href=""

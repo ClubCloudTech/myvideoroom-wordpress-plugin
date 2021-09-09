@@ -2,7 +2,7 @@
 /**
  * Outputs Formatted Table for WooCommerce Shopping Cart
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Module\WooCommerce\Views\Table-Output.php
  */
 
 use MyVideoRoomPlugin\Factory;
@@ -41,8 +41,6 @@ return function (
 	>
 	</div>
 	<?php
-		// echo Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
-
 	// Render Product Broadcast Table if Autosync isnt on.
 
 	if ( ! $download_active ) {

@@ -55,5 +55,4 @@ class CartAjax {
 
 		wp_die();
 	}
-
 }

@@ -72,7 +72,7 @@ class WooCategory {
 	 *
 	 * @param string $slug            -  Name of Room.
 	 * @param string $category_name   -  Category Name.
-	 * @param int    $parent_id          -  Category Parent ID.
+	 * @param int    $parent_id       -  Category Parent ID.
 	 * @return ?string
 	 */
 	public function create_product_category( string $slug, string $category_name, int $parent_id = null ) {

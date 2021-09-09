@@ -10,6 +10,8 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
+use MyVideoRoomPlugin\DAO\RoomMap;
 
 /**
  * Class ShopView Basket
@@ -31,94 +33,77 @@ class ShopView {
 		if ( ! $category_check ) {
 			return '';
 		}
+		$output = do_shortcode( '[products category=' . $room_name . ']' );
 
-		$category_id = Factory::get_instance( WooCategory::class )->get_category_id_by_room_name( $room_name );
+		$render = require __DIR__ . '/../views/shop-output.php';
+		return $render( $output, $room_name );
+	}
 
-		$args = array(
-			'post_type'           => 'product',
-			'post_status'         => 'publish',
-			'ignore_sticky_posts' => 1,
-			'posts_per_page'      => '12',
-			'tax_query'           => array(
-				array(
-					'taxonomy' => 'product_cat',
-					'field'    => 'term_id',
-					'terms'    => $category_id,
-					'operator' => 'IN',
-				),
-				array(
-					'taxonomy' => 'product_visibility',
-					'field'    => 'slug',
-					'terms'    => 'exclude-from-catalog', // Possibly 'exclude-from-search' too
-					'operator' => 'NOT IN',
-				),
-			),
-		);
-		/*
-		$loop = new \WP_Query( $args );
-		if ( $loop->have_posts() ) {
-			while ( $loop->have_posts() ) : $loop->the_post();
-				\wc_get_template_part( 'content', 'product' );
-			endwhile;
+	/**
+	 * Render Save Category Button
+	 *
+	 * @param string $button -    Button in pipeline.
+	 * @param array  $item    -   Object of Room Info.
+	 * @param string $room_name - Object of Room Info.
+	 * @return ?string
+	 */
+	public function render_save_category_button( ?string $button = null, array $item, string $room_name ): string {
+
+		$am_i_host = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+
+		if ( $am_i_host ) {
+
+			return $button .= '
+			<a href=""
+			class="mvr-icons myvideoroom-woocommerce-basket-ajax"
+			data-product-id="' . esc_attr( $item['product_id'] ) . '"
+			data-quantity="' . esc_attr( $item['quantity'] ) . '"
+			data-variation-id="' . esc_attr( $item['variation_id'] ) . '"
+			data-input-type="' . esc_attr( WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY ) . '"
+			data-room-name="' . esc_attr( $room_name ) . '"
+			data-auth-nonce="' . esc_attr( wp_create_nonce( WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY ) ) . '"
+			title="' . esc_html__( 'Save this product to the room permanently (note: this adds it to the room category)', 'myvideoroom' ) . '"
+			target="_blank"	><span class="dashicons dashicons-cloud-upload"></span></a>';
 		} else {
-			echo __( 'No products found' );
-		}
-		\wp_reset_postdata();
-		return '';
-
-		if ( ! function_exists( 'wc_get_products' ) ) {
 			return '';
 		}
-		*/
-		$paged               = ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
-		$ordering            = WC()->query->get_catalog_ordering_args();
-		$ordering['orderby'] = array_shift( explode( ' ', $ordering['orderby'] ) );
-		$ordering['orderby'] = stristr( $ordering['orderby'], 'price' ) ? 'meta_value_num' : $ordering['orderby'];
-		$products_per_page   = apply_filters( 'loop_shop_per_page', wc_get_default_products_per_row() * wc_get_default_product_rows_per_page() );
+	}
 
-		$featured_products = wc_get_products(
-			array(
-				'meta_key' => '_price',
-				'status'   => 'publish',
-				'limit'    => $products_per_page,
-				'page'     => $paged,
-				'category' => $room_name,
-				'paginate' => true,
-				'return'   => 'ids',
-				'orderby'  => $ordering['orderby'],
-				'order'    => $ordering['order'],
-			)
-		);
+	/**
+	 * Render Save Category Button
+	 *
+	 * @param string $product_id -   Object of Room Info.
+	 * @param string $room_name - Object of Room Info.
+	 * @return bool
+	 */
+	public function add_category_to_product( string $product_id, string $room_name ): bool {
 
-		wc_set_loop_prop( 'current_page', $paged );
-		wc_set_loop_prop( 'is_paginated', wc_string_to_bool( true ) );
-		wc_set_loop_prop( 'page_template', get_page_template_slug() );
-		wc_set_loop_prop( 'per_page', $products_per_page );
-		wc_set_loop_prop( 'total', $featured_products->total );
-		wc_set_loop_prop( 'total_pages', $featured_products->max_num_pages );
-
-		if ( $featured_products ) {
-			do_action( 'woocommerce_before_shop_loop' );
-			woocommerce_product_loop_start();
-			foreach ( $featured_products->products as $featured_product ) {
-				$post_object = get_post( $featured_product );
-				setup_postdata( $GLOBALS['post'] =& $post_object );
-				// wc_get_template_part( 'content', 'product' );
-				echo $post_object->post_title . ' id-> ' . $post_object->ID . ' Link-> ' . $post_object->guid . '<br>';
-				$image = wp_get_attachment_image_src( get_post_thumbnail_id( $post_object->ID ), 'single-post-thumbnail' );
-				?>
-				<img src="<?php echo $image[0]; ?>" data-id="<?php echo $post_object->ID; ?>">
-				<?php
-
-				// echo var_dump( $post_object );
-			}
-			wp_reset_postdata();
-			woocommerce_product_loop_end();
-			do_action( 'woocommerce_after_shop_loop' );
-		} else {
-			do_action( 'woocommerce_no_products_found' );
+		$term_to_add = Factory::get_instance( WooCategory::class )->get_category_id_by_room_name( $room_name );
+		if ( ! $term_to_add ) {
+			$room_id     = Factory::get_instance( RoomApp::class )->get_post_id_by_room_name( $room_name );
+			$room_object = Factory::get_instance( RoomApp::class )->get_room_info( $room_id );
+			Factory::get_instance( WooCategory::class )->create_product_category( $room_name, $room->display_name );
+			$term_to_add = Factory::get_instance( WooCategory::class )->get_category_id_by_room_name( $room_name );
 		}
 
-		return '';
+		$term_ids = array();
+		$terms    = wp_get_object_terms( intval( $product_id ), 'product_cat' );
+		if ( count( $terms ) > 0 ) {
+			foreach ( $terms as $item ) {
+				$term_ids[] = $item->term_id;
+			}
+		}
+
+		$term_ids = array();
+		$terms    = wp_get_object_terms( $product_id, 'product_cat' );
+		if ( count( $terms ) > 0 ) {
+			foreach ( $terms as $item ) {
+				$term_ids[] = $item->term_id;
+			}
+		}
+		$term_ids[] = $term_to_add;
+		wp_set_object_terms( $product_id, $term_ids, 'product_cat' );
+		return true;
 	}
+
 }
