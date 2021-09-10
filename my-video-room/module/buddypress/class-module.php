@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin\Module\BuddyPress;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HttpPost;
+use MyVideoRoomPlugin\Module\BuddyPress\Entity\Settings;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\Security\Settings\Field\Select;
 use MyVideoRoomPlugin\Module\Security\Settings\Field\SelectOption;
@@ -130,7 +131,7 @@ class Module {
 			! in_array( $member_restriction, self::MEMBER_OPTIONS, true ) ||
 			! in_array( $friend_restriction, self::FRIEND_OPTIONS, true )
 		) {
-			// maybe should show an error here.
+
 			return $security_video_preference;
 		}
 

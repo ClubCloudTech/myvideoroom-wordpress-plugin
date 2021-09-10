@@ -26,7 +26,7 @@ return function (
 	int $shop_count = null
 ): string {
 	ob_start();
-?>
+	?>
 	<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
 	<div class ="mvr-storefront-master">
 	<div id="storeid" 

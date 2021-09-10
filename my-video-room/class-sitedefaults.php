@@ -46,6 +46,8 @@ class SiteDefaults {
 	const LAST_VISITED_TOLERANCE = 30 * 60; /* Minutes X seconds */
 	const QUEUE_VIEW_TOLERANCE   = 24 * 60 * 60; /* Hours X Minutes X seconds */
 
+	const VIDEO_TEMPLATE_MODE = 1;
+
 
 	/**
 	 * If the initialised function already been run.

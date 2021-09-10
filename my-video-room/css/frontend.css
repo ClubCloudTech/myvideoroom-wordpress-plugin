@@ -24,6 +24,16 @@
 	z-index: 2;
 }
 
+.myvideoroom-side-tab {
+	float: left;
+	width: 15%;
+	min-width: 15%;
+	
+	
+	
+}
+
+
 .myvideoroom-nav-tab-wrapper li:after {
 	border-bottom: 1px solid #c3c4c7;
 	bottom: 0;

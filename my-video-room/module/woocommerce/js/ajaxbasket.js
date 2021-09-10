@@ -88,12 +88,11 @@
 							$notification.html( state_response.notificationbar + '' );
 							$container.html( state_response.mainwindow + '' );
 
-
 						}
 						if (state_response.storestatus == 'change' ) {
 							$notification.html( state_response.notificationbar + '' );
 							$storefront.html( state_response.storefront + '' );
-							
+
 						}
 
 						if (state_response.status == 'nochange') {
@@ -106,7 +105,6 @@
 					}
 			);
 		}
-
 
 		if ( typeof room_name === 'undefined' && $container ) {
 			triggerRefresh( room_name );
@@ -123,12 +121,12 @@
 
 	function triggerRefresh( room_checksum ) {
 
-		var ajax_url   = myvideoroom_woocommerce_basket.ajax_url;
-		var $container = $( '.mvr-woocommerce-basket' );
-		var input_type = 'reload';
-		var room_name  = $( '#roomid' ).data( 'roomName' );
-		var $notification   = $( '.mvr-notification-master' );
-		var $storefront     = $( '.mvr-storefront-master' );
+		var ajax_url      = myvideoroom_woocommerce_basket.ajax_url;
+		var $container    = $( '.mvr-woocommerce-basket' );
+		var input_type    = 'reload';
+		var room_name     = $( '#roomid' ).data( 'roomName' );
+		var $notification = $( '.mvr-notification-master' );
+		var $storefront   = $( '.mvr-storefront-master' );
 
 		if ( typeof room_name === 'undefined' ) {
 			room_name = room_checksum;
@@ -145,12 +143,12 @@
 						},
 						success: function (response) {
 							var state_response = JSON.parse( response );
-						
+
 							$container.html( state_response.mainwindow + '' );
 							$notification.html( state_response.notificationbar + '' );
 							$storefront.html( state_response.storefront + '' );
-									
-						init();
+
+							init();
 						},
 						error: function ( response ){
 							setTimeout( () => {  triggerRefresh; }, 1000 );
@@ -173,11 +171,10 @@
 
 	function notifyRefresh( room_checksum ) {
 
-		var ajax_url   = myvideoroom_woocommerce_basket.ajax_url;
-		var input_type = 'reload';
-		var room_name  = $( '#roomid' ).data( 'roomName' );
-		var $notification   = $( '.mvr-notification-master' );
-		
+		var ajax_url      = myvideoroom_woocommerce_basket.ajax_url;
+		var input_type    = 'reload';
+		var room_name     = $( '#roomid' ).data( 'roomName' );
+		var $notification = $( '.mvr-notification-master' );
 
 		if ( typeof room_name === 'undefined' ) {
 			room_name = room_checksum;
@@ -194,10 +191,10 @@
 						},
 						success: function (response) {
 							var state_response = JSON.parse( response );
-											
+
 							$notification.html( state_response.notificationbar + '' );
-									
-						init();
+
+							init();
 						},
 						error: function ( response ){
 							setTimeout( () => {  triggerRefresh; }, 1000 );

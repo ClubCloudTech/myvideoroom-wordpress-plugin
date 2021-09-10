@@ -11,7 +11,6 @@ namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
-use MyVideoRoomPlugin\DAO\RoomMap;
 
 /**
  * Class ShopView Basket
@@ -33,10 +32,10 @@ class ShopView {
 		if ( ! $category_check ) {
 			return '';
 		}
-		$output      = do_shortcode( '[products category=' . $room_name . ']' );
-		$last_basket = Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name, null, true );
+		$output          = do_shortcode( '[products category=' . $room_name . ']' );
+		$last_basket     = Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name, null, true );
 		$last_storecount = Factory::get_instance( WooCategory::class )->get_category_count( $room_name );
-		$render = require __DIR__ . '/../views/shop-output.php';
+		$render          = require __DIR__ . '/../views/shop-output.php';
 		return $render( $output, $room_name, $last_basket, $last_storecount );
 	}
 

@@ -647,8 +647,8 @@ class HostManagement {
 					</button>';
 
 			case WooCommerce::SETTING_REQUEST_MASTER:
-				$id_text              = $this->get_user_session();
-				//$accept_nonce         = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING );
+				$id_text = $this->get_user_session();
+				// $accept_nonce         = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING );
 				$accept_button_type   = WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING;
 				$accept_button_label  = \esc_html__( 'Accept Transfer Request', 'myvideoroom' );
 				$decline_nonce        = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_DECLINED_PENDING );

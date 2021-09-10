@@ -7,7 +7,7 @@
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Module\BuddyPress;
+namespace MyVideoRoomPlugin\Module\BuddyPress\Entity;
 
 /**
  * Class Settings

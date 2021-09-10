@@ -164,7 +164,7 @@ class BuddyPress {
 	 * @return bool|string|true|null
 	 */
 	public function bp_groupname_shortcode( $params = array() ) {
-		if ( ! Factory::get_instance( self::class )->is_buddypress_active() ) {
+		if ( ! $this->is_buddypress_active() ) {
 			return null;
 		}
 		global $bp;
@@ -235,7 +235,7 @@ class BuddyPress {
 			// Setup My Video Tab. Section 1.
 			\bp_core_new_nav_item(
 				array(
-					'name'                    => 'My Video Room',
+					'name'                    => 'MyVideoRoom',
 					'slug'                    => 'my-video-room',
 					'show_for_displayed_user' => true,
 					'screen_function'         => array( $this, 'myvideo_render_main_screen_function' ),
@@ -280,7 +280,7 @@ class BuddyPress {
 			return null;
 		}
 		if ( \bp_is_active( 'groups' ) && $bp->groups && $bp->groups->current_group ) {
-			$group_link = $bp->root_domain . '/' . $bp->groups->slug . '/' . $bp->groups->current_group->slug . '/';
+			$group_link = $bp->root_domain . '/' . $bp->groups->root_slug . '/' . $bp->groups->current_group->slug . '/';
 			\bp_core_new_subnav_item(
 				array(
 					'name'            => 'Video Room',
@@ -293,51 +293,24 @@ class BuddyPress {
 					'item_css_id'     => 'group-css',
 				)
 			);
-			\bp_core_new_subnav_item(
-				array(
-					'name'            => 'Video Settings',
-					'slug'            => 'video-settings',
-					'parent_url'      => $group_link,
-					'parent_slug'     => $bp->groups->current_group->slug,
-					'screen_function' => array( $this, 'group_video_admin_screen_function' ),
-					'position'        => 300,
-					'user_has_access' => Factory::get_instance( BuddyPressHelpers::class )->bp_can_host_group( get_current_user_id() ),
-					'item_css_id'     => 'group-css',
-				)
-			);
 		}
 	}
+
 
 	/**
 	 * This function renders the group Video Meet tab function
 	 */
 	public function group_video_main_screen_function() {
 		// add title and content here - last is to call the members plugin.php template.
-		\add_action( 'bp_template_content', array( $this, 'group_video_meeting_content_action' ) );
+		\add_action( 'bp_template_content', array( $this, 'buddypress_video_meeting_action' ) );
 		\bp_core_load_template( \apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
 	}
+
 	/**
-	 * This function renders the Video Meeting tab Content that is a child of Video meet
+	 * This function renders the Video Meeting tab Content that is a child of Video meeting
 	 */
-	public function group_video_meeting_content_action() {
-		return Factory::get_instance( BuddyPressVideo::class )->groupmeet_switch();
-	}
-	/**
-	 * Functions to Render Group Admin Panel - Screen Function and Template
-	 */
-	/**
-	 * This function renders the Group Admin Control Panel
-	 */
-	public function group_video_admin_screen_function() {
-		// add title and content here - last is to call the members plugin.php template.
-		\add_action( 'bp_template_content', array( Factory::get_instance( BuddyPressConfig::class ), 'bp_render_group_settings' ) );
-		\bp_core_load_template( \apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
-	}
-	/**
-	 * This function renders the Video Meeting tab Content that is a child of Video meet
-	 */
-	public function group_video_admin_content_action() {
-		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Already Made safe in function
+	public function buddypress_video_meeting_action():void {
+		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Output already sanitised.
 		echo Factory::get_instance( BuddyPressVideo::class )->groupmeet_switch();
 	}
 

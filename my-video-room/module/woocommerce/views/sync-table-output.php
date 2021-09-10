@@ -28,9 +28,8 @@ return function (
 	ob_start();
 
 	if ( ! $room_basket_archive && $basket_list ) {
-		$accept_all_nonce   = wp_create_nonce( WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
-		$nav_button_filter  = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ACCEPT_ALL_QUEUE, esc_html__( 'Accept All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
-		
+		$accept_all_nonce  = wp_create_nonce( WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
+		$nav_button_filter = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ACCEPT_ALL_QUEUE, esc_html__( 'Accept All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
 
 		$message            = esc_html__( 'Items Shared with You', 'myvideoroom' );
 		$reject_all_nonce   = wp_create_nonce( WooCommerce::SETTING_REJECT_ALL_QUEUE );

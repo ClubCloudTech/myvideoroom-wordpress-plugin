@@ -56,14 +56,15 @@ class BuddyPressViews {
 	 * @return null
 	 */
 	public function bp_plugin_control_centre_dashboard() {
-		wp_enqueue_style( 'mvr-guest-reception-template', plugins_url( '/stylesheets/guest-reception.css', __FILE__ ) );
-		?>
-		<div class="mvr-row">
-			<h2 class="mvr-reception-header"><?php esc_html_e( 'Video Settings for ', 'my-video-room' ) . esc_html( get_bloginfo( 'name' ) ); ?></h2>
 
-			<table style="width:100%">
-				<tr>
-					<th style="width:50%"><img src="
+		?>
+<div class="mvr-row">
+	<h2 class="mvr-reception-header">
+		<?php esc_html_e( 'Video Settings for ', 'my-video-room' ) . esc_html( get_bloginfo( 'name' ) ); ?></h2>
+
+	<table style="width:100%">
+		<tr>
+			<th style="width:50%"><img src="
 									<?php
 									// Get ClubCloud Logo from Plugin folder for Form, or use Site Logo if loaded in theme.
 									$custom_logo_id = get_theme_mod( 'custom_logo' );
@@ -76,15 +77,15 @@ class BuddyPressViews {
 									}
 									?>
 									" alt="Site Logo"></th>
-					<th>
-					<?php esc_html_e( 'Video Settings for Please Choose Configuration Option from Tab Above', 'my-video-room' ); ?>
+			<th>
+				<?php esc_html_e( 'Video Settings for Please Choose Configuration Option from Tab Above', 'my-video-room' ); ?>
 
-					</th>
+			</th>
 
-				</tr>
+		</tr>
 
-			</table>
-		</div>
+	</table>
+</div>
 		<?php
 		return null;
 	}

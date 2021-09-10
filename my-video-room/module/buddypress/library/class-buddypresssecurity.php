@@ -158,10 +158,10 @@ class BuddyPressSecurity {
 		}
 		// Are We Friends ?
 		if ( 'is_friend' === $friends_status ) {
-				return false;
-		}
-				// Is Setting set to Do Not Disturb (in which case Render Block will need to display a template and we fall through here) OR is Setting Allow All ?
-		elseif ( '' === $bp_friends_setting || 'Do-Not-Disturb' === $bp_friends_setting || null === $bp_friends_setting ) {
+			return false;
+
+			// Is Setting set to Do Not Disturb (in which case Render Block will need to display a template and we fall through here) OR is Setting Allow All ?
+		} elseif ( '' === $bp_friends_setting || 'Do-Not-Disturb' === $bp_friends_setting || null === $bp_friends_setting ) {
 				return false;
 		}
 		// If none of the above fire the filter.

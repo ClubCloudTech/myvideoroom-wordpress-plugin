@@ -11,7 +11,6 @@ namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
-use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
@@ -506,11 +505,10 @@ class AjaxHandler {
 
 				$response = array();
 				if ( true === $store_change_state ) {
-					$response['storestatus'] = 'change';
+					$response['storestatus']     = 'change';
 					$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
 					$response['storefront']      = Factory::get_instance( ShopView::class )->show_shop( $room_name );
 				}
-
 
 				if ( true === $client_change_state ) {
 					$host_status                 = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
@@ -522,7 +520,6 @@ class AjaxHandler {
 					$response['status'] = 'nochange';
 
 				}
-
 
 				return \wp_send_json( $response );
 

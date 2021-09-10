@@ -7,14 +7,15 @@
 
 declare( strict_types=1 );
 
-namespace MyVideoRoomPlugin\Module\BuddyPress;
+namespace MyVideoRoomPlugin\Module\BuddyPress\Dao;
 
+use MyVideoRoomPlugin\Module\BuddyPress\Entity\Settings;
 use MyVideoRoomPlugin\Plugin;
 
 /**
  * Class Activation
  */
-class Dao {
+class BuddyPressDao {
 
 	/**
 	 * Create the table

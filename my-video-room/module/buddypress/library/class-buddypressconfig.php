@@ -145,57 +145,5 @@ class BuddyPressConfig {
 		<?php
 		return null;
 	}
-
-	/**
-	 * bp_render_group_settings Dialog Box
-	 *
-	 * @return null
-	 */
-	public function bp_render_group_settings() {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
-			return null;
-		}
-		if ( ! bp_is_active( 'groups' ) ) {
-			return null;
-		}
-		global $bp;
-		$group_id = $bp->groups->current_group->slug;
-
-		$user_id        = $bp->groups->current_group->creator_id;
-		$security_tab   = Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
-			$user_id,
-			$group_id,
-			$group_id
-		);
-		$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
-			$user_id,
-			$group_id
-		); ?>
-		<ul class="menu">
-			<div style="display: flex!important;	justify-content: space-between!important; width: 50%;">
-				<a class="cc-menu-header-template" href="javascript:activateTab2( 'page5' )">
-					<h2><?php esc_html_e( 'Room Permissions', 'my-video-room' ); ?></h2>Set Security
-				</a>
-				<a class="cc-menu-header-template" href="javascript:activateTab2( 'page6' )">
-					<h2><?php esc_html_e( 'Video Host Settings', 'my-video-room' ); ?></h2><?php esc_html_e( 'Set Display Settings', 'my-video-room' ); ?>
-				</a>
-			</div>
-		</ul>
-		<div id="tabCtrl2" style="margin-top : 10px; line-height: 2;">
-			<div id="page5" style="display: block;">
-			<?php
-				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Already Made safe in function
-				echo $security_tab;
-			?>
-			</div>
-			<div id="page6" style="display: block;">
-			<?php
-				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Already Made safe in function
-				echo $layout_setting;
-			?>
-			</div>
-		</div>
-		<?php
-	}
 }
 

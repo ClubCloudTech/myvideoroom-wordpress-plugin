@@ -123,10 +123,10 @@ class BuddyPressVideo {
 	 *
 	 * @return string|null
 	 */
-	public function bp_boardroom_video_host() {
+	public function bp_boardroom_video_host():string {
 		// Escape dependencies.
 		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
-			return 'BuddyPress not active';
+			return null;
 		}
 
 		// Shortcode Initialise Hooks/Filters.
@@ -182,7 +182,6 @@ class BuddyPressVideo {
 				Factory::get_instance( UserVideoPreference::class )->choose_settings(
 					$user_id,
 					MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING,
-					array( 'basic', 'premium' )
 				)
 			)
 		);
@@ -205,11 +204,11 @@ class BuddyPressVideo {
 
 		if ( Factory::get_instance( BuddyPressHelpers::class )->bp_can_host_group( get_current_user_id() ) ) {
 
-			return Factory::get_instance( self::class )->bp_group_video_host();
+			return $this->bp_group_video_host();
 
 		} else {
 
-			return Factory::get_instance( self::class )->bp_group_video_guest();
+			return $this->bp_group_video_guest();
 		}
 	}
 
@@ -237,7 +236,7 @@ class BuddyPressVideo {
 
 		// Checking Permissions of for Host Status of Group.
 		if ( ! Factory::get_instance( BuddyPressHelpers::class )->bp_can_host_group( $my_user_id ) ) {
-			Factory::get_instance( self::class )->bp_group_video_guest();
+			$this->bp_group_video_guest();
 		}
 
 		// Security Engine - blocks room rendering if another setting has blocked it ( eg upgrades, site lockdown, or other feature ).
@@ -270,8 +269,6 @@ class BuddyPressVideo {
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
 
-		echo do_shortcode( $myvideoroom_app->output_shortcode_text() );
-
 		array_push( $output_object, $host_menu );
 			$admin_menu = new MenuTabDisplay(
 				esc_html__( 'Host Settings', 'my-video-room' ),
@@ -279,8 +276,7 @@ class BuddyPressVideo {
 				fn() => \do_shortcode(
 					Factory::get_instance( UserVideoPreference::class )->choose_settings(
 						$user_id,
-						$room_name,
-						array( 'basic', 'premium' )
+						$room_name
 					)
 				)
 			);
@@ -295,11 +291,11 @@ class BuddyPressVideo {
 	 * @return string Returns the Shortcode call.
 	 */
 	public function bp_group_video_guest() {
-		global $bp;
 		// Escape dependencies.
 		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
 			return null;
 		}
+		global $bp;
 
 		// Shortcode Initialise Hooks/Filters.
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
@@ -310,7 +306,7 @@ class BuddyPressVideo {
 
 		// Checking Permissions of for Host Status of Group.
 		if ( Factory::get_instance( BuddyPressHelpers::class )->bp_can_host_group( $my_user_id ) ) {
-			Factory::get_instance( self::class )->bp_group_video_host();
+			$this->bp_group_video_host();
 		}
 		// Security Engine - blocks room rendering if another setting has blocked it ( eg upgrades, site lockdown, or other feature ).
 
@@ -349,7 +345,7 @@ class BuddyPressVideo {
 		// Construct Shortcode Template - and execute.
 		$header        = Factory::get_instance( BuddyPressViews::class )->bp_group_guest_template( $user_id );
 		$output_object = array();
-		$host_status   = true;
+		$host_status   = false;
 		$host_menu     = new MenuTabDisplay(
 			esc_html__( 'Video Room', 'my-video-room' ),
 			'videoroom',

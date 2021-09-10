@@ -8,6 +8,7 @@
 namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class SectionTemplate
@@ -31,15 +32,100 @@ class SectionTemplates {
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
 		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 		$tabs         = apply_filters( 'myvideoroom_main_template_render', $inbound_tabs, $user_id, $room_name, $host_status );
-		?>
 
-		<div class="mvr-nav-shortcode-outer-wrap">
-			<div class="mvr-header-section">
-				<?php
+		// Proxy for Site Template Mode.
+		if ( SiteDefaults::VIDEO_TEMPLATE_MODE === 1 ) {
+
+		
+			?>
+
+			<div class="mvr-nav-shortcode-outer-wrap">
+				<div class="mvr-header-section">
+						<?php
+							//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
+							//echo $header;
+						?>
+				</div>
+				<div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master">
+							<?php
+							$output = \apply_filters( 'myvideoroom_notification_master', '', $room_name );
+							// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
+							echo $output;
+							?>
+				</div>
+			
+						<?php
+						$tab_count = \count( $tabs );
+						if ( $tab_count <= 1 ) {
+							//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode already properly escaped.
+							echo $tabs[0]->get_function_callback();
+						} else {
+							?>
+				
+				<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper myvideoroom-side-tab">
+				<ul>
+							<?php
+									$active = ' nav-tab-active';
+
+							foreach ( $tabs as $menu_output ) {
+								$tab_display_name = $menu_output->get_tab_display_name();
+								$tab_slug         = $menu_output->get_tab_slug();
+								$object_id        = $menu_output->get_element_id();
+								?>
+						<li>
+							<a class="nav-tab<?php echo esc_attr( $active ); ?>" 
+														<?php
+														if ( $object_id ) {
+															echo 'id = "' . esc_attr( $object_id ) . '" ';
+														}
+														?>
+												href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+								<?php echo esc_html( $tab_display_name ); ?>
+							</a>
+						</li>
+				</ul>
+								<?php
+								$active = null;
+							}
+							?>
+					
+				</nav>
+
+
+							<?php
+							foreach ( $tabs as $article_output ) {
+								$function_callback = $article_output->get_function_callback();
+								$tab_slug          = $article_output->get_tab_slug();
+								?>
+				<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+								<?php
+									// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
+									echo $function_callback;
+								?>
+				</article>
+								<?php
+							}
+						}
+						?>
+			</div>
+						<?php
+						return \ob_get_clean();
+		
+		
+		
+		
+		// Original Template
+		} else {
+
+			?>
+
+<div class="mvr-nav-shortcode-outer-wrap">
+	<div class="mvr-header-section">
+			<?php
 				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
 				echo $header;
-				?>
-			</div>
+			?>
+	</div>
 
 			<?php
 			$tab_count = \count( $tabs );
@@ -48,57 +134,58 @@ class SectionTemplates {
 				echo $tabs[0]->get_function_callback();
 			} else {
 				?>
-				<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-					<ul>
-						<?php
+	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
+		<ul>
+				<?php
 						$active = ' nav-tab-active';
 
-						foreach ( $tabs as $menu_output ) {
-							$tab_display_name = $menu_output->get_tab_display_name();
-							$tab_slug         = $menu_output->get_tab_slug();
-							$object_id        = $menu_output->get_element_id();
-							?>
-							<li>
-								<a class="nav-tab<?php echo esc_attr( $active ); ?>"
-									<?php
-									if ( $object_id ) {
-										echo 'id = "' . esc_attr( $object_id ) . '" ';
-									}
-									?>
+				foreach ( $tabs as $menu_output ) {
+					$tab_display_name = $menu_output->get_tab_display_name();
+					$tab_slug         = $menu_output->get_tab_slug();
+					$object_id        = $menu_output->get_element_id();
+					?>
+			<li>
+				<a class="nav-tab<?php echo esc_attr( $active ); ?>" 
+											<?php
+											if ( $object_id ) {
+												echo 'id = "' . esc_attr( $object_id ) . '" ';
+											}
+											?>
 									href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-									<?php echo esc_html( $tab_display_name ); ?>
-								</a>
-							</li>
-							<?php
-							$active = null;
-						}
-						?>
-					</ul>
-				</nav>
-<div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master">
+					<?php echo esc_html( $tab_display_name ); ?>
+				</a>
+			</li>
+					<?php
+					$active = null;
+				}
+				?>
+		</ul>
+	</nav>
+	<div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master">
 				<?php
 				$output = \apply_filters( 'myvideoroom_notification_master', '', $room_name );
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
 				echo $output;
 				?>
-</div>
+	</div>
 				<?php
 				foreach ( $tabs as $article_output ) {
 					$function_callback = $article_output->get_function_callback();
 					$tab_slug          = $article_output->get_tab_slug();
 					?>
-					<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-						<?php
+	<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+					<?php
 						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
 						echo $function_callback;
-						?>
-					</article>
+					?>
+	</article>
 					<?php
 				}
 			}
 			?>
-		</div>
-		<?php
-		return \ob_get_clean();
+</div>
+			<?php
+			return \ob_get_clean();
+		}
 	}
 }

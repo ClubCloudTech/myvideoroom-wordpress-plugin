@@ -31,6 +31,8 @@ class ShoppingBasket {
 	 * @return Void
 	 */
 	public function render_basket( string $room_name, $host_status = null ) {
+
+		// echo var_dump( $bp->groups->current_group );
 		if ( ! $room_name ) {
 			return null;
 		}

@@ -43,7 +43,7 @@ return function (
 		</td>
 		<td>
 				<?php
-				
+
 				if ( ! $item['am_i_downloading'] ) {
 					if ( ! $room_basket_archive ) {
 						?>

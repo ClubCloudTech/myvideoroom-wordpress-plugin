@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\BuddyPress;
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Module\BuddyPress\Dao\BuddyPressDao;
 
 /**
  * Class Activation
@@ -21,7 +22,7 @@ class Activation {
 	 * - creates the table
 	 */
 	public function activate() {
-		Factory::get_instance( Dao::class )->create_table();
+		Factory::get_instance( BuddyPressDao::class )->create_table();
 	}
 
 	/**
@@ -29,6 +30,6 @@ class Activation {
 	 * - drops the table
 	 */
 	public function uninstall() {
-		Factory::get_instance( Dao::class )->drop_table();
+		Factory::get_instance( BuddyPressDao::class )->drop_table();
 	}
 }
