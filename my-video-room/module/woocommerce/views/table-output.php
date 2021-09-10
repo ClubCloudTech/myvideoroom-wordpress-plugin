@@ -72,7 +72,7 @@ return function (
 	<?php
 	if ( $basket_list ) {
 		?>
-	<div class="mvr-header-table-left">
+	<div class="mvr-button-rail">
 				<?php
 				if ( ! $download_active ) {
 					$delete_basket_nonce = wp_create_nonce( WooCommerce::SETTING_DELETE_BASKET );

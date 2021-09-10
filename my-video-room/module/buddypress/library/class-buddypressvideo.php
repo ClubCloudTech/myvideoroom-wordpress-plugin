@@ -203,7 +203,7 @@ class BuddyPressVideo {
 		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
 		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 
-		if ( Factory::get_instance( BuddyPress::class )->bp_can_host_group( get_current_user_id() ) ) {
+		if ( Factory::get_instance( BuddyPressHelpers::class )->bp_can_host_group( get_current_user_id() ) ) {
 
 			return Factory::get_instance( self::class )->bp_group_video_host();
 
@@ -236,7 +236,7 @@ class BuddyPressVideo {
 		$room_name  = $bp->groups->current_group->slug;
 
 		// Checking Permissions of for Host Status of Group.
-		if ( ! Factory::get_instance( BuddyPress::class )->bp_can_host_group( $my_user_id ) ) {
+		if ( ! Factory::get_instance( BuddyPressHelpers::class )->bp_can_host_group( $my_user_id ) ) {
 			Factory::get_instance( self::class )->bp_group_video_guest();
 		}
 
@@ -309,7 +309,7 @@ class BuddyPressVideo {
 		$my_user_id = get_current_user_id();
 
 		// Checking Permissions of for Host Status of Group.
-		if ( Factory::get_instance( BuddyPress::class )->bp_can_host_group( $my_user_id ) ) {
+		if ( Factory::get_instance( BuddyPressHelpers::class )->bp_can_host_group( $my_user_id ) ) {
 			Factory::get_instance( self::class )->bp_group_video_host();
 		}
 		// Security Engine - blocks room rendering if another setting has blocked it ( eg upgrades, site lockdown, or other feature ).

@@ -22,13 +22,16 @@ use MyVideoRoomPlugin\Module\WooCommerce\Library\WooCategory;
 return function (
 	$output,
 	string $room_name = null,
-	string $last_queue = null
+	string $last_queue = null,
+	int $shop_count = null
 ): string {
 	ob_start();
-
-	?>
-<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
-
+?>
+	<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
+	<div class ="mvr-storefront-master">
+	<div id="storeid" 
+	data-last-storecount="<?php echo esc_attr( $shop_count ); ?>"
+	></div>
 	<?php
 	if ( strlen( $output ) > 100 ) {
 		?>
@@ -91,7 +94,8 @@ return function (
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - This is pre-formatted from WooCommerce no escape needed.
 				echo $last_queue;
 				?>
-				</div>
+				</div>	
+	</div>
 			<?php
 	}
 	return ob_get_clean();

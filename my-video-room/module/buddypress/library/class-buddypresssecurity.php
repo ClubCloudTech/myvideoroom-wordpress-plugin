@@ -144,7 +144,7 @@ class BuddyPressSecurity {
 				$user_id = \bp_displayed_user_id();
 		}
 			$visitor_id           = get_current_user_id();
-			$friends_status       = Factory::get_instance( BuddyPress::class )->bp_are_users_friends( $user_id, $visitor_id );
+			$friends_status       = Factory::get_instance( BuddyPressHelpers::class )->bp_are_users_friends( $user_id, $visitor_id );
 			$user_friends_setting = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_security_settings( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, 'bp_friends_setting' );
 		if ( $site_override && $site_friends_override ) {
 			$bp_friends_setting = $site_friends_override;
@@ -216,9 +216,9 @@ class BuddyPressSecurity {
 		// Get Global Information on Group.
 		$group_id          = $bp->groups->current_group->id;
 		$user_id           = get_current_user_id();
-		$is_user_member    = Factory::get_instance( \MyVideoRoomPlugin\Module\BuddyPress\BuddyPress::class )->bp_is_user_member( $group_id, $user_id );
-		$is_user_moderator = Factory::get_instance( \MyVideoRoomPlugin\Module\BuddyPress\BuddyPress::class )->bp_is_user_moderator( $group_id, $user_id );
-		$is_user_admin     = Factory::get_instance( \MyVideoRoomPlugin\Module\BuddyPress\BuddyPress::class )->bp_is_user_admin( $group_id, $user_id );
+		$is_user_member    = Factory::get_instance( BuddyPressHelpers::class )->bp_is_user_member( $group_id, $user_id );
+		$is_user_moderator = Factory::get_instance( BuddyPressHelpers::class )->bp_is_user_moderator( $group_id, $user_id );
+		$is_user_admin     = Factory::get_instance( BuddyPressHelpers::class )->bp_is_user_admin( $group_id, $user_id );
 
 		switch ( $room_access_setting ) {
 			case 'Administrators':

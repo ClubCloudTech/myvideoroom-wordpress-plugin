@@ -28,16 +28,17 @@ class AjaxHandler {
 	 */
 	public function get_ajax_page_basketwc() {
 
-		$product_id    = Factory::get_instance( Ajax::class )->get_text_parameter( 'productId' );
-		$input_type    = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
-		$auth_nonce    = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
-		$room_name     = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
-		$host_status   = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
-		$quantity      = Factory::get_instance( Ajax::class )->get_text_parameter( 'quantity' );
-		$variation_id  = Factory::get_instance( Ajax::class )->get_text_parameter( 'variationId' );
-		$record_id     = Factory::get_instance( Ajax::class )->get_text_parameter( 'recordId' );
-		$last_queuenum = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastQueuenum' );
-		$last_carthash = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastCarthash' );
+		$product_id      = Factory::get_instance( Ajax::class )->get_text_parameter( 'productId' );
+		$input_type      = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
+		$auth_nonce      = Factory::get_instance( Ajax::class )->get_text_parameter( 'authNonce' );
+		$room_name       = Factory::get_instance( Ajax::class )->get_text_parameter( 'roomName' );
+		$host_status     = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+		$quantity        = Factory::get_instance( Ajax::class )->get_text_parameter( 'quantity' );
+		$variation_id    = Factory::get_instance( Ajax::class )->get_text_parameter( 'variationId' );
+		$record_id       = Factory::get_instance( Ajax::class )->get_text_parameter( 'recordId' );
+		$last_queuenum   = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastQueuenum' );
+		$last_carthash   = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastCarthash' );
+		$last_storecount = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastStorecount' );
 
 		switch ( $input_type ) {
 			/*
@@ -88,7 +89,6 @@ class AjaxHandler {
 				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ACCEPT_ALL_QUEUE_CONFIRMED, esc_html__( 'Accept All Products', 'my-video-room' ), $room_name, $nonce );
 					// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $button_approved );
-
 				break;
 
 			case WooCommerce::SETTING_ACCEPT_ALL_QUEUE_CONFIRMED:
@@ -104,7 +104,6 @@ class AjaxHandler {
 						echo '<strong>' . esc_html__( 'There was a problem adding items to queue - please refresh page', 'myvideoroom' ) . '</strong>';
 					}
 				}
-
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				break;
@@ -430,11 +429,11 @@ class AjaxHandler {
 			case WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING:
 				$message         = \esc_html__( 'approve the transfer. You will no longer control the basket ?', 'myvideoroom' );
 				$nonce           = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING );
-				$declined_nonce  = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_APPROVED );
-				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REQUEST_MASTER_APPROVED, esc_html__( 'Approve Request', 'myvideoroom' ), $room_name, $declined_nonce );
+				$approved_nonce  = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_APPROVED );
+				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REQUEST_MASTER_APPROVED, esc_html__( 'Approve Request', 'myvideoroom' ), $room_name, $approved_nonce );
 
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $message, $nonce, $button_approved );
+				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $nonce, $message, $button_approved );
 				break;
 
 					// Case Approve Request for Basket Ownership - Post Confirmation.
@@ -480,7 +479,7 @@ class AjaxHandler {
 
 				} else {
 					// Activate Category.
-					echo 'ajax confirmed product id->' . $record_id;
+
 					$state = Factory::get_instance( ShopView::class )->add_category_to_product( $record_id, $room_name );
 					if ( true === $state ) {
 						echo '<strong>' . esc_html__( 'Your Request has been Completed successfully', 'myvideoroom' ) . '</strong>';
@@ -502,26 +501,41 @@ class AjaxHandler {
 
 			case 'refresh':
 				// Cart Change Section.
-				$change_state = Factory::get_instance( ShoppingBasket::class )->check_for_user_changes( $last_queuenum, $last_carthash, $room_name );
-				$response     = array();
+				$client_change_state = Factory::get_instance( ShoppingBasket::class )->check_for_user_changes( $last_queuenum, $last_carthash, $room_name );
+				$store_change_state  = Factory::get_instance( ShopView::class )->has_room_store_changed( $room_name, $last_storecount );
 
-				if ( true === $change_state ) {
-					$response['status'] = 'change';
+				$response = array();
+				if ( true === $store_change_state ) {
+					$response['storestatus'] = 'change';
+					$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
+					$response['storefront']      = Factory::get_instance( ShopView::class )->show_shop( $room_name );
+				}
+
+
+				if ( true === $client_change_state ) {
+					$host_status                 = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+					$response['status']          = 'change';
+					$response['mainwindow']      = Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+					$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
 
 				} else {
 					$response['status'] = 'nochange';
+
 				}
-				$host_status     = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
-				$response['aas'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( null, $room_name );
+
 
 				return \wp_send_json( $response );
 
 			case 'reload':
-				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+					$response = array();
 
-				break;
+						$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
+						$response['storefront']      = Factory::get_instance( ShopView::class )->show_shop( $room_name );
+						$host_status                 = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+						$response['mainwindow']      = Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+
+				return \wp_send_json( $response );
+
 			default:
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );

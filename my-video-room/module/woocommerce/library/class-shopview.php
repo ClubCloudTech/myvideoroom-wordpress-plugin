@@ -35,9 +35,9 @@ class ShopView {
 		}
 		$output      = do_shortcode( '[products category=' . $room_name . ']' );
 		$last_basket = Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name, null, true );
-
+		$last_storecount = Factory::get_instance( WooCategory::class )->get_category_count( $room_name );
 		$render = require __DIR__ . '/../views/shop-output.php';
-		return $render( $output, $room_name, $last_basket );
+		return $render( $output, $room_name, $last_basket, $last_storecount );
 	}
 
 	/**
@@ -105,6 +105,24 @@ class ShopView {
 		$term_ids[] = $term_to_add;
 		wp_set_object_terms( $product_id, $term_ids, 'product_cat' );
 		return true;
+	}
+
+	/**
+	 * Has Shop Size Changed?
+	 *
+	 * @param string $room_name - Object of Room Info.
+	 * @param string $last_storecount - The last count store had.
+	 * @return bool
+	 */
+	public function has_room_store_changed( string $room_name, string $last_storecount ): bool {
+		$last_storecount    = intval( $last_storecount );
+		$current_storecount = Factory::get_instance( WooCategory::class )->get_category_count( $room_name );
+		if ( $last_storecount === $current_storecount ) {
+			return false;
+
+		} else {
+			return true;
+		}
 	}
 
 }

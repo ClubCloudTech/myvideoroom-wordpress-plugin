@@ -28,12 +28,13 @@ return function (
 	ob_start();
 
 	if ( ! $room_basket_archive && $basket_list ) {
-		$nav_button_filter  = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ACCEPT_ALL_QUEUE, esc_html__( 'Accept All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
 		$accept_all_nonce   = wp_create_nonce( WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
-		$style              = 'mvr-woocommerce-basket';
+		$nav_button_filter  = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ACCEPT_ALL_QUEUE, esc_html__( 'Accept All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
+		
+
 		$message            = esc_html__( 'Items Shared with You', 'myvideoroom' );
 		$reject_all_nonce   = wp_create_nonce( WooCommerce::SETTING_REJECT_ALL_QUEUE );
-		$nav_button_filter .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REJECT_ALL_QUEUE, esc_html__( 'Delete All items', 'myvideoroom' ), $room_name, $reject_all_nonce, WooCommerce::SETTING_REJECT_ALL_QUEUE );
+		$nav_button_filter .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REJECT_ALL_QUEUE, esc_html__( 'Delete All items', 'myvideoroom' ), $room_name, $reject_all_nonce, WooCommerce::SETTING_REJECT_ALL_QUEUE, 'mvr-main-button-cancel' );
 
 	} else {
 		$message = null;
@@ -41,7 +42,7 @@ return function (
 
 	if ( $basket_list ) {
 		?>
-<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap <?php echo esc_attr( $style ); ?>">
+<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
 	<h1>
 		<?php
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped Above.

@@ -15,8 +15,8 @@ use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\Dependencies;
+use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressConfig;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
-use \MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
@@ -75,10 +75,11 @@ class BuddyPress {
 			return null;
 		}
 
-		wp_enqueue_style( 'dashicons' );
 		add_shortcode( self::SHORTCODE_TAG . 'bpgroupname', array( $this, 'bp_groupname_shortcode' ) );
+
 		$is_user_module_enabled  = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_USER_ID );
 		$is_group_module_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_GROUP_ID );
+
 		if ( $is_module_enabled && $is_buddypress_enabled ) {
 			if ( $is_user_module_enabled ) {
 				$this->setup_root_nav_action();
@@ -87,15 +88,18 @@ class BuddyPress {
 				$this->setup_group_nav_action();
 			}
 		}
+
 		// Register Menu for modules.
 		$this->buddypress_menu_setup();
 
 		// Render Other BuddyPress Shortcodes.
 		Factory::get_instance( BuddyPressVideo::class )->init();
+
 		// Action Hooks for Security.
 		add_action( 'myvideoroom_security_preference_form', array( Factory::get_instance( BuddyPressSecurity::class ), 'mvrbp_security_menu_hook' ), 10, 3 );
 		add_filter( 'myvideoroom_security_render_block', array( Factory::get_instance( BuddyPressSecurity::class ), 'mvrbp_security_friends_group_filter_hook' ), 10, 5 );
 		add_filter( 'myvideoroom_security_change_room_name', array( Factory::get_instance( BuddyPressSecurity::class ), 'mvrbp_change_room_name' ) );
+
 		// Change UserIDs for Groups.
 		add_filter( 'myvideoroom_security_change_user_id', array( Factory::get_instance( BuddyPressSecurity::class ), 'mvrbp_change_user_id' ) );
 		add_filter( 'myvideoroom_security_choosesettings_change_user_id', array( Factory::get_instance( BuddyPressSecurity::class ), 'mvrbp_change_user_id' ) );
@@ -112,11 +116,11 @@ class BuddyPress {
 				Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 			}
 		);
+
 		// Add Permissions Notification of Status to Main Permissions SecurityVideoPreference Form.
 		\add_filter( 'myvideoroom_security_admin_preference_user_id_intercept', array( Factory::get_instance( BuddyPressHelpers::class ), 'modify_user_id_for_groups' ), 10, 1 );
 
 	}
-
 
 	/**
 	 * Setup of Module Menu
@@ -144,24 +148,7 @@ class BuddyPress {
 		$display = esc_html__( $name, 'myvideoroom' );
 		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $display ) . '</a>';
 	}
-	/**
-	 * Enable - enables BuddyPress actions
-	 *
-	 * @return void
-	 */
-	public function enable() {
-		// add_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
-		// add_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
-	}
-	/**
-	 * Disable- disables BuddyPress initialisation actions.
-	 *
-	 * @return void
-	 */
-	public function disable() {
-		// remove_action( 'bp_init', array( $this, 'setup_root_nav_action' ), 1000 );
-		// remove_action( 'bp_init', array( $this, 'setup_group_nav_action' ) );
-	}
+
 
 	/**
 	 * Naming Screen Functions Section - This section hosts the page construction templates for each named clickable function.
@@ -229,132 +216,6 @@ class BuddyPress {
 				return $display_name;
 		}
 	}
-	/**
-	 * Permissions Helpers
-	 * These functions provide support to tabs based on user status
-	 */
-
-	/**
-	 * Bp_is_user_admin - returns admin status of a user in a group.
-	 *
-	 * @param  mixed $group_id - required.
-	 * @param  mixed $user_id - optional.
-	 * @return bool
-	 */
-	public function bp_is_user_admin( $group_id, $user_id = null ): bool {
-		if ( ! $user_id ) {
-			$user_id = get_current_user_id();
-		}
-		$is_admin          = false;
-		$user_groups_admin = bp_get_user_groups(
-			$user_id,
-			array(
-				'is_admin' => true,
-			)
-		);
-
-		if ( isset( $user_groups_admin[ $group_id ] ) ) {
-			$is_admin = true;
-		}
-		return $is_admin;
-	}
-	/**
-	 * Bp_is_user_moderator - returns whether a user id is a moderator of a BuddyPress Group
-	 *
-	 * @param  mixed $group_id - required.
-	 * @param  mixed $user_id - not required.
-	 * @return bool
-	 */
-	public function bp_is_user_moderator( $group_id, $user_id = null ): bool {
-		if ( ! $user_id ) {
-			$user_id = get_current_user_id();
-		}
-		$is_mod          = false;
-		$user_groups_mod = bp_get_user_groups(
-			$user_id,
-			array(
-				'is_mod' => true,
-			)
-		);
-
-		if ( isset( $user_groups_mod[ $group_id ] ) ) {
-			$is_mod = true;
-		}
-		return $is_mod;
-	}
-	/**
-	 * Bp_is_user_member - checks whether user is member of a group
-	 *
-	 * @param  mixed $group_id - required.
-	 * @param  mixed $user_id - optional.
-	 * @return bool
-	 */
-	public function bp_is_user_member( $group_id, $user_id = null ): bool {
-		if ( ! $user_id ) {
-			$user_id = get_current_user_id();
-		}
-		$is_member          = false;
-		$user_groups_member = bp_get_user_groups( $user_id );
-
-		if ( isset( $user_groups_member[ $group_id ] ) ) {
-			$is_member = true;
-		}
-		return $is_member;
-	}
-	/**
-	 * BP - are Users Friends.
-	 *
-	 * @param  int $user_id - The first person to check.
-	 * @param  int $visitor_id - required. The second person to check.
-	 * @return bool
-	 */
-	public function bp_are_users_friends( int $user_id, int $visitor_id ): string {
-		if ( ! \bp_is_active( 'friends' ) ) {
-			return null;
-		}
-		$friends_status = \friends_check_friendship( $user_id, $visitor_id );
-		return $friends_status;
-	}
-	/**
-	 * Bp_can_host_group - returns whether user is a host of a group or not
-	 *
-	 * @param  mixed $group_id required.
-	 * @param  mixed $user_id optional.
-	 * @return bool
-	 */
-	public function bp_can_host_group( $group_id, $user_id = null ): bool {
-		if ( ! $user_id ) {
-			$user_id = get_current_user_id();
-		}
-
-		$is_user_admin     = $this->bp_is_user_admin( $group_id, $user_id );
-		$is_user_moderator = $this->bp_is_user_moderator( $group_id, $user_id );
-
-		if ( $is_user_admin || $is_user_moderator || is_super_admin() || is_network_admin() ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	/**
-	 * Bp_is_room_active - returns room state from DB
-	 *
-	 * @param  mixed $room_name - required.
-	 * @param  mixed $user_id - optional.
-	 * @return bool
-	 */
-	public function bp_is_room_active( $room_name, $user_id = null ): bool {
-		if ( ! $user_id ) {
-			$user_id = get_current_user_id();
-		}
-		$room_disabled = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_security_settings( $user_id, $room_name, 'room_disabled' );
-
-		if ( $room_disabled ) {
-			return false;
-		}
-		return true;
-	}
-
 
 	/**
 	 * Main Constructor
@@ -363,6 +224,9 @@ class BuddyPress {
 	 * You can add tabs, and sub tabs here - The parent slug defines if it is a sub navigation item, or a navigation item
 	 */
 	public function setup_root_nav_action() {
+		if ( ! $this->is_buddypress_active() ) {
+			return null;
+		}
 		global $bp;
 
 		$hide_tab_from_user = Factory::get_instance( BuddyPressSecurity::class )->block_friends_display();
@@ -407,6 +271,9 @@ class BuddyPress {
 	 * @return false|string
 	 */
 	public function setup_group_nav_action() {
+		if ( ! $this->is_buddypress_active() ) {
+			return null;
+		}
 		global $bp;
 		$is_buddypress_enabled = Factory::get_instance( self::class )->is_buddypress_active();
 		if ( ! $is_buddypress_enabled ) {
@@ -421,7 +288,7 @@ class BuddyPress {
 					'parent_url'      => $group_link,
 					'parent_slug'     => $bp->groups->current_group->slug,
 					'screen_function' => array( $this, 'group_video_main_screen_function' ),
-					'user_has_access' => $this->bp_is_room_active( $bp->groups->current_group->slug, $bp->groups->current_group->creator_id ),
+					'user_has_access' => Factory::get_instance( BuddyPressHelpers::class )->bp_is_room_active( $bp->groups->current_group->slug, $bp->groups->current_group->creator_id ),
 					'position'        => 300,
 					'item_css_id'     => 'group-css',
 				)
@@ -434,60 +301,13 @@ class BuddyPress {
 					'parent_slug'     => $bp->groups->current_group->slug,
 					'screen_function' => array( $this, 'group_video_admin_screen_function' ),
 					'position'        => 300,
-					'user_has_access' => $this->bp_can_host_group( get_current_user_id() ),
+					'user_has_access' => Factory::get_instance( BuddyPressHelpers::class )->bp_can_host_group( get_current_user_id() ),
 					'item_css_id'     => 'group-css',
 				)
 			);
 		}
 	}
 
-	/**
-	 * Render_group_settings Dialog Box
-	 *
-	 * @return null
-	 */
-	public function render_group_settings() {
-		if ( ! bp_is_active( 'groups' ) ) {
-			return null;
-		}
-		global $bp;
-		$group_id = $bp->groups->current_group->slug;
-
-		$user_id        = $bp->groups->current_group->creator_id;
-		$security_tab   = Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
-			$user_id,
-			$group_id,
-			$group_id
-		);
-		$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
-			$user_id,
-			$group_id
-		); ?>
-		<ul class="menu">
-			<div style="display: flex!important;	justify-content: space-between!important; width: 50%;">
-				<a class="cc-menu-header-template" href="javascript:activateTab2( 'page5' )">
-					<h2><?php esc_html_e( 'Room Permissions', 'my-video-room' ); ?></h2>Set Security
-				</a>
-				<a class="cc-menu-header-template" href="javascript:activateTab2( 'page6' )">
-					<h2><?php esc_html_e( 'Video Host Settings', 'my-video-room' ); ?></h2><?php esc_html_e( 'Set Display Settings', 'my-video-room' ); ?>
-				</a>
-			</div>
-		</ul>
-		<div id="tabCtrl2" style="margin-top : 10px; line-height: 2;">
-			<div id="page5" style="display: block;">
-			<?php
-				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Already Made safe in function
-				echo $security_tab;
-			?>
-			</div>
-			<div id="page6" style="display: block;">
-			<?php
-				echo $layout_setting;
-			?>
-			</div>
-		</div>
-		<?php
-	}
 	/**
 	 * This function renders the group Video Meet tab function
 	 */
@@ -510,7 +330,7 @@ class BuddyPress {
 	 */
 	public function group_video_admin_screen_function() {
 		// add title and content here - last is to call the members plugin.php template.
-		\add_action( 'bp_template_content', array( $this, 'render_group_settings' ) );
+		\add_action( 'bp_template_content', array( Factory::get_instance( BuddyPressConfig::class ), 'bp_render_group_settings' ) );
 		\bp_core_load_template( \apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
 	}
 	/**

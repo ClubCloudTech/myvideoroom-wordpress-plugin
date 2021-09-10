@@ -34,7 +34,7 @@ return function (
 
 			$output  = Factory::get_instance( HostManagement::class )->master_button( $room_name );
 			$output .= Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name );
-			$output .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
+			$output .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Refresh Basket', 'my-video-room' ), $room_name );
 
 			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 			echo $output;

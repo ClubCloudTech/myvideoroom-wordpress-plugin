@@ -147,7 +147,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			170,
+			195,
 			true
 		);
 
@@ -155,7 +155,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-carthandler',
 			\plugins_url( '/js/carthandler.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			6,
+			11,
 			true
 		);
 		wp_enqueue_script(

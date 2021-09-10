@@ -80,7 +80,7 @@ class ShoppingBasket {
 	 * @param string $room_name -  Name of Room.
 	 * @return string
 	 */
-	public function render_notification_tab( string $input = null, string $room_name ):string {
+	public function render_notification_tab( string $room_name ):string {
 
 		// Render Confirmation Page View.
 		$render = require __DIR__ . '/../views/notification-bar.php';
@@ -362,6 +362,7 @@ class ShoppingBasket {
 	 * @param string $room_name -  Name of Room.
 	 * @param  string $nonce - Nonce for operation (if confirmation used).
 	 * @param  string $product_or_id - Adds additional Data to Nonce for more security (optional).
+	 * @param  string $style - Add a class for the button (optional).
 	 *
 	 * @return string
 	 */
@@ -377,7 +378,7 @@ class ShoppingBasket {
 		}
 
 		return '
-		<button id="mvr-basket-button" class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax">
+		<button  class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax">
 		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
 		</button>
 		';
