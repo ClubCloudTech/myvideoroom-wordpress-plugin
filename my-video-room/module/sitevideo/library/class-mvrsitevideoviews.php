@@ -27,9 +27,9 @@ class MVRSiteVideoViews {
 	 *
 	 * @param int $room_id The room ID.
 	 *
-	 * @return string
+	 * @return array|string
 	 */
-	public function site_videoroom_host_template( int $room_id ): string {
+	public function site_videoroom_host_template( int $room_id ) {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 
 		$display_name = '';
@@ -56,9 +56,9 @@ class MVRSiteVideoViews {
 	 *
 	 * @param int $host_id ID of Host for calculating Headers.
 	 *
-	 * @return string
+	 * @return array|string
 	 */
-	public function site_videoroom_guest_template( int $host_id ): string {
+	public function site_videoroom_guest_template( int $host_id ) {
 		$room_object   = Factory::get_instance( RoomMap::class )->get_room_info( $host_id );
 		$display_name  = $room_object->display_name;
 		$room_name     = $room_object->room_name;

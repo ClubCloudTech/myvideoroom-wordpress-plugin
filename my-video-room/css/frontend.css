@@ -26,11 +26,15 @@
 
 .myvideoroom-side-tab {
 	float: left;
-	width: 15%;
-	min-width: 15%;
-	
-	
-	
+	width: 7%;
+	min-width: 7%;
+
+}
+.myvideoroom-content-tab {
+	float: left;
+	width: 93%;
+
+
 }
 
 
@@ -100,8 +104,8 @@
 	border-width: 1px 1px 1px 1px;
 	box-shadow: 0 0 1px 1px rgb(0 0 0 / 30%);
 	display: grid;
-	margin: 10px 10px 10px 10px;
-	padding: 10px 10px 10px 10px;
+	margin: 3px 3px 3px 3px;
+	padding: 2px 2px 2px 2px;
 	transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
 	display: flex;
 }

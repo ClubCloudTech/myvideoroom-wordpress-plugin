@@ -125,14 +125,14 @@ class SiteDefaults {
 			'myvideoroom-menutab-header',
 			plugins_url( '/css/menutab.css', __FILE__ ),
 			false,
-			$plugin_version . '1'
+			$plugin_version . '4'
 		);
 
 		wp_register_style(
 			'myvideoroom-template',
 			plugins_url( '/css/template.css', __FILE__ ),
 			false,
-			$plugin_version . '5'
+			$plugin_version . '7'
 		);
 
 		wp_register_style(
@@ -257,5 +257,13 @@ class SiteDefaults {
 		\do_action( 'myvideoroom_shortcode_initialisation_action_hook' );
 
 		return true;
+	}
+
+	public function horizontal_site_template_mode(): bool {
+		if ( 1 === self::VIDEO_TEMPLATE_MODE ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

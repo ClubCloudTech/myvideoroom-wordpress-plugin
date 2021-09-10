@@ -22,9 +22,9 @@ class BuddyPressViews {
 	 * Render Group Host Template
 	 *
 	 * @param  int $host_id - ID of User to Generate from.
-	 * @return string
+	 * @return array|string
 	 */
-	public function bp_group_host_template( int $host_id ): string {
+	public function bp_group_host_template( int $host_id ) {
 		$module_id    = BuddyPress::DISPLAY_NAME_BUDDYPRESS_GROUPS;
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
 		$name_output  = esc_html__( 'Hosting ', 'my-video-room' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );
@@ -38,9 +38,9 @@ class BuddyPressViews {
 	 * Render Group Guest Template
 	 *
 	 * @param  int $host_id - ID of User to Generate from.
-	 * @return string
+	 * @return array|string
 	 */
-	public function bp_group_guest_template( int $host_id ): string {
+	public function bp_group_guest_template( int $host_id ) {
 		$module_id    = BuddyPress::DISPLAY_NAME_BUDDYPRESS_GROUPS;
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
 		$name_output  = esc_html__( 'Visiting ', 'my-video-room' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );

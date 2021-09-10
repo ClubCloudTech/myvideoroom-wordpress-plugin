@@ -10,6 +10,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
+use MyVideoRoomPlugin\SiteDefaults;
 
 return function (
 	?string $module_name,
@@ -19,7 +20,7 @@ return function (
 	bool $visitor_status = false,
 	string $invite_menu = null,
 	string $post_site_title = null
-): string {
+) {
 	ob_start();
 
 	if ( $visitor_status ) {
@@ -31,6 +32,20 @@ return function (
 			)
 		);
 	}
+	$template_icons = null;
+	$template_icons = apply_filters( 'myvideoroom_template_icon_section', $template_icons, $user_id, $room_name, $visitor_status );
+	if ( Factory::get_instance( SiteDefaults::class )->horizontal_site_template_mode() ) {
+		$return_array = array(
+			'module_name'     => $module_name,
+			'name_output'     => $name_output,
+			'room_name'       => $room_name,
+			'visitor_status'  => $visitor_status,
+			'invite_menu'     => $invite_menu,
+			'post_site_title' => $post_site_title,
+			'template_icons'  => $template_icons,
+		);
+		return $return_array;
+	}
 
 	?>
 	<div id="video-host-wrap" class="mvr-header-outer-wrap">
@@ -38,8 +53,6 @@ return function (
 			<div class="mvr-header-table-left">
 				<h2 class="mvr-header-title"><?php echo esc_html( get_bloginfo( 'name' ) ) . esc_html( $post_site_title ); ?></h2>
 				<?php
-				$template_icons = null;
-				$template_icons = apply_filters( 'myvideoroom_template_icon_section', $template_icons, $user_id, $room_name, $visitor_status );
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 				echo $template_icons;
 				?>
@@ -58,5 +71,7 @@ return function (
 	</div>
 
 	<?php
-	return ob_get_clean();
+
+		return ob_get_clean();
+
 };
