@@ -20,6 +20,8 @@ class SectionTemplates {
 	const TAB_ROOM_PERMISSIONS = 'Room Permissions';
 	const TAB_STOREFRONT       = 'Storefront';
 	const TAB_SHOPPING_BASKET  = 'Shopping Basket';
+	const TAB_INFO_WELCOME     = 'Welcome';
+
 
 
 	/**
@@ -38,7 +40,7 @@ class SectionTemplates {
 		ob_start();
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
 		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
-		$tabs         = apply_filters( 'myvideoroom_main_template_render', $inbound_tabs, $user_id, $room_name, $host_status );
+		$tabs         = apply_filters( 'myvideoroom_main_template_render', $inbound_tabs, $user_id, $room_name, $host_status, $header );
 
 		// Proxy for Site Template Mode.
 		if ( SiteDefaults::VIDEO_TEMPLATE_MODE === 1 ) {
@@ -61,11 +63,6 @@ class SectionTemplates {
 						</p>
 						</div>
 
-						<?php
-							//echo \var_dump( $header);
-
-							//echo $header;
-						?>
 				</div>
 				<div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master">
 							<?php
@@ -101,7 +98,10 @@ class SectionTemplates {
 														}
 														?>
 												href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-								<?php echo $tab_display_name ; ?>
+								<?php
+									//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icon is created by escaped function.
+									echo $tab_display_name;
+								?>
 							</a>
 						</li>
 				</ul>
@@ -207,6 +207,13 @@ class SectionTemplates {
 		}
 	}
 
+
+	/**
+	 * Returns Icons for Template Menus. (Horizontal or Vertical Menus)
+	 *
+	 * @param string $input_type The type of Icon to return.
+	 * @return string
+	 */
 	public function template_icon_switch( string $input_type ) {
 
 		$template_status = Factory::get_instance( SiteDefaults::class )->horizontal_site_template_mode();
@@ -223,6 +230,8 @@ class SectionTemplates {
 					return self::TAB_STOREFRONT;
 				case self::TAB_SHOPPING_BASKET:
 					return self::TAB_SHOPPING_BASKET;
+				case self::TAB_INFO_WELCOME:
+					return self::TAB_INFO_WELCOME;
 			}
 		} else {
 			switch ( $input_type ) {
@@ -236,8 +245,12 @@ class SectionTemplates {
 					return '<span title ="' . esc_html__( 'Room Builtin Storefront', 'myvideoroom' ) . '" class="dashicons dashicons-store"></span>';
 				case self::TAB_SHOPPING_BASKET:
 					return '<span title ="' . esc_html__( 'Your Shopping Basket with AutoSync to Room', 'myvideoroom' ) . '" class="dashicons dashicons-cart"></span>';
+				case self::TAB_INFO_WELCOME:
+					return '<span title ="' . esc_html__( 'Welcome and Information', 'myvideoroom' ) . '" class="dashicons dashicons-nametag"></span>';
 			}
 		}
 	}
 
+
+	
 }

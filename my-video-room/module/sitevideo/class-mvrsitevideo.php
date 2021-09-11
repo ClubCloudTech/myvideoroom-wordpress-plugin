@@ -14,8 +14,11 @@ use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
+use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
@@ -100,6 +103,27 @@ class MVRSiteVideo {
 				Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 			}
 		);
+
+		// Add Welcome Tabs to Template.
+		add_filter(
+			'myvideoroom_main_template_render',
+			array(
+				$this,
+				'render_sitevideo_welcome_tabs',
+			),
+			5,
+			5
+		);
+/*
+		add_filter(
+			'myvideoroom_welcome_page',
+			array(
+				$this,
+				'render_sitevideo_welcome_tabs',
+			),
+			5,
+			5
+		);*/
 
 		// Ajax Handler for SiteVideo Room.
 		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ), 10, 2 );
@@ -292,5 +316,57 @@ class MVRSiteVideo {
 			echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, $input_type );
 		}
 		die();
+	}
+
+
+	/**
+	 * Render SiteVideo Welcome Tab.
+	 *
+	 * @param array $input   - the inbound menu.
+	 * @param int   $room_id - the room identifier.
+	 *
+	 * @return array - outbound menu.
+	 */
+	public function render_sitevideo_welcome_tabs( array $input, int $room_id, $host_status = null , $header ): array {
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+
+		if ( ! $room_object ) {
+			return $input;
+		}
+
+		$room_name = $room_object->room_name;
+
+		// Host Menu Tab - rendered in Security as its a module feature of Security.
+		$host_menu = new MenuTabDisplay(
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_INFO_WELCOME ),
+			'welcomepage',
+			fn() => $this->render_shortcode_basket_tab( $room_id, $host_status, $header )
+		);
+
+		// Change Order and add tab first for signed out users.
+		if ( ! \is_user_logged_in() ) {
+			array_unshift( $input, $host_menu );
+		} else {
+			array_push( $input, $host_menu );
+		}
+
+		return $input;
+	}
+	/**
+	 * Controller Function to Render Welcome Page in Main Shortcode.
+	 *
+	 * @param int    $room_id     - the user or entity identifier.
+	 * @param bool   $host_status - whether function is for a host type.
+	 * @param string|array  $header - Data Object with Header Info.
+	 *
+	 * @return string - outbound menu.
+	 */
+	public function render_shortcode_basket_tab( int $room_id, bool $host_status = null, $header ): string {
+		$html_library = Factory::get_instance( HTML::class, array( 'welcometab' ) );
+		$tabs         = \apply_filters( 'myvideoroom_welcome_page', '', $room_id, $host_status, $header );
+		$render       = require __DIR__ . '/views/header/view-welcometab.php';
+
+		return $render( $tabs, $html_library, $room_id, $host_status, $header );
+
 	}
 }

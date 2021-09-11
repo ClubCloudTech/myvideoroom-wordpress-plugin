@@ -130,7 +130,7 @@ class WooCommerce {
 				'render_shortcode_store_tab',
 			),
 			40,
-			4
+			5
 		);
 
 				// Add Basket Menu to Main Frontend Templates.
@@ -141,7 +141,7 @@ class WooCommerce {
 				'render_shortcode_basket_tab',
 			),
 			50,
-			4
+			5
 		);
 
 		\wp_enqueue_script(

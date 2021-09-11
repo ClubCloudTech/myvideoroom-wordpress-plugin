@@ -1,24 +1,28 @@
 <?php
 /**
- * Outputs the configuration settings for the video plugin
+ * Outputs the Welcome Tab
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Module\SiteVideo\Views\Header\WelcomeTab.php
  */
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingControllers;
 
 /**
- * Render the Meet Center Reception page
+ * Render the Outputs the Welcome Tab
  *
  * @param array   $tabs          Any Tabs to Display.
  * @param ?string $html_library  Randomizing Data for Tabs.
+ * @param bool    $host_status   Whether user is host.
+ * @param ?string $header        Data Object.
  *
  * @return string
  */
 return function (
 $tabs = null,
-$html_library
+$html_library,
+bool $host_status,
+$header
 ): string {
 	ob_start();
 	if ( count( $tabs ) >= 1 ) {
@@ -27,7 +31,7 @@ $html_library
 	<ul>
 		<li>
 			<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
-				<?php esc_html_e( 'Join Meeting', 'myvideoroom' ); ?>
+				<?php esc_html_e( 'Welcome', 'myvideoroom' ); ?>
 			</a>
 		</li>
 		<?php

@@ -11,6 +11,7 @@ use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
@@ -106,4 +107,30 @@ class MVRSiteVideoViews {
 		$rooms = Factory::get_instance( MVRSiteVideoRoomHelpers::class )->get_rooms( $room_type );
 		return ( require __DIR__ . '/../views/table-output.php' )( $rooms, $room_type, $shortcode );
 	}
+
+	/**
+	 * Generate Login Function.
+	 *
+	 * @param array  $input       - the inbound menu.
+	 * @param int    $post_id     - the user or entity identifier.
+	 * @param string $room_name   - the room identifier.
+	 * @param bool   $host_status - whether function is for a host type.
+	 *
+	 * @return array - outbound menu.
+	 */
+	public function render_login_tab_welcome( array $input ): array {
+
+		$basket_menu = new MenuTabDisplay(
+			\esc_html__( 'Login', 'myvideoroom' ),
+			'shoppingbasket',
+			fn() => Factory::get_instance( ShoppingBasket::class )
+				->render_basket( $room_name, $host_status ),
+			'mvr-shopping-basket'
+		);
+
+		array_push( $input, $basket_menu );
+		return $input;
+
+	}
+
 }

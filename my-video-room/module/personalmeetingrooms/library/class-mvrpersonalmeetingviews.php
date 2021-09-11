@@ -64,13 +64,7 @@ class MVRPersonalMeetingViews {
 		$html_library = Factory::get_instance( HTML::class, array( 'meetcentre' ) );
 		$inbound_tabs = array();
 		$render       = require __DIR__ . '/../views/view-meetcentre.php';
-
-		/**
-		 * A list of tabs to show
-		 *
-		 * @var \MyVideoRoomPlugin\Entity\MenuTabDisplay[] $tabs
-		 */
-		$tabs = apply_filters( 'myvideoroom_meet_centre_guest_menu', $inbound_tabs );
+		$tabs         = apply_filters( 'myvideoroom_meet_centre_guest_menu', $inbound_tabs );
 		return $render( $tabs, $html_library );
 
 	}

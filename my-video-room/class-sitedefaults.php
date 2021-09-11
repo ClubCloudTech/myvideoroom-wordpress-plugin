@@ -259,6 +259,12 @@ class SiteDefaults {
 		return true;
 	}
 
+	/**
+	 * Returns Site Template Mode. (Horizontal or Vertical Menus)
+	 *
+	 *
+	 * @return bool
+	 */
 	public function horizontal_site_template_mode(): bool {
 		if ( 1 === self::VIDEO_TEMPLATE_MODE ) {
 			return true;

@@ -91,7 +91,7 @@ class Security {
 				'render_shortcode_security_permissions_tab',
 			),
 			40,
-			4
+			5
 		);
 
 		// Add Permissions Icons Status to Main Shortcode Header.
@@ -226,7 +226,7 @@ class Security {
 
 		// Host Menu Tab - rendered in Security as its a module feature of Security.
 		$host_menu = new MenuTabDisplay(
-			esc_html__( 'Room Hosts', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_HOST_SETTINGS ),
 			'roomhosts',
 			fn() => Factory::get_instance( SecurityVideoPreference::class )
 						->choose_settings(
