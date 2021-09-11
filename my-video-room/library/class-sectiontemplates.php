@@ -236,17 +236,17 @@ class SectionTemplates {
 		} else {
 			switch ( $input_type ) {
 				case self::TAB_VIDEO_ROOM:
-					return '<span title ="' . esc_html__( 'Video Room', 'myvideoroom' ) . '" class="dashicons dashicons-video-alt3"></span>';
+					return '<span title ="' . esc_html__( 'Video Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-video-alt3"></span>';
 				case self::TAB_HOST_SETTINGS:
-					return '<span title ="' . esc_html__( 'Room Hosting, Reception, and Layout Settings', 'myvideoroom' ) . '" class="dashicons dashicons-welcome-widgets-menus"></span>';
+					return '<span title ="' . esc_html__( 'Room Hosting, Reception, and Layout Settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-welcome-widgets-menus"></span>';
 				case self::TAB_ROOM_PERMISSIONS:
-					return '<span title ="' . esc_html__( 'Room Security and Permissions', 'myvideoroom' ) . '" class="dashicons dashicons-lock"></span>';
+					return '<span title ="' . esc_html__( 'Room Security and Permissions', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-lock"></span>';
 				case self::TAB_STOREFRONT:
-					return '<span title ="' . esc_html__( 'Room Builtin Storefront', 'myvideoroom' ) . '" class="dashicons dashicons-store"></span>';
+					return '<span title ="' . esc_html__( 'Room Builtin Storefront', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-store"></span>';
 				case self::TAB_SHOPPING_BASKET:
-					return '<span title ="' . esc_html__( 'Your Shopping Basket with AutoSync to Room', 'myvideoroom' ) . '" class="dashicons dashicons-cart"></span>';
+					return '<span title ="' . esc_html__( 'Your Shopping Basket with AutoSync to Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
 				case self::TAB_INFO_WELCOME:
-					return '<span title ="' . esc_html__( 'Welcome and Information', 'myvideoroom' ) . '" class="dashicons dashicons-nametag"></span>';
+					return '<span title ="' . esc_html__( 'Welcome and Information', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-nametag"></span>';
 			}
 		}
 	}

@@ -20,7 +20,6 @@
 	display: inline-block;
 	margin: 0;
 	padding: 0;
-	position: relative;
 	z-index: 2;
 }
 
@@ -64,11 +63,10 @@
 	border: 1px solid #c3c4c7;
 	border-radius: 3px 3px 0 0;
 	display: inline-block;
-	padding: 4px 12px;
+	padding: 4px 7px;
 }
 
 .myvideoroom-nav-tab-wrapper li a.nav-tab-active {
-	border-bottom: 1px solid transparent;
 	font-weight: 500;
 }
 
@@ -134,3 +132,25 @@
 	display: table;
 	clear: both;
   }
+
+  .myvideoroom-dashicons, .myvideoroom-dashicons-before:before {
+    font-family: dashicons;
+    display: inline-block;
+    line-height: 1;
+    font-weight: 400;
+    font-style: normal;
+    margin-left: 3px;
+	margin-right: 3px;
+    text-decoration: inherit;
+    text-transform: none;
+    font-size: 25px!important;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    vertical-align:middle;
+    text-align: center;
+    transition: color .1s ease-in;
+}
