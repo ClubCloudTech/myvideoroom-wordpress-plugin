@@ -14,7 +14,6 @@ use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
-use MyVideoRoomPlugin\Module\WooCommerce\Library\CartAjax;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\WooCategory;

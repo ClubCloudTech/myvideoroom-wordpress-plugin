@@ -8,15 +8,9 @@
 namespace MyVideoRoomPlugin\Module\SiteVideo\Shortcode;
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Library\HttpPost;
-use MyVideoRoomPlugin\Library\WordPressUser;
-use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
-use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
-use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
-use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Shortcode\App;
-use MyVideoRoomPlugin\SiteDefaults;
+
 
 /**
  * Class SecurityVideoPreference
