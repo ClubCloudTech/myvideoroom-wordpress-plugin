@@ -111,10 +111,7 @@ class MVRSiteVideoViews {
 	/**
 	 * Generate Login Function.
 	 *
-	 * @param array  $input       - the inbound menu.
-	 * @param int    $post_id     - the user or entity identifier.
-	 * @param string $room_name   - the room identifier.
-	 * @param bool   $host_status - whether function is for a host type.
+	 * @param array $input       - the inbound menu.
 	 *
 	 * @return array - outbound menu.
 	 */
@@ -122,14 +119,23 @@ class MVRSiteVideoViews {
 
 		$basket_menu = new MenuTabDisplay(
 			\esc_html__( 'Login', 'myvideoroom' ),
-			'shoppingbasket',
-			fn() => Factory::get_instance( ShoppingBasket::class )
-				->render_basket( $room_name, $host_status ),
-			'mvr-shopping-basket'
+			'templatelogin',
+			fn() => $this->render_login_page()
 		);
 
 		array_push( $input, $basket_menu );
 		return $input;
+
+	}
+
+	/**
+	 * Render Login Page
+	 *
+	 * @return string - Login Page.
+	 */
+	public function render_login_page(): string {
+		$render = require __DIR__ . '/../views/login/view-login.php';
+		return $render();
 
 	}
 

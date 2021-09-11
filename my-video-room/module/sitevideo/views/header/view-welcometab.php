@@ -6,6 +6,7 @@
  */
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingControllers;
 
 /**
@@ -67,7 +68,7 @@ $header
 <article id="<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
 	<?php
 			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Sanitised.
-			echo Factory::get_instance( MVRPersonalMeetingControllers::class )->personal_meeting_guest_shortcode(); 
+			echo Factory::get_instance( SectionTemplates::class )->welcome_template(); 
 	?>
 </article>
 	<?php

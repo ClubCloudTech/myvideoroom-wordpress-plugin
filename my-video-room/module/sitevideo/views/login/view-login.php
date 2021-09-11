@@ -18,8 +18,7 @@ return function (
 
 	ob_start();
 
-	if ( ! is_user_logged_in() ) {
-		?><div class="mvr-admin-page-wrap">
+	?><div class="mvr-admin-page-wrap">
 		<h2><?php esc_html_e( 'Please Sign in to Improve Your Experience', 'my-video-room' ); ?></h2>
 		<?php
 		global $wp;
@@ -31,7 +30,6 @@ return function (
 		?>
 	</div>
 		<?php
-	}
 
-	return ob_get_clean();
+		return ob_get_clean();
 };

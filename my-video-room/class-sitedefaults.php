@@ -132,7 +132,7 @@ class SiteDefaults {
 			'myvideoroom-template',
 			plugins_url( '/css/template.css', __FILE__ ),
 			false,
-			$plugin_version . '7'
+			$plugin_version . '8'
 		);
 
 		wp_register_style(
@@ -261,7 +261,6 @@ class SiteDefaults {
 
 	/**
 	 * Returns Site Template Mode. (Horizontal or Vertical Menus)
-	 *
 	 *
 	 * @return bool
 	 */

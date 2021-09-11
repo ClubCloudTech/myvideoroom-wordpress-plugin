@@ -114,16 +114,17 @@ class MVRSiteVideo {
 			5,
 			5
 		);
-/*
-		add_filter(
-			'myvideoroom_welcome_page',
-			array(
-				$this,
-				'render_sitevideo_welcome_tabs',
-			),
-			5,
-			5
-		);*/
+		if ( ! \is_user_logged_in() ) {
+			add_filter(
+				'myvideoroom_welcome_page',
+				array(
+					Factory::get_instance( MVRSiteVideoViews::class ),
+					'render_login_tab_welcome',
+				),
+				5,
+				5
+			);
+		}
 
 		// Ajax Handler for SiteVideo Room.
 		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ), 10, 2 );
@@ -167,7 +168,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-css',
 					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '6',
+					Factory::get_instance( Version::class )->get_plugin_version() . '9',
 				);
 			},
 		);
@@ -327,20 +328,18 @@ class MVRSiteVideo {
 	 *
 	 * @return array - outbound menu.
 	 */
-	public function render_sitevideo_welcome_tabs( array $input, int $room_id, $host_status = null , $header ): array {
+	public function render_sitevideo_welcome_tabs( array $input, int $room_id, $host_status = null, $header ): array {
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 
 		if ( ! $room_object ) {
 			return $input;
 		}
 
-		$room_name = $room_object->room_name;
-
 		// Host Menu Tab - rendered in Security as its a module feature of Security.
 		$host_menu = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_INFO_WELCOME ),
 			'welcomepage',
-			fn() => $this->render_shortcode_basket_tab( $room_id, $host_status, $header )
+			fn() => $this->render_welcome_tab( $room_id, $host_status, $header )
 		);
 
 		// Change Order and add tab first for signed out users.
@@ -355,15 +354,15 @@ class MVRSiteVideo {
 	/**
 	 * Controller Function to Render Welcome Page in Main Shortcode.
 	 *
-	 * @param int    $room_id     - the user or entity identifier.
-	 * @param bool   $host_status - whether function is for a host type.
-	 * @param string|array  $header - Data Object with Header Info.
+	 * @param int          $room_id     - the user or entity identifier.
+	 * @param bool         $host_status - whether function is for a host type.
+	 * @param string|array $header - Data Object with Header Info.
 	 *
 	 * @return string - outbound menu.
 	 */
-	public function render_shortcode_basket_tab( int $room_id, bool $host_status = null, $header ): string {
+	public function render_welcome_tab( int $room_id, bool $host_status = null, $header ): string {
 		$html_library = Factory::get_instance( HTML::class, array( 'welcometab' ) );
-		$tabs         = \apply_filters( 'myvideoroom_welcome_page', '', $room_id, $host_status, $header );
+		$tabs         = \apply_filters( 'myvideoroom_welcome_page', array(), $room_id, $host_status, $header );
 		$render       = require __DIR__ . '/views/header/view-welcometab.php';
 
 		return $render( $tabs, $html_library, $room_id, $host_status, $header );
