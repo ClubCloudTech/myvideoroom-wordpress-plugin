@@ -21,6 +21,7 @@ class SectionTemplates {
 	const TAB_STOREFRONT       = 'Storefront';
 	const TAB_SHOPPING_BASKET  = 'Shopping Basket';
 	const TAB_INFO_WELCOME     = 'Welcome';
+	const TAB_INFO_RECEPTION   = 'Site Reception Centre';
 
 
 
@@ -81,7 +82,7 @@ class SectionTemplates {
 				?>
 
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper myvideoroom-side-tab">
-		<ul>
+		<ul class="mvr-ul-style-menu">
 				<?php
 						$active = ' nav-tab-active';
 
@@ -97,7 +98,7 @@ class SectionTemplates {
 												echo 'id = "' . esc_attr( $object_id ) . '" ';
 											}
 											?>
-														 href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+												href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 					<?php
 						//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icon is created by escaped function.
 						echo $tab_display_name;
@@ -238,7 +239,7 @@ class SectionTemplates {
 				case self::TAB_VIDEO_ROOM:
 					return '<span title ="' . esc_html__( 'Video Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-video-alt3"></span>';
 				case self::TAB_HOST_SETTINGS:
-					return '<span title ="' . esc_html__( 'Room Hosting, Reception, and Layout Settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-welcome-widgets-menus"></span>';
+					return '<span title ="' . esc_html__( 'Room Hosting, Reception, and Layout Settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-generic"></span>';
 				case self::TAB_ROOM_PERMISSIONS:
 					return '<span title ="' . esc_html__( 'Room Security and Permissions', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-lock"></span>';
 				case self::TAB_STOREFRONT:
@@ -247,6 +248,8 @@ class SectionTemplates {
 					return '<span title ="' . esc_html__( 'Your Shopping Basket with AutoSync to Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
 				case self::TAB_INFO_WELCOME:
 					return '<span title ="' . esc_html__( 'Welcome and Information', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-nametag"></span>';
+				case self::TAB_INFO_RECEPTION:
+					return '<span title ="' . esc_html__( 'Main Room Reception Centre', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-clipboard"></span>';
 			}
 		}
 	}

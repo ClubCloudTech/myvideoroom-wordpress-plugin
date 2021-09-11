@@ -14,6 +14,7 @@
 	margin: 0;
 	padding: 0;
 	white-space: nowrap;
+	display: contents;
 }
 
 .myvideoroom-nav-tab-wrapper li {
@@ -23,12 +24,7 @@
 	z-index: 2;
 }
 
-.myvideoroom-side-tab {
-	float: left;
-	width: 7%;
-	min-width: 7%;
 
-}
 .myvideoroom-content-tab {
 	float: left;
 	width: 93%;

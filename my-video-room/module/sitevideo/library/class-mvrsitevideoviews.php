@@ -12,6 +12,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
+use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
@@ -121,6 +122,26 @@ class MVRSiteVideoViews {
 			\esc_html__( 'Login', 'myvideoroom' ),
 			'templatelogin',
 			fn() => $this->render_login_page()
+		);
+
+		array_push( $input, $basket_menu );
+		return $input;
+
+	}
+
+	/**
+	 * Generate Reception Function.
+	 *
+	 * @param array $input       - the inbound menu.
+	 *
+	 * @return array - outbound menu.
+	 */
+	public function render_reception_tab_welcome( array $input ): array {
+
+		$basket_menu = new MenuTabDisplay(
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_INFO_RECEPTION ),
+			'receptioncenter',
+			fn() => Factory::get_instance( MVRSiteVideoRoomHelpers::class )->create_site_conference_page( true )
 		);
 
 		array_push( $input, $basket_menu );

@@ -125,6 +125,17 @@ class MVRSiteVideo {
 				5
 			);
 		}
+		if ( ! \is_user_admin() ) {
+			add_filter(
+				'myvideoroom_main_template_render',
+				array(
+					Factory::get_instance( MVRSiteVideoViews::class ),
+					'render_reception_tab_welcome',
+				),
+				6,
+				5
+			);
+		}
 
 		// Ajax Handler for SiteVideo Room.
 		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ), 10, 2 );
@@ -168,7 +179,20 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-css',
 					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '15',
+					Factory::get_instance( Version::class )->get_plugin_version() . '18',
+					'(min-width: 640px)'
+				);
+			},
+		);
+		\add_action(
+			'wp_enqueue_scripts',
+			function () {
+				\wp_enqueue_style(
+					'myvideoroom-frontend-mobile-css',
+					\plugins_url( '/css/frontend-mobile.css', \realpath( __DIR__ . '/../' ) ),
+					false,
+					Factory::get_instance( Version::class )->get_plugin_version() . '3',
+					'(max-width: 640px)'
 				);
 			},
 		);
