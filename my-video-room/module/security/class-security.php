@@ -226,7 +226,7 @@ class Security {
 
 		// Host Menu Tab - rendered in Security as its a module feature of Security.
 		$host_menu = new MenuTabDisplay(
-			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_HOST_SETTINGS ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_HOST_ROOM_SETTINGS ),
 			'roomhosts',
 			fn() => Factory::get_instance( SecurityVideoPreference::class )
 						->choose_settings(

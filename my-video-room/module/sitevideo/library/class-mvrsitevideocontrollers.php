@@ -120,7 +120,7 @@ class MVRSiteVideoControllers {
 		);
 		array_push( $output_object, $host_menu );
 		$admin_menu = new MenuTabDisplay(
-			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_HOST_SETTINGS ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM_SETTINGS ),
 			'adminpage',
 			fn() => \do_shortcode(
 			//phpcs:ignore PEAR.Functions.FunctionCallSignature.Indent - indent is correct.

@@ -177,7 +177,7 @@ class BuddyPressVideo {
 		);
 		array_push( $output_object, $host_menu );
 		$admin_menu = new MenuTabDisplay(
-			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_HOST_SETTINGS ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM_SETTINGS ),
 			'adminpage',
 			fn() => \do_shortcode(
 				Factory::get_instance( UserVideoPreference::class )->choose_settings(
@@ -272,7 +272,7 @@ class BuddyPressVideo {
 
 		array_push( $output_object, $host_menu );
 			$admin_menu = new MenuTabDisplay(
-				Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_HOST_SETTINGS ),
+				Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM_SETTINGS ),
 				'adminpage',
 				fn() => \do_shortcode(
 					Factory::get_instance( UserVideoPreference::class )->choose_settings(

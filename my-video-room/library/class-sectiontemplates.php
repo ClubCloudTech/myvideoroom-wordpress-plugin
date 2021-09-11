@@ -15,14 +15,14 @@ use MyVideoRoomPlugin\SiteDefaults;
  */
 class SectionTemplates {
 
-	const TAB_VIDEO_ROOM       = 'Video Room';
-	const TAB_HOST_SETTINGS    = 'Host Settings';
-	const TAB_ROOM_PERMISSIONS = 'Room Permissions';
-	const TAB_STOREFRONT       = 'Storefront';
-	const TAB_SHOPPING_BASKET  = 'Shopping Basket';
-	const TAB_INFO_WELCOME     = 'Welcome';
-	const TAB_INFO_RECEPTION   = 'Site Reception Centre';
-
+	const TAB_VIDEO_ROOM          = 'Video Room';
+	const TAB_VIDEO_ROOM_SETTINGS = 'Video Room Settings';
+	const TAB_ROOM_PERMISSIONS    = 'Room Permissions';
+	const TAB_STOREFRONT          = 'Storefront';
+	const TAB_SHOPPING_BASKET     = 'Shopping Basket';
+	const TAB_INFO_WELCOME        = 'Welcome';
+	const TAB_INFO_RECEPTION      = 'Site Reception Centre';
+	const TAB_HOST_ROOM_SETTINGS  = 'Room Hosts';
 
 
 	/**
@@ -43,10 +43,7 @@ class SectionTemplates {
 		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 		$tabs         = apply_filters( 'myvideoroom_main_template_render', $inbound_tabs, $user_id, $room_name, $host_status, $header );
 
-		// Proxy for Site Template Mode.
-		if ( SiteDefaults::VIDEO_TEMPLATE_MODE === 1 ) {
-
-			?>
+?>
 
 <div class="mvr-nav-shortcode-outer-wrap">
 	<div class="mvr-header-section">
@@ -133,79 +130,8 @@ class SectionTemplates {
 			<?php
 						return \ob_get_clean();
 
-						// Original Template
-		} else {
 
-			?>
 
-<div class="mvr-nav-shortcode-outer-wrap">
-	<div class="mvr-header-section">
-			<?php
-				//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
-				echo $header;
-			?>
-	</div>
-
-			<?php
-			$tab_count = \count( $tabs );
-			if ( $tab_count <= 1 ) {
-				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode already properly escaped.
-				echo $tabs[0]->get_function_callback();
-			} else {
-				?>
-	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-		<ul>
-				<?php
-						$active = ' nav-tab-active';
-
-				foreach ( $tabs as $menu_output ) {
-					$tab_display_name = $menu_output->get_tab_display_name();
-					$tab_slug         = $menu_output->get_tab_slug();
-					$object_id        = $menu_output->get_element_id();
-					?>
-			<li>
-				<a class="nav-tab<?php echo esc_attr( $active ); ?>" 
-											<?php
-											if ( $object_id ) {
-												echo 'id = "' . esc_attr( $object_id ) . '" ';
-											}
-											?>
-											 href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-					<?php echo esc_html( $tab_display_name ); ?>
-				</a>
-			</li>
-					<?php
-					$active = null;
-				}
-				?>
-		</ul>
-	</nav>
-	<div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master">
-				<?php
-				$output = \apply_filters( 'myvideoroom_notification_master', '', $room_name );
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-				echo $output;
-				?>
-	</div>
-				<?php
-				foreach ( $tabs as $article_output ) {
-					$function_callback = $article_output->get_function_callback();
-					$tab_slug          = $article_output->get_tab_slug();
-					?>
-	<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-					<?php
-						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-						echo $function_callback;
-					?>
-	</article>
-					<?php
-				}
-			}
-			?>
-</div>
-			<?php
-			return \ob_get_clean();
-		}
 	}
 
 
@@ -223,8 +149,8 @@ class SectionTemplates {
 			switch ( $input_type ) {
 				case self::TAB_VIDEO_ROOM:
 					return self::TAB_VIDEO_ROOM;
-				case self::TAB_HOST_SETTINGS:
-					return self::TAB_HOST_SETTINGS;
+				case self::TAB_VIDEO_ROOM_SETTINGS:
+					return self::TAB_VIDEO_ROOM_SETTINGS;
 				case self::TAB_ROOM_PERMISSIONS:
 					return self::TAB_ROOM_PERMISSIONS;
 				case self::TAB_STOREFRONT:
@@ -238,8 +164,8 @@ class SectionTemplates {
 			switch ( $input_type ) {
 				case self::TAB_VIDEO_ROOM:
 					return '<span title ="' . esc_html__( 'Video Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-video-alt3"></span>';
-				case self::TAB_HOST_SETTINGS:
-					return '<span title ="' . esc_html__( 'Room Hosting, Reception, and Layout Settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-generic"></span>';
+				case self::TAB_VIDEO_ROOM_SETTINGS:
+					return '<span title ="' . esc_html__( 'Room Reception, and Layout Settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-generic"></span>';
 				case self::TAB_ROOM_PERMISSIONS:
 					return '<span title ="' . esc_html__( 'Room Security and Permissions', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-lock"></span>';
 				case self::TAB_STOREFRONT:
@@ -250,6 +176,8 @@ class SectionTemplates {
 					return '<span title ="' . esc_html__( 'Welcome and Information', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-nametag"></span>';
 				case self::TAB_INFO_RECEPTION:
 					return '<span title ="' . esc_html__( 'Main Room Reception Centre', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-clipboard"></span>';
+					case self::TAB_HOST_ROOM_SETTINGS:
+						return '<span title ="' . esc_html__( 'Control Room Hosts', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-businessman"></span>';
 			}
 		}
 	}

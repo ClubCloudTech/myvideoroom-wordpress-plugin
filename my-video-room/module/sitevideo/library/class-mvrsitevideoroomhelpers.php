@@ -16,6 +16,7 @@ use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
+use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -284,7 +285,7 @@ class MVRSiteVideoRoomHelpers {
 		}
 
 		$base_menu = new MenuTabDisplay(
-			esc_html__( 'Video Settings', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM_SETTINGS ),
 			'videosettings',
 			fn() => Factory::get_instance( UserVideoPreference::class )
 						->choose_settings(
