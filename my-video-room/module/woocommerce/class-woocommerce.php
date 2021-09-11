@@ -10,6 +10,7 @@ namespace MyVideoRoomPlugin\Module\WooCommerce;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
+use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
@@ -236,7 +237,7 @@ class WooCommerce {
 		}
 
 		$basket_menu = new MenuTabDisplay(
-			esc_html__( 'Shopping Basket', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_SHOPPING_BASKET ),
 			'shoppingbasket',
 			fn() => Factory::get_instance( ShoppingBasket::class )
 				->render_basket( $room_name, $host_status ),
@@ -269,7 +270,7 @@ class WooCommerce {
 		}
 
 		$basket_menu = new MenuTabDisplay(
-			esc_html__( 'Storefront', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_STOREFRONT ),
 			'storefront',
 			fn() => Factory::get_instance( ShopView::class )
 				->show_shop( $room_name, $host_status ),

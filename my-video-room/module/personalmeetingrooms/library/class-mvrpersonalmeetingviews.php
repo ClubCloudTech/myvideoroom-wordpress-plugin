@@ -79,9 +79,9 @@ class MVRPersonalMeetingViews {
 	 * Render guest header template for meetings - used above guest room video shortcodes - provides meeting invite links, name, owner etc
 	 *
 	 * @param int $host_id - the Host ID of the room.
-	 * @return string
+	 * @return array|string
 	 */
-	public function meet_guest_header( $host_id ): string {
+	public function meet_guest_header( $host_id ) {
 		$module_id    = MVRPersonalMeeting::MODULE_PERSONAL_MEETING_DISPLAY;
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
 		$user         = get_user_by( 'id', $host_id );
@@ -95,9 +95,9 @@ class MVRPersonalMeetingViews {
 	/**
 	 * Render Host header template for meetings - used above Host room video shortcodes - provides meeting invite links, name, owner etc
 	 *
-	 * @return string
+	 * @return array|string
 	 */
-	public function meet_host_header(): string {
+	public function meet_host_header() {
 
 		$module_id    = MVRPersonalMeeting::MODULE_PERSONAL_MEETING_DISPLAY;
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';

@@ -118,10 +118,9 @@
 	border-radius: 3px;
 	color: rgb(255 255 255) !important;
 	display: inline;
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 400;
-	margin-left: 2px !important;
-	padding: 4px;
+	margin-left: 1px !important;
 	text-align: -webkit-center;
 	vertical-align: middle;
 }
@@ -131,10 +130,9 @@
 	border-radius: 3px;
 	color: rgb(255 255 255) !important;
 	display: inline;
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 400;
-	margin-left: 2px !important;
-	padding: 4px;
+	margin-left: 1px !important;
 	text-align: -webkit-center;
 	vertical-align: middle;
 }

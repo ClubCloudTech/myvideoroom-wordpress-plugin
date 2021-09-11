@@ -28,12 +28,10 @@
 .mvr-nav-shortcode-outer-wrap {
 	background-color: white;
 	border: 1px solid #c3c4c7;
-	padding: 10px 10px 10px 10px;
 }
 
 .mvr-nav-shortcode-outer-wrap-clean {
 	display: flow-root;
-	padding: 10px 10px 10px 10px;
 }
 
 .mvr-nav-settingstabs-outer-wrap {
@@ -101,6 +99,13 @@
 	text-align: left;
 	width: 35%;
 }
+
+.mvr-header-align {
+	margin-right: 6px;
+	margin-top: 4px;
+	margin-left: 6px;
+}
+
 
 .mvr-header-table-left {
 	width: 35%;

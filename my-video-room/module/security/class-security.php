@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Library\PageFilters;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
+use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityNotifications;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
@@ -239,7 +240,7 @@ class Security {
 
 		// Permissions Default Tab - rendered in Security as its a module feature of Security.
 		$base_menu = new MenuTabDisplay(
-			esc_html__( 'Room Permissions', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_ROOM_PERMISSIONS ),
 			'roompermissions',
 			fn() => Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
 				$room_id,
@@ -267,7 +268,7 @@ class Security {
 			return $input;
 		}
 		$permissions_menu = new MenuTabDisplay(
-			esc_html__( 'Room Permissions', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_ROOM_PERMISSIONS ),
 			'roompermissions',
 			fn() => Factory::get_instance( SecurityVideoPreference::class )
 				->choose_settings(

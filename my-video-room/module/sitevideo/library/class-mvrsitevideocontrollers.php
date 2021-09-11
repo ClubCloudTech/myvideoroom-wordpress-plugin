@@ -112,14 +112,15 @@ class MVRSiteVideoControllers {
 		$header        = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_host_template( $post_id );
 		$host_status   = true;
 		$output_object = array();
+		$display_name  = Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM );
 		$host_menu     = new MenuTabDisplay(
-			esc_html__( 'Video Room', 'my-video-room' ),
+			$display_name,
 			'videoroom',
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
 		array_push( $output_object, $host_menu );
 		$admin_menu = new MenuTabDisplay(
-			esc_html__( 'Host Settings', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_HOST_SETTINGS ),
 			'adminpage',
 			fn() => \do_shortcode(
 			//phpcs:ignore PEAR.Functions.FunctionCallSignature.Indent - indent is correct.
@@ -192,7 +193,7 @@ class MVRSiteVideoControllers {
 		$host_status   = false;
 		$output_object = array();
 		$host_menu     = new MenuTabDisplay(
-			esc_html__( 'Video Room', 'myvideoroom' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);

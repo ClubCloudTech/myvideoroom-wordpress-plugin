@@ -103,8 +103,9 @@ class BuddyPressVideo {
 		$header        = Factory::get_instance( MVRPersonalMeetingViews::class )->meet_guest_header( $user_id );
 		$output_object = array();
 		$host_status   = false;
-		$host_menu     = new MenuTabDisplay(
-			esc_html__( 'Video Room', 'my-video-room' ),
+
+		$host_menu = new MenuTabDisplay(
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
@@ -170,13 +171,13 @@ class BuddyPressVideo {
 		$host_status   = true;
 		$output_object = array();
 		$host_menu     = new MenuTabDisplay(
-			esc_html__( 'Video Room', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
 		array_push( $output_object, $host_menu );
 		$admin_menu = new MenuTabDisplay(
-			esc_html__( 'Host Settings', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_HOST_SETTINGS ),
 			'adminpage',
 			fn() => \do_shortcode(
 				Factory::get_instance( UserVideoPreference::class )->choose_settings(
@@ -264,14 +265,14 @@ class BuddyPressVideo {
 		$output_object = array();
 		$host_status   = true;
 		$host_menu     = new MenuTabDisplay(
-			esc_html__( 'Video Room', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
 
 		array_push( $output_object, $host_menu );
 			$admin_menu = new MenuTabDisplay(
-				esc_html__( 'Host Settings', 'my-video-room' ),
+				Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_HOST_SETTINGS ),
 				'adminpage',
 				fn() => \do_shortcode(
 					Factory::get_instance( UserVideoPreference::class )->choose_settings(
@@ -347,7 +348,7 @@ class BuddyPressVideo {
 		$output_object = array();
 		$host_status   = false;
 		$host_menu     = new MenuTabDisplay(
-			esc_html__( 'Video Room', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
 		);
