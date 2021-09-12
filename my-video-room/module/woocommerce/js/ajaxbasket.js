@@ -44,12 +44,12 @@
 							var $response_length = response.length;
 							if ( $response_length > 40 ) {
 								$container.html( response );
-								init();	
+								init();
 							}
-							
+
 						},
 						error: function (){
-							console.log('timeout reached');
+							console.log( 'timeout reached' );
 							setTimeout( () => {  triggerRefresh( room_name ); }, 1000 );
 						}
 					}
@@ -96,15 +96,16 @@
 						if (state_response.storestatus == 'change' ) {
 							$notification.html( state_response.notificationbar + '' );
 							$storefront.html( state_response.storefront + '' );
-
 						}
-						
+						if (state_response.messagewindow == 'change' ) {
+							$notification.html( state_response.notificationbar + '' );
+						}
 
 						if (state_response.status == 'nochange') {
 						} else {
 							init();
 						}
-						
+
 					},
 					error: function (){
 						setTimeout( () => {  triggerRefresh( room_name ); }, 1000 );
@@ -116,7 +117,7 @@
 		if ( typeof room_name === 'undefined' && $container ) {
 			triggerRefresh( room_name );
 		}
-		
+
 		return null;
 	}
 
@@ -194,7 +195,7 @@
 
 	var init = function(){
 
-	   $( '.myvideoroom-woocommerce-basket-ajax' ).on(
+		$( '.myvideoroom-woocommerce-basket-ajax' ).on(
 			'click',
 			handleEvent
 		);
@@ -204,46 +205,43 @@
 			handleEvent
 		);
 
-
-		$(".myvideoroom-button-link").click(function(event){
-			event.stopPropagation();
-			event.preventDefault();
-			event.stopImmediatePropagation();
-			mvrchangefocus();	
-			
-		  });
-		
-		  $(".myvideoroom-button-dismiss").click(function(event){
+		$( ".myvideoroom-button-link" ).click(
+			function(event){
 				event.stopPropagation();
 				event.preventDefault();
 				event.stopImmediatePropagation();
-				let dismiss = $(this).closest('button').attr('id');
-				$( "#"+ dismiss ).fadeOut('slow');
+				let targetclass = $( this ).closest( 'button' ).data( "target" );
+				mvrchangefocus( targetclass );
 
-		  });
+			}
+		);
 
-		return false;
-	} 
+		$( ".myvideoroom-button-dismiss" ).click(
+			function(event){
+				event.stopPropagation();
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				let dismiss = $( this ).closest( 'button' ).attr( 'id' );
+				$( "#" + dismiss ).fadeOut( 'slow' );
 
-		function mvrchangefocus( event ) {
+			}
+		);
 
-		/* Disabling Execution outside of MVR */
-		var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
-		
-		if ( mvrIsactive.length > 0) {
-
-			
-			
-			let targetclass = $(this).closest('button').data("target");
-			console.log( targetclass );
-			document.getElementById( 'mvr-shopping-basket' ).click();
-		
-			
-		}
 		return false;
 	}
 
+	function mvrchangefocus( targetclass ) {
 
+		/* Disabling Execution outside of MVR */
+		var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
+
+		if ( mvrIsactive.length > 0) {
+
+			document.getElementById( targetclass ).click();
+
+		}
+		return false;
+	}
 
 	/* Disabling Execution outside of MVR */
 	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );

@@ -133,7 +133,7 @@ class PageFilters {
 			$anonymous_setting = $user_permissions->is_anonymous_enabled();
 		}
 
-		if ( $site_override_permissions->is_site_override_enabled() ) {
+		if ( $site_override_permissions && $site_override_permissions->is_site_override_enabled() ) {
 			$anonymous_setting = $site_override_permissions->is_anonymous_enabled();
 		}
 

@@ -25,6 +25,7 @@ class SectionTemplates {
 	const TAB_HOST_ROOM_SETTINGS  = 'Room Hosts';
 	const BUTTON_REFRESH          = 'Refresh';
 	const BUTTON_SHARE_BASKET     = 'Share Basket';
+	const BUTTON_REQUEST_BASKET   = 'Request Basket';
 
 
 	/**
@@ -45,7 +46,7 @@ class SectionTemplates {
 		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 		$tabs         = apply_filters( 'myvideoroom_main_template_render', $inbound_tabs, $user_id, $room_name, $host_status, $header );
 
-?>
+		?>
 
 <div class="mvr-nav-shortcode-outer-wrap">
 	<div class="mvr-header-section">
@@ -132,7 +133,6 @@ class SectionTemplates {
 			<?php
 						return \ob_get_clean();
 
-
 	}
 
 
@@ -160,13 +160,18 @@ class SectionTemplates {
 			case self::TAB_INFO_RECEPTION:
 				return '<span title ="' . esc_html__( 'Main Room Reception Centre', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-clipboard"></span>';
 			case self::TAB_HOST_ROOM_SETTINGS:
-					return '<span title ="' . esc_html__( 'Control Room Hosts', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-businessman"></span>';
+				return '<span title ="' . esc_html__( 'Control Room Hosts', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-businessman"></span>';
 			case self::BUTTON_REFRESH:
-					return '<span title ="' . esc_html__( 'Reconnect to Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-update-alt"></span>';
+				return '<span title ="' . esc_html__( 'Reconnect to Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-update-alt" ></span>';
 			case self::BUTTON_SHARE_BASKET:
 				return '<span title ="' . esc_html__( 'Share Your Basket with the Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-share-alt2"></span><span title ="' . esc_html__( 'Share Your Basket with the Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
-
-		}
+			case self::BUTTON_REQUEST_BASKET:
+				return '<span title ="' . esc_html__( 'Request Control of the Room Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-format-status"></span><span title ="' . esc_html__( 'Request Control of the Room Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
+			case 'accept':
+				return '<span title ="' . esc_html__( 'Accept', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-thumbs-up"></span>';
+			case 'reject':
+				return '<span title ="' . esc_html__( 'Reject', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-thumbs-down"></span>';
+			}
 	}
 	/**
 	 * Welcome Template.

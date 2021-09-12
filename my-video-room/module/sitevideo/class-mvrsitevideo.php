@@ -114,6 +114,19 @@ class MVRSiteVideo {
 			5,
 			5
 		);
+		// Reception Center Tab.
+		if ( current_user_can( 'administrator' ) ) {
+			add_filter(
+				'myvideoroom_main_template_render',
+				array(
+					Factory::get_instance( MVRSiteVideoViews::class ),
+					'render_reception_tab_welcome',
+				),
+				6,
+				5
+			);
+		}
+
 		if ( ! \is_user_logged_in() ) {
 			add_filter(
 				'myvideoroom_welcome_page',
@@ -122,18 +135,6 @@ class MVRSiteVideo {
 					'render_login_tab_welcome',
 				),
 				5,
-				5
-			);
-		}
-		
-		if ( current_user_can('administrator') ) {
-			add_filter(
-				'myvideoroom_main_template_render',
-				array(
-					Factory::get_instance( MVRSiteVideoViews::class ),
-					'render_reception_tab_welcome',
-				),
-				6,
 				5
 			);
 		}
@@ -180,7 +181,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-css',
 					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '30',
+					Factory::get_instance( Version::class )->get_plugin_version() . '35',
 					'(min-width: 640px)'
 				);
 			},
@@ -192,7 +193,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-mobile-css',
 					\plugins_url( '/css/frontend-mobile.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '14',
+					Factory::get_instance( Version::class )->get_plugin_version() . '16',
 					'(max-width: 640px)'
 				);
 			},

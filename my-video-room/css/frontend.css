@@ -5,7 +5,7 @@
  */
 
 .myvideoroom-nav-tab-wrapper {
-	
+
 	margin-bottom: 4px;
 	overflow: hidden;
 }
@@ -141,27 +141,69 @@
 }
 
 .myvideoroom-notification-area {
-    background: darkblue;
-    color: white;
-    text-align: center;
-    font-size: 15px;
-    padding-right: 10px;
-    padding-left: 10px;
+	background: darkblue;
+	color: white;
+	text-align: center;
+	font-size: 15px;
+	padding-right: 10px;
+	padding-left: 10px;
 }
   .myvideoroom-dashicons, .myvideoroom-dashicons-before:before {
-    font-family: dashicons;
-    display: inline-block;
-    line-height: 1;
-    font-weight: 400;
-    font-style: normal;
-    text-decoration: inherit;
-    font-size: 25px!important;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 20px;
-    vertical-align:middle;
-    text-align: center;
-    transition: color .5s ease-in;
+	font-family: dashicons;
+	display: inline-block;
+	line-height: 1;
+	font-weight: 400;
+	font-style: normal;
+	text-decoration: inherit;
+	font-size: 25px!important;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 20px;
+	vertical-align:middle;
+	text-align: center;
+	transition: color .5s ease-in;
 }
 
+
+.mvr-main-button-enabled {
+	background-color: rgb(15, 54, 21);
+	border-radius: 3px;
+	color: rgb(255 255 255) !important;
+	display: inline;
+	font-size: 12px;
+	font-weight: 400;
+	margin-left: 1px !important;
+	text-align: -webkit-center;
+	vertical-align: middle;
+}
+
+.mvr-main-button-enabled a {
+	color: white;
+}
+
+.mvr-main-button-cancel a {
+	color: white;
+}
+
+.mvr-main-button-cancel {
+	background-color: rgb(77, 77, 77);
+	border-radius: 3px;
+	color: rgb(255 255 255) !important;
+	display: inline;
+	font-size: 12px;
+	font-weight: 400;
+	margin-left: 1px !important;
+	text-align: -webkit-center;
+	vertical-align: middle;
+}
+.mvr-woocommerce-overlay {
+	border-color: #C6C0AD;
+	border-style: solid;
+	border-width: 1px 1px 1px 1px;
+	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
+	display: grid;
+	background: white;
+	padding: 10px 10px 10px 10px;
+	transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+}

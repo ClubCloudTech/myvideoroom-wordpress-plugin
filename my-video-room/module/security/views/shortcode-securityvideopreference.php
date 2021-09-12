@@ -40,7 +40,7 @@ return function (
 		$current_user_setting
 	);
 	?>
-
+<div class="mvr-woocommerce-overlay">
 	<div id="security-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
 		<h1><?php esc_html_e( 'Security Settings for ', 'my-video-room' ); ?>
 			<?php
@@ -187,7 +187,7 @@ return function (
 			?>
 		</form>
 	</div>
-
+		</div>
 	<?php
 	return ob_get_clean();
 };

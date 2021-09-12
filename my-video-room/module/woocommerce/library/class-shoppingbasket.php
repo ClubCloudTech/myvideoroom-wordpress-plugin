@@ -32,7 +32,6 @@ class ShoppingBasket {
 	 */
 	public function render_basket( string $room_name, $host_status = null ) {
 
-
 		if ( ! $room_name ) {
 			return null;
 		}
@@ -80,20 +79,44 @@ class ShoppingBasket {
 	 * Render Notification Pages
 	 *
 	 * @param string $room_name -  Name of Room.
+	 * @param bool   $client_change_state -  If the Client has a Change (basket Woocomm).
+	 * @param bool   $store_change_state -  If the Store has changed.
+	 * @param bool   $notification_queue_change_state -  If a product share queue item has changed.
+	 *
 	 * @return string
 	 */
-	public function render_notification_tab( string $room_name, bool $client_change_state = null, bool $store_change_state = null, bool $notification_queue_change_state = null ):string {
+	public function render_notification_tab( string $room_name, bool $client_change_state = null, bool $store_change_state = null, bool $notification_queue_change_state = null ): ?string {
+
+			$output = null;
 
 		if ( $client_change_state ) {
 			$title               = esc_html__( 'A new Product has been automatically synced into your basket from another source', 'myvideoroom' );
-			$target_focus_class  = 'mvr-shopping-basket';
-			$client_notification = Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_class );
+			$target_focus_id     = 'mvr-shopping-basket';
+			$message             = \esc_html__( ' New Basket Update ', 'myvideoroom' );
+			$iconclass           = 'dashicons-cart';
+			$client_notification = Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
+
+		}
+		if ( $store_change_state ) {
+			$title              = esc_html__( 'The Room store has been updated, check it out', 'myvideoroom' );
+			$target_focus_id    = 'mvr-shop';
+			$message            = \esc_html__( ' New Update to Room Store ', 'myvideoroom' );
+			$iconclass          = 'dashicons-store';
+			$store_notification = Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
+
+		}
+		if ( $notification_queue_change_state ) {
+			$title              = esc_html__( 'A Product has been shared with you in the room, check it out', 'myvideoroom' );
+			$target_focus_id    = 'mvr-shopping-basket';
+			$message            = \esc_html__( ' Product Shared With You ', 'myvideoroom' );
+			$iconclass          = 'dashicons-cart dashicons-plus';
+			$queue_notification = Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
+
 		}
 
-		// Render Confirmation Page View.
-		$render = require __DIR__ . '/../views/notification-bar.php';
-		return $render( $room_name, $client_notification, $store_notification, $queue_notification );
-
+			// Render Confirmation Page View.
+			$render = require __DIR__ . '/../views/notification-bar.php';
+			return $render( $room_name, $client_notification, $store_notification, $queue_notification );
 	}
 
 	/**
@@ -371,10 +394,12 @@ class ShoppingBasket {
 	 * @param  string $nonce - Nonce for operation (if confirmation used).
 	 * @param  string $product_or_id - Adds additional Data to Nonce for more security (optional).
 	 * @param  string $style - Add a class for the button (optional).
+	 * @param  string $target_id - Adds a class to the button to javascript take an action on.
+	 * @param  string $href_class - Adds a class to the button to javascript take an action on.
 	 *
 	 * @return string
 	 */
-	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $product_or_id = null, string $style = null ):string {
+	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $product_or_id = null, string $style = null, string $target_id = null, string $href_class = null ): string {
 
 		$id_text = null;
 		if ( $product_or_id ) {
@@ -386,8 +411,8 @@ class ShoppingBasket {
 		}
 
 		return '
-		<button  class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax">
-		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
+		<button  class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax" data-target="' . $target_id . '">
+		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="myvideoroom-woocommerce-basket-ajax ' . $href_class . '">' . $button_label . '</a>
 		</button>
 		';
 	}

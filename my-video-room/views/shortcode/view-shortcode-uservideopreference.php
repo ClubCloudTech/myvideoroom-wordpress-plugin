@@ -23,13 +23,14 @@ return function (
 	ob_start();
 
 	?>
+	<div class="mvr-woocommerce-overlay">
 	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
-		<h1><?php esc_html_e( 'Video Host Settings for ', 'my-video-room' ); ?>
+		<h2><?php esc_html_e( 'Room Settings for ', 'my-video-room' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );
 			echo esc_html( ucwords( $output ) );
 			?>
-		</h1>
+		</h2>
 		<?php
 		// room permissions info.
 		$output              = null;
@@ -61,17 +62,17 @@ return function (
 		<form method="post" action="">
 			<input name="myvideoroom_user_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
 
-			<h2 class="mvr-title-header">
+			<h3 class="mvr-title-header">
 				<label for="myvideoroom_user_layout_id_preference_<?php echo esc_attr( $id_index ); ?>">
 					<?php esc_html_e( 'Video layout setting:', 'my-video-room' ); ?>
 				</label>
-			</h2>
+			</h3>
 			<div class="mvr-video-template mvr-title-header"><i class="dashicons mvr-icons dashicons-editor-help"></i>
 			</div>
 
 			<div class="mvr-hide mvr-template-table">
 				<div class="mvr-template-table" style="float:left">
-					<h2><?php esc_html_e( 'Lifelike Rooms', 'my-video-room' ); ?></h2>
+					<h3><?php esc_html_e( 'Lifelike Rooms', 'my-video-room' ); ?></h3>
 					<?php
 					esc_html_e(
 						'You can pick your room template to suit the type of meeting you have. Including whether to have breakout areas, seating position, seniority, and 
@@ -131,12 +132,12 @@ return function (
 				?>
 			</p>
 			<hr />
-			<h2 class="mvr-title-header">
+			<h3 class="mvr-title-header">
 				<label for="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					class="mvr-preferences-paragraph">
 					<i class="dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'my-video-room' ); ?>
 				</label>
-			</h2>
+			</h3>
 			<input
 				type="checkbox"
 				class="myvideoroom_user_reception_enabled_preference"
@@ -167,7 +168,7 @@ return function (
 
 			<div class="mvr-hide">
 				<div class="mvr-template-table" style="float:left">
-					<h2><?php esc_html_e( 'Interactive Receptions', 'my-video-room' ); ?></h2>
+					<h3><?php esc_html_e( 'Interactive Receptions', 'my-video-room' ); ?></h3>
 					<?php
 					esc_html_e(
 						'A Reception can be styled in many ways, and is what your guest will see whilst they wait for you. You can even pick a video for them
@@ -226,7 +227,7 @@ return function (
 
 			<div class="mvr-hide">
 				<div class="mvr-template-table" style="float:left">
-					<h2><?php esc_html_e( 'Choose your Reception Video Screening', 'my-video-room' ); ?></h2>
+					<h3><?php esc_html_e( 'Choose your Reception Video Screening', 'my-video-room' ); ?></h3>
 					<?php esc_html_e( 'Select the content you want your guest to view whilst they wait for you.', 'my-video-room' ); ?>
 					<img class="mvr-template-image"
 						src="<?php echo esc_url( plugins_url( '/../../img/sitevideoreception.png', __FILE__ ) ); ?>">
@@ -278,6 +279,7 @@ return function (
 			?>
 		</form>
 	</div>
+		</div>
 	<?php
 	return ob_get_clean();
 };

@@ -132,7 +132,7 @@ class SiteDefaults {
 			'myvideoroom-template',
 			plugins_url( '/css/template.css', __FILE__ ),
 			false,
-			$plugin_version . '9'
+			$plugin_version . '11'
 		);
 
 		wp_register_style(

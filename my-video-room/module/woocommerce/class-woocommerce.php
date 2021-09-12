@@ -158,7 +158,8 @@ class WooCommerce {
 			13,
 			true
 		);
-		/*wp_enqueue_script(
+		/*
+		wp_enqueue_script(
 			'myvideoroom-notification-buttons',
 			plugins_url( '/../../js/notification.js', __FILE__ ),
 			array( 'jquery' ),

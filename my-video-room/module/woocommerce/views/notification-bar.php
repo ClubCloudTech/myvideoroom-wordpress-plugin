@@ -38,8 +38,10 @@ return function (
 
 			$output  = Factory::get_instance( HostManagement::class )->master_button( $room_name );
 			$output .= Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name );
-			$output .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::BUTTON_REFRESH ), $room_name );
+			$output .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::BUTTON_REFRESH ), $room_name, null, null, null, 'mvr-shopping-basket', 'myvideoroom-button-link' );
 			$output .= $client_change_state;
+			$output .= $store_change_state;
+			$output .= $notification_queue_change_state;
 			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 			echo $output;
 		?>

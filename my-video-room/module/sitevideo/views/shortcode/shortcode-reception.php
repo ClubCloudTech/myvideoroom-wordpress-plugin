@@ -41,6 +41,7 @@ return function (
 
 	$settings_url = \add_query_arg( \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
 	?>
+	<div class="mvr-woocommerce-overlay">
 	<div class="mvr-admin-page-wrap">
 		<h2><?php esc_html_e( 'Site Conference Reception Center', 'my-video-room' ); ?></h2>
 
@@ -79,7 +80,7 @@ return function (
 			echo $details_section;
 			?>
 		</div>
-		<hr />
+</div>
 
 	<?php
 	return ob_get_clean();

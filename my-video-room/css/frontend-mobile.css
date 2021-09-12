@@ -5,7 +5,7 @@
  */
 
 .myvideoroom-nav-tab-wrapper {
-	
+
 	margin-bottom: 4px;
 	overflow: hidden;
 }
@@ -132,21 +132,21 @@
 
   .myvideoroom-dashicons, .myvideoroom-dashicons-before:before {
 	font-family: dashicons;
-    display: inline-block;
-    line-height: 1;
-    font-weight: 400;
-    font-style: normal;
-    text-decoration: inherit;
-    text-transform: none;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    margin-left: 3px;
-    font-size: 27px;
-    margin-right: 3px;
-    vertical-align: top;
-    text-align: center;
-    transition: color .1s ease-in;
+	display: inline-block;
+	line-height: 1;
+	font-weight: 400;
+	font-style: normal;
+	text-decoration: inherit;
+	text-transform: none;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	margin-left: 3px;
+	font-size: 27px;
+	margin-right: 3px;
+	vertical-align: top;
+	text-align: center;
+	transition: color .1s ease-in;
 }
 
 .myvideoroom-table-adjust {
@@ -156,15 +156,15 @@
 	display: none;
 }
 .myvideoroom-mobile-img-adjust{
-    min-width: 170px;
-    margin-left: auto;
+	min-width: 170px;
+	margin-left: auto;
 }
 .myvideoroom-mobile-table-row-adjust{
 	background-color: rgb(255 255 255 / 38%);
 	font-weight: 600;
 }
 .myvideoroom-mobile-table-row-opacity{
-    background: #e8e8e8e3;
+	background: #e8e8e8e3;
 	font-weight: 600;
 
 }
