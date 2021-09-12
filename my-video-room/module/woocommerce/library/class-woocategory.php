@@ -61,7 +61,7 @@ class WooCategory {
 		if ( $object ) {
 			return $object->term_id;
 		} else {
-			return false;
+			return null;
 		}
 	}
 
