@@ -125,7 +125,8 @@ class MVRSiteVideo {
 				5
 			);
 		}
-		if ( \is_user_admin() ) {
+		
+		if ( current_user_can('administrator') ) {
 			add_filter(
 				'myvideoroom_main_template_render',
 				array(
