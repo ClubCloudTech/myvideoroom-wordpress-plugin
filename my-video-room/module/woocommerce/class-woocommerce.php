@@ -147,7 +147,7 @@ class WooCommerce {
 			'myvideoroom-woocommerce-basket-js',
 			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			195,
+			wp_rand( 10, 10000 ),
 			true
 		);
 
@@ -155,18 +155,18 @@ class WooCommerce {
 			'myvideoroom-woocommerce-carthandler',
 			\plugins_url( '/js/carthandler.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			11,
+			13,
 			true
 		);
-		wp_enqueue_script(
+		/*wp_enqueue_script(
 			'myvideoroom-notification-buttons',
 			plugins_url( '/../../js/notification.js', __FILE__ ),
 			array( 'jquery' ),
-			139,
+			148,
 			true
-		);
+		);*/
 
-		add_filter( 'myvideoroom_basket_buttons', array( Factory::get_instance( ShopView::class ), 'render_save_category_button' ), 30, 3 );
+		add_filter( 'myvideoroom_basket_buttons', array( Factory::get_instance( WooCategory::class ), 'render_save_category_button' ), 30, 3 );
 
 		// Add Notification Bar to Video Call.
 		\add_filter( 'myvideoroom_notification_master', array( Factory::get_instance( ShoppingBasket::class ), 'render_notification_tab' ), 100, 2 );

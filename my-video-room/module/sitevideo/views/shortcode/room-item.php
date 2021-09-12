@@ -72,7 +72,7 @@ return function (
 	);
 
 	?>
-	<tr class="active" data-room-id="<?php echo esc_attr( $room->id ); ?>">
+	<tr class="active mvr-table-mobile" data-room-id="<?php echo esc_attr( $room->id ); ?>">
 		<td class="plugin-title column-primary"><?php echo esc_html( $room->display_name ); ?></td>
 		<td class="column-description">
 			<?php

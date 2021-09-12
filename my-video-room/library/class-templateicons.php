@@ -24,9 +24,12 @@ class TemplateIcons {
 	 *
 	 * @return ?string - the icons.
 	 */
-	public function show_icon( int $user_id, string $room_name ): ?string {
+	public function show_icon( int $user_id = null, string $room_name ): ?string {
 		if ( ! $user_id && ! $room_name ) {
 			return null;
+		}
+		if ( ! $user_id ) {
+			$user_id = \get_current_user_id();
 		}
 
 		$video_default_settings_applied = Factory::get_instance( UserVideoPreferenceDAO::class )->get_by_id( $user_id, $room_name );

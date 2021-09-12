@@ -58,7 +58,7 @@ return function (
 		?>
 
 		<br />
-		<table class="wp-list-table widefat plugins">
+		<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
 			<thead>
 			<tr>
 				<th class="manage-column column-name column-primary">

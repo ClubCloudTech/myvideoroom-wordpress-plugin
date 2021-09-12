@@ -36,7 +36,7 @@ return function (
 	if ( strlen( $output ) > 100 ) {
 		?>
 
-	<table class="wp-list-table widefat plugins">
+	<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
 		<thead>
 			<tr>
 			<h2>

@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
@@ -599,7 +600,7 @@ class HostManagement {
 
 		if ( $master_status ) {
 			$nonce        = wp_create_nonce( WooCommerce::SETTING_ENABLE_SYNC );
-			$button_label = \esc_html__( 'Share Basket', 'myvideoroom' );
+			$button_label = Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::BUTTON_SHARE_BASKET );
 			$button_type  = WooCommerce::SETTING_ENABLE_SYNC;
 			$title_box    = 'title ="' . esc_html__( 'Your Basket can be shared with others in the room', 'myvideoroom' ) . '"';
 			return '

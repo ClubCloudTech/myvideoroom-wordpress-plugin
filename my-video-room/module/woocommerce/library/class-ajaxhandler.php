@@ -499,26 +499,34 @@ class AjaxHandler {
 			*/
 
 			case 'refresh':
-				// Cart Change Section.
-				$client_change_state = Factory::get_instance( ShoppingBasket::class )->check_for_user_changes( $last_queuenum, $last_carthash, $room_name );
-				$store_change_state  = Factory::get_instance( ShopView::class )->has_room_store_changed( $room_name, $last_storecount );
+				// Change States.
+				$client_change_state             = Factory::get_instance( ShoppingBasket::class )->check_for_user_cart_changes( $last_carthash, $room_name );
+				$store_change_state              = Factory::get_instance( ShopView::class )->has_room_store_changed( $room_name, $last_storecount );
+				$notification_queue_change_state = Factory::get_instance( ShoppingBasket::class )->check_for_product_queue_changes( $last_queuenum, $room_name );
+				$change_heartbeat                = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, Factory::get_instance( HostManagement::class )->get_user_session() );
 
 				$response = array();
+
 				if ( true === $store_change_state ) {
-					$response['storestatus']     = 'change';
-					$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
-					$response['storefront']      = Factory::get_instance( ShopView::class )->show_shop( $room_name );
+					$response['storestatus'] = 'change';
+					$response['storefront']  = Factory::get_instance( ShopView::class )->show_shop( $room_name );
 				}
 
 				if ( true === $client_change_state ) {
-					$host_status                 = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
-					$response['status']          = 'change';
-					$response['mainwindow']      = Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
-					$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name );
+					$host_status            = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+					$response['status']     = 'change';
+					$response['mainwindow'] = Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 
+				}
+				if ( true === $notification_queue_change_state ) {
+					$response['status']     = 'change';
+					$response['mainwindow'] = Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				}
+
+				if ( $client_change_state || $store_change_state || $notification_queue_change_state || $change_heartbeat ) {
+					$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name, $client_change_state, $store_change_state, $notification_queue_change_state );
 				} else {
 					$response['status'] = 'nochange';
-
 				}
 
 				return \wp_send_json( $response );
@@ -534,6 +542,7 @@ class AjaxHandler {
 				return \wp_send_json( $response );
 
 			default:
+				$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 		}

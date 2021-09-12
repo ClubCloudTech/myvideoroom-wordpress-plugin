@@ -24,10 +24,11 @@ return function (
 	ob_start();
 
 	?>
-	<tr class="active" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
-		<td class="plugin-title column-primary mvr-icons"><?php echo $item['image']; ?></td>
+	<tr class="active mvr-table-mobile" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
+		<td class="plugin-title column-primary mvr-icons myvideoroom-mobile-img-adjust myvideoroom-mobile-table-row-adjust"><?php echo $item['image']; ?></td>
 
-		<td><a href="<?php echo $item['link']; ?>"
+		<td class="myvideoroom-mobile-table-row-adjust">
+			<a href="<?php echo $item['link']; ?>"
 					title="<?php esc_html_e( 'View Product', 'myvideoroom' ); ?>"
 					target="_blank"
 
@@ -35,13 +36,13 @@ return function (
 			</td>
 
 
-		<td class="column-description">
+		<td class="column-description myvideoroom-mobile-table-row-adjust">
 			<?php echo $item['price'] . ' x ' . $item['quantity']; ?>
 		</td>
-		<td class="plugin-title column-primary">
+		<td class="plugin-title column-primary myvideoroom-mobile-table-row-adjust">
 		<?php echo $item['subtotal']; ?>
 		</td>
-		<td>
+		<td class="myvideoroom-mobile-table-row-adjust">
 				<?php
 
 				if ( ! $item['am_i_downloading'] ) {
@@ -55,7 +56,7 @@ return function (
 					title="<?php esc_html_e( 'Reject Item - Do not add to your basket', 'myvideoroom' ); ?>"
 					target="_blank"
 
-				><span class="dashicons dashicons-dismiss"></span></a>
+				><span class="myvideoroom-dashicons dashicons-dismiss"></span></a>
 						<?php
 					}
 					?>
@@ -71,7 +72,7 @@ return function (
 					data-auth-nonce="<?php echo esc_attr( wp_create_nonce( WooCommerce::SETTING_ADD_PRODUCT . $item['product_id'] ) ); ?>"
 					title="<?php esc_html_e( 'Accept Item- add it to your basket', 'myvideoroom' ); ?>"
 					target="_blank"
-				><span class="dashicons dashicons-yes-alt"></span></a>
+				><span class="myvideoroom-dashicons dashicons-yes-alt"></span></a>
 
 					<?php
 				} else {

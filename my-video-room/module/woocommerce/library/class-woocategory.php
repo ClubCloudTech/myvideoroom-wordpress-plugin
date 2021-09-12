@@ -148,4 +148,35 @@ class WooCategory {
 
 	}
 
+	/**
+	 * Render Save Category Button
+	 *
+	 * @param string $button -    Button in pipeline.
+	 * @param array  $item    -   Object of Room Info.
+	 * @param string $room_name - Object of Room Info.
+	 * @return ?string
+	 */
+	public function render_save_category_button( ?string $button = null, array $item, string $room_name ): string {
+
+		$am_i_host = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+
+		if ( $am_i_host ) {
+
+			return $button .= '
+			<a href=""
+			class="mvr-icons myvideoroom-woocommerce-basket-ajax"
+			data-product-id="' . esc_attr( $item['product_id'] ) . '"
+			data-quantity="' . esc_attr( $item['quantity'] ) . '"
+			data-variation-id="' . esc_attr( $item['variation_id'] ) . '"
+			data-input-type="' . esc_attr( WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY ) . '"
+			data-room-name="' . esc_attr( $room_name ) . '"
+			data-auth-nonce="' . esc_attr( wp_create_nonce( WooCommerce::SETTING_SAVE_PRODUCT_CATEGORY ) ) . '"
+			title="' . esc_html__( 'Save this product to the room permanently (note: this adds it to the room category)', 'myvideoroom' ) . '"
+			target="_blank"	><span class="myvideoroom-dashicons dashicons-cloud-upload"></span></a>';
+		} else {
+			return '';
+		}
+	}
+
+
 }

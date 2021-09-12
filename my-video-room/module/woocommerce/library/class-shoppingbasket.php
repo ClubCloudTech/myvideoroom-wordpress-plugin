@@ -32,7 +32,7 @@ class ShoppingBasket {
 	 */
 	public function render_basket( string $room_name, $host_status = null ) {
 
-		// echo var_dump( $bp->groups->current_group );
+
 		if ( ! $room_name ) {
 			return null;
 		}
@@ -82,11 +82,17 @@ class ShoppingBasket {
 	 * @param string $room_name -  Name of Room.
 	 * @return string
 	 */
-	public function render_notification_tab( string $room_name ):string {
+	public function render_notification_tab( string $room_name, bool $client_change_state = null, bool $store_change_state = null, bool $notification_queue_change_state = null ):string {
+
+		if ( $client_change_state ) {
+			$title               = esc_html__( 'A new Product has been automatically synced into your basket from another source', 'myvideoroom' );
+			$target_focus_class  = 'mvr-shopping-basket';
+			$client_notification = Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_class );
+		}
 
 		// Render Confirmation Page View.
 		$render = require __DIR__ . '/../views/notification-bar.php';
-		return $render( $room_name );
+		return $render( $room_name, $client_notification, $store_notification, $queue_notification );
 
 	}
 
@@ -458,23 +464,13 @@ class ShoppingBasket {
 	/**
 	 * Check for User Changes
 	 *
-	 * @param string $last_queue_ammount - The Number last recorded for Inbound Queue.
 	 * @param string $last_carthash - The last stored cart hash.
 	 * @param string $room_name - Room Name to Check.
-	 * @param string $sync_type - the Mode the User has set of Sync.
 	 */
-	public function check_for_user_changes( string $last_queue_ammount, string $last_carthash, string $room_name, string $sync_type = null ) {
+	public function check_for_user_cart_changes( string $last_carthash, string $room_name ) {
 
 		// Initialise.
-		$cart_id             = Factory::get_instance( HostManagement::class )->get_user_session();
-		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name ) );
-		$current_carthash    = WC()->cart->get_cart_hash();
-		$change_heartbeat    = $this->user_notification_heartbeat( $room_name, $cart_id );
-
-		// Check Inbound Queue for Changes.
-		if ( intval( $last_queue_ammount ) !== $count_current_queue ) {
-			$queue_changed = true;
-		}
+		$current_carthash = WC()->cart->get_cart_hash();
 
 		// Check WooCommerce Cart for Changes.
 		if ( $current_carthash !== $last_carthash ) {
@@ -488,7 +484,31 @@ class ShoppingBasket {
 			}
 		}
 
-		if ( $woocart_changed || $queue_changed || $change_heartbeat ) {
+		if ( $woocart_changed ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check for Notification Queue Product Sharing Changes
+	 *
+	 * @param string $last_queue_ammount - The Number last recorded for Inbound Queue.
+	 * @param string $room_name - Room Name to Check.
+	 */
+	public function check_for_product_queue_changes( string $last_queue_ammount, string $room_name ) {
+
+		// Initialise.
+		$cart_id             = Factory::get_instance( HostManagement::class )->get_user_session();
+		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name ) );
+
+		// Check Inbound Queue for Changes.
+		if ( intval( $last_queue_ammount ) !== $count_current_queue ) {
+			$queue_changed = true;
+		}
+
+		if ( $queue_changed ) {
 			return true;
 		}
 

@@ -71,9 +71,9 @@ return function (
 	);
 
 	?>
-	<tr class="active" data-room-id="<?php echo esc_attr( $room->id ); ?>">
-		<td class="plugin-title column-primary"><?php echo esc_html( $room->display_name ); ?></td>
-		<td class="column-description">
+	<tr class="active mvr-table-mobile" data-room-id="<?php echo esc_attr( $room->id ); ?>">
+		<td class="plugin-title column-primary myvideoroom-mobile-table-row-adjust"><?php echo esc_html( $room->display_name ); ?></td>
+		<td class="column-description myvideoroom-mobile-table-row-adjust">
 			<?php
 			if ( $room->url ) {
 				echo '<a href="' . esc_url_raw( $room->url ) . '" target="_blank">' . esc_url_raw( $room->url ) . '</a>';

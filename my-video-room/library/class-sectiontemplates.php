@@ -23,6 +23,8 @@ class SectionTemplates {
 	const TAB_INFO_WELCOME        = 'Welcome';
 	const TAB_INFO_RECEPTION      = 'Site Reception Centre';
 	const TAB_HOST_ROOM_SETTINGS  = 'Room Hosts';
+	const BUTTON_REFRESH          = 'Refresh';
+	const BUTTON_SHARE_BASKET     = 'Share Basket';
 
 
 	/**
@@ -131,7 +133,6 @@ class SectionTemplates {
 						return \ob_get_clean();
 
 
-
 	}
 
 
@@ -143,42 +144,28 @@ class SectionTemplates {
 	 */
 	public function template_icon_switch( string $input_type ) {
 
-		$template_status = Factory::get_instance( SiteDefaults::class )->horizontal_site_template_mode();
+		switch ( $input_type ) {
+			case self::TAB_VIDEO_ROOM:
+				return '<span title ="' . esc_html__( 'Video Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-video-alt3"></span>';
+			case self::TAB_VIDEO_ROOM_SETTINGS:
+				return '<span title ="' . esc_html__( 'Room Reception, and Layout Settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-generic"></span>';
+			case self::TAB_ROOM_PERMISSIONS:
+				return '<span title ="' . esc_html__( 'Room Security and Permissions', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-lock"></span>';
+			case self::TAB_STOREFRONT:
+				return '<span title ="' . esc_html__( 'Room Builtin Storefront', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-store"></span>';
+			case self::TAB_SHOPPING_BASKET:
+				return '<span title ="' . esc_html__( 'Your Shopping Basket with AutoSync to Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
+			case self::TAB_INFO_WELCOME:
+				return '<span title ="' . esc_html__( 'Welcome and Information', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-nametag"></span>';
+			case self::TAB_INFO_RECEPTION:
+				return '<span title ="' . esc_html__( 'Main Room Reception Centre', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-clipboard"></span>';
+			case self::TAB_HOST_ROOM_SETTINGS:
+					return '<span title ="' . esc_html__( 'Control Room Hosts', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-businessman"></span>';
+			case self::BUTTON_REFRESH:
+					return '<span title ="' . esc_html__( 'Reconnect to Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-update-alt"></span>';
+			case self::BUTTON_SHARE_BASKET:
+				return '<span title ="' . esc_html__( 'Share Your Basket with the Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-share-alt2"></span><span title ="' . esc_html__( 'Share Your Basket with the Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
 
-		if ( ! $template_status ) {
-			switch ( $input_type ) {
-				case self::TAB_VIDEO_ROOM:
-					return self::TAB_VIDEO_ROOM;
-				case self::TAB_VIDEO_ROOM_SETTINGS:
-					return self::TAB_VIDEO_ROOM_SETTINGS;
-				case self::TAB_ROOM_PERMISSIONS:
-					return self::TAB_ROOM_PERMISSIONS;
-				case self::TAB_STOREFRONT:
-					return self::TAB_STOREFRONT;
-				case self::TAB_SHOPPING_BASKET:
-					return self::TAB_SHOPPING_BASKET;
-				case self::TAB_INFO_WELCOME:
-					return self::TAB_INFO_WELCOME;
-			}
-		} else {
-			switch ( $input_type ) {
-				case self::TAB_VIDEO_ROOM:
-					return '<span title ="' . esc_html__( 'Video Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-video-alt3"></span>';
-				case self::TAB_VIDEO_ROOM_SETTINGS:
-					return '<span title ="' . esc_html__( 'Room Reception, and Layout Settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-generic"></span>';
-				case self::TAB_ROOM_PERMISSIONS:
-					return '<span title ="' . esc_html__( 'Room Security and Permissions', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-lock"></span>';
-				case self::TAB_STOREFRONT:
-					return '<span title ="' . esc_html__( 'Room Builtin Storefront', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-store"></span>';
-				case self::TAB_SHOPPING_BASKET:
-					return '<span title ="' . esc_html__( 'Your Shopping Basket with AutoSync to Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
-				case self::TAB_INFO_WELCOME:
-					return '<span title ="' . esc_html__( 'Welcome and Information', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-nametag"></span>';
-				case self::TAB_INFO_RECEPTION:
-					return '<span title ="' . esc_html__( 'Main Room Reception Centre', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-clipboard"></span>';
-					case self::TAB_HOST_ROOM_SETTINGS:
-						return '<span title ="' . esc_html__( 'Control Room Hosts', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-businessman"></span>';
-			}
 		}
 	}
 	/**

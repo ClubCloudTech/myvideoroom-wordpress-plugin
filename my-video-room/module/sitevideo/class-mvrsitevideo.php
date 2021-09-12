@@ -125,7 +125,7 @@ class MVRSiteVideo {
 				5
 			);
 		}
-		if ( ! \is_user_admin() ) {
+		if ( \is_user_admin() ) {
 			add_filter(
 				'myvideoroom_main_template_render',
 				array(
@@ -179,7 +179,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-css',
 					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '18',
+					Factory::get_instance( Version::class )->get_plugin_version() . '30',
 					'(min-width: 640px)'
 				);
 			},
@@ -191,7 +191,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-mobile-css',
 					\plugins_url( '/css/frontend-mobile.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '3',
+					Factory::get_instance( Version::class )->get_plugin_version() . '14',
 					'(max-width: 640px)'
 				);
 			},

@@ -24,7 +24,7 @@ return function (
 	<?php
 	if ( $room_list && ! $shortcode ) {
 		?>
-	<table class="wp-list-table widefat plugins">
+	<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
 		<thead>
 			<tr>
 				<th scope="col" class="manage-column column-name column-primary">
@@ -61,9 +61,9 @@ return function (
 		<?php
 	} elseif ( $room_list && true === $shortcode ) {
 		?>
-		<table class="wp-list-table widefat plugins">
+		<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
 			<thead>
-				<tr>
+				<tr class="myvideoroom-hide-mobile">
 					<th scope="col" class="manage-column column-name column-primary">
 						<?php esc_html_e( 'Room Name', 'my-video-room' ); ?>
 					</th>

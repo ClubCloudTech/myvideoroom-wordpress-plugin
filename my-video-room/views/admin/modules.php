@@ -36,7 +36,7 @@ return function (
 		?>
 	</p>
 
-	<table class="wp-list-table widefat plugins">
+	<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
 		<thead>
 		<tr>
 			<th scope="col" class="manage-column column-name column-primary">

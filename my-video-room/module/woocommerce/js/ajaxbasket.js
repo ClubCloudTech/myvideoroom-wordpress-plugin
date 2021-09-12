@@ -14,6 +14,7 @@
 				var room_name    = $( this ).data( 'roomName' );
 				var quantity     = $( this ).data( 'quantity' );
 				var variation_id = $( this ).data( 'variationId' );
+				var target_class = $( this ).data( 'targetClass' );
 
 				var $container   = $( '.mvr-woocommerce-basket' );
 				var loading_text = $container.data( 'loadingText' );
@@ -36,21 +37,25 @@
 							roomName: room_name,
 							quantity: quantity,
 							variationId: variation_id,
-							recordId: record_id
+							recordId: record_id,
+							targetClass: target_class
 						},
 						success: function (response) {
 							var $response_length = response.length;
 							if ( $response_length > 40 ) {
 								$container.html( response );
+								init();	
 							}
-							init();
+							
 						},
 						error: function (){
+							console.log('timeout reached');
 							setTimeout( () => {  triggerRefresh( room_name ); }, 1000 );
 						}
 					}
 				);
 		e.preventDefault();
+		e.stopPropagation();
 		return false;
 	}
 
@@ -87,36 +92,32 @@
 						if (state_response.status == 'change' ) {
 							$notification.html( state_response.notificationbar + '' );
 							$container.html( state_response.mainwindow + '' );
-
 						}
 						if (state_response.storestatus == 'change' ) {
 							$notification.html( state_response.notificationbar + '' );
 							$storefront.html( state_response.storefront + '' );
 
 						}
+						
 
 						if (state_response.status == 'nochange') {
+						} else {
+							init();
 						}
-						init();
+						
 					},
 					error: function (){
 						setTimeout( () => {  triggerRefresh( room_name ); }, 1000 );
 					}
-					}
+				}
 			);
 		}
 
 		if ( typeof room_name === 'undefined' && $container ) {
 			triggerRefresh( room_name );
 		}
-		$( '.myvideoroom-button-link' ).on(
-			'click',
-			mvrchangefocus
-		);
-		$( '.mvr-main-button-cancel' ).on(
-			'click',
-			mvrchangefocus
-		);
+		
+		return null;
 	}
 
 	function triggerRefresh( room_checksum ) {
@@ -147,7 +148,6 @@
 							$container.html( state_response.mainwindow + '' );
 							$notification.html( state_response.notificationbar + '' );
 							$storefront.html( state_response.storefront + '' );
-
 							init();
 						},
 						error: function ( response ){
@@ -155,18 +155,7 @@
 						}
 					}
 				);
-	}
-
-	var init = function(){
-		$( '.myvideoroom-woocommerce-basket-ajax' ).on(
-			'click',
-			handleEvent
-		);
-
-		$( document.body ).on(
-			'updated_cart_totals',
-			handleEvent
-		);
+				return null;
 	}
 
 	function notifyRefresh( room_checksum ) {
@@ -193,7 +182,6 @@
 							var state_response = JSON.parse( response );
 
 							$notification.html( state_response.notificationbar + '' );
-
 							init();
 						},
 						error: function ( response ){
@@ -201,10 +189,12 @@
 						}
 					}
 				);
+		return null;
 	}
 
 	var init = function(){
-		$( '.myvideoroom-woocommerce-basket-ajax' ).on(
+
+	   $( '.myvideoroom-woocommerce-basket-ajax' ).on(
 			'click',
 			handleEvent
 		);
@@ -213,7 +203,47 @@
 			'updated_cart_totals',
 			handleEvent
 		);
+
+
+		$(".myvideoroom-button-link").click(function(event){
+			event.stopPropagation();
+			event.preventDefault();
+			event.stopImmediatePropagation();
+			mvrchangefocus();	
+			
+		  });
+		
+		  $(".myvideoroom-button-dismiss").click(function(event){
+				event.stopPropagation();
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				let dismiss = $(this).closest('button').attr('id');
+				$( "#"+ dismiss ).fadeOut('slow');
+
+		  });
+
+		return false;
+	} 
+
+		function mvrchangefocus( event ) {
+
+		/* Disabling Execution outside of MVR */
+		var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
+		
+		if ( mvrIsactive.length > 0) {
+
+			
+			
+			let targetclass = $(this).closest('button').data("target");
+			console.log( targetclass );
+			document.getElementById( 'mvr-shopping-basket' ).click();
+		
+			
+		}
+		return false;
 	}
+
+
 
 	/* Disabling Execution outside of MVR */
 	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
@@ -225,7 +255,7 @@
 	}
 
 	/* Initialise Runtime */
-	window.myvideoroom_shoppingbasket_init = init;
+	/*window.myvideoroom_shoppingbasket_init = init;*/
 	init();
 
 })( jQuery );

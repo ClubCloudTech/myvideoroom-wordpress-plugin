@@ -23,10 +23,11 @@ return function (
 ): string {
 	ob_start();
 	?>
-	<tr class="active" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
-		<td class="plugin-title column-primary mvr-icons"><?php echo $item['image']; ?></td>
+	<tr class="active mvr-table-mobile" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
+		<td class="plugin-title column-primary mvr-icons myvideoroom-mobile-img-adjust myvideoroom-mobile-table-row-adjust"><?php echo $item['image']; ?></td>
 
-		<td>		<a href="<?php echo $item['link']; ?>"
+		<td class="myvideoroom-mobile-table-row-adjust">		
+			<a href="<?php echo $item['link']; ?>"
 					title="<?php esc_html_e( 'View Product', 'myvideoroom' ); ?>"
 					target="_blank"
 
@@ -35,15 +36,15 @@ return function (
 	</td>
 
 
-		<td class="column-description">
+		<td class="column-description myvideoroom-mobile-table-row-adjust">
 			<?php echo $item['price'] . ' x ' . $item['quantity']; ?>
 		</td>
-		<td class="plugin-title column-primary">
+		<td class="plugin-title column-primary myvideoroom-mobile-table-row-adjust">
 		<?php echo $item['subtotal']; ?>
 		</td>
-		<td>
+		<td class="myvideoroom-mobile-table-row-adjust">
 			<?php
-			echo apply_filters( 'myvideoroom_basket_buttons', $buttons, $item, $room_name );
+			echo apply_filters( 'myvideoroom_basket_buttons', null, $item, $room_name );
 			if ( ! $item['am_i_downloading'] ) {
 				?>
 				<a href=""
@@ -55,7 +56,7 @@ return function (
 					title="<?php esc_html_e( 'Delete this item from Basket', 'myvideoroom' ); ?>"
 					target="_blank"
 
-				><span class="dashicons dashicons-dismiss"></span></a>
+				><span class="myvideoroom-dashicons dashicons-dismiss"></span></a>
 				<a href=""
 					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
@@ -67,7 +68,7 @@ return function (
 					title="<?php esc_html_e( 'Share This Product With the Room', 'myvideoroom' ); ?>"
 					target="_blank"
 
-				><span class="dashicons dashicons-upload"></span></a>
+				><span class="myvideoroom-dashicons dashicons-upload"></span></a>
 				<?php
 			} else {
 				echo esc_html_e( 'Basket is Auto Syncing' );

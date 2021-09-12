@@ -55,9 +55,9 @@ return function (
 				?>
 	</div>
 
-	<table class="wp-list-table widefat plugins">
+	<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
 		<thead>
-			<tr>
+			<tr class="myvideoroom-hide-mobile">
 				<th scope="col" class="manage-column column-name column-primary">
 					<?php esc_html_e( 'Product', 'myvideoroom' ); ?>
 				</th>
@@ -89,7 +89,7 @@ return function (
 			?>
 		</tbody>
 	</table>
-		</div>
+</div>
 
 		<?php
 	}
