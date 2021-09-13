@@ -39,6 +39,7 @@ class Setup {
 			`reception_video_enabled` BOOLEAN,
 			`reception_video_url` VARCHAR(255) NULL,
 			`show_floorplan` BOOLEAN,
+			`timestamp` BIGINT UNSIGNED NULL,
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
@@ -89,6 +90,34 @@ class Setup {
 			`module_param` VARCHAR(255) NULL,
 			`module_has_admin_page` BOOLEAN,
 			PRIMARY KEY (`module_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
+
+		return \maybe_create_table( $table_name, $sql_create );
+	}
+
+	/**
+	 * Install SessionState Sync Config Table.
+	 *
+	 * @return bool
+	 */
+	public function install_room_presence_table(): bool {
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		$table_name = $wpdb->prefix . SiteDefaults::TABLE_NAME_ROOM_PRESENCE;
+
+		$sql_create = 'CREATE TABLE IF NOT EXISTS `' . $table_name . '` (
+			`record_id` int NOT NULL AUTO_INCREMENT,
+			`cart_id` VARCHAR(255) NOT NULL,
+			`room_name` VARCHAR(255) NOT NULL,
+			`timestamp` BIGINT UNSIGNED NULL,
+			`last_notification` BIGINT UNSIGNED NULL,
+			`room_host` BOOLEAN,
+			`basket_change` VARCHAR(255) NULL,
+			`sync_state` VARCHAR(255) NULL,
+			`current_master` BOOLEAN,
+			`owner_id` BIGINT UNSIGNED NULL,
+			`video_record` BIGINT UNSIGNED NULL,
+			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
 		return \maybe_create_table( $table_name, $sql_create );

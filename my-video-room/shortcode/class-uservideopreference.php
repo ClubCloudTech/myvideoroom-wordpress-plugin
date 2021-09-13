@@ -85,6 +85,7 @@ class UserVideoPreference {
 			$reception_video_enabled = $http_post_library->get_checkbox_parameter( 'user_reception_video_enabled_preference' );
 			$reception_video_url     = $http_post_library->get_string_parameter( 'user_reception_waiting_video_url' );
 			$show_floorplan          = $http_post_library->get_checkbox_parameter( 'user_show_floorplan_preference' );
+			$timestamp               = current_time( 'timestamp' );
 
 			if ( $current_user_setting ) {
 				$current_user_setting->set_layout_id( $layout_id )
@@ -92,7 +93,8 @@ class UserVideoPreference {
 					->set_reception_enabled( $reception_enabled )
 					->set_reception_video_enabled_setting( $reception_video_enabled )
 					->set_reception_video_url_setting( $reception_video_url )
-					->set_show_floorplan_setting( $show_floorplan );
+					->set_show_floorplan_setting( $show_floorplan )
+					->set_timestamp( $timestamp );
 
 				$video_preference_dao->update( $current_user_setting );
 			} else {
@@ -104,7 +106,8 @@ class UserVideoPreference {
 					$reception_enabled,
 					$reception_video_enabled,
 					$reception_video_url,
-					$show_floorplan
+					$show_floorplan,
+					$timestamp
 				);
 				$video_preference_dao->create( $current_user_setting );
 			}

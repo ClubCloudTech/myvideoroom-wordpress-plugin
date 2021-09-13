@@ -40,5 +40,23 @@ class NotificationHelpers {
 				<i id="myvideoroom-button-dismiss-alert" class="myvideoroom-dashicons dashicons-dismiss myvideoroom-button-dismiss"
 				title="' . esc_html__( 'Hide this notification', 'myvideoroom' ) . '"></i></button>';
 	}
+	/**
+	 * Render Accept Master Notification Popup
+	 *
+	 * @param string $inbound_notification - Inbound buttons from filter.
+	 * @return ?string
+	 */
+	public function render_accept_master_notification( string $inbound_notification = null ): string {
+
+		$title                 = esc_html__( 'The basket master status has been transferred', 'myvideoroom' );
+		$target_focus_id       = 'mvr-shopping-basket';
+		$message               = \esc_html__( ' Basket Owner Changed ', 'myvideoroom' );
+		$iconclass             = 'dashicons-cart dashicons-cart';
+		$inbound_notification .= $this->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
+
+		return $inbound_notification . '2ec';
+
+	}
+
 
 }

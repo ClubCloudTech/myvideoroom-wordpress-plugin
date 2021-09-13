@@ -32,6 +32,7 @@ class SiteDefaults {
 	const TABLE_NAME_MODULE_CONFIG         = 'myvideoroom_module_config';
 	const TABLE_NAME_ROOM_MAP              = 'myvideoroom_room_post_mapping';
 	const TABLE_NAME_USER_VIDEO_PREFERENCE = 'myvideoroom_user_video_preference';
+	const TABLE_NAME_ROOM_PRESENCE         = 'myvideoroom_room_presence';
 
 	// Module Names and IDs.
 	const MODULE_DEFAULT_VIDEO_NAME = 'default-video-module';
@@ -45,8 +46,8 @@ class SiteDefaults {
 	const DBCLEAN_TIMESTAMP      = self::DBCLEAN_DAYS * 24 * 60 * 60; /* Days X Minutes X Seconds */
 	const LAST_VISITED_TOLERANCE = 30 * 60; /* Minutes X seconds */
 	const QUEUE_VIEW_TOLERANCE   = 24 * 60 * 60; /* Hours X Minutes X seconds */
-
-	const VIDEO_TEMPLATE_MODE = 1;
+	const ROOM_REFRESH_TOLERANCE = 8; /* 8 seconds - 6 second refresh window plus 2 seconds contingency */
+	const VIDEO_TEMPLATE_MODE    = 1;
 
 
 	/**
@@ -65,6 +66,7 @@ class SiteDefaults {
 		Factory::get_instance( Setup::class )->install_user_video_preference_table();
 		Factory::get_instance( Setup::class )->install_module_config_table();
 		Factory::get_instance( Setup::class )->initialise_default_video_settings();
+		Factory::get_instance( Setup::class )->install_room_presence_table();
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
 			self::MODULE_DEFAULT_VIDEO_NAME,
 			self::MODULE_DEFAULT_VIDEO_ID,

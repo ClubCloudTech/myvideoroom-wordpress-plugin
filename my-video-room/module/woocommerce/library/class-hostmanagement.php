@@ -410,9 +410,10 @@ class HostManagement {
 	 * Accept Request and Change Master.
 	 *
 	 * @param string $room_name -  Name of Room.
+	 * @param bool   $autoaccept -  If this is an autoaccept request (dont decode user - it is logged in hash).
 	 * @return bool
 	 */
-	public function accept_master_change_request( string $room_name ): bool {
+	public function accept_master_change_request( string $room_name, bool $autoaccept = null ): bool {
 
 		// Check Permissions.
 		$master = $this->am_i_master( $room_name );
@@ -420,9 +421,14 @@ class HostManagement {
 			return false;
 		}
 
-		// Decode User from request.
-		$original_hash  = $this->get_my_basket_request_state( $room_name, null, true );
-		$user_requestor = substr( $original_hash, strpos( $original_hash, ',' ) + 1 );
+		if ( $autoaccept ) {
+			$user_requestor = $this->get_user_session();
+
+		} else {
+			// Decode User from request.
+			$original_hash  = $this->get_my_basket_request_state( $room_name, null, true );
+			$user_requestor = substr( $original_hash, strpos( $original_hash, ',' ) + 1 );
+		}
 
 		// Make the Change.
 		$success = Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_master( $user_requestor, $room_name );
@@ -437,6 +443,7 @@ class HostManagement {
 			$master     = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, null, true );
 			$requestor  = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $user_requestor, null, true );
 			$this->turn_off_basket_downloads( $room_name );
+			add_filter( 'myvideoroom_notification_popup', array( Factory::get_instance( NotificationHelpers::class ), 'render_accept_master_notification' ), 10, 2 );
 
 		} else {
 			return false;
@@ -551,13 +558,13 @@ class HostManagement {
 		$my_hash = $this->get_user_session();
 		if ( $my_hash === $current_master ) {
 			echo 'Request Automatically Accepted';
-			$this->accept_master_change_request( $my_hash, $room_name );
+			$this->accept_master_change_request( $room_name );
 		}
 
 		// If no current master, or master is inactive - set user as master and skip workflow.
 		if ( ! $current_master || ! $is_master_active ) {
-
-			$this->accept_master_change_request( $room_name );
+			\esc_html_e( 'Request Automatically Accepted', 'myvideoroom' );
+			$this->accept_master_change_request( $room_name, true );
 			return true;
 		}
 
@@ -595,7 +602,7 @@ class HostManagement {
 			$button_type  = WooCommerce::SETTING_DISABLE_SYNC;
 			$target       = 'mvr-shopping-basket';
 			$title_box    = 'title ="' . esc_html__( ' You are currently sharing your basket with the room', 'myvideoroom' ) . '"';
-			return '<button ' . $title_box . '  class="mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax" data-target="'. $target .'">
+			return '<button ' . $title_box . '  class="mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
 			<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a> </button>';
 		}
 
@@ -651,12 +658,12 @@ class HostManagement {
 					</button>';
 
 			case WooCommerce::SETTING_REQUEST_MASTER:
-				$id_text = $this->get_user_session();
+				$id_text              = $this->get_user_session();
 				$accept_nonce         = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING );
 				$accept_button_type   = WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING;
-				$accept_button_label  = Factory::get_instance( SectionTemplates::class )->template_icon_switch( 'accept' ) . \esc_html__( 'Accept Request', 'myvideoroom' );
+				$accept_button_label  = Factory::get_instance( SectionTemplates::class )->template_icon_switch( 'accept' ) . \esc_html__( 'Accept', 'myvideoroom' );
 				$decline_nonce        = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_DECLINED_PENDING );
-				$decline_button_label = Factory::get_instance( SectionTemplates::class )->template_icon_switch( 'reject' ) . \esc_html__( 'Decline Request', 'myvideoroom' );
+				$decline_button_label = Factory::get_instance( SectionTemplates::class )->template_icon_switch( 'reject' ) . \esc_html__( 'Decline', 'myvideoroom' );
 				$decline_button_type  = WooCommerce::SETTING_REQUEST_MASTER_DECLINED_PENDING;
 				$title_box            = 'title ="' . \esc_html__( 'A request to take control of the shared basket has been received', 'myvideoroom' ) . '"';
 				return '<strong>' . \esc_html__( 'Basket Owner Change Request', 'myvideoroom' ) . '</strong>- <button ' . $title_box . '  class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax" data-target = "mvr-shopping-basket">

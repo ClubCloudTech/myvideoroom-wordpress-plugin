@@ -69,6 +69,13 @@ class UserVideoPreference {
 	private bool $show_floorplan;
 
 	/**
+	 * Timestamp
+	 *
+	 * @var int $timestamp - the Timestamp.
+	 */
+	private ?int $timestamp;
+
+	/**
 	 * UserVideoPreference constructor.
 	 *
 	 * @param int     $user_id                 Userid.
@@ -79,6 +86,7 @@ class UserVideoPreference {
 	 * @param bool    $reception_video_enabled Reception Video Status.
 	 * @param ?string $reception_video_url     Reception Video Path.
 	 * @param bool    $show_floorplan          Show Video Template to Guests Status.
+	 * @param ?int    $timestamp               Last Updated Timestamp.
 	 */
 	public function __construct(
 		int $user_id,
@@ -88,7 +96,8 @@ class UserVideoPreference {
 		bool $reception_enabled = false,
 		bool $reception_video_enabled = false,
 		string $reception_video_url = null,
-		bool $show_floorplan = false
+		bool $show_floorplan = false,
+		?int $timestamp = null
 
 	) {
 		$this->user_id                 = $user_id;
@@ -99,6 +108,7 @@ class UserVideoPreference {
 		$this->reception_video_enabled = $reception_video_enabled;
 		$this->reception_video_url     = $reception_video_url;
 		$this->show_floorplan          = $show_floorplan;
+		$this->timestamp               = $timestamp;
 	}
 
 	/**
@@ -121,6 +131,7 @@ class UserVideoPreference {
 				$data->reception_video_enabled,
 				$data->reception_video_url,
 				$data->show_floorplan,
+				$data->timestamp,
 			);
 		}
 
@@ -144,6 +155,7 @@ class UserVideoPreference {
 				'reception_video_enabled' => $this->reception_video_enabled,
 				'reception_video_url'     => $this->reception_video_url,
 				'show_floorplan'          => $this->show_floorplan,
+				'timestamp'               => $this->timestamp,
 			)
 		);
 	}
@@ -307,6 +319,28 @@ class UserVideoPreference {
 	 */
 	public function set_show_floorplan_setting( bool $show_floorplan ): UserVideoPreference {
 		$this->show_floorplan = $show_floorplan;
+
+		return $this;
+	}
+
+	/**
+	 * Gets Timestamp.
+	 *
+	 * @return int
+	 */
+	public function get_timestamp(): int {
+		return $this->timestamp;
+	}
+
+	/**
+	 * Sets Timestamp.
+	 *
+	 * @param int $timestamp - sets the Single Product Sync state.
+	 *
+	 * @return int
+	 */
+	public function set_timestamp( int $timestamp ): UserVideoPreference {
+		$this->timestamp = $timestamp;
 
 		return $this;
 	}

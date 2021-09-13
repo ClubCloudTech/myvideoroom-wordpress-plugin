@@ -12,6 +12,7 @@ namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class WooCommerce Category Management
@@ -56,7 +57,7 @@ class WooCategory {
 	 * @return ?int - the category room name. or Null if no room parent category
 	 */
 	public function get_room_parent_category_id(): ?int {
-		$room_name = WooCommerce::TABLE_NAME_WOOCOMMERCE_ROOM;
+		$room_name = SiteDefaults::TABLE_NAME_ROOM_PRESENCE;
 		$object    = get_term_by( 'slug', $room_name, 'product_cat' );
 		if ( $object ) {
 			return $object->term_id;
@@ -122,7 +123,7 @@ class WooCategory {
 	public function activate_product_category(): void {
 
 		$rooms_available = Factory::get_instance( MVRSiteVideoRoomHelpers::class )->get_rooms();
-		$parent_id       = $this->create_product_category( WooCommerce::TABLE_NAME_WOOCOMMERCE_ROOM, WooCommerce::MAIN_CATEGORY_DISPLAY );
+		$parent_id       = $this->create_product_category( SiteDefaults::TABLE_NAME_ROOM_PRESENCE, WooCommerce::MAIN_CATEGORY_DISPLAY );
 		foreach ( $rooms_available as $room ) {
 			$this->create_product_category( $room->room_name, $room->display_name, $parent_id );
 

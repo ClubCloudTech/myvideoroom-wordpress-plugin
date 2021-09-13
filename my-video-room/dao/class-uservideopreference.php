@@ -46,6 +46,7 @@ class UserVideoPreference {
 				'reception_video_enabled' => $user_video_preference->is_reception_video_enabled(),
 				'reception_video_url'     => $user_video_preference->get_reception_video_url_setting(),
 				'show_floorplan'          => $user_video_preference->is_floorplan_enabled(),
+				'timestamp'               => $user_video_preference->get_timestamp(),
 			)
 		);
 
@@ -224,7 +225,7 @@ class UserVideoPreference {
 		$row = $wpdb->get_row(
 			$wpdb->prepare(
 				'
-				SELECT user_id, room_name, layout_id, reception_id, reception_enabled, reception_video_enabled, reception_video_url, show_floorplan
+				SELECT user_id, room_name, layout_id, reception_id, reception_enabled, reception_video_enabled, reception_video_url, show_floorplan, timestamp
 				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
 				WHERE user_id = %d AND room_name = %s;
 			',
@@ -245,6 +246,7 @@ class UserVideoPreference {
 				(bool) $row->reception_video_enabled,
 				$row->reception_video_url,
 				(bool) $row->show_floorplan,
+				$row->timestamp,
 			);
 
 			wp_cache_set( $cache_key, __METHOD__, $result->to_json() );
@@ -284,6 +286,7 @@ class UserVideoPreference {
 				'reception_video_enabled' => $user_video_preference->is_reception_video_enabled(),
 				'reception_video_url'     => $user_video_preference->get_reception_video_url_setting(),
 				'show_floorplan'          => $user_video_preference->is_floorplan_enabled(),
+				'timestamp'               => $user_video_preference->get_timestamp(),
 			),
 			array(
 				'user_id'   => $user_video_preference->get_user_id(),

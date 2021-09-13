@@ -87,8 +87,6 @@ class ShoppingBasket {
 	 */
 	public function render_notification_tab( string $room_name, bool $client_change_state = null, bool $store_change_state = null, bool $notification_queue_change_state = null ): ?string {
 
-			$output = null;
-
 		if ( $client_change_state ) {
 			$title               = esc_html__( 'A new Product has been automatically synced into your basket from another source', 'myvideoroom' );
 			$target_focus_id     = 'mvr-shopping-basket';
@@ -98,25 +96,26 @@ class ShoppingBasket {
 
 		}
 		if ( $store_change_state ) {
-			$title              = esc_html__( 'The Room store has been updated, check it out', 'myvideoroom' );
-			$target_focus_id    = 'mvr-shop';
-			$message            = \esc_html__( ' New Update to Room Store ', 'myvideoroom' );
-			$iconclass          = 'dashicons-store';
-			$store_notification = Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
+			$title                = esc_html__( 'The Room store has been updated, check it out', 'myvideoroom' );
+			$target_focus_id      = 'mvr-shop';
+			$message              = \esc_html__( ' New Update to Room Store ', 'myvideoroom' );
+			$iconclass            = 'dashicons-store';
+			$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
 		}
 		if ( $notification_queue_change_state ) {
-			$title              = esc_html__( 'A Product has been shared with you in the room, check it out', 'myvideoroom' );
-			$target_focus_id    = 'mvr-shopping-basket';
-			$message            = \esc_html__( ' Product Shared With You ', 'myvideoroom' );
-			$iconclass          = 'dashicons-cart dashicons-plus';
-			$queue_notification = Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
+			$title                = esc_html__( 'A Product has been shared with you in the room, check it out', 'myvideoroom' );
+			$target_focus_id      = 'mvr-shopping-basket';
+			$message              = \esc_html__( ' Product Shared With You ', 'myvideoroom' );
+			$iconclass            = 'dashicons-cart dashicons-plus';
+			$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
 		}
+		$popup_notification = apply_filters( 'myvideoroom_notification_popup', '', $room_name );
 
 			// Render Confirmation Page View.
 			$render = require __DIR__ . '/../views/notification-bar.php';
-			return $render( $room_name, $client_notification, $store_notification, $queue_notification );
+			return $render( $room_name, $client_notification, $popup_notification );
 	}
 
 	/**

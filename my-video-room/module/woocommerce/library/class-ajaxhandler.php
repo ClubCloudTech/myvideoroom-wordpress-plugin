@@ -504,6 +504,7 @@ class AjaxHandler {
 				$store_change_state              = Factory::get_instance( ShopView::class )->has_room_store_changed( $room_name, $last_storecount );
 				$notification_queue_change_state = Factory::get_instance( ShoppingBasket::class )->check_for_product_queue_changes( $last_queuenum, $room_name );
 				$change_heartbeat                = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, Factory::get_instance( HostManagement::class )->get_user_session() );
+				$room_change_heartbeat           = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, Factory::get_instance( HostManagement::class )->get_user_session() );
 
 				$response = array();
 

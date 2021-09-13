@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 
 /**
  * Class RoomAdmin
@@ -61,4 +62,20 @@ class RoomAdmin {
 
 		return \apply_filters( 'myvideoroom_room_type_display_override', $room->room_type );
 	}
+	/**
+	 * Room Change Heartbeat - Returns if Room Layout has changed.
+	 *
+	 * @param string $room_name The name of the room.
+	 *
+	 * @return UserVideoPreferenceEntity
+	 */
+	public function room_change_heartbeat( string $room_name ): ?UserVideoPreferenceEntity {
+		/*
+		$current_time     = \current_time( 'timestamp' );
+		$tolerance        = SiteDefaults::ROOM_REFRESH_TOLERANCE;
+		$room_preference  =
+		$room_last_update = */
+		return null;
+	}
+
 }

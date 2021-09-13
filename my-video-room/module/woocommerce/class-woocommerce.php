@@ -8,6 +8,7 @@
 namespace MyVideoRoomPlugin\Module\WooCommerce;
 
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\SectionTemplates;
@@ -38,7 +39,6 @@ class WooCommerce {
 	const SETTING_BROADCAST_PRODUCT              = 'woocommerce-broadcast-single-product';
 	const SETTING_BROADCAST_PRODUCT_CONFIRMED    = 'woocommerce-broadcast-single-product-confirmed';
 	const TABLE_NAME_WOOCOMMERCE_CART            = 'myvideoroom_wocommerce_cart_sync';
-	const TABLE_NAME_WOOCOMMERCE_ROOM            = 'myvideoroom_wocommerce_room_presence';
 	const MAIN_CATEGORY_DISPLAY                  = 'MyVideoRoom Parent Store Category';
 
 	const SETTING_ACCEPT_ALL_QUEUE           = 'accept-all';
@@ -87,7 +87,6 @@ class WooCommerce {
 
 		// Create Tables in Database.
 		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
-		Factory::get_instance( WooCommerceRoomSyncDAO::class )->install_woocommerce_room_presence_table();
 
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
 			self::MODULE_WOOCOMMERCE_BASKET,
@@ -303,8 +302,8 @@ class WooCommerce {
 	 * @return void
 	 */
 	public function proxy_test() {
-		Factory::get_instance( WooCommerceRoomSyncDAO::class )->install_woocommerce_room_presence_table();
-		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
+		Factory::get_instance( Setup::class )->install_room_presence_table();
+
 	}
 
 

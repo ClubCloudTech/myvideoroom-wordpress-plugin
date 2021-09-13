@@ -171,7 +171,7 @@ class SectionTemplates {
 				return '<span title ="' . esc_html__( 'Accept', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-thumbs-up"></span>';
 			case 'reject':
 				return '<span title ="' . esc_html__( 'Reject', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-thumbs-down"></span>';
-			}
+		}
 	}
 	/**
 	 * Welcome Template.

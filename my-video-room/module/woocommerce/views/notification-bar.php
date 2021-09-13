@@ -25,8 +25,7 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 return function (
 	string $room_name,
 	string $client_change_state = null,
-	string $store_change_state = null,
-	string $notification_queue_change_state = null
+	string $popup = null
 ): string {
 	ob_start();
 
@@ -40,8 +39,8 @@ return function (
 			$output .= Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name );
 			$output .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::BUTTON_REFRESH ), $room_name, null, null, null, 'mvr-shopping-basket', 'myvideoroom-button-link' );
 			$output .= $client_change_state;
-			$output .= $store_change_state;
-			$output .= $notification_queue_change_state;
+			$output .= $popup;
+
 			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 			echo $output;
 		?>

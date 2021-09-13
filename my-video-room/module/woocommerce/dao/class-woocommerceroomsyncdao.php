@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\DAO;
 
+use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
@@ -19,31 +20,6 @@ use MyVideoRoomPlugin\SiteDefaults;
 class WooCommerceRoomSyncDAO {
 
 	/**
-	 * Install WooCommerce Sync Config Table.
-	 *
-	 * @return bool
-	 */
-	public function install_woocommerce_room_presence_table(): bool {
-		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
-		$sql_create = 'CREATE TABLE IF NOT EXISTS `' . $this->get_room_presence_table_name() . '` (
-			`record_id` int NOT NULL AUTO_INCREMENT,
-			`cart_id` VARCHAR(255) NOT NULL,
-			`room_name` VARCHAR(255) NOT NULL,
-			`timestamp` BIGINT UNSIGNED NULL,
-			`last_notification` BIGINT UNSIGNED NULL,
-			`room_host` BOOLEAN,
-			`basket_change` VARCHAR(255) NULL,
-			`sync_state` VARCHAR(255) NULL,
-			`current_master` BOOLEAN,
-			PRIMARY KEY (`record_id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
-
-		return \maybe_create_table( $this->get_room_presence_table_name(), $sql_create );
-	}
-
-
-	/**
 	 * Get the table name for Room Presence Table DAO.
 	 *
 	 * @return string
@@ -51,7 +27,7 @@ class WooCommerceRoomSyncDAO {
 	private function get_room_presence_table_name(): string {
 		global $wpdb;
 
-		return $wpdb->prefix . WooCommerce::TABLE_NAME_WOOCOMMERCE_ROOM;
+		return $wpdb->prefix . SiteDefaults::TABLE_NAME_ROOM_PRESENCE;
 	}
 
 	/**
@@ -217,6 +193,8 @@ class WooCommerceRoomSyncDAO {
 
 		// Can't cache as query involves time.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+			
+
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
@@ -228,6 +206,10 @@ class WooCommerceRoomSyncDAO {
 					$allowed_time
 				)
 			);
+
+		if ( $wpdb->last_error ) {
+			Factory::get_instance( Setup::class )->install_room_presence_table();
+		  }
 
 		return $participants;
 	}
@@ -307,6 +289,9 @@ class WooCommerceRoomSyncDAO {
 
 		// Flush other sync requests.
 		$this->flush_sync_state( $room_name );
+
+		// Notify Users.
+		
 
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 		\wp_cache_delete( $cart_id, __CLASS__ . '::get_room_info' );
