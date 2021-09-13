@@ -178,6 +178,20 @@
 	vertical-align: middle;
 }
 
+.myvideoroom-header-table-left {
+	width: 20%;
+	float:left;
+	text-align: left;
+	padding: 10px;
+}
+
+.myvideoroom-header-table-right {
+	width: 80%;
+	float:right;
+	text-align: right;
+}
+
+
 .mvr-main-button-enabled a {
 	color: white;
 }

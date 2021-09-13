@@ -12,7 +12,7 @@ use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\SectionTemplates;
-use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
+use MyVideoRoomPlugin\Module\WooCommerce\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
@@ -239,7 +239,7 @@ class WooCommerce {
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_SHOPPING_BASKET ),
 			'shoppingbasket',
 			fn() => Factory::get_instance( ShoppingBasket::class )
-				->render_basket( $room_name, $host_status ),
+				->render_basket( $room_name, $host_status, $post_id ),
 			'mvr-shopping-basket'
 		);
 

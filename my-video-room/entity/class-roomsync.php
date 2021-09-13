@@ -2,15 +2,15 @@
 /**
  * WooCoomerce Video Sync Basket System -Data Object.
  *
- * @package MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync.php
+ * @package MyVideoRoomPlugin\Entity\RoomSync.php
  */
 
-namespace MyVideoRoomPlugin\Module\WooCommerce\Entity;
+namespace MyVideoRoomPlugin\Entity;
 
 /**
  * Class WooCommerceVideo - Handler for Cart Sync.
  */
-class WooCommerceRoomSync {
+class RoomSync {
 
 	/**
 	 * The record id
@@ -75,6 +75,12 @@ class WooCommerceRoomSync {
 	 */
 	private bool $current_master;
 
+	/**
+	 * The Owner id
+	 *
+	 * @var ?int
+	 */
+	private ?int $owner_id;
 
 	/**
 	 * WooCommerce Room Sync Constructor.
@@ -88,6 +94,7 @@ class WooCommerceRoomSync {
 	 * @param ?string $sync_state              State of Automatic Basket Sync.
 	 * @param  bool    $current_master         User is Current Sync Basket Source.
 	 * @param  ?int    $id                     The record id.
+	 * @param  ?int    $owner_id               The Owner id.
 	 */
 	public function __construct(
 		string $cart_id,
@@ -98,7 +105,8 @@ class WooCommerceRoomSync {
 		string $basket_change = null,
 		string $sync_state = null,
 		bool $current_master = null,
-		?int $id
+		?int $id,
+		?int $owner_id
 	) {
 		$this->cart_id           = $cart_id;
 		$this->room_name         = $room_name;
@@ -109,6 +117,7 @@ class WooCommerceRoomSync {
 		$this->sync_state        = $sync_state;
 		$this->current_master    = $current_master;
 		$this->id                = $id;
+		$this->owner_id          = $owner_id;
 	}
 
 	/**
@@ -132,6 +141,7 @@ class WooCommerceRoomSync {
 				$data->sync_state,
 				$data->current_master,
 				$data->id,
+				$data->owner_id,
 			);
 		}
 
@@ -156,6 +166,7 @@ class WooCommerceRoomSync {
 				'sync_state'        => $this->sync_state,
 				'current_master'    => $this->current_master,
 				'id'                => $this->id,
+				'owner_id'          => $this->owner_id,
 			)
 		);
 	}
@@ -240,7 +251,7 @@ class WooCommerceRoomSync {
 	 *
 	 * @param int $timestamp - sets the Single Product Sync state.
 	 *
-	 * @return WooCommerceRoomSync
+	 * @return RoomSync
 	 */
 	public function set_timestamp( int $timestamp ): self {
 		$this->timestamp = $timestamp;
@@ -262,7 +273,7 @@ class WooCommerceRoomSync {
 	 *
 	 * @param int $last_notification - Last Notification Timestamp.
 	 *
-	 * @return WooCommerceRoomSync
+	 * @return RoomSync
 	 */
 	public function set_last_notification( int $last_notification ): self {
 		$this->last_notification = $last_notification;
@@ -284,9 +295,9 @@ class WooCommerceRoomSync {
 	 *
 	 * @param bool $room_host - sets the Single Product Sync state.
 	 *
-	 * @return WooCommerceRoomSync
+	 * @return RoomSync
 	 */
-	public function set_room_host( bool $room_host ): WooCommerceRoomSync {
+	public function set_room_host( bool $room_host ): RoomSync {
 		$this->room_host = $room_host;
 
 		return $this;
@@ -299,7 +310,7 @@ class WooCommerceRoomSync {
 	 *
 	 * @return UserVideoPreference
 	 */
-	public function set_basket_change_setting( string $basket_change = null ): WooCommerceRoomSync {
+	public function set_basket_change_setting( string $basket_change = null ): RoomSync {
 		$this->basket_change = $basket_change;
 
 		return $this;
@@ -321,7 +332,7 @@ class WooCommerceRoomSync {
 	 *
 	 * @return UserVideoPreference
 	 */
-	public function set_sync_state( string $sync_state = null ): WooCommerceRoomSync {
+	public function set_sync_state( string $sync_state = null ): RoomSync {
 		$this->sync_state = $sync_state;
 
 		return $this;
@@ -352,10 +363,32 @@ class WooCommerceRoomSync {
 	 *
 	 * @return WooCommerceVideo
 	 */
-	public function set_current_master( bool $current_master ): WooCommerceRoomSync {
+	public function set_current_master( bool $current_master ): RoomSync {
 		$this->current_master = $current_master;
 
 		return $this;
 	}
 
+
+	/**
+	 * Gets Owner_id.
+	 *
+	 * @return int
+	 */
+	public function get_owner_id(): ?int {
+		return $this->owner_id;
+	}
+
+	/**
+	 * Sets Owner_id.
+	 *
+	 * @param int $owner_id - sets the Owner ID of the room.
+	 *
+	 * @return RoomSync
+	 */
+	public function set_owner_id( int $owner_id ): self {
+		$this->owner_id = $owner_id;
+
+		return $this;
+	}
 }

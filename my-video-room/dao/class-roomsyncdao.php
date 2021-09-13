@@ -5,19 +5,18 @@
  * @package MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideo.php
  */
 
-namespace MyVideoRoomPlugin\Module\WooCommerce\DAO;
+namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync;
-use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
+use MyVideoRoomPlugin\Entity\RoomSync;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\SiteDefaults;
 
 /**
- * Class WooCommerceRoomSyncDAO
+ * Class RoomSyncDAO
  */
-class WooCommerceRoomSyncDAO {
+class RoomSyncDAO {
 
 	/**
 	 * Get the table name for Room Presence Table DAO.
@@ -33,12 +32,12 @@ class WooCommerceRoomSyncDAO {
 	/**
 	 * Save a Room Sync Event into the database
 	 *
-	 * @param WooCommerceRoomSync $woocommerceroomsyncobj The video preference to save.
+	 * @param RoomSync $woocommerceroomsyncobj The video preference to save.
 	 *
-	 * @return WooCommerceRoomSync|null
+	 * @return RoomSync|null
 	 * @throws \Exception When failing to insert, most likely a duplicate key.
 	 */
-	public function create( WooCommerceRoomSync $woocommerceroomsyncobj ): ?WooCommerceRoomSync {
+	public function create( RoomSync $woocommerceroomsyncobj ): ?RoomSync {
 		global $wpdb;
 
 		$cart_id   = $woocommerceroomsyncobj->get_cart_id();
@@ -69,6 +68,7 @@ class WooCommerceRoomSyncDAO {
 				'basket_change'     => $woocommerceroomsyncobj->get_basket_change(),
 				'sync_state'        => $woocommerceroomsyncobj->get_sync_state(),
 				'current_master'    => $woocommerceroomsyncobj->is_current_master(),
+				'owner_id'          => $woocommerceroomsyncobj->get_owner_id(),
 			)
 		);
 
@@ -116,7 +116,7 @@ class WooCommerceRoomSyncDAO {
 	 *
 	 * @param string $cart_id The Cart id.
 	 *
-	 * @return WooCommerceRoomSync[]
+	 * @return RoomSync[]
 	 */
 	public function get_by_cart_id( string $cart_id ): array {
 		global $wpdb;
@@ -153,7 +153,7 @@ class WooCommerceRoomSyncDAO {
 	 *
 	 * @param string $room_name - The Room Name to Return Recipients for.
 	 *
-	 * @return WooCommerceRoomSync[]
+	 * @return RoomSync[]
 	 */
 	public function get_room_participants( string $room_name ) {
 		global $wpdb;
@@ -166,7 +166,7 @@ class WooCommerceRoomSyncDAO {
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
-						SELECT cart_id, room_name, timestamp, room_host, current_master, basket_change, record_id 
+						SELECT cart_id, room_name, timestamp, room_host, current_master, basket_change, record_id, $owner_id 
 						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
 						WHERE room_name = %s AND timestamp > %d;
 					',
@@ -183,7 +183,7 @@ class WooCommerceRoomSyncDAO {
 	 *
 	 * @param string $room_name - The Room Name to Return Recipients for.
 	 *
-	 * @return WooCommerceRoomSync[]
+	 * @return RoomSync[]
 	 */
 	public function get_room_hosts_from_db( string $room_name ) {
 		global $wpdb;
@@ -193,8 +193,6 @@ class WooCommerceRoomSyncDAO {
 
 		// Can't cache as query involves time.
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-			
-
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
@@ -209,7 +207,7 @@ class WooCommerceRoomSyncDAO {
 
 		if ( $wpdb->last_error ) {
 			Factory::get_instance( Setup::class )->install_room_presence_table();
-		  }
+		}
 
 		return $participants;
 	}
@@ -219,7 +217,7 @@ class WooCommerceRoomSyncDAO {
 	 *
 	 * @param string $room_name - The Room Name to Return Recipients for.
 	 *
-	 * @return WooCommerceRoomSync[]
+	 * @return RoomSync[]
 	 */
 	public function get_room_masters( string $room_name ) {
 		global $wpdb;
@@ -229,7 +227,7 @@ class WooCommerceRoomSyncDAO {
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
-						SELECT cart_id, room_name, timestamp, room_host, current_master, record_id, sync_state
+						SELECT cart_id, room_name, timestamp, room_host, current_master, record_id, sync_state, owner_id
 						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
 						WHERE room_name = %s AND current_master IS TRUE 
 						ORDER BY timestamp DESC
@@ -290,9 +288,6 @@ class WooCommerceRoomSyncDAO {
 		// Flush other sync requests.
 		$this->flush_sync_state( $room_name );
 
-		// Notify Users.
-		
-
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 		\wp_cache_delete( $cart_id, __CLASS__ . '::get_room_info' );
 
@@ -302,7 +297,6 @@ class WooCommerceRoomSyncDAO {
 	/**
 	 * Update Master Status in Database.
 	 *
-	 * @param string $cart_id   The New ID for the Master.
 	 * @param string $room_name The Room Name.
 	 *
 	 * @return bool|null
@@ -340,9 +334,6 @@ class WooCommerceRoomSyncDAO {
 		global $wpdb;
 
 		$timestamp   = current_time( 'timestamp' );
-		$am_i_host   = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
-		$sync_state  = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
-		$am_i_master = Factory::get_instance( HostManagement::class )->am_i_master( $room_name );
 
 		// Try to Update First.
 
@@ -359,22 +350,6 @@ class WooCommerceRoomSyncDAO {
 				$room_name,
 			)
 		);
-		/*
-		 If Record Doesn't Exist Create Record.
-		if ( ! $result ) {
-			$result = new WooCommerceRoomSync(
-				$user_hash_id,
-				$room_name,
-				null,
-				current_time( 'timestamp' ),
-				$am_i_host,
-				WooCommerce::SETTING_BASKET_REQUEST_OFF,
-				$sync_state,
-				$am_i_master,
-				null
-			);
-			$this->create( $result );
-		}*/
 
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 
@@ -432,7 +407,7 @@ class WooCommerceRoomSyncDAO {
 		);
 		// If Record Doesn't Exist Create Record.
 		if ( ! $result ) {
-			$result = new WooCommerceRoomSync(
+			$result = new RoomSync(
 				WooCommerce::SETTING_BASKET_REQUEST_USER,
 				$room_name,
 				current_time( 'timestamp' ),
@@ -441,6 +416,7 @@ class WooCommerceRoomSyncDAO {
 				WooCommerce::SETTING_BASKET_REQUEST_OFF,
 				$sync_state,
 				false,
+				null,
 				null
 			);
 			$this->create( $result );
@@ -505,9 +481,9 @@ class WooCommerceRoomSyncDAO {
 	 * @param string $room_name The room name.
 	 * @param bool   $host_status - Optional Host Status.
 	 *
-	 * @return WooCommerceRoomSync|null
+	 * @return RoomSync|null
 	 */
-	public function get_by_id_sync_table( string $cart_id, string $room_name, bool $host_status = null ): ?WooCommerceRoomSync {
+	public function get_by_id_sync_table( string $cart_id, string $room_name, bool $host_status = null ): ?RoomSync {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
@@ -518,7 +494,7 @@ class WooCommerceRoomSyncDAO {
 		$result = \wp_cache_get( $cache_key, __METHOD__ );
 
 		if ( $result ) {
-			return WooCommerceRoomSync::from_json( $result );
+			return RoomSync::from_json( $result );
 		}
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.NotPrepared
@@ -534,7 +510,9 @@ class WooCommerceRoomSyncDAO {
 				   basket_change,
 				   sync_state,
 				   current_master,  
-				   record_id
+				   record_id,
+				   owner_id
+
 				   
 				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
 				WHERE cart_id = %s AND room_name = %s;
@@ -549,7 +527,7 @@ class WooCommerceRoomSyncDAO {
 		$result = null;
 
 		if ( $row ) {
-			$result = new WooCommerceRoomSync(
+			$result = new RoomSync(
 				$row->cart_id,
 				$row->room_name,
 				$row->timestamp,
@@ -559,6 +537,7 @@ class WooCommerceRoomSyncDAO {
 				$row->sync_state,
 				$row->current_master,
 				$row->id,
+				$row->owner_id,
 			);
 			wp_cache_set( $cache_key, __METHOD__, $result->to_json() );
 		} else {
@@ -571,12 +550,12 @@ class WooCommerceRoomSyncDAO {
 	/**
 	 * Update a Cart Object into the database
 	 *
-	 * @param WooCommerceRoomSync $woocommerceroomsyncobj The updated Cart Object.
+	 * @param RoomSync $woocommerceroomsyncobj The updated Cart Object.
 	 *
-	 * @return WooCommerceRoomSync|null
+	 * @return RoomSync|null
 	 * @throws \Exception When failing to update.
 	 */
-	public function update( WooCommerceRoomSync $woocommerceroomsyncobj ): ?WooCommerceRoomSync {
+	public function update( RoomSync $woocommerceroomsyncobj ): ?RoomSync {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
@@ -596,6 +575,7 @@ class WooCommerceRoomSyncDAO {
 				'basket_change'     => $woocommerceroomsyncobj->get_basket_change(),
 				'sync_state'        => $woocommerceroomsyncobj->get_sync_state(),
 				'current_master'    => $woocommerceroomsyncobj->is_current_master(),
+				'owner_id'          => $woocommerceroomsyncobj->get_owner_id(),
 			),
 			array(
 				'cart_id'   => $woocommerceroomsyncobj->get_cart_id(),
@@ -631,12 +611,12 @@ class WooCommerceRoomSyncDAO {
 	/**
 	 * Delete a Cart Object from the database
 	 *
-	 * @param WooCommerceRoomSync $woocommerceroomsyncobj The Cart Object to delete.
+	 * @param RoomSync $woocommerceroomsyncobj The Cart Object to delete.
 	 *
 	 * @return null
 	 * @throws \Exception When failing to delete.
 	 */
-	public function delete( WooCommerceRoomSync $woocommerceroomsyncobj ) {
+	public function delete( RoomSync $woocommerceroomsyncobj ) {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(

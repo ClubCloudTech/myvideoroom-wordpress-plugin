@@ -9,9 +9,10 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
+use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Library\SectionTemplates;
-use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
@@ -28,7 +29,7 @@ class HostManagement {
 	 */
 	public function get_master_status( string $room_name ):?string {
 
-		$masters = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_masters( $room_name );
+		$masters = Factory::get_instance( RoomSyncDAO::class )->get_room_masters( $room_name );
 		// Case No Masters.
 		if ( ! $masters ) {
 			return null;
@@ -46,7 +47,7 @@ class HostManagement {
 	 */
 	public function get_room_hosts( string $room_name ): array {
 
-		$hosts_objects = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_hosts_from_db( $room_name );
+		$hosts_objects = Factory::get_instance( RoomSyncDAO::class )->get_room_hosts_from_db( $room_name );
 
 		$output = array();
 		foreach ( $hosts_objects as $host ) {
@@ -64,7 +65,7 @@ class HostManagement {
 	public function am_i_host( $room_name ): bool {
 
 		$host_status = false;
-		$my_session  = $this->get_user_session();
+		$my_session  = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$room_hosts  = $this->get_room_hosts( $room_name );
 
 		foreach ( $room_hosts as $host ) {
@@ -84,7 +85,7 @@ class HostManagement {
 	 */
 	public function am_i_master( $room_name ): bool {
 
-		$my_session     = $this->get_user_session();
+		$my_session     = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$current_master = $this->get_master_status( $room_name );
 
 		if ( $my_session === $current_master ) {
@@ -120,9 +121,9 @@ class HostManagement {
 	 */
 	public function am_i_broadcasting( string $room_name ): bool {
 
-		$my_session = $this->get_user_session();
+		$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
 
-		$sync_object = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
+		$sync_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
 
 		if ( ! $sync_object ) {
 			return false;
@@ -143,9 +144,9 @@ class HostManagement {
 	 */
 	public function am_i_downloading( $room_name ): bool {
 
-		$my_session = $this->get_user_session();
+		$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
 
-		$sync_object = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( $my_session, $room_name );
+		$sync_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $my_session, $room_name );
 
 		if ( ! $sync_object ) {
 			return false;
@@ -167,7 +168,7 @@ class HostManagement {
 	 */
 	public function is_sync_available( $room_name ): bool {
 
-		$sync_object = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
+		$sync_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
 		if ( ! $sync_object ) {
 			return false;
 		}
@@ -195,7 +196,7 @@ class HostManagement {
 			}
 		}
 
-		$sync_object = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( $master_id, $room_name );
+		$sync_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $master_id, $room_name );
 
 		if ( ! $sync_object ) {
 			return false;
@@ -222,7 +223,7 @@ class HostManagement {
 	public function turn_on_basket_broadcast( string $room_name, string $new_master_id = null ): bool {
 
 		if ( ! $new_master_id ) {
-			$new_master_id = $this->get_user_session();
+			$new_master_id = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		}
 
 		$am_i_host   = $this->am_i_host( $room_name );
@@ -232,7 +233,7 @@ class HostManagement {
 			return false;
 		}
 		// Change State.
-		Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $new_master_id );
+		Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $new_master_id );
 
 		// Notify User's Queue, and Main one.
 		$this->notify_user( $room_name, $new_master_id );
@@ -251,7 +252,7 @@ class HostManagement {
 	public function turn_off_basket_broadcast( $room_name ): bool {
 
 		// Change State.
-		$state = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name );
+		$state = Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name );
 
 		if ( ! $state ) {
 			return false;
@@ -272,7 +273,7 @@ class HostManagement {
 	 */
 	public function does_room_exist( $room_name ): bool {
 
-		$current_record = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
+		$current_record = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
 		if ( $current_record ) {
 			return true;
 		} else {
@@ -291,10 +292,10 @@ class HostManagement {
 	public function get_my_basket_request_state( string $room_name, string $hash_id = null, bool $return_all = null ): ?string {
 
 		if ( ! $hash_id ) {
-			$hash_id = $this->get_user_session();
+			$hash_id = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		}
 
-		$user_object = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( $hash_id, $room_name );
+		$user_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $hash_id, $room_name );
 		if ( $user_object ) {
 			$state_hash = $user_object->get_sync_state();
 		}
@@ -326,7 +327,7 @@ class HostManagement {
 		}
 
 		// Change State.
-		Factory::get_instance( WooCommerceRoomSyncDAO::class )->notify_user( $room_name, $hash_id );
+		Factory::get_instance( RoomSyncDAO::class )->notify_user( $room_name, $hash_id );
 
 		return false;
 
@@ -346,12 +347,12 @@ class HostManagement {
 		}
 
 		// Request Master Change.
-		$my_session = $this->get_user_session();
+		$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
 
 		// Notify Master.
-		$master = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $hash_id, WooCommerce::SETTING_REQUEST_MASTER . ',' . $my_session );
+		$master = Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $hash_id, WooCommerce::SETTING_REQUEST_MASTER . ',' . $my_session );
 		// Update Own User for Pending.
-		$requestor = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, WooCommerce::SETTING_REQUEST_MASTER_PENDING . ',' . $hash_id );
+		$requestor = Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, WooCommerce::SETTING_REQUEST_MASTER_PENDING . ',' . $hash_id );
 
 		// Return Success State.
 		if ( $master && $requestor ) {
@@ -378,7 +379,7 @@ class HostManagement {
 		}
 
 		// Request Master Change.
-		$my_session = $this->get_user_session();
+		$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
 
 		// Notify Master if Current Queue request is from this user.
 		$original_hash = $this->get_my_basket_request_state( $room_name, null, true );
@@ -388,12 +389,12 @@ class HostManagement {
 
 		// Remove Notification from Master Record if our request is still the one considered valid.
 		if ( $current_master === $reported_master ) {
-			$master = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $current_master, null, true );
+			$master = Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $current_master, null, true );
 		} else {
 			$master = true;
 		}
 		// Update Own User to remove Pending Sync Flag.
-		$requestor = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, null, true );
+		$requestor = Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, null, true );
 
 		// Return Success State.
 		if ( $master && $requestor ) {
@@ -422,7 +423,7 @@ class HostManagement {
 		}
 
 		if ( $autoaccept ) {
-			$user_requestor = $this->get_user_session();
+			$user_requestor = Factory::get_instance( RoomAdmin::class )->get_user_session();
 
 		} else {
 			// Decode User from request.
@@ -431,7 +432,7 @@ class HostManagement {
 		}
 
 		// Make the Change.
-		$success = Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_master( $user_requestor, $room_name );
+		$success = Factory::get_instance( RoomSyncDAO::class )->update_master( $user_requestor, $room_name );
 
 		// Notify Users.
 
@@ -439,9 +440,9 @@ class HostManagement {
 			// Stop Sharing Basket.
 			Factory::get_instance( self::class )->turn_off_basket_broadcast( $room_name );
 			// Clear User and Master Records.
-			$my_session = $this->get_user_session();
-			$master     = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, null, true );
-			$requestor  = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $user_requestor, null, true );
+			$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
+			$master     = Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, null, true );
+			$requestor  = Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $user_requestor, null, true );
 			$this->turn_off_basket_downloads( $room_name );
 			add_filter( 'myvideoroom_notification_popup', array( Factory::get_instance( NotificationHelpers::class ), 'render_accept_master_notification' ), 10, 2 );
 
@@ -469,15 +470,15 @@ class HostManagement {
 	public function decline_master_change_request( string $room_name ): bool {
 
 		// Request Master Change.
-		$my_session = $this->get_user_session();
+		$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
 
 		// Notify Master if Current Queue request is from this user.
 		$original_hash  = $this->get_my_basket_request_state( $room_name, null, true );
 		$user_requestor = substr( $original_hash, strpos( $original_hash, ',' ) + 1 );
 
 		// Update Own User to remove Pending Sync Flag.
-		$master    = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, null, true );
-		$requestor = Factory::get_instance( WooCommerceRoomSyncDAO::class )->change_basket_sync_state( $room_name, $user_requestor, null, true );
+		$master    = Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $my_session, null, true );
+		$requestor = Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $user_requestor, null, true );
 
 		// Return Success State.
 		if ( $master && $requestor ) {
@@ -502,27 +503,27 @@ class HostManagement {
 
 		$does_room_exist = $this->does_room_exist( $room_name );
 
-		$my_session           = $this->get_user_session();
+		$my_session           = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$current_master       = $this->get_master_status( $room_name );
 		$is_master_active     = $this->is_master_active( $room_name );
 		$am_i_downloading     = $this->am_i_downloading( $room_name );
 		$am_i_master          = $this->am_i_master( $room_name );
-		$masters              = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_masters( $room_name );
+		$masters              = Factory::get_instance( RoomSyncDAO::class )->get_room_masters( $room_name );
 		$current_master_count = count( $masters );
 
 		// Clean Invalid Hosts - Replace with this user if Host - or Most Recent Master if not.
 		if ( $host_status && $current_master_count >= 2 ) {
 
-			Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_master( $my_session, $room_name );
+			Factory::get_instance( RoomSyncDAO::class )->update_master( $my_session, $room_name );
 
 		} elseif ( ! $host_status && $current_master_count >= 2 ) {
 
-			Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_master( $current_master, $room_name );
+			Factory::get_instance( RoomSyncDAO::class )->update_master( $current_master, $room_name );
 		}
 		// Auto Take Ownership if Invalid Master.
 		if ( ( ! $current_master || ! $is_master_active ) && true === $host_status ) {
 
-			Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_master( $my_session, $room_name );
+			Factory::get_instance( RoomSyncDAO::class )->update_master( $my_session, $room_name );
 
 			return true;
 		}
@@ -555,7 +556,7 @@ class HostManagement {
 		$is_master_active = $this->is_master_active( $room_name );
 
 		// Clear any errors if I am master.
-		$my_hash = $this->get_user_session();
+		$my_hash = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		if ( $my_hash === $current_master ) {
 			echo 'Request Automatically Accepted';
 			$this->accept_master_change_request( $room_name );
@@ -587,7 +588,7 @@ class HostManagement {
 	 */
 	public function master_button( $room_name ): ?string {
 
-		$id_text        = $this->get_user_session();
+		$id_text        = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$host_status    = $this->am_i_host( $room_name );
 		$sync_is_on     = $this->am_i_broadcasting( $room_name );
 		$master_status  = Factory::get_instance( self::class )->am_i_master( $room_name );
@@ -602,7 +603,8 @@ class HostManagement {
 			$button_type  = WooCommerce::SETTING_DISABLE_SYNC;
 			$target       = 'mvr-shopping-basket';
 			$title_box    = 'title ="' . esc_html__( ' You are currently sharing your basket with the room', 'myvideoroom' ) . '"';
-			return '<button ' . $title_box . '  class="mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
+			return '
+			<strong>' . \esc_html__( 'Basket Broadcasting ', 'myvideoroom' ) . '</strong><button ' . $title_box . '  class="mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
 			<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a> </button>';
 		}
 
@@ -613,7 +615,7 @@ class HostManagement {
 			$target       = 'mvr-shopping-basket';
 			$title_box    = 'title ="' . esc_html__( 'Your Basket can be shared with others in the room', 'myvideoroom' ) . '"';
 			return '
-			<button ' . $title_box . '  class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
+			<strong>' . \esc_html__( 'Basket Owner ', 'myvideoroom' ) . '</strong>- <button ' . $title_box . '  class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
 			<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
 			</button>';
 		} elseif ( $host_status ) {
@@ -623,7 +625,7 @@ class HostManagement {
 			$target       = 'mvr-shopping-basket';
 			$title_box    = 'title ="' . esc_html__( 'As a host, you can request control of the room basket from the current owner', 'myvideoroom' ) . '"';
 			return '
-			<br></p><button ' . $title_box . '  class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
+			<button ' . $title_box . '  class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
 			<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
 			</button>
 			';
@@ -647,18 +649,18 @@ class HostManagement {
 
 		switch ( $sync_status ) {
 			case WooCommerce::SETTING_REQUEST_MASTER_PENDING:
-				$id_text               = $this->get_user_session();
+				$id_text               = Factory::get_instance( RoomAdmin::class )->get_user_session();
 				$withdraw_nonce        = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_WITHDRAW_PENDING );
 				$withdraw_button_label = \esc_html__( 'Cancel Transfer Request', 'myvideoroom' );
 				$withdraw_button_type  = WooCommerce::SETTING_REQUEST_MASTER_WITHDRAW_PENDING;
 				$title_box             = 'title ="' . \esc_html__( 'You have Requested to Take Control of the Shared Basket', 'myvideoroom' ) . '"';
 				return '
-					<button  ' . $title_box . '  class=" mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax">
+				<strong>' . \esc_html__( 'Basket Ownership Pending ', 'myvideoroom' ) . '</strong><button  ' . $title_box . '  class=" mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax">
 					<a href="" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
 					</button>';
 
 			case WooCommerce::SETTING_REQUEST_MASTER:
-				$id_text              = $this->get_user_session();
+				$id_text              = Factory::get_instance( RoomAdmin::class )->get_user_session();
 				$accept_nonce         = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING );
 				$accept_button_type   = WooCommerce::SETTING_REQUEST_MASTER_APPROVED_PENDING;
 				$accept_button_label  = Factory::get_instance( SectionTemplates::class )->template_icon_switch( 'accept' ) . \esc_html__( 'Accept', 'myvideoroom' );
@@ -675,26 +677,26 @@ class HostManagement {
 		}
 		// Client Section.
 		if ( $am_i_downloading ) {
-			$id_text               = $this->get_user_session();
+			$id_text               = Factory::get_instance( RoomAdmin::class )->get_user_session();
 			$withdraw_nonce        = wp_create_nonce( WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD );
 			$withdraw_button_label = \esc_html__( 'Stop Syncing Basket', 'myvideoroom' );
 			$withdraw_button_type  = WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD;
 			$title_box             = 'title ="' . \esc_html__( 'You are currently syncing your basket from the room automatically', 'myvideoroom' ) . '"';
 			return '
-				<button ' . $title_box . '  class="mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax" 
+			<strong>' . \esc_html__( 'Basket Sync On ', 'myvideoroom' ) . '</strong><button ' . $title_box . '  class="mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax" 
 				<a href="" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
 				</button>';
 		}
 
 		if ( $sync_is_available && ! $am_i_master && ! $am_i_downloading ) {
 
-			$id_text               = $this->get_user_session();
+			$id_text               = Factory::get_instance( RoomAdmin::class )->get_user_session();
 			$withdraw_nonce        = wp_create_nonce( WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD );
 			$withdraw_button_label = \esc_html__( 'Sync My Basket', 'myvideoroom' );
 			$withdraw_button_type  = WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD;
 			$title_box             = 'title ="' . \esc_html__( 'A group shared basket is available - would you like to synchronise your basket to the room ?', 'myvideoroom' ) . '"';
 			return '
-				<button ' . $title_box . '  class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax">
+			<strong>' . \esc_html__( 'Room AutoSync Basket Available ', 'myvideoroom' ) . '</strong><button ' . $title_box . '  class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax">
 				<a href="" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
 				</button>';
 		}
@@ -709,13 +711,13 @@ class HostManagement {
 	 */
 	public function check_basket_sync_request( string $room_name ): ?string {
 
-		$basket_state = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
+		$basket_state = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
 
 		// If No Basket Sync state (eg deleted table etc) repair.
 
 		if ( ! $basket_state ) {
-			Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_basket_transfer_state( $room_name );
-			$basket_state = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
+			Factory::get_instance( RoomSyncDAO::class )->update_basket_transfer_state( $room_name );
+			$basket_state = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
 		}
 
 		return $basket_state->get_basket_change();
@@ -729,8 +731,8 @@ class HostManagement {
 	 */
 	public function turn_on_basket_downloads( string $room_name ): bool {
 
-		$my_session = $this->get_user_session();
-		$state      = Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_basket_transfer_state( $room_name, $my_session, WooCommerce::SETTING_BASKET_REQUEST_ON );
+		$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
+		$state      = Factory::get_instance( RoomSyncDAO::class )->update_basket_transfer_state( $room_name, $my_session, WooCommerce::SETTING_BASKET_REQUEST_ON );
 		$this->notify_user( $room_name );
 		if ( $state ) {
 			return true;
@@ -747,8 +749,8 @@ class HostManagement {
 	 */
 	public function turn_off_basket_downloads( string $room_name ): bool {
 
-		$my_session = $this->get_user_session();
-		$state      = Factory::get_instance( WooCommerceRoomSyncDAO::class )->update_basket_transfer_state( $room_name, $my_session, WooCommerce::SETTING_BASKET_REQUEST_OFF );
+		$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
+		$state      = Factory::get_instance( RoomSyncDAO::class )->update_basket_transfer_state( $room_name, $my_session, WooCommerce::SETTING_BASKET_REQUEST_OFF );
 		$this->notify_user( $room_name );
 
 		if ( $state ) {
@@ -758,29 +760,4 @@ class HostManagement {
 		}
 	}
 
-
-	/**
-	 * Get Session ID for Cart Synchronisation.
-	 *
-	 * @param ?int $user_id The user id. (optional).
-	 *
-	 * @return string the session ID of the user.
-	 */
-	public function get_user_session( int $user_id = null ): string {
-
-		if ( $user_id ) {
-			return wp_hash( $user_id );
-
-		} elseif ( is_user_logged_in() ) {
-
-			return wp_hash( get_current_user_id() );
-		} else {
-
-			// Get php session hash.
-			if ( ! session_id() ) {
-				session_start();
-			}
-			return session_id();
-		}
-	}
 }

@@ -11,7 +11,7 @@ namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
-use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
+use MyVideoRoomPlugin\Module\WooCommerce\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 

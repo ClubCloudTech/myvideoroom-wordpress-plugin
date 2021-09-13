@@ -78,4 +78,67 @@ class RoomAdmin {
 		return null;
 	}
 
+	/**
+	 * Register Room Presence
+	 *
+	 * @param string $room_name -  Name of Room.
+	 * @param bool   $host_status - If User is Host.
+	 * @return void
+	 */
+	public function register_room_presence( string $room_name, bool $host_status ):void {
+		// Setup.
+		$cart_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
+		$timestamp    = \current_time( 'timestamp' );
+
+		$current_record = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_session, $room_name, $host_status );
+
+		if ( $current_record ) {
+			$current_record->set_timestamp( $timestamp );
+			$current_record->set_room_host( $host_status );
+
+		} else {
+			$current_record = new RoomSyncEntity(
+				$cart_session,
+				$room_name,
+				$timestamp,
+				$timestamp,
+				$host_status,
+				null,
+				null,
+				$host_status,
+				null
+			);
+			// Set Last Notification Timestamp for new room.
+			Factory::get_instance( HostManagement::class )->notify_user( $room_name );
+		}
+		Factory::get_instance( RoomSyncDAO::class )->create( $current_record );
+
+		// Check and Clean Master Status.
+		Factory::get_instance( HostManagement::class )->initialise_master_status( $room_name, $host_status );
+	}
+
+	/**
+	 * Get Session ID for Cart Synchronisation.
+	 *
+	 * @param ?int $user_id The user id. (optional).
+	 *
+	 * @return string the session ID of the user.
+	 */
+	public function get_user_session( int $user_id = null ): string {
+
+		if ( $user_id ) {
+			return wp_hash( $user_id );
+
+		} elseif ( is_user_logged_in() ) {
+
+			return wp_hash( get_current_user_id() );
+		} else {
+
+			// Get php session hash.
+			if ( ! session_id() ) {
+				session_start();
+			}
+			return session_id();
+		}
+	}
 }

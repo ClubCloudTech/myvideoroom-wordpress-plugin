@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Library;
 
+use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -41,6 +42,8 @@ class SectionTemplates {
 	 * @return string The completed Formatted Template.
 	 */
 	public function shortcode_template_wrapper( $header, array $inbound_tabs, int $user_id = null, string $room_name = null, bool $host_status = null ): string {
+		Factory::get_instance( SessionState::class )->register_room_presence( $room_name, $host_status, $user_id );
+		//echo $host_status.$room_name.$user_id;
 		ob_start();
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
 		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
@@ -51,12 +54,12 @@ class SectionTemplates {
 <div class="mvr-nav-shortcode-outer-wrap">
 	<div class="mvr-header-section">
 
-		<div id="mvr-header-table-left" class="mvr-header-table-left">
-			<i class="mvr-header-align">
+		<div id="mvr-header-table-left" class="myvideoroom-header-table-left">
+			
 				<?php echo $header['template_icons']; ?>
-			</i>
+			
 		</div>
-		<div id="mvr-header-table-right" class="mvr-header-table-right">
+		<div id="mvr-header-table-right" class="myvideoroom-header-table-right">
 			<p class="mvr-header-title mvr-header-align">
 				<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
 							echo $header['name_output']. ' ' . $header['module_name'];

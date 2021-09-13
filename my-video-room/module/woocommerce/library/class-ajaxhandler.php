@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
+use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
@@ -503,8 +504,8 @@ class AjaxHandler {
 				$client_change_state             = Factory::get_instance( ShoppingBasket::class )->check_for_user_cart_changes( $last_carthash, $room_name );
 				$store_change_state              = Factory::get_instance( ShopView::class )->has_room_store_changed( $room_name, $last_storecount );
 				$notification_queue_change_state = Factory::get_instance( ShoppingBasket::class )->check_for_product_queue_changes( $last_queuenum, $room_name );
-				$change_heartbeat                = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, Factory::get_instance( HostManagement::class )->get_user_session() );
-				$room_change_heartbeat           = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, Factory::get_instance( HostManagement::class )->get_user_session() );
+				$change_heartbeat                = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, Factory::get_instance( RoomAdmin::class )->get_user_session() );
+				$room_change_heartbeat           = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, Factory::get_instance( RoomAdmin::class )->get_user_session() );
 
 				$response = array();
 

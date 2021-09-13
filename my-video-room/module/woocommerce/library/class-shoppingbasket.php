@@ -9,10 +9,11 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
+use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceRoomSyncDAO;
+use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
-use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceRoomSync as WooCommerceRoomSyncEntity;
+use MyVideoRoomPlugin\Entity\RoomSync as RoomSyncEntity;
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
@@ -27,10 +28,11 @@ class ShoppingBasket {
 	 *
 	 * @param string $room_name -  Name of Room.
 	 * @param bool   $host_status  Whether user is a host.
+	 * @param int    $post_id      Rooms ID.
 	 *
 	 * @return Void
 	 */
-	public function render_basket( string $room_name, $host_status = null ) {
+	public function render_basket( string $room_name, $host_status = null, int $post_id = null ) {
 
 		if ( ! $room_name ) {
 			return null;
@@ -127,17 +129,17 @@ class ShoppingBasket {
 	 */
 	public function register_room_presence( string $room_name, bool $host_status ):void {
 		// Setup.
-		$cart_session = Factory::get_instance( HostManagement::class )->get_user_session();
+		$cart_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$timestamp    = \current_time( 'timestamp' );
 
-		$current_record = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( $cart_session, $room_name, $host_status );
+		$current_record = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_session, $room_name, $host_status );
 
 		if ( $current_record ) {
 			$current_record->set_timestamp( $timestamp );
 			$current_record->set_room_host( $host_status );
 
 		} else {
-			$current_record = new WooCommerceRoomSyncEntity(
+			$current_record = new RoomSyncEntity(
 				$cart_session,
 				$room_name,
 				$timestamp,
@@ -151,7 +153,7 @@ class ShoppingBasket {
 			// Set Last Notification Timestamp for new room.
 			Factory::get_instance( HostManagement::class )->notify_user( $room_name );
 		}
-		Factory::get_instance( WooCommerceRoomSyncDAO::class )->create( $current_record );
+		Factory::get_instance( RoomSyncDAO::class )->create( $current_record );
 
 		// Check and Clean Master Status.
 		Factory::get_instance( HostManagement::class )->initialise_master_status( $room_name, $host_status );
@@ -245,7 +247,7 @@ class ShoppingBasket {
 			return false;
 		}
 
-		$cart_session = Factory::get_instance( HostManagement::class )->get_user_session();
+		$cart_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$timestamp    = \current_time( 'timestamp' );
 
 		foreach ( $basket_array as $item ) {
@@ -455,9 +457,9 @@ class ShoppingBasket {
 	 * @param string $variation_id - Variation ID.
 	 */
 	public function broadcast_single_product( string $product_id, string $room_name, string $quantity, string $variation_id ) {
-		$participants = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_room_participants( $room_name );
+		$participants = Factory::get_instance( RoomSyncDAO::class )->get_room_participants( $room_name );
 		$timestamp    = \current_time( 'timestamp' );
-		$source_cart  = Factory::get_instance( HostManagement::class )->get_user_session();
+		$source_cart  = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		foreach ( $participants as $room ) {
 
 			// Skip Cart Items Originated by this User.
@@ -524,7 +526,7 @@ class ShoppingBasket {
 	public function check_for_product_queue_changes( string $last_queue_ammount, string $room_name ) {
 
 		// Initialise.
-		$cart_id             = Factory::get_instance( HostManagement::class )->get_user_session();
+		$cart_id             = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name ) );
 
 		// Check Inbound Queue for Changes.
@@ -545,7 +547,7 @@ class ShoppingBasket {
 	 * @param string $room_name - Room Name to Check.
 	 */
 	public function check_queue_length( string $room_name ) {
-		$cart_id             = Factory::get_instance( HostManagement::class )->get_user_session();
+		$cart_id             = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$count_current_queue = count( Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name ) );
 
 		return $count_current_queue;
@@ -559,15 +561,15 @@ class ShoppingBasket {
 	 */
 	public function user_notification_heartbeat( string $room_name, string $user_hash = null ): bool {
 		if ( ! $user_hash ) {
-			$user_hash = Factory::get_instance( HostManagement::class )->get_user_session();
+			$user_hash = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		}
 
-		$user_object = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( $user_hash, $room_name );
+		$user_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $user_hash, $room_name );
 		if ( ! $user_object ) {
 			return false;
 		}
 		$user_timestamp = $user_object->get_last_notification() + WooCommerce::SETTING_HEARTBEAT_THRESHOLD;
-		$global_object  = Factory::get_instance( WooCommerceRoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
+		$global_object  = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( WooCommerce::SETTING_BASKET_REQUEST_USER, $room_name );
 
 		if ( ! $global_object ) {
 			return false;
@@ -606,7 +608,7 @@ class ShoppingBasket {
 		if ( true === $last_basket ) {
 			$cart_id = WooCommerce::SETTING_BASKET_REQUEST_ON;
 		} else {
-			$cart_id = Factory::get_instance( HostManagement::class )->get_user_session();
+			$cart_id = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		}
 
 		$available_queue = Factory::get_instance( WooCommerceVideoDAO::class )->get_queue_records( $cart_id, $room_name );
