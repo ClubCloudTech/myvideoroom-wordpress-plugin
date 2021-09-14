@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
+use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
@@ -148,10 +149,11 @@ class ShoppingBasket {
 				null,
 				null,
 				$host_status,
+				null,
 				null
 			);
 			// Set Last Notification Timestamp for new room.
-			Factory::get_instance( HostManagement::class )->notify_user( $room_name );
+			Factory::get_instance( SessionState::class )->notify_user( $room_name );
 		}
 		Factory::get_instance( RoomSyncDAO::class )->create( $current_record );
 
@@ -505,7 +507,7 @@ class ShoppingBasket {
 			// Update Cart if User is Broadcasting Basket.
 			$am_i_broadcasting = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
 			if ( $am_i_broadcasting ) {
-				Factory::get_instance( HostManagement::class )->notify_user( $room_name );
+				Factory::get_instance( SessionState::class )->notify_user( $room_name );
 				$this->broadcast_basket( $room_name );
 			}
 		}

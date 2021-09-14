@@ -54,7 +54,7 @@ class NotificationHelpers {
 		$iconclass             = 'dashicons-cart dashicons-cart';
 		$inbound_notification .= $this->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
-		return $inbound_notification . '2ec';
+		return $inbound_notification;
 
 	}
 

@@ -15,7 +15,6 @@ use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\Dependencies;
-use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressConfig;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Shortcode\App;
 

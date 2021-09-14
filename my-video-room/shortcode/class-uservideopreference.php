@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Shortcode;
 
+use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
 use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Library\AvailableScenes;
@@ -111,6 +112,8 @@ class UserVideoPreference {
 				);
 				$video_preference_dao->create( $current_user_setting );
 			}
+			// Notify Global Change Queue.
+			Factory::get_instance( SessionState::class )->notify_user( $room_name );
 		}
 	}
 

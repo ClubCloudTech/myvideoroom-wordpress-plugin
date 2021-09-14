@@ -43,7 +43,7 @@ class SectionTemplates {
 	 */
 	public function shortcode_template_wrapper( $header, array $inbound_tabs, int $user_id = null, string $room_name = null, bool $host_status = null ): string {
 		Factory::get_instance( SessionState::class )->register_room_presence( $room_name, $host_status, $user_id );
-		//echo $host_status.$room_name.$user_id;
+
 		ob_start();
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
 		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
@@ -55,9 +55,9 @@ class SectionTemplates {
 	<div class="mvr-header-section">
 
 		<div id="mvr-header-table-left" class="myvideoroom-header-table-left">
-			
-				<?php echo $header['template_icons']; ?>
-			
+				<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
+				echo $header['template_icons'];
+				?>
 		</div>
 		<div id="mvr-header-table-right" class="myvideoroom-header-table-right">
 			<p class="mvr-header-title mvr-header-align">
@@ -179,8 +179,6 @@ class SectionTemplates {
 	/**
 	 * Welcome Template.
 	 *
-	 * @param int $user_id - the user ID who is blocking.
-	 *
 	 * @return string
 	 */
 	public function welcome_template(): string {
@@ -200,27 +198,11 @@ class SectionTemplates {
 
 		<p class="mvr-template-text">
 			<?php
-			$new_user           = get_userdata( $user_id );
+
 			$first_display_name = '<strong>' . esc_html__( 'Welcome', 'my-video-room' ) . '</strong>';
-			if ( $new_user ) {
-				$first_name = $new_user->user_firstname;
-				$nicename   = $new_user->user_nicename;
-				if ( $first_name ) {
-					$first_display_name = '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
-				} elseif ( $nicename ) {
-					$first_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
-				}
-			}
+
 			$second_display_name = esc_html__( 'the site administrators', 'my-video-room' );
-			if ( $new_user ) {
-				$first_name = $new_user->user_firstname;
-				$nicename   = $new_user->user_nicename;
-				if ( $first_name ) {
-					$second_display_name = '<strong>' . esc_html( ucfirst( $first_name ) ) . '</strong>';
-				} elseif ( $nicename ) {
-					$second_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
-				}
-			}
+
 			echo sprintf(
 			/* translators: %1s is the text "The Administrator" and %2s is "the site administrators" */
 				esc_html__( '%1$s Our rooms work best if you are signed in. Click the help icon for instructions or contact the site owner, your host, or %2$s for more assistance.', 'myvideoroom' ),

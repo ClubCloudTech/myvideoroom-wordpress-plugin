@@ -10,8 +10,13 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\DAO\RoomSyncDAO;
+use MyVideoRoomPlugin\DAO\UserVideoPreference;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
+use MyVideoRoomPlugin\Shortcode\UserVideoPreference as ShortcodeUserVideoPreference;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class RoomAdmin
@@ -63,59 +68,49 @@ class RoomAdmin {
 		return \apply_filters( 'myvideoroom_room_type_display_override', $room->room_type );
 	}
 	/**
-	 * Room Change Heartbeat - Returns if Room Layout has changed.
+	 * Room Change Heartbeat - Returns The Room Configuration Object if Room Layout has changed.
 	 *
 	 * @param string $room_name The name of the room.
+	 * @param string $cart_id The ID of the User Making the Request.
 	 *
-	 * @return UserVideoPreferenceEntity
+	 * @return ?UserVideoPreferenceEntity
 	 */
-	public function room_change_heartbeat( string $room_name ): ?UserVideoPreferenceEntity {
-		/*
-		$current_time     = \current_time( 'timestamp' );
-		$tolerance        = SiteDefaults::ROOM_REFRESH_TOLERANCE;
-		$room_preference  =
-		$room_last_update = */
-		return null;
-	}
+	public function room_change_heartbeat( string $room_name, string $cart_id = null ) {
 
-	/**
-	 * Register Room Presence
-	 *
-	 * @param string $room_name -  Name of Room.
-	 * @param bool   $host_status - If User is Host.
-	 * @return void
-	 */
-	public function register_room_presence( string $room_name, bool $host_status ):void {
-		// Setup.
-		$cart_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
-		$timestamp    = \current_time( 'timestamp' );
-
-		$current_record = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_session, $room_name, $host_status );
-
-		if ( $current_record ) {
-			$current_record->set_timestamp( $timestamp );
-			$current_record->set_room_host( $host_status );
-
-		} else {
-			$current_record = new RoomSyncEntity(
-				$cart_session,
-				$room_name,
-				$timestamp,
-				$timestamp,
-				$host_status,
-				null,
-				null,
-				$host_status,
-				null
-			);
-			// Set Last Notification Timestamp for new room.
-			Factory::get_instance( HostManagement::class )->notify_user( $room_name );
+		if ( ! $cart_id ) {
+			$cart_id = $this->get_user_session();
 		}
-		Factory::get_instance( RoomSyncDAO::class )->create( $current_record );
 
-		// Check and Clean Master Status.
-		Factory::get_instance( HostManagement::class )->initialise_master_status( $room_name, $host_status );
+		// Users Entered Room Timestamp and recorded Room Owner.
+		$room_record = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $room_name );
+
+		if ( $room_record ) {
+
+			$my_timestamp  = $room_record->get_timestamp();
+			$room_owner_id = $room_record->get_owner_id();
+			if ( ! $room_owner_id || ! $my_timestamp ) {
+				return null;
+			}
+		} else {
+			return null;
+		}
+
+		// Rooms last updated timestamp, and object info.
+		$room_object = Factory::get_instance( UserVideoPreference::class )->get_by_id( $room_owner_id, $room_name );
+
+		if ( $room_object ) {
+			$room_last_changed = $room_object->get_timestamp();
+		} else {
+			return null;
+		}
+
+		if ( $room_last_changed > $my_timestamp ) {
+			return $room_object;
+		} else {
+			return null;
+		}
 	}
+
 
 	/**
 	 * Get Session ID for Cart Synchronisation.
@@ -141,4 +136,61 @@ class RoomAdmin {
 			return session_id();
 		}
 	}
+	/**
+	 * Room Change Heartbeat - Returns The Room Configuration Object if Room Layout has changed.
+	 *
+	 * @param UserVideoPreferenceEntity $room_object - the object class to re-assemble room from.
+	 *
+	 * @return string
+	 */
+	public function update_main_video_window( UserVideoPreferenceEntity $room_object ) {
+
+		//return serialize( $room_object );
+
+		$user_id                 = $room_object->get_user_id();
+		$room_name               = $room_object->get_room_name();
+		$video_template          = $room_object->get_layout_id();
+		$reception_id            = $room_object->get_reception_id();
+		$reception_enabled       = $room_object->is_reception_enabled();
+		$reception_video_enabled = $room_object->is_reception_video_enabled();
+		$reception_video_url     = $room_object->get_reception_video_url_setting();
+		$show_floorplan          = $room_object->is_floorplan_enabled();
+
+		$myvideoroom_app = AppShortcodeConstructor::create_instance()
+			->set_name( $room_name )
+			->set_layout( $video_template );
+
+		$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+
+		if ( $host_status ) {
+			$myvideoroom_app->set_as_host();
+
+		} else {
+
+		}
+		return do_shortcode( $myvideoroom_app->output_shortcode_text() );
+
+	}
+
+	/**
+	 * Room Change Heartbeat - Returns The Room Configuration Object if Room Layout has changed.
+	 *
+	 * @param UserVideoPreferenceEntity $room_object - the object class to re-assemble room from.
+	 *
+	 * @return string
+	 */
+	public function update_video_settings_window( UserVideoPreferenceEntity $room_object ) {
+
+		$user_id   = $room_object->get_user_id();
+		$room_name = $room_object->get_room_name();
+
+		return \do_shortcode(
+			Factory::get_instance( ShortcodeUserVideoPreference::class )->choose_settings(
+				$user_id,
+				$room_name
+			)
+		);
+
+	}
+
 }

@@ -6,6 +6,7 @@
  */
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
@@ -28,7 +29,6 @@ return function (
 	string $popup = null
 ): string {
 	ob_start();
-
 	?>
 
 	<div id="notification" class="mvr-table-row">

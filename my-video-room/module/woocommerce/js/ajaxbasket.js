@@ -69,6 +69,9 @@
 		var $container      = $( '.mvr-woocommerce-basket' );
 		var $notification   = $( '.mvr-notification-master' );
 		var $storefront     = $( '.mvr-storefront-master' );
+		var $mainvideo      = $( '.myvideoroom-app' );
+		var videosetting    = $( '#video-host-wrap' );
+		var securitysetting = $( '#security-video-host-wrap' );
 
 		if ( typeof room_name === 'undefined' ) {
 			room_name = original_room;
@@ -100,8 +103,58 @@
 						if (state_response.messagewindow == 'change' ) {
 							$notification.html( state_response.notificationbar + '' );
 						}
+						if (state_response.settingchange == 'change' ) {
+							
+							if (confirm('The Room Host has made a change to the room that will require you to reconnect your call - do you want to do this ?')) {
+								// Save it!
+								
+								videosetting.html( state_response.videosetting );
+								securitysetting.html( state_response.securitysetting );
+
+
+							var room_id    = $mainvideo.data( 'roomId' );
+							console.log( room_id );
+							var loading_text = $mainvideo.data( 'loadingText' );
+							if ('URLSearchParams' in window) {
+								var searchParams = new URLSearchParams( window.location.search );
+								searchParams.set( 'room_id', room_id );
+		
+								var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+								history.pushState( null, '', newRelativePathQuery );
+							}
+							
+							$mainvideo.html( state_response.mainvideo + '' );
+		
+							if (window.myvideoroom_tabbed_init) {
+								window.myvideoroom_tabbed_init( $mainvideo );
+							}
+		
+							if (window.myvideoroom_app_init) {
+								window.myvideoroom_app_init( $mainvideo[0] );
+							}
+		
+							if (window.myvideoroom_app_load) {
+								window.myvideoroom_app_load();
+							}
+		
+							if (window.myvideoroom_shoppingbasket_init) {
+								window.myvideoroom_shoppingbasket_init();
+							}
+
+
+							  } else {
+								// Do nothing!
+								
+							  }
+
+
+							
+								
+						}
+						
 
 						if (state_response.status == 'nochange') {
+
 						} else {
 							init();
 						}

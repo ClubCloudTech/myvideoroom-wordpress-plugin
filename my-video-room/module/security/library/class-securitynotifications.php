@@ -12,6 +12,8 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 use MyVideoRoomPlugin\SiteDefaults;
+use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
+use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 
 /**
  * Class SecurityNotifications
@@ -297,5 +299,25 @@ class SecurityNotifications {
 		$input .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled();
 		return $input;
 	}
+	/**
+	 * Room Change Heartbeat - Returns The Room Configuration Object if Room Layout has changed.
+	 *
+	 * @param UserVideoPreferenceEntity $room_object - the object class to re-assemble room from.
+	 *
+	 * @return string
+	 */
+	public function update_security_settings_window( UserVideoPreferenceEntity $room_object ) {
 
+		$user_id   = $room_object->get_user_id();
+		$room_name = $room_object->get_room_name();
+
+		return \do_shortcode(
+			Factory::get_instance( SecurityVideoPreference::class )
+				->choose_settings(
+					$user_id,
+					$room_name
+				)
+		);
+
+	}
 }

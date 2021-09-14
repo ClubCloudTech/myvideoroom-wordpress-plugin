@@ -10,6 +10,7 @@ namespace MyVideoRoomPlugin\DAO;
 use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\RoomSync;
+use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -356,6 +357,45 @@ class RoomSyncDAO {
 		return null;
 	}
 
+	/**
+	 * Notify User.
+	 *
+	 * @param string $room_name The Room Name.
+	 * @param string $user_hash_id - User hash to check for.
+	 *
+	 * @return bool
+	 */
+	public function reset_timestamp( string $room_name, string $user_hash_id = null ): bool {
+		global $wpdb;
+
+		$timestamp   = current_time( 'timestamp' );
+		if ( ! $user_hash_id ) {
+			$user_hash_id = Factory::get_instance( RoomAdmin::class )->get_user_session();
+		}
+
+		// Try to Update First.
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$result = $wpdb->query(
+			$wpdb->prepare(
+				'
+					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
+					SET timestamp = %d
+					WHERE cart_id = %s AND room_name = %s
+				',
+				$timestamp,
+				$user_hash_id,
+				$room_name,
+			)
+		);
+		if ( $result ) {
+			\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
+			return true;
+		} else {
+			return false;
+		}
+
+	}
 
 
 	/**

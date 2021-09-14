@@ -10,6 +10,7 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
+use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Library\SectionTemplates;
@@ -107,7 +108,7 @@ class HostManagement {
 		$am_i_broadcasting = $this->am_i_broadcasting( $room_name );
 
 		if ( $room_name && $am_i_broadcasting ) {
-			$this->notify_user( $room_name );
+			Factory::get_instance( SessionState::class )->notify_user( $room_name );
 			return true;
 		}
 		return false;
@@ -236,8 +237,8 @@ class HostManagement {
 		Factory::get_instance( RoomSyncDAO::class )->change_basket_sync_state( $room_name, $new_master_id );
 
 		// Notify User's Queue, and Main one.
-		$this->notify_user( $room_name, $new_master_id );
-		$this->notify_user( $room_name );
+		Factory::get_instance( SessionState::class )->notify_user( $room_name, $new_master_id );
+		Factory::get_instance( SessionState::class )->notify_user( $room_name );
 
 		return true;
 
@@ -259,7 +260,7 @@ class HostManagement {
 		}
 
 		// Notify Main Queue.
-		$this->notify_user( $room_name );
+		Factory::get_instance( SessionState::class )->notify_user( $room_name );
 
 		return true;
 
@@ -309,27 +310,6 @@ class HostManagement {
 			$state = strtok( $state_hash, ',' );
 			return $state;
 		}
-
-	}
-
-
-	/**
-	 * Flag for Notification
-	 *
-	 * @param string $room_name -  Name of Room.
-	 * @param string $hash_id - User Hash to match. (optional) - will update master record if nothing received.
-	 * @return bool
-	 */
-	public function notify_user( string $room_name, string $hash_id = null ): bool {
-
-		if ( ! $hash_id ) {
-			$hash_id = WooCommerce::SETTING_BASKET_REQUEST_USER;
-		}
-
-		// Change State.
-		Factory::get_instance( RoomSyncDAO::class )->notify_user( $room_name, $hash_id );
-
-		return false;
 
 	}
 
@@ -733,7 +713,7 @@ class HostManagement {
 
 		$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$state      = Factory::get_instance( RoomSyncDAO::class )->update_basket_transfer_state( $room_name, $my_session, WooCommerce::SETTING_BASKET_REQUEST_ON );
-		$this->notify_user( $room_name );
+		Factory::get_instance( SessionState::class )->notify_user( $room_name );
 		if ( $state ) {
 			return true;
 		} else {
@@ -751,7 +731,7 @@ class HostManagement {
 
 		$my_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		$state      = Factory::get_instance( RoomSyncDAO::class )->update_basket_transfer_state( $room_name, $my_session, WooCommerce::SETTING_BASKET_REQUEST_OFF );
-		$this->notify_user( $room_name );
+		Factory::get_instance( SessionState::class )->notify_user( $room_name );
 
 		if ( $state ) {
 			return true;

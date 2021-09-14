@@ -9,26 +9,14 @@ namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
-use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Entity\RoomSync as RoomSyncEntity;
-use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
+use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
  * Class SessionState
  * Registers Rooms Permanently in Database - base for WCBookings, Meet Center, Site Video.
  */
 class SessionState {
-
-	/**
-	 * Get the table name for Room Presence Table DAO.
-	 *
-	 * @return string
-	 */
-	private function get_room_presence_table_name(): string {
-		global $wpdb;
-
-		return $wpdb->prefix . SiteDefaults::TABLE_NAME_ROOM_PRESENCE;
-	}
 
 	/**
 	 * Register Room Presence
@@ -64,10 +52,31 @@ class SessionState {
 				$room_id
 			);
 			// Set Last Notification Timestamp for new room.
-			Factory::get_instance( HostManagement::class )->notify_user( $room_name );
+			$this->notify_user( $room_name );
 		}
 		Factory::get_instance( RoomSyncDAO::class )->create( $current_record );
 
 	}
+
+	/**
+	 * Flag for Notification
+	 *
+	 * @param string $room_name -  Name of Room.
+	 * @param string $hash_id - User Hash to match. (optional) - will update master record if nothing received.
+	 * @return bool
+	 */
+	public function notify_user( string $room_name, string $hash_id = null ): bool {
+
+		if ( ! $hash_id ) {
+			$hash_id = WooCommerce::SETTING_BASKET_REQUEST_USER;
+		}
+
+		// Change State.
+		Factory::get_instance( RoomSyncDAO::class )->notify_user( $room_name, $hash_id );
+
+		return false;
+
+	}
+
 
 }

@@ -7,8 +7,10 @@
 
 namespace MyVideoRoomPlugin\Module\Security\Shortcode;
 
+use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HttpPost;
+use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
@@ -87,6 +89,9 @@ class SecurityVideoPreference {
 			$allowed_roles_list = $http_post_library->get_string_list_parameter( 'security_allowed_roles_preference' );
 			$allowed_roles      = implode( '|', $allowed_roles_list );
 
+						// Notify Global Change Queue.
+						Factory::get_instance( SessionState::class )->notify_user( $room_name );
+
 			if ( $current_user_setting ) {
 
 				$current_user_setting
@@ -123,6 +128,8 @@ class SecurityVideoPreference {
 			 * @var SecurityVideoPreferenceEntity $current_user_setting
 			 */
 			\do_action( 'myvideoroom_security_preference_persisted', $current_user_setting );
+
+
 		}
 	}
 
@@ -167,6 +174,7 @@ class SecurityVideoPreference {
 		}
 
 		return $render( $current_user_setting, $room_name, self::$id_index ++, $roles_output, $user_id, $group_name );
+
 	}
 
 
