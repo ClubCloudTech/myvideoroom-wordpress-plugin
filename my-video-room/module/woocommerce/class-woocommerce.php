@@ -12,7 +12,6 @@ use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\SectionTemplates;
-use MyVideoRoomPlugin\Module\WooCommerce\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
@@ -157,14 +156,6 @@ class WooCommerce {
 			13,
 			true
 		);
-		/*
-		wp_enqueue_script(
-			'myvideoroom-notification-buttons',
-			plugins_url( '/../../js/notification.js', __FILE__ ),
-			array( 'jquery' ),
-			148,
-			true
-		);*/
 
 		add_filter( 'myvideoroom_basket_buttons', array( Factory::get_instance( WooCategory::class ), 'render_save_category_button' ), 30, 3 );
 
