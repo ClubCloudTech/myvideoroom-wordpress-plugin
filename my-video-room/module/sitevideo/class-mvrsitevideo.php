@@ -394,4 +394,5 @@ class MVRSiteVideo {
 		return $render( $tabs, $html_library, $room_id, $host_status, $header );
 
 	}
+
 }

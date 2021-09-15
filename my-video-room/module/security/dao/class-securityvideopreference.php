@@ -1,12 +1,13 @@
 <?php
 /**
- * Data Access Object for user video preferences
+ * Data Access Object for Security preferences
  *
  * @package MyVideoRoomPlugin\DAO
  */
 
 namespace MyVideoRoomPlugin\Module\Security\DAO;
 
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\Security\Security;
 
@@ -39,6 +40,7 @@ class SecurityVideoPreference {
 			`bp_friends_setting` VARCHAR(255) NULL,
 			`allowed_template_id` BIGINT UNSIGNED NULL,
 			`blocked_template_id` BIGINT UNSIGNED NULL,
+			`timestamp` BIGINT UNSIGNED NULL,
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
@@ -59,43 +61,44 @@ class SecurityVideoPreference {
 	/**
 	 * Save a User Video Preference into the database
 	 *
-	 * @param SecurityVideoPreferenceEntity $user_video_preference The video preference to save.
+	 * @param SecurityVideoPreferenceEntity $security_video_preference The video preference to save.
 	 *
 	 * @return SecurityVideoPreferenceEntity|null
 	 * @throws \Exception When failing to insert, most likely a duplicate key.
 	 */
-	public function create( SecurityVideoPreferenceEntity $user_video_preference ): ?SecurityVideoPreferenceEntity {
+	public function create( SecurityVideoPreferenceEntity $security_video_preference ): ?SecurityVideoPreferenceEntity {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
-			$user_video_preference->get_user_id(),
-			$user_video_preference->get_room_name()
+			$security_video_preference->get_user_id(),
+			$security_video_preference->get_room_name()
 		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->insert(
 			$this->get_table_name(),
 			array(
-				'user_id'                           => $user_video_preference->get_user_id(),
-				'room_name'                         => $user_video_preference->get_room_name(),
-				'allowed_roles'                     => implode( '|', $user_video_preference->get_roles() ),
-				'blocked_roles'                     => $user_video_preference->get_blocked_roles(),
-				'room_disabled'                     => $user_video_preference->is_room_disabled(),
-				'anonymous_enabled'                 => $user_video_preference->is_anonymous_enabled(),
-				'allow_role_control_enabled'        => $user_video_preference->is_allow_role_control_enabled(),
-				'block_role_control_enabled'        => $user_video_preference->is_block_role_control_enabled(),
-				'restrict_group_to_members_enabled' => $user_video_preference->is_restricted_to_group_to_members(),
-				'site_override_enabled'             => $user_video_preference->is_site_override_enabled(),
-				'bp_friends_setting'                => $user_video_preference->is_bp_friends_setting_enabled(),
+				'user_id'                           => $security_video_preference->get_user_id(),
+				'room_name'                         => $security_video_preference->get_room_name(),
+				'allowed_roles'                     => implode( '|', $security_video_preference->get_roles() ),
+				'blocked_roles'                     => $security_video_preference->get_blocked_roles(),
+				'room_disabled'                     => $security_video_preference->is_room_disabled(),
+				'anonymous_enabled'                 => $security_video_preference->is_anonymous_enabled(),
+				'allow_role_control_enabled'        => $security_video_preference->is_allow_role_control_enabled(),
+				'block_role_control_enabled'        => $security_video_preference->is_block_role_control_enabled(),
+				'restrict_group_to_members_enabled' => $security_video_preference->is_restricted_to_group_to_members(),
+				'site_override_enabled'             => $security_video_preference->is_site_override_enabled(),
+				'bp_friends_setting'                => $security_video_preference->is_bp_friends_setting_enabled(),
+				'timestamp'                         => $security_video_preference->get_timestamp(),
 
 			)
 		);
 
-		$user_video_preference->set_id( $wpdb->insert_id );
+		$security_video_preference->set_id( $wpdb->insert_id );
 
 		\wp_cache_set(
 			$cache_key,
-			$user_video_preference->to_json(),
+			$security_video_preference->to_json(),
 			implode(
 				'::',
 				array(
@@ -105,7 +108,7 @@ class SecurityVideoPreference {
 			)
 		);
 		\wp_cache_delete(
-			$user_video_preference->get_user_id(),
+			$security_video_preference->get_user_id(),
 			implode(
 				'::',
 				array(
@@ -115,7 +118,7 @@ class SecurityVideoPreference {
 			)
 		);
 
-		return $user_video_preference;
+		return $security_video_preference;
 	}
 
 	/**
@@ -225,7 +228,8 @@ class SecurityVideoPreference {
 			       block_role_control_enabled, 
 			       site_override_enabled, 
 			       restrict_group_to_members_enabled,
-			       bp_friends_setting
+			       bp_friends_setting,
+				   timestamp
 				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
 				WHERE user_id = %d AND room_name = %s;
 			',
@@ -234,8 +238,11 @@ class SecurityVideoPreference {
 					$room_name,
 				)
 			)
-		);
 
+		);
+		if ( $wpdb->last_error ) {
+			$this->install_security_config_table();
+		}
 		$result = null;
 
 		if ( $row ) {
@@ -252,6 +259,7 @@ class SecurityVideoPreference {
 				(bool) $row->site_override_enabled,
 				$row->restrict_group_to_members_enabled,
 				$row->bp_friends_setting,
+				$row->timestamp,
 			);
 			wp_cache_set( $cache_key, __METHOD__, $result->to_json() );
 		} else {
@@ -264,44 +272,45 @@ class SecurityVideoPreference {
 	/**
 	 * Update a User Video Preference into the database
 	 *
-	 * @param SecurityVideoPreferenceEntity $user_video_preference The updated user video preference.
+	 * @param SecurityVideoPreferenceEntity $security_video_preference The updated user video preference.
 	 *
 	 * @return SecurityVideoPreferenceEntity|null
 	 * @throws \Exception When failing to update.
 	 */
-	public function update( SecurityVideoPreferenceEntity $user_video_preference ): ?SecurityVideoPreferenceEntity {
+	public function update( SecurityVideoPreferenceEntity $security_video_preference ): ?SecurityVideoPreferenceEntity {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
-			$user_video_preference->get_user_id(),
-			$user_video_preference->get_room_name()
+			$security_video_preference->get_user_id(),
+			$security_video_preference->get_room_name()
 		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->update(
 			$this->get_table_name(),
 			array(
-				'user_id'                           => $user_video_preference->get_user_id(),
-				'allowed_roles'                     => implode( '|', $user_video_preference->get_roles() ),
-				'blocked_roles'                     => $user_video_preference->get_blocked_roles(),
-				'room_disabled'                     => $user_video_preference->is_room_disabled(),
-				'anonymous_enabled'                 => $user_video_preference->is_anonymous_enabled(),
-				'allow_role_control_enabled'        => $user_video_preference->is_allow_role_control_enabled(),
-				'block_role_control_enabled'        => $user_video_preference->is_block_role_control_enabled(),
-				'site_override_enabled'             => $user_video_preference->is_site_override_enabled(),
-				'restrict_group_to_members_enabled' => $user_video_preference->is_restricted_to_group_to_members(),
-				'bp_friends_setting'                => $user_video_preference->is_bp_friends_setting_enabled(),
+				'user_id'                           => $security_video_preference->get_user_id(),
+				'allowed_roles'                     => implode( '|', $security_video_preference->get_roles() ),
+				'blocked_roles'                     => $security_video_preference->get_blocked_roles(),
+				'room_disabled'                     => $security_video_preference->is_room_disabled(),
+				'anonymous_enabled'                 => $security_video_preference->is_anonymous_enabled(),
+				'allow_role_control_enabled'        => $security_video_preference->is_allow_role_control_enabled(),
+				'block_role_control_enabled'        => $security_video_preference->is_block_role_control_enabled(),
+				'site_override_enabled'             => $security_video_preference->is_site_override_enabled(),
+				'restrict_group_to_members_enabled' => $security_video_preference->is_restricted_to_group_to_members(),
+				'bp_friends_setting'                => $security_video_preference->is_bp_friends_setting_enabled(),
+				'timestamp'                         => $security_video_preference->get_timestamp(),
 
 			),
 			array(
-				'user_id'   => $user_video_preference->get_user_id(),
-				'room_name' => $user_video_preference->get_room_name(),
+				'user_id'   => $security_video_preference->get_user_id(),
+				'room_name' => $security_video_preference->get_room_name(),
 			)
 		);
 
 		\wp_cache_set(
 			$cache_key,
-			$user_video_preference->to_json(),
+			$security_video_preference->to_json(),
 			implode(
 				'::',
 				array(
@@ -311,7 +320,7 @@ class SecurityVideoPreference {
 			)
 		);
 		\wp_cache_delete(
-			$user_video_preference->get_user_id(),
+			$security_video_preference->get_user_id(),
 			implode(
 				'::',
 				array(
@@ -321,37 +330,37 @@ class SecurityVideoPreference {
 			)
 		);
 
-		return $user_video_preference;
+		return $security_video_preference;
 	}
 
 	/**
 	 * Delete a User Video Preference from the database
 	 *
-	 * @param SecurityVideoPreferenceEntity $user_video_preference The user video preference to delete.
+	 * @param SecurityVideoPreferenceEntity $security_video_preference The user video preference to delete.
 	 *
 	 * @return null
 	 * @throws \Exception When failing to delete.
 	 */
-	public function delete( SecurityVideoPreferenceEntity $user_video_preference ) {
+	public function delete( SecurityVideoPreferenceEntity $security_video_preference ) {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
-			$user_video_preference->get_user_id(),
-			$user_video_preference->get_room_name()
+			$security_video_preference->get_user_id(),
+			$security_video_preference->get_room_name()
 		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->delete(
 			$this->get_table_name(),
 			array(
-				'user_id'   => $user_video_preference->get_user_id(),
-				'room_name' => $user_video_preference->get_room_name(),
+				'user_id'   => $security_video_preference->get_user_id(),
+				'room_name' => $security_video_preference->get_room_name(),
 			)
 		);
 
 		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_by_id' ) ) );
 		\wp_cache_delete(
-			$user_video_preference->get_user_id(),
+			$security_video_preference->get_user_id(),
 			implode(
 				'::',
 				array(

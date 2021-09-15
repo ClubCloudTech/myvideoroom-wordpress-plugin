@@ -14,9 +14,10 @@ use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\DAO\UserVideoPreference;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
+use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as ShortcodeUserVideoPreference;
-use MyVideoRoomPlugin\SiteDefaults;
+
 
 /**
  * Class RoomAdmin
@@ -140,10 +141,11 @@ class RoomAdmin {
 	 * Room Change Heartbeat - Returns The Room Configuration Object if Room Layout has changed.
 	 *
 	 * @param UserVideoPreferenceEntity $room_object - the object class to re-assemble room from.
+	 * @param string $room_name - the original room name rendered in the room.
 	 *
 	 * @return string
 	 */
-	public function update_main_video_window( UserVideoPreferenceEntity $room_object ) {
+	public function update_main_video_window( UserVideoPreferenceEntity $room_object, string $original_room_name ) {
 
 		//return serialize( $room_object );
 
@@ -157,7 +159,7 @@ class RoomAdmin {
 		$show_floorplan          = $room_object->is_floorplan_enabled();
 
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
-			->set_name( $room_name )
+			->set_name( $original_room_name )
 			->set_layout( $video_template );
 
 		$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
@@ -173,7 +175,7 @@ class RoomAdmin {
 	}
 
 	/**
-	 * Room Change Heartbeat - Returns The Room Configuration Object if Room Layout has changed.
+	 * Update Security Settings - Returns The Room Security Settings Page on Ajax.
 	 *
 	 * @param UserVideoPreferenceEntity $room_object - the object class to re-assemble room from.
 	 *
@@ -186,6 +188,27 @@ class RoomAdmin {
 
 		return \do_shortcode(
 			Factory::get_instance( ShortcodeUserVideoPreference::class )->choose_settings(
+				$user_id,
+				$room_name
+			)
+		);
+
+	}
+
+	/**
+	 * Update Security Settings - Returns The Room Security Settings Page on Ajax.
+	 *
+	 * @param UserVideoPreferenceEntity $room_object - the object class to re-assemble room from.
+	 *
+	 * @return string
+	 */
+	public function update_security_settings_window( UserVideoPreferenceEntity $room_object ) {
+
+		$user_id   = $room_object->get_user_id();
+		$room_name = $room_object->get_room_name();
+
+		return \do_shortcode(
+			Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
 				$user_id,
 				$room_name
 			)

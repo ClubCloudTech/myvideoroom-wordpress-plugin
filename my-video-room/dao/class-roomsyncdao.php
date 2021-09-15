@@ -358,7 +358,7 @@ class RoomSyncDAO {
 	}
 
 	/**
-	 * Notify User.
+	 * Update Timestamp
 	 *
 	 * @param string $room_name The Room Name.
 	 * @param string $user_hash_id - User hash to check for.

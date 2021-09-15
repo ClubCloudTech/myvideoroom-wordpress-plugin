@@ -10,7 +10,6 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
-use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\Module;
@@ -44,6 +43,7 @@ class AjaxHandler {
 		$last_queuenum   = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastQueuenum' );
 		$last_carthash   = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastCarthash' );
 		$last_storecount = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastStorecount' );
+		$message_room    = Factory::get_instance( Ajax::class )->get_text_parameter( 'messageRoom' );
 
 		switch ( $input_type ) {
 			/*
@@ -513,9 +513,9 @@ class AjaxHandler {
 				$change_heartbeat                = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, $my_session );
 				// Only Check for Room Change if Global Update Flag has Fired.
 				if ( $change_heartbeat ) {
-				//	$room_change_heartbeat = Factory::get_instance( RoomAdmin::class )->room_change_heartbeat( $room_name );
+					$room_change_heartbeat = Factory::get_instance( RoomAdmin::class )->room_change_heartbeat( $room_name );
 				}
-				$room_change_heartbeat = Factory::get_instance( RoomAdmin::class )->room_change_heartbeat( $room_name );
+
 				$response = array();
 
 				if ( true === $store_change_state ) {
@@ -543,13 +543,12 @@ class AjaxHandler {
 				}
 
 				if ( $room_change_heartbeat ) {
-					$response['settingchange']   = 'change';
-					$response['mainvideo']       = Factory::get_instance( RoomAdmin::class )->update_main_video_window( $room_change_heartbeat );
-					$response['videosetting']    = Factory::get_instance( RoomAdmin::class )->update_video_settings_window( $room_change_heartbeat );
+					$response['settingchange'] = 'change';
+					$response['mainvideo']     = Factory::get_instance( RoomAdmin::class )->update_main_video_window( $room_change_heartbeat, $message_room );
+					$response['videosetting']  = Factory::get_instance( RoomAdmin::class )->update_video_settings_window( $room_change_heartbeat );
 
-					
 					if ( Factory::get_instance( Module::class )->is_module_active( Security::MODULE_SECURITY_NAME ) ) {
-					
+						$response['securitysetting'] = Factory::get_instance( RoomAdmin::class )->update_security_settings_window( $room_change_heartbeat );
 					}
 					$response['securitysetting'] = Factory::get_instance( SecurityNotifications::class )->update_security_settings_window( $room_change_heartbeat );
 					Factory::get_instance( RoomSyncDAO::class )->reset_timestamp( $room_name );

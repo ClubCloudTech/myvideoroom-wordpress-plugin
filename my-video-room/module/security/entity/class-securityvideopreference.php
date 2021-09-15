@@ -97,6 +97,13 @@ class SecurityVideoPreference {
 	private ?string $bp_friends_setting;
 
 	/**
+	 * Timestamp
+	 *
+	 * @var int $timestamp - the Timestamp.
+	 */
+	private ?int $timestamp;
+
+	/**
 	 * SecurityVideoPreference constructor.
 	 *
 	 * @param ?int    $id                                The record id.
@@ -111,6 +118,7 @@ class SecurityVideoPreference {
 	 * @param bool    $site_override_enabled             Overrides User settings with central ones.
 	 * @param ?string $restrict_group_to_members_enabled Blocks rooms from outside users (used for BuddyPress initially but can use any group plugin).
 	 * @param ?string $bp_friends_setting                Setting for BuddyPress Friends (can be other platforms with plugins).
+	 * @param ?int    $timestamp                         Last Updated Timestamp.
 	 */
 	public function __construct(
 		?int $id,
@@ -124,7 +132,8 @@ class SecurityVideoPreference {
 		bool $block_role_control_enabled = false,
 		bool $site_override_enabled = false,
 		string $restrict_group_to_members_enabled = null,
-		string $bp_friends_setting = null
+		string $bp_friends_setting = null,
+		?int $timestamp = null
 
 	) {
 		$this->id                                = $id;
@@ -139,6 +148,7 @@ class SecurityVideoPreference {
 		$this->site_override_enabled             = $site_override_enabled;
 		$this->restrict_group_to_members_enabled = $restrict_group_to_members_enabled;
 		$this->bp_friends_setting                = $bp_friends_setting;
+		$this->timestamp                         = $timestamp;
 	}
 
 	/**
@@ -165,6 +175,7 @@ class SecurityVideoPreference {
 				$data->site_override_enabled,
 				$data->restrict_group_to_members_enabled,
 				$data->bp_friends_setting,
+				$data->timestamp,
 			);
 		}
 
@@ -192,6 +203,7 @@ class SecurityVideoPreference {
 				'site_override_enabled'             => $this->site_override_enabled,
 				'restrict_group_to_members_enabled' => $this->restrict_group_to_members_enabled,
 				'bp_friends_setting'                => $this->bp_friends_setting,
+				'timestamp'                         => $this->timestamp,
 			)
 		);
 	}
@@ -447,5 +459,26 @@ class SecurityVideoPreference {
 		return $this;
 	}
 
+	/**
+	 * Gets Timestamp.
+	 *
+	 * @return int
+	 */
+	public function get_timestamp(): ?int {
+		return $this->timestamp;
+	}
+
+	/**
+	 * Sets Timestamp.
+	 *
+	 * @param int $timestamp - sets the Timestamp.
+	 *
+	 * @return int
+	 */
+	public function set_timestamp( int $timestamp ): SecurityVideoPreference {
+		$this->timestamp = $timestamp;
+
+		return $this;
+	}
 
 }

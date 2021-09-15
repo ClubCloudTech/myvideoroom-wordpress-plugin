@@ -8,9 +8,9 @@
 namespace MyVideoRoomPlugin\Module\Security\Shortcode;
 
 use MyVideoRoomPlugin\DAO\SessionState;
+use MyVideoRoomPlugin\DAO\UserVideoPreference;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HttpPost;
-use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDao;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
@@ -84,13 +84,11 @@ class SecurityVideoPreference {
 			$allow_role_control_enabled = $http_post_library->get_checkbox_parameter( 'security_allow_role_control_enabled_preference' );
 			$block_role_control_enabled = $http_post_library->get_checkbox_parameter( 'security_block_role_control_enabled_preference' );
 			$site_override_enabled      = $http_post_library->get_checkbox_parameter( 'override_all_preferences' );
+			$timestamp                  = current_time( 'timestamp' );
 
 			// Handle Multi_box array and change it to a Database compatible string.
 			$allowed_roles_list = $http_post_library->get_string_list_parameter( 'security_allowed_roles_preference' );
 			$allowed_roles      = implode( '|', $allowed_roles_list );
-
-						// Notify Global Change Queue.
-						Factory::get_instance( SessionState::class )->notify_user( $room_name );
 
 			if ( $current_user_setting ) {
 
@@ -101,7 +99,8 @@ class SecurityVideoPreference {
 					->set_anonymous_enabled( $anonymous_enabled )
 					->set_allow_role_control_enabled( $allow_role_control_enabled )
 					->set_block_role_control_enabled( $block_role_control_enabled )
-					->set_site_override_setting( $site_override_enabled );
+					->set_site_override_setting( $site_override_enabled )
+					->set_timestamp( $timestamp );
 
 				$security_preference_dao->update( $current_user_setting );
 			} else {
@@ -116,20 +115,19 @@ class SecurityVideoPreference {
 					$anonymous_enabled,
 					$allow_role_control_enabled,
 					$block_role_control_enabled,
-					$site_override_enabled
+					$site_override_enabled,
+					$timestamp
 				);
 
 				$security_preference_dao->create( $current_user_setting );
 			}
+			// Update Room Change Timestamp.
+			Factory::get_instance( UserVideoPreference::class )->update_timestamp( $user_id, $room_name );
 
-			/**
-			 * Update the current user setting
-			 *
-			 * @var SecurityVideoPreferenceEntity $current_user_setting
-			 */
 			\do_action( 'myvideoroom_security_preference_persisted', $current_user_setting );
 
-
+			// Notify Global Change Queue.
+			Factory::get_instance( SessionState::class )->notify_user( $room_name );
 		}
 	}
 
