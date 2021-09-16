@@ -121,8 +121,6 @@ class SecurityVideoPreference {
 
 				$security_preference_dao->create( $current_user_setting );
 			}
-			// Update Room Change Timestamp.
-			Factory::get_instance( UserVideoPreference::class )->update_timestamp( $user_id, $room_name );
 
 			\do_action( 'myvideoroom_security_preference_persisted', $current_user_setting );
 

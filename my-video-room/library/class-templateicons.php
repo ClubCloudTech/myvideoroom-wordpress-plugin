@@ -110,7 +110,7 @@ class TemplateIcons {
 		if ( true === $visitor_status && ! $template_icons ) {
 			$template_icons .= '<form method="post" action=""><input type="submit" name="submit" id="submit" class="button mvr-form-button mvr-form-button-max" value="Exit Meeting"  />';
 		} else {
-			$template_icons .= Factory::get_instance( self::class )->show_icon( $user_id, $room_name );
+			$template_icons .= $this->show_icon( $user_id, $room_name );
 		}
 
 		return $template_icons;

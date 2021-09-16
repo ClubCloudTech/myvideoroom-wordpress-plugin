@@ -54,7 +54,7 @@ class SectionTemplates {
 <div class="mvr-nav-shortcode-outer-wrap">
 	<div class="mvr-header-section">
 
-		<div id="mvr-header-table-left" class="myvideoroom-header-table-left">
+		<div id="mvr-notification-icons" class="myvideoroom-header-table-left">
 				<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
 				echo $header['template_icons'];
 				?>

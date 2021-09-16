@@ -72,6 +72,7 @@
 		var $mainvideo      = $( '.myvideoroom-app' );
 		var videosetting    = $( '#video-host-wrap' );
 		var securitysetting = $( '#security-video-host-wrap' );
+		var icondisplay     = $( '#mvr-notification-icons' );
 
 		if ( typeof room_name === 'undefined' ) {
 			room_name = original_room;
@@ -111,6 +112,7 @@
 								
 								videosetting.html( state_response.videosetting );
 								securitysetting.html( state_response.securitysetting );
+								icondisplay.html( state_response.icons );
 								$mainvideo.html( state_response.mainvideo );
 			
 								if (window.myvideoroom_tabbed_init) {
@@ -135,6 +137,10 @@
 		
 							}
 								
+						}
+						if (state_response.securitychange == 'change' ) {
+							securitysetting.html( state_response.securitysetting );
+							icondisplay.html( state_response.icons );
 						}
 					
 						if (state_response.status == 'nochange') {

@@ -15,6 +15,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Entity\RoomSync as RoomSyncEntity;
+use MyVideoRoomPlugin\Entity\UserVideoPreference;
 use MyVideoRoomPlugin\Module\WooCommerce\Entity\WooCommerceVideo;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
@@ -81,14 +82,15 @@ class ShoppingBasket {
 	/**
 	 * Render Notification Pages
 	 *
-	 * @param string $room_name -  Name of Room.
-	 * @param bool   $client_change_state -  If the Client has a Change (basket Woocomm).
-	 * @param bool   $store_change_state -  If the Store has changed.
-	 * @param bool   $notification_queue_change_state -  If a product share queue item has changed.
+	 * @param string               $room_name -  Name of Room.
+	 * @param bool                 $client_change_state -  If the Client has a Change (basket Woocomm).
+	 * @param bool                 $store_change_state -  If the Store has changed.
+	 * @param bool                 $notification_queue_change_state -  If a product share queue item has changed.
+	 * @param ?UserVideoPreference $security_change_state -  If a product share queue item has changed.
 	 *
 	 * @return string
 	 */
-	public function render_notification_tab( string $room_name, bool $client_change_state = null, bool $store_change_state = null, bool $notification_queue_change_state = null ): ?string {
+	public function render_notification_tab( string $room_name, bool $client_change_state = null, bool $store_change_state = null, bool $notification_queue_change_state = null, ?UserVideoPreference $security_change_state = null ): ?string {
 
 		if ( $client_change_state ) {
 			$title               = esc_html__( 'A new Product has been automatically synced into your basket from another source', 'myvideoroom' );
@@ -113,6 +115,9 @@ class ShoppingBasket {
 			$iconclass            = 'dashicons-cart dashicons-plus';
 			$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
+		}
+		if ( $security_change_state ) {
+			$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_security_update_notification();
 		}
 		$popup_notification = apply_filters( 'myvideoroom_notification_popup', '', $room_name );
 

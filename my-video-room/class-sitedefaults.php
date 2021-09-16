@@ -250,7 +250,7 @@ class SiteDefaults {
 				Factory::get_instance( TemplateIcons::class ),
 				'add_default_video_icons_to_header',
 			),
-			10,
+			50,
 			4
 		);
 
