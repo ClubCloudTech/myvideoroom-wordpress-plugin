@@ -23,7 +23,7 @@ class ShortcodeDocuments {
 			<h2><?php esc_html_e( 'General Shortcodes', 'my-video-room' ); ?></h2>
 			<table style="width:70%; border: 1px solid black;">
 				<tr>
-					<th style="width:25%; text-align: left;"><h2>[myvideoroom_sitedefaultconfig]</h2></th>
+					<th style="width:25%; text-align: left;"><h2>[ccsitedefaultconfig]</h2></th>
 					<th style="width:75%; text-align: left;"><p>
 							<?php
 							esc_html_e(
@@ -107,7 +107,7 @@ class ShortcodeDocuments {
 				</tr>
 
 				<tr>
-					<td style="width:25%; text-align: left;"><h2>[myvideoroom_bpboardroomswitch]</h2></td>
+					<td style="width:25%; text-align: left;"><h2>[ccbpboardroomswitch]</h2></td>
 					<td style="width:75%; text-align: left;">
 						<p>
 							<?php
@@ -152,22 +152,22 @@ class ShortcodeDocuments {
 				</tr>
 
 				<tr>
-					<td style="width:25%; text-align: left;"><h2>[myvideoroom_sitevideoroom]</h2></td>
+					<td style="width:25%; text-align: left;"><h2>[ccsitevideoroom]</h2></td>
 					<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the main Site Video Room - it can be used on any page in the site - and handles automatically whether you are a host or guest.', 'my-video-room' ); ?></td>
 				</tr>
 
 				<tr>
-					<td style="width:25%; text-align: left;"><h2>[myvideoroom_sitevideoroomhost]</h2></td>
+					<td style="width:25%; text-align: left;"><h2>[ccsitevideoroomhost]</h2></td>
 					<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <strong>Host</strong> of site Video Room<', 'my-video-room' ); ?>/td>
 				</tr>
 
 				<tr>
-					<td style="width:25%; text-align: left;"><h2>[myvideoroom_sitevideoroomguest]</h2></td>
+					<td style="width:25%; text-align: left;"><h2>[ccsitevideoroomguest]</h2></td>
 					<td style="width:75%; text-align: left;"><?php esc_html_e( 'Renders the Site Video Room - it can be used on any page in the site - It will make whoever uses this entrance a <strong>Guest</strong> of site Video Room', 'my-video-room' ); ?></td>
 				</tr>
 
 				<tr>
-					<td style="width:25%; text-align: left;"><h2>[myvideoroom_sitevideoroomsettings]</h2></td>
+					<td style="width:25%; text-align: left;"><h2>[ccsitevideoroomsettings]</h2></td>
 					<td style="width:75%; text-align: left;">
 						<?php
 						esc_html_e(
@@ -199,7 +199,7 @@ class ShortcodeDocuments {
 				</tr>
 
 				<tr>
-					<td style="width:25%; text-align: left;"><h2>[myvideoroom_meetswitch]</h2></td>
+					<td style="width:25%; text-align: left;"><h2>[ccmeetswitch]</h2></td>
 					<td style="width:75%; text-align: left;">
 							<?php
 							printf(
@@ -215,7 +215,7 @@ class ShortcodeDocuments {
 				</tr>
 
 				<tr>
-					<td style="width:25%; text-align: left;"><h2>[myvideoroom_personalmeetingguest]</h2></td>
+					<td style="width:25%; text-align: left;"><h2>[ccpersonalmeetingguest]</h2></td>
 					<td style="width:75%; text-align: left;">
 						<?php
 						printf(
@@ -233,7 +233,7 @@ class ShortcodeDocuments {
 				</tr>
 
 				<tr>
-					<td style="width:25%; text-align: left;"><h2>[myvideoroom_personalmeetinghost]</h2></td>
+					<td style="width:25%; text-align: left;"><h2>[ccpersonalmeetinghost]</h2></td>
 					<td style="width:75%; text-align: left;">
 						<?php
 						printf(
@@ -250,7 +250,7 @@ class ShortcodeDocuments {
 				</tr>
 
 				<tr>
-					<td style="width:25%; text-align: left;"><h2>[myvideoroom_personalmeetinghostsettings]</h2></td>
+					<td style="width:25%; text-align: left;"><h2>[ccpersonalmeetinghostsettings]</h2></td>
 					<td style="width:75%; text-align: left;">
 						<?php
 						printf(
