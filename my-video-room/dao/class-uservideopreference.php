@@ -234,6 +234,13 @@ class UserVideoPreference {
 			)
 		);
 
+		if ( $wpdb->last_error ) {
+			//Factory::get_instance( Setup::class )->install_room_presence_table();
+		}
+		
+		
+		
+		
 		$result = null;
 
 		if ( $row ) {
@@ -317,5 +324,17 @@ class UserVideoPreference {
 		);
 
 		return $user_video_preference;
+	}
+
+	/**
+	 * Database Restore and Update
+	 *
+	 * @param int    $user_id   The user id.
+	 * @param string $room_name The room name.
+	 *
+	 * @return bool
+	 */
+	private function get_by_id( int $user_id, string $room_name ): ?UserVideoPreferenceEntity {
+		global $wpdb;
 	}
 }
