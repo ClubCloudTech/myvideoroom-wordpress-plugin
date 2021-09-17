@@ -255,11 +255,12 @@ class ShortcodeDocuments {
 						<?php
 						printf(
 							esc_html__(
-								'This shortcode will render only the %1$s page of the %2$s. This is useful if you just want to edit the room settings without launching the full room. This shortcode determines its host from the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will return blank. <strong>Please note</strong> admin settings for personal rooms are shared between BuddyPress Profile Rooms and Personal Video Rooms as they are effectively the same room, with multiple entrances ',
+								'This shortcode will render only the %1$s page of the %2$s. This is useful if you just want to edit the room settings without launching the full room. This shortcode determines its host from the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will return blank. %3$s admin settings for personal rooms are shared between BuddyPress Profile Rooms and Personal Video Rooms as they are effectively the same room, with multiple entrances ',
 								'my-video-room'
 							),
 							'<strong>' . esc_html__( 'settings' ). '</strong>',
-							'<strong>' . esc_html__( 'Host' ). '</strong>'
+							'<strong>' . esc_html__( 'Host' ). '</strong>',
+							'<strong>' . esc_html__( 'Please note' ). '</strong>'
 						)
 						;
 						?>
