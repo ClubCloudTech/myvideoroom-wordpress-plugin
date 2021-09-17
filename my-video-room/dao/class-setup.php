@@ -23,7 +23,7 @@ class Setup {
 	 *
 	 * @return bool
 	 */
-	public static function install_user_video_preference_table(): bool {
+	public static function install_user_video_preference_table(): ?string {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		global $wpdb;
 
@@ -43,7 +43,12 @@ class Setup {
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 
-		return \maybe_create_table( $table_name, $sql_create );
+		$record = \maybe_create_table( $table_name, $sql_create );
+		if ( $record ) {
+			return $wpdb->last_error;
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -129,15 +134,14 @@ class Setup {
 	 * @return bool
 	 */
 	public function initialise_default_video_settings(): bool {
-		$video_preference_dao = Factory::get_instance( UserVideoPreferenceDao::class );
 
-		// Check Exists.
-		$current_user_setting = $video_preference_dao->get_by_id(
+		// Check default doesn't already exist.
+		$record = Factory::get_instance( UserVideoPreferenceDao::class )->get_by_id(
 			SiteDefaults::USER_ID_SITE_DEFAULTS,
 			SiteDefaults::ROOM_NAME_SITE_DEFAULT
 		);
 
-		if ( ! $current_user_setting ) {
+		if ( ! $record ) {
 			$current_user_setting = new UserVideoPreferenceEntity(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
 				SiteDefaults::ROOM_NAME_SITE_DEFAULT,
@@ -145,7 +149,7 @@ class Setup {
 				'default',
 				false,
 			);
-			$video_preference_dao->create( $current_user_setting );
+			Factory::get_instance( UserVideoPreferenceDao::class )->create( $current_user_setting );
 		}
 
 		return true;

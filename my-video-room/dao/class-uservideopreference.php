@@ -8,6 +8,7 @@
 namespace MyVideoRoomPlugin\DAO;
 
 use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
 
 /**
@@ -235,7 +236,19 @@ class UserVideoPreference {
 		);
 
 		if ( $wpdb->last_error ) {
-			$this->repair_update_database();
+			$this->repair_update_database( $wpdb->last_error );
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+			$row = $wpdb->get_row(
+				$wpdb->prepare(
+					'
+					SELECT user_id, room_name, layout_id, reception_id, reception_enabled, reception_video_enabled, reception_video_url, show_floorplan, timestamp
+					FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
+					WHERE user_id = %d AND room_name = %s;
+				',
+					$user_id,
+					$room_name,
+				)
+			);
 		}
 
 		$result = null;
@@ -326,14 +339,34 @@ class UserVideoPreference {
 	/**
 	 * Database Restore and Update
 	 *
-	 * @param int    $user_id   The user id.
-	 * @param string $room_name The room name.
+	 * @param string $db_error_message   The Error Message.
 	 *
 	 * @return bool
 	 */
-	private function repair_update_database(): bool {
+	private function repair_update_database( string $db_error_message = null ): bool {
 		global $wpdb;
-	
+
+		// Case Table Mising Column.
+		if ( strpos( $db_error_message, 'Unknown column' ) !== false ) {
+			// Update Database to new Schema.
+
+			$table_name           = $this->get_table_name();
+			$add_timestamp_column = "ALTER TABLE `{$table_name}` ADD `timestamp` BIGINT UNSIGNED NULL AFTER `show_floorplan`; ";
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery
+			$wpdb->query( $wpdb->prepare( $add_timestamp_column ) );
+			return true;
+		}
+
+		// Case Table Delete.
+		$table_message = $this->get_table_name() . '\' doesn\'t exist';
+		if ( strpos( $db_error_message, $table_message ) !== false ) {
+			// Recreate Table.
+			Factory::get_instance( Setup::class )->install_user_video_preference_table();
+			Factory::get_instance( Setup::class )->initialise_default_video_settings();
+
+			return true;
+		}
+
 	}
 
 
@@ -347,7 +380,6 @@ class UserVideoPreference {
 	 */
 	public function update_timestamp( int $user_id, string $room_name ): bool {
 		global $wpdb;
-
 		$timestamp = current_time( 'timestamp' );
 
 		// Try to Update First.
@@ -356,15 +388,16 @@ class UserVideoPreference {
 		$result = $wpdb->query(
 			$wpdb->prepare(
 				'
-					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
-					SET timestamp = %d
-					WHERE user_id = %d AND room_name = %s;
+				UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
+				SET timestamp = %d
+				WHERE user_id = %d AND room_name = %s;
 				',
 				$timestamp,
 				$user_id,
 				$room_name,
 			)
 		);
+
 		if ( $result ) {
 			\wp_cache_delete( $room_name );
 			return true;
@@ -374,4 +407,3 @@ class UserVideoPreference {
 
 	}
 }
-

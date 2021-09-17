@@ -51,10 +51,11 @@ return function (
 		<?php
 		$output = null;
 		$output = apply_filters( 'myvideoroom_security_settings_preference_buttons', $output, $user_id, $room_name );
+
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 		?>
-		<form method="post" action="">
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 			<h2 class="mvr-title-header"><i
 					class="dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable Room', 'my-video-room' ); ?>
 			</h2>

@@ -648,11 +648,8 @@ class ShoppingBasket {
 	public function get_individual_cart_object( int $record_id = null, string $room_name = null ):?array {
 
 		// Handling Object if passed in. If not getting it direct.
-		if ( $cart ) {
-			$cart_item = $cart;
-		} else {
-			$cart_item = Factory::get_instance( WooCommerceVideoDAO::class )->get_record_by_record_id( $record_id );
-		}
+
+		$cart_item = Factory::get_instance( WooCommerceVideoDAO::class )->get_record_by_record_id( $record_id );
 
 		if ( $cart_item ) {
 

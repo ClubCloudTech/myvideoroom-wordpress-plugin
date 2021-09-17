@@ -38,7 +38,7 @@ return function (
 				<li>
 					<a class="nav-tab<?php echo esc_attr( $active ); ?>"
 						href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-						<?php echo $tab_display_name; ?>
+						<?php echo esc_textarea( $tab_display_name ); ?>
 					</a>
 				</li>
 				<?php

@@ -8,7 +8,6 @@
 namespace MyVideoRoomPlugin\Module\Security\Shortcode;
 
 use MyVideoRoomPlugin\DAO\SessionState;
-use MyVideoRoomPlugin\DAO\UserVideoPreference;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\WordPressUser;

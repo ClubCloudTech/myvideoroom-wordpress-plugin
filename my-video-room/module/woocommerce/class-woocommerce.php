@@ -293,7 +293,8 @@ class WooCommerce {
 	 * @return void
 	 */
 	public function proxy_test() {
-		Factory::get_instance( Setup::class )->install_room_presence_table();
+
+		Factory::get_instance( Setup::class )->initialise_default_video_settings();
 
 	}
 

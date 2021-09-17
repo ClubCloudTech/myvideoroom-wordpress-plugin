@@ -328,7 +328,7 @@ class UserVideoPreference {
 	 *
 	 * @return int
 	 */
-	public function get_timestamp(): int {
+	public function get_timestamp(): ?int {
 		return $this->timestamp;
 	}
 

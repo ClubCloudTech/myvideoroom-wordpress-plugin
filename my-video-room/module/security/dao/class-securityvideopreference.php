@@ -7,7 +7,6 @@
 
 namespace MyVideoRoomPlugin\Module\Security\DAO;
 
-use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference as SecurityVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\Security\Security;
 
@@ -241,7 +240,7 @@ class SecurityVideoPreference {
 
 		);
 		if ( $wpdb->last_error ) {
-			$this->install_security_config_table();
+			$this->repair_update_database( $wpdb->last_error );
 		}
 		$result = null;
 
@@ -427,6 +426,37 @@ class SecurityVideoPreference {
 
 			default:
 				return null;
+		}
+	}
+
+	/**
+	 * Database Restore and Update
+	 *
+	 * @param string $db_error_message   The Error Message.
+	 *
+	 * @return bool
+	 */
+	private function repair_update_database( string $db_error_message = null ): bool {
+		global $wpdb;
+
+		// Case Table Mising Column.
+		if ( strpos( $db_error_message, 'Unknown column' ) !== false ) {
+			// Update Database to new Schema.
+
+			$table_name           = $this->get_table_name();
+			$add_timestamp_column = "ALTER TABLE `{$table_name}` ADD `timestamp` BIGINT UNSIGNED NULL AFTER `blocked_template_id`; ";
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery
+			$wpdb->query( $wpdb->prepare( $add_timestamp_column ) );
+			return true;
+		}
+
+		// Case Table Delete.
+		$table_message = $this->get_table_name() . '\' doesn\'t exist';
+		if ( strpos( $db_error_message, $table_message ) !== false ) {
+			// Recreate Table.
+			$this->install_security_config_table();
+
+			return true;
 		}
 	}
 }

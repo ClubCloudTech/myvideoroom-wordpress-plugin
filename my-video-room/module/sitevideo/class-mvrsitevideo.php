@@ -377,6 +377,7 @@ class MVRSiteVideo {
 
 		return $input;
 	}
+
 	/**
 	 * Controller Function to Render Welcome Page in Main Shortcode.
 	 *
