@@ -58,5 +58,17 @@ class NotificationHelpers {
 
 	}
 
+	/**
+	 * Render Accept Master Notification Popup
+	 *
+	 * @return ?string
+	 */
+	public function render_security_update_notification(): string {
+		$title           = esc_html__( 'Room Security Settings have Changed', 'myvideoroom' );
+		$target_focus_id = 'mvr-shopping-basket';
+		$message         = \esc_html__( ' Room Security Changed ', 'myvideoroom' );
+		$iconclass       = 'dashicons-shield-alt';
+		return $this->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
+	}
 }

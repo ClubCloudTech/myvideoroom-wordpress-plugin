@@ -10,11 +10,11 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
-use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Library\RoomAdmin;
+use MyVideoRoomPlugin\Library\TemplateIcons;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityNotifications;
 use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
@@ -44,6 +44,7 @@ class AjaxHandler {
 		$last_queuenum   = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastQueuenum' );
 		$last_carthash   = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastCarthash' );
 		$last_storecount = Factory::get_instance( Ajax::class )->get_text_parameter( 'lastStorecount' );
+		$message_room    = Factory::get_instance( Ajax::class )->get_text_parameter( 'messageRoom' );
 
 		switch ( $input_type ) {
 			/*
@@ -511,11 +512,13 @@ class AjaxHandler {
 				$notification_queue_change_state = Factory::get_instance( ShoppingBasket::class )->check_for_product_queue_changes( $last_queuenum, $room_name );
 				$my_session                      = Factory::get_instance( RoomAdmin::class )->get_user_session();
 				$change_heartbeat                = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, $my_session );
+				$host_status            = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 				// Only Check for Room Change if Global Update Flag has Fired.
 				if ( $change_heartbeat ) {
-				//	$room_change_heartbeat = Factory::get_instance( RoomAdmin::class )->room_change_heartbeat( $room_name );
+					$room_change_heartbeat     = Factory::get_instance( RoomAdmin::class )->room_change_heartbeat( $room_name );
+					$security_change_heartbeat = Factory::get_instance( RoomAdmin::class )->security_change_heartbeat( $room_name );
 				}
-				$room_change_heartbeat = Factory::get_instance( RoomAdmin::class )->room_change_heartbeat( $room_name );
+
 				$response = array();
 
 				if ( true === $store_change_state ) {
@@ -524,35 +527,39 @@ class AjaxHandler {
 				}
 
 				if ( true === $client_change_state ) {
-					$host_status            = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 					$response['status']     = 'change';
 					$response['mainwindow'] = Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 
 				}
 				if ( true === $notification_queue_change_state ) {
-					$host_status            = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 					$response['status']     = 'change';
 					$response['mainwindow'] = Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				}
 
 				if ( $client_change_state || $store_change_state || $notification_queue_change_state || $change_heartbeat ) {
 					$response['messagewindow']   = 'change';
-					$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name, $client_change_state, $store_change_state, $notification_queue_change_state );
+					$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name, $client_change_state, $store_change_state, $notification_queue_change_state, $security_change_heartbeat );
 				} else {
 					$response['status'] = 'nochange';
 				}
 
 				if ( $room_change_heartbeat ) {
-					$response['settingchange']   = 'change';
-					$response['mainvideo']       = Factory::get_instance( RoomAdmin::class )->update_main_video_window( $room_change_heartbeat );
-					$response['videosetting']    = Factory::get_instance( RoomAdmin::class )->update_video_settings_window( $room_change_heartbeat );
+					$response['settingchange'] = 'change';
+					$response['mainvideo']     = Factory::get_instance( RoomAdmin::class )->update_main_video_window( $room_change_heartbeat, $message_room );
+					$response['videosetting']  = Factory::get_instance( RoomAdmin::class )->update_video_settings_window( $room_change_heartbeat );
+					$response['icons']         = apply_filters( 'myvideoroom_template_icon_section', Factory::get_instance( TemplateIcons::class )->show_icon( $room_change_heartbeat->get_user_id(), $room_name ), $room_change_heartbeat->get_user_id(), $room_name, ! $host_status );
 
-					
 					if ( Factory::get_instance( Module::class )->is_module_active( Security::MODULE_SECURITY_NAME ) ) {
-					
+						$response['securitysetting'] = Factory::get_instance( RoomAdmin::class )->update_security_settings_window( $room_change_heartbeat );
 					}
-					$response['securitysetting'] = Factory::get_instance( SecurityNotifications::class )->update_security_settings_window( $room_change_heartbeat );
 					Factory::get_instance( RoomSyncDAO::class )->reset_timestamp( $room_name );
+				}
+
+				if ( $security_change_heartbeat ) {
+					$response['securitychange']  = 'change';
+					$response['icons']           = apply_filters( 'myvideoroom_template_icon_section', null, $security_change_heartbeat->get_user_id(), $room_name, ! $host_status );
+					$response['securitysetting'] = Factory::get_instance( RoomAdmin::class )->update_security_settings_window( $security_change_heartbeat );
+
 				}
 
 				return \wp_send_json( $response );

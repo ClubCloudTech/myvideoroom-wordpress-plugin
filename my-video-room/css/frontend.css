@@ -140,6 +140,11 @@
 	font-size: smaller;
 }
 
+#mvr-notification-icons, .mvr-header-title {
+animation: fadeIn 2s;
+opacity: 1;
+}
+
 .myvideoroom-notification-area {
 	background: darkblue;
 	color: white;
@@ -183,6 +188,7 @@
 	float:left;
 	text-align: left;
 	padding: 10px;
+	display: flex;
 }
 
 .myvideoroom-header-table-right {

@@ -59,7 +59,7 @@
 		return false;
 	}
 
-	function refreshHeartbeat( original_room ) {
+	function refreshHeartbeat( original_room, message_room ) {
 		var ajax_url        = myvideoroom_woocommerce_basket.ajax_url;
 		var input_type      = 'refresh';
 		var room_name       = $( '#roomid' ).data( 'roomName' );
@@ -72,6 +72,7 @@
 		var $mainvideo      = $( '.myvideoroom-app' );
 		var videosetting    = $( '#video-host-wrap' );
 		var securitysetting = $( '#security-video-host-wrap' );
+		var icondisplay     = $( '#mvr-notification-icons' );
 
 		if ( typeof room_name === 'undefined' ) {
 			room_name = original_room;
@@ -88,17 +89,18 @@
 						lastQueuenum: last_queuenum,
 						lastCarthash: last_carthash,
 						lastStorecount: last_storecount,
+						messageRoom: message_room,
 					},
 					success: function (response) {
 
 						var state_response = JSON.parse( response );
 						if (state_response.status == 'change' ) {
 							$notification.html( state_response.notificationbar + '' );
-							$container.html( state_response.mainwindow + '' );
+							$container.html( state_response.mainwindow );
 						}
 						if (state_response.storestatus == 'change' ) {
-							$notification.html( state_response.notificationbar + '' );
-							$storefront.html( state_response.storefront + '' );
+							$notification.html( state_response.notificationbar );
+							$storefront.html( state_response.storefront );
 						}
 						if (state_response.messagewindow == 'change' ) {
 							$notification.html( state_response.notificationbar + '' );
@@ -110,49 +112,37 @@
 								
 								videosetting.html( state_response.videosetting );
 								securitysetting.html( state_response.securitysetting );
+								icondisplay.html( state_response.icons );
+								$mainvideo.html( state_response.mainvideo );
+			
+								if (window.myvideoroom_tabbed_init) {
+									window.myvideoroom_tabbed_init( $mainvideo );
+								}
+			
+								if (window.myvideoroom_app_init) {
+									window.myvideoroom_app_init( $mainvideo[0] );
+								}
+			
+								if (window.myvideoroom_app_load) {
+									window.myvideoroom_app_load();
+								}
+			
+								if (window.myvideoroom_shoppingbasket_init) {
+									window.myvideoroom_shoppingbasket_init();
+								}
 
 
-							var room_id    = $mainvideo.data( 'roomId' );
-							console.log( room_id );
-							var loading_text = $mainvideo.data( 'loadingText' );
-							if ('URLSearchParams' in window) {
-								var searchParams = new URLSearchParams( window.location.search );
-								searchParams.set( 'room_id', room_id );
+							} else {
+							// Do nothing!
 		
-								var newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
-								history.pushState( null, '', newRelativePathQuery );
 							}
-							
-							$mainvideo.html( state_response.mainvideo + '' );
-		
-							if (window.myvideoroom_tabbed_init) {
-								window.myvideoroom_tabbed_init( $mainvideo );
-							}
-		
-							if (window.myvideoroom_app_init) {
-								window.myvideoroom_app_init( $mainvideo[0] );
-							}
-		
-							if (window.myvideoroom_app_load) {
-								window.myvideoroom_app_load();
-							}
-		
-							if (window.myvideoroom_shoppingbasket_init) {
-								window.myvideoroom_shoppingbasket_init();
-							}
-
-
-							  } else {
-								// Do nothing!
-								
-							  }
-
-
-							
 								
 						}
-						
-
+						if (state_response.securitychange == 'change' ) {
+							securitysetting.html( state_response.securitysetting );
+							icondisplay.html( state_response.icons );
+						}
+					
 						if (state_response.status == 'nochange') {
 
 						} else {
@@ -269,6 +259,7 @@
 			}
 		);
 
+
 		$( ".myvideoroom-button-dismiss" ).click(
 			function(event){
 				event.stopPropagation();
@@ -301,7 +292,8 @@
 
 	if ( mvrIsactive.length > 0) {
 		var original_room = $( '#roomid' ).data( 'roomName' );
-		setInterval( refreshHeartbeat, 6000, original_room );
+		var message_room = $( '.myvideoroom-app' ).data( 'roomName' );
+		setInterval( refreshHeartbeat, 6000, original_room, message_room );
 		notifyRefresh( original_room );
 	}
 

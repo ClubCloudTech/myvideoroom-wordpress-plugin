@@ -335,7 +335,7 @@ class UserVideoPreference {
 	/**
 	 * Sets Timestamp.
 	 *
-	 * @param int $timestamp - sets the Single Product Sync state.
+	 * @param int $timestamp - sets the Timestamp.
 	 *
 	 * @return int
 	 */

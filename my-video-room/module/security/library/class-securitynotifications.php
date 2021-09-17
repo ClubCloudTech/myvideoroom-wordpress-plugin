@@ -102,7 +102,7 @@ class SecurityNotifications {
 	 * @return string
 	 */
 	public function add_default_video_icons_to_header( ?string $template_icons, int $user_id, string $room_name ): string {
-		$template_icons .= Factory::get_instance( self::class )->show_icon( $user_id, $room_name );
+		$template_icons .= $this->show_icon( $user_id, $room_name );
 
 		return $template_icons;
 	}

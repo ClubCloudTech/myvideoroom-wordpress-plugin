@@ -66,8 +66,11 @@ class UserVideoPreference {
 
 		if ( $http_post_library->is_post_request( 'update_user_video_preference' ) ) {
 			if ( ! $http_post_library->is_nonce_valid( 'update_user_video_preference' ) ) {
-				// @TODO - FIX ME/HANDLE ME/...
-				throw new \Exception( 'Invalid nonce' );
+				?>
+				<script type="text/javascript">
+				location.reload()
+				</script>
+				<?php
 			}
 
 			$room_name = $http_post_library->get_string_parameter( 'room_name' );

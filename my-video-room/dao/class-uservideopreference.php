@@ -235,12 +235,9 @@ class UserVideoPreference {
 		);
 
 		if ( $wpdb->last_error ) {
-			//Factory::get_instance( Setup::class )->install_room_presence_table();
+			$this->repair_update_database();
 		}
-		
-		
-		
-		
+
 		$result = null;
 
 		if ( $row ) {
@@ -334,7 +331,47 @@ class UserVideoPreference {
 	 *
 	 * @return bool
 	 */
-	private function get_by_id( int $user_id, string $room_name ): ?UserVideoPreferenceEntity {
+	private function repair_update_database(): bool {
 		global $wpdb;
+	
+	}
+
+
+	/**
+	 * Update Timestamp
+	 *
+	 * @param int    $user_id - User ID.
+	 * @param string $room_name The Room Name.
+	 *
+	 * @return bool
+	 */
+	public function update_timestamp( int $user_id, string $room_name ): bool {
+		global $wpdb;
+
+		$timestamp = current_time( 'timestamp' );
+
+		// Try to Update First.
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$result = $wpdb->query(
+			$wpdb->prepare(
+				'
+					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
+					SET timestamp = %d
+					WHERE user_id = %d AND room_name = %s;
+				',
+				$timestamp,
+				$user_id,
+				$room_name,
+			)
+		);
+		if ( $result ) {
+			\wp_cache_delete( $room_name );
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }
+

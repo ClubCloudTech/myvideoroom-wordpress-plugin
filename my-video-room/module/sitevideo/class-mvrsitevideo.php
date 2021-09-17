@@ -181,7 +181,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-css',
 					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '38',
+					Factory::get_instance( Version::class )->get_plugin_version() . '42',
 					'(min-width: 640px)'
 				);
 			},
@@ -394,4 +394,5 @@ class MVRSiteVideo {
 		return $render( $tabs, $html_library, $room_id, $host_status, $header );
 
 	}
+
 }
