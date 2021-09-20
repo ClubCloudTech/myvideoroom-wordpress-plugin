@@ -167,7 +167,7 @@ class RoomSyncDAO {
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
-						SELECT cart_id, room_name, timestamp, room_host, current_master, basket_change, record_id, $owner_id 
+						SELECT cart_id, room_name, timestamp, room_host, current_master, basket_change, record_id, owner_id 
 						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
 						WHERE room_name = %s AND timestamp > %d;
 					',

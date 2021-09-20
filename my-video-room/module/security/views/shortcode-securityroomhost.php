@@ -10,6 +10,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;
 
 return function (
@@ -113,7 +114,7 @@ return function (
 
 			<?php
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( \MyVideoRoomPlugin\Library\HttpPost::class )->create_form_submit(
+			echo Factory::get_instance( HttpPost::class )->create_form_submit(
 				'update_security_video_preference',
 				\esc_html__( 'Save changes', 'myvideoroom' )
 			);

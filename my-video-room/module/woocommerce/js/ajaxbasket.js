@@ -281,7 +281,10 @@
 
 		if ( mvrIsactive.length > 0) {
 
-			document.getElementById( targetclass ).click();
+			if ( typeof targetclass !=='undefined' ) {
+				document.getElementById( targetclass ).click();
+			}
+			
 
 		}
 		return false;

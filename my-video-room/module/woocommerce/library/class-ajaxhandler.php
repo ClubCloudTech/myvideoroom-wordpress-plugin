@@ -512,7 +512,7 @@ class AjaxHandler {
 				$notification_queue_change_state = Factory::get_instance( ShoppingBasket::class )->check_for_product_queue_changes( $last_queuenum, $room_name );
 				$my_session                      = Factory::get_instance( RoomAdmin::class )->get_user_session();
 				$change_heartbeat                = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, $my_session );
-				$host_status            = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+				$host_status                     = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 				// Only Check for Room Change if Global Update Flag has Fired.
 				if ( $change_heartbeat ) {
 					$room_change_heartbeat     = Factory::get_instance( RoomAdmin::class )->room_change_heartbeat( $room_name );
