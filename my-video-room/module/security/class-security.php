@@ -173,9 +173,6 @@ class Security {
 			2
 		);
 
-		// Ajax Handler for Security Form.
-		\add_action( 'admin_post_security_form', array( Factory::get_instance( SecurityVideoPreference::class ), 'check_for_update_request' ) );
-
 		// Disable Feature Module.
 		\add_action( 'myvideoroom_disable_feature_module', array( Factory::get_instance( SecurityRoomHelpers::class ), 'security_disable_feature_module' ) );
 

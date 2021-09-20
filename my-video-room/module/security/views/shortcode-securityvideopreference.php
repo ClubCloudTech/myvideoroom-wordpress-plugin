@@ -55,7 +55,7 @@ return function (
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 		?>
-		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<form method="post" action="" enctype="multipart/form-data" class="ajaxsecurity">
 			<h2 class="mvr-title-header"><i
 					class="dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable Room', 'my-video-room' ); ?>
 			</h2>
@@ -186,6 +186,9 @@ return function (
 				);
 			}
 			?>
+			<div class="success_msg" style="display: none"><?php esc_html_e( 'Settings changed Successfully', 'myvideoroom' ); ?></div>
+
+			<div class="error_msg" style="display: none"><?php esc_html_e( 'There was an error changing your settings', 'myvideoroom' ); ?></div>
 		</form>
 	</div>
 		</div>
