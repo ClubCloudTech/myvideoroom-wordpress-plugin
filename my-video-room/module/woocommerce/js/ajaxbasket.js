@@ -295,6 +295,22 @@
 		var message_room = $( '.myvideoroom-app' ).data( 'roomName' );
 		setInterval( refreshHeartbeat, 6000, original_room, message_room );
 		notifyRefresh( original_room );
+
+		$('.ajaxsecurity').submit(function () {
+			
+			if (confirm("Changing this setting will immediately apply it and you must reconnect to the room, do you want to do this ?"))
+			   return true;
+			else
+			  return false;
+		 });
+
+		 $('.ajaxvideosettings').submit(function () {
+			
+			if (confirm("Changing Video Settings will immediately apply them and you must reconnect to the room, do you want to do this ?"))
+			   return true;
+			else
+			  return false;
+		 });
 	}
 
 	/* Initialise Runtime */

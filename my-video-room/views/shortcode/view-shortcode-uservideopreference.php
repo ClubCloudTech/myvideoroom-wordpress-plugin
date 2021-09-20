@@ -59,7 +59,7 @@ return function (
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 		?>
 		<hr>
-		<form method="post" action="">
+		<form method="post" action="" class="ajaxvideosettings">
 			<input name="myvideoroom_user_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
 
 			<h3 class="mvr-title-header">

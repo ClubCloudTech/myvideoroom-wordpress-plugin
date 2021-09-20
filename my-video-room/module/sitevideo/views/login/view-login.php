@@ -18,17 +18,22 @@ return function (
 
 	ob_start();
 
-	?><div class="mvr-admin-page-wrap">
-		<h2><?php esc_html_e( 'Please Sign in to Improve Your Experience', 'my-video-room' ); ?></h2>
-		<?php
-		global $wp;
-		$args = array(
-			'redirect' => home_url( $wp->request ),
-		);
-		wp_login_form( $args );
+	?>
 
-		?>
-	</div>
+		<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap myvideoroom-header-table-right">
+			<h2><?php esc_html_e( 'Please Sign in to Improve Your Experience', 'my-video-room' ); ?></h2>
+			<?php
+			global $wp;
+			$args = array(
+				'redirect' => home_url( $wp->request ),
+				'remember' => true,
+			);
+
+			wp_login_form( $args );
+
+			?>
+		</div>
+
 		<?php
 
 		return ob_get_clean();

@@ -9,6 +9,8 @@ namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingViews;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\SiteDefaults;
 
 /**
@@ -186,39 +188,38 @@ class SectionTemplates {
 		ob_start();
 		?>
 
-<div class="mvr-row">
+<div class="mvr-nav-settingstabs-outer-wrap">
+
+	<div class="mvr-left ">
 	<h2 class="mvr-header-text">
-		<?php
-		echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
-		esc_html_e( 'Welcome to Our Video Room', 'myvideoroom' );
-		?>
-	</h2>
-		<img class="myvideoroom-center" src="
-			<?php echo esc_url( plugins_url( '/../img/screen-1.png', __FILE__ ) ); ?>" alt="Video">
-
-		<p class="mvr-template-text">
 			<?php
-
-			$first_display_name = '<strong>' . esc_html__( 'Welcome', 'my-video-room' ) . '</strong>';
-
-			$second_display_name = esc_html__( 'the site administrators', 'my-video-room' );
-
-			echo sprintf(
-			/* translators: %1s is the text "The Administrator" and %2s is "the site administrators" */
-				esc_html__( '%1$s Our rooms work best if you are signed in. Click the help icon for instructions or contact the site owner, your host, or %2$s for more assistance.', 'myvideoroom' ),
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
-				$first_display_name,
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
-				$second_display_name
-			);
+			esc_html_e( 'Checkin for Your Call', 'myvideoroom' );
 			?>
-		</p>
+		</h2>
+			<?php echo Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page(); ?>
+
+	</div>
+
+	<div class="mvr-right ">
+		<div id="mvr-container-login">
+			<h2 class="mvr-header-text">
+				<?php
+				esc_html_e( 'Welcome Back', 'myvideoroom' );
+				?>
+			</h2>
+				<?php echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page(); ?>
+
+		</div>
+	</div>
+
+
+
 		<div class="mvr-powered-by">
 				<img class="myvideoroom-product-image" src="
 			<?php echo esc_url( plugins_url( '/../img/mvr-imagelogo.png', __FILE__ ) ); ?>" alt="Powered by MyVideoRoom">
 		</div>
 
-
+	</div>
 		<?php
 
 		return ' ';

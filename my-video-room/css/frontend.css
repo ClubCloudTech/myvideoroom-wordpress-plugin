@@ -32,8 +32,6 @@
 .myvideoroom-content-tab {
 	float: left;
 	width: 93%;
-
-
 }
 
 .myvideoroom-center {
@@ -68,6 +66,7 @@
 
 .myvideoroom-nav-tab-wrapper li a.nav-tab-active {
 	font-weight: 500;
+	background: white;
 }
 
 .myvideoroom-nav-tab-wrapper li a:not(.nav-tab-active) {
@@ -114,8 +113,14 @@
 	display: flex;
 }
 
-  .mvr-left, .mvr-right {
+  .mvr-left {
 	width: 50%;
+	float: left;
+  }
+
+  .mvr-right {
+	width: 50%;
+	float: right;
   }
 
   .mvr-middle {
@@ -178,6 +183,7 @@ opacity: 1;
 	display: inline;
 	font-size: 12px;
 	font-weight: 400;
+	padding: 8px;
 	margin-left: 1px !important;
 	text-align: -webkit-center;
 	vertical-align: middle;

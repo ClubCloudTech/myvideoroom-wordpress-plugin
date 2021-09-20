@@ -161,6 +161,8 @@ class HttpPost {
 	 */
 	public function create_admin_form_submit( string $action ): string {
 		$output  = \wp_nonce_field( $action, 'myvideoroom_nonce', true, false );
+
+
 		$output .= '<input type="hidden" value="' . $action . '" name="myvideoroom_action" />';
 		$output .= \get_submit_button();
 
@@ -172,10 +174,11 @@ class HttpPost {
 	 *
 	 * @param string $action      The action.
 	 * @param string $submit_text The translated text for the submit button.
+	 * @param string $class The Class to add to the button (optional).
 	 *
 	 * @return string
 	 */
-	public function create_form_submit( string $action, string $submit_text ): string {
+	public function create_form_submit( string $action, string $submit_text, string $class = null ): string {
 		\ob_start();
 		?>
 
@@ -185,7 +188,7 @@ class HttpPost {
 		<input type="submit"
 			name="submit"
 			id="submit"
-			class="button button-primary"
+			class="button button-primary <?php echo esc_attr( $class ); ?>"
 			value="<?php echo \esc_html( $submit_text ); ?>"
 		/>
 		<?php

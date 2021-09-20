@@ -182,13 +182,11 @@ return function (
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( HttpPost::class )->create_form_submit(
 					'update_security_video_preference',
-					\esc_html__( 'Save changes', 'myvideoroom' )
+					\esc_html__( 'Save changes', 'myvideoroom' ),
+					'myvideoroom-securityformbutton'
 				);
 			}
 			?>
-			<div class="success_msg" style="display: none"><?php esc_html_e( 'Settings changed Successfully', 'myvideoroom' ); ?></div>
-
-			<div class="error_msg" style="display: none"><?php esc_html_e( 'There was an error changing your settings', 'myvideoroom' ); ?></div>
 		</form>
 	</div>
 		</div>

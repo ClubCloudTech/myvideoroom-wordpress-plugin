@@ -13,6 +13,7 @@ use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\SectionTemplates;
+use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
@@ -156,6 +157,24 @@ class MVRSiteVideoViews {
 	 */
 	public function render_login_page(): string {
 		$render = require __DIR__ . '/../views/login/view-login.php';
+		return $render();
+
+	}
+
+	/**
+	 * Render Picture Page
+	 *
+	 * @return string - Login Page.
+	 */
+	public function render_picture_page(): string {
+		\wp_enqueue_script(
+			'myvideoroom-webcam-stream-js',
+			\plugins_url( '/../../../js/webcam/mvr-stream.js', \realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			Factory::get_instance( Version::class )->get_plugin_version(),
+			true
+		);
+		$render = require __DIR__ . '/../views/login/view-picture-register.php';
 		return $render();
 
 	}
