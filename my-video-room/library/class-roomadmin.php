@@ -18,7 +18,7 @@ use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as DAOSecurity
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as ShortcodeUserVideoPreference;
-
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class RoomAdmin
@@ -182,7 +182,7 @@ class RoomAdmin {
 		}
 	}
 	/**
-	 * Room Change Heartbeat - Returns The Room Configuration Object if Room Layout has changed.
+	 * Update Main Video Window - Redraws the Meeting via Ajax and returns a new room.
 	 *
 	 * @param UserVideoPreferenceEntity $room_object - the object class to re-assemble room from.
 	 * @param string                    $original_room_name - the original room name rendered in the room.
@@ -211,6 +211,25 @@ class RoomAdmin {
 			$myvideoroom_app->set_as_host();
 
 		}
+
+		return do_shortcode( $myvideoroom_app->output_shortcode_text() );
+
+	}
+
+	/**
+	 * Renders a Pre-Entry Room for Users to perform a soundcheck.
+	 *
+	 * $original_room_name - the original room name rendered in the room.
+	 *
+	 * @return string
+	 */
+	public function render_guest_soundcheck() {
+
+		$myvideoroom_app = AppShortcodeConstructor::create_instance()
+			->set_name( SiteDefaults::SOUNDCHECK_ROOM_NAME )
+			->set_original_room_name( SiteDefaults::SOUNDCHECK_ROOM_NAME )
+			->disable_reception()
+			->disable_floorplan();
 
 		return do_shortcode( $myvideoroom_app->output_shortcode_text() );
 
@@ -307,10 +326,12 @@ class RoomAdmin {
 		$cart_id                = $this->get_user_session();
 		$user_preference_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $room_name );
 		$output_array           = array();
-		$picture_path           = $user_preference_object->get_user_picture_path();
-		$picture_url            = $user_preference_object->get_user_picture_url();
-		$user_display_name      = $user_preference_object->get_user_display_name();
 
+		if ( $user_preference_object ) {
+			$picture_path      = $user_preference_object->get_user_picture_path();
+			$picture_url       = $user_preference_object->get_user_picture_url();
+			$user_display_name = $user_preference_object->get_user_display_name();
+		}
 		// Data Clean Up (In case Image has been deleted from Uploads Folder by other plugin or user).
 
 		if ( isset( $picture_path ) && ! file_exists( $user_preference_object->get_user_picture_path() ) ) {

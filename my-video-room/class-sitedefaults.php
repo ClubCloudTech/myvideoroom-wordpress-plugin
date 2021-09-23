@@ -49,6 +49,9 @@ class SiteDefaults {
 	const ROOM_REFRESH_TOLERANCE = 8; /* 8 seconds - 6 second refresh window plus 2 seconds contingency */
 	const VIDEO_TEMPLATE_MODE    = 1;
 
+	// Guest SoundCheck Room Name.
+	const SOUNDCHECK_ROOM_NAME = 'testprejoin434';
+
 
 	/**
 	 * If the initialised function already been run.

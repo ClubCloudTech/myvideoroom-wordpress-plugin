@@ -18,6 +18,7 @@ use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Library\Logger;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Plugin;
+use MyVideoRoomPlugin\SiteDefaults;
 use WP_User;
 
 /**
@@ -282,6 +283,10 @@ class App {
 		$reception_video   = $shortcode_constructor->get_reception_video();
 		$floorplan_enabled = $shortcode_constructor->is_floorplan_enabled();
 		$host              = $shortcode_constructor->is_host();
+
+		if ( SiteDefaults::SOUNDCHECK_ROOM_NAME === $room_name ) {
+			$user_name = 'Soundcheck User';
+		}
 
 		return <<<EOT
             <div

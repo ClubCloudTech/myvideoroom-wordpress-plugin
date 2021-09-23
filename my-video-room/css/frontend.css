@@ -38,7 +38,13 @@
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	width: 50%;
+	width: 60%;
+  }
+
+  .myvideoroom-button-separation {
+	margin-left: 5px;
+	margin-right: 5px;
+	
   }
 
 .myvideoroom-nav-tab-wrapper li:after {
@@ -99,7 +105,18 @@
 	width:  50px;
 	height: 50px;
 }
+.myvideoroom-image-result {
+	color: #fff;
+	width:  180px;
+	height: 101px;
+}
+.myvideoroom-button-notification {
+	text-align: right;
+}
 
+.myvideoroom-welcome-page {
+	background: #fff;
+}
 /* Create three unequal columns that floats next to each other */
 .mvr-table-row {
 	border-color: #C6C0AD;
@@ -212,6 +229,28 @@ opacity: 1;
 	text-align: right;
 }
 
+.myvideoroom-welcome-buttons {
+	background-color: rgb(77, 77, 77)!important;
+	border-radius: 3px!important;
+	color: rgb(255 255 255) !important;
+	font-size: 12px!important;
+	padding: 10px!important;
+	font-weight: 400!important;
+	margin: 5px!important;
+	text-align: -webkit-center!important;
+	vertical-align: middle!important;
+}
+.myvideoroom-welcome-positive {
+	background-color: #3777ff!important;
+	border-radius: 3px!important;
+	color: rgb(255 255 255) !important;
+	font-size: 12px!important;
+	padding: 10px!important;
+	font-weight: 400!important;
+	margin: 5px!important;
+	text-align: -webkit-center!important;
+	vertical-align: middle!important;
+}
 
 .mvr-main-button-enabled a {
 	color: white;

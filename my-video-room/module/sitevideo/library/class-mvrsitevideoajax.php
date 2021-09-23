@@ -76,6 +76,16 @@ class MVRSiteVideoAjax {
 		}
 
 		/*
+		* Check Sound Section.
+		*
+		*/
+		if ( 'check_sound' === $action_taken ) {
+			$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->render_guest_soundcheck();
+			$response['message'] = \esc_html('To begin Soundcheck click on any open seat', 'myvideoroom');
+			return \wp_send_json( $response );
+		}
+
+		/*
 		* Update Picture Section.
 		*
 		*/

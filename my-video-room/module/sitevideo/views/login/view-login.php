@@ -20,9 +20,12 @@ return function (
 
 	?>
 
-		<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap myvideoroom-header-table-right">
-			<h2><?php esc_html_e( 'Have an Account?', 'my-video-room' ); ?></h2>
-			<?php
+<div id="mvr-login-form" class="myvideoroom-center  myvideoroom-welcome-page mvr-hide">
+	<h2><?php esc_html_e( 'Have an Account?', 'my-video-room' ); ?></h2>
+	<p id="myvideoroom-picturedescription" class="myvideoroom-table-adjust">
+		<?php esc_html_e( 'You can login to access your previously stored room settings, baskets, lists, and pictures', 'myvideoroom' ); ?>
+	</p>
+	<?php
 			global $wp;
 			$args = array(
 				'redirect' => home_url( $wp->request ),
@@ -32,9 +35,9 @@ return function (
 			wp_login_form( $args );
 
 			?>
-		</div>
+</div>
 
-		<?php
+	<?php
 
 		return ob_get_clean();
 };

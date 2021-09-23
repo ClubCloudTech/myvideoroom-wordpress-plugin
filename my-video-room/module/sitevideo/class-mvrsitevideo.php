@@ -203,7 +203,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-css',
 					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '50',
+					Factory::get_instance( Version::class )->get_plugin_version() . wp_rand( 1, 10000 ),
 					'(min-width: 640px)'
 				);
 			},

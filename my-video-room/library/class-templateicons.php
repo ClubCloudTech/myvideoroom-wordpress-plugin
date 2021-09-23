@@ -115,5 +115,48 @@ class TemplateIcons {
 
 		return $template_icons;
 	}
+	/**
+	 * Filter for Adding Template Buttons to Shortcode Builder
+	 *
+	 * @param ?string $type The type of button to use.
+	 *
+	 * @return string
+	 */
+	public function format_button_icon( ?string $type ): string {
+		switch ( $type ) {
+			case 'login':
+				$button_label = '<span title ="' . esc_html__( 'Login to access your room settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-network"></span>';
+				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$a_class      = '';
+				$id           = 'mvr-button-login';
+				break;
+			case 'photo':
+				$button_label = '<span title ="' . esc_html__( 'Take your picture for room floorplans and easy recognition', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-camera"></span>';
+				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$a_class      = '';
+				$id           = 'mvr-photo-image';
+				break;
+			case 'name':
+				$button_label = '<span title ="' . esc_html__( 'You need to identify yourself for the meeting. Please enter a short name', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-format-chat"></span>';
+				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$a_class      = '';
+				$id           = 'mvr-name-user';
+				break;
+			case 'checksound':
+				$button_label  = '<span title ="' . esc_html__( 'Lets get your sound, and camera checked out and ready', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-controls-volumeon"></span>';
+				$button_label .= '<span title ="' . esc_html__( 'Lets get your sound, and camera checked out and ready', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-video-alt2"></span>';
+				$button_class  = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$a_class       = '';
+				$id            = 'mvr-check-sound';
+				break;
+		}
+
+		return '<button id=' . $id . ' class=" ' . $button_class . '" >
+			<a href=""  class="' . $a_class . '">' . $button_label . '</a>
+			</button>';
+
+	}
+
+
 
 }

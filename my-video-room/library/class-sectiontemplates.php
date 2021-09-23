@@ -115,7 +115,7 @@ class SectionTemplates {
 				?>
 
 	</nav>
-
+<div id="mvr-above-article-notification"></div>
 
 				<?php
 				foreach ( $tabs as $article_output ) {
@@ -186,27 +186,12 @@ class SectionTemplates {
 		ob_start();
 		?>
 
-<div class="mvr-nav-settingstabs-outer-wrap">
+<div class="mvr-nav-settingstabs-outer-wrap myvideoroom-welcome-page">
 
-	<div class="mvr-left ">
-
-			<?php echo Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page(); ?>
-
-	</div>
-
-	<div class="mvr-right ">
-		<div id="mvr-container-login">
-
-				<?php
-				if ( ! \is_user_logged_in() ) {
-					echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page();
-				}
-				?>
-
-		</div>
-	</div>
-
-
+			<?php
+				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page();
+			?>
 
 		<div class="mvr-powered-by mvr-clear">
 				<img class="myvideoroom-product-image" src="

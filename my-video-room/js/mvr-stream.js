@@ -5,15 +5,49 @@ window.addEventListener("load", function(){
 	document.getElementById("vid-picture").onclick = function(){
 		document.getElementById("myvideoroom-picturewrap").classList.remove('mvr-hide');
 		document.getElementById("vid-picture").classList.add('mvr-hide');
+		document.getElementById("vid-up").classList.add('mvr-hide');
 		document.getElementById("myvideoroom-picturedescription").classList.remove('mvr-hide');
 		startcamera();
 	}
 	document.getElementById("vid-skip").onclick = function(){
 	skipwindow();
 	}
+	document.getElementById("mvr-button-login").onclick = function(e){
+		e.preventDefault();
+		document.getElementById("mvr-picture").classList.add('mvr-hide');
+		document.getElementById("mvr-login-form").classList.remove('mvr-hide');
+		document.getElementById("myvideoroom-checksound").classList.add('mvr-hide');
+		document.getElementById("myvideoroom-meeting-name").classList.add('mvr-hide');
+	}
+	document.getElementById("mvr-photo-image").onclick = function(e){
+		e.preventDefault();
+		document.getElementById("mvr-picture").classList.remove('mvr-hide');
+		document.getElementById("mvr-login-form").classList.add('mvr-hide');
+		document.getElementById("myvideoroom-checksound").classList.add('mvr-hide');
+		document.getElementById("myvideoroom-meeting-name").classList.add('mvr-hide');
+	}
+	document.getElementById("mvr-name-user").onclick = function(e){
+		e.preventDefault();
+		skipwindow();
+	}
+	document.getElementById("mvr-check-sound").onclick = function(e){
+		e.preventDefault();
+		stopcamera();
+		document.getElementById("mvr-picture").classList.add('mvr-hide');
+		document.getElementById("mvr-login-form").classList.add('mvr-hide');
+		document.getElementById("myvideoroom-meeting-name").classList.add('mvr-hide');
+		document.getElementById("myvideoroom-checksound").classList.remove('mvr-hide');
+	}
+	document.getElementById("chk-sound").onclick = function(e){
+		e.preventDefault();
+		document.getElementById("myvideoroom-checksound").classList.remove('myvideoroom-center');
+		checksound();
+	}
+	
 
 function startcamera(){
-	  // (A) ASK FOR USER PERMISSION TO ACCESS CAMERA
+
+	document.getElementById("vid-take").classList.remove('mvr-hide');
 	  navigator.mediaDevices.getUserMedia({
 		// (A1) THE EASY WAY
 		// video: true
@@ -48,11 +82,11 @@ function startcamera(){
 }
 
 function skipwindow() {
-	document.getElementById("myvideoroom-picturewrap").classList.add('mvr-hide');
-	document.getElementById("myvideoroom-picturedescription").classList.add('mvr-hide');
-	document.getElementById("vid-picture").classList.remove('mvr-hide');
+	document.getElementById("mvr-picture").classList.add('mvr-hide');
+
 	document.getElementById("myvideoroom-meeting-name").classList.remove('mvr-hide');
-	
+	document.getElementById("myvideoroom-meeting-name").classList.add('myvideoroom-center');
+
 }
 
   function vidtake() {
@@ -73,6 +107,9 @@ function skipwindow() {
 	document.getElementById("vid-up").classList.remove('mvr-hide');
 	document.getElementById("vid-live").classList.add('mvr-hide');
 	document.getElementById("vid-take").classList.add('mvr-hide');
+	document.getElementById("vid-result").classList.add('myvideoroom-image-result');
+
+	
 	
 	
 	stopcamera();
@@ -137,8 +174,6 @@ function cameratimeout(){
 
 	function vidup () {
 		
-		document.getElementById("myvideoroom-meeting-name").classList.remove('mvr-hide');
-		
 			canvas = document.querySelector('canvas');
 			context2D = canvas.getContext("2d");
 			canvas.toBlob(function(blob){
@@ -174,8 +209,68 @@ function cameratimeout(){
 				});
 				
 			});
-		
+		skipwindow();
 	  }
+
+	  function checksound() {
+		console.log('Check sound starting');
+		document.getElementById("stop-chk-sound").classList.remove('mvr-hide');
+		// Prepare Form.
+		var form_data = new FormData();
+		form_data.append('action','myvideoroom_file_upload');
+				
+		jQuery(function($) {
+			container      = $( '.myvideoroom-app' );
+			notification   = $( '#mvr-above-article-notification' );
+			form_data.append('security', myvideoroom_file_upload.security );
+			form_data.append('action_taken', 'check_sound' );
+			$.ajax(
+				{
+					type: 'post',
+					dataType: 'html',
+					url: myvideoroom_file_upload.ajax_url,
+					contentType: false,
+					processData: false,
+					data: form_data,
+					success: function (response) {
+						// Hard Delete of Existing Container to Avoid Duplication.
+						container_parent = container.parent().attr('id');
+						container.empty();
+												
+						var state_response = JSON.parse( response );
+
+						// Redraw Container.
+						container.html( state_response.mainvideo );
+						notification.html ( state_response.message);
+							
+						if (window.myvideoroom_tabbed_init) {
+							window.myvideoroom_tabbed_init( container );
+						}
+
+						if (window.myvideoroom_app_init) {
+							window.myvideoroom_app_init( container[0] );
+						}
+
+						if (window.myvideoroom_app_load) {
+							window.myvideoroom_app_load();
+						}
+
+						if (window.myvideoroom_shoppingbasket_init) {
+							window.myvideoroom_shoppingbasket_init();
+						}
+						
+						$( '#vid-up' ).prop('value', 'Saved !');
+					},
+					error: function ( response ){
+						console.log('Error Uploading');
+					}
+				}
+			);
+		});  
+				// Change Focus to Video Tab.
+				document.getElementById( 'mvr-video' ).click();
+}
+
 
 	  function startmeeting() {
 				// Prepare Form.
