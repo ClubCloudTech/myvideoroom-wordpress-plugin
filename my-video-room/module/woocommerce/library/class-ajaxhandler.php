@@ -15,7 +15,6 @@ use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Library\TemplateIcons;
-use MyVideoRoomPlugin\Module\Security\Library\SecurityNotifications;
 use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;

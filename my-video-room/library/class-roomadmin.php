@@ -202,6 +202,7 @@ class RoomAdmin {
 
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( $original_room_name )
+			->set_original_room_name( $room_name )
 			->set_layout( $video_template );
 
 		$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
@@ -209,9 +210,8 @@ class RoomAdmin {
 		if ( $host_status ) {
 			$myvideoroom_app->set_as_host();
 
-		} else {
-
 		}
+
 		return do_shortcode( $myvideoroom_app->output_shortcode_text() );
 
 	}
@@ -304,7 +304,7 @@ class RoomAdmin {
 	 */
 	public function room_user_settings( string $room_name, string $avatar_url = null, string $display_name = null ) {
 		// Setup Data.
-		$cart_id = $this->get_user_session();
+		$cart_id                = $this->get_user_session();
 		$user_preference_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $room_name );
 		$output_array           = array();
 		$picture_path           = $user_preference_object->get_user_picture_path();
@@ -319,7 +319,7 @@ class RoomAdmin {
 			Factory::get_instance( RoomSyncDAO::class )->update( $user_preference_object );
 			return 'file doesnt exist';
 		}
-//return $user_preference_object;
+		// return $user_preference_object;
 		// Logged Out.
 		if ( ! \is_user_logged_in() ) {
 			$output_array['display-name'] = $user_display_name;

@@ -151,6 +151,7 @@ function cameratimeout(){
 				jQuery(function($) {
 					var room_name     = $( '#roomid' ).data( 'roomName' );
 					form_data.append('room_name', room_name );
+					form_data.append('action_taken', 'update_picture' );
 					form_data.append('security', myvideoroom_file_upload.security );
 					$.ajax(
 						{
@@ -161,7 +162,8 @@ function cameratimeout(){
 							processData: false,
 							data: form_data,
 							success: function (response) {
-								alert(response);
+								var state_response = JSON.parse( response );
+								console.log( state_response.message );
 								$( '#vid-up' ).prop('value', 'Saved !');
 							},
 							error: function ( response ){
@@ -181,13 +183,16 @@ function cameratimeout(){
 				form_data.append('action','myvideoroom_file_upload');
 						
 				jQuery(function($) {
-					var room_name     = $( '#roomid' ).data( 'roomName' ),
-					display_name      = $( '#vid-name' ).val();
+					var room_name  = $( '#roomid' ).data( 'roomName' ),
+					display_name   = $( '#vid-name' ).val(),
+					original_room  = $( '.myvideoroom-app' ).data( 'roomName' ),
+					container      = $( '.myvideoroom-app' );
 					
 					form_data.append('room_name', room_name );
 					form_data.append('security', myvideoroom_file_upload.security );
 					form_data.append('display_name', display_name );
 					form_data.append('action_taken', 'start_meeting' );
+					form_data.append('original_room', original_room );
 					$.ajax(
 						{
 							type: 'post',
@@ -197,7 +202,32 @@ function cameratimeout(){
 							processData: false,
 							data: form_data,
 							success: function (response) {
-								alert(response);
+								// Hard Delete of Existing Container to Avoid Duplication.
+								container_parent = container.parent().attr('id');
+								container.empty();
+								container.parent().empty();
+								$( '#'+container_parent ).prepend('<div class="myvideoroom-app"></div>');
+								container      = $( '.myvideoroom-app' );
+								var state_response = JSON.parse( response );
+								// Redraw Container.
+								container.html( state_response.mainvideo );
+									
+								if (window.myvideoroom_tabbed_init) {
+									window.myvideoroom_tabbed_init( container );
+								}
+
+								if (window.myvideoroom_app_init) {
+									window.myvideoroom_app_init( container[0] );
+								}
+
+								if (window.myvideoroom_app_load) {
+									window.myvideoroom_app_load();
+								}
+
+								if (window.myvideoroom_shoppingbasket_init) {
+									window.myvideoroom_shoppingbasket_init();
+								}
+								
 								$( '#vid-up' ).prop('value', 'Saved !');
 							},
 							error: function ( response ){

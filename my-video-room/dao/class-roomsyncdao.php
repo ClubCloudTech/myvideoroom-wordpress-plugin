@@ -722,7 +722,7 @@ class RoomSyncDAO {
 
 			$table_name = $this->get_room_presence_table_name();
 			// V2.
-			$update_db  = "ALTER TABLE `{$table_name}` ADD `user_picture_url` VARCHAR(255) NULL AFTER `owner_id`, ADD `user_display_name` VARCHAR(255) NULL AFTER `user_picture_url`";
+			$update_db = "ALTER TABLE `{$table_name}` ADD `user_picture_url` VARCHAR(255) NULL AFTER `owner_id`, ADD `user_display_name` VARCHAR(255) NULL AFTER `user_picture_url`";
 			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery
 			$wpdb->query( $wpdb->prepare( $update_db ) );
 
