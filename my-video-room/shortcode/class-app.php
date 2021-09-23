@@ -270,10 +270,8 @@ class App {
 
 		$user_preference_object = Factory::get_instance( RoomAdmin::class )->room_user_settings( $original_room_name, $avatar, $user_display );
 
-		$user_name  = $user_preference_object['display-name'];
-		$avatar_url = $user_preference_object['picture-url'];
-
-//		echo $user_name . $avatar_url . var_dump( $user_preference_object );
+		$user_name           = $user_preference_object['display-name'];
+		$avatar_url          = $user_preference_object['picture-url'];
 		$custom_jitsi_server = true;
 
 		$room_name         = $shortcode_constructor->get_name();
