@@ -185,13 +185,13 @@ class RoomAdmin {
 	 * Room Change Heartbeat - Returns The Room Configuration Object if Room Layout has changed.
 	 *
 	 * @param UserVideoPreferenceEntity $room_object - the object class to re-assemble room from.
-	 * @param string $room_name - the original room name rendered in the room.
+	 * @param string                    $original_room_name - the original room name rendered in the room.
 	 *
 	 * @return string
 	 */
 	public function update_main_video_window( UserVideoPreferenceEntity $room_object, string $original_room_name ) {
 
-		//return serialize( $room_object );
+		// return serialize( $room_object );
 
 		$user_id                 = $room_object->get_user_id();
 		$room_name               = $room_object->get_room_name();
@@ -219,7 +219,7 @@ class RoomAdmin {
 	}
 
 	/**
-	 * Update Security Settings - Returns The Room Security Settings Page on Ajax.
+	 * Update Video Settings - Returns The Updated Video Settings Page on Ajax.
 	 *
 	 * @param UserVideoPreferenceEntity $room_object - the object class to re-assemble room from.
 	 *
@@ -258,6 +258,38 @@ class RoomAdmin {
 			)
 		);
 
+	}
+
+	/**
+	 * Room Picture and Name Update - changes Avatar Picture and sets User Meeting Display Name.
+	 *
+	 * @param string $room_name The name of the room.
+	 * @param string $cart_id The ID of the User Making the Request.
+	 *
+	 * @return bool
+	 */
+	public function room_picture_name_update( string $room_name, string $cart_id = null, string $file_path = null, string $file_url = null, string $display_name = null ): bool {
+
+		if ( ! $cart_id ) {
+			$cart_id = $this->get_user_session();
+		}
+		$current_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $room_name );
+		if ( $file_path && $file_url ) {
+
+			$current_object->set_user_picture_url( $file_url );
+			$current_object->set_user_picture_path( $file_path );
+		}
+
+		if ( $display_name ) {
+			$current_object->set_user_display_name( $display_name );
+		}
+
+		$return = Factory::get_instance( RoomSyncDAO::class )->update( $current_object );
+		if ( $return ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

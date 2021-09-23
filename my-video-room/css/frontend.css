@@ -54,7 +54,7 @@
 }
 
 .myvideoroom-nav-tab-wrapper li:last-child:after {
-	width: 1000%;
+	width: 100%;
 }
 
 .myvideoroom-nav-tab-wrapper li a {
@@ -127,6 +127,12 @@
 	width: 50%;
   }
 
+  .mvr-flex {
+	  display: flex;
+	  margin-top: 5px;
+	  margin-bottom: 5px;
+  }
+
   /* Clear floats after the columns */
   .mvr-table-row:after {
 	content: "";
@@ -143,6 +149,10 @@
 
 .myvideoroom-table-adjust {
 	font-size: smaller;
+}
+
+.mvr-clear {
+	clear:both;
 }
 
 #mvr-notification-icons, .mvr-header-title {
@@ -169,7 +179,6 @@ opacity: 1;
 	text-rendering: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	font-size: 20px;
 	vertical-align:middle;
 	text-align: center;
 	transition: color .5s ease-in;

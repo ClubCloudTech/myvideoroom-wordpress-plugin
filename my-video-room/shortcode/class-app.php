@@ -9,12 +9,14 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Shortcode;
 
+use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Library\Host;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Library\Logger;
+use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Plugin;
 use WP_User;
 
@@ -247,6 +249,12 @@ class App {
 
 		$jwt_endpoint = $licence_endpoint . '/' . $hostname . '.jwt?';
 
+		// Get User Details.
+		$cart_id                = Factory::get_instance( RoomAdmin::class )->get_user_session();
+		$room_name = explode('-', $attr['name'], 2)[1];
+		$user_preference_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $shortcode_constructor->get_name() );
+		echo var_dump( $room_name );
+
 		$current_user = \wp_get_current_user();
 
 		$user_name  = null;
@@ -258,6 +266,8 @@ class App {
 			$user_name  = $current_user->display_name;
 			$avatar_url = $this->get_avatar( $current_user );
 		}
+		$user_name = $cart_id;
+		$avatar_url = 'https://clubelemental.com/wp-content/uploads/2021/09/tmp-tdr3hvudnbmrd053np2m2iu70a.png';
 
 		$custom_jitsi_server = true;
 

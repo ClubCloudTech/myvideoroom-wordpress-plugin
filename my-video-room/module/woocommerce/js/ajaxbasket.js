@@ -106,43 +106,42 @@
 							$notification.html( state_response.notificationbar + '' );
 						}
 						if (state_response.settingchange == 'change' ) {
-							
-							if (confirm('The Room Host has made a change to the room that will require you to reconnect your call - do you want to do this ?')) {
+
+							if (confirm( 'The Room Host has made a change to the room that will require you to reconnect your call - do you want to do this ?' )) {
 								// Save it!
-								
+
 								videosetting.html( state_response.videosetting );
 								securitysetting.html( state_response.securitysetting );
 								icondisplay.html( state_response.icons );
 								$mainvideo.html( state_response.mainvideo );
-			
+
 								if (window.myvideoroom_tabbed_init) {
 									window.myvideoroom_tabbed_init( $mainvideo );
 								}
-			
+
 								if (window.myvideoroom_app_init) {
 									window.myvideoroom_app_init( $mainvideo[0] );
 								}
-			
+
 								if (window.myvideoroom_app_load) {
 									window.myvideoroom_app_load();
 								}
-			
+
 								if (window.myvideoroom_shoppingbasket_init) {
 									window.myvideoroom_shoppingbasket_init();
 								}
 
-
 							} else {
-							// Do nothing!
-		
+								// Do nothing!
+
 							}
-								
+
 						}
 						if (state_response.securitychange == 'change' ) {
 							securitysetting.html( state_response.securitysetting );
 							icondisplay.html( state_response.icons );
 						}
-					
+
 						if (state_response.status == 'nochange') {
 
 						} else {
@@ -259,7 +258,6 @@
 			}
 		);
 
-
 		$( ".myvideoroom-button-dismiss" ).click(
 			function(event){
 				event.stopPropagation();
@@ -281,10 +279,9 @@
 
 		if ( mvrIsactive.length > 0) {
 
-			if ( typeof targetclass !=='undefined' ) {
+			if ( typeof targetclass !== 'undefined' ) {
 				document.getElementById( targetclass ).click();
 			}
-			
 
 		}
 		return false;
@@ -295,25 +292,31 @@
 
 	if ( mvrIsactive.length > 0) {
 		var original_room = $( '#roomid' ).data( 'roomName' );
-		var message_room = $( '.myvideoroom-app' ).data( 'roomName' );
+		var message_room  = $( '.myvideoroom-app' ).data( 'roomName' );
 		setInterval( refreshHeartbeat, 6000, original_room, message_room );
 		notifyRefresh( original_room );
 
-		$('.ajaxsecurity').submit(function () {
-			
-			if (confirm("Changing this setting will immediately apply it and you must reconnect to the room, do you want to do this ?"))
-			   return true;
-			else
-			  return false;
-		 });
+		$( '.ajaxsecurity' ).submit(
+			function () {
 
-		 $('.ajaxvideosettings').submit(function () {
-			
-			if (confirm("Changing Video Settings will immediately apply them and you must reconnect to the room, do you want to do this ?"))
-			   return true;
-			else
-			  return false;
-		 });
+				if (confirm( "Changing this setting will immediately apply it and you must reconnect to the room, do you want to do this ?" )) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		);
+
+		$( '.ajaxvideosettings' ).submit(
+			function () {
+
+				if (confirm( "Changing Video Settings will immediately apply them and you must reconnect to the room, do you want to do this ?" )) {
+					 return true;
+				} else {
+					return false;
+				}
+			}
+		);
 	}
 
 	/* Initialise Runtime */

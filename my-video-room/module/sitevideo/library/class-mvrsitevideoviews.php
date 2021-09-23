@@ -167,15 +167,12 @@ class MVRSiteVideoViews {
 	 * @return string - Login Page.
 	 */
 	public function render_picture_page(): string {
-		\wp_enqueue_script(
-			'myvideoroom-webcam-stream-js',
-			\plugins_url( '/../../../js/webcam/mvr-stream.js', \realpath( __FILE__ ) ),
-			array( 'jquery' ),
-			Factory::get_instance( Version::class )->get_plugin_version(),
-			true
-		);
-		$render = require __DIR__ . '/../views/login/view-picture-register.php';
-		return $render();
+
+			wp_enqueue_script( 'myvideoroom-protect-input' );
+
+			$render = require __DIR__ . '/../views/login/view-picture-register.php';
+
+			return $render();
 
 	}
 

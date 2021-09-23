@@ -9,9 +9,7 @@ namespace MyVideoRoomPlugin\Library;
 
 use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingViews;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
-use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class SectionTemplate
@@ -191,30 +189,26 @@ class SectionTemplates {
 <div class="mvr-nav-settingstabs-outer-wrap">
 
 	<div class="mvr-left ">
-	<h2 class="mvr-header-text">
-			<?php
-			esc_html_e( 'Checkin for Your Call', 'myvideoroom' );
-			?>
-		</h2>
+
 			<?php echo Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page(); ?>
 
 	</div>
 
 	<div class="mvr-right ">
 		<div id="mvr-container-login">
-			<h2 class="mvr-header-text">
+
 				<?php
-				esc_html_e( 'Welcome Back', 'myvideoroom' );
+				if ( ! \is_user_logged_in() ) {
+					echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page();
+				}
 				?>
-			</h2>
-				<?php echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page(); ?>
 
 		</div>
 	</div>
 
 
 
-		<div class="mvr-powered-by">
+		<div class="mvr-powered-by mvr-clear">
 				<img class="myvideoroom-product-image" src="
 			<?php echo esc_url( plugins_url( '/../img/mvr-imagelogo.png', __FILE__ ) ); ?>" alt="Powered by MyVideoRoom">
 		</div>

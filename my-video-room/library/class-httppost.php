@@ -160,8 +160,7 @@ class HttpPost {
 	 * @return string
 	 */
 	public function create_admin_form_submit( string $action ): string {
-		$output  = \wp_nonce_field( $action, 'myvideoroom_nonce', true, false );
-
+		$output = \wp_nonce_field( $action, 'myvideoroom_nonce', true, false );
 
 		$output .= '<input type="hidden" value="' . $action . '" name="myvideoroom_action" />';
 		$output .= \get_submit_button();

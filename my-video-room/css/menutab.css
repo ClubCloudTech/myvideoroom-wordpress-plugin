@@ -67,6 +67,9 @@
 	position: relative;
 	width: 100%;
 }
+.mvr-header-section canvas {
+	width: 100%;
+}
 
 .mvr-header-section:after {
 	clear: both;

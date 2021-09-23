@@ -237,7 +237,6 @@ class SecurityVideoPreference {
 					$room_name,
 				)
 			)
-
 		);
 		if ( $wpdb->last_error ) {
 			$this->repair_update_database( $wpdb->last_error );

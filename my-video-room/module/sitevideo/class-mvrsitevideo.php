@@ -17,10 +17,10 @@ use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
-use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoAjax;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
@@ -139,8 +139,10 @@ class MVRSiteVideo {
 			);
 		}
 
-		// Ajax Handler for SiteVideo Room.
-		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( $this, 'get_ajax_page_settings' ), 10, 2 );
+		// Ajax Handler for SiteVideo.
+		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'get_ajax_page_settings' ), 10, 2 );
+		\add_action( 'wp_ajax_myvideoroom_file_upload', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'file_upload_handler' ), 10, 2 );
+		\add_action( 'wp_ajax_nopriv_myvideoroom_file_upload', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'file_upload_handler' ), 10, 2 );
 
 		\wp_enqueue_script(
 			'myvideoroom-sitevideo-settings-js',
@@ -155,6 +157,26 @@ class MVRSiteVideo {
 			'myvideoroom_sitevideo_settings',
 			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
 		);
+
+		// Register Script Ajax Upload.
+		\wp_enqueue_script(
+			'myvideoroom-webcam-stream-js',
+			\plugins_url( '/../../js/webcam/mvr-stream.js', \realpath( __FILE__ ) ),
+			array( 'jquery' ),
+			Factory::get_instance( Version::class )->get_plugin_version() . \wp_rand( 40, 30000 ),
+			true
+		);
+		// Localize script Ajax Upload.
+			$script_data_array = array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'security' => wp_create_nonce( 'handle_picture_upload' ),
+
+			);
+			wp_localize_script(
+				'myvideoroom-webcam-stream-js',
+				'myvideoroom_file_upload',
+				$script_data_array
+			);
 
 		\wp_enqueue_script(
 			'myvideoroom-sitevideo-add-room-js',
@@ -181,7 +203,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-css',
 					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '46',
+					Factory::get_instance( Version::class )->get_plugin_version() . '50',
 					'(min-width: 640px)'
 				);
 			},
@@ -320,33 +342,6 @@ class MVRSiteVideo {
 	}
 
 	/**
-	 * Get Site Video Ajax Data
-	 */
-	public function get_ajax_page_settings() {
-
-		$room_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
-		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
-
-		// Case Room Render for Reception Shortcode.
-
-		if ( self::RECEPTION_ROOM_FLAG === $input_type ) {
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped.
-			echo Factory::get_instance( MVRSiteVideoControllers::class )->site_videoroom_host_function( $room_id );
-
-		} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && self::ROOM_NAME_SITE_VIDEO === $input_type ) {
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo ( require __DIR__ . '/views/view-settings-conference-center-default.php' )();
-
-		} else {
-			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, $input_type );
-		}
-		die();
-	}
-
-
-	/**
 	 * Render SiteVideo Welcome Tab.
 	 *
 	 * @param array $input   - the inbound menu.
@@ -388,11 +383,9 @@ class MVRSiteVideo {
 	 * @return string - outbound menu.
 	 */
 	public function render_welcome_tab( int $room_id, bool $host_status = null, $header ): string {
-		$html_library = Factory::get_instance( HTML::class, array( 'welcometab' ) );
-		$tabs         = \apply_filters( 'myvideoroom_welcome_page', array(), $room_id, $host_status, $header );
-		$render       = require __DIR__ . '/views/header/view-welcometab.php';
+		$render = require __DIR__ . '/views/header/view-welcometab.php';
 
-		return $render( $tabs, $html_library, $room_id, $host_status, $header );
+		return $render();
 
 	}
 

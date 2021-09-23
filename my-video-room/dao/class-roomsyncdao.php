@@ -33,23 +33,23 @@ class RoomSyncDAO {
 	/**
 	 * Save a Room Sync Event into the database
 	 *
-	 * @param RoomSync $woocommerceroomsyncobj The video preference to save.
+	 * @param RoomSync $roomsyncobj The video preference to save.
 	 *
 	 * @return RoomSync|null
 	 * @throws \Exception When failing to insert, most likely a duplicate key.
 	 */
-	public function create( RoomSync $woocommerceroomsyncobj ): ?RoomSync {
+	public function create( RoomSync $roomsyncobj ): ?RoomSync {
 		global $wpdb;
 
-		$cart_id   = $woocommerceroomsyncobj->get_cart_id();
-		$room_name = $woocommerceroomsyncobj->get_room_name();
+		$cart_id   = $roomsyncobj->get_cart_id();
+		$room_name = $roomsyncobj->get_room_name();
 
 		// Check Record Doesn't already exist (update not create if it does).
 
 		$check = $this->get_by_id_sync_table( $cart_id, $room_name );
 
 		if ( $check ) {
-			return $this->update( $woocommerceroomsyncobj );
+			return $this->update( $roomsyncobj );
 		}
 
 		$cache_key = $this->create_cache_key(
@@ -61,23 +61,26 @@ class RoomSyncDAO {
 		$wpdb->insert(
 			$this->get_room_presence_table_name(),
 			array(
-				'cart_id'           => $woocommerceroomsyncobj->get_cart_id(),
-				'room_name'         => $woocommerceroomsyncobj->get_room_name(),
-				'timestamp'         => $woocommerceroomsyncobj->get_timestamp(),
-				'last_notification' => $woocommerceroomsyncobj->get_last_notification(),
-				'room_host'         => $woocommerceroomsyncobj->is_room_host(),
-				'basket_change'     => $woocommerceroomsyncobj->get_basket_change(),
-				'sync_state'        => $woocommerceroomsyncobj->get_sync_state(),
-				'current_master'    => $woocommerceroomsyncobj->is_current_master(),
-				'owner_id'          => $woocommerceroomsyncobj->get_owner_id(),
+				'cart_id'           => $roomsyncobj->get_cart_id(),
+				'room_name'         => $roomsyncobj->get_room_name(),
+				'timestamp'         => $roomsyncobj->get_timestamp(),
+				'last_notification' => $roomsyncobj->get_last_notification(),
+				'room_host'         => $roomsyncobj->is_room_host(),
+				'basket_change'     => $roomsyncobj->get_basket_change(),
+				'sync_state'        => $roomsyncobj->get_sync_state(),
+				'current_master'    => $roomsyncobj->is_current_master(),
+				'owner_id'          => $roomsyncobj->get_owner_id(),
+				'user_picture_url'  => $roomsyncobj->get_user_picture_url(),
+				'user_display_name' => $roomsyncobj->get_user_display_name(),
+				'user_picture_path' => $roomsyncobj->get_user_picture_path(),
 			)
 		);
 
-		$woocommerceroomsyncobj->set_id( $wpdb->insert_id );
+		$roomsyncobj->set_id( $wpdb->insert_id );
 
 		\wp_cache_set(
 			$cache_key,
-			$woocommerceroomsyncobj->to_json(),
+			$roomsyncobj->to_json(),
 			implode(
 				'::',
 				array(
@@ -87,7 +90,7 @@ class RoomSyncDAO {
 			)
 		);
 		\wp_cache_delete(
-			$woocommerceroomsyncobj->get_cart_id(),
+			$roomsyncobj->get_cart_id(),
 			implode(
 				'::',
 				array(
@@ -97,7 +100,7 @@ class RoomSyncDAO {
 			)
 		);
 
-		return $woocommerceroomsyncobj;
+		return $roomsyncobj;
 	}
 
 	/**
@@ -167,7 +170,7 @@ class RoomSyncDAO {
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
-						SELECT cart_id, room_name, timestamp, room_host, current_master, basket_change, record_id, owner_id 
+						SELECT cart_id, room_name, timestamp, room_host, current_master, basket_change, record_id, owner_id, user_picture_url, user_display_name, user_picture_path
 						FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
 						WHERE room_name = %s AND timestamp > %d;
 					',
@@ -334,7 +337,7 @@ class RoomSyncDAO {
 	public function notify_user( string $room_name, string $user_hash_id = null ): ?bool {
 		global $wpdb;
 
-		$timestamp   = current_time( 'timestamp' );
+		$timestamp = current_time( 'timestamp' );
 
 		// Try to Update First.
 
@@ -368,7 +371,7 @@ class RoomSyncDAO {
 	public function reset_timestamp( string $room_name, string $user_hash_id = null ): bool {
 		global $wpdb;
 
-		$timestamp   = current_time( 'timestamp' );
+		$timestamp = current_time( 'timestamp' );
 		if ( ! $user_hash_id ) {
 			$user_hash_id = Factory::get_instance( RoomAdmin::class )->get_user_session();
 		}
@@ -456,6 +459,9 @@ class RoomSyncDAO {
 				WooCommerce::SETTING_BASKET_REQUEST_OFF,
 				$sync_state,
 				false,
+				null,
+				null,
+				null,
 				null,
 				null
 			);
@@ -551,8 +557,10 @@ class RoomSyncDAO {
 				   sync_state,
 				   current_master,  
 				   record_id,
-				   owner_id
-
+				   owner_id,
+				   user_picture_url,
+				   user_display_name,
+				   user_picture_path
 				   
 				FROM ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_room_presence_table_name() . '
 				WHERE cart_id = %s AND room_name = %s;
@@ -563,6 +571,10 @@ class RoomSyncDAO {
 				)
 			)
 		);
+
+		if ( $wpdb->last_error ) {
+			$this->repair_update_database( $wpdb->last_error );
+		}
 
 		$result = null;
 
@@ -578,6 +590,9 @@ class RoomSyncDAO {
 				$row->current_master,
 				$row->id,
 				$row->owner_id,
+				$row->user_picture_url,
+				$row->user_display_name,
+				$row->user_picture_path
 			);
 			wp_cache_set( $cache_key, __METHOD__, $result->to_json() );
 		} else {
@@ -590,42 +605,45 @@ class RoomSyncDAO {
 	/**
 	 * Update a Cart Object into the database
 	 *
-	 * @param RoomSync $woocommerceroomsyncobj The updated Cart Object.
+	 * @param RoomSync $roomsyncobj The updated Cart Object.
 	 *
 	 * @return RoomSync|null
 	 * @throws \Exception When failing to update.
 	 */
-	public function update( RoomSync $woocommerceroomsyncobj ): ?RoomSync {
+	public function update( RoomSync $roomsyncobj ): ?RoomSync {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
-			$woocommerceroomsyncobj->get_cart_id(),
-			$woocommerceroomsyncobj->get_room_name()
+			$roomsyncobj->get_cart_id(),
+			$roomsyncobj->get_room_name()
 		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->update(
 			$this->get_room_presence_table_name(),
 			array(
-				'cart_id'           => $woocommerceroomsyncobj->get_cart_id(),
-				'room_name'         => $woocommerceroomsyncobj->get_room_name(),
-				'timestamp'         => $woocommerceroomsyncobj->get_timestamp(),
-				'last_notification' => $woocommerceroomsyncobj->get_last_notification(),
-				'room_host'         => $woocommerceroomsyncobj->is_room_host(),
-				'basket_change'     => $woocommerceroomsyncobj->get_basket_change(),
-				'sync_state'        => $woocommerceroomsyncobj->get_sync_state(),
-				'current_master'    => $woocommerceroomsyncobj->is_current_master(),
-				'owner_id'          => $woocommerceroomsyncobj->get_owner_id(),
+				'cart_id'           => $roomsyncobj->get_cart_id(),
+				'room_name'         => $roomsyncobj->get_room_name(),
+				'timestamp'         => $roomsyncobj->get_timestamp(),
+				'last_notification' => $roomsyncobj->get_last_notification(),
+				'room_host'         => $roomsyncobj->is_room_host(),
+				'basket_change'     => $roomsyncobj->get_basket_change(),
+				'sync_state'        => $roomsyncobj->get_sync_state(),
+				'current_master'    => $roomsyncobj->is_current_master(),
+				'owner_id'          => $roomsyncobj->get_owner_id(),
+				'user_picture_url'  => $roomsyncobj->get_user_picture_url(),
+				'user_display_name' => $roomsyncobj->get_user_display_name(),
+				'user_picture_path' => $roomsyncobj->get_user_picture_path(),
 			),
 			array(
-				'cart_id'   => $woocommerceroomsyncobj->get_cart_id(),
-				'room_name' => $woocommerceroomsyncobj->get_room_name(),
+				'cart_id'   => $roomsyncobj->get_cart_id(),
+				'room_name' => $roomsyncobj->get_room_name(),
 			)
 		);
 
 		\wp_cache_set(
 			$cache_key,
-			$woocommerceroomsyncobj->to_json(),
+			$roomsyncobj->to_json(),
 			implode(
 				'::',
 				array(
@@ -635,7 +653,7 @@ class RoomSyncDAO {
 			)
 		);
 		\wp_cache_delete(
-			$woocommerceroomsyncobj->get_cart_id(),
+			$roomsyncobj->get_cart_id(),
 			implode(
 				'::',
 				array(
@@ -645,37 +663,37 @@ class RoomSyncDAO {
 			)
 		);
 
-		return $woocommerceroomsyncobj;
+		return $roomsyncobj;
 	}
 
 	/**
 	 * Delete a Cart Object from the database
 	 *
-	 * @param RoomSync $woocommerceroomsyncobj The Cart Object to delete.
+	 * @param RoomSync $roomsyncobj The Cart Object to delete.
 	 *
 	 * @return null
 	 * @throws \Exception When failing to delete.
 	 */
-	public function delete( RoomSync $woocommerceroomsyncobj ) {
+	public function delete( RoomSync $roomsyncobj ) {
 		global $wpdb;
 
 		$cache_key = $this->create_cache_key(
-			$woocommerceroomsyncobj->get_cart_id(),
-			$woocommerceroomsyncobj->get_room_name()
+			$roomsyncobj->get_cart_id(),
+			$roomsyncobj->get_room_name()
 		);
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$wpdb->delete(
 			$this->get_room_presence_table_name(),
 			array(
-				'cart_id'   => $woocommerceroomsyncobj->get_cart_id(),
-				'room_name' => $woocommerceroomsyncobj->get_room_name(),
+				'cart_id'   => $roomsyncobj->get_cart_id(),
+				'room_name' => $roomsyncobj->get_room_name(),
 			)
 		);
 
 		\wp_cache_delete( $cache_key, implode( '::', array( __CLASS__, 'get_by_id_sync_table' ) ) );
 		\wp_cache_delete(
-			$woocommerceroomsyncobj->get_cart_id(),
+			$roomsyncobj->get_cart_id(),
 			implode(
 				'::',
 				array(
@@ -686,5 +704,42 @@ class RoomSyncDAO {
 		);
 
 		return null;
+	}
+
+	/**
+	 * Database Restore and Update
+	 *
+	 * @param string $db_error_message   The Error Message.
+	 *
+	 * @return bool
+	 */
+	private function repair_update_database( string $db_error_message = null ): bool {
+		global $wpdb;
+
+		// Case Table Mising Column.
+		if ( strpos( $db_error_message, 'Unknown column' ) !== false ) {
+			// Update Database to new Schema.
+
+			$table_name = $this->get_room_presence_table_name();
+			// V2.
+			$update_db  = "ALTER TABLE `{$table_name}` ADD `user_picture_url` VARCHAR(255) NULL AFTER `owner_id`, ADD `user_display_name` VARCHAR(255) NULL AFTER `user_picture_url`";
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery
+			$wpdb->query( $wpdb->prepare( $update_db ) );
+
+			// V3.
+			$update_db = "ALTER TABLE `{$table_name}` ADD `user_picture_path` VARCHAR(255) NULL AFTER `user_display_name`; ";
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery
+			$wpdb->query( $wpdb->prepare( $update_db ) );
+			return true;
+		}
+
+		// Case Table Delete.
+		$table_message = $this->get_room_presence_table_name() . '\' doesn\'t exist';
+		if ( strpos( $db_error_message, $table_message ) !== false ) {
+			// Recreate Table.
+			Factory::get_instance( Setup::class )->install_room_presence_table();
+
+			return true;
+		}
 	}
 }

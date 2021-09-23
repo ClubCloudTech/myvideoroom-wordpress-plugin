@@ -207,7 +207,7 @@ class ShortcodeDocuments {
 									'Use this Shortcode wherever possible to render %s. Renders the Main Site Meeting Center Reception page for users. This page is automatically created by the plugin in the details above, but can also be added anywhere on the site. Please note that this switch automatically changes the host and guest context depending on user state (logged on/off/admins etc). Take special care when using this page with regards to emails- invites etc. The page contains filters in the host for anonymous meeting invites, querying users etc. We recommend using the default Meeting Center location for emails, invites etc. The plugins own template and widgets always use the default location of the Meeting Center, which you can change on this tab without issue.',
 									'my-video-room'
 								),
-								'<strong>' . esc_html__( 'Personal Meetings' ). '</strong>'
+								'<strong>' . esc_html__( 'Personal Meetings' ) . '</strong>'
 							);
 							?>
 							<br>
@@ -223,10 +223,9 @@ class ShortcodeDocuments {
 								'This shortcode will always render the %1$s reception of the meeting center. It will prompt the user for the username of the Host, accept a meeting invite link (automatically in the URL), or accept a hostname (automatically in the URL) It will also prompt for the Site Video Room if enabled. %2$s- this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which	use their own logic. Please use the shortcodes in BuddyPress, WCFM, WooCommerce Bookings, etc for placing on plugin pages.',
 								'my-video-room'
 							),
-							'<strong>' . esc_html__( 'Guest' ). '</strong>',
-							'<strong>' . esc_html__( 'Please note' ). '</strong>'
-						)
-						;
+							'<strong>' . esc_html__( 'Guest' ) . '</strong>',
+							'<strong>' . esc_html__( 'Please note' ) . '</strong>'
+						);
 						?>
 					</td>
 
@@ -241,10 +240,9 @@ class ShortcodeDocuments {
 								'This shortcode will always render the %1$s reception of the meeting center. This page determines its host from the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will default to guest reception mode. %2$s this link is not meant to be used for BuddyPress, WCFM, or WooCommerce Bookings pages which use their own logic. Please use the shortcodes in BuddyPress, WCFM, WooCommerce Bookings, etc for placing on plugin pages. Host settings render automatically in the short code or can be rendered separately by using the [personalmeetinghostsettings] shortcode',
 								'my-video-room'
 							),
-							'<strong>' . esc_html__( 'Host' ). '</strong>',
-							'<strong>' . esc_html__( 'Please note' ). '</strong>'
-						)
-						;
+							'<strong>' . esc_html__( 'Host' ) . '</strong>',
+							'<strong>' . esc_html__( 'Please note' ) . '</strong>'
+						);
 						?>
 					</td>
 				</tr>
@@ -258,11 +256,10 @@ class ShortcodeDocuments {
 								'This shortcode will render only the %1$s page of the %2$s. This is useful if you just want to edit the room settings without launching the full room. This shortcode determines its host from the logged in user. If placed in anonymous/non-logged in areas of the site the shortcode will return blank. %3$s admin settings for personal rooms are shared between BuddyPress Profile Rooms and Personal Video Rooms as they are effectively the same room, with multiple entrances ',
 								'my-video-room'
 							),
-							'<strong>' . esc_html__( 'settings' ). '</strong>',
-							'<strong>' . esc_html__( 'Host' ). '</strong>',
-							'<strong>' . esc_html__( 'Please note' ). '</strong>'
-						)
-						;
+							'<strong>' . esc_html__( 'settings' ) . '</strong>',
+							'<strong>' . esc_html__( 'Host' ) . '</strong>',
+							'<strong>' . esc_html__( 'Please note' ) . '</strong>'
+						);
 						?>
 					</td>
 				</tr>

@@ -137,7 +137,7 @@
 }
 
 .mvr-hide {
-	display: none;
+	display: none!important;
 }
 
 .mvr-reception-image:hover + .mvr-hide {

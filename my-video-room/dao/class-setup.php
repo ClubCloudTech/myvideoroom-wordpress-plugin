@@ -121,7 +121,9 @@ class Setup {
 			`sync_state` VARCHAR(255) NULL,
 			`current_master` BOOLEAN,
 			`owner_id` BIGINT UNSIGNED NULL,
-			`video_record` BIGINT UNSIGNED NULL,
+			`user_picture_url` VARCHAR(255) NULL,
+			`user_display_name` VARCHAR(255) NULL,
+			`user_picture_path` VARCHAR(255) NULL,
 			PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;';
 

@@ -83,6 +83,27 @@ class RoomSync {
 	private ?int $owner_id;
 
 	/**
+	 * User Picture URL
+	 *
+	 * @var ?string $user_picture_url
+	 */
+	private ?string $user_picture_url;
+
+	/**
+	 * User Display Name
+	 *
+	 * @var ?string $user_display_name
+	 */
+	private ?string $user_display_name;
+
+	/**
+	 * User Picture Path
+	 *
+	 * @var ?string $user_display_name
+	 */
+	private ?string $user_picture_path;
+
+	/**
 	 * WooCommerce Room Sync Constructor.
 	 *
 	 * @param  string  $cart_id                The User ID.
@@ -95,6 +116,9 @@ class RoomSync {
 	 * @param  bool    $current_master         User is Current Sync Basket Source.
 	 * @param  ?int    $id                     The record id.
 	 * @param  ?int    $owner_id               The Owner id.
+	 * @param  ?string $user_picture_url       The URL of the User picture.
+	 * @param  ?string $user_display_name      The User Display Name.
+	 * @param  ?string $user_picture_path      The User Display Name.
 	 */
 	public function __construct(
 		string $cart_id,
@@ -106,7 +130,10 @@ class RoomSync {
 		string $sync_state = null,
 		bool $current_master = null,
 		?int $id,
-		?int $owner_id
+		?int $owner_id,
+		string $user_picture_url = null,
+		string $user_display_name = null,
+		string $user_picture_path = null
 	) {
 		$this->cart_id           = $cart_id;
 		$this->room_name         = $room_name;
@@ -118,6 +145,9 @@ class RoomSync {
 		$this->current_master    = $current_master;
 		$this->id                = $id;
 		$this->owner_id          = $owner_id;
+		$this->user_picture_url  = $user_picture_url;
+		$this->user_display_name = $user_display_name;
+		$this->user_picture_path = $user_picture_path;
 	}
 
 	/**
@@ -142,6 +172,9 @@ class RoomSync {
 				$data->current_master,
 				$data->id,
 				$data->owner_id,
+				$data->user_picture_url,
+				$data->user_display_name,
+				$data->user_picture_path,
 			);
 		}
 
@@ -167,6 +200,9 @@ class RoomSync {
 				'current_master'    => $this->current_master,
 				'id'                => $this->id,
 				'owner_id'          => $this->owner_id,
+				'user_picture_url'  => $this->user_picture_url,
+				'user_display_name' => $this->user_display_name,
+				'user_picture_path' => $this->user_picture_path,
 			)
 		);
 	}
@@ -388,6 +424,72 @@ class RoomSync {
 	 */
 	public function set_owner_id( int $owner_id ): self {
 		$this->owner_id = $owner_id;
+
+		return $this;
+	}
+
+	/**
+	 * Gets User Picture URL.
+	 *
+	 * @return string
+	 */
+	public function get_user_picture_url(): ?string {
+		return $this->user_picture_url;
+	}
+
+	/**
+	 * Set the User Picture URL
+	 *
+	 * @param string $user_picture_url The URL of the User Picture.
+	 *
+	 * @return $this
+	 */
+	public function set_user_picture_url( string $user_picture_url ): self {
+		$this->user_picture_url = $user_picture_url;
+
+		return $this;
+	}
+
+	/**
+	 * Gets User Display Name.
+	 *
+	 * @return string
+	 */
+	public function get_user_display_name(): ?string {
+		return $this->user_display_name;
+	}
+
+	/**
+	 * Set the User Display Name.
+	 *
+	 * @param string $user_display_name The new Cart id.
+	 *
+	 * @return $this
+	 */
+	public function set_user_display_name( string $user_display_name ): self {
+		$this->user_display_name = $user_display_name;
+
+		return $this;
+	}
+
+	/**
+	 * Gets User Display Name.
+	 *
+	 * @return string
+	 */
+	public function get_user_picture_path(): ?string {
+		return $this->user_picture_path;
+	}
+
+	/**
+	 * Set the User Display Name.
+	 *
+	 * @param string $user_picture_path The User Picture Path.
+	 *
+	 * @return $this
+	 */
+	public function set_user_picture_path( string $user_picture_path ): self {
+		$this->user_picture_path = $user_picture_path;
 
 		return $this;
 	}
