@@ -255,6 +255,9 @@ class App {
 
 		// Get User Prefernce Details.
 		$original_room_name = $attr['original-room'];
+		if ( ! $original_room_name ) {
+			$original_room_name = $shortcode_constructor->get_name();
+		}
 
 		if ( \is_user_logged_in() ) {
 			$current_user = \wp_get_current_user();
