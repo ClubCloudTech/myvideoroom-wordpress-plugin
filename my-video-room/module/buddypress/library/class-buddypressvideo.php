@@ -50,6 +50,7 @@ class BuddyPressVideo {
 
 		// Shortcode Initialise Hooks/Filters.
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
+		$room_name = MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING;
 
 		// Adding Listeners for Update.
 		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
@@ -66,26 +67,27 @@ class BuddyPressVideo {
 
 		// Security Engine - blocks room rendering if another setting has blocked it ( eg upgrades, site lockdown, or other feature ).
 
-		$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $user_id, 'bppbrguest', BuddyPress::MODULE_BUDDYPRESS_ID, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $user_id, 'bppbrguest', BuddyPress::MODULE_BUDDYPRESS_ID, $room_name );
 		if ( $render_block ) {
 			return $render_block;
 		}
 
 		// Get Room Layout and Reception Settings.
-		$reception_setting     = Factory::get_instance( VideoHelpers::class )->get_enable_reception_state( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
-		$reception_template    = Factory::get_instance( VideoHelpers::class )->get_reception_template( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
-		$video_template        = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
-		$video_reception_state = Factory::get_instance( VideoHelpers::class )->get_video_reception_state( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
-		$video_reception_url   = Factory::get_instance( VideoHelpers::class )->get_video_reception_url( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$reception_setting     = Factory::get_instance( VideoHelpers::class )->get_enable_reception_state( $user_id, $room_name );
+		$reception_template    = Factory::get_instance( VideoHelpers::class )->get_reception_template( $user_id, $room_name );
+		$video_template        = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name );
+		$video_reception_state = Factory::get_instance( VideoHelpers::class )->get_video_reception_state( $user_id, $room_name );
+		$video_reception_url   = Factory::get_instance( VideoHelpers::class )->get_video_reception_url( $user_id, $room_name );
 
 		// Build Shortcode.
 
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'userbr', $user_id ) )
+			->set_original_room_name( $room_name )
 			->set_layout( $video_template );
 
 		// Check Floorplan Status.
-		$show_floorplan = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$show_floorplan = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $user_id, $room_name );
 
 		if ( $show_floorplan ) {
 			$myvideoroom_app->enable_floorplan();
@@ -112,7 +114,7 @@ class BuddyPressVideo {
 		array_push( $output_object, $host_menu );
 
 		//phpcs:ignore --WordPressOutputNotEscaped - the elements are already sanitised.
-		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, $host_status );
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, $room_name, $host_status );
 
 	}
 
@@ -132,6 +134,7 @@ class BuddyPressVideo {
 
 		// Shortcode Initialise Hooks/Filters.
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
+		$room_name = MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING;
 
 		// Adding Listeners for Update.
 		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
@@ -148,21 +151,22 @@ class BuddyPressVideo {
 
 		// Security Engine - blocks room rendering if another setting has blocked it ( eg upgrades, site lockdown, or other feature ).
 
-		$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $user_id, 'bppbrhost', BuddyPress::MODULE_BUDDYPRESS_ID, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $user_id, 'bppbrhost', BuddyPress::MODULE_BUDDYPRESS_ID, $room_name );
 		if ( $render_block ) {
 			return $render_block;
 		}
 
 		// Get Room Parameters.
-		$video_template = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$video_template = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name );
 		// Build the Room.
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'userbr', $user_id ) )
 			->set_layout( $video_template )
+			->set_original_room_name( $room_name )
 			->set_as_host();
 
 		// Check Floorplan Status.
-		$show_floorplan = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$show_floorplan = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $user_id, $room_name );
 		if ( $show_floorplan ) {
 			$myvideoroom_app->enable_floorplan();
 		}
@@ -182,13 +186,13 @@ class BuddyPressVideo {
 			fn() => \do_shortcode(
 				Factory::get_instance( UserVideoPreference::class )->choose_settings(
 					$user_id,
-					MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING,
+					$room_name,
 				)
 			)
 		);
 		array_push( $output_object, $admin_menu );
 
-		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, $host_status );
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, $room_name, $host_status );
 	}
 
 	/**
@@ -252,6 +256,7 @@ class BuddyPressVideo {
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'group', $user_id ) )
 			->set_layout( $video_template )
+			->set_original_room_name( $room_name )
 			->set_as_host();
 
 		// Floorplan Status from DB (applies to hosts as well as guests).
@@ -317,19 +322,21 @@ class BuddyPressVideo {
 		}
 
 		// Get Room Layout and Reception Settings.
-		$reception_setting     = Factory::get_instance( VideoHelpers::class )->get_enable_reception_state( $user_id, $bp->groups->current_group->slug );
-		$reception_template    = Factory::get_instance( VideoHelpers::class )->get_reception_template( $user_id, $bp->groups->current_group->slug );
-		$video_template        = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $bp->groups->current_group->slug );
-		$video_reception_state = Factory::get_instance( VideoHelpers::class )->get_video_reception_state( $user_id, $bp->groups->current_group->slug );
-		$video_reception_url   = Factory::get_instance( VideoHelpers::class )->get_video_reception_url( $user_id, $bp->groups->current_group->slug );
+		$room_name             = $bp->groups->current_group->slug;
+		$reception_setting     = Factory::get_instance( VideoHelpers::class )->get_enable_reception_state( $user_id, $room_name );
+		$reception_template    = Factory::get_instance( VideoHelpers::class )->get_reception_template( $user_id, $room_name );
+		$video_template        = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name );
+		$video_reception_state = Factory::get_instance( VideoHelpers::class )->get_video_reception_state( $user_id, $room_name );
+		$video_reception_url   = Factory::get_instance( VideoHelpers::class )->get_video_reception_url( $user_id, $room_name );
 
 		// Build the Room.
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'group', $user_id ) )
+			->set_original_room_name( $room_name )
 			->set_layout( $video_template );
 
 		// Check Floorplan Status.
-		$show_floorplan = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $user_id, $bp->groups->current_group->slug );
+		$show_floorplan = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $user_id, $room_name );
 		if ( $show_floorplan ) {
 			$myvideoroom_app->enable_floorplan();
 		}
@@ -355,7 +362,7 @@ class BuddyPressVideo {
 		array_push( $output_object, $host_menu );
 
 		//phpcs:ignore --WordPressOutputNotEscaped - the elements are already sanitised.
-		echo Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, $bp->groups->current_group->slug, $host_status );
+		echo Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, $room_name, $host_status );
 		return null;
 	}
 }

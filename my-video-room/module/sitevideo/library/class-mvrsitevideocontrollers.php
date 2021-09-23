@@ -105,6 +105,7 @@ class MVRSiteVideoControllers {
 
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $display_name ) )
+			->set_original_room_name( $room_name )
 			->set_layout( $video_template )
 			->set_as_host();
 
@@ -173,6 +174,7 @@ class MVRSiteVideoControllers {
 		$myvideoroom_app = AppShortcodeConstructor::create_instance();
 		$myvideoroom_app->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $display_name ) );
 		$myvideoroom_app->set_layout( $video_template );
+		$myvideoroom_app->set_original_room_name( $room_name );
 
 		// Reception setting.
 		if ( $reception_setting ) {

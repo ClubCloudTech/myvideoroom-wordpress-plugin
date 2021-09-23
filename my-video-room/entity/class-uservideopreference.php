@@ -76,6 +76,13 @@ class UserVideoPreference {
 	private ?int $timestamp;
 
 	/**
+	 * Original Room Name
+	 *
+	 * @var ?string $original_room_name
+	 */
+	private ?string $original_room_name;
+
+	/**
 	 * UserVideoPreference constructor.
 	 *
 	 * @param int     $user_id                 Userid.
@@ -87,6 +94,7 @@ class UserVideoPreference {
 	 * @param ?string $reception_video_url     Reception Video Path.
 	 * @param bool    $show_floorplan          Show Video Template to Guests Status.
 	 * @param ?int    $timestamp               Last Updated Timestamp.
+	 * @param ?string $original_room_name      The unmodified room name as it appears in storage db.
 	 */
 	public function __construct(
 		int $user_id,
@@ -97,7 +105,8 @@ class UserVideoPreference {
 		bool $reception_video_enabled = false,
 		string $reception_video_url = null,
 		bool $show_floorplan = false,
-		?int $timestamp = null
+		?int $timestamp = null,
+		string $original_room_name = null
 
 	) {
 		$this->user_id                 = $user_id;
@@ -109,10 +118,12 @@ class UserVideoPreference {
 		$this->reception_video_url     = $reception_video_url;
 		$this->show_floorplan          = $show_floorplan;
 		$this->timestamp               = $timestamp;
+		$this->original_room_name      = $original_room_name;
 	}
 
 	/**
 	 * Create from a JSON object
+	 * Note - Original Room Name does not get stored in JSON as it does not get stored in database.
 	 *
 	 * @param string $json The JSON representation of the object.
 	 *
@@ -141,6 +152,7 @@ class UserVideoPreference {
 	/**
 	 * Convert to JSON
 	 * Used for caching.
+	 * Note - Original Room Name does not get stored in JSON as it does not get stored in database.
 	 *
 	 * @return string
 	 */
@@ -343,5 +355,27 @@ class UserVideoPreference {
 		$this->timestamp = $timestamp;
 
 		return $this;
+	}
+
+	/**
+	 * Sets Original Room Name.
+	 *
+	 * @param string|null $original_room_name - The unmodified room name as it appears in storage db.
+	 *
+	 * @return UserVideoPreference
+	 */
+	public function set_original_room_name( string $original_room_name = null ): UserVideoPreference {
+		$this->original_room_name = $original_room_name;
+
+		return $this;
+	}
+
+	/**
+	 * Gets Original Room Name.
+	 *
+	 * @return ?string
+	 */
+	public function get_original_room_name(): ?string {
+		return $this->original_room_name;
 	}
 }

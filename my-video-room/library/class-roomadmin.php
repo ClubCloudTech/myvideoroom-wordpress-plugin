@@ -191,8 +191,6 @@ class RoomAdmin {
 	 */
 	public function update_main_video_window( UserVideoPreferenceEntity $room_object, string $original_room_name ) {
 
-		// return serialize( $room_object );
-
 		$user_id                 = $room_object->get_user_id();
 		$room_name               = $room_object->get_room_name();
 		$video_template          = $room_object->get_layout_id();
@@ -265,6 +263,9 @@ class RoomAdmin {
 	 *
 	 * @param string $room_name The name of the room.
 	 * @param string $cart_id The ID of the User Making the Request.
+	 * @param string $file_path The Display Name the User wants to use.
+	 * @param string $file_url The Display Name the User wants to use.
+	 * @param string $display_name The Display Name the User wants to use.
 	 *
 	 * @return bool
 	 */
@@ -291,5 +292,65 @@ class RoomAdmin {
 			return false;
 		}
 	}
+
+	/**
+	 * Room User Settings Return - provides an object with User Name and pictures.
+	 *
+	 * @param string $room_name The name of the room.
+	 * @param string $avatar_url Avatar URL of the User (if any).
+	 * @param string $display_name The Display Name the User wants to use.
+	 *
+	 * @return bool
+	 */
+	public function room_user_settings( string $room_name, string $avatar_url = null, string $display_name = null ) {
+		// Setup Data.
+		$cart_id = $this->get_user_session();
+		$user_preference_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $room_name );
+		$output_array           = array();
+		$picture_path           = $user_preference_object->get_user_picture_path();
+		$picture_url            = $user_preference_object->get_user_picture_url();
+		$user_display_name      = $user_preference_object->get_user_display_name();
+
+		// Data Clean Up (In case Image has been deleted from Uploads Folder by other plugin or user).
+
+		if ( isset( $picture_path ) && ! file_exists( $user_preference_object->get_user_picture_path() ) ) {
+			$user_preference_object->set_user_picture_path( null );
+			$user_preference_object->set_user_picture_url( null );
+			Factory::get_instance( RoomSyncDAO::class )->update( $user_preference_object );
+			return 'file doesnt exist';
+		}
+//return $user_preference_object;
+		// Logged Out.
+		if ( ! \is_user_logged_in() ) {
+			$output_array['display-name'] = $user_display_name;
+			$output_array['picture-url']  = $picture_url;
+
+			// Logged in Picture.
+		} else {
+			if ( isset( $picture_url ) ) {
+				// Try Stored User Image First.
+				$output_array['picture-url'] = $picture_url;
+
+				// Try User Profile URL Second.
+			} elseif ( isset( $avatar_url ) ) {
+				$output_array['picture-url'] = $avatar_url;
+
+				// No Picture.
+			} else {
+				$output_array['picture-url'] = null;
+			}
+
+			if ( isset( $user_display_name ) ) {
+				$output_array['display-name'] = $user_display_name;
+
+				// Try Logged in User Name Second.
+			} elseif ( isset( $display_name ) ) {
+				$output_array['display-name'] = $display_name;
+			}
+		}
+
+		return $output_array;
+	}
+
 
 }

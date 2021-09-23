@@ -444,7 +444,7 @@ class RoomSync {
 	 *
 	 * @return $this
 	 */
-	public function set_user_picture_url( string $user_picture_url ): self {
+	public function set_user_picture_url( ?string $user_picture_url ): self {
 		$this->user_picture_url = $user_picture_url;
 
 		return $this;
@@ -488,7 +488,7 @@ class RoomSync {
 	 *
 	 * @return $this
 	 */
-	public function set_user_picture_path( string $user_picture_path ): self {
+	public function set_user_picture_path( ?string $user_picture_path ): self {
 		$this->user_picture_path = $user_picture_path;
 
 		return $this;

@@ -93,6 +93,13 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	private array $custom_settings = array();
 
 	/**
+	 * Original Room Name
+	 *
+	 * @var ?string $original_room_name
+	 */
+	private ?string $original_room_name = null;
+
+	/**
 	 * A error prevents the shortcode from working
 	 *
 	 * @var ?string
@@ -266,6 +273,28 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 	}
 
 	/**
+	 * Sets Original Room Name.
+	 *
+	 * @param string|null $original_room_name - The unmodified room name as it appears in storage db.
+	 *
+	 * @return self
+	 */
+	public function set_original_room_name( string $original_room_name = null ): self {
+		$this->original_room_name = $original_room_name;
+
+		return $this;
+	}
+
+	/**
+	 * Gets Original Room Name.
+	 *
+	 * @return ?string
+	 */
+	public function get_original_room_name(): ?string {
+		return $this->original_room_name;
+	}
+
+	/**
 	 * Get the error string
 	 *
 	 * @return ?string
@@ -332,6 +361,10 @@ class AppShortcodeConstructor extends ShortcodeConstructor {
 
 		if ( $this->get_seed() ) {
 			$shortcode_array['seed'] = $this->get_seed();
+		}
+
+		if ( $this->get_original_room_name() ) {
+			$shortcode_array['original-room'] = $this->get_original_room_name();
 		}
 
 		foreach ( $this->custom_settings as $key => $custom_setting ) {

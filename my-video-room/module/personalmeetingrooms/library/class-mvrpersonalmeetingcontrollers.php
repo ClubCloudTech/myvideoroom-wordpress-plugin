@@ -37,6 +37,7 @@ class MVRPersonalMeetingControllers {
 	public function personal_meeting_host_shortcode() {
 		// Shortcode Initialise Hooks/Filters.
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
+		$room_name = MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING;
 
 		// Establish who is host.
 		if ( \is_user_logged_in() ) {
@@ -50,17 +51,18 @@ class MVRPersonalMeetingControllers {
 		}
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
 
-		$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $user_id, 'pbrhost', MVRPersonalMeeting::MODULE_PERSONAL_MEETING_ID, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $user_id, 'pbrhost', MVRPersonalMeeting::MODULE_PERSONAL_MEETING_ID, $room_name );
 		if ( $render_block ) {
 			return $render_block;
 		}
 
 		// Get Room Parameters.
-		$video_template = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$video_template = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name );
 		// Build the Room.
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'userbr', $user_id ) )
 			->set_layout( $video_template )
+			->set_original_room_name( $room_name )
 			->set_as_host();
 
 		// Construct Shortcode Template - and execute.
@@ -79,14 +81,13 @@ class MVRPersonalMeetingControllers {
 			fn() => \do_shortcode(
 				Factory::get_instance( UserVideoPreference::class )->choose_settings(
 					$user_id,
-					MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING,
-					array( 'basic', 'premium' )
+					$room_name,
 				)
 			)
 		);
 		array_push( $output_object, $admin_menu );
 
-		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, $host_status );
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, $room_name, $host_status );
 	}
 
 	/**
@@ -115,6 +116,7 @@ class MVRPersonalMeetingControllers {
 	public function boardroom_video_guest( string $host, string $invite ): string {
 		// Shortcode Initialise Hooks/Filters.
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
+		$room_name = MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING;
 
 		// Reject Blank Input.
 		if ( ! ( $host ) && ! ( $invite ) ) {
@@ -133,7 +135,7 @@ class MVRPersonalMeetingControllers {
 			return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_select_host_reception_template();
 		}
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
-		$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $user_id, 'pbrguest', MVRPersonalMeeting::MODULE_PERSONAL_MEETING_ID, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $user_id, 'pbrguest', MVRPersonalMeeting::MODULE_PERSONAL_MEETING_ID, $room_name );
 		if ( $render_block ) {
 			return $render_block;
 		}
@@ -141,22 +143,26 @@ class MVRPersonalMeetingControllers {
 		$user_checksum = \get_current_user_id();
 		if ( \is_user_logged_in() ) {
 			if ( $user_checksum === $user_id ) {
-				$meet_page = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, 'url' );
+				$meet_page = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room_name, 'url' );
 				wp_safe_redirect( $meet_page );
 				exit();
 			}
 		}
+
 		// Get Room Layout and Reception Settings.
-		$reception_setting     = Factory::get_instance( VideoHelpers::class )->get_enable_reception_state( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
-		$reception_template    = Factory::get_instance( VideoHelpers::class )->get_reception_template( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
-		$video_template        = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
-		$video_reception_state = Factory::get_instance( VideoHelpers::class )->get_video_reception_state( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
-		$video_reception_url   = Factory::get_instance( VideoHelpers::class )->get_video_reception_url( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
-		$show_floorplan        = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING );
+		$reception_setting     = Factory::get_instance( VideoHelpers::class )->get_enable_reception_state( $user_id, $room_name );
+		$reception_template    = Factory::get_instance( VideoHelpers::class )->get_reception_template( $user_id, $room_name );
+		$video_template        = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name );
+		$video_reception_state = Factory::get_instance( VideoHelpers::class )->get_video_reception_state( $user_id, $room_name );
+		$video_reception_url   = Factory::get_instance( VideoHelpers::class )->get_video_reception_url( $user_id, $room_name );
+		$show_floorplan        = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $user_id, $room_name );
+
 		// Base Room.
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 		->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'userbr', $user_id ) )
+		->set_original_room_name( $room_name )
 		->set_layout( $video_template );
+
 		// Reception.
 		if ( $reception_setting && $reception_template ) {
 			$myvideoroom_app->enable_reception()->set_reception_id( $reception_template );
@@ -182,7 +188,7 @@ class MVRPersonalMeetingControllers {
 		);
 
 		array_push( $output_object, $host_menu );
-		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, $host_status );
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, $room_name, $host_status );
 	}
 	/**
 	 * A shortcode to switch The  Meet Centre

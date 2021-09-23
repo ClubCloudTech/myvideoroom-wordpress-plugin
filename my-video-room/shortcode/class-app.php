@@ -146,6 +146,10 @@ class App {
 			$shortcode_constructor->set_reception_video_url( $attr['reception-video'] );
 		}
 
+		if ( $attr['original-room'] ?? null ) {
+			$shortcode_constructor->set_original_room_name( $attr['original-room'] );
+		}
+
 		if ( 'true' === ( $attr['lobby'] ?? 'false' ) ) {
 			$shortcode_constructor->enable_lobby();
 		} else {
@@ -249,26 +253,28 @@ class App {
 
 		$jwt_endpoint = $licence_endpoint . '/' . $hostname . '.jwt?';
 
-		// Get User Details.
-		$cart_id                = Factory::get_instance( RoomAdmin::class )->get_user_session();
-		$room_name = explode('-', $attr['name'], 2)[1];
-		$user_preference_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $shortcode_constructor->get_name() );
-		echo var_dump( $room_name );
+		// Get User Prefernce Details.
+		$original_room_name = $attr['original-room'];
 
-		$current_user = \wp_get_current_user();
-
-		$user_name  = null;
-		$avatar_url = null;
-
-		if ( isset( $attr['user-name'] ) ) {
-			$user_name = \esc_attr( $attr['user-name'] );
-		} elseif ( $current_user ) {
-			$user_name  = $current_user->display_name;
-			$avatar_url = $this->get_avatar( $current_user );
+		if ( \is_user_logged_in() ) {
+			$current_user = \wp_get_current_user();
+			$avatar       = $this->get_avatar( $current_user );
+			$user_display = $current_user->display_name;
+		} else {
+			$avatar       = null;
+			$user_display = null;
 		}
-		$user_name = $cart_id;
-		$avatar_url = 'https://clubelemental.com/wp-content/uploads/2021/09/tmp-tdr3hvudnbmrd053np2m2iu70a.png';
 
+		$user_preference_object = Factory::get_instance( RoomAdmin::class )->room_user_settings( $original_room_name, $avatar, $user_display );
+
+		//echo var_dump( $user_preference_object );
+
+		//return null;
+
+		$user_name  = $user_preference_object['display-name'];
+		$avatar_url = $user_preference_object['picture-url'];
+		
+		echo $user_name. $avatar_url. var_dump( $user_preference_object);
 		$custom_jitsi_server = true;
 
 		$room_name         = $shortcode_constructor->get_name();
