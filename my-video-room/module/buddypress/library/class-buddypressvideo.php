@@ -109,7 +109,8 @@ class BuddyPressVideo {
 		$host_menu = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
-			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
+			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() ),
+			'mvr-video'
 		);
 		array_push( $output_object, $host_menu );
 
@@ -177,7 +178,8 @@ class BuddyPressVideo {
 		$host_menu     = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
-			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
+			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() ),
+			'mvr-video'
 		);
 		array_push( $output_object, $host_menu );
 		$admin_menu = new MenuTabDisplay(
@@ -272,7 +274,8 @@ class BuddyPressVideo {
 		$host_menu     = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
-			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
+			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() ),
+			'mvr-video'
 		);
 
 		array_push( $output_object, $host_menu );
@@ -357,7 +360,8 @@ class BuddyPressVideo {
 		$host_menu     = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
-			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() )
+			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() ),
+			'mvr-video'
 		);
 		array_push( $output_object, $host_menu );
 

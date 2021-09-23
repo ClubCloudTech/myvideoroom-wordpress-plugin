@@ -206,7 +206,8 @@ function cameratimeout(){
 						}
 					);
 				});  
-
+				// Change Focus to Video Tab.
+				document.getElementById( 'mvr-video' ).click();
 	  }
 
 	  document.getElementById("vid-name").onkeyup = function() {

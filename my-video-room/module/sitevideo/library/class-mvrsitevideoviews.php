@@ -13,7 +13,6 @@ use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\SectionTemplates;
-use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**

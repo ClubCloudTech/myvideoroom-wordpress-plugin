@@ -49,13 +49,13 @@ class MVRSiteVideoAjax {
 	/** File Upload Ajax Support.
 	 * Handles Uploads from Welcome Area, sends them to storage and updates the database.
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function file_upload_handler() {
 		// Security Checks.
 		check_ajax_referer( 'handle_picture_upload', 'security', false );
 		$user_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
-		$temp_name = null;
+		$temp_name    = null;
 
 		if ( isset( $_POST['room_name'] ) ) {
 			$room_name = sanitize_text_field( wp_unslash( $_POST['room_name'] ) );
@@ -71,8 +71,7 @@ class MVRSiteVideoAjax {
 		// Start Meeting Section.
 		if ( 'start_meeting' === $action_taken && $display_updated ) {
 			echo 'meeting_started_fred';
-
-		} 
+		}
 
 		// Image Upload Section.
 		if ( isset( $_FILES['upimage']['type'] ) && isset( $_FILES['upimage']['tmp_name'] ) ) {
@@ -104,7 +103,7 @@ class MVRSiteVideoAjax {
 	/** File Directory Support Aseembly.
 	 * Returns current file name of upload directory.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	private function get_current_directory() {
 		$current_upload_object = wp_get_upload_dir();
