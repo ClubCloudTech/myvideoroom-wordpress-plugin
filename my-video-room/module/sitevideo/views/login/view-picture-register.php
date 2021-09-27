@@ -23,10 +23,10 @@ return function (
 	$user_picture = $room_object->get_user_picture_url();
 
 	if ( $display_name && $user_picture ) {
-		$output  = '<strong>' . esc_html__( 'Welcome Back ', 'myvideoroom' ) . $display_name . '</strong>';
+		$output  = '<strong>' . esc_html__( 'Welcome ', 'myvideoroom' ) . $display_name . '</strong>';
 		$all_set = true;
 	} elseif ( $display_name ) {
-		$output = '<strong>' . esc_html__( 'Welcome Back ', 'myvideoroom' ) . $display_name . '</strong>';
+		$output = '<strong>' . esc_html__( 'Welcome ', 'myvideoroom' ) . $display_name . '</strong>';
 	} else {
 		$output = '<strong>' . esc_html__( 'Welcome, let\'s get you setup', 'myvideoroom' ) . '</strong>';
 	}
@@ -71,7 +71,7 @@ return function (
 		?>
 	<div id="myvideoroom-welcome-pictureadd" class="myvideoroom-center">
 		<h2><?php esc_html_e( 'Add a meeting picture?', 'my-video-room' ); ?></h2>
-		<p id="myvideoroom-weslcome-setup-description" class="myvideoroom-table-adjust">
+		<p id="myvideoroom-welcome-setup-description" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'Meetings are better when you can see who you are talking to. Would you like to add a picture, or check your sound settings?', 'myvideoroom' ); ?>
 		</p>
 		<?php
@@ -87,7 +87,7 @@ return function (
 		?>
 	<div id="myvideoroom-welcome-setup" class="myvideoroom-center">
 		<h2><?php esc_html_e( 'Nice to Meet You', 'my-video-room' ); ?></h2>
-		<p id="myvideoroom-weslcome-setup-description" class="myvideoroom-table-adjust">
+		<p id="myvideoroom-welcome-setup-description" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'To start your meeting, you need to decide your meeting name that others can see in the floorplan, and optionally set a picture for yourself.', 'myvideoroom' ); ?>
 		</p>
 		<hr>
@@ -111,17 +111,29 @@ return function (
 				<?php esc_html_e( 'You can select a picture for the room participants to see you in seating plans', 'myvideoroom' ); ?>
 			</p>
 		</div>
-		<div id="myvideoroom-picturewrap" class="">
-			<div id="mvr-picture-left" class="mvr-left">
-				<p id="mvr-text-description-current" class="mvr-hide"><?php esc_html_e( 'Current', 'myvideoroom' ); ?></p>
-				<img class="myvideoroom-image-result" src="
-		<?php echo esc_url( $user_picture ); ?>" alt="Powered by MyVideoRoom">
-			</div>
-			<div id="mvr-picture-right" class="mvr-right">
-				<p id="mvr-text-description-new" class="mvr-hide"><?php esc_html_e( 'New', 'myvideoroom' ); ?></p>
-				<video id="vid-live" autoplay class="mvr-header-section "></video>
-				<div id="vid-result" class="mvr-header-section"></div>
-			</div>
+		<div id="mvr-picture-left" class="mvr-left">
+			<p id="mvr-text-description-current" class="mvr-hide"><?php esc_html_e( 'Current', 'myvideoroom' ); ?></p>
+			<?php
+			if ( $user_picture ) {
+				?>
+			<img class="myvideoroom-image-result" src="
+				<?php echo esc_url( $user_picture ); ?>" alt="Powered by MyVideoRoom">
+				<?php
+			} else {
+				?>
+					<p id="mvr-text-description-current" ><?php esc_html_e( 'No Picture yet', 'myvideoroom' ); ?></p>
+					<?php
+			}
+			?>
+		</div>
+
+
+		<div id="mvr-picture-right" class="mvr-right">
+			<p id="mvr-text-description-new" class=""><?php esc_html_e( 'Use Your Own Photo', 'myvideoroom' ); ?></p>
+			<input type="file" accept=".gif,.jpg,.jpeg,.png" id="mvr-file-input"/>
+			<p id="mvr-text-description-new" class="mvr-hide"><?php esc_html_e( 'New', 'myvideoroom' ); ?></p>
+			<video id="vid-live" autoplay class="mvr-header-section "></video>
+			<div id="vid-result" class="mvr-header-section"></div>
 		</div>
 
 		<div class="mvr-flex mvr-clear">
@@ -130,8 +142,11 @@ return function (
 				class="mvr-main-button-enabled myvideoroom-welcome-buttons" />
 			<input id="vid-up" type="button" value="Use This" class="myvideoroom-welcome-positive mvr-hide" />
 			<input id="vid-picture" type="button" value="Take Picture" class="myvideoroom-welcome-positive" />
+			<input id="upload-picture" type="button" value="Upload Picture" class="myvideoroom-welcome-positive mvr-hide" />
+
 		</div>
 	</div>
+
 	<div id="myvideoroom-meeting-name" style="display:none;">
 		<h2><?php esc_html_e( 'Your Display Name', 'my-video-room' ); ?></h2>
 		<p id="myvideoroom-namedescription" class="myvideoroom-table-adjust">
@@ -151,7 +166,6 @@ return function (
 		<input id="chk-sound" type="button" value="Check Camera and Sound" class="myvideoroom-welcome-positive" />
 		<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons mvr-hide" />
 	</div>
-
 	<?php
 	if ( ! \is_user_logged_in() ) {
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -159,12 +173,14 @@ return function (
 	}
 	if ( ! $all_set ) {
 		?>
-	<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-welcome-positive mvr-hide" disabled />
+<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-welcome-positive mvr-hide" disabled />
 		<?php
 	}
 	?>
 
 </div>
+
+
 	<?php
 
 		return ob_get_clean();

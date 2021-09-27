@@ -283,18 +283,15 @@ class RoomAdmin {
 	/**
 	 * Room Picture and Name Update - changes Avatar Picture and sets User Meeting Display Name.
 	 *
-	 * @param string $cart_id The ID of the User Making the Request.
 	 * @param string $file_path The Display Name the User wants to use.
 	 * @param string $file_url The Display Name the User wants to use.
 	 * @param string $display_name The Display Name the User wants to use.
 	 *
 	 * @return bool
 	 */
-	public function room_picture_name_update( string $cart_id = null, string $file_path = null, string $file_url = null, string $display_name = null ): bool {
+	public function room_picture_name_update( string $file_path = null, string $file_url = null, string $display_name = null ):bool {
+		$cart_id = $this->get_user_session();
 
-		if ( ! $cart_id ) {
-			$cart_id = $this->get_user_session();
-		}
 		$room_name      = MVRSiteVideo::USER_STATE_INFO;
 		$current_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $room_name );
 		if ( ! $current_object ) {
@@ -305,7 +302,6 @@ class RoomAdmin {
 			$current_object->set_user_picture_url( $file_url );
 			$current_object->set_user_picture_path( $file_path );
 		}
-
 		if ( $display_name ) {
 			$current_object->set_user_display_name( $display_name );
 		}

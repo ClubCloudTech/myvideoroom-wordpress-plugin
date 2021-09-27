@@ -47,9 +47,13 @@ class ShoppingBasket {
 		$this->broadcast_basket( $room_name );
 
 		// Add Queue Length and Cart Hash for Sync flag.
-		$current_cartnum   = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
-		$current_cart_data = WC()->cart->get_cart_hash();
-		$cart_objects      = $this->get_cart_objects( $room_name );
+		$current_cartnum = strval( Factory::get_instance( self::class )->check_queue_length( $room_name ) );
+		if ( isset( WC()->cart ) ) {
+			$current_cart_data = WC()->cart->get_cart_hash();
+			$cart_objects      = $this->get_cart_objects( $room_name );
+		} else {
+			$cart_objects = array();
+		}
 		$download_active   = Factory::get_instance( HostManagement::class )->am_i_downloading( $room_name );
 		$master_status     = Factory::get_instance( HostManagement::class )->am_i_master( $room_name );
 		$broadcast_status  = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
@@ -289,28 +293,32 @@ class ShoppingBasket {
 
 		$output_array = array();
 		// Loop over $cart items.
-		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
+		if ( isset( WC()->cart ) ) {
+			foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
 
-				$basket_array                 = array();
-				$product_id                   = $cart_item['product_id'];
-				$basket_array['product_id']   = $product_id;
-				$product                      = wc_get_product( $product_id );
-				$basket_array['quantity']     = $cart_item['quantity'];
-				$basket_array['variation_id'] = $cart_item['variation_id'];
-				$basket_array['name']         = $product->get_name();
-				$basket_array['image']        = $product->get_image();
-				$basket_array['price']        = WC()->cart->get_product_price( $product );
-				$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] );
-				$basket_array['link']         = $product->get_permalink( $cart_item );
-			if ( $room_name ) {
-				$basket_array['am_i_host']         = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
-				$basket_array['am_i_broadcasting'] = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
-				$basket_array['am_i_downloading']  = Factory::get_instance( HostManagement::class )->am_i_downloading( $room_name );
+					$basket_array                 = array();
+					$product_id                   = $cart_item['product_id'];
+					$basket_array['product_id']   = $product_id;
+					$product                      = wc_get_product( $product_id );
+					$basket_array['quantity']     = $cart_item['quantity'];
+					$basket_array['variation_id'] = $cart_item['variation_id'];
+					$basket_array['name']         = $product->get_name();
+					$basket_array['image']        = $product->get_image();
+					$basket_array['price']        = WC()->cart->get_product_price( $product );
+					$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item['quantity'] );
+					$basket_array['link']         = $product->get_permalink( $cart_item );
+				if ( $room_name ) {
+					$basket_array['am_i_host']         = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+					$basket_array['am_i_broadcasting'] = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
+					$basket_array['am_i_downloading']  = Factory::get_instance( HostManagement::class )->am_i_downloading( $room_name );
+				}
+
+					array_push( $output_array, $basket_array );
 			}
-
-				array_push( $output_array, $basket_array );
+			return $output_array;
+		} else {
+			return null;
 		}
-		return $output_array;
 	}
 
 	/**

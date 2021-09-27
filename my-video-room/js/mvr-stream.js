@@ -6,7 +6,6 @@ function init(){
 	var loginActive = document.getElementsByClassName( 'mvr-login-form' );
 	/* Initialise Camera, and Listen to Buttons */
 	$('#vid-picture').click(function(e){
-		document.getElementById("myvideoroom-picturewrap").classList.remove('mvr-hide');
 		document.getElementById("vid-picture").classList.add('mvr-hide');
 		document.getElementById("vid-up").classList.add('mvr-hide');
 		document.getElementById("myvideoroom-picturedescription").classList.remove('mvr-hide');
@@ -29,6 +28,7 @@ function init(){
 	$('.mvr-photo-image').click(function(e){
 		e.preventDefault();
 		document.getElementById("mvr-picture").classList.remove('mvr-hide');
+		document.getElementById("vid-picture").classList.remove('mvr-hide');
 		
 		if ( loginActive.length > 0) {
 			document.getElementById("mvr-login-form").classList.add('mvr-hide');
@@ -74,8 +74,17 @@ function init(){
 		e.preventDefault();
 		updateName();
 	}
+	$('#vid-name').keydown(function(e) {
+		if ( e.which == 13) {
+		e.preventDefault();
+		updateName();
+		}
+	});
+
 	$('.mvr-forget-me').click(function(e) {
 		e.preventDefault();
+		e.stopPropagation();
+		e.stopImmediatePropagation();
 		deleteMe();
 	});
 
@@ -94,7 +103,49 @@ function init(){
 			$('#mvr-above-article-notification').html('<br><strong>The Video Room will be available when you complete your welcome</strong>');
 		}
 	}
+		$('#mvr-file-input').on('change', imageUpload);
+	});
 
+}
+
+function imageUpload(event){
+	event.stopPropagation();
+	jQuery(function($) {
+		document.getElementById("upload-picture").classList.remove('mvr-hide');
+		var file = event.target.files;
+			var form_data = new FormData();
+			$.each(file, function(key, value)
+  			{
+    			form_data.append("upimage", value);
+  			});
+
+			  form_data.append('action','myvideoroom_file_upload');
+				
+				var room_name     = $( '#roomid' ).data( 'roomName' );
+					form_data.append('room_name', room_name );
+					form_data.append('action_taken', 'update_picture' );
+					form_data.append('security', myvideoroom_file_upload.security );
+					$.ajax(
+						{
+							type: 'post',
+							dataType: 'html',
+							url: myvideoroom_file_upload.ajax_url,
+							contentType: false,
+							processData: false,
+							data: form_data,
+							success: function (response) {
+								var state_response = JSON.parse( response );
+								console.log( state_response.message );
+								document.getElementById("mvr-top-notification").innerHTML += '<br><h3>' + state_response.message + '</h3><br>';
+								$( '#vid-up' ).prop('value', 'Saved !');
+							},
+							error: function ( response ){
+								console.log('Error Uploading');
+							}
+						}
+					);
+				
+		setTimeout( () => {  refreshWelcome(); }, 2000 );
 	});
 
 }
@@ -116,8 +167,8 @@ function startcamera(){
 	
 		// (A2) TO SPECIFY PREFERRED RESOLUTION
 		video: {
-		  width: { min: 213, ideal: 512, max: 1920 },
-		  height: { min: 120, ideal: 288, max: 1080 }
+		  width: { min: 213, ideal: 1024, max: 1920 },
+		  height: { min: 120, ideal: 576, max: 1080 }
 		}
 	  })
 	
@@ -156,16 +207,15 @@ function startcamera(){
 	wrap.appendChild(canvas);
 
 	/* Arrange Buttons for Retake, or Accept Image */
+	jQuery(function($) {
+		$( '#vid-up' ).prop('value', 'Use This');
+	});
 	document.getElementById("vid-result").classList.remove('mvr-hide');
 	document.getElementById("vid-retake").classList.remove('mvr-hide');
 	document.getElementById("vid-up").classList.remove('mvr-hide');
 	document.getElementById("vid-live").classList.add('mvr-hide');
 	document.getElementById("vid-take").classList.add('mvr-hide');
-	
-
-	
-	
-	
+		
 	stopcamera();
   }
 
@@ -173,8 +223,8 @@ function stopcamera(){
 	navigator.mediaDevices.getUserMedia({
 		// Resolution
 		video: {
-		  width: { min: 213, ideal: 512, max: 1920 },
-		  height: { min: 120, ideal: 288, max: 1080 }
+		  width: { min: 213, ideal: 1024, max: 1920 },
+		  height: { min: 120, ideal: 576, max: 1080 }
 		}
 	  })
 	  .then(function(stream) {
@@ -191,8 +241,8 @@ function cameratimeout(){
 	navigator.mediaDevices.getUserMedia({
 		// Resolution
 		video: {
-		  width: { min: 213, ideal: 512, max: 1920 },
-		  height: { min: 120, ideal: 288, max: 1080 }
+		  width: { min: 213, ideal: 1024, max: 1920 },
+		  height: { min: 120, ideal: 576, max: 1080 }
 		}
 	  })
 	  .then(function(stream) {
@@ -253,7 +303,7 @@ function cameratimeout(){
 							success: function (response) {
 								var state_response = JSON.parse( response );
 								console.log( state_response.message );
-								document.getElementById("mvr-top-notification").innerHTML += '<br><h2>'+ state_response.message +'</h2>';
+								document.getElementById("mvr-top-notification").innerHTML += '<br>';
 								$( '#vid-up' ).prop('value', 'Saved !');
 							},
 							error: function ( response ){
@@ -264,9 +314,7 @@ function cameratimeout(){
 				});
 				
 			});
-		//skipwindow();
-
-		//setTimeout( () => {  refreshWelcome(); }, 2000 );
+		setTimeout( () => {  refreshWelcome(); }, 2000 );
 	  }
 
 	  function updateName () {
@@ -303,7 +351,6 @@ function cameratimeout(){
 							$('.mvr-forget-me').show();
 							setTimeout( () => {  refreshWelcome(); }, 2000 );
 							;
-							//$( '#vid-up' ).prop('value', 'Saved !');
 						},
 						error: function ( response ){
 							console.log('Error Uploading');
@@ -323,6 +370,7 @@ function cameratimeout(){
 		form_data.append('action','myvideoroom_file_upload');
 				
 		jQuery(function($) {
+			console.log('Picture Delete');
 			var room_name  = $( '#roomid' ).data( 'roomName' );
 			display_name   = $( '#vid-name' ).val(),
 			form_data.append('room_name', room_name );
@@ -362,6 +410,7 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 		form_data.append('action','myvideoroom_file_upload');
 				
 		jQuery(function($) {
+
 			var room_name  = $( '#roomid' ).data( 'roomName' ),
 			container      = $( '#myvideoroom-welcome-page' );
 			
@@ -383,6 +432,8 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 						var state_response = JSON.parse( response );
 						// Redraw Container.
 						container.html( state_response.mainvideo );
+
+
 						resetPanel();
 						init();
 					},
@@ -493,12 +544,14 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 								container_parent = container.parent().attr('id');
 								container.empty();
 								container.parent().empty();
+								console.log('prereload');
 								$( '#'+container_parent ).prepend('<div class="myvideoroom-app"></div>');
 								container      = $( '.myvideoroom-app' );
 								var state_response = JSON.parse( response );
 								// Redraw Container.
 								container.html( state_response.mainvideo );
-									
+								
+								
 								if (window.myvideoroom_tabbed_init) {
 									window.myvideoroom_tabbed_init( container );
 								}
@@ -506,7 +559,7 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 								if (window.myvideoroom_app_init) {
 									window.myvideoroom_app_init( container[0] );
 								}
-
+								
 								if (window.myvideoroom_app_load) {
 									window.myvideoroom_app_load();
 								}
@@ -536,5 +589,6 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 	};
 
 init();
+
 
 });

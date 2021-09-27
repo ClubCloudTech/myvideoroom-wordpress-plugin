@@ -221,6 +221,7 @@ class SectionTemplates {
 		<?php /*phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped*/echo Factory::get_instance( TemplateIcons::class )->format_button_icon( 'forgetme' ); ?>
 		</div>
 	</div>
+
 </div>
 		<?php
 

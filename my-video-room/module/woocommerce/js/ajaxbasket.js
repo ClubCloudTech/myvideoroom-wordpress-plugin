@@ -38,14 +38,12 @@
 						success: function (response) {
 							var $response_length = response.length;
 							if ( $response_length > 40 ) {
+
 								// Hard Delete of Existing Container to Avoid Duplication.
 								container_parent = container.parent().attr( 'id' );
-								container.empty();
+								container.remove();
 								container.parent().empty();
-								$( '#' + container_parent ).prepend( '<div id="mvr-basket-section2"></div>' );
-								container = $( '#mvr-basket-section2' );
-								container.empty();
-								container.html( response );
+								$( '#' + container_parent ).html( response );
 								init();
 
 							}
@@ -57,6 +55,7 @@
 						}
 					}
 				);
+		console.log( 'endajax main on click' );
 		e.preventDefault();
 		e.stopPropagation();
 		return false;
@@ -72,7 +71,7 @@
 		var container       = $( '#mvr-basket-section' );
 		var notification    = $( '.mvr-notification-master' );
 		var $storefront     = $( '.mvr-storefront-master' );
-		var $mainvideo      = $( '.myvideoroom-app' );
+		var mainvideo       = $( '.myvideoroom-app' );
 		var videosetting    = $( '#video-host-wrap' );
 		var securitysetting = $( '#security-video-host-wrap' );
 		var icondisplay     = $( '#mvr-notification-icons' );
@@ -123,22 +122,16 @@
 								videosetting.html( state_response.videosetting );
 								securitysetting.html( state_response.securitysetting );
 								icondisplay.html( state_response.icons );
-								$mainvideo.html( state_response.mainvideo );
 
+								// Hard Delete of Existing Container to Avoid Duplication.
+								mainvideo_parent = mainvideo.parent().attr( 'id' );
+								mainvideo.remove();
+								mainvideo.parent().empty();
+								$( '#' + mainvideo_parent ).html( state_response.mainvideo );
+								mainvideo = $( '.myvideoroom-app' );
+								reload();
 								if (window.myvideoroom_tabbed_init) {
-									window.myvideoroom_tabbed_init( $mainvideo );
-								}
-
-								if (window.myvideoroom_app_init) {
-									window.myvideoroom_app_init( $mainvideo[0] );
-								}
-
-								if (window.myvideoroom_app_load) {
-									window.myvideoroom_app_load();
-								}
-
-								if (window.myvideoroom_shoppingbasket_init) {
-									window.myvideoroom_shoppingbasket_init();
+									window.myvideoroom_tabbed_init( mainvideo );
 								}
 
 							} else {
@@ -200,12 +193,11 @@
 
 							// Hard Delete of Existing Container to Avoid Duplication.
 							container_parent = container.parent().attr( 'id' );
-							container.empty();
+							container.remove();
 							container.parent().empty();
-							$( '#' + container_parent ).prepend( '<div id="mvr-basket-section2"></div>' );
-							container = $( '#mvr-basket-section2' );
-							container.empty();
-							container.html( state_response.mainwindow );
+							$( '#' + container_parent ).prepend( '<div id="mvr-basket-section" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket myvideoroom-welcome-page"></div>' );
+							$( '#mvr-basket-section' ).html( state_response.mainwindow );
+							console.log( 'triggerRefreshDiv' );
 
 							notification.html( state_response.notificationbar );
 							$storefront.html( state_response.storefront );
@@ -270,9 +262,15 @@
 				event.stopPropagation();
 				event.preventDefault();
 				event.stopImmediatePropagation();
-				document.getElementById( "basket-video-host-wrap-item" ).classList.add( 'mvr-shopping-basket-frame' );
-				document.getElementById( "mvr-basket-section" ).classList.remove( 'mvr-clear' );
-				document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
+				if ($( '#basket-video-host-wrap-item' ).length) {
+					document.getElementById( "basket-video-host-wrap-item" ).classList.add( 'mvr-shopping-basket-frame' );
+				}
+				if ($( '#mvr-basket-section' ).length) {
+					document.getElementById( "mvr-basket-section" ).classList.remove( 'mvr-clear' );
+				}
+				if ($( '#shoppingbasket' ).length) {
+					document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
+				}
 			}
 		);
 
@@ -288,41 +286,96 @@
 		);
 		$( ".mvr-main-button-cancel" ).click(
 			function(event){
+				event.stopPropagation();
+				event.preventDefault();
+			
 				$( '#mvr-video' ).click();
 			}
 		);
 		$( ".mvr-main-button-enabled" ).click(
 			function(event){
+				event.stopPropagation();
+				event.preventDefault();
+			
 				$( '#mvr-video' ).click();
 			}
 		);
 
 		$( '.nav-tab' ).click(
-			function(e) {
+			function(event) {
 
 				if ( this.id == 'mvr-shopping-basket' ) {
 
 					if ($( '#basket-video-host-wrap-item' ).length) {
 						document.getElementById( "basket-video-host-wrap-item" ).classList.add( 'mvr-shopping-basket-frame' );
 					}
-					document.getElementById( "mvr-basket-section" ).classList.remove( 'mvr-clear' );
-					document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
-
+					if ($( '#mvr-basket-section' ).length) {
+						document.getElementById( "mvr-basket-section" ).classList.remove( 'mvr-clear' );
+					}
+					if ($( '#shoppingbasket' ).length) {
+						document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
+					}
 				} else if ( this.id == 'mvr-video' ) {
-					document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
+					if ($( '#shoppingbasket' ).length) {
+						document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
+					}
 				} else {
-					document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );
+					if ($( '#shoppingbasket' ).length) {
+						document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );
+					}
 					if ($( '#basket-video-host-wrap-item' ).length) {
 						document.getElementById( "basket-video-host-wrap-item" ).classList.remove( 'mvr-shopping-basket-frame' );
 					}
-					document.getElementById( "mvr-basket-section" ).classList.add( 'mvr-clear' );
-					document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );
+					if ($( '#mvr-basket-section' ).length) {
+						document.getElementById( "mvr-basket-section" ).classList.add( 'mvr-clear' );
+					}
+					if ($( '#shoppingbasket' ).length) {
+						document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );
+					}
 				}
-
+				event.preventDefault();
 			}
 		);
 
 		return false;
+	}
+
+	function reload() {
+
+				// WordPress may add custom headers to the request, this is likely to trigger CORS issues, so we remove them.
+		if ($.ajaxSettings && $.ajaxSettings.headers) {
+			delete $.ajaxSettings.headers;
+		}
+
+				$.ajax(
+					{
+						url: myVideoRoomAppEndpoint + '/asset-manifest.json',
+						dataType: 'json'
+					}
+				).then(
+					function (data) {
+						Object.values( data.files ).map(
+							function (file) {
+								var url = myVideoRoomAppEndpoint + '/' + file;
+
+								if (file.endsWith( '.js' )) {
+									$.ajax(
+										{
+											beforeSend: function () {},
+											url: url,
+											dataType: 'script'
+										}
+									);
+								} else if (file.endsWith( '.css' )) {
+									$( '<link rel="stylesheet" type="text/css" />' )
+										.attr( 'href', url )
+										.appendTo( 'head' );
+								}
+							}
+						);
+					}
+				);
+				$( '#mvr-video' ).click();
 	}
 
 	/* Disabling Execution outside of MVR */

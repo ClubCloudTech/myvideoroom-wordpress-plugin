@@ -39,12 +39,12 @@ class MVRSiteVideoAjax {
 
 		} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $input_type ) {
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo ( require __DIR__ . '/views/view-settings-conference-center-default.php' )();
+			echo ( require __DIR__ . '../views/view-settings-conference-center-default.php' )();
 
 		} else {
 			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo ( require __DIR__ . '/views/view-management-rooms.php' )( $room_object, $input_type );
+			echo ( require __DIR__ . '../views/view-management-rooms.php' )( $room_object, $input_type );
 		}
 		die();
 	}
@@ -137,22 +137,23 @@ class MVRSiteVideoAjax {
 				$response['message'] = esc_html__( 'Incorrect Attachment Type Sent', 'myvideoroom' );
 				return \wp_send_json( $response );
 			}
-			$session = 'tmp-' . $user_session . '.png';
+			$session = 'tmp-' . $user_session . wp_rand( 200, 20000 ) . '.png';
 
 			// Delete Existing File in Uploads directory if exists.
-			$delete = $this->get_current_directory() . '/' . $session;
-			\wp_delete_file( $delete );
+			$delete_path = $this->get_current_picture_path( $user_session );
 
-			// Process Upload.
+			if ( $delete_path ) {
+				$delete = \wp_delete_file( $delete_path );
+			}
+
 			if ( $temp_name ) {
 				//phpcs:ignore -- WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				$upload = \wp_upload_bits( $session, null, file_get_contents( $_FILES['upimage']['tmp_name'] ) );
-
-				$return = Factory::get_instance( RoomAdmin::class )->room_picture_name_update( $user_session, $upload['file'], $upload['url'] );
+				$return = Factory::get_instance( RoomAdmin::class )->room_picture_name_update( $upload['file'], $upload['url'] );
 				if ( $return ) {
-					$response['message'] = esc_html__( 'Picture Update Success', 'myvideoroom' ) . $return;
+					$response['message'] = esc_html__( 'Picture Update Success', 'myvideoroom' );
 				} else {
-					$response['message'] = esc_html__( 'Picture Update Failed', 'myvideoroom' ) . $return;
+					$response['message'] = esc_html__( 'Picture Update Failed', 'myvideoroom' );
 				}
 			}
 			return \wp_send_json( $response );
@@ -164,7 +165,7 @@ class MVRSiteVideoAjax {
 		*/
 		if ( 'update_display_name' === $action_taken ) {
 			if ( $display_name && $room_name ) {
-				$display_updated = Factory::get_instance( RoomAdmin::class )->room_picture_name_update( $user_session, null, null, $display_name );
+				$display_updated = Factory::get_instance( RoomAdmin::class )->room_picture_name_update( null, null, $display_name );
 			}
 
 			if ( true === $display_updated ) {
@@ -199,5 +200,22 @@ class MVRSiteVideoAjax {
 	private function get_current_directory() {
 		$current_upload_object = wp_get_upload_dir();
 		return $current_upload_object['basedir'] . $current_upload_object['subdir'];
+	}
+
+	/** Current Picture Path
+	 * Returns current file name of upload directory.
+	 *
+	 * @param string $session_id the cart hash of the user.
+	 * @return ?string
+	 */
+	private function get_current_picture_path( string $session_id ) {
+		$room_name   = MVRSiteVideo::USER_STATE_INFO;
+		$user_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $session_id, $room_name );
+		if ( $user_object && $user_object->get_user_picture_path() ) {
+			return $user_object->get_user_picture_path();
+		} else {
+			return null;
+		}
+
 	}
 }

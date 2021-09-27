@@ -37,9 +37,10 @@ return function (
 	if ( ! $message ) {
 		$message = esc_html__( 'do this ?', 'myvideoroom' );
 	}
-
 	ob_start();
-
+	?>
+<div id="mvr-basket-section" class=" mvr-woocommerce-basket mvr-nav-settingstabs-outer-wrap mvr-table-row myvideoroom-welcome-page">
+	<?php
 	echo sprintf(
 	/* translators: %s is the message variant translated above */
 		\esc_html__(
@@ -53,24 +54,25 @@ return function (
 
 	?>
 
-	<table id ="mvr-confirmation-table" class="wp-list-table widefat plugins mvr-shopping-basket-frame">
-	<thead>
-		<tr>
-			<th scope="col" class="manage-column column-name column-primary">
-				<?php
+	<table id="mvr-confirmation-table" class="wp-list-table widefat plugins mvr-shopping-basket-frame">
+		<thead>
+			<tr>
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-				echo $confirmation_button_approved;
-				?>
-			</th>
+					echo $confirmation_button_approved;
+					?>
+				</th>
 
-			<th scope="col" class="manage-column column-name column-primary">
-				<?php
+				<th scope="col" class="manage-column column-name column-primary">
+					<?php
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-				echo $confirmation_button_cancel;
-				?>
-			</th>
-		</tr>
-	</thead>
+					echo $confirmation_button_cancel;
+					?>
+				</th>
+			</tr>
+		</thead>
+</div>
 
 	<?php
 	return ob_get_clean();
