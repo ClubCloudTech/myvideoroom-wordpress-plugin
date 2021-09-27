@@ -174,7 +174,6 @@
 	  margin-bottom: 5px;
   }
 
-  /* Clear floats after the columns */
   .mvr-table-row:after {
 	content: "";
 	display: table;
@@ -237,6 +236,10 @@ opacity: 1;
 	margin-left: 1px !important;
 	text-align: -webkit-center;
 	vertical-align: middle;
+}
+
+.mvr-ul-style-menu{
+
 }
 
 .myvideoroom-header-table-left {
