@@ -53,11 +53,12 @@ class ShoppingBasket {
 		$download_active   = Factory::get_instance( HostManagement::class )->am_i_downloading( $room_name );
 		$master_status     = Factory::get_instance( HostManagement::class )->am_i_master( $room_name );
 		$broadcast_status  = Factory::get_instance( HostManagement::class )->am_i_broadcasting( $room_name );
+		$is_sync_available = Factory::get_instance( HostManagement::class )->is_sync_available( $room_name );
 
 		// Render View.
 		$render = require __DIR__ . '/../views/table-output.php';
 
-		return $render( $cart_objects, $room_name, $current_cartnum, $current_cart_data, $download_active, $master_status, $broadcast_status );
+		return $render( $cart_objects, $room_name, $current_cartnum, $current_cart_data, $download_active, $master_status, $broadcast_status, $is_sync_available, $host_status );
 	}
 
 	/**
@@ -419,8 +420,8 @@ class ShoppingBasket {
 		}
 
 		return '
-		<button  class=" ' . $style . ' myvideoroom-woocommerce-basket-ajax" data-target="' . $target_id . '">
-		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="myvideoroom-woocommerce-basket-ajax ' . $href_class . '">' . $button_label . '</a>
+		<button  class="' . $style . ' myvideoroom-woocommerce-basket-ajax" data-target="' . $target_id . '">
+		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="' . $style . ' myvideoroom-woocommerce-basket-ajax ' . $href_class . '">' . $button_label . '</a>
 		</button>
 		';
 	}
@@ -495,7 +496,7 @@ class ShoppingBasket {
 	}
 
 	/**
-	 * Check for User Changes
+	 * Check for User Changes - in case other browser windows have made change to cart.
 	 *
 	 * @param string $last_carthash - The last stored cart hash.
 	 * @param string $room_name - Room Name to Check.
@@ -504,6 +505,7 @@ class ShoppingBasket {
 
 		// Initialise.
 		$current_carthash = WC()->cart->get_cart_hash();
+		$woocart_changed  = false;
 
 		// Check WooCommerce Cart for Changes.
 		if ( $current_carthash !== $last_carthash ) {
@@ -517,11 +519,7 @@ class ShoppingBasket {
 			}
 		}
 
-		if ( $woocart_changed ) {
-			return true;
-		}
-
-		return false;
+		return $woocart_changed;
 	}
 
 	/**

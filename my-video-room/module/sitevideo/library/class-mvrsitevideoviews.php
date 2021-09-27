@@ -11,6 +11,7 @@ use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\DAO\RoomMap;
+use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
@@ -163,15 +164,37 @@ class MVRSiteVideoViews {
 	/**
 	 * Render Picture Page
 	 *
-	 * @return string - Login Page.
+	 * @return string - Welcome Picture Page.
 	 */
 	public function render_picture_page(): string {
 
-			wp_enqueue_script( 'myvideoroom-protect-input' );
+		wp_enqueue_script( 'myvideoroom-protect-username' );
+		$user_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
+		$room_name    = MVRSiteVideo::USER_STATE_INFO;
+		$user_info    = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $user_session, $room_name );
 
+		// Check for Blank Record of new user and create record.
+		if ( ! $user_info ) {
+				$user_info = Factory::get_instance( RoomSyncDAO::class )->create_new_user_storage_record();
+		}
+
+		// Check Logged in user Profile Picture or Display Name.
+		if ( \is_user_logged_in() ) {
+			$current_user = \wp_get_current_user();
+
+			if ( $user_info && ! $user_info->get_user_picture_url() ) {
+				$avatar = \get_avatar_url( $current_user );
+				$user_info->set_user_picture_url( $avatar );
+			}
+
+			if ( $user_info && ! $user_info->get_user_display_name() ) {
+				$user_display = $current_user->display_name;
+				$user_info->set_user_display_name( $user_display );
+			}
+		}
 			$render = require __DIR__ . '/../views/login/view-picture-register.php';
 
-			return $render();
+			return $render( $user_info );
 
 	}
 

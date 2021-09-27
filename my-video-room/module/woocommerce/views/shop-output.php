@@ -27,7 +27,7 @@ return function (
 ): string {
 	ob_start();
 	?>
-	<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
+	<div id="basket-video-host-wrap-shop" class="mvr-nav-settingstabs-outer-wrap">
 	<div class ="mvr-storefront-master">
 	<div id="storeid" 
 	data-last-storecount="<?php echo esc_attr( $shop_count ); ?>"

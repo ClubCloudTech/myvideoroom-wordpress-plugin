@@ -12,11 +12,14 @@ namespace MyVideoRoomPlugin\Library;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\DAO\UserVideoPreference;
+use MyVideoRoomPlugin\Entity\RoomSync;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as DAOSecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
+use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as ShortcodeUserVideoPreference;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -280,7 +283,6 @@ class RoomAdmin {
 	/**
 	 * Room Picture and Name Update - changes Avatar Picture and sets User Meeting Display Name.
 	 *
-	 * @param string $room_name The name of the room.
 	 * @param string $cart_id The ID of the User Making the Request.
 	 * @param string $file_path The Display Name the User wants to use.
 	 * @param string $file_url The Display Name the User wants to use.
@@ -288,12 +290,16 @@ class RoomAdmin {
 	 *
 	 * @return bool
 	 */
-	public function room_picture_name_update( string $room_name, string $cart_id = null, string $file_path = null, string $file_url = null, string $display_name = null ): bool {
+	public function room_picture_name_update( string $cart_id = null, string $file_path = null, string $file_url = null, string $display_name = null ): bool {
 
 		if ( ! $cart_id ) {
 			$cart_id = $this->get_user_session();
 		}
+		$room_name      = MVRSiteVideo::USER_STATE_INFO;
 		$current_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $room_name );
+		if ( ! $current_object ) {
+			$current_object = Factory::get_instance( RoomSyncDAO::class )->create_new_user_storage_record();
+		}
 		if ( $file_path && $file_url ) {
 
 			$current_object->set_user_picture_url( $file_url );
@@ -315,15 +321,15 @@ class RoomAdmin {
 	/**
 	 * Room User Settings Return - provides an object with User Name and pictures.
 	 *
-	 * @param string $room_name The name of the room.
 	 * @param string $avatar_url Avatar URL of the User (if any).
 	 * @param string $display_name The Display Name the User wants to use.
 	 *
 	 * @return bool
 	 */
-	public function room_user_settings( string $room_name, string $avatar_url = null, string $display_name = null ) {
+	public function room_user_settings( string $avatar_url = null, string $display_name = null ) {
 		// Setup Data.
 		$cart_id                = $this->get_user_session();
+		$room_name              = MVRSiteVideo::USER_STATE_INFO;
 		$user_preference_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $cart_id, $room_name );
 		$output_array           = array();
 

@@ -535,6 +535,11 @@ class AjaxHandler {
 					$response['mainwindow'] = Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
 				}
 
+				if ( true === $change_heartbeat ) {
+					$response['status']     = 'change';
+					$response['mainwindow'] = Factory::get_instance( ShoppingBasket::class )->render_basket( $room_name, $host_status );
+				}
+
 				if ( $client_change_state || $store_change_state || $notification_queue_change_state || $change_heartbeat ) {
 					$response['messagewindow']   = 'change';
 					$response['notificationbar'] = Factory::get_instance( ShoppingBasket::class )->render_notification_tab( $room_name, $client_change_state, $store_change_state, $notification_queue_change_state, $security_change_heartbeat );

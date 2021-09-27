@@ -16,7 +16,6 @@ use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
@@ -27,7 +26,6 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\Module\SiteVideo\Shortcode\Reception;
 use MyVideoRoomPlugin\Shortcode\App;
-use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -46,6 +44,7 @@ class MVRSiteVideo {
 	const ROOM_SLUG_SITE_VIDEO          = 'conference';
 	const SHORTCODE_SITE_VIDEO          = App::SHORTCODE_TAG . '_sitevideoroom';
 	const RECEPTION_ROOM_FLAG           = 'reception_room';
+	const USER_STATE_INFO               = 'user_state_info';
 
 	/**
 	 * Initialise On Module Activation
@@ -350,17 +349,12 @@ class MVRSiteVideo {
 	 * @return array - outbound menu.
 	 */
 	public function render_sitevideo_welcome_tabs( array $input, int $room_id, $host_status = null, $header ): array {
-		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-
-		if ( ! $room_object ) {
-			return $input;
-		}
-
 		// Host Menu Tab - rendered in Security as its a module feature of Security.
 		$host_menu = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_INFO_WELCOME ),
 			'welcomepage',
-			fn() => $this->render_welcome_tab( $room_id, $host_status, $header )
+			fn() => $this->render_welcome_tab(),
+			'mvr-welcome-page'
 		);
 
 		// Change Order and add tab first for signed out users.
@@ -376,13 +370,9 @@ class MVRSiteVideo {
 	/**
 	 * Controller Function to Render Welcome Page in Main Shortcode.
 	 *
-	 * @param int          $room_id     - the user or entity identifier.
-	 * @param bool         $host_status - whether function is for a host type.
-	 * @param string|array $header - Data Object with Header Info.
-	 *
 	 * @return string - outbound menu.
 	 */
-	public function render_welcome_tab( int $room_id, bool $host_status = null, $header ): string {
+	public function render_welcome_tab(): string {
 		$render = require __DIR__ . '/views/header/view-welcometab.php';
 
 		return $render();

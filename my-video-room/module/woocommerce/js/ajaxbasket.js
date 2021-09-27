@@ -15,13 +15,8 @@
 				var quantity     = $( this ).data( 'quantity' );
 				var variation_id = $( this ).data( 'variationId' );
 				var target_class = $( this ).data( 'targetClass' );
-
-				var $container   = $( '.mvr-woocommerce-basket' );
-				var loading_text = $container.data( 'loadingText' );
-
-				/*$container.html( loading_text );*/
-
-				var ajax_url = myvideoroom_woocommerce_basket.ajax_url;
+				var container    = $( '.mvr-woocommerce-basket' );
+				var ajax_url     = myvideoroom_woocommerce_basket.ajax_url;
 
 				$.ajax(
 					{
@@ -43,8 +38,16 @@
 						success: function (response) {
 							var $response_length = response.length;
 							if ( $response_length > 40 ) {
-								$container.html( response );
+								// Hard Delete of Existing Container to Avoid Duplication.
+								container_parent = container.parent().attr( 'id' );
+								container.empty();
+								container.parent().empty();
+								$( '#' + container_parent ).prepend( '<div id="mvr-basket-section2"></div>' );
+								container = $( '#mvr-basket-section2' );
+								container.empty();
+								container.html( response );
 								init();
+
 							}
 
 						},
@@ -66,8 +69,8 @@
 		var last_queuenum   = $( '#roomid' ).data( 'lastQueuenum' );
 		var last_carthash   = $( '#roomid' ).data( 'lastCarthash' );
 		var last_storecount = $( '#storeid' ).data( 'lastStorecount' );
-		var $container      = $( '.mvr-woocommerce-basket' );
-		var $notification   = $( '.mvr-notification-master' );
+		var container       = $( '#mvr-basket-section' );
+		var notification    = $( '.mvr-notification-master' );
 		var $storefront     = $( '.mvr-storefront-master' );
 		var $mainvideo      = $( '.myvideoroom-app' );
 		var videosetting    = $( '#video-host-wrap' );
@@ -95,15 +98,22 @@
 
 						var state_response = JSON.parse( response );
 						if (state_response.status == 'change' ) {
-							$notification.html( state_response.notificationbar + '' );
-							$container.html( state_response.mainwindow );
+							notification.html( state_response.notificationbar );
+							// Hard Delete of Existing Container to Avoid Duplication.
+							container_parent = container.parent().attr( 'id' );
+							container.empty();
+							container.parent().empty();
+							$( '#' + container_parent ).prepend( '<div id="mvr-basket-section2"></div>' );
+							container = $( '#mvr-basket-section2' );
+							container.empty();
+							container.html( state_response.mainwindow );
 						}
 						if (state_response.storestatus == 'change' ) {
-							$notification.html( state_response.notificationbar );
+							notification.html( state_response.notificationbar );
 							$storefront.html( state_response.storefront );
 						}
 						if (state_response.messagewindow == 'change' ) {
-							$notification.html( state_response.notificationbar + '' );
+							notification.html( state_response.notificationbar );
 						}
 						if (state_response.settingchange == 'change' ) {
 
@@ -156,7 +166,7 @@
 			);
 		}
 
-		if ( typeof room_name === 'undefined' && $container ) {
+		if ( typeof room_name === 'undefined' && container ) {
 			triggerRefresh( room_name );
 		}
 
@@ -165,12 +175,12 @@
 
 	function triggerRefresh( room_checksum ) {
 
-		var ajax_url      = myvideoroom_woocommerce_basket.ajax_url;
-		var $container    = $( '.mvr-woocommerce-basket' );
-		var input_type    = 'reload';
-		var room_name     = $( '#roomid' ).data( 'roomName' );
-		var $notification = $( '.mvr-notification-master' );
-		var $storefront   = $( '.mvr-storefront-master' );
+		var ajax_url     = myvideoroom_woocommerce_basket.ajax_url;
+		var container    = $( '.mvr-woocommerce-basket' );
+		var input_type   = 'reload';
+		var room_name    = $( '#roomid' ).data( 'roomName' );
+		var notification = $( '.mvr-notification-master' );
+		var $storefront  = $( '.mvr-storefront-master' );
 
 		if ( typeof room_name === 'undefined' ) {
 			room_name = room_checksum;
@@ -188,9 +198,17 @@
 						success: function (response) {
 							var state_response = JSON.parse( response );
 
-							$container.html( state_response.mainwindow + '' );
-							$notification.html( state_response.notificationbar + '' );
-							$storefront.html( state_response.storefront + '' );
+							// Hard Delete of Existing Container to Avoid Duplication.
+							container_parent = container.parent().attr( 'id' );
+							container.empty();
+							container.parent().empty();
+							$( '#' + container_parent ).prepend( '<div id="mvr-basket-section2"></div>' );
+							container = $( '#mvr-basket-section2' );
+							container.empty();
+							container.html( state_response.mainwindow );
+
+							notification.html( state_response.notificationbar );
+							$storefront.html( state_response.storefront );
 							init();
 						},
 						error: function ( response ){
@@ -203,10 +221,10 @@
 
 	function notifyRefresh( room_checksum ) {
 
-		var ajax_url      = myvideoroom_woocommerce_basket.ajax_url;
-		var input_type    = 'reload';
-		var room_name     = $( '#roomid' ).data( 'roomName' );
-		var $notification = $( '.mvr-notification-master' );
+		var ajax_url     = myvideoroom_woocommerce_basket.ajax_url;
+		var input_type   = 'reload';
+		var room_name    = $( '#roomid' ).data( 'roomName' );
+		var notification = $( '.mvr-notification-master' );
 
 		if ( typeof room_name === 'undefined' ) {
 			room_name = room_checksum;
@@ -224,7 +242,7 @@
 						success: function (response) {
 							var state_response = JSON.parse( response );
 
-							$notification.html( state_response.notificationbar + '' );
+							notification.html( state_response.notificationbar );
 							init();
 						},
 						error: function ( response ){
@@ -252,9 +270,9 @@
 				event.stopPropagation();
 				event.preventDefault();
 				event.stopImmediatePropagation();
-				let targetclass = $( this ).closest( 'button' ).data( "target" );
-				mvrchangefocus( targetclass );
-
+				document.getElementById( "basket-video-host-wrap-item" ).classList.add( 'mvr-shopping-basket-frame' );
+				document.getElementById( "mvr-basket-section" ).classList.remove( 'mvr-clear' );
+				document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
 			}
 		);
 
@@ -268,22 +286,42 @@
 
 			}
 		);
-
-		return false;
-	}
-
-	function mvrchangefocus( targetclass ) {
-
-		/* Disabling Execution outside of MVR */
-		var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
-
-		if ( mvrIsactive.length > 0) {
-
-			if ( typeof targetclass !== 'undefined' ) {
-				document.getElementById( targetclass ).click();
+		$( ".mvr-main-button-cancel" ).click(
+			function(event){
+				$( '#mvr-video' ).click();
 			}
+		);
+		$( ".mvr-main-button-enabled" ).click(
+			function(event){
+				$( '#mvr-video' ).click();
+			}
+		);
 
-		}
+		$( '.nav-tab' ).click(
+			function(e) {
+
+				if ( this.id == 'mvr-shopping-basket' ) {
+
+					if ($( '#basket-video-host-wrap-item' ).length) {
+						document.getElementById( "basket-video-host-wrap-item" ).classList.add( 'mvr-shopping-basket-frame' );
+					}
+					document.getElementById( "mvr-basket-section" ).classList.remove( 'mvr-clear' );
+					document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
+
+				} else if ( this.id == 'mvr-video' ) {
+					document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
+				} else {
+					document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );
+					if ($( '#basket-video-host-wrap-item' ).length) {
+						document.getElementById( "basket-video-host-wrap-item" ).classList.remove( 'mvr-shopping-basket-frame' );
+					}
+					document.getElementById( "mvr-basket-section" ).classList.add( 'mvr-clear' );
+					document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );
+				}
+
+			}
+		);
+
 		return false;
 	}
 
@@ -291,8 +329,12 @@
 	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
 
 	if ( mvrIsactive.length > 0) {
-		var original_room = $( '#roomid' ).data( 'roomName' );
-		var message_room  = $( '.myvideoroom-app' ).data( 'roomName' );
+		var original_room = $( '#roomid' ).data( 'roomName' ),
+		host_status       = $( '#roomid' ).data( 'hostStatus' );
+		if ( host_status !== 1) {
+			document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );
+		}
+		var message_room = $( '.myvideoroom-app' ).data( 'roomName' );
 		setInterval( refreshHeartbeat, 6000, original_room, message_room );
 		notifyRefresh( original_room );
 
@@ -318,9 +360,6 @@
 			}
 		);
 	}
-
-	/* Initialise Runtime */
-	/*window.myvideoroom_shoppingbasket_init = init;*/
 	init();
 
 })( jQuery );

@@ -41,7 +41,7 @@ return function (
 
 	if ( $basket_list ) {
 		?>
-<div id="basket-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
+<div id="basket-video-host-wrap-table" class="mvr-nav-settingstabs-outer-wrap">
 	<h1>
 		<?php
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped Above.

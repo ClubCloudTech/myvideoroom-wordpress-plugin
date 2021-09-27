@@ -116,6 +116,14 @@ class SiteDefaults {
 		);
 
 		wp_register_script(
+			'myvideoroom-protect-username',
+			plugins_url( '/js/protect-username.js', __FILE__ ),
+			null,
+			$plugin_version,
+			true
+		);
+
+		wp_register_script(
 			'myvideoroom-admin-tabs',
 			plugins_url( '/js/tabbed.js', __FILE__ ),
 			array( 'jquery' ),
@@ -130,7 +138,7 @@ class SiteDefaults {
 			'myvideoroom-menutab-header',
 			plugins_url( '/css/menutab.css', __FILE__ ),
 			false,
-			$plugin_version . '6'
+			$plugin_version . '7'
 		);
 
 		wp_register_style(

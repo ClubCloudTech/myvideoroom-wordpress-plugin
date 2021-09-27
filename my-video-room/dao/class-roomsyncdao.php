@@ -11,6 +11,7 @@ use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\RoomSync;
 use MyVideoRoomPlugin\Library\RoomAdmin;
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -600,6 +601,41 @@ class RoomSyncDAO {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Create a User Picture and Name Storage record in DB.
+	 *
+	 * @param string $cart_id   The Cart id.
+	 *
+	 * @return RoomSync|null
+	 */
+	public function create_new_user_storage_record( string $cart_id = null ): ?RoomSync {
+		if ( ! $cart_id ) {
+			$cart_id = Factory::get_instance( RoomAdmin::class )->get_user_session();
+		}
+		$room_name      = MVRSiteVideo::USER_STATE_INFO;
+		$current_object = new RoomSync(
+			$cart_id,
+			$room_name,
+			current_time( 'timestamp' ),
+			current_time( 'timestamp' ),
+			false,
+			WooCommerce::SETTING_BASKET_REQUEST_OFF,
+			null,
+			false,
+			null,
+			null,
+			null,
+			null,
+			null
+		);
+		$success        = $this->create( $current_object );
+		if ( $success ) {
+			return $current_object;
+		} else {
+			return null;
+		}
 	}
 
 	/**

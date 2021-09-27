@@ -24,7 +24,7 @@ return function (
 	<?php
 	if ( $room_list && ! $shortcode ) {
 		?>
-	<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
+	<table id="mvr-table-basket-frame" class="wp-list-table widefat plugins myvideoroom-table-adjust">
 		<thead>
 			<tr>
 				<th scope="col" class="manage-column column-name column-primary">

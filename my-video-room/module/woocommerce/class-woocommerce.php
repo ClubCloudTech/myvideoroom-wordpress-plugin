@@ -76,6 +76,7 @@ class WooCommerce {
 
 	const SETTING_SAVE_PRODUCT_CATEGORY           = 'save-product-category';
 	const SETTING_SAVE_PRODUCT_CATEGORY_CONFIRMED = 'save-product-category-confirmed';
+	const SETTING_SHOPPING_BASKET                 = 'shoppingbasket';
 
 
 	/**
@@ -228,7 +229,7 @@ class WooCommerce {
 
 		$basket_menu = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_SHOPPING_BASKET ),
-			'shoppingbasket',
+			self::SETTING_SHOPPING_BASKET,
 			fn() => Factory::get_instance( ShoppingBasket::class )
 				->render_basket( $room_name, $host_status, $post_id ),
 			'mvr-shopping-basket'

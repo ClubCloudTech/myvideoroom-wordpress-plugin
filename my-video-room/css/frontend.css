@@ -44,7 +44,7 @@
   .myvideoroom-button-separation {
 	margin-left: 5px;
 	margin-right: 5px;
-	
+
   }
 
 .myvideoroom-nav-tab-wrapper li:after {
@@ -107,6 +107,13 @@
 }
 .myvideoroom-image-result {
 	color: #fff;
+	border-radius: 80px;
+	max-width: 120px;
+	border:solid;
+	border-width: 3px;
+}
+.myvideoroom-image-result {
+	color: #fff;
 	width:  180px;
 	height: 101px;
 }
@@ -130,6 +137,9 @@
 	display: flex;
 }
 
+.mvr-input-box{
+	padding: 4px;
+}
   .mvr-left {
 	width: 50%;
 	float: left;
@@ -138,10 +148,24 @@
   .mvr-right {
 	width: 50%;
 	float: right;
+	text-align: -webkit-right;
+
   }
 
   .mvr-middle {
 	width: 50%;
+	display: flex;
+  }
+
+  .mvr-shopping-basket-frame {
+	width: 90%;
+
+  }
+
+  .mvr-notification-align {
+	align-self: center;
+	margin: 0;
+	margin-right: 5px;
   }
 
   .mvr-flex {
@@ -265,11 +289,12 @@ opacity: 1;
 	border-radius: 3px;
 	color: rgb(255 255 255) !important;
 	display: inline;
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: 400;
 	margin-left: 1px !important;
 	text-align: -webkit-center;
 	vertical-align: middle;
+	padding: 6px;
 }
 .mvr-woocommerce-overlay {
 	border-color: #C6C0AD;
@@ -280,4 +305,9 @@ opacity: 1;
 	background: white;
 	padding: 10px 10px 10px 10px;
 	transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+}
+.prejoin-preview-dropdown-container div{
+	background: #0376da;
+	border: 1px solid #0376da;
+	display: none!important;
 }

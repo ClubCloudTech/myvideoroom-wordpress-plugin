@@ -10,6 +10,7 @@ namespace MyVideoRoomPlugin\Library;
 use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
+use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
  * Class SectionTemplate
@@ -55,9 +56,9 @@ class SectionTemplates {
 	<div class="mvr-header-section">
 
 		<div id="mvr-notification-icons" class="myvideoroom-header-table-left">
-				<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
+			<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
 				echo $header['template_icons'];
-				?>
+			?>
 		</div>
 		<div id="mvr-header-table-right" class="myvideoroom-header-table-right">
 			<p class="mvr-header-title mvr-header-align">
@@ -69,31 +70,31 @@ class SectionTemplates {
 
 	</div>
 	<div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master">
-			<?php
+		<?php
 							$output = \apply_filters( 'myvideoroom_notification_master', '', $room_name );
 							// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
 							echo $output;
-			?>
+		?>
 	</div>
 
-			<?php
+		<?php
 						$tab_count = \count( $tabs );
-			if ( $tab_count <= 1 ) {
-				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode already properly escaped.
-				echo $tabs[0]->get_function_callback();
-			} else {
-				?>
+		if ( $tab_count <= 1 ) {
+			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode already properly escaped.
+			echo $tabs[0]->get_function_callback();
+		} else {
+			?>
 
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper myvideoroom-side-tab">
 		<ul class="mvr-ul-style-menu">
-				<?php
-						$active = ' nav-tab-active';
+			<?php
+					$active = ' nav-tab-active';
 
-				foreach ( $tabs as $menu_output ) {
-					$tab_display_name = $menu_output->get_tab_display_name();
-					$tab_slug         = $menu_output->get_tab_slug();
-					$object_id        = $menu_output->get_element_id();
-					?>
+			foreach ( $tabs as $menu_output ) {
+				$tab_display_name = $menu_output->get_tab_display_name();
+				$tab_slug         = $menu_output->get_tab_slug();
+				$object_id        = $menu_output->get_element_id();
+				?>
 			<li>
 				<a class="nav-tab<?php echo esc_attr( $active ); ?>" 
 											<?php
@@ -101,32 +102,47 @@ class SectionTemplates {
 												echo 'id = "' . esc_attr( $object_id ) . '" ';
 											}
 											?>
-												href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+											href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 					<?php
-						//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icon is created by escaped function.
-						echo $tab_display_name;
+					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icon is created by escaped function.
+					echo $tab_display_name;
 					?>
 				</a>
 			</li>
 		</ul>
-					<?php
-					$active = null;
-				}
-				?>
+				<?php
+				$active = null;
+			}
+			?>
 
 	</nav>
-<div id="mvr-above-article-notification"></div>
+	<div id="mvr-above-article-notification"></div>
 
-				<?php
-				foreach ( $tabs as $article_output ) {
-					$function_callback = $article_output->get_function_callback();
-					$tab_slug          = $article_output->get_tab_slug();
-					?>
+			<?php
+			foreach ( $tabs as $article_output ) {
+
+				$function_callback = $article_output->get_function_callback();
+				$tab_slug          = $article_output->get_tab_slug();
+				?>
 	<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>" class="myvideoroom-content-tab">
-					<?php
-						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-						echo $function_callback;
+				<?php
+
+				if ( WooCommerce::SETTING_SHOPPING_BASKET !== $tab_slug ) {
+				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
+					echo $function_callback;
+				}
+
+				?>
+	</article>
+				<?php
+				if ( WooCommerce::SETTING_SHOPPING_BASKET === $tab_slug ) {
 					?>
+	<article id="<?php echo \esc_textarea( WooCommerce::SETTING_SHOPPING_BASKET ); ?>">
+					<?php
+					// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
+					echo $function_callback; 
+					?>
+
 	</article>
 					<?php
 				}
@@ -136,8 +152,8 @@ class SectionTemplates {
 			<?php
 						return \ob_get_clean();
 
+		}
 	}
-
 
 	/**
 	 * Returns Icons for Template Menus. (Horizontal or Vertical Menus)
@@ -184,21 +200,28 @@ class SectionTemplates {
 	public function welcome_template(): string {
 
 		ob_start();
+
 		?>
 
 <div class="mvr-nav-settingstabs-outer-wrap myvideoroom-welcome-page">
 
-			<?php
+		<?php
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page();
-			?>
-
-		<div class="mvr-powered-by mvr-clear">
+		?>
+	<div class="mvr-flex">
+		<div class="mvr-powered-by mvr-clear mvr-left">
+			<a href="https://clubcloud.tech"
+				title="<?php echo esc_html_e( 'Get MyVideoRoom for your website', 'myvideoroom' ); ?>" target="_blank">
 				<img class="myvideoroom-product-image" src="
-			<?php echo esc_url( plugins_url( '/../img/mvr-imagelogo.png', __FILE__ ) ); ?>" alt="Powered by MyVideoRoom">
+				<?php echo esc_url( plugins_url( '/../img/mvr-imagelogo.png', __FILE__ ) ); ?>" alt="Powered by MyVideoRoom">
+			</a>
 		</div>
-
+		<div class="mvr-powered-by mvr-clear mvr-right">
+		<?php /*phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped*/echo Factory::get_instance( TemplateIcons::class )->format_button_icon( 'forgetme' ); ?>
+		</div>
 	</div>
+</div>
 		<?php
 
 		return ' ';

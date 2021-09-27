@@ -254,7 +254,7 @@ class App {
 
 		$jwt_endpoint = $licence_endpoint . '/' . $hostname . '.jwt?';
 
-		// Get User Prefernce Details.
+		// Get User Preference Details.
 		$original_room_name = $attr['original-room'];
 		if ( ! $original_room_name ) {
 			$original_room_name = $shortcode_constructor->get_name();
@@ -268,11 +268,13 @@ class App {
 			$avatar       = null;
 			$user_display = null;
 		}
+		// Get User Managed Settings if Exist.
+		$user_preference_object = Factory::get_instance( RoomAdmin::class )->room_user_settings( $avatar, $user_display );
+		if ( isset( $user_preference_object ) ) {
+			$user_name  = $user_preference_object['display-name'];
+			$avatar_url = $user_preference_object['picture-url'];
+		}
 
-		$user_preference_object = Factory::get_instance( RoomAdmin::class )->room_user_settings( $original_room_name, $avatar, $user_display );
-
-		$user_name           = $user_preference_object['display-name'];
-		$avatar_url          = $user_preference_object['picture-url'];
 		$custom_jitsi_server = true;
 
 		$room_name         = $shortcode_constructor->get_name();

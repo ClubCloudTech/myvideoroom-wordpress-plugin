@@ -53,7 +53,7 @@ return function (
 
 	?>
 
-	<table class="wp-list-table widefat plugins">
+	<table id ="mvr-confirmation-table" class="wp-list-table widefat plugins mvr-shopping-basket-frame">
 	<thead>
 		<tr>
 			<th scope="col" class="manage-column column-name column-primary">

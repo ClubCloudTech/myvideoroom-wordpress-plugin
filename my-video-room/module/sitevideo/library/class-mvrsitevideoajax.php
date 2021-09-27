@@ -11,6 +11,7 @@ use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\DAO\UserVideoPreference;
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\SiteDefaults;
@@ -81,7 +82,41 @@ class MVRSiteVideoAjax {
 		*/
 		if ( 'check_sound' === $action_taken ) {
 			$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->render_guest_soundcheck();
-			$response['message'] = \esc_html('To begin Soundcheck click on any open seat', 'myvideoroom');
+			$response['message']   = '<strong>' . \esc_html__( 'To begin Soundcheck click on any open seat', 'myvideoroom' ) . '</strong>';
+			$response['message']  .= '<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons " />';
+			return \wp_send_json( $response );
+		}
+
+		/*
+		* Refresh Page Section.
+		*
+		*/
+		if ( 'refresh_page' === $action_taken ) {
+			$response              = array();
+			$response['mainvideo'] = Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page();
+
+			return \wp_send_json( $response );
+		}
+
+		/*
+		* Delete Me Section.
+		*
+		*/
+		if ( 'delete_me' === $action_taken ) {
+			// Process Delete.
+			$room_name   = MVRSiteVideo::USER_STATE_INFO;
+			$response    = array();
+			$room_object = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $user_session, $room_name );
+			if ( ! $room_object ) {
+				return null;
+			}
+			$delete = Factory::get_instance( RoomSyncDAO::class )->delete( $room_object );
+			if ( $delete ) {
+				$response['message'] = esc_html__( 'Record Deleted', 'myvideoroom' );
+			} else {
+				$response['message'] = esc_html__( 'Record Delete Failed', 'myvideoroom' );
+			}
+
 			return \wp_send_json( $response );
 		}
 
@@ -99,7 +134,8 @@ class MVRSiteVideoAjax {
 			$arr_img_ext = array( 'image/png', 'image/jpeg', 'image/jpg', 'image/gif' );
 
 			if ( isset( $_FILES['upimage']['type'] ) && ! in_array( $_FILES['upimage']['type'], $arr_img_ext, true ) ) {
-				return null;
+				$response['message'] = esc_html__( 'Incorrect Attachment Type Sent', 'myvideoroom' );
+				return \wp_send_json( $response );
 			}
 			$session = 'tmp-' . $user_session . '.png';
 
@@ -112,22 +148,38 @@ class MVRSiteVideoAjax {
 				//phpcs:ignore -- WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				$upload = \wp_upload_bits( $session, null, file_get_contents( $_FILES['upimage']['tmp_name'] ) );
 
-				$return = Factory::get_instance( RoomAdmin::class )->room_picture_name_update( $room_name, $user_session, $upload['file'], $upload['url'] );
+				$return = Factory::get_instance( RoomAdmin::class )->room_picture_name_update( $user_session, $upload['file'], $upload['url'] );
 				if ( $return ) {
-					$response['message'] = 'Picture Update Success';
+					$response['message'] = esc_html__( 'Picture Update Success', 'myvideoroom' ) . $return;
 				} else {
-					$response['message'] = 'Picture Update Failed';
+					$response['message'] = esc_html__( 'Picture Update Failed', 'myvideoroom' ) . $return;
 				}
 			}
 			return \wp_send_json( $response );
 		}
 
-		if ( $display_name ) {
-			$display_updated = Factory::get_instance( RoomAdmin::class )->room_picture_name_update( $room_name, $user_session, null, null, $display_name );
+		/*
+		* Update Display Name section.
+		*
+		*/
+		if ( 'update_display_name' === $action_taken ) {
+			if ( $display_name && $room_name ) {
+				$display_updated = Factory::get_instance( RoomAdmin::class )->room_picture_name_update( $user_session, null, null, $display_name );
+			}
+
+			if ( true === $display_updated ) {
+				$response['message'] = 'Display Name Updated';
+			} else {
+				$response['message'] = 'Display Name Update Failed';
+			}
+			return \wp_send_json( $response );
 		}
 
-		// Start Meeting Section.
-		if ( 'start_meeting' === $action_taken && $display_updated ) {
+		/*
+		* Start Meeting Section..
+		*
+		*/
+		if ( 'start_meeting' === $action_taken ) {
 			$session_id    = Factory::get_instance( RoomAdmin::class )->get_user_session();
 			$room_record   = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $session_id, $room_name );
 			$room_owner_id = $room_record->get_owner_id();

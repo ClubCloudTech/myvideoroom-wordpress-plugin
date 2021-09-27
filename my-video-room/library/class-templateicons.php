@@ -149,9 +149,15 @@ class TemplateIcons {
 				$a_class       = '';
 				$id            = 'mvr-check-sound';
 				break;
+			case 'forgetme':
+				$button_label = '<span title ="' . esc_html__( 'Delete your name, picture, and clear temporary information', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-hidden"></span>';
+				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$a_class      = '';
+				$id           = 'mvr-forget-me';
+				break;
 		}
 
-		return '<button id=' . $id . ' class=" ' . $button_class . '" >
+		return '<button id=' . $id . \wp_rand( 1, 10000 ) . ' class=" ' . $button_class . ' ' . $id . '" >
 			<a href=""  class="' . $a_class . '">' . $button_label . '</a>
 			</button>';
 
