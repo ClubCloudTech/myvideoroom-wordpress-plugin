@@ -13,6 +13,7 @@ function init(){
 	if ( mvrIsactive.length < 1 ) {
 		return false;
 	}
+	console.log('continue');
 	var loginActive = document.getElementsByClassName( 'mvr-login-form' );
 	/* Initialise Camera, and Listen to Buttons */
 	$('#vid-picture').click(function(e){
