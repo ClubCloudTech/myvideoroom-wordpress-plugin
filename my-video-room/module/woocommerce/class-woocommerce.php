@@ -180,10 +180,6 @@ class WooCommerce {
 		);
 
 		add_action( 'myvideoroom_post_room_create', array( Factory::get_instance( WooCategory::class ), 'create_product_category' ), 10, 2 );
-
-		// Initialise PHPSESSION to track logged out users.
-		$this->start_php_session();
-
 	}
 
 	/**
@@ -271,20 +267,6 @@ class WooCommerce {
 		array_push( $input, $basket_menu );
 		return $input;
 
-	}
-
-
-	/**
-	 * Start PHP Session
-	 * Starts PHP Session Cookie in case user is signed out.
-	 *
-	 * @return void
-	 */
-	public function start_php_session() {
-
-		if ( ! session_id() ) {
-			session_start();
-		}
 	}
 
 	/**

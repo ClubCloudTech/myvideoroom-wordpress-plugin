@@ -181,13 +181,17 @@ class MVRSiteVideoAjax {
 		*
 		*/
 		if ( 'start_meeting' === $action_taken ) {
-			$session_id    = Factory::get_instance( RoomAdmin::class )->get_user_session();
-			$room_record   = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $session_id, $room_name );
-			$room_owner_id = $room_record->get_owner_id();
-			$room_object   = Factory::get_instance( UserVideoPreference::class )->get_by_id( $room_owner_id, $room_name );
-
-			$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->update_main_video_window( $room_object, $original_room );
-
+			$session_id  = Factory::get_instance( RoomAdmin::class )->get_user_session();
+			$room_record = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $session_id, $room_name );
+			
+			if ( ! $room_record ) {
+				$response['errormessage'] = 'Room Record Retrieval Failed';
+			} else {
+				$room_owner_id = $room_record->get_owner_id();
+				$room_object           = Factory::get_instance( UserVideoPreference::class )->get_by_id( $room_owner_id, $room_name );
+				$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->update_main_video_window( $room_object, $original_room );
+			}
+			
 			return \wp_send_json( $response );
 		}
 		die();

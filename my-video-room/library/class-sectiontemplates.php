@@ -53,8 +53,8 @@ class SectionTemplates {
 		?>
 
 <div class="mvr-nav-shortcode-outer-wrap">
+	<div id="roominfo" data-room-name="<?php echo esc_attr( $room_name ); ?>"></div>
 	<div class="mvr-header-section">
-
 		<div id="mvr-notification-icons" class="myvideoroom-header-table-left">
 			<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
 				echo $header['template_icons'];
