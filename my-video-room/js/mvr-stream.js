@@ -1,9 +1,18 @@
 window.addEventListener("load", function(){
  
 function init(){
-	
 	jQuery(function($) {
-	
+	//Initialise Reception.
+	let item = document.querySelector("#Reset_app__30V6t > form > input[type=submit]");
+	if ( item ) {
+		item.click();
+	}
+	/* Disabling Execution outside of MVR */
+	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
+	console.log (mvrIsactive.length);
+	if ( mvrIsactive.length < 1 ) {
+		return false;
+	}
 	var loginActive = document.getElementsByClassName( 'mvr-login-form' );
 	/* Initialise Camera, and Listen to Buttons */
 	$('#vid-picture').click(function(e){
@@ -122,7 +131,7 @@ function imageUpload(event){
 
 			  form_data.append('action','myvideoroom_file_upload');
 				
-				var room_name     = $( '#roomid' ).data( 'roomName' );
+				var room_name     = $( '#roominfo' ).data( 'roomName' );
 					form_data.append('room_name', room_name );
 					form_data.append('action_taken', 'update_picture' );
 					form_data.append('security', myvideoroom_file_upload.security );
@@ -137,6 +146,9 @@ function imageUpload(event){
 							success: function (response) {
 								var state_response = JSON.parse( response );
 								console.log( state_response.message );
+								if (state_response.errormessage){
+									console.log(state_response.errormessage);
+								}
 								document.getElementById("mvr-top-notification").innerHTML += '<br><h3>' + state_response.message + '</h3><br>';
 								$( '#vid-up' ).prop('value', 'Saved !');
 							},
@@ -289,7 +301,7 @@ function cameratimeout(){
 				form_data.append('action','myvideoroom_file_upload');
 						
 				jQuery(function($) {
-					var room_name     = $( '#roomid' ).data( 'roomName' );
+					var room_name     = $( '#roominfo' ).data( 'roomName' );
 					form_data.append('room_name', room_name );
 					form_data.append('action_taken', 'update_picture' );
 					form_data.append('security', myvideoroom_file_upload.security );
@@ -303,6 +315,9 @@ function cameratimeout(){
 							data: form_data,
 							success: function (response) {
 								var state_response = JSON.parse( response );
+								if (state_response.errormessage){
+									console.log(state_response.errormessage);
+								}
 								console.log( state_response.message );
 								document.getElementById("mvr-top-notification").innerHTML += '<br>';
 								$( '#vid-up' ).prop('value', 'Saved !');
@@ -331,7 +346,7 @@ function cameratimeout(){
 			form_data.append('action','myvideoroom_file_upload');
 					
 			jQuery(function($) {
-				var room_name     = $( '#roomid' ).data( 'roomName' );
+				var room_name     = $( '#roominfo' ).data( 'roomName' );
 				display_name   = $( '#vid-name' ).val(),
 				form_data.append('room_name', room_name );
 				form_data.append('display_name', display_name );
@@ -349,6 +364,9 @@ function cameratimeout(){
 						success: function (response) {
 							var state_response = JSON.parse( response );
 							console.log( state_response.message );
+							if (state_response.errormessage){
+								console.log(state_response.errormessage);
+							}
 							$('.mvr-forget-me').show();
 							setTimeout( () => {  refreshWelcome(); }, 2000 );
 							;
@@ -372,7 +390,7 @@ function cameratimeout(){
 				
 		jQuery(function($) {
 			console.log('Picture Delete');
-			var room_name  = $( '#roomid' ).data( 'roomName' );
+			var room_name  = $( '#roominfo' ).data( 'roomName' );
 			display_name   = $( '#vid-name' ).val(),
 			form_data.append('room_name', room_name );
 			form_data.append('display_name', display_name );
@@ -389,6 +407,9 @@ function cameratimeout(){
 					data: form_data,
 					success: function (response) {
 						var state_response = JSON.parse( response );
+						if (state_response.errormessage){
+							console.log(state_response.errormessage);
+						}
 						$('.mvr-forget-me').hide();
 						setTimeout( () => {  window.location.reload (); }, 2500 );
 						;
@@ -412,7 +433,7 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 				
 		jQuery(function($) {
 
-			var room_name  = $( '#roomid' ).data( 'roomName' ),
+			var room_name  = $( '#roominfo' ).data( 'roomName' ),
 			container      = $( '#myvideoroom-welcome-page' );
 			
 			form_data.append('room_name', room_name );
@@ -433,7 +454,9 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 						var state_response = JSON.parse( response );
 						// Redraw Container.
 						container.html( state_response.mainvideo );
-
+						if (state_response.errormessage){
+							console.log(state_response.errormessage);
+						}
 
 						resetPanel();
 						init();
@@ -481,7 +504,9 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 						container.empty();
 												
 						var state_response = JSON.parse( response );
-
+						if (state_response.errormessage){
+							console.log(state_response.errormessage);
+						}
 						// Redraw Container.
 						container.html( state_response.mainvideo );
 						notification.html ( state_response.message );
@@ -522,7 +547,7 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 				form_data.append('action','myvideoroom_file_upload');
 						
 				jQuery(function($) {
-					var room_name  = $( '#roomid' ).data( 'roomName' ),
+					var room_name  = $( '#roominfo' ).data( 'roomName' ),
 					display_name   = $( '#vid-name' ).val(),
 					original_room  = $( '.myvideoroom-app' ).data( 'roomName' ),
 					container      = $( '.myvideoroom-app' );
@@ -551,7 +576,9 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 								var state_response = JSON.parse( response );
 								// Redraw Container.
 								container.html( state_response.mainvideo );
-								
+								if (state_response.errormessage){
+									console.log(state_response.errormessage);
+								}
 								
 								if (window.myvideoroom_tabbed_init) {
 									window.myvideoroom_tabbed_init( container );
@@ -584,10 +611,14 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 				
 	  }
 
-	  document.getElementById("vid-name").onkeyup = function() {
-		document.getElementById("vid-name").innerHTML='';
-		document.getElementById("vid-down").disabled = false;
-	};
+	 let vidnamecheck = document.getElementById("vid-name");
+	 if ( vidnamecheck ) {
+		document.getElementById("vid-name").onkeyup = function() {
+			document.getElementById("vid-name").innerHTML='';
+			document.getElementById("vid-down").disabled = false;
+		};
+	 }
+	  
 
 init();
 

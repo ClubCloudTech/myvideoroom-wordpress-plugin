@@ -13,7 +13,6 @@ use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\SectionTemplates;
@@ -142,6 +141,9 @@ class MVRSiteVideo {
 		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'get_ajax_page_settings' ), 10, 2 );
 		\add_action( 'wp_ajax_myvideoroom_file_upload', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'file_upload_handler' ), 10, 2 );
 		\add_action( 'wp_ajax_nopriv_myvideoroom_file_upload', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'file_upload_handler' ), 10, 2 );
+
+		// Initialise PHPSESSION to track logged out users.
+		$this->start_php_session();
 
 		\wp_enqueue_script(
 			'myvideoroom-sitevideo-settings-js',
@@ -377,6 +379,19 @@ class MVRSiteVideo {
 
 		return $render();
 
+	}
+
+	/**
+	 * Start PHP Session
+	 * Starts PHP Session Cookie in case user is signed out.
+	 *
+	 * @return void
+	 */
+	public function start_php_session() {
+
+		if ( ! session_id() ) {
+			session_start();
+		}
 	}
 
 }

@@ -38,7 +38,8 @@ return function (
 <div id="mvr-basket-section"
 	class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket myvideoroom-welcome-page mvr-clear">
 
-	<div id="roomid" data-room-name="<?php echo esc_attr( $room_name ); ?>"
+	<div id="roomid" 
+		data-room-name="<?php echo esc_attr( $room_name ); ?>"
 		data-last-queuenum="<?php echo esc_attr( $last_queuenum ); ?>"
 		data-last-carthash="<?php echo esc_attr( $last_carthash ); ?>"
 		data-host-status="<?php echo esc_attr( $host_status ); ?>">

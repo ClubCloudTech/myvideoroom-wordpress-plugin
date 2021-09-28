@@ -64,7 +64,7 @@
 	function refreshHeartbeat( original_room, message_room ) {
 		var ajax_url        = myvideoroom_woocommerce_basket.ajax_url;
 		var input_type      = 'refresh';
-		var room_name       = $( '#roomid' ).data( 'roomName' );
+		var room_name       = $( '#roominfo' ).data( 'roomName' );
 		var last_queuenum   = $( '#roomid' ).data( 'lastQueuenum' );
 		var last_carthash   = $( '#roomid' ).data( 'lastCarthash' );
 		var last_storecount = $( '#storeid' ).data( 'lastStorecount' );
@@ -174,7 +174,7 @@
 		var ajax_url     = myvideoroom_woocommerce_basket.ajax_url;
 		var container    = $( '.mvr-woocommerce-basket' );
 		var input_type   = 'reload';
-		var room_name    = $( '#roomid' ).data( 'roomName' );
+		var room_name    = $( '#roominfo' ).data( 'roomName' );
 		var notification = $( '.mvr-notification-master' );
 		var $storefront  = $( '.mvr-storefront-master' );
 
@@ -218,7 +218,7 @@
 
 		var ajax_url     = myvideoroom_woocommerce_basket.ajax_url;
 		var input_type   = 'reload';
-		var room_name    = $( '#roomid' ).data( 'roomName' );
+		var room_name    = $( '#roominfo' ).data( 'roomName' );
 		var notification = $( '.mvr-notification-master' );
 
 		if ( typeof room_name === 'undefined' ) {
@@ -249,10 +249,6 @@
 	}
 
 	var init = function(){
-		let item = document.querySelector("#Reset_app__30V6t > form > input[type=submit]");
-		if ( item ) {
-			item.click();
-		}
 		
 		$( '.myvideoroom-woocommerce-basket-ajax' ).on(
 			'click',
@@ -390,7 +386,7 @@
 	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
 
 	if ( mvrIsactive.length > 0) {
-		var original_room = $( '#roomid' ).data( 'roomName' ),
+		var original_room = $( '#roominfo' ).data( 'roomName' ),
 		host_status       = $( '#roomid' ).data( 'hostStatus' );
 		if ( host_status !== 1) {
 			document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );
