@@ -19,8 +19,12 @@
 .myvideoroom-nav-tab-wrapper li {
 	display: inline-block;
 	margin: 0;
-	padding: 0;
+	padding: 1px;
 	z-index: 2;
+	background: white;
+}
+#basket-video-host-wrap-table, #mvr-main-basket-window {
+	margin-left: 48px;
 }
 
 .myvideoroom-side-tab {
@@ -211,29 +215,43 @@ opacity: 1;
 
 
 .mvr-main-button-enabled {
-	background-color: rgb(15, 54, 21);
-	border-radius: 3px;
-	color: rgb(255 255 255) !important;
-	display: inline;
-	font-size: 12px;
-	font-weight: 400;
-	padding: 8px;
-	margin-left: 1px !important;
-	text-align: -webkit-center;
-	vertical-align: middle;
+	background: linear-gradient(#232923, #679e6e);
+	border-radius: 4px;
+	border-width: 2px;
+	cursor: pointer;
+	display: inline-block !important;
+	letter-spacing: -.021em;
+	line-height: 1.82947;
+	min-width: 30px !important;
+	padding: 2px 4px;
 }
 
-.mvr-ul-style-menu {
-    box-sizing: border-box;
-    background-color: #e0e0e0;
-    color: #525151;
+.mvr-main-button-enabled a {
+	color: white;
+	font-size: 12px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+.mvr-ul-style-side-menu {
+	box-sizing: border-box;
+	background-color: #e0e0e0;
+	color: #525151;
 	font-size: 20px;
 	line-height: initial;
-    border-style: solid;
-    border-color: #27241c;
-    border-width: 3px;
 	text-decoration: none;
 	display: contents;
+}
+.mvr-ul-style-menu {
+	box-sizing: border-box;
+	background-color: #e0e0e0;
+	color: #525151;
+	font-size: 20px;
+	line-height: initial;
+	border-style: solid;
+	border-radius: 4px;
+	border-color: #27241c;
+	border-width: 2px;
+	text-decoration: none;
 }
 .mvr-ul-style-menu span{
 	font-size: 28px;
@@ -246,7 +264,7 @@ opacity: 1;
 	line-height: 1;
 	font-weight: 400;
 	font-style: normal;
-	font-size: 28px!important;
+	font-size: 22px!important;
 	text-rendering: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
@@ -281,7 +299,7 @@ opacity: 1;
 	vertical-align: middle!important;
 }
 .myvideoroom-welcome-positive {
-	background-color: #3777ff!important;
+	background: linear-gradient(#032979, #1c1c96);
 	border-radius: 3px!important;
 	color: rgb(255 255 255) !important;
 	font-size: 12px!important;
@@ -292,25 +310,29 @@ opacity: 1;
 	vertical-align: middle!important;
 }
 
-.mvr-main-button-enabled a {
-	color: white;
-}
-
 .mvr-main-button-cancel a {
 	color: white;
 }
+.mvr-main-refresh-button {
+	padding:9px!important;
+	font-weight: 400!important;
+}
 
 .mvr-main-button-cancel {
-	background-color: rgb(77, 77, 77);
-	border-radius: 3px;
-	color: rgb(255 255 255) !important;
-	display: inline;
-	font-size: 14px;
+	background: linear-gradient(#615858, #b5b5b6);
+	border-radius: 4px;
+	border-width: 2px;
+	cursor: pointer;
+	display: inline-block !important;
 	font-weight: 400;
-	margin-left: 1px !important;
-	text-align: -webkit-center;
-	vertical-align: middle;
-	padding: 6px;
+	letter-spacing: -.021em;
+	line-height: 1.52947;
+	min-width: 30px !important;
+	padding: 2px 4px;
+}
+
+.mvr-main-button-stop {
+	background: linear-gradient(#e60000, #e84a58)!important;
 }
 .mvr-woocommerce-overlay {
 	border-color: #C6C0AD;
@@ -326,4 +348,30 @@ opacity: 1;
 	background: #0376da;
 	border: 1px solid #0376da;
 	display: none!important;
+}
+
+.mvr-form-button {
+	background: -webkit-gradient(linear, left top, left bottom, from(#42a1ec), to(#0070c9));
+	background: -webkit-linear-gradient(#42a1ec, #0070c9);
+	background: linear-gradient(#42a1ec, #0070c9);
+	background-color: #0070c9;
+	border-color: #07c;
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block !important;
+	font-weight: 400;
+	letter-spacing: -.021em;
+	line-height: 1.52947;
+	min-width: 30px !important;
+	padding: 4px 6px;
+	text-align: center !important;
+	white-space: nowrap !important;
+}
+
+.mvr-form-button-max {
+	max-height: 30px;
+	max-width: 125px;
 }

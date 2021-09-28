@@ -108,7 +108,7 @@ class TemplateIcons {
 	 */
 	public function add_default_video_icons_to_header( ?string $template_icons, int $user_id, string $room_name, bool $visitor_status = null ): string {
 		if ( true === $visitor_status && ! $template_icons ) {
-			$template_icons .= '<form method="post" action=""><input type="submit" name="submit" id="submit" class="button mvr-form-button mvr-form-button-max" value="Exit Meeting"  />';
+			$template_icons .= '<form method="post" action=""><a><input type="submit" name="submit" id="submit" class="mvr-main-refresh-button  myvideoroom-welcome-positive mvr-input-box" value="' . esc_html__( 'Refresh', 'myvideoroom' ) . '"  /></a>';
 		} else {
 			$template_icons .= $this->show_icon( $user_id, $room_name );
 		}
@@ -143,8 +143,8 @@ class TemplateIcons {
 				$id           = 'mvr-name-user';
 				break;
 			case 'checksound':
-				$button_label  = '<span title ="' . esc_html__( 'Lets get your sound, and camera checked out and ready', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-controls-volumeon"></span>';
-				$button_label .= '<span title ="' . esc_html__( 'Lets get your sound, and camera checked out and ready', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-video-alt2"></span>';
+				$button_label  = '<span title ="' . esc_html__( 'Lets get your sound, and camera checked out and ready', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-generic"></span>';
+				$button_label .= '<span title ="' . esc_html__( 'Lets get your sound, and camera checked out and ready', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-controls-volumeon"></span>';
 				$button_class  = 'mvr-ul-style-menu myvideoroom-button-separation';
 				$a_class       = '';
 				$id            = 'mvr-check-sound';

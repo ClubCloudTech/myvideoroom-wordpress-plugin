@@ -39,6 +39,7 @@ return function (
 	}
 	ob_start();
 	?>
+
 <div id="mvr-basket-section" class=" mvr-woocommerce-basket mvr-nav-settingstabs-outer-wrap mvr-table-row myvideoroom-welcome-page">
 	<?php
 	echo sprintf(

@@ -282,7 +282,7 @@ class AjaxHandler {
 				$message         = \esc_html__( 'clear your basket and keep it synced to the room ?', 'myvideoroom' );
 				$nonce           = wp_create_nonce( WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD );
 				$approved_nonce  = wp_create_nonce( WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD_CONFIRMED );
-				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD_CONFIRMED, esc_html__( 'Turn on Basket Download Sync', 'my-video-room' ), $room_name, $approved_nonce );
+				$button_approved = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD_CONFIRMED, esc_html__( 'Sync My Basket', 'my-video-room' ), $room_name, $approved_nonce );
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( ShoppingBasket::class )->cart_confirmation( $input_type, $room_name, $auth_nonce, $message, $button_approved );
 				break;

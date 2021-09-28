@@ -86,7 +86,7 @@ class SectionTemplates {
 			?>
 
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper myvideoroom-side-tab">
-		<ul class="mvr-ul-style-menu">
+		<ul class="mvr-ul-style-side-menu">
 			<?php
 					$active = ' nav-tab-active';
 

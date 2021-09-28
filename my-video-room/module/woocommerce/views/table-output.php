@@ -35,25 +35,25 @@ return function (
 	ob_start();
 
 	?>
-<div id ="mvr-basket-section" class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket myvideoroom-welcome-page mvr-clear">
+<div id="mvr-basket-section"
+	class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket myvideoroom-welcome-page mvr-clear">
 
-	<div id="roomid"
-		data-room-name="<?php echo esc_attr( $room_name ); ?>" 
+	<div id="roomid" data-room-name="<?php echo esc_attr( $room_name ); ?>"
 		data-last-queuenum="<?php echo esc_attr( $last_queuenum ); ?>"
 		data-last-carthash="<?php echo esc_attr( $last_carthash ); ?>"
-		data-host-status="<?php echo esc_attr( $host_status ); ?>"
-		>
+		data-host-status="<?php echo esc_attr( $host_status ); ?>">
 
 	</div>
-		<?php
+	<?php
 		// Render Product Broadcast Table if Autosync isnt on.
 
-		if ( ! $download_active ) {
-			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-			echo Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name );
-		}
+	if ( ! $download_active ) {
+		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+		echo Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name );
+	}
 
-		?>
+	?>
+	<div id="mvr-main-basket-window" class="mvr-nav-settingstabs-outer-wrap">
 		<h1 class="mvr-basket-header-title">
 			<?php
 			$prefix = esc_html__( 'Your ', 'my-video-room' );
@@ -68,13 +68,13 @@ return function (
 			}
 			if ( $download_active ) {
 				$main        = esc_html__( ' Auto Updated ', 'myvideoroom' );
-				$description = esc_html__( 'Your basket is currently downloading automatically content from the room basket', 'myvideoroom' );
+				$description = esc_html__( 'Your basket is currently downloading automatically from the room basket', 'myvideoroom' );
 			}
 			$suffix = esc_html__( 'Basket', 'my-video-room' );
 
 			echo esc_html( $prefix . $main . $suffix );
 
-			if ( $is_sync_available && ! $master_status ) {
+			if ( $is_sync_available && ! $master_status && ! $download_active ) {
 				$description = esc_html__( 'A shared room basket is currently available for you to sync products into your basket from the room.', 'myvideoroom' );
 			}
 
@@ -91,17 +91,19 @@ return function (
 		if ( $basket_list ) {
 			?>
 		<div class="mvr-button-rail">
-					<?php
-					if ( ! $download_active ) {
-						$delete_basket_nonce = wp_create_nonce( WooCommerce::SETTING_DELETE_BASKET );
-						$nav_button_filter   = Factory::get_instance( HostManagement::class )->master_button( $room_name, true );
-						$nav_button_filter  .= Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name, true );
-						$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce, null, 'mvr-main-button-cancel' );
-						//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-						echo $nav_button_filter;
-					}
+			<?php
+			if ( ! $download_active ) {
+				$delete_basket_nonce = wp_create_nonce( WooCommerce::SETTING_DELETE_BASKET );
+				$nav_button_filter   = Factory::get_instance( HostManagement::class )->master_button( $room_name, true );
+				$nav_button_filter  .= Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name, true );
+				$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce, null, 'mvr-main-button-cancel' );
+			} elseif ( $download_active ) {
+				$nav_button_filter = Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name, true );
+			}
+			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
+			echo $nav_button_filter;
 
-					?>
+			?>
 		</div>
 
 		<table id="basket-video-host-wrap-item" class="wp-list-table widefat plugins myvideoroom-table-adjust">
@@ -153,8 +155,8 @@ return function (
 
 			?>
 		</p>
+	</div>
 </div>
-
 			<?php
 		}
 

@@ -288,7 +288,7 @@
 			function(event){
 				event.stopPropagation();
 				event.preventDefault();
-			
+
 				$( '#mvr-video' ).click();
 			}
 		);
@@ -296,7 +296,7 @@
 			function(event){
 				event.stopPropagation();
 				event.preventDefault();
-			
+
 				$( '#mvr-video' ).click();
 			}
 		);
