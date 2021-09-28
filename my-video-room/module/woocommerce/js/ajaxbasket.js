@@ -117,8 +117,11 @@
 						if (state_response.settingchange == 'change' ) {
 
 							if (confirm( 'The Room Host has made a change to the room that will require you to reconnect your call - do you want to do this ?' )) {
-								// Save it!
-
+	
+								let exitbutton = document.querySelector("#Reset_app__30V6t > div.Interface_interface__26TVe.undefined > div.Interface_reception__3IXL8 > button");
+								if (exitbutton){
+									exitbutton.click();
+								}
 								videosetting.html( state_response.videosetting );
 								securitysetting.html( state_response.securitysetting );
 								icondisplay.html( state_response.icons );

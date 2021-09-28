@@ -3,7 +3,9 @@
  * This is used for breakpoints above 640px width
  * @package MyVideoRoomPlugin
  */
-
+ .entry-content{
+	 text-decoration: none;
+ }
 .myvideoroom-mobile-img-adjust{
 	min-width: 100px;
 	margin-left: auto;
@@ -198,6 +200,7 @@
 
 .myvideoroom-table-adjust {
 	font-size: smaller;
+	border-bottom: 1px !important;
 }
 
 .mvr-clear {

@@ -52,7 +52,7 @@ return function (
 			alt="" />
 	</header>
 
-	<nav class="nav-tab-wrapper">
+	<nav class="myvideoroom-nav-tab-wrapper">
 		<ul>
 			<?php
 			foreach ( $pages as $page_settings ) {
