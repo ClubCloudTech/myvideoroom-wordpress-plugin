@@ -246,7 +246,11 @@
 	}
 
 	var init = function(){
-
+		let item = document.querySelector("#Reset_app__30V6t > form > input[type=submit]");
+		if ( item ) {
+			item.click();
+		}
+		
 		$( '.myvideoroom-woocommerce-basket-ajax' ).on(
 			'click',
 			handleEvent
@@ -319,6 +323,7 @@
 					if ($( '#shoppingbasket' ).length) {
 						document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
 					}
+				
 				} else {
 					if ($( '#shoppingbasket' ).length) {
 						document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );

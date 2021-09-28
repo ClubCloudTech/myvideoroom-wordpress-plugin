@@ -1,6 +1,7 @@
 window.addEventListener("load", function(){
  
 function init(){
+	
 	jQuery(function($) {
 	
 	var loginActive = document.getElementsByClassName( 'mvr-login-form' );
