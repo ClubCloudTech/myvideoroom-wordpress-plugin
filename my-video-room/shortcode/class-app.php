@@ -273,6 +273,7 @@ class App {
 		if ( isset( $user_preference_object ) ) {
 			$user_name  = $user_preference_object['display-name'];
 			$avatar_url = $user_preference_object['picture-url'];
+
 		}
 
 		$custom_jitsi_server = true;
@@ -287,7 +288,7 @@ class App {
 		$host              = $shortcode_constructor->is_host();
 
 		if ( SiteDefaults::SOUNDCHECK_ROOM_NAME === $room_name ) {
-			$user_name = 'Soundcheck User';
+			$user_name = 'Soundcheck';
 		}
 
 		return <<<EOT

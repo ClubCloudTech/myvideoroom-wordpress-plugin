@@ -194,25 +194,34 @@ class RoomAdmin {
 	 */
 	public function update_main_video_window( UserVideoPreferenceEntity $room_object, string $original_room_name ) {
 
-		$user_id                 = $room_object->get_user_id();
-		$room_name               = $room_object->get_room_name();
-		$video_template          = $room_object->get_layout_id();
-		$reception_id            = $room_object->get_reception_id();
-		$reception_enabled       = $room_object->is_reception_enabled();
-		$reception_video_enabled = $room_object->is_reception_video_enabled();
-		$reception_video_url     = $room_object->get_reception_video_url_setting();
-		$show_floorplan          = $room_object->is_floorplan_enabled();
+		$room_name      = $room_object->get_room_name();
+		$video_template = $room_object->get_layout_id();
+		$host_status    = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( $original_room_name )
 			->set_original_room_name( $room_name )
 			->set_layout( $video_template );
 
-		$host_status = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
-
 		if ( $host_status ) {
 			$myvideoroom_app->set_as_host();
+		} else {
+			$reception_enabled  = $room_object->is_reception_enabled();
+			$reception_template = $room_object->get_reception_id();
+			$show_floorplan     = $room_object->is_floorplan_enabled();
+		}
 
+		if ( $show_floorplan ) {
+			$myvideoroom_app->enable_floorplan();
+		}
+
+		if ( $reception_enabled && $reception_template ) {
+			$myvideoroom_app->enable_reception()->set_reception_id( $reception_template );
+			$reception_video_enabled = $room_object->is_reception_video_enabled();
+			$video_reception_url     = $room_object->get_reception_video_url_setting();
+			if ( $reception_video_enabled ) {
+				$myvideoroom_app->set_reception_video_url( $video_reception_url );
+			}
 		}
 
 		return do_shortcode( $myvideoroom_app->output_shortcode_text() );
