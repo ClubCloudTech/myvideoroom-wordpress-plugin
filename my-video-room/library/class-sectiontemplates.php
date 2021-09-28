@@ -109,12 +109,12 @@ class SectionTemplates {
 					?>
 				</a>
 			</li>
-		</ul>
+
 				<?php
 				$active = null;
 			}
 			?>
-
+	</ul>
 	</nav>
 	<div id="mvr-above-article-notification"></div>
 
