@@ -22,14 +22,16 @@ return function (
 	$display_name = $room_object->get_user_display_name();
 	$user_picture = $room_object->get_user_picture_url();
 
+	$output = '<div id="mvr-name-greeting" >';
 	if ( $display_name && $user_picture ) {
-		$output  = '<strong>' . esc_html__( 'Welcome ', 'myvideoroom' ) . $display_name . '</strong>';
+		$output .= '<strong>' . esc_html__( 'Welcome ', 'myvideoroom' ) . $display_name . '</strong>';
 		$all_set = true;
 	} elseif ( $display_name ) {
-		$output = '<strong>' . esc_html__( 'Welcome ', 'myvideoroom' ) . $display_name . '</strong>';
+		$output .= '<strong>' . esc_html__( 'Welcome ', 'myvideoroom' ) . $display_name . '</strong>';
 	} else {
-		$output = '<strong>' . esc_html__( 'Welcome, let\'s get you setup', 'myvideoroom' ) . '</strong>';
+		$output .= '<strong>' . esc_html__( 'Welcome, let\'s get you setup', 'myvideoroom' ) . '</strong>';
 	}
+	$output .= '</div>';
 
 	ob_start();
 
@@ -57,7 +59,7 @@ return function (
 	<?php
 	if ( $all_set ) {
 		?>
-	<div id="myvideoroom-all-set" class="myvideoroom-center">
+	<div id="myvideoroom-all-set" class="myvideoroom-center mvr-mobile-top-margin">
 		<h2><?php esc_html_e( 'You\'re good to go', 'my-video-room' ); ?></h2>
 		<p id="myvideoroom-allset-description" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'You\'re all set to start your meeting. You can start your meeting, or check your sound first', 'myvideoroom' ); ?>

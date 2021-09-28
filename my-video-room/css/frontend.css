@@ -1,9 +1,14 @@
 /**
  * The frontend css for MyVideoRoom
- *
+ * This is used for breakpoints above 640px width
  * @package MyVideoRoomPlugin
  */
 
+.myvideoroom-mobile-img-adjust{
+	min-width: 100px;
+	margin-left: auto;
+	border-bottom: none;
+}
 .myvideoroom-nav-tab-wrapper {
 
 	margin-bottom: 4px;
@@ -252,12 +257,16 @@ opacity: 1;
 	border-color: #27241c;
 	border-width: 2px;
 	text-decoration: none;
+	padding: 5px;
 }
 .mvr-ul-style-menu span{
 	font-size: 28px;
 	color: rgb(58, 45, 45);
 }
-
+.mvr-nav-settingstabs-outer-wrap {
+	border: 1px solid #c3c4c7;
+	padding: 10px 10px 10px 10px;
+}
 .myvideoroom-dashicons, .myvideoroom-dashicons-before:before {
 	font-family: dashicons;
 	display: inline-block;

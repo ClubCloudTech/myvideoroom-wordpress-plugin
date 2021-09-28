@@ -565,7 +565,6 @@ class AjaxHandler {
 					$response['securitysetting'] = Factory::get_instance( RoomAdmin::class )->update_security_settings_window( $security_change_heartbeat );
 
 				}
-
 				return \wp_send_json( $response );
 
 			case 'reload':

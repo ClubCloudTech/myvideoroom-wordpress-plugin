@@ -1,10 +1,15 @@
 /**
- * The frontend css for MyVideoRoom
+ * The frontend css for MyVideoRoom Mobiles
+ * This is used for breakpoints below 640px width
  *
  * @package MyVideoRoomPlugin
  */
 
-.myvideoroom-nav-tab-wrapper {
+td {
+    border-bottom: 0px;
+}
+
+ .myvideoroom-nav-tab-wrapper {
 
 	margin-bottom: 4px;
 	overflow: hidden;
@@ -14,35 +19,28 @@
 	margin: 0;
 	padding: 0;
 	white-space: nowrap;
-	display: contents;
 }
 
 .myvideoroom-nav-tab-wrapper li {
 	display: inline-block;
 	margin: 0;
-	padding: 0;
+	padding: 1px;
 	z-index: 2;
-}
-
-.mvr-admin-page-wrap {
-	border: 1px solid #c3c4c7;
-	margin-top: 0;
-	padding: 8px;
 	background: white;
 }
-
-.myvideoroom-content-tab {
-	float: left;
-	width: 93%;
-
-
+#basket-video-host-wrap-table, #mvr-main-basket-window {
+	width: 100%;
 }
 
 .myvideoroom-center {
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 50%;
+	width: 100%;
+  }
+
+  .myvideoroom-button-separation {
+	margin-left: 5px;
+	margin-right: 5px;
+
   }
 
 .myvideoroom-nav-tab-wrapper li:after {
@@ -58,7 +56,7 @@
 }
 
 .myvideoroom-nav-tab-wrapper li:last-child:after {
-	width: 1000%;
+	width: 100%;
 }
 
 .myvideoroom-nav-tab-wrapper li a {
@@ -70,6 +68,7 @@
 
 .myvideoroom-nav-tab-wrapper li a.nav-tab-active {
 	font-weight: 500;
+	background: white;
 }
 
 .myvideoroom-nav-tab-wrapper li a:not(.nav-tab-active) {
@@ -102,8 +101,26 @@
 	width:  50px;
 	height: 50px;
 }
+.myvideoroom-image-result {
+	color: #fff;
+	border-radius: 80px;
+	max-width: 120px;
+	border:solid;
+	border-width: 3px;
+}
+.myvideoroom-image-result {
+	color: #fff;
+	width:  180px;
+	height: 101px;
+}
+.myvideoroom-button-notification {
+	text-align: right;
+}
 
-
+.myvideoroom-welcome-page {
+	background: #fff;
+}
+/* Create three unequal columns that floats next to each other */
 .mvr-table-row {
 	border-color: #C6C0AD;
 	border-style: solid;
@@ -113,41 +130,245 @@
 	margin: 3px 3px 3px 3px;
 	padding: 2px 2px 2px 2px;
 	transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+	display: flex;
 }
 
-  .mvr-left, .mvr-right {
+.mvr-input-box{
+	padding: 4px;
+}
+  .mvr-left {
 	width: 50%;
+	float: left;
+  }
+
+  .mvr-right {
+	width: 50%;
+	float: right;
+	text-align: -webkit-right;
+
   }
 
   .mvr-middle {
 	width: 50%;
+	display: flex;
   }
 
-  /* Clear floats after the columns */
+  .mvr-shopping-basket-frame {
+	width: 90%;
+
+  }
+
+  .mvr-notification-align {
+	align-self: center;
+	margin: 0;
+	margin-right: 5px;
+  }
+
+  .mvr-flex {
+	  display: flex;
+	  margin-top: 5px;
+	  margin-bottom: 5px;
+  }
+
   .mvr-table-row:after {
 	content: "";
 	display: table;
 	clear: both;
   }
 
-  .myvideoroom-dashicons, .myvideoroom-dashicons-before:before {
+  .mvr-admin-page-wrap {
+	border: 1px solid #c3c4c7;
+	margin-top: 0;
+	padding: 8px;
+	background: white;
+}
+
+.myvideoroom-table-adjust {
+	font-size: smaller;
+}
+
+.mvr-clear {
+	clear:both;
+}
+
+#mvr-notification-icons, .mvr-header-title {
+animation: fadeIn 2s;
+opacity: 1;
+}
+
+.myvideoroom-notification-area {
+	background: darkblue;
+	color: white;
+	text-align: center;
+	font-size: 15px;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+
+.mvr-main-button-enabled {
+	background: linear-gradient(#232923, #679e6e);
+	border-radius: 4px;
+	border-width: 2px;
+	cursor: pointer;
+	display: inline-block !important;
+	letter-spacing: -.021em;
+	line-height: 1.82947;
+	min-width: 30px !important;
+	padding: 2px 4px;
+}
+
+.mvr-main-button-enabled a {
+	color: white;
+	font-size: 12px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+.mvr-ul-style-side-menu {
+	box-sizing: border-box;
+	background-color: #e0e0e0;
+	color: #525151;
+	font-size: 20px;
+	line-height: initial;
+	text-decoration: none;
+	display: contents;
+}
+.mvr-ul-style-menu {
+	padding: 3px;
+	box-sizing: border-box;
+	background-color: #e0e0e0;
+	color: #525151;
+	font-size: 20px;
+	line-height: initial;
+	border-style: solid;
+	border-radius: 4px;
+	border-color: #27241c;
+	border-width: 2px;
+	text-decoration: none;
+}
+.mvr-ul-style-menu span{
+	font-size: 28px;
+	color: rgb(58, 45, 45);
+}
+
+.myvideoroom-dashicons, .myvideoroom-dashicons-before:before {
 	font-family: dashicons;
 	display: inline-block;
 	line-height: 1;
 	font-weight: 400;
 	font-style: normal;
-	text-decoration: inherit;
-	text-transform: none;
+	font-size: 22px!important;
 	text-rendering: auto;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	margin-left: 3px;
-	font-size: 27px;
-	margin-right: 3px;
-	vertical-align: top;
+	vertical-align:middle;
 	text-align: center;
-	transition: color .1s ease-in;
+	transition: color .5s ease-in;
 }
+
+.myvideoroom-header-table-left {
+	width: 20%;
+	float:left;
+	text-align: left;
+	padding: 10px;
+	display: flex;
+}
+
+.myvideoroom-header-table-right {
+	width: 80%;
+	float:right;
+	text-align: right;
+}
+
+.myvideoroom-welcome-buttons {
+	background-color: rgb(77, 77, 77)!important;
+	border-radius: 3px!important;
+	color: rgb(255 255 255) !important;
+	font-size: 12px!important;
+	padding: 10px!important;
+	font-weight: 400!important;
+	margin: 5px!important;
+	text-align: -webkit-center!important;
+	vertical-align: middle!important;
+}
+.myvideoroom-welcome-positive {
+	background: linear-gradient(#032979, #1c1c96);
+	border-radius: 3px!important;
+	color: rgb(255 255 255) !important;
+	font-size: 12px!important;
+	padding: 10px!important;
+	font-weight: 400!important;
+	margin: 5px!important;
+	text-align: -webkit-center!important;
+	vertical-align: middle!important;
+}
+
+.mvr-main-button-cancel a {
+	color: white;
+}
+.mvr-main-refresh-button {
+	padding:9px!important;
+	font-weight: 400!important;
+}
+
+.mvr-main-button-cancel {
+	background: linear-gradient(#615858, #b5b5b6);
+	border-radius: 4px;
+	border-width: 2px;
+	cursor: pointer;
+	display: inline-block !important;
+	font-weight: 400;
+	letter-spacing: -.021em;
+	line-height: 1.52947;
+	min-width: 30px !important;
+	padding: 2px 4px;
+}
+
+.mvr-main-button-stop {
+	background: linear-gradient(#e60000, #e84a58)!important;
+}
+.mvr-woocommerce-overlay {
+	border-color: #C6C0AD;
+	border-style: solid;
+	border-width: 1px 1px 1px 1px;
+	box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
+	display: grid;
+	background: white;
+	padding: 10px 10px 10px 10px;
+	transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+}
+.prejoin-preview-dropdown-container div{
+	background: #0376da;
+	border: 1px solid #0376da;
+	display: none!important;
+}
+
+.mvr-form-button {
+	background: -webkit-gradient(linear, left top, left bottom, from(#42a1ec), to(#0070c9));
+	background: -webkit-linear-gradient(#42a1ec, #0070c9);
+	background: linear-gradient(#42a1ec, #0070c9);
+	background-color: #0070c9;
+	border-color: #07c;
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block !important;
+	font-weight: 400;
+	letter-spacing: -.021em;
+	line-height: 1.52947;
+	min-width: 30px !important;
+	padding: 4px 6px;
+	text-align: center !important;
+	white-space: nowrap !important;
+}
+
+.mvr-form-button-max {
+	max-height: 30px;
+	max-width: 125px;
+}
+
 
 .myvideoroom-table-adjust {
 	font-size: smaller;
@@ -158,6 +379,7 @@
 .myvideoroom-mobile-img-adjust{
 	min-width: 170px;
 	margin-left: auto;
+	border-bottom: none;
 }
 .myvideoroom-mobile-table-row-adjust{
 	background-color: rgb(255 255 255 / 38%);
@@ -179,3 +401,29 @@
 	padding: 2px 2px 2px 2px;
 	transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
 }
+.myvideoroom-side-tab {
+	width: 100%;
+}
+.myvideoroom-content-tab {
+	width: 100%;
+}
+.mvr-mobile-top-margin {
+	margin-top: 15px;
+}
+.mvr-nav-settingstabs-outer-wrap {
+	background-color: #f7f7f7;
+	border: 1px solid #c3c4c7;
+	padding: 3px;
+}
+h2{
+	margin-bottom: 10px;
+	font-size: 22px;
+}
+h1{
+	margin-bottom: 10px;
+	font-size: 24px;
+}
+p {
+	margin-bottom: 10px;
+}
+

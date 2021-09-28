@@ -138,7 +138,7 @@ class SiteDefaults {
 			'myvideoroom-menutab-header',
 			plugins_url( '/css/menutab.css', __FILE__ ),
 			false,
-			$plugin_version . '8'
+			$plugin_version . wp_rand( 1, 20000 )
 		);
 
 		wp_register_style(

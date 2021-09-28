@@ -355,10 +355,17 @@ class RoomSyncDAO {
 				$room_name,
 			)
 		);
+		if ( $wpdb->last_error ) {
+			throw new \Exception( 'Notify User Query Failed' );
+		}
 
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
+		if ( $result ) {
+			return true;
+		} else {
+			return false;
+		}
 
-		return null;
 	}
 
 	/**

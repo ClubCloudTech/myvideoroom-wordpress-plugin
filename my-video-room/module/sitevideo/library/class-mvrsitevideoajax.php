@@ -192,15 +192,6 @@ class MVRSiteVideoAjax {
 		}
 		die();
 	}
-	/** File Directory Support Aseembly.
-	 * Returns current file name of upload directory.
-	 *
-	 * @return string
-	 */
-	private function get_current_directory() {
-		$current_upload_object = wp_get_upload_dir();
-		return $current_upload_object['basedir'] . $current_upload_object['subdir'];
-	}
 
 	/** Current Picture Path
 	 * Returns current file name of upload directory.

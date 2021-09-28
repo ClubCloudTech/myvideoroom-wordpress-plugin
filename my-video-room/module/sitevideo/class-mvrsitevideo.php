@@ -214,7 +214,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-mobile-css',
 					\plugins_url( '/css/frontend-mobile.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . '16',
+					Factory::get_instance( Version::class )->get_plugin_version() . wp_rand( 1, 10000 ),
 					'(max-width: 640px)'
 				);
 			},
