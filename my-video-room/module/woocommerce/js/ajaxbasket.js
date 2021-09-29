@@ -117,9 +117,9 @@
 						if (state_response.settingchange == 'change' ) {
 
 							if (confirm( 'The Room Host has made a change to the room that will require you to reconnect your call - do you want to do this ?' )) {
-	
-								let exitbutton = document.querySelector("#Reset_app__30V6t > div.Interface_interface__26TVe.undefined > div.Interface_reception__3IXL8 > button");
-								if (exitbutton){
+
+								let exitbutton = document.querySelector( "#Reset_app__30V6t > div.Interface_interface__26TVe.undefined > div.Interface_reception__3IXL8 > button" );
+								if (exitbutton) {
 									exitbutton.click();
 								}
 								videosetting.html( state_response.videosetting );
@@ -249,7 +249,7 @@
 	}
 
 	var init = function(){
-		
+
 		$( '.myvideoroom-woocommerce-basket-ajax' ).on(
 			'click',
 			handleEvent
@@ -322,7 +322,7 @@
 					if ($( '#shoppingbasket' ).length) {
 						document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
 					}
-				
+
 				} else {
 					if ($( '#shoppingbasket' ).length) {
 						document.getElementById( "shoppingbasket" ).classList.add( 'mvr-hide' );
@@ -418,6 +418,5 @@
 		);
 		init();
 	}
-	
 
 })( jQuery );

@@ -1,8 +1,8 @@
 <?php
 /**
- * Outputs Formatted Sync Table for WooCommerce Shopping Cart - this is used inside the Main table
+ * Outputs Formatted Room Category Edit Table for WooCommerce Category Management.
  *
- * @package MyVideoRoomPlugin\Module\WooCommerce\Views\Sync-Table-Output.php
+ * @package MyVideoRoomPlugin\Module\WooCommerce\Views\Room-Management-Output.php
  */
 
 use MyVideoRoomPlugin\Factory;
@@ -28,32 +28,21 @@ return function (
 	ob_start();
 
 	if ( ! $room_basket_archive && $basket_list ) {
-		$accept_all_nonce  = wp_create_nonce( WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
-		$nav_button_filter = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_ACCEPT_ALL_QUEUE, esc_html__( 'Accept All items', 'myvideoroom' ), $room_name, $accept_all_nonce, WooCommerce::SETTING_ACCEPT_ALL_QUEUE );
-
-		$message            = esc_html__( 'Items Shared with You', 'myvideoroom' );
-		$reject_all_nonce   = wp_create_nonce( WooCommerce::SETTING_REJECT_ALL_QUEUE );
-		$nav_button_filter .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REJECT_ALL_QUEUE, esc_html__( 'Delete All items', 'myvideoroom' ), $room_name, $reject_all_nonce, WooCommerce::SETTING_REJECT_ALL_QUEUE, 'mvr-main-button-cancel' );
+		$message = esc_html__( 'Items in Room Store', 'myvideoroom' );
 
 	} else {
-		$message = null;
+		$message = esc_html__( 'Store is Empty', 'myvideoroom' );
 	}
 
 	if ( $basket_list ) {
 		?>
-<div id="basket-video-host-wrap-table<?php echo esc_textarea( $room_basket_archive ); ?>" class="mvr-nav-settingstabs-outer-wrap">
-	<h1>
+<div id="roommanage-video-host-wrap-table" class="mvr-nav-settingstabs-outer-wrap">
+	<h2>
 		<?php
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped Above.
 		echo $message;
 		?>
-	</h1>
-	<div>
-				<?php
-				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
-				echo $nav_button_filter;
-				?>
-	</div>
+	</h2>
 
 	<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
 		<thead>
@@ -71,17 +60,13 @@ return function (
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Subtotal', 'myvideoroom' ); ?>
-				</th>
-
-				<th scope="col" class="manage-column column-name column-primary">
 					<?php esc_html_e( 'Actions', 'myvideoroom' ); ?>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php
-			$basket_item_render = require __DIR__ . '/queue-item.php';
+			$basket_item_render = require __DIR__ . '/store-manage-item.php';
 			foreach ( $basket_list as $basket ) {
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $basket_item_render( $basket, $room_name, $room_basket_archive );

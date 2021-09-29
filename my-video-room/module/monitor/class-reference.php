@@ -26,13 +26,13 @@ class Reference {
 	public function get_shortcode_reference(): Shortcode {
 		$shortcode_reference = new Shortcode(
 			Module::SHORTCODE_TAG,
-			\__( 'Monitor widget', 'myvideoroom' ),
-			\__( 'This shows the number of people currently waiting in a room', 'myvideoroom' ),
+			\esc_html__( 'Monitor widget', 'myvideoroom' ),
+			\esc_html__( 'This shows the number of people currently waiting in a room', 'myvideoroom' ),
 			array(
 				'name'        => 'MyVideoRoom',
-				'text-empty'  => \__( 'Nobody is currently waiting', 'myvideoroom' ),
-				'text-single' => \__( 'One person is waiting in reception', 'myvideoroom' ),
-				'text-plural' => \__( '{{count}} people are waiting in reception', 'myvideoroom' ),
+				'text-empty'  => \esc_html__( 'Nobody is currently waiting', 'myvideoroom' ),
+				'text-single' => \esc_html__( 'One person is waiting in reception', 'myvideoroom' ),
+				'text-plural' => \esc_html__( '{{count}} people are waiting in reception', 'myvideoroom' ),
 			)
 		);
 

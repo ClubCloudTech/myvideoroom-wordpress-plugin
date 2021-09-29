@@ -648,29 +648,41 @@ class ShoppingBasket {
 	 *
 	 * @param int    $record_id -  RecordID to return.
 	 * @param string $room_name -  Name of Room.
+	 * @param bool   $have_product_id - Flag to indicate product ID is known and not to retrieve from DB (used for Room Category views).
 	 *
 	 * @return string|Array depending on return flag
 	 */
-	public function get_individual_cart_object( int $record_id = null, string $room_name = null ):?array {
+	public function get_individual_cart_object( int $record_id = null, string $room_name = null, bool $have_product_id = null ):?array {
 
 		// Handling Object if passed in. If not getting it direct.
 
 		$cart_item = Factory::get_instance( WooCommerceVideoDAO::class )->get_record_by_record_id( $record_id );
 
-		if ( $cart_item ) {
+		if ( $cart_item || $have_product_id ) {
+			$basket_array = array();
 
-			$basket_array                 = array();
-			$product_id                   = $cart_item->get_product_id();
-			$basket_array['record_id']    = $record_id;
-			$basket_array['product_id']   = $product_id;
-			$product                      = wc_get_product( $product_id );
-			$basket_array['quantity']     = $cart_item->get_quantity();
-			$basket_array['variation_id'] = $cart_item->get_variation_id();
-			$basket_array['name']         = $product->get_name();
-			$basket_array['image']        = $product->get_image();
-			$basket_array['price']        = WC()->cart->get_product_price( $product );
-			$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item->get_quantity() );
-			$basket_array['link']         = $product->get_permalink( $cart_item );
+			if ( $have_product_id ) {
+				$product_id                 = $record_id;
+				$basket_array['record_id']  = $record_id;
+				$basket_array['product_id'] = $product_id;
+				$product                    = wc_get_product( $product_id );
+				$basket_array['name']       = $product->get_name();
+				$basket_array['image']      = $product->get_image();
+				$basket_array['price']      = $product->get_price();
+				$basket_array['link']       = $product->get_permalink( $cart_item );
+			} else {
+				$product_id                   = $cart_item->get_product_id();
+				$basket_array['record_id']    = $record_id;
+				$basket_array['product_id']   = $product_id;
+				$product                      = wc_get_product( $product_id );
+				$basket_array['quantity']     = $cart_item->get_quantity();
+				$basket_array['variation_id'] = $cart_item->get_variation_id();
+				$basket_array['name']         = $product->get_name();
+				$basket_array['image']        = $product->get_image();
+				$basket_array['price']        = WC()->cart->get_product_price( $product );
+				$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item->get_quantity() );
+				$basket_array['link']         = $product->get_permalink( $cart_item );
+			}
 		}
 		if ( $room_name ) {
 			$basket_array['am_i_host']         = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );

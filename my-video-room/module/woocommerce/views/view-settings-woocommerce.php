@@ -17,15 +17,14 @@
 
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 return function () {
 	ob_start();
 
 	?>
-	<div id="outer" class="mvr-admin-page-wrap">
-	<h1>WooCommerce Integration</h1>
+<div id="outer" class="mvr-admin-page-wrap">
+	<h1><?php esc_html_e( 'WooCommerce Store Integration', 'my-video-room' ); ?></h1>
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 		<ul>
 			<li>
@@ -42,7 +41,7 @@ return function () {
 
 		</ul>
 	</nav>
-	<br><br>
+	<br>
 	<div id="video-host-wrap" class="mvr-admin-page-wrap">
 		<article id="defaultperms">
 			<p>
@@ -67,7 +66,7 @@ return function () {
 			<?php Factory::get_instance( ModuleConfig::class )->module_activation_button( WooCommerce::MODULE_WOOCOMMERCE_BASKET_ID ); ?>
 		</article>
 	</div>
-
+</div>
 	<?php
 	return ob_get_clean();
 };

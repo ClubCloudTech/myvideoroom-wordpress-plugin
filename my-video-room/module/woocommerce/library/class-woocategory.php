@@ -66,6 +66,34 @@ class WooCategory {
 		}
 	}
 
+	/**
+	 * Get ID of Products in Category of Room.
+	 *
+	 * @param string $room_name -  Name of Room.
+	 * @return ?array - an array of product IDs in the room.
+	 */
+	public function get_product_ids_by_category( string $room_name ): ?array {
+		$category_id = $this->get_category_id_by_room_name( $room_name );
+		if ( ! $category_id ) {
+			return null;
+		}
+		$products = new \WP_Query(
+			array(
+				'post_type'   => 'product',
+				'post_status' => 'publish',
+				'fields'      => 'ids',
+				'tax_query'   => array(
+					'relation' => 'AND',
+					array(
+						'taxonomy' => 'product_cat',
+						'field'    => 'term_id',
+						'terms'    => $category_id,
+					),
+				),
+			)
+		);
+		return $products->posts;
+	}
 
 
 	/**

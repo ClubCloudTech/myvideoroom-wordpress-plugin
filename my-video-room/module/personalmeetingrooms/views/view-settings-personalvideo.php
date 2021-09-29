@@ -93,9 +93,11 @@ return function (): string {
 
 	<div>
 
+	<!-- 
 	<?php
-		Factory::get_instance( ShortcodeDocuments::class )->render_personalmeeting_shortcode_docs();
+		// Factory::get_instance( ShortcodeDocuments::class )->render_personalmeeting_shortcode_docs();
 	?>
+	 -->
 	</div>
 
 

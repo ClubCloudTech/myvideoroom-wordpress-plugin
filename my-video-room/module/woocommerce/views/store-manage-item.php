@@ -28,7 +28,7 @@ return function (
 		<td class="plugin-title column-primary mvr-icons myvideoroom-mobile-img-adjust myvideoroom-mobile-table-row-adjust"><?php echo $item['image']; ?></td>
 
 		<td class="myvideoroom-mobile-table-row-adjust">
-			<a href="<?php echo $item['link']; ?>"
+			<a href="<?php echo esc_url( $item['link'] ); ?>"
 					title="<?php esc_html_e( 'View Product', 'myvideoroom' ); ?>"
 					target="_blank"
 
@@ -37,48 +37,28 @@ return function (
 
 
 		<td class="column-description myvideoroom-mobile-table-row-adjust">
-			<?php echo $item['price'] . ' x ' . $item['quantity']; ?>
+			<?php
+			if ( $item['price'] ) {
+				echo esc_textarea( $item['price'] );
+			} else {
+				esc_html_e( 'Out of Stock', 'myvideoroom' );
+			}
+
+			?>
 		</td>
-		<td class="plugin-title column-primary myvideoroom-mobile-table-row-adjust">
-		<?php echo $item['subtotal']; ?>
-		</td>
+
 		<td class="myvideoroom-mobile-table-row-adjust">
-				<?php
-
-				if ( ! $item['am_i_downloading'] ) {
-					if ( ! $room_basket_archive ) {
-						?>
-				<a href=""
-					class="mvr-icons myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
-					data-record-id="<?php echo esc_attr( $item['record_id'] ); ?>"
-					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT_QUEUE ); ?>"
-					data-room-name="<?php echo esc_attr( $room_name ); ?>"
-					title="<?php esc_html_e( 'Reject Item - Do not add to your basket', 'myvideoroom' ); ?>"
-					target="_blank"
-
-				><span class="myvideoroom-dashicons dashicons-dismiss"></span></a>
-						<?php
-					}
-					?>
-
 				<a href=""
 					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
-					data-record-id="<?php echo esc_attr( $item['record_id'] ); ?>"
-					data-quantity="<?php echo esc_attr( $item['quantity'] ); ?>"
-					data-variation-id="<?php echo esc_attr( $item['variation_id'] ); ?>"
 					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_ADD_PRODUCT ); ?>"
 					data-room-name="<?php echo esc_attr( $room_name ); ?>"
 					data-auth-nonce="<?php echo esc_attr( wp_create_nonce( WooCommerce::SETTING_ADD_PRODUCT . $item['product_id'] ) ); ?>"
-					title="<?php esc_html_e( 'Accept Item- add it to your basket', 'myvideoroom' ); ?>"
+					title="<?php esc_html_e( 'Remove this item from the room', 'myvideoroom' ); ?>"
 					target="_blank"
-				><span class="myvideoroom-dashicons dashicons-yes-alt"></span></a>
+				><span class="myvideoroom-dashicons dashicons-dismiss"></span></a>
 
-					<?php
-				} else {
-					echo esc_html_e( 'Basket is Auto Syncing' );
-				}
-				?>
+
 		</td>
 	</tr>
 
