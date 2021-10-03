@@ -81,6 +81,44 @@ class ShopView {
 	}
 
 	/**
+	 * Delete Category from Product
+	 *
+	 * @param string $product_id - Object of Room Info.
+	 * @param string $room_name - Object of Room Info.
+	 * @return bool
+	 */
+	public function delete_category_from_product( string $product_id, string $room_name ): bool {
+
+		$term_to_remove = Factory::get_instance( WooCategory::class )->get_category_id_by_room_name( $room_name );
+		if ( ! $term_to_remove ) {
+			return false;
+		}
+
+		$term_ids = array();
+		$terms    = wp_get_object_terms( intval( $product_id ), 'product_cat' );
+		if ( count( $terms ) > 0 ) {
+			foreach ( $terms as $item ) {
+				$term_ids[] = $item->term_id;
+			}
+		} else {
+			return false;
+		}
+
+		$term_ids = array();
+		$terms    = wp_get_object_terms( $product_id, 'product_cat' );
+		if ( count( $terms ) > 0 ) {
+			foreach ( $terms as $item ) {
+				if ( $term_to_remove !== $item->term_id ) {
+					$term_ids[] = $item->term_id;
+				}
+			}
+		}
+
+		wp_set_object_terms( $product_id, $term_ids, 'product_cat' );
+		return true;
+	}
+
+	/**
 	 * Has Shop Size Changed?
 	 *
 	 * @param string $room_name - Object of Room Info.

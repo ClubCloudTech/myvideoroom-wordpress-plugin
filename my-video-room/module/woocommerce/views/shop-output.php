@@ -25,23 +25,31 @@ return function (
 	bool $host_status = null,
 	string $room_admin = null
 ): string {
+
 	ob_start();
+
 	?>
 <div id="basket-video-host-wrap-shop" class="mvr-nav-settingstabs-outer-wrap">
 	<div class="mvr-storefront-master">
 		<div id="storeid" data-last-storecount="<?php echo esc_attr( $shop_count ); ?>"></div>
 		<div id="myvideoroom-roomstore-outer" class="mvr-admin-page-wrap">
 			<h2><?php esc_html_e( 'Room Store and Basket', 'my-video-room' ); ?></h2>
-			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-				<ul>
+			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper ">
+				<ul class="mvr-ul-style-side-menu">
 					<li>
-						<a class="nav-tab nav-tab-active" href="#roomstore">
+						<a class="nav-tab nav-tab-active mvr-full-hide" href="#roomstore">
+							<?php esc_html_e( 'Store', 'my-video-room' ); ?>
+						</a>
+						<a class="nav-tab nav-tab-active mvr-mobile-hide" href="#roomstore">
 							<?php esc_html_e( 'Room Store', 'my-video-room' ); ?>
 						</a>
 					</li>
 
 					<li>
-						<a class="nav-tab" href="#basketprevious">
+						<a class="nav-tab mvr-full-hide" href="#basketprevious">
+							<?php esc_html_e( 'Basket', 'my-video-room' ); ?>
+						</a>
+						<a class="nav-tab mvr-mobile-hide" href="#basketprevious">
 							<?php esc_html_e( 'Previously Shared Basket', 'my-video-room' ); ?>
 						</a>
 					</li>
@@ -50,7 +58,10 @@ return function (
 					if ( $host_status ) {
 						?>
 					<li>
-						<a class="nav-tab" href="#roomcontrol">
+						<a class="nav-tab mvr-full-hide" href="#roomcontrol">
+							<?php esc_html_e( 'Manage', 'my-video-room' ); ?>
+						</a>
+						<a class="nav-tab mvr-mobile-hide" href="#roomcontrol">
 							<?php esc_html_e( 'Manage Room Store', 'my-video-room' ); ?>
 						</a>
 					</li>

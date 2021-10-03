@@ -5,10 +5,6 @@
  * @package MyVideoRoomPlugin\Module\WooCommerce\Views\BasketConfirmation.php
  */
 
-use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
-use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
-
 /**
  * Renders a basket operation confirmation
  *
@@ -18,6 +14,7 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
  * @param string $message - Message to Display.
  * @param string $confirmation_button_approved - Button to Display for Approved.
  * @param string $data_for_nonce - Extra parameter like record id, product id etc for strengthening nonce.
+ * @param string $cancel_type - The type of Operation to confirm in cancel button (used to redirect cancel through handlers to non basket window).
  */
 return function (
 	string $operation_type,
@@ -25,7 +22,8 @@ return function (
 	string $auth_nonce,
 	string $message = null,
 	string $confirmation_button_approved,
-	string $data_for_nonce = null
+	string $data_for_nonce = null,
+	string $confirmation_button_cancel
 ): string {
 	// Check Nonce for Operation.
 	$verify = wp_verify_nonce( $auth_nonce, $operation_type . $data_for_nonce );
@@ -40,7 +38,7 @@ return function (
 	ob_start();
 	?>
 
-<div id="mvr-basket-section" class=" mvr-woocommerce-basket mvr-nav-settingstabs-outer-wrap mvr-table-row myvideoroom-welcome-page">
+<div id="mvr-basket-section-confirmation" class=" mvr-woocommerce-basket mvr-nav-settingstabs-outer-wrap mvr-table-row myvideoroom-welcome-page">
 	<?php
 	echo sprintf(
 	/* translators: %s is the message variant translated above */
@@ -50,8 +48,6 @@ return function (
 		),
 		esc_html( $message )
 	);
-	// Confirmation Cancel Button.
-	$confirmation_button_cancel = Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Cancel', 'my-video-room' ), $room_name, null, null, 'mvr-main-button-cancel' );
 
 	?>
 

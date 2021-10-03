@@ -68,19 +68,22 @@ class ShoppingBasket {
 	/**
 	 * Render Confirmation Pages
 	 *
-	 * @param  string $action_type - The type of Operation to confirm.
+	 * @param string $action_type - The type of Operation to confirm.
 	 * @param string $room_name -  Name of Room.
-	 * @param  string $auth_nonce - Authentication Nonce.
+	 * @param string $auth_nonce - Authentication Nonce.
 	 * @param string $message - Message to Display.
 	 * @param string $confirmation_button_approved - Button to Display for Approved.
 	 * @param string $data_for_confirmation - Extra parameter like record id, product id etc for strengthening nonce.
+	 * @param string $target_window - the destination handler function (used to allow same functions to return to different windows in Ajax).
 	 * @return string
 	 */
-	public function cart_confirmation( string $action_type, string $room_name, string $auth_nonce, string $message, string $confirmation_button_approved, string $data_for_confirmation = null ):string {
+	public function cart_confirmation( string $action_type, string $room_name, string $auth_nonce, string $message, string $confirmation_button_approved, string $data_for_confirmation = null, string $target_window = null ):string {
+
+			$cancel_button = $this->cancel_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Cancel', 'my-video-room' ), null, 'mvr-main-button-cancel', $target_window );
 
 		// Render Confirmation Page View.
 		$render = require __DIR__ . '/../views/basket-confirmation.php';
-		return $render( $action_type, $room_name, $auth_nonce, $message, $confirmation_button_approved, $data_for_confirmation );
+		return $render( $action_type, $room_name, $auth_nonce, $message, $confirmation_button_approved, $data_for_confirmation, $cancel_button, $target_window );
 
 	}
 
@@ -108,16 +111,16 @@ class ShoppingBasket {
 		if ( $store_change_state ) {
 			$title                = esc_html__( 'The Room store has been updated, check it out', 'myvideoroom' );
 			$target_focus_id      = 'mvr-shop';
-			$message              = \esc_html__( ' New Update to Room Store ', 'myvideoroom' );
-			$iconclass            = 'dashicons-store';
+			$message              = \esc_html__( ' Store Update ', 'myvideoroom' );
+			$iconclass            = '';
 			$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
 		}
 		if ( $notification_queue_change_state ) {
-			$title                = esc_html__( 'A Product has been shared with you in the room, check it out', 'myvideoroom' );
+			$title                = esc_html__( 'A Product has been shared with you in the room', 'myvideoroom' );
 			$target_focus_id      = 'mvr-shopping-basket';
 			$message              = \esc_html__( ' Product Shared With You ', 'myvideoroom' );
-			$iconclass            = 'dashicons-cart dashicons-plus';
+			$iconclass            = '';
 			$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
 		}
@@ -413,14 +416,19 @@ class ShoppingBasket {
 	 * @param  string $style - Add a class for the button (optional).
 	 * @param  string $target_id - Adds a class to the button to javascript take an action on.
 	 * @param  string $href_class - Adds a class to the button to javascript take an action on.
+	 * @param  string $target_window - adds a target window element used to switch destination windows.
 	 *
 	 * @return string
 	 */
-	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $product_or_id = null, string $style = null, string $target_id = null, string $href_class = null ): string {
+	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $product_or_id = null, string $style = null, string $target_id = null, string $href_class = null, string $target_window = null ): string {
 
 		$id_text = null;
 		if ( $product_or_id ) {
-			$id_text = ' data-record-id="' . $product_or_id . '" ';
+			$id_text .= ' data-record-id="' . $product_or_id . '" ';
+		}
+
+		if ( $target_window ) {
+			$id_text .= ' data-target="' . $target_window . '" ';
 		}
 
 		if ( ! $style ) {
@@ -433,7 +441,33 @@ class ShoppingBasket {
 		</button>
 		';
 	}
+	/**
+	 * Render the Basket Nav Bar Button
+	 *
+	 * @param  string $button_type - Feedback for Ajax Post.
+	 * @param  string $button_label - Label for Button.
+	 * @param  string $style - Add a class for the button (optional).
+	 * @param  string $target_id - Adds a class to the button to javascript take an action on.
+	 * @param  string $target_window - adds a target window element used to switch destination windows.
+	 *
+	 * @return string
+	 */
+	public function cancel_nav_bar_button( string $button_type, string $button_label, string $style = null, string $target_id = null, string $target_window = null ): string {
 
+		$id_text = null;
+
+		if ( $target_window ) {
+			$id_text = ' data-target="' . $target_window . '" ';
+		}
+
+		$style .= ' ' . $target_id;
+
+		return '
+		<button id="' . $target_id . '" class="' . $style . '" data-target="' . $target_window . '">
+		<a href="" data-input-type="' . $button_type . '" ' . $id_text . ' class=" ' . $style . ' ">' . $button_label . '</a>
+		</button>
+		';
+	}
 
 	/**
 	 * Render the Product Share Nav Bar Button
@@ -445,10 +479,14 @@ class ShoppingBasket {
 	 * @param string $quantity - Product Quantity.
 	 * @param string $product_id - Product ID.
 	 * @param string $variation_id - Variation ID.
+	 * @param string $target_window - The target dataframe to specify window return handling.
 	 *
 	 * @return string
 	 */
-	public function basket_product_share_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $quantity, string $product_id, string $variation_id ):string {
+	public function basket_product_share_button( string $button_type, string $button_label, string $room_name, string $nonce = null, string $quantity, string $product_id, string $variation_id, string $target_window = null ):string {
+		if ( $target_window ) {
+			$item = ' data-target="' . $target_window . '"';
+		}
 
 		return '
 		<button class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax">
@@ -457,7 +495,8 @@ class ShoppingBasket {
 		 data-room-name="' . $room_name . '"
 		 data-quantity="' . $quantity . '"
 		 data-variation-id="' . $variation_id . '"
-		 data-product-id="' . $product_id . '"
+		 data-product-id="' . $product_id . '" 
+		 ' . $item . ' 
 		 class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
 		</button>
 		';

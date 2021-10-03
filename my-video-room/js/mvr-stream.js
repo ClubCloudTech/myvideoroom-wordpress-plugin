@@ -150,7 +150,10 @@ function imageUpload(event){
 								if (state_response.errormessage){
 									console.log(state_response.errormessage);
 								}
-								document.getElementById("mvr-top-notification").innerHTML += '<br><h3>' + state_response.message + '</h3><br>';
+								let notify = document.getElementById("mvr-top-notification");
+								if (typeof notify !== null ){
+									notify.innerHTML += '<br><h3>' + state_response.message + '</h3><br>';
+								}
 								$( '#vid-up' ).prop('value', 'Saved !');
 							},
 							error: function ( response ){
@@ -450,15 +453,15 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 					processData: false,
 					data: form_data,
 					success: function (response) {
-						// Hard Delete of Existing Container to Avoid Duplication.
-						container.empty();
 						var state_response = JSON.parse( response );
-						// Redraw Container.
-						container.html( state_response.mainvideo );
+						
+						if ( state_response.mainvideo ) {
+							refreshTarget( container, state_response.mainvideo );
+						}
+
 						if (state_response.errormessage){
 							console.log(state_response.errormessage);
 						}
-
 						resetPanel();
 						init();
 					},
@@ -500,17 +503,17 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 					processData: false,
 					data: form_data,
 					success: function (response) {
-						// Hard Delete of Existing Container to Avoid Duplication.
-						container_parent = container.parent().attr('id');
-						container.empty();
 												
 						var state_response = JSON.parse( response );
 						if (state_response.errormessage){
 							console.log(state_response.errormessage);
 						}
-						// Redraw Container.
-						container.html( state_response.mainvideo );
-						notification.html ( state_response.message );
+						if ( state_response.mainvideo ) {
+							refreshTarget( container, state_response.mainvideo );
+						}
+						if ( state_response.message ) {
+							notification.html( state_response.message );
+						}
 						init();
 							
 						if (window.myvideoroom_tabbed_init) {
@@ -567,16 +570,12 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 							processData: false,
 							data: form_data,
 							success: function (response) {
-								// Hard Delete of Existing Container to Avoid Duplication.
-								container_parent = container.parent().attr('id');
-								container.empty();
-								container.parent().empty();
-								console.log('prereload');
-								$( '#'+container_parent ).prepend('<div class="myvideoroom-app"></div>');
-								container      = $( '.myvideoroom-app' );
 								var state_response = JSON.parse( response );
-								// Redraw Container.
-								container.html( state_response.mainvideo );
+								
+								if ( state_response.mainvideo ) {
+									refreshTarget( container, state_response.mainvideo );
+								}
+
 								if (state_response.errormessage){
 									console.log(state_response.errormessage);
 								}
@@ -625,3 +624,63 @@ init();
 
 
 });
+
+function refreshTarget( source_element, ajax_response, video_skip ) {
+	// Hard Delete of Content in Parent Container to Avoid Duplication in replacement.
+	if ( source_element.length === 0 ) {
+		console.log ('Source Element Empty- Exiting');
+		return false
+	}
+	mainvideo_parent = source_element.parent().attr( 'id' );
+	source_element.remove();
+	source_element.parent().empty();
+	let item = document.getElementById( mainvideo_parent );
+	
+	if ( typeof item !== 'null' ) {
+		item.innerHTML= ajax_response ;
+	}
+	
+	if ( ! video_skip ) {
+		reloadVideo();
+	}
+}
+
+function reloadVideo() {
+	jQuery(function($) {
+// WordPress may add custom headers to the request, this is likely to trigger CORS issues, so we remove them.
+if ($.ajaxSettings && $.ajaxSettings.headers) {
+	delete $.ajaxSettings.headers;
+	}
+	
+		$.ajax(
+			{
+				url: myVideoRoomAppEndpoint + '/asset-manifest.json',
+				dataType: 'json'
+			}
+		).then(
+			function (data) {
+				Object.values( data.files ).map(
+					function (file) {
+						var url = myVideoRoomAppEndpoint + '/' + file;
+	
+						if (file.endsWith( '.js' )) {
+							$.ajax(
+								{
+									beforeSend: function () {},
+									url: url,
+									dataType: 'script'
+								}
+							);
+						} else if (file.endsWith( '.css' )) {
+							$( '<link rel="stylesheet" type="text/css" />' )
+								.attr( 'href', url )
+								.appendTo( 'head' );
+						}
+					}
+				);
+			}
+		);
+		$( '#mvr-video' ).click();
+	});
+	
+}

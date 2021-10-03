@@ -66,7 +66,7 @@ class WooCommerceVideo {
 	 *
 	 * @var string $variation_id - the ID of the Variation.
 	 */
-	private int $variation_id;
+	private string $variation_id;
 
 	/**
 	 * Single Product Sync Switch

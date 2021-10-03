@@ -74,9 +74,14 @@ class WooCommerce {
 	const SETTING_BASKET_REQUEST_PENDING = 'br-pending';
 	const SETTING_BASKET_REQUEST_USER    = 'br-user-placeholder';
 
-	const SETTING_SAVE_PRODUCT_CATEGORY           = 'save-product-category';
-	const SETTING_SAVE_PRODUCT_CATEGORY_CONFIRMED = 'save-product-category-confirmed';
-	const SETTING_SHOPPING_BASKET                 = 'shoppingbasket';
+	const SETTING_SAVE_PRODUCT_CATEGORY             = 'save-product-category';
+	const SETTING_SAVE_PRODUCT_CATEGORY_CONFIRMED   = 'save-product-category-confirmed';
+	const SETTING_DELETE_PRODUCT_CATEGORY           = 'delete-product-category';
+	const SETTING_DELETE_PRODUCT_CATEGORY_CONFIRMED = 'delete-product-category-confirmed';
+	const SETTING_CANCEL_BUTTON_STORE_MANAGER       = 'cancel-store-manager';
+	const SETTING_SHOPPING_BASKET                   = 'shoppingbasket';
+	const SETTING_STORE_MANAGER                     = 'store-manager';
+	const SETTING_STORE_FRAME                       = 'roommanage-video-host-wrap-table';
 
 
 	/**
@@ -166,10 +171,6 @@ class WooCommerce {
 		// Ajax Handler for Basket Management.
 		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
 		\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
-
-		// Ajax Handler for Add to Basket Button.
-		// add_action( 'wp_ajax_woocommerce_ajax_add_to_cart', array( Factory::get_instance( CartAjax::class ), 'woocommerce_ajax_add_to_cart' ) );
-		// add_action( 'wp_ajax_nopriv_woocommerce_ajax_add_to_cart', array( Factory::get_instance( CartAjax::class ), 'woocommerce_ajax_add_to_cart' ) );
 
 		\wp_enqueue_script( 'myvideoroom-admin-tabs' );
 

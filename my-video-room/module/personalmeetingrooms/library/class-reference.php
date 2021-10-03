@@ -12,6 +12,7 @@ namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
 use MyVideoRoomPlugin\Reference\Option;
 use MyVideoRoomPlugin\Reference\Section;
 use MyVideoRoomPlugin\Reference\Shortcode;
+use MyVideoRoomPlugin\Library\ShortcodeDocuments;
 
 /**
  * Class Reference
@@ -45,11 +46,12 @@ class Reference {
 					array( \esc_html__( 'If the color of the icons should be inverted.', 'myvideoroom' ) ),
 					'false'
 				),
+
 			)
 		);
 
 		$shortcode_reference->add_section( $main_section );
-
+		// Factory::get_instance( ShortcodeDocuments::class )->render_personalmeeting_shortcode_docs();
 		return $shortcode_reference;
 	}
 

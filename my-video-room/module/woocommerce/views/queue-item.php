@@ -50,6 +50,7 @@ return function (
 						?>
 				<a href=""
 					class="mvr-icons myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
+					data-target="mvr-shopping-basket" 
 					data-record-id="<?php echo esc_attr( $item['record_id'] ); ?>"
 					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT_QUEUE ); ?>"
 					data-room-name="<?php echo esc_attr( $room_name ); ?>"
@@ -63,6 +64,7 @@ return function (
 
 				<a href=""
 					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
+					data-target="mvr-shopping-basket" 
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 					data-record-id="<?php echo esc_attr( $item['record_id'] ); ?>"
 					data-quantity="<?php echo esc_attr( $item['quantity'] ); ?>"

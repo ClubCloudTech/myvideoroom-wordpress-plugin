@@ -35,6 +35,7 @@ return function (
 	ob_start();
 
 	?>
+<div id="mvr-main-basket-confirmation"></div>
 <div id="mvr-basket-section"
 	class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket myvideoroom-welcome-page mvr-clear">
 
@@ -54,7 +55,7 @@ return function (
 	}
 
 	?>
-	<div id="mvr-main-basket-window" class="mvr-nav-settingstabs-outer-wrap">
+	<div id="mvr-main-basket-window" class="mvr-nav-settingstabs-outer-wrap mvr-separation">
 		<h1 class="mvr-basket-header-title">
 			<?php
 			$prefix = esc_html__( 'Your ', 'my-video-room' );
@@ -94,10 +95,11 @@ return function (
 		<div class="mvr-button-rail">
 			<?php
 			if ( ! $download_active ) {
+				$target              = 'mvr-shopping-basket';
 				$delete_basket_nonce = wp_create_nonce( WooCommerce::SETTING_DELETE_BASKET );
 				$nav_button_filter   = Factory::get_instance( HostManagement::class )->master_button( $room_name, true );
 				$nav_button_filter  .= Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name, true );
-				$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce, null, 'mvr-main-button-cancel' );
+				$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce, null, 'mvr-main-button-cancel', $target, null, $target );
 			} elseif ( $download_active ) {
 				$nav_button_filter = Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name, true );
 			}

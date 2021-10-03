@@ -15,6 +15,7 @@ use MyVideoRoomPlugin\Reference\Option;
 use MyVideoRoomPlugin\Reference\Section;
 use MyVideoRoomPlugin\Reference\Shortcode;
 use MyVideoRoomPlugin\Shortcode\App as AppShortcode;
+use MyVideoRoomPlugin\Library\ShortcodeDocuments;
 
 /**
  * Class App
@@ -193,8 +194,10 @@ class App {
 					),
 					'(' . \esc_html__( 'Use reception setting', 'myvideoroom' ) . ')'
 				),
+
 			)
 		);
+
 		$shortcode_reference->add_section( $host_section );
 
 		return $shortcode_reference;

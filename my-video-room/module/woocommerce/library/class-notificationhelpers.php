@@ -31,7 +31,7 @@ class NotificationHelpers {
 	public function render_client_change_notification( string $title = null, string $target_focus_class, string $message, string $iconclass, string $style = null ): string {
 
 			return '
-			<button id="mvr-button-client-change_' . strval( wp_rand( 1, 20000 ) ) . '" class="myvideoroom-notification-area myvideoroom-button-link ' . $style . '"
+			<button id="mvr-button-client-change_' . strval( wp_rand( 1, 2000 ) ) . '" class="myvideoroom-notification-area myvideoroom-button-link ' . $style . '"
 			title="' . $title . '"
 			data-target=' . $target_focus_class . '
 			>

@@ -414,7 +414,9 @@ opacity: 1;
 	background-color: #f7f7f7;
 	border: 1px solid #c3c4c7;
 	padding: 3px;
+	display: contents;
 }
+
 h2{
 	margin-bottom: 10px;
 	font-size: 22px;
@@ -425,4 +427,20 @@ h1{
 }
 p {
 	margin-bottom: 10px;
+}
+
+.mvr-preferences-paragraph {
+	color: rgb(32, 32, 32);
+	font-size: 12px;
+	font-weight: 500;
+	margin-bottom: 10px !important;
+}
+.mvr-title-header {
+	display: inline !important;
+	margin-bottom: 8px;
+	margin-top: 8px;
+	font-size: medium;
+}
+.mvr-mobile-hide {
+	display: none!important;
 }

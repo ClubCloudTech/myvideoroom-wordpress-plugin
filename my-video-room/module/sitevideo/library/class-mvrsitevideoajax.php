@@ -92,7 +92,6 @@ class MVRSiteVideoAjax {
 		*
 		*/
 		if ( 'refresh_page' === $action_taken ) {
-			$response              = array();
 			$response['mainvideo'] = Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page();
 
 			return \wp_send_json( $response );

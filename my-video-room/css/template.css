@@ -3,21 +3,6 @@
 	display: flex;
 }
 
-.mvr-title-header {
-	display: inline !important;
-	margin-bottom: 10px;
-	margin-top: 10px;
-}
-
-
-.mvr-preferences-paragraph {
-	color: rgb(32, 32, 32);
-	font-size: 13px;
-	font-weight: 500;
-	margin-bottom: 10px !important;
-}
-
-
 .mvr-icons-enabled,
 .mvr-icons-disabled {
 	font-size: 18px;

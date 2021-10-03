@@ -17,6 +17,12 @@
 	overflow: hidden;
 }
 
+.mvr-title-header {
+	display: inline !important;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
 .myvideoroom-nav-tab-wrapper ul {
 	margin: 0;
 	padding: 0;
@@ -159,7 +165,7 @@
   .mvr-right {
 	width: 50%;
 	float: right;
-	text-align: -webkit-right;
+	text-align: end;
 
   }
 
@@ -205,6 +211,10 @@
 
 .mvr-clear {
 	clear:both;
+}
+
+.mvr-separation {
+	margin-top: 10px;
 }
 
 #mvr-notification-icons, .mvr-header-title {
@@ -386,4 +396,14 @@ opacity: 1;
 .mvr-form-button-max {
 	max-height: 30px;
 	max-width: 125px;
+}
+
+.mvr-preferences-paragraph {
+	color: rgb(32, 32, 32);
+	font-size: 12px;
+	font-weight: 500;
+	margin-bottom: 10px !important;
+}
+.mvr-full-hide {
+	display: none!important;
 }

@@ -23,8 +23,8 @@ return function (
 	ob_start();
 
 	?>
-	<div class="mvr-woocommerce-overlay">
-	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
+	<div class="mvr-woocommerce-overlay mvr-nav-shortcode-outer-wrap">
+	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap ">
 		<h2><?php esc_html_e( 'Room Settings for ', 'my-video-room' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );
