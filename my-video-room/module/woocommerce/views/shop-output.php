@@ -34,7 +34,7 @@ return function (
 		<div id="storeid" data-last-storecount="<?php echo esc_attr( $shop_count ); ?>"></div>
 		<div id="myvideoroom-roomstore-outer" class="mvr-admin-page-wrap">
 			<h2><?php esc_html_e( 'Room Store and Basket', 'my-video-room' ); ?></h2>
-			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper ">
+			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper mvr-mobile-size">
 				<ul class="mvr-ul-style-side-menu">
 					<li>
 						<a class="nav-tab nav-tab-active mvr-full-hide" href="#roomstore">
@@ -50,7 +50,7 @@ return function (
 							<?php esc_html_e( 'Basket', 'my-video-room' ); ?>
 						</a>
 						<a class="nav-tab mvr-mobile-hide" href="#basketprevious">
-							<?php esc_html_e( 'Previously Shared Basket', 'my-video-room' ); ?>
+							<?php esc_html_e( 'Previous Basket', 'my-video-room' ); ?>
 						</a>
 					</li>
 

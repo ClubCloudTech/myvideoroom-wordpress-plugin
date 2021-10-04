@@ -192,7 +192,7 @@ class WooCategory {
 		if ( $am_i_host ) {
 
 			return $button .= '
-			<a href=""
+			<a
 			class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 			data-target="mvr-shopping-basket" 
 			data-product-id="' . esc_attr( $item['product_id'] ) . '"

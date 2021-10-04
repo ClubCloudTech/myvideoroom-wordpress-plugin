@@ -48,8 +48,7 @@ return function (
 				if ( ! $item['am_i_downloading'] ) {
 					if ( ! $room_basket_archive ) {
 						?>
-				<a href=""
-					class="mvr-icons myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
+				<a 	class="mvr-icons myvideoroom-sitevideo-delete myvideoroom-woocommerce-basket-ajax"
 					data-target="mvr-shopping-basket" 
 					data-record-id="<?php echo esc_attr( $item['record_id'] ); ?>"
 					data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT_QUEUE ); ?>"
@@ -62,7 +61,7 @@ return function (
 					}
 					?>
 
-				<a href=""
+				<a 
 					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 					data-target="mvr-shopping-basket" 
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"

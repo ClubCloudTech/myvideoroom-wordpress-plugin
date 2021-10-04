@@ -35,7 +35,7 @@ return function (
 	ob_start();
 
 	?>
-<div id="mvr-main-basket-confirmation"></div>
+<div id="mvr-main-basket-confirmation" class = "mvr-welcome-page"></div>
 <div id="mvr-basket-section"
 	class="mvr-nav-settingstabs-outer-wrap mvr-woocommerce-basket myvideoroom-welcome-page mvr-clear">
 

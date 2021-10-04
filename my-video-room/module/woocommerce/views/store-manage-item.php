@@ -46,7 +46,7 @@ return function (
 		?>
 	</td>
 	<td class="myvideoroom-mobile-table-row-adjust">
-		<a href="" class="mvr-icons myvideoroom-woocommerce-basket-ajax"
+		<a  class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 			data-target="<?php echo esc_textarea( WooCommerce::SETTING_STORE_FRAME ); ?>" 
 			data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 			data-input-type="<?php echo esc_attr( WooCommerce::SETTING_DELETE_PRODUCT_CATEGORY ); ?>"
@@ -54,7 +54,7 @@ return function (
 			data-auth-nonce="<?php echo esc_attr( wp_create_nonce( WooCommerce::SETTING_DELETE_PRODUCT_CATEGORY . $item['product_id'] ) ); ?>"
 			title="<?php esc_html_e( 'Remove this item from the room', 'myvideoroom' ); ?>" target="_blank"><span
 				class="myvideoroom-dashicons dashicons-dismiss"></span></a>
-		<a href="" class="mvr-icons myvideoroom-woocommerce-basket-ajax"
+		<a  class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 			data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 			data-quantity="1"
 			data-target="<?php echo esc_textarea( WooCommerce::SETTING_STORE_FRAME ); ?>"

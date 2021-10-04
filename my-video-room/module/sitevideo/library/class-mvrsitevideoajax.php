@@ -82,8 +82,8 @@ class MVRSiteVideoAjax {
 		*/
 		if ( 'check_sound' === $action_taken ) {
 			$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->render_guest_soundcheck();
-			$response['message']   = '<strong>' . \esc_html__( 'To begin Soundcheck click on any open seat', 'myvideoroom' ) . '</strong>';
-			$response['message']  .= '<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons " />';
+			$response['feedback']  = '<strong>' . \esc_html__( 'To begin Soundcheck click on any open seat', 'myvideoroom' ) . '</strong>';
+			$response['feedback'] .= '<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons " />';
 			return \wp_send_json( $response );
 		}
 
@@ -92,7 +92,7 @@ class MVRSiteVideoAjax {
 		*
 		*/
 		if ( 'refresh_page' === $action_taken ) {
-			$response['mainvideo'] = Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page();
+			$response['welcome'] = Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page();
 
 			return \wp_send_json( $response );
 		}
@@ -111,9 +111,9 @@ class MVRSiteVideoAjax {
 			}
 			$delete = Factory::get_instance( RoomSyncDAO::class )->delete( $room_object );
 			if ( $delete ) {
-				$response['message'] = esc_html__( 'Record Deleted', 'myvideoroom' );
+				$response['feedback'] = esc_html__( 'Record Deleted', 'myvideoroom' );
 			} else {
-				$response['message'] = esc_html__( 'Record Delete Failed', 'myvideoroom' );
+				$response['feedback'] = esc_html__( 'Record Delete Failed', 'myvideoroom' );
 			}
 
 			return \wp_send_json( $response );
@@ -133,7 +133,7 @@ class MVRSiteVideoAjax {
 			$arr_img_ext = array( 'image/png', 'image/jpeg', 'image/jpg', 'image/gif' );
 
 			if ( isset( $_FILES['upimage']['type'] ) && ! in_array( $_FILES['upimage']['type'], $arr_img_ext, true ) ) {
-				$response['message'] = esc_html__( 'Incorrect Attachment Type Sent', 'myvideoroom' );
+				$response['feedback'] = esc_html__( 'Incorrect Attachment Type Sent', 'myvideoroom' );
 				return \wp_send_json( $response );
 			}
 			$session = 'tmp-' . $user_session . wp_rand( 200, 20000 ) . '.png';
@@ -150,9 +150,9 @@ class MVRSiteVideoAjax {
 				$upload = \wp_upload_bits( $session, null, file_get_contents( $_FILES['upimage']['tmp_name'] ) );
 				$return = Factory::get_instance( RoomAdmin::class )->room_picture_name_update( $upload['file'], $upload['url'] );
 				if ( $return ) {
-					$response['message'] = esc_html__( 'Picture Update Success', 'myvideoroom' );
+					$response['feedback'] = esc_html__( 'Picture Update Success', 'myvideoroom' );
 				} else {
-					$response['message'] = esc_html__( 'Picture Update Failed', 'myvideoroom' );
+					$response['feedback'] = esc_html__( 'Picture Update Failed', 'myvideoroom' );
 				}
 			}
 			return \wp_send_json( $response );
@@ -168,9 +168,9 @@ class MVRSiteVideoAjax {
 			}
 
 			if ( true === $display_updated ) {
-				$response['message'] = 'Display Name Updated';
+				$response['feedback'] = \esc_html__( 'Display Name Update Updated', 'myvideoroom' );
 			} else {
-				$response['message'] = 'Display Name Update Failed';
+				$response['feedback'] = \esc_html__( 'Display Name Update Failed', 'myvideoroom' );
 			}
 			return \wp_send_json( $response );
 		}
@@ -184,10 +184,11 @@ class MVRSiteVideoAjax {
 			$room_record = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $session_id, $room_name );
 
 			if ( ! $room_record ) {
-				$response['errormessage'] = 'Room Record Retrieval Failed';
+				$response['feedback'] = \esc_html__( 'Room Record Retrieval Failed', 'myvideoroom' );
 			} else {
 				$room_owner_id         = $room_record->get_owner_id();
 				$room_object           = Factory::get_instance( UserVideoPreference::class )->get_by_id( $room_owner_id, $room_name );
+				$response['feedback'] = \esc_html__( 'Refreshing Video Room', 'myvideoroom' );
 				$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->update_main_video_window( $room_object, $original_room );
 			}
 

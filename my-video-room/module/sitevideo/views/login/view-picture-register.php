@@ -123,7 +123,7 @@ return function (
 				<?php
 			} else {
 				?>
-					<p id="mvr-text-description-current" ><?php esc_html_e( 'No Picture yet', 'myvideoroom' ); ?></p>
+					<p id="mvr-text-description-current2" ><?php esc_html_e( 'No Picture yet', 'myvideoroom' ); ?></p>
 					<?php
 			}
 			?>
@@ -133,15 +133,14 @@ return function (
 		<div id="mvr-picture-right" class="mvr-right">
 			<p id="mvr-text-description-new" class=""><?php esc_html_e( 'Use Your Own Photo', 'myvideoroom' ); ?></p>
 			<input type="file" accept=".gif,.jpg,.jpeg,.png" id="mvr-file-input"/>
-			<p id="mvr-text-description-new" class="mvr-hide"><?php esc_html_e( 'New', 'myvideoroom' ); ?></p>
+			<p id="mvr-text-description-23" class="mvr-hide"><?php esc_html_e( 'New', 'myvideoroom' ); ?></p>
 			<video id="vid-live" autoplay class="mvr-header-section "></video>
 			<div id="vid-result" class="mvr-header-section"></div>
 		</div>
 
 		<div class="mvr-flex mvr-clear">
 			<input id="vid-retake" type="button" value="Retake" class="mvr-hide myvideoroom-welcome-buttons" />
-			<input id="vid-take" type="button" value="Snap" class="myvideoroom-welcome-positive mvr-hide"
-				class="mvr-main-button-enabled myvideoroom-welcome-buttons" />
+			<input id="vid-take" type="button" value="Snap" class="myvideoroom-welcome-positive mvr-hide mvr-main-button-enabled myvideoroom-welcome-button"/>
 			<input id="vid-up" type="button" value="Use This" class="myvideoroom-welcome-positive mvr-hide" />
 			<input id="vid-picture" type="button" value="Take Picture" class="myvideoroom-welcome-positive" />
 			<input id="upload-picture" type="button" value="Upload Picture" class="myvideoroom-welcome-positive mvr-hide" />

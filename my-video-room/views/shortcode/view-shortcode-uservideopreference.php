@@ -23,7 +23,7 @@ return function (
 	ob_start();
 
 	?>
-	<div class="mvr-woocommerce-overlay mvr-nav-shortcode-outer-wrap">
+<div class="mvr-woocommerce-overlay mvr-nav-shortcode-outer-wrap">
 	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap ">
 		<h2><?php esc_html_e( 'Room Settings for ', 'my-video-room' ); ?>
 			<?php
@@ -47,13 +47,13 @@ return function (
 		}
 
 		if ( $reception_enabled || $floorplan_enabled ) {
-			$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Your Guests will see the Reception Template of your choice and will not be admitted into the room until you drag their icon in.', 'myvideoroom' ) . '">' . esc_html__( 'Reception Enabled', 'myvideoroom' ) . '</p>';
+			$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Guests will see the Reception Template of your choice and will not be admitted into the room until you drag their icon in.', 'myvideoroom' ) . '">' . esc_html__( 'Reception Enabled', 'myvideoroom' ) . '</p>';
 		}
 		if ( $floorplan_enabled ) {
-			$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Your Guests will not see the Image of the Room Floorplan and only have a classic Video Experience', 'myvideoroom' ) . '">' . esc_html__( 'Guest Template Disabled', 'myvideoroom' ) . '</p>';
+			$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Guests will not see the Image of the Room Floorplan and only have a classic Video Experience', 'myvideoroom' ) . '">' . esc_html__( 'Guest Template Disabled', 'myvideoroom' ) . '</p>';
 		}
 		if ( ! $reception_enabled && ! $floorplan_enabled ) {
-			$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Your Guests can view the room and see the presence of other participants. They still require you to be in the room to join fully.', 'myvideoroom' ) . '">' . esc_html__( 'Unrestricted Entry', 'myvideoroom' ) . '</p>';
+			$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Guests can view the room and see the presence of other participants. Guests still require admission into room.', 'myvideoroom' ) . '">' . esc_html__( 'Unrestricted Entry', 'myvideoroom' ) . '</p>';
 		}
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Elements above are already safe.
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
@@ -87,9 +87,7 @@ return function (
 
 				</div>
 			</div>
-			<select
-				class="mvr-roles-multiselect mvr-select-box"
-				name="myvideoroom_user_layout_id_preference"
+			<select class="mvr-roles-multiselect mvr-select-box" name="myvideoroom_user_layout_id_preference"
 				id="myvideoroom_user_layout_id_preference_<?php echo esc_attr( $id_index ); ?>">
 				<?php
 				if ( ! $current_user_setting || ! $current_user_setting->get_layout_id() ) {
@@ -115,13 +113,10 @@ return function (
 				class="mvr-preferences-paragraph">
 				<strong><?php esc_html_e( 'Disable Interactive Floorplan:', 'my-video-room' ); ?></strong>
 			</label>
-			<input
-				type="checkbox"
-				class="myvideoroom_user_show_floorplan_preference"
+			<input type="checkbox" class="myvideoroom_user_show_floorplan_preference"
 				name="myvideoroom_user_show_floorplan_preference"
 				id="myvideoroom_user_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo $current_user_setting && $current_user_setting->is_floorplan_enabled() ? 'checked' : ''; ?>
-			/>
+				<?php echo $current_user_setting && $current_user_setting->is_floorplan_enabled() ? 'checked' : ''; ?> />
 			<p class="mvr-preferences-paragraph">
 				<?php
 				esc_html_e(
@@ -135,16 +130,14 @@ return function (
 			<h3 class="mvr-title-header">
 				<label for="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					class="mvr-preferences-paragraph">
-					<i class="dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'my-video-room' ); ?>
+					<i
+						class="dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'my-video-room' ); ?>
 				</label>
 			</h3>
-			<input
-				type="checkbox"
-				class="myvideoroom_user_reception_enabled_preference"
+			<input type="checkbox" class="myvideoroom_user_reception_enabled_preference"
 				name="myvideoroom_user_reception_enabled_preference"
 				id="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo $current_user_setting && $current_user_setting->is_reception_enabled() ? 'checked' : ''; ?>
-			/>
+				<?php echo $current_user_setting && $current_user_setting->is_reception_enabled() ? 'checked' : ''; ?> />
 			<p class="mvr-preferences-paragraph">
 				<?php
 				esc_html_e(
@@ -184,9 +177,7 @@ return function (
 
 			</div>
 
-			<select
-				class="mvr-roles-multiselect mvr-select-box"
-				name="myvideoroom_user_reception_id_preference"
+			<select class="mvr-roles-multiselect mvr-select-box" name="myvideoroom_user_reception_id_preference"
 				id="myvideoroom_user_reception_id_preference_<?php echo esc_attr( $id_index ); ?>">
 				<?php
 				if ( ! $current_user_setting || ! $current_user_setting->get_reception_id() ) {
@@ -237,23 +228,17 @@ return function (
 				</div>
 			</div>
 
-			<input
-				type="checkbox"
-				class="myvideoroom_user_reception_video_enabled_preference"
+			<input type="checkbox" class="myvideoroom_user_reception_video_enabled_preference"
 				name="myvideoroom_user_reception_video_enabled_preference"
 				id="myvideoroom_user_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				<?php echo $current_user_setting && $current_user_setting->is_reception_video_enabled() ? 'checked' : ''; ?>
-			/>
+				<?php echo $current_user_setting && $current_user_setting->is_reception_video_enabled() ? 'checked' : ''; ?> />
 			<br>
 			<label for="myvideoroom_user_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
 				class="mvr-preferences-paragraph">
 				<?php esc_html_e( 'Your Video URL:', 'my-video-room' ); ?>
 			</label>
-			<input
-				type="text"
-				id="myvideoroom_user_reception_waiting_video_url"
-				name="myvideoroom_user_reception_waiting_video_url"
-				class="mvr-roles-multiselect mvr-select-box"
+			<input type="text" id="myvideoroom_user_reception_waiting_video_url"
+				name="myvideoroom_user_reception_waiting_video_url" class="mvr-roles-multiselect mvr-select-box"
 				value="<?php echo esc_url( $reception_video_url ); ?>">
 
 			<br><br>
@@ -279,7 +264,7 @@ return function (
 			?>
 		</form>
 	</div>
-		</div>
+</div>
 	<?php
 	return ob_get_clean();
 };

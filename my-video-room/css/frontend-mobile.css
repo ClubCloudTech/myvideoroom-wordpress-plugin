@@ -69,6 +69,7 @@ td {
 .myvideoroom-nav-tab-wrapper li a.nav-tab-active {
 	font-weight: 500;
 	background: white;
+	width: 100%;
 }
 
 .myvideoroom-nav-tab-wrapper li a:not(.nav-tab-active) {
@@ -119,6 +120,8 @@ td {
 
 .myvideoroom-welcome-page {
 	background: #fff;
+	padding: 5px;
+
 }
 /* Create three unequal columns that floats next to each other */
 .mvr-table-row {
@@ -228,7 +231,7 @@ opacity: 1;
 	box-sizing: border-box;
 	background-color: #e0e0e0;
 	color: #525151;
-	font-size: 20px;
+	font-size: 14px;
 	line-height: initial;
 	text-decoration: none;
 	display: contents;
@@ -443,4 +446,14 @@ p {
 }
 .mvr-mobile-hide {
 	display: none!important;
+}
+.elementor-column-wrap {
+	padding: 0px!important;
+}
+#myvideoroom-all-set{
+	border: #c6c0ad;
+	border-style: solid;
+	border-width: 1px;
+	padding: 4px;
+	margin: 3px;
 }

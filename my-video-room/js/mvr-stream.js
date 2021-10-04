@@ -9,11 +9,10 @@ function init(){
 	}
 	/* Disabling Execution outside of MVR */
 	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
-	console.log (mvrIsactive.length);
+
 	if ( mvrIsactive.length < 1 ) {
 		return false;
 	}
-	console.log('continue');
 	var loginActive = document.getElementsByClassName( 'mvr-login-form' );
 	/* Initialise Camera, and Listen to Buttons */
 	$('#vid-picture').click(function(e){
@@ -72,19 +71,19 @@ function init(){
 		startmeeting();
 	});
 	
-	document.getElementById("chk-sound").onclick = function(e){
+	$('#chk-sound').click(function(e) {
 		e.preventDefault();
 		document.getElementById("myvideoroom-checksound").classList.remove('myvideoroom-center');
 		checksound();
-	}
-	document.getElementById("stop-chk-sound").onclick = function(e){
+	});
+	
+	$('#stop-chk-sound').click(function(e) {
 		window.location.reload ();
-
-	}
-	document.getElementById("room-name-update").onclick = function(e){
+	});
+	$('#room-name-update').click(function(e) {
 		e.preventDefault();
 		updateName();
-	}
+	});
 	$('#vid-name').keydown(function(e) {
 		if ( e.which == 13) {
 		e.preventDefault();
@@ -99,12 +98,12 @@ function init(){
 		deleteMe();
 	});
 
-	var textvalue = document.getElementById('vid-name').value;
-	
-	if ( textvalue.length > 1 ){
+	var text = document.getElementById('vid-name');
+	if ( text && Object.keys(text).length === 0 && Object.getPrototypeOf(text) ){
 		document.getElementById("vid-down").disabled = false;
 		document.getElementById("vid-down").onclick = startmeeting;
 	}
+
 	if ($('#myvideoroom-welcome-setup').length) {
 		var existsvalue = document.getElementById('myvideoroom-welcome-setup').innerHTML;
 		if ( existsvalue.length > 1 ){
@@ -350,8 +349,10 @@ function cameratimeout(){
 			form_data.append('action','myvideoroom_file_upload');
 					
 			jQuery(function($) {
-				var room_name     = $( '#roominfo' ).data( 'roomName' );
-				display_name   = $( '#vid-name' ).val(),
+				console.log('start update');
+				var room_name = $( '#roominfo' ).data( 'roomName' ),
+				status_message     = $( '#mvr-postbutton-notification' ),
+				display_name  = $( '#vid-name' ).val();
 				form_data.append('room_name', room_name );
 				form_data.append('display_name', display_name );
 
@@ -367,12 +368,21 @@ function cameratimeout(){
 						data: form_data,
 						success: function (response) {
 							var state_response = JSON.parse( response );
-							console.log( state_response.message );
+							if ( state_response.feedback ) {
+								status_message.html( state_response.feedback );
+								setTimeout( function() { 
+									status_message.fadeOut(); 
+								}, 6000 );
+								setTimeout( function() { 
+									status_message.empty();
+									$(status_message).removeAttr('style');
+								}, 8000 );
+							}
+							refreshWelcome();
 							if (state_response.errormessage){
 								console.log(state_response.errormessage);
 							}
 							$('.mvr-forget-me').show();
-							setTimeout( () => {  refreshWelcome(); }, 2000 );
 							;
 						},
 						error: function ( response ){
@@ -381,9 +391,7 @@ function cameratimeout(){
 					}
 				);
 			});
-			
-	document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Your name has been updated</strong></div>';
-	setTimeout( () => {  refreshWelcome(); }, 2000 );
+	 
   }
 
   function deleteMe () {
@@ -415,7 +423,7 @@ function cameratimeout(){
 							console.log(state_response.errormessage);
 						}
 						$('.mvr-forget-me').hide();
-						setTimeout( () => {  window.location.reload (); }, 2500 );
+						setTimeout( () => {  window.location.reload (); }, 1500 );
 						;
 					},
 					error: function ( response ){
@@ -455,8 +463,8 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 					success: function (response) {
 						var state_response = JSON.parse( response );
 						
-						if ( state_response.mainvideo ) {
-							refreshTarget( container, state_response.mainvideo );
+						if ( state_response.welcome ) {
+							container.html( state_response.welcome );
 						}
 
 						if (state_response.errormessage){
@@ -475,10 +483,8 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 }
 		function resetPanel() {
 		jQuery(function($) {
-			$('#mvr-above-article-notification').html('');
 			$('.myvideoroom-app').show();
 			startmeeting(true);
-
 		});  
 		}
 
@@ -554,6 +560,7 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 					var room_name  = $( '#roominfo' ).data( 'roomName' ),
 					display_name   = $( '#vid-name' ).val(),
 					original_room  = $( '.myvideoroom-app' ).data( 'roomName' ),
+					status_message = $( '#mvr-postbutton-notification' ),
 					container      = $( '.myvideoroom-app' );
 					
 					form_data.append('room_name', room_name );
@@ -574,10 +581,18 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 								
 								if ( state_response.mainvideo ) {
 									refreshTarget( container, state_response.mainvideo );
+									//container.html( state_response.mainvideo );
 								}
 
-								if (state_response.errormessage){
-									console.log(state_response.errormessage);
+								if (state_response.feedback){
+									status_message.html( state_response.feedback );
+									setTimeout( function() { 
+										status_message.fadeOut(); 
+									}, 6000 );
+									setTimeout( function() { 
+										status_message.empty();
+										$(status_message).removeAttr('style');
+									}, 8000 );
 								}
 								
 								if (window.myvideoroom_tabbed_init) {
@@ -635,11 +650,13 @@ function refreshTarget( source_element, ajax_response, video_skip ) {
 	source_element.remove();
 	source_element.parent().empty();
 	let item = document.getElementById( mainvideo_parent );
-	
-	if ( typeof item !== 'null' ) {
+	console.log(Object.keys(item).length)	;
+	if ( item && Object.keys(item).length >=1 ){
 		item.innerHTML= ajax_response ;
+	} else {
+		console.log('empty parent');
 	}
-	
+			
 	if ( ! video_skip ) {
 		reloadVideo();
 	}

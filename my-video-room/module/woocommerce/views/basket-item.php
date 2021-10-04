@@ -57,8 +57,7 @@ return function (
 			echo apply_filters( 'myvideoroom_basket_buttons', null, $item, $room_name );
 			if ( ! $item['am_i_downloading'] ) {
 				?>
-				<a href=""
-					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
+				<a 	class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 					alt="remove"
 					data-target="mvr-shopping-basket" 
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
@@ -68,8 +67,7 @@ return function (
 					target="_blank"
 
 				><span class="myvideoroom-dashicons dashicons-dismiss"></span></a>
-				<a href=""
-					class="mvr-icons myvideoroom-woocommerce-basket-ajax"
+				<a 	class="mvr-icons myvideoroom-woocommerce-basket-ajax"
 					data-target="mvr-shopping-basket" 
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 					data-quantity="<?php echo esc_attr( $item['quantity'] ); ?>"

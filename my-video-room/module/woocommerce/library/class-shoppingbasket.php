@@ -437,7 +437,7 @@ class ShoppingBasket {
 
 		return '
 		<button  class="' . $style . ' myvideoroom-woocommerce-basket-ajax" data-target="' . $target_id . '">
-		<a href="" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="' . $style . ' myvideoroom-woocommerce-basket-ajax ' . $href_class . '">' . $button_label . '</a>
+		<a  data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="' . $style . ' myvideoroom-woocommerce-basket-ajax ' . $href_class . '">' . $button_label . '</a>
 		</button>
 		';
 	}
@@ -464,7 +464,7 @@ class ShoppingBasket {
 
 		return '
 		<button id="' . $target_id . '" class="' . $style . '" data-target="' . $target_window . '">
-		<a href="" data-input-type="' . $button_type . '" ' . $id_text . ' class=" ' . $style . ' ">' . $button_label . '</a>
+		<a data-input-type="' . $button_type . '" ' . $id_text . ' class=" ' . $style . ' ">' . $button_label . '</a>
 		</button>
 		';
 	}
@@ -490,7 +490,7 @@ class ShoppingBasket {
 
 		return '
 		<button class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax">
-		<a href="" data-input-type="' . $button_type . '" 
+		<a data-input-type="' . $button_type . '" 
 		 data-auth-nonce="' . $nonce . '"
 		 data-room-name="' . $room_name . '"
 		 data-quantity="' . $quantity . '"

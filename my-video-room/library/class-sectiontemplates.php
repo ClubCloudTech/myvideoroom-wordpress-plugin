@@ -52,8 +52,9 @@ class SectionTemplates {
 
 		?>
 
-<div class="mvr-nav-shortcode-outer-wrap">
-	<div id="roominfo" data-room-name="<?php echo esc_attr( $room_name ); ?>"></div>
+<div class="mvr-nav-shortcode-outer-wrap" style="max-width: 1250px;">
+	<div id="roominfo" data-room-name="<?php echo esc_attr( $room_name ); ?>">
+	</div>
 	<div class="mvr-header-section">
 		<div id="mvr-notification-icons" class="myvideoroom-header-table-left">
 			<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
@@ -73,17 +74,10 @@ class SectionTemplates {
 		<?php
 							$output = \apply_filters( 'myvideoroom_notification_master', '', $room_name );
 							// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-							echo $output;
+							//echo $output;
 		?>
+		<div id="mvr-postbutton-notification" class="mvr-notification-align"></div>
 	</div>
-
-		<?php
-						$tab_count = \count( $tabs );
-		if ( $tab_count <= 1 ) {
-			//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Shortcode already properly escaped.
-			echo $tabs[0]->get_function_callback();
-		} else {
-			?>
 
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper myvideoroom-side-tab">
 		<ul class="mvr-ul-style-side-menu">
@@ -124,35 +118,33 @@ class SectionTemplates {
 				$function_callback = $article_output->get_function_callback();
 				$tab_slug          = $article_output->get_tab_slug();
 				?>
-	<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>" class="myvideoroom-content-tab">
-				<?php
-
-				if ( WooCommerce::SETTING_SHOPPING_BASKET !== $tab_slug ) {
-				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-					echo $function_callback;
-				}
-
-				?>
-	</article>
-				<?php
-				if ( WooCommerce::SETTING_SHOPPING_BASKET === $tab_slug ) {
-					?>
-	<article id="<?php echo \esc_textarea( WooCommerce::SETTING_SHOPPING_BASKET ); ?>">
+		<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>" class="myvideoroom-content-tab mvr-article-separation">
 					<?php
+
+					if ( WooCommerce::SETTING_SHOPPING_BASKET !== $tab_slug ) {
 					// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-					echo $function_callback; 
-					?>
+						echo $function_callback;
+					}
 
-	</article>
+					?>
+		</article>
 					<?php
-				}
+					if ( WooCommerce::SETTING_SHOPPING_BASKET === $tab_slug ) {
+						?>
+		<article id="<?php echo \esc_textarea( WooCommerce::SETTING_SHOPPING_BASKET ); ?>" class="mvr-article-separation">
+						<?php
+						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
+						echo $function_callback; 
+						?>
+
+		</article>
+						<?php
+					}
 			}
 			?>
 </div>
 			<?php
-						return \ob_get_clean();
-
-		}
+			return \ob_get_clean();
 	}
 
 	/**
@@ -203,7 +195,7 @@ class SectionTemplates {
 
 		?>
 
-<div class="mvr-nav-settingstabs-outer-wrap myvideoroom-welcome-page">
+<div class="mvr-nav-settingstabs-outer-wrap myvideoroom-welcome-page ">
 
 		<?php
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped

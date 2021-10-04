@@ -108,7 +108,7 @@ class TemplateIcons {
 	 */
 	public function add_default_video_icons_to_header( ?string $template_icons, int $user_id, string $room_name, bool $visitor_status = null ): string {
 		if ( true === $visitor_status && ! $template_icons ) {
-			$template_icons .= '<form method="post" action=""><a><input type="submit" name="submit" id="submit" class="mvr-main-refresh-button  myvideoroom-welcome-positive mvr-input-box" value="' . esc_html__( 'Refresh', 'myvideoroom' ) . '"  /></a>';
+			$template_icons .= '<form method="post" action=""><input type="submit" name="submit" id="submit" class="mvr-main-refresh-button  myvideoroom-welcome-positive mvr-input-box" value="' . esc_html__( 'Refresh', 'myvideoroom' ) . '"  /></form>';
 		} else {
 			$template_icons .= $this->show_icon( $user_id, $room_name );
 		}
@@ -158,7 +158,7 @@ class TemplateIcons {
 		}
 
 		return '<button id=' . $id . \wp_rand( 1, 10000 ) . ' class=" ' . $button_class . ' ' . $id . '" >
-			<a href=""  class="' . $a_class . '">' . $button_label . '</a>
+			<a class="' . $a_class . '">' . $button_label . '</a>
 			</button>';
 
 	}
