@@ -80,7 +80,7 @@ class Admin {
 					'myvideoroom-admin-css',
 					\plugins_url( '/css/admin.css', __FILE__ ),
 					false,
-					$plugin_version,
+					$plugin_version . \wp_rand( 1, 10000 ),
 				);
 
 				\wp_enqueue_style(

@@ -2,7 +2,7 @@
 /**
  * Outputs Formatted Table for Site Video and Other Applications
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Views\Public\Admin
  */
 
 /**

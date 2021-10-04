@@ -2,7 +2,7 @@
 /**
  * Outputs the View for Guests to enter meeting code or username.
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Views\Public\Admin
  */
 
 /**

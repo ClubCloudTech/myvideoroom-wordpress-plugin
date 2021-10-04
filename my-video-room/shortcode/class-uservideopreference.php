@@ -2,7 +2,7 @@
 /**
  * Allow user to change video preferences
  *
- * @package MyVideoRoomExtrasPlugin\Module\UserVideoPreference
+ * @package MyVideoRoomPlugin\Module\UserVideoPreference
  */
 
 namespace MyVideoRoomPlugin\Shortcode;

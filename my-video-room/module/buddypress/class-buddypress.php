@@ -2,7 +2,7 @@
 /**
  * Addon functionality for BuddyPress
  *
- * @package MyVideoRoomExtrasPlugin\Modules\BuddyPress
+ * @package MyVideoRoomPlugin\Modules\BuddyPress
  */
 
 namespace MyVideoRoomPlugin\Module\BuddyPress;

@@ -2,7 +2,7 @@
 /**
  * Addon functionality for Personal Boardroom.
  *
- * @package MyVideoRoomExtrasPlugin\Modules\MVRPersonalBoardroom
+ * @package MyVideoRoomPlugin\Modules\MVRPersonalBoardroom
  */
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;

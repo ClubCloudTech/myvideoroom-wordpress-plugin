@@ -2,7 +2,7 @@
 /**
  * Outputs the Login Form File Template
  *
- * @package MyVideoRoomExtrasPlugin\Views\ViewLoginForm.php
+ * @package MyVideoRoomPlugin\Views\ViewLoginForm.php
  */
 
 use MyVideoRoomPlugin\Factory;

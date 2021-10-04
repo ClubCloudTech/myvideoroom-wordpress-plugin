@@ -2,7 +2,7 @@
 /**
  * Generate unique ids for Meetings and handles their creation.
  *
- * @package MyVideoRoomExtrasPlugin\Library
+ * @package MyVideoRoomPlugin\Library
  */
 
 namespace MyVideoRoomPlugin\Library;

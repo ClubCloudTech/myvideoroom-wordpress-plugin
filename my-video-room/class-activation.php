@@ -11,6 +11,8 @@ namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
  * Class Activation
@@ -27,6 +29,8 @@ class Activation {
 
 		( new self() )
 			->create_roles_and_permissions()
+			->activate_site_video()
+			->run_upgrade_functions()
 			->enable_default_modules();
 
 		$active_modules = Factory::get_instance( Module::class )->get_active_modules();
@@ -54,6 +58,26 @@ class Activation {
 			Factory::get_instance( Modules::class )->activate_module( $elementor_module );
 		}
 
+		return $this;
+	}
+
+	/**
+	 * Activate Site Video
+	 *
+	 * @return self
+	 */
+	public function run_upgrade_functions(): self {
+		Factory::get_instance( MVRSiteVideoRoomHelpers::class )->create_site_redirect_page();
+		return $this;
+	}
+
+	/**
+	 * Run Upgrade Functions will run upgrade functions across versions.
+	 *
+	 * @return self
+	 */
+	public function activate_site_video(): self {
+		Factory::get_instance( MVRSiteVideo::class )->activate_module();
 		return $this;
 	}
 

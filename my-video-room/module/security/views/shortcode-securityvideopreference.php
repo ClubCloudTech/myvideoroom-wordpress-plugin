@@ -5,7 +5,7 @@
  * @param string|null $current_user_setting
  * @param array       $available_layouts
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public
+ * @package MyVideoRoomPlugin\Views\Public
  */
 
 use MyVideoRoomPlugin\Factory;

@@ -1,8 +1,8 @@
 <?php
 /**
- * Shows a single row in the conference center rooms table - Used for Front ends as it doesn't display shortcode text.
+ * FRONTEND ROW in conference center rooms table - Used for Front ends as it doesn't display shortcode text.
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Views\Public\Admin
  */
 
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;

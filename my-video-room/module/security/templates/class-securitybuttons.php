@@ -2,7 +2,7 @@
 /**
  * Display section templates
  *
- * @package MyVideoRoomExtrasPlugin\Library
+ * @package MyVideoRoomPlugin\Library
  */
 
 namespace MyVideoRoomPlugin\Module\Security\Templates;

@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
@@ -59,6 +60,7 @@ class Plugin {
 		);
 
 		Factory::get_instance( Admin::class )->init();
+		Factory::get_instance( MVRSiteVideo::class )->init();
 
 		$active_modules = Factory::get_instance( Module::class )->get_active_modules();
 

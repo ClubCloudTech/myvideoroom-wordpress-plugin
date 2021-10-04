@@ -13,7 +13,8 @@
  * @return string
  */
 return function (
-	string $details_section = null
+	bool $login_override = null,
+	string $login_shortcode = null
 ): string {
 
 	ob_start();
@@ -26,13 +27,18 @@ return function (
 		<?php esc_html_e( 'You can login to access your previously stored room settings, baskets, lists, and pictures', 'myvideoroom' ); ?>
 	</p>
 	<?php
-			global $wp;
-			$args = array(
-				'redirect' => home_url( $wp->request ),
-				'remember' => true,
-			);
+	if ( $login_override && strlen( $login_shortcode ) > 5 ) {
+		echo do_shortcode( '[' . $login_shortcode . ']' );
 
-			wp_login_form( $args );
+	} else {
+
+		global $wp;
+		$args = array(
+			'redirect' => home_url( $wp->request ),
+			'remember' => true,
+		);
+		wp_login_form( $args );
+	}
 
 			?>
 </div>

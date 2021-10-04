@@ -1,8 +1,8 @@
 <?php
 /**
- * Shows a single row in the conference center rooms table
+ * BACKEND/ADMIN Shows a single row in the conference center rooms table (shows shortcodes)
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Views\Public\Admin
  */
 
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
@@ -29,7 +29,7 @@ return function (
 			array( 'target' => '_blank' ),
 		),
 	);
-
+echo var_dump( $room );
 	// Add any extra options.
 	$edit_actions = \apply_filters( 'myvideoroom_sitevideo_edit_actions', $edit_actions, $room->id );
 

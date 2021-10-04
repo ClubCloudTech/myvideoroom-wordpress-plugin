@@ -354,3 +354,30 @@
 .myvideoroom-sitevideo-add-room-button {
 	display: none;
 }
+.myvideoroom-admin-picture {
+	max-width: 300px !important;
+}
+.myvideoroom-table-split-left {
+	float: unset;
+	width: 45%;
+	float: left;
+}
+.myvideoroom-table-split-right {
+	float: unset;
+	width: 45%;
+	float: right;
+}
+.myvideoroom-clear {
+	clear:both;
+}
+
+.myvideoroom-split-padding {
+	padding: 10px;
+}
+.myvideoroom-inline {
+	display: inline;
+}
+.myvideoroom-separation {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}

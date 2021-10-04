@@ -2,7 +2,7 @@
 /**
  * Addon functionality for Site Video Room
  *
- * @package MyVideoRoomExtrasPlugin\Modules\SiteVideo
+ * @package MyVideoRoomPlugin\Modules\SiteVideo
  */
 
 namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
@@ -156,8 +156,10 @@ class MVRSiteVideoViews {
 	 * @return string - Login Page.
 	 */
 	public function render_login_page(): string {
-		$render = require __DIR__ . '/../views/login/view-login.php';
-		return $render();
+		$login_override  = get_option( 'myvideoroom-login-override' );
+		$login_shortcode = get_option( 'myvideoroom-login-shortcode' );
+		$render          = require __DIR__ . '/../views/login/view-login.php';
+		return $render( \boolval( $login_override ), $login_shortcode );
 
 	}
 

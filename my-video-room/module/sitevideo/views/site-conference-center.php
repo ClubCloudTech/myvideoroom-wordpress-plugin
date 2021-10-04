@@ -2,7 +2,7 @@
 /**
  * Outputs the configuration settings for the video plugin
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Views\Public\Admin
  */
 
 use MyVideoRoomPlugin\Factory;

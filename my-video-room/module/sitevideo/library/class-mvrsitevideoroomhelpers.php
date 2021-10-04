@@ -44,7 +44,7 @@ class MVRSiteVideoRoomHelpers {
 	}
 
 	/**
-	 * Regenerate a page
+	 * Create or Regenerate a page
 	 *
 	 * @param ?int       $original_room_id The original room id.
 	 * @param ?\stdClass $room_object      The original room object.
@@ -75,6 +75,39 @@ class MVRSiteVideoRoomHelpers {
 		return $new_id;
 	}
 
+	/**
+	 * Create or Regenerate a Redirect page
+	 *
+	 * @param ?int       $original_room_id The original room id.
+	 * @param ?\stdClass $room_object      The original room object.
+	 *
+	 * @return int
+	 */
+	public function create_site_redirect_page( int $original_room_id = null, \stdClass $room_object = null ): int {
+		if ( ! $room_object || MVRSiteVideo::ROOM_NAME_REDIRECT === $room_object->room_name ) {
+			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
+				MVRSiteVideo::ROOM_NAME_REDIRECT,
+				get_bloginfo( 'name' ) . ' ' . MVRSiteVideo::ROOM_TITLE_REDIRECT,
+				MVRSiteVideo::ROOM_SLUG_REDIRECT,
+				MVRSiteVideo::ROOM_NAME_REDIRECT,
+				MVRSiteVideo::SHORTCODE_REDIRECT,
+				$original_room_id,
+				true
+			);
+		} else {
+			$new_id = Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
+				$room_object->room_name,
+				$room_object->display_name,
+				$room_object->slug,
+				MVRSiteVideo::ROOM_NAME_REDIRECT,
+				MVRSiteVideo::SHORTCODE_REDIRECT,
+				$original_room_id,
+				true
+			);
+		}
+
+		return $new_id;
+	}
 	/**
 	 * Room Shortcode Transform
 	 *

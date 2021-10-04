@@ -2,7 +2,7 @@
 /**
  * Outputs the configuration settings header for the video plugin
  *
- * @package MyVideoRoomExtrasPlugin\Module\Security\Views\view-settings-security.php
+ * @package MyVideoRoomPlugin\Module\Security\Views\view-settings-security.php
  */
 
 use MyVideoRoomPlugin\Factory;

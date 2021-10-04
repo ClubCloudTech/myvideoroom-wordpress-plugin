@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\HttpPost;
+use MyVideoRoomPlugin\Library\LoginForm;
 
 /**
  * Render the Default Settings Admin page
@@ -37,7 +38,13 @@ return function (
 			<ul>
 				<li>
 					<a class="nav-tab nav-tab-active"
-						href="#<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
+						href="#logintab<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
+						<?php esc_html_e( 'Login Tab Settings', 'myvideoroom' ); ?>
+					</a>
+				</li>
+				<li>
+					<a class="nav-tab"
+						href="#defhosts<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
 						<?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?>
 					</a>
 				</li>
@@ -60,8 +67,27 @@ return function (
 		<?php
 	}
 	?>
+		<article class="mvr-admin-page-wrap"
+		id="logintab<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
+		<h2><?php \esc_html_e( 'Login Tab Settings', 'myvideoroom' ); ?></h2>
+
+		<p>
+			<?php
+			\esc_html_e(
+				'This setting defines the login tabs that will be shown to signed out users to allow them to login, you can use the default tab, or add a shortcode from your own Login solution',
+				'myvideoroom'
+			);
+			?>
+		</p>
+		<div class = "mvr-nav-shortcode-outer-wrap ">
+			<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --internally created sanitised function
+				echo Factory::get_instance( LoginForm::class )->get_login_settings_page();
+			?>
+		</div>
+	</article>
 	<article class="mvr-admin-page-wrap"
-		id="<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
+		id="defhosts<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
 		<h2><?php \esc_html_e( 'Site Level Default Hosts', 'myvideoroom' ); ?></h2>
 
 		<p>
@@ -114,7 +140,7 @@ return function (
 			</fieldset>
 
 			<?php
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --internally created sanitised function
 			echo Factory::get_instance( HttpPost::class )->create_admin_form_submit( 'update_permissions' );
 			?>
 		</form>

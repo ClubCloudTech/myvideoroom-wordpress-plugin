@@ -2,7 +2,7 @@
 /**
  * Addon functionality for Site Video Room
  *
- * @package MyVideoRoomExtrasPlugin\Modules\SiteVideo
+ * @package MyVideoRoomPlugin\Modules\SiteVideo
  */
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;

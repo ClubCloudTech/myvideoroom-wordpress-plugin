@@ -3,7 +3,7 @@
 /**
  * Addon functionality for Personal Meetings.
  *
- * @package MyVideoRoomExtrasPlugin\Modules\PersonalMeetingControllers
+ * @package MyVideoRoomPlugin\Modules\PersonalMeetingControllers
  */
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
@@ -224,7 +224,7 @@ class MVRPersonalMeetingControllers {
 		<h1><?php esc_html_e( 'Personal Meeting Video Room Settings', 'my-video-room' ); ?></h1>
 		<p><?php esc_html_e( 'The Personal Video Room is private to each user. Use these settings to update your room configuration, privacy, and video layouts', 'my-video-room' ); ?><br>	</p>
 		<?php
-		$layout_setting = Factory::get_instance( \MyVideoRoomExtrasPlugin\Shortcode\UserVideoPreference::class )->choose_settings(
+		$layout_setting = Factory::get_instance( \MyVideoRoomPlugin\Shortcode\UserVideoPreference::class )->choose_settings(
 			$user_id,
 			MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING,
 			array( 'basic', 'premium' )

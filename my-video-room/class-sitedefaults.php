@@ -2,7 +2,7 @@
 /**
  * Default settings and params
  *
- * @package MyVideoRoomExtrasPlugin\Core
+ * @package MyVideoRoomPlugin\Core
  */
 
 namespace MyVideoRoomPlugin;

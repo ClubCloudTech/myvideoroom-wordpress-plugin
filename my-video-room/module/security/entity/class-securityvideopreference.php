@@ -2,7 +2,7 @@
 /**
  * A User Video Preference
  *
- * @package MyVideoRoomExtrasPlugin\Entity
+ * @package MyVideoRoomPlugin\Entity
  */
 
 namespace MyVideoRoomPlugin\Module\Security\Entity;

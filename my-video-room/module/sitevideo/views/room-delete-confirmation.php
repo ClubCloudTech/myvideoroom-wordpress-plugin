@@ -2,7 +2,7 @@
 /**
  * Outputs a delete confirmation
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Views\Public\Admin
  */
 
 /**

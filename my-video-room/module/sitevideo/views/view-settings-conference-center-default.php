@@ -3,7 +3,7 @@
  * Outputs the configuration settings for the Conference Center Module plugin
  * This page appears in the Conference Centre Tab that is added to Room Manager.
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Views\Public\Admin
  */
 
 /**

@@ -42,6 +42,10 @@ class MVRSiteVideo {
 	const ROOM_TITLE_SITE_VIDEO         = 'Main Conference Room';
 	const ROOM_SLUG_SITE_VIDEO          = 'conference';
 	const SHORTCODE_SITE_VIDEO          = App::SHORTCODE_TAG . '_sitevideoroom';
+	const SHORTCODE_REDIRECT            = App::SHORTCODE_TAG . '_redirect';
+	const ROOM_NAME_REDIRECT            = 'site-redirect';
+	const ROOM_TITLE_REDIRECT           = 'MyVideoRoom Redirect Handler';
+	const ROOM_SLUG_REDIRECT            = 'myvideoroomredirect';
 	const RECEPTION_ROOM_FLAG           = 'reception_room';
 	const USER_STATE_INFO               = 'user_state_info';
 
@@ -67,6 +71,9 @@ class MVRSiteVideo {
 
 		// Generate Site Video Room Page.
 		Factory::get_instance( MVRSiteVideoRoomHelpers::class )->create_site_videoroom_page();
+
+		// Generate Site redirect iframe page.
+		Factory::get_instance( MVRSiteVideoRoomHelpers::class )->create_site_redirect_page();
 
 		// Configure Default Category Settings for Room.
 		Factory::get_instance( RoomAdmin::class )->initialise_default_sitevideo_settings();

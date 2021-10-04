@@ -2,7 +2,7 @@
 /**
  * Outputs Formatted Table for WooCommerce Shopping Cart
  *
- * @package MyVideoRoomExtrasPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Views\Public\Admin
  */
 
 use MyVideoRoomPlugin\Factory;

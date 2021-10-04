@@ -12,14 +12,12 @@ namespace MyVideoRoomPlugin\Library;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\DAO\UserVideoPreference;
-use MyVideoRoomPlugin\Entity\RoomSync;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as DAOSecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
-use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as ShortcodeUserVideoPreference;
 use MyVideoRoomPlugin\SiteDefaults;
 

@@ -2,7 +2,7 @@
 /**
  * Wrapper for WordPress User functions
  *
- * @package MyVideoRoomExtrasPlugin\Library
+ * @package MyVideoRoomPlugin\Library
  */
 
 namespace MyVideoRoomPlugin\Library;
