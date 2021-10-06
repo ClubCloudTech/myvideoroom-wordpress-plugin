@@ -30,18 +30,33 @@ class RoomAdmin {
 	 * Get the WordPress URL of a room
 	 *
 	 * @param string $room_name The name of the room.
+	 * @param bool   $slug_only return just slug.
 	 *
 	 * @return string
 	 */
-	public function get_room_url( string $room_name ): ?string {
+	public function get_room_url( string $room_name, bool $slug_only = null ): ?string {
 		$post = $this->get_post( $room_name );
 
 		// rooms which are no longer published should no longer have urls.
-		if ( ! $post || 'publish' !== $post->post_status ) {
+		if ( ! $post || ( 'publish' === $post->post_status && 'private' === $post->post_status ) ) {
 			return null;
 		}
+		if ( $slug_only ) {
+			return $post->post_name;
+		} else {
+			return get_site_url() . '/' . $post->post_name . '/';
+		}
+	}
+	/**
+	 * Get the Site Redirect Room Name
+	 *
+	 * @param string $room_name The name of the room.
+	 *
+	 * @return string
+	 */
+	public function get_site_redirect_url(): ?string {
 
-		return get_site_url() . '/' . $post->post_name . '/';
+		return get_site_url() . '/' . MVRSiteVideo::ROOM_NAME_REDIRECT . '/';
 	}
 
 	/**

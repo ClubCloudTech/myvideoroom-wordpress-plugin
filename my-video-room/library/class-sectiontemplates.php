@@ -53,7 +53,10 @@ class SectionTemplates {
 		?>
 
 <div class="mvr-nav-shortcode-outer-wrap" style="max-width: 1250px;">
-	<div id="roominfo" data-room-name="<?php echo esc_attr( $room_name ); ?>">
+	<div id="roominfo" 
+	data-room-name="<?php echo esc_attr( $room_name ); ?>"
+	data-logged-in="<?php echo esc_attr( is_user_logged_in() ); ?>"
+	>
 	</div>
 	<div class="mvr-header-section">
 		<div id="mvr-notification-icons" class="myvideoroom-header-table-left">
@@ -187,9 +190,11 @@ class SectionTemplates {
 	/**
 	 * Welcome Template.
 	 *
+	 * @param string $room_name - the room name.
+	 *
 	 * @return string
 	 */
-	public function welcome_template(): string {
+	public function welcome_template( string $room_name = null ): string {
 
 		ob_start();
 
@@ -199,7 +204,7 @@ class SectionTemplates {
 
 		<?php
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page();
+				echo Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page( $room_name );
 		?>
 	<div class="mvr-flex">
 		<div class="mvr-powered-by mvr-clear mvr-left">

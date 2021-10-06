@@ -44,6 +44,24 @@ class MVRSiteVideoRoomHelpers {
 	}
 
 	/**
+	 * Regenerate Room Helper
+	 *
+	 * @param ?string   $input       .
+	 * @param int       $room_id     - the room id.
+	 * @param \stdClass $room_object . Object with preferences.
+	 *
+	 * @return string CallBack.
+	 */
+	public function regenerate_redirect_room( ?string $input, int $room_id, \stdClass $room_object ): ?string {
+		if ( MVRSiteVideo::ROOM_NAME_REDIRECT === $room_object->room_type ) {
+			$new_room_id = $this->create_site_redirect_page( $room_id, $room_object );
+			Factory::get_instance( RoomMap::class )->update_room_post_id( $new_room_id, $room_object->room_name );
+		}
+
+		return $input;
+	}
+
+	/**
 	 * Create or Regenerate a page
 	 *
 	 * @param ?int       $original_room_id The original room id.
@@ -252,7 +270,7 @@ class MVRSiteVideoRoomHelpers {
 	 * @param int       $room_id     The room id.
 	 * @param \stdClass $room_object The room object.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	private function regenerate_room( int $room_id, \stdClass $room_object ): int {
 		// Modules Register this Filter to Handle Regeneration as per their logic.

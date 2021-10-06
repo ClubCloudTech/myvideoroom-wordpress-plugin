@@ -153,22 +153,26 @@ class MVRSiteVideoViews {
 	/**
 	 * Render Login Page
 	 *
+	 * @param string $room_name The Room name.
 	 * @return string - Login Page.
 	 */
-	public function render_login_page(): string {
+	public function render_login_page( string $room_name = null ): string {
+		\wp_enqueue_script( 'myvideoroom-iframe-handler' );
 		$login_override  = get_option( 'myvideoroom-login-override' );
 		$login_shortcode = get_option( 'myvideoroom-login-shortcode' );
+		$redirect_url    = Factory::get_instance( RoomAdmin::class )->get_room_url( MVRSiteVideo::ROOM_NAME_REDIRECT, true ) . '/';
 		$render          = require __DIR__ . '/../views/login/view-login.php';
-		return $render( \boolval( $login_override ), $login_shortcode );
+		return $render( \boolval( $login_override ), $login_shortcode, $room_name, $redirect_url );
 
 	}
 
 	/**
 	 * Render Picture Page
 	 *
+	 * @param string $room_name_login The Room name.
 	 * @return string - Welcome Picture Page.
 	 */
-	public function render_picture_page(): string {
+	public function render_picture_page( string $room_name_login = null ): string {
 
 		wp_enqueue_script( 'myvideoroom-protect-username' );
 		$user_session = Factory::get_instance( RoomAdmin::class )->get_user_session();
@@ -196,7 +200,7 @@ class MVRSiteVideoViews {
 		}
 			$render = require __DIR__ . '/../views/login/view-picture-register.php';
 
-			return $render( $user_info );
+			return $render( $user_info, $room_name_login );
 
 	}
 

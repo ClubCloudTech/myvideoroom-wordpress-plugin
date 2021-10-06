@@ -18,10 +18,12 @@ use MyVideoRoomPlugin\Library\SectionTemplates;
  *
  * @return string
  */
-return function (): string {
+return function (
+	string $room_name = null
+	): string {
 	ob_start();
 			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Sanitised.
-			echo Factory::get_instance( SectionTemplates::class )->welcome_template(); 
+			echo Factory::get_instance( SectionTemplates::class )->welcome_template( $room_name ); 
 
 	return ob_get_clean();
 };

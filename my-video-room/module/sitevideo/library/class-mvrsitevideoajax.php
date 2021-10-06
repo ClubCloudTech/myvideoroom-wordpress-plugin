@@ -176,6 +176,20 @@ class MVRSiteVideoAjax {
 		}
 
 		/*
+		* Check Login.
+		*
+		*/
+		if ( 'check_login' === $action_taken ) {
+
+			if ( \is_user_logged_in() ) {
+				$response['login'] = true;
+			} else {
+				$response['login'] = false;
+			}
+			return \wp_send_json( $response );
+		}
+
+		/*
 		* Start Meeting Section..
 		*
 		*/

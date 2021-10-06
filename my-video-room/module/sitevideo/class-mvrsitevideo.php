@@ -13,13 +13,16 @@ use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Library\Version;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingHelpers;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoAjax;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRedirect;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
@@ -98,6 +101,7 @@ class MVRSiteVideo {
 
 		Factory::get_instance( RoomInfo::class )->init();
 		Factory::get_instance( Reception::class )->init();
+		Factory::get_instance( MVRSiteVideoRedirect::class )->init();
 
 		add_shortcode( self::SHORTCODE_SITE_VIDEO, array( $site_video_controller, 'sitevideo_shortcode' ) );
 
@@ -132,6 +136,9 @@ class MVRSiteVideo {
 			);
 		}
 
+		// Shortcode Admin Page Rename.
+		add_filter( 'myvideoroom_room_manager_shortcode_display', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'conference_change_shortcode' ), 10, 4 );
+
 		if ( ! \is_user_logged_in() ) {
 			add_filter(
 				'myvideoroom_welcome_page',
@@ -146,8 +153,8 @@ class MVRSiteVideo {
 
 		// Ajax Handler for SiteVideo.
 		\add_action( 'wp_ajax_myvideoroom_sitevideo_settings', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'get_ajax_page_settings' ), 10, 2 );
-		\add_action( 'wp_ajax_myvideoroom_file_upload', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'file_upload_handler' ), 10, 2 );
-		\add_action( 'wp_ajax_nopriv_myvideoroom_file_upload', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'file_upload_handler' ), 10, 2 );
+		\add_action( 'wp_ajax_myvideoroom_base_ajax', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'file_upload_handler' ), 10, 2 );
+		\add_action( 'wp_ajax_nopriv_myvideoroom_base_ajax', array( Factory::get_instance( MVRSiteVideoAjax::class ), 'file_upload_handler' ), 10, 2 );
 
 		// Initialise PHPSESSION to track logged out users.
 		$this->start_php_session();
@@ -180,9 +187,17 @@ class MVRSiteVideo {
 				'security' => wp_create_nonce( 'handle_picture_upload' ),
 
 			);
+		// Register Script Iframe Handling.
+			\wp_register_script(
+				'myvideoroom-iframe-handler',
+				\plugins_url( '/../../js/iframe-manage.js', \realpath( __FILE__ ) ),
+				array( 'jquery' ),
+				Factory::get_instance( Version::class )->get_plugin_version() . \wp_rand( 40, 30000 ),
+				true
+			);
 			wp_localize_script(
 				'myvideoroom-webcam-stream-js',
-				'myvideoroom_file_upload',
+				'myvideoroom_base_ajax',
 				$script_data_array
 			);
 
@@ -293,12 +308,23 @@ class MVRSiteVideo {
 			10,
 			2
 		);
-		// Regenerate Filter.
+		// Regenerate Filter Site Video Page.
 		add_filter(
 			'myvideoroom_room_manager_regenerate',
 			array(
 				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
 				'regenerate_sitevideo_meeting_room',
+			),
+			10,
+			3
+		);
+
+		// Regenerate Filter Site Video Page.
+		add_filter(
+			'myvideoroom_room_manager_regenerate',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'regenerate_redirect_room',
 			),
 			10,
 			3
@@ -359,10 +385,12 @@ class MVRSiteVideo {
 	 */
 	public function render_sitevideo_welcome_tabs( array $input, int $room_id, $host_status = null, $header ): array {
 		// Host Menu Tab - rendered in Security as its a module feature of Security.
-		$host_menu = new MenuTabDisplay(
+		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+		$room_name   = $room_object->room_name;
+		$host_menu   = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_INFO_WELCOME ),
 			'welcomepage',
-			fn() => $this->render_welcome_tab(),
+			fn() => $this->render_welcome_tab( $room_name ),
 			'mvr-welcome-page'
 		);
 
@@ -381,10 +409,10 @@ class MVRSiteVideo {
 	 *
 	 * @return string - outbound menu.
 	 */
-	public function render_welcome_tab(): string {
+	public function render_welcome_tab( string $room_name = null ): string {
 		$render = require __DIR__ . '/views/header/view-welcometab.php';
 
-		return $render();
+		return $render( $room_name );
 
 	}
 

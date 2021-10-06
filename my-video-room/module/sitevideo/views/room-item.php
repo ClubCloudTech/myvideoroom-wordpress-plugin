@@ -29,7 +29,7 @@ return function (
 			array( 'target' => '_blank' ),
 		),
 	);
-echo var_dump( $room );
+
 	// Add any extra options.
 	$edit_actions = \apply_filters( 'myvideoroom_sitevideo_edit_actions', $edit_actions, $room->id );
 
@@ -86,15 +86,24 @@ echo var_dump( $room );
 			<code class="myvideoroom-shortcode-example-inline">
 				<?php
 
-				$shortcode = '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $room->id . ']';
+					$shortcode        = '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $room->id . ']';
+					$shortcode_filter = apply_filters( 'myvideoroom_room_manager_shortcode_display', $shortcode, $room->room_type, $room->id, $room );
+					echo esc_html( $shortcode_filter );
 
-				$shortcode_filter = apply_filters( 'myvideoroom_room_manager_shortcode_display', $shortcode, $room->room_type, $room->id, $room );
-				echo esc_html( $shortcode_filter );
 				?>
 			</code>
 		</td>
 		<td class="plugin-title column-primary">
-			<?php echo apply_filters( 'myvideoroom_conference_room_type_column_field', $room->type, $room ); ?></td>
+			<?php
+			if ( MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room->room_type ){
+				// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped upstream to render HTML.
+				echo apply_filters( 'myvideoroom_conference_room_type_column_field', $room->type, $room ); 
+			} else {
+				esc_html_e( '(Switch not Room)', 'myvideoroom' );
+			}
+
+			?>
+		</td>
 		<td>
 			<?php
 			foreach ( $edit_actions as $action ) {

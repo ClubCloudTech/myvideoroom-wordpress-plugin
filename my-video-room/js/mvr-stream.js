@@ -129,17 +129,17 @@ function imageUpload(event){
     			form_data.append("upimage", value);
   			});
 
-			  form_data.append('action','myvideoroom_file_upload');
+			  form_data.append('action','myvideoroom_base_ajax');
 				
 				var room_name     = $( '#roominfo' ).data( 'roomName' );
 					form_data.append('room_name', room_name );
 					form_data.append('action_taken', 'update_picture' );
-					form_data.append('security', myvideoroom_file_upload.security );
+					form_data.append('security', myvideoroom_base_ajax.security );
 					$.ajax(
 						{
 							type: 'post',
 							dataType: 'html',
-							url: myvideoroom_file_upload.ajax_url,
+							url: myvideoroom_base_ajax.ajax_url,
 							contentType: false,
 							processData: false,
 							data: form_data,
@@ -301,18 +301,18 @@ function cameratimeout(){
 				// Prepare Form.
 				var form_data = new FormData();
 				form_data.append('upimage', blob);
-				form_data.append('action','myvideoroom_file_upload');
+				form_data.append('action','myvideoroom_base_ajax');
 						
 				jQuery(function($) {
 					var room_name     = $( '#roominfo' ).data( 'roomName' );
 					form_data.append('room_name', room_name );
 					form_data.append('action_taken', 'update_picture' );
-					form_data.append('security', myvideoroom_file_upload.security );
+					form_data.append('security', myvideoroom_base_ajax.security );
 					$.ajax(
 						{
 							type: 'post',
 							dataType: 'html',
-							url: myvideoroom_file_upload.ajax_url,
+							url: myvideoroom_base_ajax.ajax_url,
 							contentType: false,
 							processData: false,
 							data: form_data,
@@ -346,7 +346,7 @@ function cameratimeout(){
 
 			// Prepare Form.
 			var form_data = new FormData();
-			form_data.append('action','myvideoroom_file_upload');
+			form_data.append('action','myvideoroom_base_ajax');
 					
 			jQuery(function($) {
 				console.log('start update');
@@ -357,12 +357,12 @@ function cameratimeout(){
 				form_data.append('display_name', display_name );
 
 				form_data.append('action_taken', 'update_display_name' );
-				form_data.append('security', myvideoroom_file_upload.security );
+				form_data.append('security', myvideoroom_base_ajax.security );
 				$.ajax(
 					{
 						type: 'post',
 						dataType: 'html',
-						url: myvideoroom_file_upload.ajax_url,
+						url: myvideoroom_base_ajax.ajax_url,
 						contentType: false,
 						processData: false,
 						data: form_data,
@@ -398,7 +398,7 @@ function cameratimeout(){
 
 		// Prepare Form.
 		var form_data = new FormData();
-		form_data.append('action','myvideoroom_file_upload');
+		form_data.append('action','myvideoroom_base_ajax');
 				
 		jQuery(function($) {
 			console.log('Picture Delete');
@@ -408,12 +408,12 @@ function cameratimeout(){
 			form_data.append('display_name', display_name );
 
 			form_data.append('action_taken', 'delete_me' );
-			form_data.append('security', myvideoroom_file_upload.security );
+			form_data.append('security', myvideoroom_base_ajax.security );
 			$.ajax(
 				{
 					type: 'post',
 					dataType: 'html',
-					url: myvideoroom_file_upload.ajax_url,
+					url: myvideoroom_base_ajax.ajax_url,
 					contentType: false,
 					processData: false,
 					data: form_data,
@@ -441,7 +441,7 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 	  function refreshWelcome() {
 		// Prepare Form.
 		var form_data = new FormData();
-		form_data.append('action','myvideoroom_file_upload');
+		form_data.append('action','myvideoroom_base_ajax');
 				
 		jQuery(function($) {
 
@@ -449,14 +449,14 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 			container      = $( '#myvideoroom-welcome-page' );
 			
 			form_data.append('room_name', room_name );
-			form_data.append('security', myvideoroom_file_upload.security );
+			form_data.append('security', myvideoroom_base_ajax.security );
 			form_data.append('action_taken', 'refresh_page' );
 
 			$.ajax(
 				{
 					type: 'post',
 					dataType: 'html',
-					url: myvideoroom_file_upload.ajax_url,
+					url: myvideoroom_base_ajax.ajax_url,
 					contentType: false,
 					processData: false,
 					data: form_data,
@@ -493,18 +493,18 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 		document.getElementById("stop-chk-sound").classList.remove('mvr-hide');
 		// Prepare Form.
 		var form_data = new FormData();
-		form_data.append('action','myvideoroom_file_upload');
+		form_data.append('action','myvideoroom_base_ajax');
 				
 		jQuery(function($) {
 			container      = $( '.myvideoroom-app' );
 			notification   = $( '#mvr-above-article-notification' );
-			form_data.append('security', myvideoroom_file_upload.security );
+			form_data.append('security', myvideoroom_base_ajax.security );
 			form_data.append('action_taken', 'check_sound' );
 			$.ajax(
 				{
 					type: 'post',
 					dataType: 'html',
-					url: myvideoroom_file_upload.ajax_url,
+					url: myvideoroom_base_ajax.ajax_url,
 					contentType: false,
 					processData: false,
 					data: form_data,
@@ -554,7 +554,7 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 	  function startmeeting(skip) {
 				// Prepare Form.
 				var form_data = new FormData();
-				form_data.append('action','myvideoroom_file_upload');
+				form_data.append('action','myvideoroom_base_ajax');
 						
 				jQuery(function($) {
 					var room_name  = $( '#roominfo' ).data( 'roomName' ),
@@ -564,7 +564,7 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 					container      = $( '.myvideoroom-app' );
 					
 					form_data.append('room_name', room_name );
-					form_data.append('security', myvideoroom_file_upload.security );
+					form_data.append('security', myvideoroom_base_ajax.security );
 					form_data.append('display_name', display_name );
 					form_data.append('action_taken', 'start_meeting' );
 					form_data.append('original_room', original_room );
@@ -572,7 +572,7 @@ document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Y
 						{
 							type: 'post',
 							dataType: 'html',
-							url: myvideoroom_file_upload.ajax_url,
+							url: myvideoroom_base_ajax.ajax_url,
 							contentType: false,
 							processData: false,
 							data: form_data,

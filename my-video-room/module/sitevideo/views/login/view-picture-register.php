@@ -13,11 +13,13 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
  * Render the admin page
  *
  * @param ?string $details_section Optional details section.
+ * @param ?string $room_name Room Name.
  *
  * @return string
  */
 return function (
-	object $room_object
+	object $room_object,
+	string $room_name
 ): string {
 	$display_name = $room_object->get_user_display_name();
 	$user_picture = $room_object->get_user_picture_url();
@@ -170,7 +172,7 @@ return function (
 	<?php
 	if ( ! \is_user_logged_in() ) {
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page();
+				echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page( $room_name );
 	}
 	if ( ! $all_set ) {
 		?>

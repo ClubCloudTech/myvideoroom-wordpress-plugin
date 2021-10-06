@@ -57,4 +57,19 @@ class HttpGet {
 		return (bool) \wp_verify_nonce( $nonce, $action );
 	}
 
+	/**
+	 * Is the request a GET?
+	 * To be used on requests that are allowed to come from non-admin pages.
+	 *
+	 * @param string $action The action we were expecting to call.
+	 *
+	 * @return bool
+	 */
+	public function is_get_request( string $action ): bool {
+		return (
+			( 'GET' === $_SERVER['REQUEST_METHOD'] ?? false ) &&
+			$this->get_string_parameter( 'action' ) === $action
+		);
+	}
+
 }

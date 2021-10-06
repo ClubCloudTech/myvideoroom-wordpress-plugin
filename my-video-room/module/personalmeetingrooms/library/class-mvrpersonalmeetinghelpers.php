@@ -13,6 +13,7 @@ use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Setup\RoomAdmin as SetupRoomAdmin;
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
 /**
  * Class MVRPersonalMeetingHelpers - Functions to assist Personal Meetings Classes
@@ -58,6 +59,10 @@ class MVRPersonalMeetingHelpers {
 					$shortcode = '[' . preg_replace( '/[^a-zA-Z0-9\s_]/', '', MVRPersonalMeeting::ROOM_SHORTCODE_PERSONAL_MEETING ) . ']';
 					return $shortcode;
 				}
+			case MVRSiteVideo::ROOM_NAME_REDIRECT:
+				$shortcode = '[' . preg_replace( '/[^a-zA-Z0-9\s_]/', '', MVRSiteVideo::SHORTCODE_REDIRECT ) . ']';
+				return $shortcode;
+
 		}
 
 		return $input;

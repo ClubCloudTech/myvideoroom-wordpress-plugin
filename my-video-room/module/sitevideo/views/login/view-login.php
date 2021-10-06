@@ -5,6 +5,8 @@
  * @package MyVideoRoomPlugin\Module\SiteVideo\Views\Login\View-Login.php
  */
 
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
+
 /**
  * Render the admin page
  *
@@ -14,7 +16,9 @@
  */
 return function (
 	bool $login_override = null,
-	string $login_shortcode = null
+	string $login_shortcode = null,
+	string $room_name = null,
+	string $redirect_url
 ): string {
 
 	ob_start();
@@ -27,8 +31,14 @@ return function (
 		<?php esc_html_e( 'You can login to access your previously stored room settings, baskets, lists, and pictures', 'myvideoroom' ); ?>
 	</p>
 	<?php
+
 	if ( $login_override && strlen( $login_shortcode ) > 5 ) {
-		echo do_shortcode( '[' . $login_shortcode . ']' );
+		$nonce = wp_create_nonce( $login_shortcode . MVRSiteVideo::ROOM_SLUG_REDIRECT );
+		?>
+<iframe id="iframe-login" src="/<?php echo esc_textarea( $redirect_url ) . '?nonce=' . esc_textarea( $nonce ) . '&shortcode=' . esc_textarea( $login_shortcode ) . '&action=' . esc_textarea( MVRSiteVideo::ROOM_SLUG_REDIRECT ); ?>" 
+sandbox="allow-forms allow-scripts allow-same-origin" height="600" width="400" frameBorder="0" class=""></iframe>
+		<?php 
+
 
 	} else {
 
