@@ -8,7 +8,6 @@
 namespace MyVideoRoomPlugin\Module\WooCommerce;
 
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\SectionTemplates;
@@ -278,7 +277,7 @@ class WooCommerce {
 	 */
 	public function proxy_test() {
 
-		Factory::get_instance( Setup::class )->initialise_default_video_settings();
+		//Factory::get_instance( Setup::class )->initialise_default_video_settings();
 
 	}
 

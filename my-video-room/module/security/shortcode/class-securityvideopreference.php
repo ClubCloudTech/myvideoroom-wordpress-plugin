@@ -29,7 +29,7 @@ class SecurityVideoPreference {
 	private static int $id_index = 0;
 
 	/**
-	 * Provide Runtime
+	 * Provide Init
 	 */
 	public function init() {
 		add_shortcode( self::SHORTCODE_TAG, array( $this, 'choose_security_settings_shortcode' ) );
@@ -41,7 +41,6 @@ class SecurityVideoPreference {
 	 * @param array|string $attributes List of shortcode params.
 	 *
 	 * @return string
-	 * @throws \Exception When the update fails.
 	 */
 	public function choose_security_settings_shortcode( $attributes = array() ): string {
 		$room_name = $attributes['room'] ?? 'default';

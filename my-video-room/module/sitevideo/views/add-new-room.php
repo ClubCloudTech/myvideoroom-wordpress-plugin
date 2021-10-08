@@ -2,7 +2,7 @@
 /**
  * Outputs the configuration settings for the video plugin
  *
- * @package MyVideoRoomPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Module\SiteVideo\Views\add-new-room.php
  */
 
 use MyVideoRoomPlugin\Factory;
