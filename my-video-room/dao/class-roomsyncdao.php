@@ -162,12 +162,11 @@ class RoomSyncDAO {
 	 */
 	public function get_room_participants( string $room_name ) {
 		global $wpdb;
-
+		/*phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested*/
 		$timestamp    = \current_time( 'timestamp' );
 		$allowed_time = $timestamp - SiteDefaults::LAST_VISITED_TOLERANCE;
 
-		// Can't cache as query involves time.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching 
 			$participants = $wpdb->get_results(
 				$wpdb->prepare(
 					'
@@ -192,7 +191,7 @@ class RoomSyncDAO {
 	 */
 	public function get_room_hosts_from_db( string $room_name ) {
 		global $wpdb;
-
+		/*phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested*/
 		$timestamp    = \current_time( 'timestamp' );
 		$allowed_time = $timestamp - SiteDefaults::LAST_VISITED_TOLERANCE;
 
@@ -337,7 +336,7 @@ class RoomSyncDAO {
 	 */
 	public function notify_user( string $room_name, string $user_hash_id = null ): ?bool {
 		global $wpdb;
-
+		//phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 		$timestamp = current_time( 'timestamp' );
 
 		// Try to Update First.
@@ -355,9 +354,6 @@ class RoomSyncDAO {
 				$room_name,
 			)
 		);
-		if ( $wpdb->last_error ) {
-			throw new \Exception( 'Notify User Query Failed' );
-		}
 
 		\wp_cache_delete( $room_name, __CLASS__ . '::get_by_id_sync_table' );
 		if ( $result ) {
@@ -378,7 +374,7 @@ class RoomSyncDAO {
 	 */
 	public function reset_timestamp( string $room_name, string $user_hash_id = null ): bool {
 		global $wpdb;
-
+		//phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 		$timestamp = current_time( 'timestamp' );
 		if ( ! $user_hash_id ) {
 			$user_hash_id = Factory::get_instance( RoomAdmin::class )->get_user_session();
@@ -438,6 +434,7 @@ class RoomSyncDAO {
 			$sync_state   = $new_master_id;
 			$core_room_id = WooCommerce::SETTING_BASKET_REQUEST_USER;
 		}
+		//phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 		$timestamp = current_time( 'timestamp' );
 
 		// Try to Update First.
@@ -461,7 +458,9 @@ class RoomSyncDAO {
 			$result = new RoomSync(
 				WooCommerce::SETTING_BASKET_REQUEST_USER,
 				$room_name,
+				/*phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested*/
 				current_time( 'timestamp' ),
+				/*phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested*/
 				current_time( 'timestamp' ),
 				false,
 				WooCommerce::SETTING_BASKET_REQUEST_OFF,
@@ -625,7 +624,9 @@ class RoomSyncDAO {
 		$current_object = new RoomSync(
 			$cart_id,
 			$room_name,
+			/*phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested*/
 			current_time( 'timestamp' ),
+			/*phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested*/
 			current_time( 'timestamp' ),
 			false,
 			WooCommerce::SETTING_BASKET_REQUEST_OFF,
@@ -637,7 +638,7 @@ class RoomSyncDAO {
 			null,
 			null
 		);
-		$success        = $this->create( $current_object );
+		$success = $this->create( $current_object );
 		if ( $success ) {
 			return $current_object;
 		} else {
