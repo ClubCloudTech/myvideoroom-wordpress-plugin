@@ -174,13 +174,15 @@ class MVRSiteVideo {
 		);
 
 		// Register Script Ajax Upload.
-		\wp_enqueue_script(
+		\wp_register_script(
 			'myvideoroom-webcam-stream-js',
 			\plugins_url( '/../../js/mvr-stream.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
 			Factory::get_instance( Version::class )->get_plugin_version() . \wp_rand( 40, 30000 ),
 			true
 		);
+		\wp_enqueue_script( 'myvideoroom-webcam-stream-js' );
+
 		// Localize script Ajax Upload.
 			$script_data_array = array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),

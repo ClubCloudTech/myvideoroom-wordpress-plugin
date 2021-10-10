@@ -49,8 +49,10 @@
 
 	/* Disabling Execution outside of MVR */
 	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
+	var loginIsactive = document.getElementsByClassName( 'mvr-login-form' );
+	
 
-	if ( mvrIsactive.length > 0) {
+	if ( mvrIsactive.length > 0 || loginIsactive.length > 0 ) {
 
 		// Check Inside Iframe for Login Page
 		document.getElementById('iframe-login').onload = function() {
