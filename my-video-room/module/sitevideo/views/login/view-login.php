@@ -17,7 +17,6 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 return function (
 	bool $login_override = null,
 	string $login_shortcode = null,
-	string $room_name = null,
 	string $redirect_url
 ): string {
 

@@ -19,7 +19,7 @@ use MyVideoRoomPlugin\Plugin;
 	function () {
 		Module::register(
 			'elementor',
-			'Elementor',
+			'Elementor Integration Pack',
 			array(
 				sprintf(
 				/* translators: %s is a link to the Elementor website builder plugin */
@@ -27,12 +27,12 @@ use MyVideoRoomPlugin\Plugin;
 						'Adds functionality to integration MyVideoRoom and %s. Allows shortcode for editing generated pages in elementor',
 						'myvideoroom'
 					),
-					'<a href="https://elementor.com/">Elementor</a>'
+					'Elementor'
 				),
 			),
 			fn() => Factory::get_instance( Elementor::class )->init()
 		)->add_compatibility_hook(
 			fn() => Factory::get_instance( Elementor::class )->is_elementor_active()
-		)->set_as_hidden();
+		);
 	}
 );

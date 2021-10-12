@@ -18,8 +18,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
  * @return string
  */
 return function (
-	object $room_object,
-	string $room_name
+	object $room_object
 ): string {
 	$display_name = $room_object->get_user_display_name();
 	$user_picture = $room_object->get_user_picture_url();
@@ -172,7 +171,7 @@ return function (
 	<?php
 	if ( ! \is_user_logged_in() ) {
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page( $room_name );
+				echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page();
 	}
 	if ( ! $all_set ) {
 		?>

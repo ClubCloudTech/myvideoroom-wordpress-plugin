@@ -190,11 +190,9 @@ class SectionTemplates {
 	/**
 	 * Welcome Template.
 	 *
-	 * @param string $room_name - the room name.
-	 *
 	 * @return string
 	 */
-	public function welcome_template( string $room_name = null ): string {
+	public function welcome_template(): string {
 
 		ob_start();
 
@@ -204,7 +202,7 @@ class SectionTemplates {
 
 		<?php
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page( $room_name );
+				echo Factory::get_instance( MVRSiteVideoViews::class )->render_picture_page();
 		?>
 	<div class="mvr-flex">
 		<div class="mvr-powered-by mvr-clear mvr-left">

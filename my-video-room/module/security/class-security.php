@@ -18,6 +18,7 @@ use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityNotifications;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
+use MyVideoRoomPlugin\Module\CustomPermissions\Module as CustomPermissions;
 
 /**
  * Class Security- Provides the Render Block Host Function for Security.
@@ -77,6 +78,8 @@ class Security {
 	 * Required for Normal Runtime.
 	 */
 	public function init() {
+		// Activate Room Custom Permissions Engine.
+		new CustomPermissions();
 		// Turn on Page Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
 

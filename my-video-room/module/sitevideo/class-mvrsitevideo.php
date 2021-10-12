@@ -386,13 +386,11 @@ class MVRSiteVideo {
 	 * @return array - outbound menu.
 	 */
 	public function render_sitevideo_welcome_tabs( array $input, int $room_id, $host_status = null, $header ): array {
-		// Host Menu Tab - rendered in Security as its a module feature of Security.
-		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-		$room_name   = $room_object->room_name;
-		$host_menu   = new MenuTabDisplay(
+
+		$host_menu = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_INFO_WELCOME ),
 			'welcomepage',
-			fn() => $this->render_welcome_tab( $room_name ),
+			fn() => $this->render_welcome_tab(),
 			'mvr-welcome-page'
 		);
 
@@ -411,10 +409,10 @@ class MVRSiteVideo {
 	 *
 	 * @return string - outbound menu.
 	 */
-	public function render_welcome_tab( string $room_name = null ): string {
+	public function render_welcome_tab(): string {
 		$render = require __DIR__ . '/views/header/view-welcometab.php';
 
-		return $render( $room_name );
+		return $render();
 
 	}
 
