@@ -35,7 +35,7 @@ return function (
 		<div id="myvideoroom-roomstore-outer" class="mvr-admin-page-wrap">
 			<h2><?php esc_html_e( 'Room Store and Basket', 'my-video-room' ); ?></h2>
 			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper mvr-mobile-size">
-				<ul class="mvr-ul-style-side-menu">
+				<ul class="mvr-ul-style-top-menu">
 					<li>
 						<a class="nav-tab nav-tab-active mvr-full-hide" href="#roomstore">
 							<?php esc_html_e( 'Store', 'my-video-room' ); ?>

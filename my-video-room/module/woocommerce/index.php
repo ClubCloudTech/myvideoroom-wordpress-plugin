@@ -18,7 +18,7 @@ use MyVideoRoomPlugin\Plugin;
 	function () {
 		Module::register(
 			'woocommerce',
-			\esc_html__( 'WooCommerce Integration', 'myvideoroom' ),
+			\esc_html__( 'WooCommerce Integration Pack', 'myvideoroom' ),
 			array(
 				\esc_html__(
 					'Integrates MyVideoRoom and WooCommerce stores giving a dedicated video room to host video calls with customers and a virtual shopfront. A video storefront Shortcode is added as well as extra tabs for meetings where a merchant can use to deliver consultations, handle drop-in visits, and host their own store level meetings securely.',

@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
@@ -56,6 +57,11 @@ class Activation {
 		$elementor_module = Factory::get_instance( Module::class )->get_module( 'elementor' );
 		if ( $elementor_module ) {
 			Factory::get_instance( Modules::class )->activate_module( $elementor_module );
+		}
+
+		$security_module = Factory::get_instance( Module::class )->get_module( Security::MODULE_SECURITY_NAME );
+		if ( $security_module ) {
+			Factory::get_instance( Modules::class )->activate_module( $security_module );
 		}
 
 		return $this;

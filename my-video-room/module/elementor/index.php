@@ -24,7 +24,7 @@ use MyVideoRoomPlugin\Plugin;
 				sprintf(
 				/* translators: %s is a link to the Elementor website builder plugin */
 					\__(
-						'Adds functionality to integration MyVideoRoom and %s. Allows shortcode for editing generated pages in elementor',
+						'Adds functionality to integration MyVideoRoom and %s. Allows shortcode for editing generated pages in Elementor',
 						'myvideoroom'
 					),
 					'Elementor'

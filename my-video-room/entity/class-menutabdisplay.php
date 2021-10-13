@@ -1,6 +1,7 @@
 <?php
 /**
- * User Video Preference Entity Object
+ * Menu Tab Object Class
+ * Shows Menu Objects that can be rendered by tabs in Elemental and MyVideoRoom.
  *
  * @package MyVideoRoomPlugin\Entity
  */
@@ -8,7 +9,8 @@
 namespace MyVideoRoomPlugin\Entity;
 
 /**
- * Class UserVideoPreference
+ * Menu Tab Object Class
+ * Shows Menu Objects that can be rendered by tabs in Elemental and MyVideoRoom.
  */
 class MenuTabDisplay {
 

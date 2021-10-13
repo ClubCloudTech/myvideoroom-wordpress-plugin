@@ -83,7 +83,7 @@ return function (
 			<?php } else { ?>
 				<td colspan="2">
 					<code
-						class="myvideoroom-shortcode-example"><?php echo \esc_html( $text_shortcode_host->output_shortcode_text() ); ?></code>
+						class="myvideoroom-shortcode-example"><?php echo \esc_html( $text_shortcode_guest->output_shortcode_text() ); ?></code>
 					<br />
 					<input class="copy-to-clipboard button-secondary" type="button"
 						value="<?php \esc_attr_e( 'Copy to clipboard', 'myvideoroom' ); ?>" />
