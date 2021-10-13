@@ -97,7 +97,7 @@ return function (): string {
 						<p>
 						<?php
 						esc_html_e(
-							'This module will add a Video Room to each BuddyPress group. It will allow a room admin or moderator of a BuddyPress group to be a <strong>Host</strong> of a group room. Regular members will be guests, signed out users are not allowed in group rooms. The moderators/admins can change Room privacy, as well as room and reception layout templates by accessing on the Video Tab of the Group and clicking on the Host tab. This will take effect at the next page refresh.',
+							'This module will add a Video Room to each BuddyPress group. It will allow a room admin or moderator of a BuddyPress group to be a Host of a group room. Regular members will be guests, signed out users are not allowed in group rooms. The moderators/admins can change Room privacy, as well as room and reception layout templates by accessing on the Video Tab of the Group and clicking on the Host tab. This will take effect at the next page refresh.',
 							'my-video-room'
 						);
 						?>
@@ -109,8 +109,7 @@ return function (): string {
 					<?php
 							$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
 								SiteDefaults::USER_ID_SITE_DEFAULTS,
-								BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT,
-								array( 'basic', 'premium' )
+								BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT
 							);
 					// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
 					echo $layout_setting;

@@ -15,7 +15,10 @@ use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\Dependencies;
+use MyVideoRoomPlugin\Library\Module;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
+use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
@@ -63,13 +66,27 @@ class BuddyPress {
 		return Factory::get_instance( Dependencies::class )->is_buddypress_active();
 	}
 	/**
+	 * Is Buddypress Active - checks if BuddyPress is enabled.
+	 *
+	 * @return bool
+	 */
+	public function can_module_be_activated():bool {
+		$buddypress_state     = $this->is_buddypress_active();
+		$personal_video_state = Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
+		if ( $buddypress_state && $personal_video_state ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	/**
 	 * Install - initialisation function of class - used to call Shortcodes or main class functions.
 	 *
 	 * @return void|null.
 	 */
 	public function init() {
 		$is_module_enabled     = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_ID );
-		$is_buddypress_enabled = Factory::get_instance( self::class )->is_buddypress_active();
+		$is_buddypress_enabled = $this->is_buddypress_active();
 		if ( ! $is_module_enabled && ! $is_buddypress_enabled ) {
 			return null;
 		}

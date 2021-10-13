@@ -34,12 +34,20 @@ return function (
 	$html_lib = Factory::get_instance( HTML::class, array( 'room_builder' ) );
 
 	?>
-	<h2><?php \esc_html_e( 'Visual room builder and shortcode generator', 'myvideoroom' ); ?></h2>
+	<h2><?php \esc_html_e( 'Visual Room Designer and shortcode generator', 'myvideoroom' ); ?></h2>
 
 	<p class="myvideoroom-explainer-text">
 		<?php
 		echo \esc_html__(
-			' Use this tool to explore and create your preferred configuration of MyVideoRoom, including layouts, receptions, permissions, and other settings. The preview is interactive and allows you to drag users in and out of the reception, and to see the output for both hosts and guests. The tool will output the shortcodes that you can then copy and paste into your page or post',
+			' Use this tool to explore and create your preferred configuration of MyVideoRoom shortcode pairs, including layouts, receptions, permissions, and other settings. The preview is interactive and allows you to drag users in and out of the reception, and to see the output for both hosts and guests. The tool will output the shortcodes that you can then copy and paste into your page or post',
+			'myvideoroom'
+		)
+		?>
+	</p>
+	<p class="myvideoroom-explainer-text">
+		<?php
+		echo \esc_html__(
+			' Note that automatically generated rooms like Personal Video Rooms, and Site Conference Rooms have their own security, reception, and other settings which must be set on a per room basis, and not in this tool.',
 			'myvideoroom'
 		)
 		?>

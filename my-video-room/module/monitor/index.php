@@ -18,10 +18,10 @@ use MyVideoRoomPlugin\Plugin;
 	function () {
 		Module::register(
 			'monitor',
-			\esc_html__( 'Monitor', 'myvideoroom' ),
+			\esc_html__( 'Room Reception Monitor', 'myvideoroom' ),
 			array(
 				\esc_html__(
-					'Adds a WordPress shortcode to allow monitoring of the number of people in a room. Will show browser notifications when users join. The outputted text and format can be customised and translated.',
+					'Provides support for an automatic room monitoring and reception monitoring engine. Also provides a shortcode to allow monitoring of the number of people in a room. This system Will show browser notifications when users join, and provides a knock on the door sound. The outputted text and format can be customised.',
 					'myvideoroom'
 				),
 			),

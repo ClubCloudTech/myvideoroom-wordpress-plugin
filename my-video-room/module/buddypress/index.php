@@ -11,9 +11,7 @@ namespace MyVideoRoomPlugin\Module\BuddyPress;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
-use MyVideoRoomPlugin\Module\BuddyPress\Module as BuddyPress;
 use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress as BuddyPressClass;
-use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Plugin;
 
 \add_action(
@@ -29,6 +27,8 @@ use MyVideoRoomPlugin\Plugin;
 				),
 			),
 			fn() => Factory::get_instance( BuddyPressClass::class )->init()
+		)->add_compatibility_hook(
+			fn() => Factory::get_instance( BuddyPressClass::class )->can_module_be_activated()
 		)->add_activation_hook(
 			fn () => Factory::get_instance( BuddyPressClass::class )->activate_module()
 		)->add_admin_page_hook(
@@ -36,6 +36,3 @@ use MyVideoRoomPlugin\Plugin;
 		);
 	}
 );
-/*
-->add_compatibility_hook(
-			fn() => Factory::get_instance( Module::class )->is_module_active( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME )*/

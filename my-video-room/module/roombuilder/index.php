@@ -18,10 +18,10 @@ use MyVideoRoomPlugin\Plugin;
 	function () {
 		Module::register(
 			'roombuilder',
-			\esc_html__( 'Room Builder', 'myvideoroom' ),
+			\esc_html__( 'Visual Room Designer Tool', 'myvideoroom' ),
 			array(
 				\esc_html__(
-					'A tool to explore the different options provided by MyVideoRoom, and to generate the correct app shortcode to output the room.',
+					'Provides a tool for administrators to visually explore the different room and reception options, and generate the correct app shortcodes for hosts and guests to output custom rooms quickly and easily.',
 					'myvideoroom'
 				),
 			),

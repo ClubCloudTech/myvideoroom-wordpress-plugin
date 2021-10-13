@@ -135,7 +135,7 @@ class Module {
 	 *
 	 * @return ModuleInstance[]
 	 */
-	public function get_active_modules(): array {
+	public function get_active_modules(): ?array {
 		if ( \get_option( Plugin::SETTING_ACTIVATED_MODULES ) ) {
 			$activated_modules = \json_decode( \get_option( Plugin::SETTING_ACTIVATED_MODULES ), true );
 		} else {
@@ -149,5 +149,21 @@ class Module {
 			},
 			ARRAY_FILTER_USE_BOTH
 		);
+	}
+	/**
+	 * Is Module Active Simple
+	 *
+	 * @return bool
+	 */
+	public function is_module_active_simple( $module_name ): bool {
+		if ( \get_option( Plugin::SETTING_ACTIVATED_MODULES ) ) {
+			$activated_modules = \json_decode( \get_option( Plugin::SETTING_ACTIVATED_MODULES ), true );
+		} else {
+			$activated_modules = array();
+		}
+		if ( \in_array( $module_name, $activated_modules, true ) ) {
+			return true;
+		}
+		return false;
 	}
 }

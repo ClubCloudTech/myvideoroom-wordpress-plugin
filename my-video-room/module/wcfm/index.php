@@ -17,7 +17,7 @@ use MyVideoRoomPlugin\Plugin;
 	function () {
 		Module::register(
 			'wcfm',
-			\esc_html__( 'WCFM', 'myvideoroom' ),
+			\esc_html__( 'WCFM Integration Pack', 'myvideoroom' ),
 			array(
 				\esc_html__(
 					'Integrates MyVideoRoom and WCFM multi-vendor marketplace giving each merchant a dedicated video room to host video calls with their customers in. A video store tab is created in WCFM storefronts that automatically adds a video storefront for a merchant can use to deliver consultations, handle drop-in visits, and host their own store level meetings securely.',

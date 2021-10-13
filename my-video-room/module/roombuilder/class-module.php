@@ -105,7 +105,7 @@ class Module {
 				$add_to_menu(
 					new Page(
 						self::PAGE_SLUG_BUILDER,
-						\esc_html__( 'Room Builder', 'myvideoroom' ),
+						\esc_html__( 'Visual Room Designer', 'myvideoroom' ),
 						array( new RoomBuilderAdmin(), 'create_room_builder_page' ),
 					),
 					1
@@ -124,7 +124,7 @@ class Module {
 							'myvideoroom'
 						),
 						'<a href="' . \esc_url( \menu_page_url( self::PAGE_SLUG_BUILDER, false ) ) . '">' .
-						\esc_html__( 'room builder', 'myvideoroom' ) .
+						\esc_html__( 'room designer', 'myvideoroom' ) .
 						'</a>'
 					)
 				);

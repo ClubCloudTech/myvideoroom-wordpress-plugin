@@ -5,6 +5,10 @@
  */
 
 (function ($) {
+	
+	/**
+	 * Handle Ajax Click Events for Basket Actions
+	 */
 	var handleEvent = function (e){
 				var product_id     = $( this ).data( 'productId' ),
 				record_id          = $( this ).data( 'recordId' ),
@@ -94,7 +98,10 @@
 		console.log( 'Ajax Main on click finished' );
 		return false;
 	}
-
+	
+	/**
+	 * Heartbeat function that checks Ajax and redraws key Divs
+	 */
 	function refreshHeartbeat( original_room, message_room ) {
 		var ajax_url    = myvideoroom_woocommerce_basket.ajax_url,
 		input_type      = 'refresh',
@@ -190,9 +197,7 @@
 								if (window.myvideoroom_tabbed_init) {
 									window.myvideoroom_tabbed_init( mainvideo );
 								}
-							} else {
-								// Do nothing!
-							}
+							} 
 						}
 						if (state_response.securitychange == 'change' ) {
 							if (  state_response.securitysetting ) {
@@ -225,6 +230,9 @@
 		return null;
 	}
 
+	/**
+	 * Handles major errors that other pages draw, causes a page reload of major components
+	 */
 	function triggerRefresh( room_checksum ) {
 		console.log( 'Refresh Triggered' );
 		var ajax_url = myvideoroom_woocommerce_basket.ajax_url,
@@ -270,6 +278,9 @@
 				return null;
 	}
 
+	/**
+	 * Refreshes the Notification bar on first page load
+	 */
 	function notifyRefresh( room_checksum ) {
 
 		var ajax_url   = myvideoroom_woocommerce_basket.ajax_url,
@@ -284,39 +295,42 @@
 		if ( typeof room_name === 'undefined' ) {
 			room_name = room_checksum;
 		}
-				$.ajax(
-					{
-						type: 'post',
-						dataType: 'html',
-						url: ajax_url,
-						data: {
-							action: 'myvideoroom_woocommerce_basket',
-							inputType: input_type,
-							roomName: room_name,
-						},
-						success: function (response) {
-							var state_response = JSON.parse( response );
-							setTimeout( function() { status_message.fadeOut(); }, 7000 );
+			$.ajax(
+				{
+					type: 'post',
+					dataType: 'html',
+					url: ajax_url,
+					data: {
+						action: 'myvideoroom_woocommerce_basket',
+						inputType: input_type,
+						roomName: room_name,
+					},
+					success: function (response) {
+						var state_response = JSON.parse( response );
+						setTimeout( function() { status_message.fadeOut(); }, 7000 );
 
-							if ( state_response.notificationbar ) {
-								setTimeout(
-									function() { notification.html( state_response.notificationbar );
-										init();
-									},
-									3000
-								);
-							}
-							init();
-						},
-						error: function ( response ){
-							console.log( response );
-							setTimeout( () => {  triggerRefresh; }, 1000 );
+						if ( state_response.notificationbar ) {
+							setTimeout(
+								function() { notification.html( state_response.notificationbar );
+									init();
+								},
+								3000
+							);
 						}
+						init();
+					},
+					error: function ( response ){
+						console.log( response );
+						setTimeout( () => {  triggerRefresh; }, 1000 );
 					}
-				);
+				}
+			);
 		return null;
 	}
-
+	
+	/**
+	 * Manages visibility of Basket Tab
+	 */
 	var showBasket = function(target){
 		if ( target ) {
 			$( '#' + target ) . show();
@@ -327,10 +341,12 @@
 			$( '#mvr-basket-section-confirmation' ).empty();
 			$( '#mvr-basket-section-confirmation' ).removeClass();
 			document.getElementById( "mvr-basket-section" ).classList.add( 'mvr-clear' );
-			console.log( 'basket show' );
 		}
 	}
-
+	
+	/**
+	 * Reset activities post click/load/interaction.
+	 */
 	var init = function(){
 
 		$( '.myvideoroom-woocommerce-basket-ajax' ).on(
@@ -434,10 +450,14 @@
 		return false;
 	}
 
-	/* Disabling Execution outside of MVR */
-	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
+	/**
+	 * Script Load Decision 
+	 */
+	
+	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' ),
+	woocommActive = document.getElementsByClassName( 'basket-video-host-wrap-shop' );
 
-	if ( mvrIsactive.length > 0) {
+	if ( mvrIsactive.length > 0 && woocommActive.length >0 ) {
 		var original_room = $( '#roominfo' ).data( 'roomName' ),
 		host_status       = $( '#roomid' ).data( 'hostStatus' );
 		if ( host_status !== 1) {
