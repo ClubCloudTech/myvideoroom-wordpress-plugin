@@ -4,17 +4,20 @@ Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 5.7
 Contributors: clubcloud
-Tags: video chat, video conference, video call, web conferencing, video meeting, web conferencing, video
+Tags: video for woocommerce, video for buddypress, buddypress video, virtual office, woocommerce video, video conference, video call, web conferencing, video meeting, video conferencing
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Video meeting for your site. Allows you to embed highly configurable and secure video chat/meeting functions into any site.
+Video for BuddyPress, video for WooCommerce, Video meetings embeded in to your site.
 
 == Description ==
-Integrate video with E-Commerce, Social Networking and Bookings. ClubCloud brings to market a novel video conferencing plugin that allows for diverse integration with, otherwise quite separated, website functionality. The MyVideoRoom Plugin enables you to not just add video chat or meeting functionality to a website but to fully embed it into the wider functions of any platform.
+Integrate video with BuddyPress profiles and groups, Integrates video with WooCommerce with video-store, Basket sharing and video bookings. ClubCloud brings to market a novel video conferencing plugin that allows for diverse integration with, otherwise quite separated, website functionality. The MyVideoRoom Plugin enables you to not just add video chat or meeting functionality to a website but to fully embed it into the wider functions of any platform.
 
 Features include:
 
+* WooCommerce integration with video assisted buying & Basket share
+* BuddyPress integration with dedicated video rooms for users and groups
+* Site conference video rooms
 * 1-to-1 or multiway meetings
 * Up to 30 participants per meeting (more can be catered for on request)
 * Custom security features including role level control.
@@ -22,7 +25,7 @@ Features include:
 * Virtual Lobby/Reception function for extra layer of security
 * Video Reception can include video streaming for an enhanced video experience, while waiting
 * Screen share
-* YouTube Video sharing
+* YouTube Video sharing (depending browser settings)
 * Room theme templates for common scenarios
 * 100% tailorable video meeting themes
 
@@ -42,6 +45,9 @@ Acceptable Use Policy: [https://clubcloud.tech/acceptable-use](https://clubcloud
 
 = Features =
 
+* WooCommerce integration with video assisted buying & Basket share
+* BuddyPress integration with dedicated video rooms for users and groups
+* Site conference video rooms
 * Immersive quality 1-to-1 or multiway meetings
 * Up to 30 participants per meeting (more can be catered for on request)
 * Custom security features including role level control.
@@ -49,7 +55,7 @@ Acceptable Use Policy: [https://clubcloud.tech/acceptable-use](https://clubcloud
 * Virtual Lobby/Reception function for extra layer of security
 * Video Reception can include video streaming for an enhanced video experience, while waiting
 * Screen share
-* Video recording
+* Video recording  (on a special request basis)
 * YouTube Video sharing (depending browser settings)
 * Room theme templates for common scenarios
 * 100% tailorable video meeting themes
@@ -133,7 +139,7 @@ The first thing to check is that you have activated the plugin. This can be done
 If you have successfully activated the plugin, and the shortcode is still returning nothing we recommend switching on WordPress Debug mode to see more logging information.
 
 = What changes does this plugin make to my WordPress installation? =
-This plugin does not add any new database tables to your WordPress installation.
+This plugin adds some tables to the DB to ehable some function's management. All additions will be automatically removed when the plugin is removed.
 This plugin creates a new role to WordPress called **Video Admin** *(myvideoroom-video-admin-role)*. This role will be automatically removed when the plugin is removed.
 
 = What are the technical requirements for this plugin? =
@@ -152,14 +158,17 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 == Screenshots ==
 
 1. The main video screen embedded into a WordPress page.
-2. Collecting name of guests before admittance to the waiting room.
-3. Room hosts choosing which seat each person should occupy.
-4. Admin screen showing initial setup and activation.
-5. The visual room building, allowing exporting of customisation and options and output of shortcodes.
-6. Customisation of default room permissions, selecting which users will be room hosts.
+2. Personal Video Room integrated to a buddypress profile.
+3. WooCommerce products available in video call context.
+4. WooCommerce shopping baskets shared during video call.
+5. BuddyPress Goups get dedicated video meeting spaces.
+6. Video Receptions for guests before joining a call.
 7. The full and detailed shortcode reference.
 
 == Changelog ==
+= 4.0.0 =
+* Adds Integration to Woocommerce and BuddyPress
+* launches a new interface for MyVideoRoom video chats.
 
 = 3.0.0 =
 * Adds site video, and customisable rooms.
