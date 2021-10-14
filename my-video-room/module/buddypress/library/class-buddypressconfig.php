@@ -135,9 +135,25 @@ class BuddyPressConfig {
 							<p class="mvr-preferences-paragraph">
 							<?php
 							esc_html_e(
-								'You can chose if you want to restrict access to your Video Room. This setting has an option to allow all users to access your room(default), or to enable access control.
-								if you enable access control, there are two options. Stealth Mode - will just remove your video room from your profile from your non-friends (and Blocked users). Show Do 
+								'You can choose if you want to restrict access to your Video Room to your friends. This setting has an option to allow all users to access your room(default), or to enable access control. If you enable access control, there are two options: ',
+								'my-video-room'
+							);
+							?>
+							</p>
+							<p class="mvr-preferences-paragraph">
+							<?php
+							esc_html_e(
+								'Stealth Mode - will just remove your video room from your profile from your non-friends (and Blocked users). Show Do 
 								not Disturb- will show your room entrance on your profile but will block any user that tries to access your reception with a message. In any case you will not be notified.',
+								'my-video-room'
+							);
+							?>
+							</p>
+							</p>
+							<p class="mvr-preferences-paragraph">
+							<?php
+							esc_html_e(
+								'Show Do Not Disturb- will show your room entrance on your profile but will block any user that tries to access your reception with a message. In any case you will not be notified.',
 								'my-video-room'
 							);
 							?>

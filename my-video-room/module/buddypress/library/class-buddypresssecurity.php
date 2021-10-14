@@ -31,19 +31,18 @@ class BuddyPressSecurity {
 	 * @return null|string
 	 */
 	public function mvrbp_security_menu_hook( int $user_id, string $room_name, int $id_index ) {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
-		! function_exists( 'bp_is_active' ) || ! bp_is_active( 'groups' ) ||
-		! ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() )
-		) {
+
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
 			return null;
 		}
+
 		$output = null;
 		global $bp;
 			$is_group_page = $bp->groups->current_group->slug;
 			$room_object   = Factory::get_instance( RoomMap::class )->get_room_info( $user_id );
 
 		// Group setting from BP.
-		if ( ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_GROUP_ID ) ) && ! $room_object &&
+		if ( function_exists( 'bp_is_active' ) && bp_is_active( 'groups' ) && function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() && ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_GROUP_ID ) ) && ! $room_object &&
 		( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ) && $is_group_page ) {
 			$output .= esc_attr( Factory::get_instance( BuddyPressConfig::class )->render_group_menu_options( $bp->groups->current_group->creator_id, $room_name, $id_index ) );
 		} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === $user_id ) {

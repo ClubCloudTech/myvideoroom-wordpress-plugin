@@ -75,16 +75,7 @@ class ModuleConfig {
 	 *
 	 * @return string  Button with link
 	 */
-	public function module_activation_button( int $module_id ): string {
-		$http_get_library = Factory::get_instance( HttpGet::class );
-
-		$module_status = $http_get_library->get_string_parameter( 'module_action' );
-		$module_id     = $http_get_library->get_string_parameter( 'module_id', $module_id );
-
-		$server_path = '';
-		if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-			$server_path = esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) );
-		}
+	public function module_activation_button( int $module_id, string $module_status = null ): ?string {
 
 		switch ( $module_status ) {
 			case self::ACTION_ENABLE:
@@ -102,48 +93,31 @@ class ModuleConfig {
 
 		// Check if is sub tab to mark as such to strip out extra data in URL when called back.
 
-		$base_url = \add_query_arg(
-			array(
-				'module_id' => $module_id,
-			),
-			home_url( $server_path )
-		);
-
 		if ( $is_module_enabled ) {
 			$action      = self::ACTION_DISABLE;
 			$type        = 'dashicons-plugins-checked';
 			$description = esc_html__( 'This scenario is currently enabled and its rooms are accepting meetings.', 'myvideoroom' );
-			$status      = 'mvr-icons-enabled';
+			$status      = 'mvr-icons-enabled mvr-admin-ajax';
 			$main_text   = __( 'Active', 'myvideoroom' );
-			$result      = true;
 		} else {
 			$action      = self::ACTION_ENABLE;
 			$type        = 'dashicons-admin-plugins';
 			$description = esc_html__( 'This scenario is currently disabled and its rooms are offline', 'myvideoroom' );
-			$status      = 'mvr-icons-disabled';
+			$status      = 'mvr-icons-disabled mvr-admin-ajax';
 			$main_text   = __( 'Inactive', 'myvideoroom' );
-			$result      = false;
 		}
+		$nonce = \wp_create_nonce( $module_id );
 
-		$url = \add_query_arg(
-			array(
-				'module_action' => $action,
-			),
-			$base_url
-		);
-
-		?>
-		<div>
-			<a href="<?php echo esc_url( $url ); ?>"
-				class="<?php echo esc_html( $status ); ?>"
-				title="<?php echo esc_html( $description ); ?>"
-			>
-				<i class="dashicons <?php echo esc_html( $type ) . ' ' . esc_html( $status ); ?>"></i>
-				<?php echo esc_html( $main_text ); ?></a>
-		</div>
-		<?php
-
-		return $result;
+		return '
+		<div id="display' . \esc_attr( $module_id ) . '">
+		<div id="module' . \esc_attr( $module_id ) . '">
+			<a href="#"
+				class="' . esc_html( $status ) . '"
+				title="' . esc_html( $description ) . '"
+				data-action="' . esc_html( $action ) . '"
+				data-module="' . esc_html( $module_id ) . '"
+			> <i class="dashicons ' . esc_html( $type ) . ' ' . esc_html( $status ) . '"></i>
+				' . esc_html( $main_text ) . '</a></div></div>';
 	}
 
 	/**

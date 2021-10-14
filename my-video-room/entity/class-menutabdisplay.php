@@ -83,9 +83,9 @@ class MenuTabDisplay {
 	/**
 	 * Gets Function Callback.
 	 *
-	 * @return string
+	 * @return ?string
 	 */
-	public function get_function_callback(): string {
+	public function get_function_callback(): ?string {
 		return ( $this->function_callback )();
 	}
 

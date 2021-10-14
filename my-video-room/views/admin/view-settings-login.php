@@ -53,8 +53,7 @@ return function (
 	</div>
 	<div class="mvr-flex">
 		<div class="myvideoroom-table-split-left myvideoroom-split-padding ">
-			<img class="" src="
-				<?php echo esc_url( plugins_url( '/../../img/login.png', __FILE__ ) ); ?>" alt="Powered by MyVideoRoom">
+			<img class="" src="	<?php echo esc_url( plugins_url( '/../../img/login.png', __FILE__ ) ); ?>" alt="Powered by MyVideoRoom">
 		</div>
 		<div class="myvideoroom-table-split-right myvideoroom-split-padding">
 			<h2><?php esc_html_e( 'What is this setting ?', 'myvideoroom' ); ?></h2>

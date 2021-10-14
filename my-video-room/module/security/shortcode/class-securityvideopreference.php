@@ -82,6 +82,7 @@ class SecurityVideoPreference {
 			$allow_role_control_enabled = $http_post_library->get_checkbox_parameter( 'security_allow_role_control_enabled_preference' );
 			$block_role_control_enabled = $http_post_library->get_checkbox_parameter( 'security_block_role_control_enabled_preference' );
 			$site_override_enabled      = $http_post_library->get_checkbox_parameter( 'override_all_preferences' );
+			$bp_friends_setting         = $http_post_library->get_checkbox_parameter( 'myvideoroom_security_restrict_bp_friends' );
 			$timestamp                  = current_time( 'timestamp' );
 
 			// Handle Multi_box array and change it to a Database compatible string.
@@ -100,6 +101,9 @@ class SecurityVideoPreference {
 					->set_site_override_setting( $site_override_enabled )
 					->set_timestamp( $timestamp );
 
+				if ( $bp_friends_setting ) {
+					$current_user_setting->set_bp_friends_setting( $bp_friends_setting );
+				}
 				$security_preference_dao->update( $current_user_setting );
 			} else {
 
@@ -114,6 +118,8 @@ class SecurityVideoPreference {
 					$allow_role_control_enabled,
 					$block_role_control_enabled,
 					$site_override_enabled,
+					null,
+					$bp_friends_setting,
 					$timestamp
 				);
 

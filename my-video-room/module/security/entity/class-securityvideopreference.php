@@ -87,7 +87,7 @@ class SecurityVideoPreference {
 	 *
 	 * @var ?bool
 	 */
-	private ?bool $restrict_group_to_members_enabled;
+	private ?bool $bp_group_member_setting;
 
 	/**
 	 * Bp_friends_setting
@@ -116,7 +116,7 @@ class SecurityVideoPreference {
 	 * @param bool    $allow_role_control_enabled        Disable Room to users who arent in specific roles.
 	 * @param bool    $block_role_control_enabled        Flips Allowed Roles to Blocked Roles instead.
 	 * @param bool    $site_override_enabled             Overrides User settings with central ones.
-	 * @param ?string $restrict_group_to_members_enabled Blocks rooms from outside users (used for BuddyPress initially but can use any group plugin).
+	 * @param ?string $bp_group_member_setting Blocks rooms from outside users (used for BuddyPress initially but can use any group plugin).
 	 * @param ?string $bp_friends_setting                Setting for BuddyPress Friends (can be other platforms with plugins).
 	 * @param ?int    $timestamp                         Last Updated Timestamp.
 	 */
@@ -131,24 +131,24 @@ class SecurityVideoPreference {
 		bool $allow_role_control_enabled = false,
 		bool $block_role_control_enabled = false,
 		bool $site_override_enabled = false,
-		string $restrict_group_to_members_enabled = null,
+		string $bp_group_member_setting = null,
 		string $bp_friends_setting = null,
 		?int $timestamp = null
 
 	) {
-		$this->id                                = $id;
-		$this->user_id                           = $user_id;
-		$this->room_name                         = $room_name;
-		$this->allowed_roles                     = $allowed_roles;
-		$this->blocked_roles                     = $blocked_roles;
-		$this->room_disabled                     = $room_disabled;
-		$this->anonymous_enabled                 = $anonymous_enabled;
-		$this->allow_role_control_enabled        = $allow_role_control_enabled;
-		$this->block_role_control_enabled        = $block_role_control_enabled;
-		$this->site_override_enabled             = $site_override_enabled;
-		$this->restrict_group_to_members_enabled = $restrict_group_to_members_enabled;
-		$this->bp_friends_setting                = $bp_friends_setting;
-		$this->timestamp                         = $timestamp;
+		$this->id                         = $id;
+		$this->user_id                    = $user_id;
+		$this->room_name                  = $room_name;
+		$this->allowed_roles              = $allowed_roles;
+		$this->blocked_roles              = $blocked_roles;
+		$this->room_disabled              = $room_disabled;
+		$this->anonymous_enabled          = $anonymous_enabled;
+		$this->allow_role_control_enabled = $allow_role_control_enabled;
+		$this->block_role_control_enabled = $block_role_control_enabled;
+		$this->site_override_enabled      = $site_override_enabled;
+		$this->bp_group_member_setting    = $bp_group_member_setting;
+		$this->bp_friends_setting         = $bp_friends_setting;
+		$this->timestamp                  = $timestamp;
 	}
 
 	/**
@@ -173,7 +173,7 @@ class SecurityVideoPreference {
 				$data->allow_role_control_enabled,
 				$data->block_role_control_enabled,
 				$data->site_override_enabled,
-				$data->restrict_group_to_members_enabled,
+				$data->bp_group_member_setting,
 				$data->bp_friends_setting,
 				$data->timestamp,
 			);
@@ -191,19 +191,19 @@ class SecurityVideoPreference {
 	public function to_json(): string {
 		return wp_json_encode(
 			array(
-				'id'                                => $this->id,
-				'user_id'                           => $this->user_id,
-				'room_name'                         => $this->room_name,
-				'allowed_roles'                     => $this->allowed_roles,
-				'blocked_roles'                     => $this->blocked_roles,
-				'room_disabled'                     => $this->room_disabled,
-				'anonymous_enabled'                 => $this->anonymous_enabled,
-				'allow_role_control_enabled'        => $this->allow_role_control_enabled,
-				'block_role_control_enabled'        => $this->block_role_control_enabled,
-				'site_override_enabled'             => $this->site_override_enabled,
-				'restrict_group_to_members_enabled' => $this->restrict_group_to_members_enabled,
-				'bp_friends_setting'                => $this->bp_friends_setting,
-				'timestamp'                         => $this->timestamp,
+				'id'                         => $this->id,
+				'user_id'                    => $this->user_id,
+				'room_name'                  => $this->room_name,
+				'allowed_roles'              => $this->allowed_roles,
+				'blocked_roles'              => $this->blocked_roles,
+				'room_disabled'              => $this->room_disabled,
+				'anonymous_enabled'          => $this->anonymous_enabled,
+				'allow_role_control_enabled' => $this->allow_role_control_enabled,
+				'block_role_control_enabled' => $this->block_role_control_enabled,
+				'site_override_enabled'      => $this->site_override_enabled,
+				'bp_group_member_setting'    => $this->bp_group_member_setting,
+				'bp_friends_setting'         => $this->bp_friends_setting,
+				'timestamp'                  => $this->timestamp,
 			)
 		);
 	}
@@ -420,19 +420,19 @@ class SecurityVideoPreference {
 	 *
 	 * @return ?bool
 	 */
-	public function is_restricted_to_group_to_members(): ?bool {
-		return $this->restrict_group_to_members_enabled;
+	public function get_restrict_group_to_members_setting(): ?string {
+		return $this->bp_group_member_setting;
 	}
 
 	/**
 	 * Set Restrict Group to Members State.
 	 *
-	 * @param bool $restrict_group_to_members_enabled - the state.
+	 * @param string $bp_group_member_setting - the state.
 	 *
 	 * @return SecurityVideoPreference
 	 */
-	public function set_restrict_group_to_members_setting( bool $restrict_group_to_members_enabled ): SecurityVideoPreference {
-		$this->restrict_group_to_members_enabled = $restrict_group_to_members_enabled;
+	public function set_restrict_group_to_members_setting( string $bp_group_member_setting ): SecurityVideoPreference {
+		$this->bp_group_member_setting = $bp_group_member_setting;
 
 		return $this;
 	}
@@ -442,18 +442,18 @@ class SecurityVideoPreference {
 	 *
 	 * @return bool
 	 */
-	public function is_bp_friends_setting_enabled(): ?bool {
+	public function get_bp_friends_setting(): ?string {
 		return $this->bp_friends_setting;
 	}
 
 	/**
-	 * Set Restrict Group to Members State.
+	 * Set Restrict Friends State.
 	 *
-	 * @param bool $bp_friends_setting - the BP friends block state.
+	 * @param string $bp_friends_setting - the BP friends block state.
 	 *
 	 * @return SecurityVideoPreference
 	 */
-	public function set_bp_friends_setting( bool $bp_friends_setting ): SecurityVideoPreference {
+	public function set_bp_friends_setting( string $bp_friends_setting ): SecurityVideoPreference {
 		$this->bp_friends_setting = $bp_friends_setting;
 
 		return $this;

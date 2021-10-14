@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
+use MyVideoRoomPlugin\Admin\AdminAjax;
 use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\Activation;
@@ -51,6 +52,7 @@ class Admin {
 			\add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 			\add_action( 'myvideoroom_admin_init', array( $this, 'init_admin' ) );
 		}
+		\add_action( 'wp_ajax_myvideoroom_admin_ajax', array( Factory::get_instance( AdminAjax::class ), 'myvideoroom_admin_ajax_handler' ), 10, 2 );
 	}
 
 	/**
@@ -99,6 +101,8 @@ class Admin {
 				);
 			}
 		);
+		// Init Admin Ajax module.
+		Factory::get_instance( AdminAjax::class )->init();
 
 		\add_action(
 			'admin_notices',

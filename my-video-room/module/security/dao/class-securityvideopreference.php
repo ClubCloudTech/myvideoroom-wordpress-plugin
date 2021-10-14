@@ -85,9 +85,9 @@ class SecurityVideoPreference {
 				'anonymous_enabled'                 => $security_video_preference->is_anonymous_enabled(),
 				'allow_role_control_enabled'        => $security_video_preference->is_allow_role_control_enabled(),
 				'block_role_control_enabled'        => $security_video_preference->is_block_role_control_enabled(),
-				'restrict_group_to_members_enabled' => $security_video_preference->is_restricted_to_group_to_members(),
+				'restrict_group_to_members_enabled' => $security_video_preference->get_restrict_group_to_members_setting(),
 				'site_override_enabled'             => $security_video_preference->is_site_override_enabled(),
-				'bp_friends_setting'                => $security_video_preference->is_bp_friends_setting_enabled(),
+				'bp_friends_setting'                => $security_video_preference->get_bp_friends_setting(),
 				'timestamp'                         => $security_video_preference->get_timestamp(),
 
 			)
@@ -295,8 +295,8 @@ class SecurityVideoPreference {
 				'allow_role_control_enabled'        => $security_video_preference->is_allow_role_control_enabled(),
 				'block_role_control_enabled'        => $security_video_preference->is_block_role_control_enabled(),
 				'site_override_enabled'             => $security_video_preference->is_site_override_enabled(),
-				'restrict_group_to_members_enabled' => $security_video_preference->is_restricted_to_group_to_members(),
-				'bp_friends_setting'                => $security_video_preference->is_bp_friends_setting_enabled(),
+				'restrict_group_to_members_enabled' => $security_video_preference->get_restrict_group_to_members_setting(),
+				'bp_friends_setting'                => $security_video_preference->get_bp_friends_setting(),
 				'timestamp'                         => $security_video_preference->get_timestamp(),
 
 			),
@@ -415,10 +415,10 @@ class SecurityVideoPreference {
 				return $preference->is_room_disabled();
 
 			case 'bp_friends_setting':
-				return $preference->is_bp_friends_setting_enabled();
+				return $preference->get_bp_friends_setting();
 
 			case 'restrict_group_to_members_enabled':
-				return $preference->is_restricted_to_group_to_members();
+				return $preference->get_restrict_group_to_members_setting();
 
 			case 'allowed_roles':
 				return implode( '|', $preference->get_roles() );

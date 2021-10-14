@@ -210,11 +210,8 @@ class BuddyPressVideo {
 		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 
 		if ( Factory::get_instance( BuddyPressHelpers::class )->bp_can_host_group( get_current_user_id() ) ) {
-
 			return $this->bp_group_video_host();
-
 		} else {
-
 			return $this->bp_group_video_guest();
 		}
 	}
