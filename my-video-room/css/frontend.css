@@ -416,6 +416,9 @@ opacity: 1;
 	max-height: 30px;
 	max-width: 125px;
 }
+.mvr-background{
+	background: white;
+}
 
 .mvr-preferences-paragraph {
 	color: rgb(32, 32, 32);

@@ -23,7 +23,7 @@ class SecurityTemplates {
 		wp_enqueue_style( 'myvideoroom-template' );
 		?>
 
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 			<h2 class="mvr-header-text">
 				<?php
 				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
@@ -56,7 +56,7 @@ class SecurityTemplates {
 		wp_enqueue_style( 'myvideoroom-template' );
 		?>
 
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 			<h2 class="mvr-header-text">
 				<?php
 				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
@@ -117,7 +117,7 @@ class SecurityTemplates {
 		ob_start();
 		wp_enqueue_style( 'myvideoroom-template' );
 		?>
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 			<h2 class="mvr-header-text">
 				<?php
 				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
@@ -177,7 +177,7 @@ class SecurityTemplates {
 		ob_start();
 		?>
 
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 		<h2 class="mvr-header-text">
 		<?php
 		echo esc_html( get_bloginfo( 'name' ) ) . ' - ';

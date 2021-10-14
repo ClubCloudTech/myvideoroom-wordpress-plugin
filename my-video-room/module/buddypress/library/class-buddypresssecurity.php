@@ -347,54 +347,34 @@ class BuddyPressSecurity {
 		ob_start();
 		wp_enqueue_style( 'myvideoroom-template' );
 		?>
-<div class="mvr-row">
-
-	<table class="mvr-table">
-		<tr>
-			<th style="width:50%">
-				<img class="myvideoroom-user-image" src="
-										" alt="Image">
-			</th>
-			<th>
-				<h2 class="mvr-reception-header"><?php echo esc_html( get_bloginfo( 'name' ) ) . esc_html__( ' This room is set to Group Members Only', 'my-video-room' ); ?></h2>
-
+		<div class="mvr-row mvr-background">
+			<h2 class="mvr-header-text">
+				<?php
+				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
+				esc_html_e( 'This room is set to Specific Group Members Only', 'myvideoroom' ) . '</h2>';
+				?>
 				<img class="mvr-access-image" src="
+			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
+
+				<p class="mvr-template-text">
 					<?php
-					//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Get site URL is already escaped and the rest is text.
-					echo get_site_url() . '/wp-content/plugins/myvideoroom-extras/noentry.jpg';
+					$first_display_name = '<strong>' . esc_html__( 'Group Administrators', 'myvideoroom' ) . '</strong>';
+					$second_display_name = '<strong>' . esc_html__( ' the group admins ', 'myvideoroom' ) . '</strong>';
+
+					echo sprintf(
+					/* translators: %1s is the text "Site Policy" and %2s is "the site administrators" */
+						esc_html__( ' %1$s  only allow specific members to access this group room. Please contact %2$s for more assistance.', 'myvideoroom' ),
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$first_display_name,
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$second_display_name
+					);
 					?>
-				" alt="Site Logo">
-			</th>
-	</table>
-	<p class="mvr-header-text">
+				</p>
+		</div>
 		<?php
 
-		$new_user = get_userdata( $user_id );
-
-		if ( $new_user->user_firstname ) {
-			$initial_admin_name   = '<strong>' . esc_html( $new_user->user_firstname ) . '</strong>';
-			$secondary_admin_name = $initial_admin_name;
-		} elseif ( $new_user->user_nicename ) {
-			$initial_admin_name   = '<strong>' . esc_html( $new_user->user_nicename ) . '</strong>';
-			$secondary_admin_name = $initial_admin_name;
-		} else {
-			$initial_admin_name   = esc_html__( 'The administrator', 'my-video-room' );
-			$secondary_admin_name = esc_html__( 'the administrator', 'my-video-room' );
-		}
-
-		printf(
-			/* translators: Both %s refer to the name of the administrator */
-			esc_html__( '%1$s or one of the moderators have enabled this room only for specific membership of the group. You are not in a class of user that %2$s or the group moderators have allowed. Please contact any of the group admins or moderators for assistance.' ),
-			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
-			$initial_admin_name,
-			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped in function
-			$secondary_admin_name
-		)
-		?>
-
-</div>
-		<?php
-		return ob_end_flush();
+		return ' ';
 	}
 }
 

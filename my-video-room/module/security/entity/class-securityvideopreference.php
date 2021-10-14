@@ -87,7 +87,7 @@ class SecurityVideoPreference {
 	 *
 	 * @var ?bool
 	 */
-	private ?bool $bp_group_member_setting;
+	private ?string $bp_group_member_setting;
 
 	/**
 	 * Bp_friends_setting

@@ -134,7 +134,7 @@ class BuddyPress {
 		);
 
 		// Add Permissions Notification of Status to Main Permissions SecurityVideoPreference Form.
-		\add_filter( 'myvideoroom_security_admin_preference_user_id_intercept', array( Factory::get_instance( BuddyPressHelpers::class ), 'modify_user_id_for_groups' ), 10, 1 );
+		// \add_filter( 'myvideoroom_security_admin_preference_user_id_intercept', array( Factory::get_instance( BuddyPressHelpers::class ), 'modify_user_id_for_groups' ), 10, 1 );
 
 	}
 

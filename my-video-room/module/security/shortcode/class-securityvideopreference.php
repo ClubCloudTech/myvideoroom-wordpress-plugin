@@ -82,7 +82,8 @@ class SecurityVideoPreference {
 			$allow_role_control_enabled = $http_post_library->get_checkbox_parameter( 'security_allow_role_control_enabled_preference' );
 			$block_role_control_enabled = $http_post_library->get_checkbox_parameter( 'security_block_role_control_enabled_preference' );
 			$site_override_enabled      = $http_post_library->get_checkbox_parameter( 'override_all_preferences' );
-			$bp_friends_setting         = $http_post_library->get_checkbox_parameter( 'myvideoroom_security_restrict_bp_friends' );
+			$bp_friends_setting         = $http_post_library->get_string_parameter( 'security_restrict_bp_friends' );
+			$bp_group_setting           = $http_post_library->get_string_parameter( 'security_restrict_group_to_members' );
 			$timestamp                  = current_time( 'timestamp' );
 
 			// Handle Multi_box array and change it to a Database compatible string.
@@ -100,10 +101,20 @@ class SecurityVideoPreference {
 					->set_block_role_control_enabled( $block_role_control_enabled )
 					->set_site_override_setting( $site_override_enabled )
 					->set_timestamp( $timestamp );
-
+				// Handle BuddyPress Module (extension not in a filter as BP is in core security database already).
 				if ( $bp_friends_setting ) {
+					if ( 'all' === $bp_friends_setting ) {
+						$bp_friends_setting = '';
+					}
 					$current_user_setting->set_bp_friends_setting( $bp_friends_setting );
 				}
+				if ( $bp_group_setting ) {
+					if ( 'off' === $bp_group_setting ) {
+						$bp_group_setting = '';
+					}
+					$current_user_setting->set_restrict_group_to_members_setting( $bp_group_setting );
+				}
+
 				$security_preference_dao->update( $current_user_setting );
 			} else {
 
@@ -118,7 +129,7 @@ class SecurityVideoPreference {
 					$allow_role_control_enabled,
 					$block_role_control_enabled,
 					$site_override_enabled,
-					null,
+					$bp_group_setting,
 					$bp_friends_setting,
 					$timestamp
 				);

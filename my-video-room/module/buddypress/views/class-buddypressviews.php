@@ -58,7 +58,7 @@ class BuddyPressViews {
 	public function bp_plugin_control_centre_dashboard() {
 
 		?>
-<div class="mvr-row">
+<div class="mvr-row mvr-background">
 	<h2 class="mvr-reception-header">
 		<?php esc_html_e( 'Video Settings for ', 'my-video-room' ) . esc_html( get_bloginfo( 'name' ) ); ?></h2>
 

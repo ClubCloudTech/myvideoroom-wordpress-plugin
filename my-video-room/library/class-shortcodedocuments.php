@@ -19,7 +19,7 @@ class ShortcodeDocuments {
 	public function render_general_shortcode_docs() {
 
 		?>
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 			<h2><?php esc_html_e( 'General Shortcodes', 'my-video-room' ); ?></h2>
 			<table style="width:70%; border: 1px solid black;">
 				<tr>
@@ -97,7 +97,7 @@ class ShortcodeDocuments {
 	public function render_buddypress_shortcode_docs() {
 
 		?>
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 
 			<h2><?php esc_html_e( 'BuddyPress Video Shortcodes', 'my-video-room' ); ?></h2>
 			<table>
@@ -142,7 +142,7 @@ class ShortcodeDocuments {
 	public function render_sitevideoroom_shortcode_docs() {
 
 		?>
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 			<h2><?php esc_html_e( 'Site Video Room Shortcodes', 'my-video-room' ); ?></h2>
 			<table style="width:70%; border: 1px solid black;">
 				<tr>
@@ -190,7 +190,7 @@ class ShortcodeDocuments {
 	public function render_personalmeeting_shortcode_docs() {
 
 		?>
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 			<h2><?php esc_html_e( 'Personal Meeting Shortcodes', 'my-video-room' ); ?></h2>
 			<table style="width:70%; border: 1px solid black;">
 				<tr>
@@ -276,7 +276,7 @@ class ShortcodeDocuments {
 	public function render_wcbookings_shortcode_docs() {
 
 		?>
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 			<h2><?php esc_html_e( 'WooCommerce Bookings Shortcodes', 'my-video-room' ); ?></h2>
 			<table style="width:70%; border: 1px solid black;">
 				<tr>
@@ -295,7 +295,7 @@ class ShortcodeDocuments {
 	public function render_wcfm_shortcode_docs() {
 
 		?>
-		<div class="mvr-row">
+		<div class="mvr-row mvr-background">
 			<h2><?php esc_html_e( 'WCFM Shortcodes', 'my-video-room' ); ?></h2>
 			<table style="width:70%; border: 1px solid black;">
 				<tr>
