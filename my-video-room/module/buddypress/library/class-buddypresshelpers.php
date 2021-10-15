@@ -2,7 +2,7 @@
 /**
  * Addon functionality for BuddyPress -Video Room Handlers for BuddyPress
  *
- * @package MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressConfig
+ * @package MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressHelpers
  */
 
 namespace MyVideoRoomPlugin\Module\BuddyPress\Library;
@@ -31,6 +31,11 @@ class BuddyPressHelpers {
 	}
 
 	/**
+	 * Permissions Helpers
+	 * These functions provide support to tabs based on user status
+	 */
+
+	/**
 	 * Bp_is_user_moderator - returns whether a user id is a moderator of a BuddyPress Group
 	 *
 	 * @param  mixed $group_id - required.
@@ -44,23 +49,21 @@ class BuddyPressHelpers {
 		if ( ! $user_id ) {
 			$user_id = get_current_user_id();
 		}
-		$is_mod          = false;
-		$user_groups_mod = bp_get_user_groups(
-			$user_id,
-			array(
-				'is_mod' => true,
-			)
-		);
+		$is_mod = false;
+		if ( function_exists( 'bp_get_user_groups' ) ) {
+			$user_groups_mod = \bp_get_user_groups(
+				$user_id,
+				array(
+					'is_mod' => true,
+				)
+			);
+		}
 
 		if ( isset( $user_groups_mod[ $group_id ] ) ) {
 			$is_mod = true;
 		}
 		return $is_mod;
 	}
-	/**
-	 * Permissions Helpers
-	 * These functions provide support to tabs based on user status
-	 */
 
 	/**
 	 * Bp_is_user_admin - returns admin status of a user in a group.
@@ -76,13 +79,15 @@ class BuddyPressHelpers {
 		if ( ! $user_id ) {
 			$user_id = get_current_user_id();
 		}
-		$is_admin          = false;
-		$user_groups_admin = bp_get_user_groups(
-			$user_id,
-			array(
-				'is_admin' => true,
-			)
-		);
+		$is_admin = false;
+		if ( function_exists( 'bp_get_user_groups' ) ) {
+			$user_groups_admin = \bp_get_user_groups(
+				$user_id,
+				array(
+					'is_admin' => true,
+				)
+			);
+		}
 
 		if ( isset( $user_groups_admin[ $group_id ] ) ) {
 			$is_admin = true;
@@ -104,8 +109,10 @@ class BuddyPressHelpers {
 		if ( ! $user_id ) {
 			$user_id = get_current_user_id();
 		}
-		$is_member          = false;
-		$user_groups_member = bp_get_user_groups( $user_id );
+		$is_member = false;
+		if ( function_exists( 'bp_get_user_groups' ) ) {
+			$user_groups_member = \bp_get_user_groups( $user_id );
+		}
 
 		if ( isset( $user_groups_member[ $group_id ] ) ) {
 			$is_member = true;
@@ -117,13 +124,13 @@ class BuddyPressHelpers {
 	 *
 	 * @param  int $user_id - The first person to check.
 	 * @param  int $visitor_id - required. The second person to check.
-	 * @return bool
+	 * @return string
 	 */
 	public function bp_are_users_friends( int $user_id, int $visitor_id ): string {
 		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
 			return null;
 		}
-		if ( ! \bp_is_active( 'friends' ) ) {
+		if ( ! \bp_is_active( 'friends' ) || ! function_exists( 'friends_check_friendship' ) ) {
 			return null;
 		}
 		$friends_status = \friends_check_friendship( $user_id, $visitor_id );

@@ -2,7 +2,7 @@
 /**
  * Addon functionality for BuddyPress -Video Room Handlers for BuddyPress
  *
- * @package MyVideoRoomPlugin\Modules\BuddyPressVideo
+ * @package MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressVideo.php
  */
 
 namespace MyVideoRoomPlugin\Module\BuddyPress\Library;
@@ -36,15 +36,14 @@ class BuddyPressVideo {
 	}
 
 	/**
-	 * A Shortcode for the Boardroom View to be rendered on BuddyPress profile pages
+	 * A Shortcode for the User Meeting Room to be rendered on BuddyPress profile pages
 	 * This is used for the Guest entry
-	 * No arguments needed
 	 *
 	 * @return string|null
 	 */
 	public function bp_boardroom_video_guest() {
 		// Escape dependencies.
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->can_module_be_activated() ) {
 			return null;
 		}
 
@@ -110,22 +109,19 @@ class BuddyPressVideo {
 		);
 		array_push( $output_object, $host_menu );
 
-		//phpcs:ignore --WordPressOutputNotEscaped - the elements are already sanitised.
 		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, $room_name, $host_status );
 
 	}
 
 	/**
-	 * A Shortcode for the Boardroom View to be rendered on BuddyPress profile pages
-	 * This is used for the Host entry and contains switching logic that will direct automatically to guest if not in own profile
-	 * This function means no switching function is needed ( guests also re-direct to host if in own profile )
-	 * No arguments needed
+	 * Function for User Meeting Room to be rendered on BuddyPress profile pages
+	 * This is used for the Host entry (with logic for auto redirects to guest if not in own profile)
 	 *
 	 * @return string|null
 	 */
 	public function bp_boardroom_video_host():string {
 		// Escape dependencies.
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->can_module_be_activated() ) {
 			return null;
 		}
 
@@ -153,9 +149,9 @@ class BuddyPressVideo {
 			return $render_block;
 		}
 
-		// Get Room Parameters.
+		// Get Room Parameters. Build Room.
 		$video_template = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name );
-		// Build the Room.
+
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'userbr', $user_id ) )
 			->set_layout( $video_template )
@@ -194,13 +190,13 @@ class BuddyPressVideo {
 	}
 
 	/**
-	 * A shortcode to switch Group Meeting Templates to Admins or Users
-	 * The groups video page subnav menu calls this function which in term calls the hosting, or attendee pages depending on role
+	 * Function to switch Group Meeting Templates to Room Hosts or Guests
+	 * Custom BP logic used for distinguishing hosts.
 	 *
 	 * @return string
 	 */
-	public function groupmeet_switch() {
-		global $bp;
+	public function groupmeet_switch(): string {
+
 		// Adding Listeners for Update.
 		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
 		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();

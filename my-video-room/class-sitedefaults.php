@@ -111,7 +111,7 @@ class SiteDefaults {
 			'myvideoroom-protect-input',
 			plugins_url( '/js/protect-input.js', __FILE__ ),
 			null,
-			$plugin_version,
+			$plugin_version . \wp_rand( 1, 2000 ),
 			true
 		);
 

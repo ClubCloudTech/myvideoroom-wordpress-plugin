@@ -11,13 +11,10 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressHelpers;
 use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressSecurity;
 use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressVideo;
-use MyVideoRoomPlugin\Library\WordPressUser;
-use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
-use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
@@ -31,7 +28,7 @@ class BuddyPress {
 	const MODULE_BUDDYPRESS_DISPLAY                = 'BuddyPress Settings';
 	const MODULE_BUDDYPRESS_ID                     = 434;
 	const MODULE_BUDDYPRESS_ADMIN_LOCATION         = '/modules/buddypress/views/view-settings-buddypress.php';
-	const MODULE_BUDDYPRESS_VIDEO_SLUG             = 'video-meeting';
+	const MODULE_BUDDYPRESS_VIDEO_SLUG             = 'myvideoroom';
 	const MODULE_BUDDYPRESS_GROUP_NAME             = 'buddypress-group-module';
 	const MODULE_BUDDYPRESS_GROUP_ID               = 837;
 	const MODULE_BUDDYPRESS_USER_NAME              = 'buddypress-user-module';
@@ -44,6 +41,7 @@ class BuddyPress {
 	const SETTING_IS_FRIEND                        = 'is_friend';
 	const SETTING_DO_NOT_DISTURB                   = 'Do-Not-Disturb';
 	const SETTING_STEALTH                          = 'Stealth-Remove-Video';
+	const SETTING_DEFAULT_TAB_NAME                 = 'MyVideoRoom';
 
 	/**
 	 * Initialise On Module Activation
@@ -59,6 +57,16 @@ class BuddyPress {
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_BUDDYPRESS_GROUP_ID, true );
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_BUDDYPRESS_FRIENDS_ID, true );
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_BUDDYPRESS_USER_ID, true );
+
+		// Initialize default tab options for User and Group Tab names, and bypass if already created.
+		$user_check = \get_option( 'myvideoroom-buddypress-user-tab' );
+		if ( ! $user_check ) {
+			\update_option( 'myvideoroom-buddypress-user-tab', self::SETTING_DEFAULT_TAB_NAME );
+		}
+		$group_check = \get_option( 'myvideoroom-buddypress-group-tab' );
+		if ( ! $group_check ) {
+			\update_option( 'myvideoroom-buddypress-group-tab', self::SETTING_DEFAULT_TAB_NAME );
+		}
 	}
 	/**
 	 * Is Buddypress Active - checks if BuddyPress is enabled.
@@ -103,7 +111,7 @@ class BuddyPress {
 			if ( $is_user_module_enabled ) {
 				$this->setup_root_nav_action();
 			}
-			if ( $is_group_module_enabled ) {
+			if ( $is_group_module_enabled && function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() ) {
 				$this->setup_group_nav_action();
 			}
 		}
@@ -123,19 +131,10 @@ class BuddyPress {
 
 		// Security Engine.
 		add_action( 'myvideoroom_security_block_disabled_module', array( Factory::get_instance( BuddyPressSecurity::class ), 'mvrbp_disabled_module_block' ), 10, 1 );
-
-		// Update Listeners.
-		\add_action(
-			'myvideoroom_admin_init',
-			function () {
-				Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
-				Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
-			}
-		);
 	}
 
 	/**
-	 * Render BuddyPress Admin Page.
+	 * Render BuddyPress Admin Page for Myvideoroom Modules Management Page.
 	 *
 	 * @return string
 	 */
@@ -146,17 +145,15 @@ class BuddyPress {
 	/**
 	 * Naming Screen Functions Section - This section hosts the page construction templates for each named clickable function.
 	 * Insert each function that the constructor above instantiates inside each separate template function
-	 * Example - if the tab above has cc_group_video_meeting_content as the screen function - the rendering function cc_group_video_meeting_content must be built below for the tab to render content
 	 */
 
 	/**
-	 * Renders the Video Meeting tab Content that is a child of groups
+	 * Supports Naming of Groups, and returning of information.
 	 *
 	 * @param array $params - the array for the shortcode.
-	 * @params array $params - [type] The array of Type required.
-	 * @return bool|string|true|null
+	 * @return ?string
 	 */
-	public function bp_groupname_shortcode( $params = array() ) {
+	public function bp_groupname_shortcode( $params = array() ): ?string {
 		if ( ! $this->is_buddypress_active() ) {
 			return null;
 		}
@@ -172,10 +169,9 @@ class BuddyPress {
 	}
 
 	/**
-	 * Main Constructor
-	 * - This function loads all tabs and subtabs in one action
-	 * - each tab calls a 'screen function' which must be in the screen function section
-	 * You can add tabs, and sub tabs here - The parent slug defines if it is a sub navigation item, or a navigation item
+	 * Main Constructor - Adds Tabs for the User Video Room.
+	 *
+	 * @return null|void
 	 */
 	public function setup_root_nav_action() {
 		if ( ! $this->is_buddypress_active() ) {
@@ -184,12 +180,15 @@ class BuddyPress {
 
 		$hide_tab_from_user = Factory::get_instance( BuddyPressSecurity::class )->block_friends_display();
 		if ( ! $hide_tab_from_user ) {
-
+			$tab_name = \get_option( 'myvideoroom-buddypress-user-tab' );
+			if ( ! $tab_name ) {
+				$tab_name = self::SETTING_DEFAULT_TAB_NAME;
+			}
 			// Setup My Video Tab. Section 1.
 			\bp_core_new_nav_item(
 				array(
-					'name'                    => 'MyVideoRoom',
-					'slug'                    => 'my-video-room',
+					'name'                    => $tab_name,
+					'slug'                    => self::MODULE_BUDDYPRESS_VIDEO_SLUG,
 					'show_for_displayed_user' => true,
 					'screen_function'         => array( $this, 'myvideo_render_main_screen_function' ),
 					'item_css_id'             => 'far fa-address-card',
@@ -199,40 +198,37 @@ class BuddyPress {
 		}
 	}
 	/**
-	 * My Video Room Section 1
-	 * - This function loads all tabs and subtabs in one action
-	 * - each tab calls a 'screen function' which must be in the screen function section
+	 * User Main Screen Function.
+	 * This function loads all tabs and subtabs by mounting template and then action.
+	 *
+	 * @return null|void
 	 */
 	public function myvideo_render_main_screen_function() {
-		add_action( 'bp_template_content', array( $this, 'bp_myvideo_tab_action' ) );
+		add_action( 'bp_template_content', array( Factory::get_instance( BuddyPressVideo::class ), 'bp_boardroom_video_host' ) );
 		\bp_core_load_template( \apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
 	}
+
 	/**
-	 * BP_myvideo_tab_action- renders the Video Host Template
+	 * Default User Room Display Function.
 	 *
-	 * @return void
-	 */
-	public function bp_myvideo_tab_action() {
-		//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Already sanitised upstream.
-		echo Factory::get_instance( BuddyPressVideo::class )->bp_boardroom_video_host();
-	}
-	/**
-	 * Function to display Groups Video Room Tab in every Video Room
-	 * This function has an issue with certain Elementor pages that call it - which means it can be disabled to edit the pages.
-	 *
-	 * @return false|string
+	 * @return null|void
 	 */
 	public function setup_group_nav_action() {
-		if ( ! $this->is_buddypress_active() || ! function_exists( 'bp_is_groups_component' ) ) {
+		if ( ! $this->is_buddypress_active() || ! function_exists( 'bp_is_groups_component' ) || ! bp_is_groups_component() ) {
 			return null;
 		}
 		global $bp;
 
-		if ( \bp_is_active( 'groups' ) && $bp->groups && $bp->groups->current_group ) {
+		if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'groups' ) && $bp->groups && $bp->groups->current_group ) {
+			$tab_name = \get_option( 'myvideoroom-buddypress-group-tab' );
+			if ( ! $tab_name ) {
+				$tab_name = self::SETTING_DEFAULT_TAB_NAME;
+			}
+
 			$group_link = $bp->root_domain . '/' . $bp->groups->root_slug . '/' . $bp->groups->current_group->slug . '/';
 			\bp_core_new_subnav_item(
 				array(
-					'name'            => 'Video Ponga',
+					'name'            => $tab_name,
 					'slug'            => self::MODULE_BUDDYPRESS_VIDEO_SLUG,
 					'parent_url'      => $group_link,
 					'parent_slug'     => $bp->groups->current_group->slug,
@@ -245,22 +241,13 @@ class BuddyPress {
 		}
 	}
 
-
 	/**
 	 * This function renders the group Video Meet tab function
+	 *
+	 * @return void
 	 */
-	public function group_video_main_screen_function() {
-		// add title and content here - last is to call the members plugin.php template.
-		\add_action( 'bp_template_content', array( $this, 'buddypress_video_meeting_action' ) );
+	public function group_video_main_screen_function():void {
+		\add_action( 'bp_template_content', array( Factory::get_instance( BuddyPressVideo::class ), 'groupmeet_switch' ) );
 		\bp_core_load_template( \apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
 	}
-
-	/**
-	 * This function renders the Video Meeting tab Content that is a child of Video meeting
-	 */
-	public function buddypress_video_meeting_action():void {
-		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Output already sanitised.
-		echo Factory::get_instance( BuddyPressVideo::class )->groupmeet_switch();
-	}
-
 }

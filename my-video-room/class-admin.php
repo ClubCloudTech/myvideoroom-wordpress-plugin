@@ -210,6 +210,7 @@ class Admin {
 	 * @param string $page_contents The page contents.
 	 */
 	private function render_admin_page( string $page_contents ) {
+		wp_enqueue_script( 'myvideoroom-protect-input' );
 		$activation_status = Factory::get_instance( Activation::class )->get_activation_status();
 		$navigation_items  = $this->get_navigation_items();
 

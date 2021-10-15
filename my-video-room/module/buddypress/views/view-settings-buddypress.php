@@ -8,10 +8,6 @@
 /**
  * Render the admin page
  *
- * @param string $active_tab
- * @param array $tabs
- * @param array $messages
- *
  * @return string
  */
 use \MyVideoRoomPlugin\SiteDefaults;
@@ -97,7 +93,28 @@ return function (): string {
 						</p>
 					</div>
 				</div>
+				<div class="myvideoroom-feature-outer-table">
+					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+						<h2><?php esc_html_e( 'Name of Tab:', 'myvideoroom' ); ?></h2>
+					</div>
+					<div class="myvideoroom-feature-table-large">
+					<div class="myvideoroom-inline">
+					<img class=""
+							src="<?php echo esc_url( plugins_url( '/../../../admin/img/tabdisplay.jpg', __FILE__ ) ); ?>"
+							alt="Settings">	
 
+							<?php
+							esc_html_e(
+								'What should we call your Room Tab in BuddyPress ?',
+								'myvideoroom'
+							);
+							?>
+							</div>
+							<div class="myvideoroom-inline">
+							<input id="user-profile-input" type="text" min="5" max="20" name="user-tab" value="<?php echo esc_textarea( get_option( 'myvideoroom-buddypress-user-tab' ) ); ?>" placeholder=""  class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />	</div>
+							<input id="save-user-tab" type="button" value="Save" class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;"/>
+					</div>
+				</div>
 
 				<div class="myvideoroom-feature-outer-table">
 					<div class="myvideoroom-feature-table">
@@ -163,6 +180,28 @@ return function (): string {
 							);
 							?>
 						</p>
+					</div>
+				</div>
+				<div class="myvideoroom-feature-outer-table">
+					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+						<h2><?php esc_html_e( 'Name of Tab:', 'myvideoroom' ); ?></h2>
+					</div>
+					<div class="myvideoroom-feature-table-large">
+					<div class="myvideoroom-inline">
+					<img class=""
+							src="<?php echo esc_url( plugins_url( '/../../../admin/img/tabdisplay.jpg', __FILE__ ) ); ?>"
+							alt="Settings">	
+
+							<?php
+							esc_html_e(
+								'What should we call your Group Room Tabs in BuddyPress ?',
+								'myvideoroom'
+							);
+							?>
+							</div>
+							<div class="myvideoroom-inline">
+							<input id="group-profile-input" type="text" min="5" max="20" name="user-tab" value="<?php echo esc_textarea( get_option( 'myvideoroom-buddypress-group-tab' ) ); ?>" placeholder=""  class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />	</div>
+							<input id="save-group-tab" type="button" value="Save" class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;"/>
 					</div>
 				</div>
 

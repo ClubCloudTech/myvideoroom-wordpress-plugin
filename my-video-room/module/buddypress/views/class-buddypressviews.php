@@ -11,20 +11,17 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
 
 /**
- * Class BuddyPressViews - Renders the Video Views and Templates for BuddyPress Video Pages.
+ * Class BuddyPressViews Groups- Renders the Video Views and Templates for BuddyPress Video Pages for Groups.
  */
 class BuddyPressViews {
-
-	// ---
-	// BuddyPress Groups Templates
 
 	/**
 	 * Render Group Host Template
 	 *
 	 * @param  int $host_id - ID of User to Generate from.
-	 * @return array|string
+	 * @return array
 	 */
-	public function bp_group_host_template( int $host_id ) {
+	public function bp_group_host_template( int $host_id ): array {
 		$module_id    = BuddyPress::DISPLAY_NAME_BUDDYPRESS_GROUPS;
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
 		$name_output  = esc_html__( 'Hosting ', 'my-video-room' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );
@@ -38,9 +35,9 @@ class BuddyPressViews {
 	 * Render Group Guest Template
 	 *
 	 * @param  int $host_id - ID of User to Generate from.
-	 * @return array|string
+	 * @return array
 	 */
-	public function bp_group_guest_template( int $host_id ) {
+	public function bp_group_guest_template( int $host_id ):array {
 		$module_id    = BuddyPress::DISPLAY_NAME_BUDDYPRESS_GROUPS;
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
 		$name_output  = esc_html__( 'Visiting ', 'my-video-room' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );
@@ -51,43 +48,42 @@ class BuddyPressViews {
 	}
 
 	/**
-	 * Render Main Dashboard Template for user's own account control panel
+	 * Blocked By Group Membership Template.
 	 *
-	 * @return null
+	 * @param  int $user_id - the user ID who is blocking.
+	 * @return string
 	 */
-	public function bp_plugin_control_centre_dashboard() {
-
+	public function blocked_by_group_membership( $user_id = null ) {
+		ob_start();
+		wp_enqueue_style( 'myvideoroom-template' );
 		?>
-<div class="mvr-row mvr-background">
-	<h2 class="mvr-reception-header">
-		<?php esc_html_e( 'Video Settings for ', 'my-video-room' ) . esc_html( get_bloginfo( 'name' ) ); ?></h2>
+		<div class="mvr-row mvr-background">
+			<h2 class="mvr-header-text">
+				<?php
+				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
+				esc_html_e( 'This room is set to Specific Group Members Only', 'myvideoroom' ) . '</h2>';
+				?>
+				<img class="mvr-access-image" src="
+			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
 
-	<table style="width:100%">
-		<tr>
-			<th style="width:50%"><img src="
-									<?php
-									// Get ClubCloud Logo from Plugin folder for Form, or use Site Logo if loaded in theme.
-									$custom_logo_id = get_theme_mod( 'custom_logo' );
-									$image          = wp_get_attachment_image_src( $custom_logo_id, 'full' );
-									if ( ! $image ) {
-										$image = plugins_url( '/images/logoCC-clear.png', __FILE__ );
-										echo esc_url( $image );
-									} else {
-										echo esc_url( $image[0] );
-									}
-									?>
-									" alt="Site Logo"></th>
-			<th>
-				<?php esc_html_e( 'Video Settings for Please Choose Configuration Option from Tab Above', 'my-video-room' ); ?>
+				<p class="mvr-template-text">
+					<?php
+					$first_display_name  = '<strong>' . esc_html__( 'Group Administrators', 'myvideoroom' ) . '</strong>';
+					$second_display_name = '<strong>' . esc_html__( ' the group admins ', 'myvideoroom' ) . '</strong>';
 
-			</th>
-
-		</tr>
-
-	</table>
-</div>
+					echo sprintf(
+					/* translators: %1s is the text "Site Policy" and %2s is "the site administrators" */
+						esc_html__( ' %1$s  only allow specific members to access this group room. Please contact %2$s for more assistance.', 'myvideoroom' ),
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$first_display_name,
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
+						$second_display_name
+					);
+					?>
+				</p>
+		</div>
 		<?php
-		return null;
-	}
 
+		return ' ';
+	}
 }

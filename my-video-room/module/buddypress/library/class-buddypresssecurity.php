@@ -2,7 +2,7 @@
 /**
  * Addon functionality for Security Module Support for BuddyPress
  *
- * @package MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressSecurity
+ * @package MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressSecurity.php
  */
 
 namespace MyVideoRoomPlugin\Module\BuddyPress\Library;
@@ -14,11 +14,14 @@ use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVid
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\Module\BuddyPress\Views\BuddyPressViews;
 use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Module\Security\Templates\SecurityTemplates;
 
 /**
- * Class BuddyPress
+ * Class BuddyPress Security
+ *
+ * Provides Security Engine connection.
  */
 class BuddyPressSecurity {
 
@@ -48,8 +51,8 @@ class BuddyPressSecurity {
 		} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === $user_id ) {
 			$output .= esc_attr( Factory::get_instance( BuddyPressConfig::class )->render_group_menu_options( SiteDefaults::USER_ID_SITE_DEFAULTS, BuddyPress::MODULE_BUDDYPRESS_GROUP_NAME, $id_index ) );
 		}
-			// Friends Setting from BP.
 
+		// Friends Setting from BP.
 		if ( function_exists( 'bp_is_active' ) && bp_is_active( 'friends' ) && ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID ) ) &&
 		( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ) && ! $room_object && ! $is_group_page ) {
 			$output .= esc_attr( Factory::get_instance( BuddyPressConfig::class )->render_friends_menu_options( $user_id, $room_name, $id_index ) );
@@ -59,14 +62,17 @@ class BuddyPressSecurity {
 
 	/**
 	 * Change User ID for BuddyPress Security Filtration
+	 * Required to change User IDs from signed in user to Group Host for shared control.
 	 *
 	 * @param  int $user_id - User ID to Filter.
 	 * @return int
 	 */
 	public function mvrbp_change_user_id( int $user_id ): int {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
-		! function_exists( 'bp_is_active' ) || ! bp_is_active( 'groups' ) ||
-		! ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() )
+		if (
+			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
+			! function_exists( 'bp_is_active' ) || ! bp_is_active( 'groups' ) ||
+			! ( function_exists( 'bp_is_groups_component' ) &&
+			bp_is_groups_component() )
 		) {
 			return $user_id;
 		}
@@ -92,7 +98,8 @@ class BuddyPressSecurity {
 		return $bp->groups->current_group->slug;
 	}
 	/**
-	 * BuddyPress Render Security Options Menu Hook.
+	 * BuddyPress Render Security Options Hook.
+	 * Provides support for Group Blocked Settings, and User Friend Blocked Settings.
 	 *
 	 * @param  string $input - inbound filter.
 	 * @param  int    $user_id - the User ID.
@@ -214,7 +221,7 @@ class BuddyPressSecurity {
 				->read_security_settings( $creator_id, $room_name, 'restrict_group_to_members_enabled' );
 		}
 
-		// Exit early if no setting for filter.
+		// Exit if no setting for filter.
 		if ( ! $room_access_setting ) {
 			return null;
 		}
@@ -244,7 +251,7 @@ class BuddyPressSecurity {
 				// Else Fire the Block.
 		}
 
-		$output = $this->blocked_by_group_membership( $creator_id, $room_type );
+		$output = Factory::get_instance( BuddyPressViews::class )->blocked_by_group_membership( $creator_id, $room_type );
 		return $output;
 	}
 
@@ -318,7 +325,7 @@ class BuddyPressSecurity {
 				->read_security_settings( $owner_id, $room_name, 'bp_friends_setting' );
 		}
 
-		// Exit early if no setting for filter.
+		// Exit if no setting for filter.
 		if ( ! $room_access_setting ) {
 			return null;
 		}
@@ -342,46 +349,6 @@ class BuddyPressSecurity {
 				// Else Fire the Block.
 		}
 		return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_user( $user_id_original, $room_type );
-	}
-
-	/**
-	 * Blocked By Group Membership Template.
-	 *
-	 * @param  int $user_id - the user ID who is blocking.
-	 * @return string
-	 */
-	public function blocked_by_group_membership( $user_id = null ) {
-		ob_start();
-		wp_enqueue_style( 'myvideoroom-template' );
-		?>
-		<div class="mvr-row mvr-background">
-			<h2 class="mvr-header-text">
-				<?php
-				echo esc_html( get_bloginfo( 'name' ) ) . ' - ';
-				esc_html_e( 'This room is set to Specific Group Members Only', 'myvideoroom' ) . '</h2>';
-				?>
-				<img class="mvr-access-image" src="
-			<?php echo esc_url( plugins_url( '../../../img/noentry.jpg', __FILE__ ) ); ?>" alt="No Entry">
-
-				<p class="mvr-template-text">
-					<?php
-					$first_display_name  = '<strong>' . esc_html__( 'Group Administrators', 'myvideoroom' ) . '</strong>';
-					$second_display_name = '<strong>' . esc_html__( ' the group admins ', 'myvideoroom' ) . '</strong>';
-
-					echo sprintf(
-					/* translators: %1s is the text "Site Policy" and %2s is "the site administrators" */
-						esc_html__( ' %1$s  only allow specific members to access this group room. Please contact %2$s for more assistance.', 'myvideoroom' ),
-						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
-						$first_display_name,
-						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- already escaped above.
-						$second_display_name
-					);
-					?>
-				</p>
-		</div>
-		<?php
-
-		return ' ';
 	}
 }
 

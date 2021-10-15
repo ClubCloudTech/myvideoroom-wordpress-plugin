@@ -70,7 +70,7 @@ class AdminAjax {
 		}
 
 		/*
-		* Create User.
+		* Activate/Deactivate Module.
 		*
 		*/
 		if ( 'update_module' === $action_taken ) {
@@ -78,6 +78,42 @@ class AdminAjax {
 			$button = Factory::get_instance( ModuleConfig::class )->module_activation_button( intval( $module ), $action_state );
 
 				$response['button'] = $button;
+
+			return \wp_send_json( $response );
+		}
+
+		/*
+		* Update User Tab Name.
+		*
+		*/
+		if ( 'update_user_tab_name' === $action_taken ) {
+			if ( isset( $_POST['user_tab_name'] ) ) {
+				$user_tab_name = sanitize_text_field( wp_unslash( $_POST['user_tab_name'] ) );
+			}
+			if ( strlen( $user_tab_name ) >= 5 ) {
+				\update_option( 'myvideoroom-buddypress-user-tab', $user_tab_name );
+				$response['feedback'] = \esc_html__( 'Setting Saved', 'myvideoroom' );
+			} else {
+				$response['feedback'] = \esc_html__( 'Tab Name Invalid', 'myvideoroom' );
+			}
+
+			return \wp_send_json( $response );
+		}
+
+		/*
+		* Update Group Tab Name.
+		*
+		*/
+		if ( 'update_group_tab_name' === $action_taken ) {
+			if ( isset( $_POST['group_tab_name'] ) ) {
+				$group_tab_name = sanitize_text_field( wp_unslash( $_POST['group_tab_name'] ) );
+			}
+			if ( strlen( $group_tab_name ) >= 5 ) {
+				\update_option( 'myvideoroom-buddypress-group-tab', $group_tab_name );
+				$response['feedback'] = \esc_html__( 'Setting Saved', 'myvideoroom' );
+			} else {
+				$response['feedback'] = \esc_html__( 'Tab Name Invalid', 'myvideoroom' );
+			}
 
 			return \wp_send_json( $response );
 		}

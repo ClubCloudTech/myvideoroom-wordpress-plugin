@@ -93,20 +93,19 @@ class BuddyPressConfig {
 	 * @return   null
 	 */
 	public function render_friends_menu_options( int $user_id, string $room_name, int $id_index ) {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() || ! function_exists( 'bp_is_active' ) || ! bp_is_active( 'friends' ) ) {
 			return null;
 		}
 		?>
 <label for="myvideoroom_security_restrict_bp_friends_<?php echo esc_attr( $id_index ); ?>">
-	<h2><i
-			class="myvideoroom-dashicons mvr-icons dashicons-share"></i><?php esc_html_e( 'BuddyPress Friends Only Room Access Control', 'myvideoroom' ); ?>
-	</h2>
+	<h2><i class="myvideoroom-dashicons mvr-icons dashicons-share"></i><?php esc_html_e( 'BuddyPress Friends Only Room Access Control', 'myvideoroom' ); ?></h2>
 </label>
 <select style="width:60%" class="mvr-roles-multiselect mvr-select-box" name="myvideoroom_security_restrict_bp_friends"
 	id="myvideoroom_security_restrict_bp_friends_<?php echo esc_attr( $id_index ); ?>">
 		<?php
 		$site_override     = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, 'site_override_enabled' );
 		$current_selection = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
+
 		// Format Display Box Default Message Correctly for No Setting Returned.
 		if ( ! $current_selection && ! $site_override ) {
 			$current_selection_text = 'Current Setting->Turned Off';
@@ -201,6 +200,5 @@ class BuddyPressConfig {
 				echo esc_html__( 'BuddyPress Friends ', 'myvideoroom' ) . ' : ' . $message;
 				break;
 		}
-
 	}
 }
