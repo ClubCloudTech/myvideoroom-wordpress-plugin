@@ -25,7 +25,7 @@ return function (
 
 	if ( ! is_user_logged_in() ) {
 		?><div class="mvr-admin-page-wrap">
-		<h2><?php esc_html_e( 'Please Sign in to Access Reception', 'my-video-room' ); ?></h2>
+		<h2><?php esc_html_e( 'Please Sign in to Access Reception', 'myvideoroom' ); ?></h2>
 		<?php
 		global $wp;
 		$args = array(
@@ -43,17 +43,17 @@ return function (
 	?>
 	<div class="mvr-woocommerce-overlay">
 	<div class="mvr-admin-page-wrap">
-		<h2><?php esc_html_e( 'Site Conference Reception Center', 'my-video-room' ); ?></h2>
+		<h2><?php esc_html_e( 'Room Reception Center', 'myvideoroom' ); ?></h2>
 
-		<button class="button button-primary myvideoroom-sitevideo-add-room-button">
-		<i class="dashicons dashicons-plus-alt"></i>
-		<?php esc_html_e( 'Add new room', 'my-video-room' ); ?>
+		<button class="mvr-ul-style-menu  myvideoroom-sitevideo-add-room-button">
+		<i class="myvideoroom-dashicons dashicons-plus-alt"></i>
+		<?php esc_html_e( 'Add new room', 'myvideoroom' ); ?>
 		</button>
 
-	<button class="button button-primary">
-	<a href="<?php echo esc_url_raw( $settings_url ) . '&room_id=' . esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>" data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>" data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>" class="myvideoroom-sitevideo-settings myvideoroom-button-link">
-	<i class="dashicons dashicons-admin-settings"></i>
-	<?php esc_html_e( 'Default Room Appearance', 'my-video-room' ); ?></a>
+	<button class=" mvr-ul-style-menu ">
+	<a href="<?php echo esc_url_raw( $settings_url ) . '&room_id=' . esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>" data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>" data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>" class="myvideoroom-sitevideo-settings myvideoroom-button-link mvr-button-fix">
+	<i class="myvideoroom-dashicons dashicons-admin-settings"></i>
+	<?php esc_html_e( 'Default Room Appearance', 'myvideoroom' ); ?></a>
 	</button>
 
 	<hr />
@@ -65,8 +65,6 @@ return function (
 		?>
 		<hr />
 	</div>
-
-	<h3><?php esc_html_e( 'Room Management and Control', 'my-video-room' ); ?></h3>
 
 	<?php
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -167,19 +167,20 @@ return function (): string {
 					<div class="myvideoroom-feature-table">
 						<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
 						<img class=""
-						src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupsetting.jpg', __FILE__ ) ); ?>"	
-							alt="Video Call in Progress">
+						src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupscreenshot.JPG', __FILE__ ) ); ?>"	
+						alt="Video Call in Progress">
 					</div>
 					<div class="myvideoroom-feature-table">
 						<br>
 						<img class=""
-						src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupscreenshot.JPG', __FILE__ ) ); ?>"							
-							alt="Settings">
+						src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpdenied.jpg', __FILE__ ) ); ?>"													
+						alt="Settings">
 					</div>
 					<div class="myvideoroom-feature-table">
+						<br><br>
 						<img class=""
 							src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupsecurity.jpg', __FILE__ ) ); ?>"
-							alt="Video Call in Progress">
+							alt="Video Call in Progress" >
 					</div>
 				</div>
 
@@ -232,18 +233,19 @@ return function (): string {
 						<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
 						<img class=""
 						src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpfriendscontrol.jpg', __FILE__ ) ); ?>"	
-							alt="BuddyPress Friends Control">
+							alt="BuddyPress Friends Control" title="<?php esc_html_e( 'Friends Mode Room Security is set in the Security Tab as Normal', 'myvideoroom' ); ?>">
 					</div>
 					<div class="myvideoroom-feature-table">
 						<br>
 						<img class=""
-						src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupscreenshot.JPG', __FILE__ ) ); ?>"							
-							alt="Settings">
+						src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpfriendsblock.jpg', __FILE__ ) ); ?>"							
+						alt="Settings" title="<?php esc_html_e( 'Do Not Disturb Mode shows the room, but blocks entrance to non friends', 'myvideoroom' ); ?>">
 					</div>
 					<div class="myvideoroom-feature-table">
-						<img class=""
-							src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupsecurity.jpg', __FILE__ ) ); ?>"
-							alt="Video Call in Progress">
+					<br>	
+					<img class=""
+							src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpfriendsstealthmode.jpg', __FILE__ ) ); ?>"
+							alt="Stealth Mode" title="<?php esc_html_e( ' Stealth Mode hides the Video Room from Non Friends', 'myvideoroom' ); ?>">
 					</div>
 				</div>
 			</article>

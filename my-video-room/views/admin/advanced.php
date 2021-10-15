@@ -30,7 +30,7 @@ return function (
 	<h2><?php \esc_html_e( 'Advanced Settings and Information', 'myvideoroom' ); ?></h2>
 
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-		<ul>
+		<ul class="mvr-ul-style-top-menu">
 			<li>
 				<a class="nav-tab nav-tab-active"
 					href="#<?php echo \esc_attr( $html_lib->get_id( 'development' ) ); ?>">

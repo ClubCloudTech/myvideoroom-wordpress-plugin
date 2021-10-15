@@ -48,6 +48,9 @@ class AjaxHandler {
 
 		$response = array();
 
+		if ( WooCommerce::SETTING_REFRESH_BASKET === $input_type ) {
+			$input_type = 'reload';
+		}
 		switch ( $input_type ) {
 			/*
 			* Product Item Section.

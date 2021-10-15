@@ -50,7 +50,7 @@ class Module {
 	 * Module constructor.
 	 */
 	public function __construct() {
-		\add_action( 'myvideoroom_security_preference_persisted', array( $this, 'update_security_video_preference' ) );
+		//\add_action( 'myvideoroom_security_preference_persisted', array( $this, 'update_security_video_preference' ) );
 		\add_action( 'myvideoroom_security_preference_settings', array( $this, 'add_security_settings' ), 10, 2 );
 	}
 

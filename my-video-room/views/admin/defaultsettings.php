@@ -35,7 +35,7 @@ return function (
 			<?php esc_html_e( 'This section allows you manage the default room appearance as well as permissions, guest/host decisions, and room security settings across all of your rooms.', 'myvideoroom' ); ?>
 		</p>
 		<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-			<ul>
+			<ul class="mvr-ul-style-top-menu">
 				<li>
 					<a class="nav-tab nav-tab-active"
 						href="#logintab<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">

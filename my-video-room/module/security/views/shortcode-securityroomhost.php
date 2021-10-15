@@ -45,7 +45,7 @@ return function (
 			<h2 class="mvr-title-header">
 				<label
 					for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable custom hosts for this room', 'my-video-room' ); ?>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable custom hosts for this room', 'my-video-room' ); ?>
 				</label>
 			</h2>
 			<input
@@ -95,7 +95,7 @@ return function (
 			<hr>
 			<h2 class="mvr-title-header">
 				<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Allow Anonymous Users to Host Rooms (not recommended)', 'my-video-room' ); ?>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Allow Anonymous Users to Host Rooms (not recommended)', 'my-video-room' ); ?>
 				</label>
 			</h2>
 			<input

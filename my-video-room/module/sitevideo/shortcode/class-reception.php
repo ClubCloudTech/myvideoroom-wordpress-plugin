@@ -41,9 +41,6 @@ class Reception {
 	 */
 	public function sitevideo_reception_shortcode( $attributes = array() ): string {
 		$room_name = $attributes['room'] ?? 'default';
-
-		// $this->check_for_update_request();
-
 		return Factory::get_instance( MVRSiteVideoRoomHelpers::class )->create_site_conference_page( true );
 	}
 

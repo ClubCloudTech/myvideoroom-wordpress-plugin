@@ -41,6 +41,9 @@ class BuddyPress {
 	const ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT = 'site-default-bp-groups';
 	const ROOM_NAME_BUDDYPRESS_GROUPS              = 'video-bp-groups';
 	const DISPLAY_NAME_BUDDYPRESS_GROUPS           = 'Group ';
+	const SETTING_IS_FRIEND                        = 'is_friend';
+	const SETTING_DO_NOT_DISTURB                   = 'Do-Not-Disturb';
+	const SETTING_STEALTH                          = 'Stealth-Remove-Video';
 
 	/**
 	 * Initialise On Module Activation

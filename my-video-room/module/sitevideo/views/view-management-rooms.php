@@ -10,7 +10,7 @@ use MyVideoRoomPlugin\Library\HTML as HTML;
 
 /**
  * Render the Room Management Ajax Frame page
- * This view redners the main Conference Room Properties configuration page - with Video Settings, and if security enabled, hosting, and room permissions.
+ * This view renders the main Conference Room Properties configuration page - with Video Settings, and if security enabled, hosting, and room permissions.
  *
  * @param stdClass $room_object - Room Object for Display if relevant.
  * @param ?string  $input_type - Room Type for special content render.
@@ -28,7 +28,7 @@ return function (
 	$output_array = apply_filters( 'myvideoroom_sitevideo_admin_page_menu', $base_option, $room_object->id );
 	?>
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-		<ul>
+		<ul class="mvr-ul-style-top-menu">
 			<?php
 			$active = ' nav-tab-active';
 			foreach ( $output_array as $menu_output ) {

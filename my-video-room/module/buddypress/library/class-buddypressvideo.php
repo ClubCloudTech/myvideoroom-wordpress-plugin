@@ -52,10 +52,6 @@ class BuddyPressVideo {
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
 		$room_name = MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING;
 
-		// Adding Listeners for Update.
-		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
-		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
-
 		// Establish who is host.
 		$user_id    = \bp_displayed_user_id();
 		$my_user_id = get_current_user_id();

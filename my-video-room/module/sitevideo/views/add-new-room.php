@@ -7,6 +7,7 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Library\HttpPost;
 
 /**
  * Render the admin page
@@ -42,10 +43,11 @@ return function (): string {
 	<form method="post" action="<?php echo \esc_url_raw( $post_url ); ?>">
 		<label for="<?php echo esc_attr( $html_library->get_id( 'title' ) ); ?>">
 			<?php esc_html_e( 'Room Display Name ', 'my-video-room' ); ?>
+			<i id="room-name-icon" class="card myvideoroom-dashicons mvr-icons dashicons-saved" title="Room Name is OK" style="display:none"></i>
 		</label>
 
 		<input type="text"
-			id="<?php echo esc_attr( $html_library->get_id( 'title' ) ); ?>"
+			id="room-display-name"
 			name="<?php echo esc_attr( $html_library->get_field_name( 'title' ) ); ?>"
 			aria-describedby="<?php echo \esc_attr( $html_library->get_description_id( 'title' ) ); ?>"
 		>
@@ -62,10 +64,11 @@ return function (): string {
 
 		<label for="<?php echo esc_attr( $html_library->get_id( 'slug' ) ); ?>">
 			<?php esc_html_e( 'Room URL Link ', 'my-video-room' ); ?>
+			<i id="room-link-icon" class="card myvideoroom-dashicons mvr-icons dashicons-saved" title="URL is OK" style="display:none"></i>
 		</label>
 
 		<input type="text"
-			id="<?php echo esc_attr( $html_library->get_id( 'slug' ) ); ?>"
+			id="room-url-link"
 			name="<?php echo esc_attr( $html_library->get_field_name( 'slug' ) ); ?>"
 			aria-describedby="<?php echo \esc_attr( $html_library->get_description_id( 'slug' ) ); ?>"
 			class="myvideoroom-input-restrict-alphanumeric"
@@ -96,14 +99,15 @@ return function (): string {
 			);
 			?>
 		</p>
-
+		<div id="submit-button" >
 		<?php
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo Factory::get_instance( \MyVideoRoomPlugin\Library\HttpPost::class )->create_form_submit(
+		echo Factory::get_instance( HttpPost::class )->create_form_submit(
 			'add_room',
 			esc_html__( 'Add Room', 'my-video-room' )
 		);
 		?>
+		</div>
 	</form>
 
 	<?php

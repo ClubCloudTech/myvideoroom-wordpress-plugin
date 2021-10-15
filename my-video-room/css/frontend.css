@@ -16,7 +16,17 @@
 	margin-bottom: 4px;
 	overflow: hidden;
 }
-
+.mvr-icons {
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
+	color: #797156;
+	font-size: 23px !important;
+	height: 20px;
+	margin-bottom: 8px;
+	vertical-align: middle;
+	width: 25px;
+}
 .mvr-title-header {
 	display: inline !important;
 	margin-bottom: 10px;
@@ -240,7 +250,6 @@ opacity: 1;
 	padding-left: 10px;
 }
 
-
 .mvr-main-button-enabled {
 	background: linear-gradient(#232923, #679e6e);
 	border-radius: 4px;
@@ -248,7 +257,7 @@ opacity: 1;
 	cursor: pointer;
 	display: inline-block !important;
 	letter-spacing: -.021em;
-	line-height: 1.82947;
+	line-height: 1.87947!important;
 	min-width: 30px !important;
 	padding: 2px 4px;
 }
@@ -300,7 +309,7 @@ opacity: 1;
 	padding: 10px 10px 10px 10px;
 }
 .myvideoroom-dashicons, .myvideoroom-dashicons-before:before {
-	font-family: dashicons;
+	font-family: dashicons!important;
 	display: inline-block;
 	line-height: 1;
 	font-weight: 400;
@@ -428,4 +437,7 @@ opacity: 1;
 }
 .mvr-full-hide {
 	display: none!important;
+}
+.mvr-button-fix{
+	color:rgb(124, 124, 124)!important;
 }

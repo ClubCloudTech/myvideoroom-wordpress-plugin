@@ -36,8 +36,7 @@ return function (
 		?>
 <iframe id="iframe-login" src="/<?php echo esc_textarea( $redirect_url ) . '?nonce=' . esc_textarea( $nonce ) . '&shortcode=' . esc_textarea( $login_shortcode ) . '&action=' . esc_textarea( MVRSiteVideo::ROOM_SLUG_REDIRECT ); ?>" 
 sandbox="allow-forms allow-scripts allow-same-origin" height="600" width="400" frameBorder="0" class=""></iframe>
-		<?php 
-
+		<?php
 
 	} else {
 
@@ -49,7 +48,7 @@ sandbox="allow-forms allow-scripts allow-same-origin" height="600" width="400" f
 		wp_login_form( $args );
 	}
 
-			?>
+	?>
 </div>
 
 	<?php

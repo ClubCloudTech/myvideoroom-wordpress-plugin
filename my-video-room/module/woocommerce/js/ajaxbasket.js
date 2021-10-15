@@ -5,7 +5,7 @@
  */
 
 (function ($) {
-	
+
 	/**
 	 * Handle Ajax Click Events for Basket Actions
 	 */
@@ -48,7 +48,6 @@
 						},
 						success: function (response) {
 							var response_length = response.length;
-							console.log( 'Ajax Clickbased Response Success' );
 							var state_response = JSON.parse( response );
 							if ( response_length > 40 ) {
 
@@ -167,7 +166,6 @@
 								refreshTarget( storefront, state_response.storefront );
 								window.myvideoroom_tabbed_init();
 							}
-							console.log( 'Storefront Updated' );
 						}
 						if (state_response.messagewindow == 'change' ) {
 							if ( state_response.notificationbar ) {
@@ -327,7 +325,7 @@
 			);
 		return null;
 	}
-	
+
 	/**
 	 * Manages visibility of Basket Tab
 	 */
@@ -348,7 +346,6 @@
 	 * Reset activities post click/load/interaction.
 	 */
 	var init = function(){
-
 		$( '.myvideoroom-woocommerce-basket-ajax' ).on(
 			'click',
 			handleEvent
@@ -408,7 +405,7 @@
 
 		$( '.nav-tab' ).click(
 			function(event) {
-
+				
 				if ( this.id == 'mvr-shopping-basket' ) {
 
 					if ($( '#basket-video-host-wrap-item' ).length) {
@@ -422,6 +419,7 @@
 						document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
 						document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-clear' );
 					}
+
 				} else if ( this.id == 'mvr-video' ) {
 					if ($( '#shoppingbasket' ).length) {
 						document.getElementById( "shoppingbasket" ).classList.remove( 'mvr-hide' );
@@ -455,9 +453,8 @@
 	 */
 	
 	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' ),
-	woocommActive = document.getElementsByClassName( 'basket-video-host-wrap-shop' );
-
-	if ( mvrIsactive.length > 0 && woocommActive.length >0 ) {
+	woocommActive = document.getElementById( 'mvr-basket-section' );
+	if ( mvrIsactive.length > 0 && woocommActive.innerHTML.length >0 ) {
 		var original_room = $( '#roominfo' ).data( 'roomName' ),
 		host_status       = $( '#roomid' ).data( 'hostStatus' );
 		if ( host_status !== 1) {

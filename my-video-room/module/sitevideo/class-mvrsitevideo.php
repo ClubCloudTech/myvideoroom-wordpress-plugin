@@ -207,7 +207,7 @@ class MVRSiteVideo {
 			'myvideoroom-sitevideo-add-room-js',
 			\plugins_url( '/js/add-room.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			Factory::get_instance( Version::class )->get_plugin_version(),
+			Factory::get_instance( Version::class )->get_plugin_version() . wp_rand( 2, 3000 ),
 			true
 		);
 

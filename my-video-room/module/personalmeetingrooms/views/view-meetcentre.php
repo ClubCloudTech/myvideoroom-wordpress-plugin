@@ -24,7 +24,7 @@ $html_library
 	if ( count( $tabs ) >= 1 ) {
 		?>
 <nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-	<ul>
+	<ul class="mvr-ul-style-top-menu">
 		<li>
 			<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
 				<?php esc_html_e( 'Join Meeting', 'myvideoroom' ); ?>

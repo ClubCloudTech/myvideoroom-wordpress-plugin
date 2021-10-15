@@ -70,7 +70,7 @@ return function (
 						<?php
 						if ( $page_settings->get_icon() ?? false ) {
 							?>
-							<i class="dashicons dashicons-<?php echo \esc_attr( $page_settings->get_icon() ); ?>">
+							<i class="myvideoroom-dashicons dashicons-<?php echo \esc_attr( $page_settings->get_icon() ); ?>">
 				<span class="screen-reader-text">
 							<?php echo \esc_html( $page_settings->get_title() ); ?>
 				</span>

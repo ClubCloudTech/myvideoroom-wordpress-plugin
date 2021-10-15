@@ -67,7 +67,7 @@ return function (
 					<?php esc_html_e( 'Video layout setting:', 'my-video-room' ); ?>
 				</label>
 			</h3>
-			<div class="mvr-video-template mvr-title-header"><i class="dashicons mvr-icons dashicons-editor-help"></i>
+			<div class="mvr-video-template mvr-title-header"><i class="myvideoroom-dashicons mvr-icons dashicons-editor-help"></i>
 			</div>
 
 			<div class="mvr-hide mvr-template-table">
@@ -131,7 +131,7 @@ return function (
 				<label for="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					class="mvr-preferences-paragraph">
 					<i
-						class="dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'my-video-room' ); ?>
+						class="myvideoroom-dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'my-video-room' ); ?>
 				</label>
 			</h3>
 			<input type="checkbox" class="myvideoroom_user_reception_enabled_preference"
@@ -157,7 +157,7 @@ return function (
 				<?php esc_html_e( 'Reception Appearance', 'my-video-room' ); ?>
 			</label>
 			<div class="mvr-template-table mvr-reception-image mvr-title-header"><i
-					class="dashicons mvr-icons dashicons-editor-help"></i></div>
+					class="myvideoroom-dashicons mvr-icons dashicons-editor-help"></i></div>
 
 			<div class="mvr-hide">
 				<div class="mvr-template-table" style="float:left">
@@ -214,7 +214,7 @@ return function (
 				<strong><?php esc_html_e( 'Enable Custom Video for Reception :', 'my-video-room' ); ?></strong>
 			</label>
 			<div class="mvr-template-table mvr-custom-video mvr-title-header"><i
-					class="dashicons mvr-icons dashicons-editor-help"></i></div>
+					class="myvideoroom-dashicons mvr-icons dashicons-editor-help"></i></div>
 
 			<div class="mvr-hide">
 				<div class="mvr-template-table" style="float:left">

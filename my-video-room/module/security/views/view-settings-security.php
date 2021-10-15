@@ -29,7 +29,7 @@ return function () {
 	?>
 	<div id="outer" class="mvr-admin-page-wrap">
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-		<ul>
+		<ul class="mvr-ul-style-top-menu">
 			<li>
 				<a class="nav-tab nav-tab-active" href="#defaultperms">
 					<?php esc_html_e( 'Default Permissions', 'my-video-room' ); ?>

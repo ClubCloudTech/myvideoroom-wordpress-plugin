@@ -85,7 +85,7 @@ class Module {
 				'myvideoroom-room-builder-frontend-css',
 				plugins_url( '/css/frontend.css', realpath( __FILE__ ) ),
 				false,
-				$plugin_version . '7',
+				$plugin_version . \wp_rand( 10, 2000 ),
 			);
 		}
 	}

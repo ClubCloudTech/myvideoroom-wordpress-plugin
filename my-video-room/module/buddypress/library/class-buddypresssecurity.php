@@ -82,7 +82,8 @@ class BuddyPressSecurity {
 	 */
 	public function mvrbp_change_room_name( string $room_name ): string {
 		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
-		! function_exists( 'bp_is_active' ) || ! bp_is_active( 'groups' ) ||
+		! function_exists( 'bp_is_active' ) ||
+		! bp_is_active( 'groups' ) ||
 		! ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() )
 		) {
 			return $room_name;
@@ -112,6 +113,7 @@ class BuddyPressSecurity {
 				return $bp_group_block;
 			}
 		}
+
 		// Check Friend Filter.
 		if ( ( strpos( $room_type, 'guest' ) !== false ) ) {
 			$bp_friend_block = $this->block_bp_friend_video_render( $user_id, $room_name, $room_type );
@@ -130,10 +132,13 @@ class BuddyPressSecurity {
 	 * @return bool
 	 */
 	public function block_friends_display( $user_id = null ): bool {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
-			return null;
-		}
-		if ( ! \bp_is_active( 'friends' ) ) {
+		if (
+			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
+			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ||
+			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID ) ||
+			! function_exists( 'bp_is_active' ) ||
+			! \bp_is_active( 'friends' )
+			) {
 			return false;
 		}
 		$site_override         = Factory::get_instance( SecurityVideoPreferenceDao::class )->read_security_settings( SiteDefaults::USER_ID_SITE_DEFAULTS, SiteDefaults::ROOM_NAME_SITE_DEFAULT, 'site_override_enabled' );
@@ -156,11 +161,11 @@ class BuddyPressSecurity {
 			return false;
 		}
 		// Are We Friends ?
-		if ( 'is_friend' === $friends_status ) {
+		if ( BuddyPress::SETTING_IS_FRIEND === $friends_status ) {
 			return false;
 
 			// Is Setting set to Do Not Disturb (in which case Render Block will need to display a template and we fall through here) OR is Setting Allow All ?
-		} elseif ( '' === $bp_friends_setting || 'Do-Not-Disturb' === $bp_friends_setting || null === $bp_friends_setting ) {
+		} elseif ( '' === $bp_friends_setting || BuddyPress::SETTING_DO_NOT_DISTURB === $bp_friends_setting || null === $bp_friends_setting ) {
 				return false;
 		}
 		// If none of the above fire the filter.
@@ -181,6 +186,8 @@ class BuddyPressSecurity {
 		if (
 			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
 			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ||
+			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_GROUP_ID ) ||
+			! function_exists( 'bp_is_active' ) ||
 			! bp_is_active( 'groups' ) ||
 			! bp_is_groups_component()
 		) {
@@ -270,20 +277,20 @@ class BuddyPressSecurity {
 	 * @param  string $room_name    Name of room.
 	 * @param  string $room_type    Type of room for inspection.
 	 *
-	 * @return String  Template if Blocked - null if allowed.
+	 * @return ?String  Template if Blocked - null if allowed.
 	 */
-	public function block_bp_friend_video_render( int $user_id, string $room_name, string $room_type = null ) {
+	public function block_bp_friend_video_render( int $user_id, string $room_name, string $room_type = null ): ?string {
 		if (
 			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
-			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ||
 			! bp_is_active( 'friends' ) ||
-			! bp_is_groups_component()
+			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ||
+			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID )
 		) {
 			return null;
 		}
 
 		// Exiting for All room types except personal meeting.
-		if ( \MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING !== $room_name ) {
+		if ( MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING !== $room_name ) {
 			return null;
 		}
 
@@ -326,7 +333,7 @@ class BuddyPressSecurity {
 			case '':
 				return null;
 				// Drop Setting Off Cases.
-			case 'Do-Not-Disturb':
+			case BuddyPress::SETTING_DO_NOT_DISTURB:
 				if ( $friends_status ) {
 					return null;
 				} else {
@@ -358,7 +365,7 @@ class BuddyPressSecurity {
 
 				<p class="mvr-template-text">
 					<?php
-					$first_display_name = '<strong>' . esc_html__( 'Group Administrators', 'myvideoroom' ) . '</strong>';
+					$first_display_name  = '<strong>' . esc_html__( 'Group Administrators', 'myvideoroom' ) . '</strong>';
 					$second_display_name = '<strong>' . esc_html__( ' the group admins ', 'myvideoroom' ) . '</strong>';
 
 					echo sprintf(

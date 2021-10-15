@@ -180,16 +180,14 @@ class HttpPost {
 	public function create_form_submit( string $action, string $submit_text, string $class = null ): string {
 		\ob_start();
 		?>
-
 		<?php \wp_nonce_field( $action, 'myvideoroom_nonce' ); ?>
 		<input type="hidden" value="<?php echo \esc_attr( $action ); ?>" name="myvideoroom_action" />
 
 		<input type="submit"
 			name="submit"
 			id="submit"
-			class="button button-primary <?php echo esc_attr( $class ); ?>"
-			value="<?php echo \esc_html( $submit_text ); ?>"
-		/>
+			class=" mvr-ul-style-menu myvideoroom-welcome-positive <?php echo esc_attr( $class ); ?>"
+			value="<?php echo \esc_html( $submit_text ); ?>"/>
 		<?php
 
 		return \ob_get_clean();

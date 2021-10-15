@@ -40,7 +40,7 @@ return function (
 
 	<?php if ( count( $shortcodes ) > 1 ) { ?>
 		<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-			<ul>
+			<ul class="mvr-ul-style-top-menu">
 				<?php
 				$active_class = ' nav-tab-active';
 

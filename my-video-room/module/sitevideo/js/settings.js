@@ -7,6 +7,7 @@
 /*global myvideoroom_sitevideo_settings*/
 
 (function ($) {
+	window.myvideoroom_tabbed_init;
 	$( '.myvideoroom-sitevideo-settings' ).on(
 		'click',
 		function (e) {

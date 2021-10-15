@@ -68,7 +68,7 @@ return function (
 			<hr>
 			<h1 class="mvr-title-header"><?php esc_html_e( 'Settings', 'my-video-room' ); ?></h1><br><br>
 			<h2 class="mvr-title-header"><i
-					class="dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable All Rooms in Site', 'my-video-room' ); ?>
+					class="myvideoroom-dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable All Rooms in Site', 'my-video-room' ); ?>
 			</h2>
 			<input
 				type="checkbox"
@@ -81,7 +81,7 @@ return function (
 			</p>
 			<h2 class="mvr-title-header">
 				<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="dashicons mvr-icons dashicons-admin-users"></i>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-admin-users"></i>
 					<?php esc_html_e( 'Restrict Anonymous Access (Force Users to Register)', 'my-video-room' ); ?>
 				</label>
 			</h2>
@@ -102,7 +102,7 @@ return function (
 			<h2 class="mvr-title-header">
 				<label
 					for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable Role Control - For Allowed Roles', 'my-video-room' ); ?>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable Role Control - For Allowed Roles', 'my-video-room' ); ?>
 				</label>
 			</h2>
 			<input
@@ -154,11 +154,11 @@ return function (
 
 			<input name="myvideoroom_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
 			<input name="myvideoroom_user_id" type="hidden" value="
-					<?php
-					$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
-					echo esc_html( $user_id );
-					?>
-					" />
+			<?php
+				$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
+				echo esc_html( $user_id );
+			?>
+			" />
 			<?php
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo Factory::get_instance( HttpPost::class )->create_form_submit(

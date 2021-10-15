@@ -17,6 +17,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\SectionTemplates;
+use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -243,6 +244,7 @@ class MVRSiteVideoRoomHelpers {
 				}
 			}
 		}
+		wp_enqueue_script( 'myvideoroom-protect-input' );
 		if ( $shortcode ) {
 			return ( require __DIR__ . '/../views/shortcode/shortcode-reception.php' )( $details_section );
 		} else {
