@@ -69,8 +69,6 @@ class AdminAjax {
 			$module = sanitize_text_field( wp_unslash( $_POST['module'] ) );
 		}
 
-
-
 		/*
 		* Create User.
 		*

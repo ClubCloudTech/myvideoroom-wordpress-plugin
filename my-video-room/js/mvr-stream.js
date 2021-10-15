@@ -178,10 +178,7 @@ function startcamera(){
 
 	document.getElementById("vid-take").classList.remove('mvr-hide');
 	  navigator.mediaDevices.getUserMedia({
-		// (A1) THE EASY WAY
-		// video: true
 	
-		// (A2) TO SPECIFY PREFERRED RESOLUTION
 		video: {
 		  width: { min: 213, ideal: 1024, max: 1920 },
 		  height: { min: 120, ideal: 576, max: 1080 }
@@ -201,7 +198,7 @@ function startcamera(){
 
 	  })
 	
-	  // (C) FAILURE - NO WEBCAM ATTACHED AND/OR NO PERMISSION
+	  // Handle Error.
 	  .catch(function(err) {
 		alert( err + " Please enable access and attach a webcam");
 	  });

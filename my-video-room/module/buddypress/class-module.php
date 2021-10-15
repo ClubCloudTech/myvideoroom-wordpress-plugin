@@ -1,6 +1,6 @@
 <?php
 /**
- * The entry point for the plugin
+ * Security Addin Settings for BuddyPress changing Security Module behaviour.
  *
  * @package MyVideoRoomPlugin
  */
@@ -50,7 +50,6 @@ class Module {
 	 * Module constructor.
 	 */
 	public function __construct() {
-		//\add_action( 'myvideoroom_security_preference_persisted', array( $this, 'update_security_video_preference' ) );
 		\add_action( 'myvideoroom_security_preference_settings', array( $this, 'add_security_settings' ), 10, 2 );
 	}
 
@@ -69,10 +68,9 @@ class Module {
 		$member_restrictions = new Select(
 			'restrict_group_to_members',
 			__( 'BuddyPress Group Member Restrictions', 'myvideoroom' ),
-			__( 'You can select if you want to make the group available to all Administrators, Moderators, Members, or normal (no access control), for example teh "Administrator Only" setting will only allow Group Administrators to enter the room, "Administrators and Moderators" will allow only group admins and moderators to enter video, and "Members" will allow admins, moderators, and members to enter.', 'myvideoroom' ),
+			__( 'You can select if you want to make the group available to all Administrators, Moderators, Members, or normal (no access control), for example "Administrator Only" setting will only allow Group Administrators to enter the room, "Administrators and Moderators" will allow only group admins and moderators to enter video, and "Members" will allow admins, moderators, and members to enter. All - will allow non group members and signed out users as well.', 'myvideoroom' ),
 			array(
 				new SelectOption( self::MEMBER_OPTION_NONE, __( 'User decides', 'myvideoroom' ) ),
-				// @FRED I assume this needs some logic around it.
 				new SelectOption( self::MEMBER_OPTION_ADMIN, __( 'Administrators only', 'myvideoroom' ) ),
 				new SelectOption( self::MEMBER_OPTION_MODERATOR, __( 'Moderators and above', 'myvideoroom' ) ),
 				new SelectOption( self::MEMBER_OPTION_MODERATOR, __( 'Members and above', 'myvideoroom' ) ),
@@ -145,6 +143,4 @@ class Module {
 
 		return $security_video_preference;
 	}
-
-
 }

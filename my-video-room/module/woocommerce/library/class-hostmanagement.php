@@ -595,7 +595,7 @@ class HostManagement {
 
 		if ( $master_status ) {
 			if ( ! $button_only ) {
-				$pre_text = '<p class ="mvr-notification-align"><strong>' . \esc_html__( 'Basket Owner ', 'myvideoroom' ) . '</strong></p>';
+				$pre_text = '<p class ="mvr-notification-align"><strong>' . \esc_html__( 'Room Basket Owner ', 'myvideoroom' ) . '</strong></p>';
 			}
 			$nonce        = wp_create_nonce( WooCommerce::SETTING_ENABLE_SYNC );
 			$button_label = Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::BUTTON_SHARE_BASKET );

@@ -132,7 +132,7 @@ class WooCommerce {
 				'render_shortcode_store_tab',
 			),
 			40,
-			5
+			6
 		);
 
 				// Add Basket Menu to Main Frontend Templates.
@@ -143,7 +143,7 @@ class WooCommerce {
 				'render_shortcode_basket_tab',
 			),
 			50,
-			5
+			6
 		);
 
 		\wp_enqueue_script(
@@ -210,11 +210,16 @@ class WooCommerce {
 	 * @param int    $post_id     - the user or entity identifier.
 	 * @param string $room_name   - the room identifier.
 	 * @param bool   $host_status - whether function is for a host type.
+	 * @param array  $null        - parameter not needed for this function (from filter).
+	 * @param bool   $in_ajax     - whether function is rendered inside an Ajax window/frame and thus block extensions.
 	 *
 	 * @return array - outbound menu.
 	 */
-	public function render_shortcode_basket_tab( array $input, int $post_id, string $room_name, bool $host_status ): array {
-
+	public function render_shortcode_basket_tab( array $input, int $post_id, string $room_name, bool $host_status, array $null = null, ?bool $in_ajax = false ): array {
+		// Do not Render inside of Ajax sub tab.
+		if ( $in_ajax ) {
+			return $input;
+		}
 		// Check Activation Status of Basket Module.
 		$module_id     = self::MODULE_WOOCOMMERCE_BASKET_ID;
 		$module_status = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( $module_id );
@@ -243,11 +248,16 @@ class WooCommerce {
 	 * @param int    $post_id     - the user or entity identifier.
 	 * @param string $room_name   - the room identifier.
 	 * @param bool   $host_status - whether function is for a host type.
+	 * @param array  $null        - parameter not needed for this function (from filter).
+	 * @param bool   $in_ajax     - whether function is rendered inside an Ajax window/frame and thus block extensions.
 	 *
 	 * @return array - outbound menu.
 	 */
-	public function render_shortcode_store_tab( array $input, int $post_id = null, string $room_name, bool $host_status ): array {
-
+	public function render_shortcode_store_tab( array $input, int $post_id = null, string $room_name, bool $host_status, array $null = null, ?bool $in_ajax = false ): array {
+		// Do not Render inside of Ajax sub tab.
+		if ( $in_ajax ) {
+			return $input;
+		}
 		// Check Activation Status of Basket Module.
 		$module_id     = self::MODULE_WOOCOMMERCE_BASKET_ID;
 		$module_status = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( $module_id );
@@ -277,8 +287,7 @@ class WooCommerce {
 	 */
 	public function proxy_test() {
 
-		//Factory::get_instance( Setup::class )->initialise_default_video_settings();
-
+		// Factory::get_instance( Setup::class )->initialise_default_video_settings();
 	}
 
 

@@ -137,7 +137,10 @@ class MVRSiteVideoViews {
 	 *
 	 * @return array - outbound menu.
 	 */
-	public function render_reception_tab_welcome( array $input ): array {
+	public function render_reception_tab_welcome( array $input, int $user_id = null, string $room_name = null, bool $host_status = null, array $header = null, bool $ajax_flag = null ): array {
+		if ( $ajax_flag ) {
+			return $input;
+		}
 
 		$basket_menu = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_INFO_RECEPTION ),

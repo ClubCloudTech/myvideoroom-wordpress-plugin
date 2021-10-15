@@ -18,6 +18,7 @@ use \MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
+use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressConfig;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 
@@ -70,8 +71,9 @@ return function (): string {
 						<h2><?php esc_html_e( 'Feature is:', 'myvideoroom' ); ?></h2>
 						<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
 							<?php
-								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_USER_ID );
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
+							echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_USER_ID );
+							Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'user' );
 							?>
 						</div>
 					</div>
@@ -102,7 +104,7 @@ return function (): string {
 						<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
 						<img class=""
 							src="<?php echo esc_url( plugins_url( '/../../../admin/img/videoroombp.jpg', __FILE__ ) ); ?>"
-							alt="Video Call in Progress">
+							alt="BuddyPress Room">
 					</div>
 					<div class="myvideoroom-feature-table">
 						<br>
@@ -139,6 +141,7 @@ return function (): string {
 							<?php
 								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
 								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_GROUP_ID );
+								Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'group' );
 							?>
 						</div>
 					</div>
@@ -205,6 +208,7 @@ return function (): string {
 							<?php
 								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
 								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID );
+								Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'friends' );
 							?>
 						</div>
 					</div>

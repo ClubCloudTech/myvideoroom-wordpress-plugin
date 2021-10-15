@@ -74,11 +74,12 @@ class MVRSiteVideoControllers {
 	 * A Shortcode for the Site Video Room - Host
 	 * This is used for the Member admin entry pages to access their preferred Video Layout - it is paired with the sitevideoroomguest function and accessed by the relevant video switch
 	 *
-	 * @param int $post_id - Post ID of DB.
+	 * @param int  $post_id - Post ID of DB.
+	 * @param bool $in_ajax_window - Flag to Disable specific tabs (like conference center) that should not run inside Ajax, and only on top parent.
 	 *
 	 * @return string
 	 */
-	public function site_videoroom_host_function( int $post_id ): string {
+	public function site_videoroom_host_function( int $post_id, bool $in_ajax_window = null ): string {
 		// Shortcode Initialise Hooks.
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
 
@@ -134,7 +135,7 @@ class MVRSiteVideoControllers {
 		);
 		array_push( $output_object, $admin_menu );
 
-		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $post_id, $room_name, $host_status );
+		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $post_id, $room_name, $host_status, $in_ajax_window );
 	}
 
 	/**

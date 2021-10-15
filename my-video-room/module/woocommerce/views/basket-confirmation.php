@@ -53,7 +53,7 @@ return function (
 
 	<table id="mvr-confirmation-table" class="wp-list-table widefat plugins mvr-shopping-basket-frame">
 		<thead>
-			<tr>
+			<tr class="mvr-shopping-basket-frame">
 				<th scope="col" class="manage-column column-name column-primary">
 					<?php
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.

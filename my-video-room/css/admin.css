@@ -427,3 +427,9 @@ margin-top: 0px;
 .myvideoroom-shortcode-heading {
 	display: none;
 }
+
+.myvideoroom-negative-dependency {
+	background: #D2222D;
+	border-color: #D2222D;
+	color: #fff;
+}

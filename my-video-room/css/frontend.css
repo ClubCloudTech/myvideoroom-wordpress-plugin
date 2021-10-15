@@ -46,17 +46,17 @@
 	z-index: 2;
 	background: white;
 	width: 100%;
-    text-align: center
+	text-align: center
 }
 #basket-video-host-wrap-table, #mvr-main-basket-window {
-	margin-left: 48px;
+	margin-left: 66px;
 }
 
 .myvideoroom-side-tab {
 	float: left;
 	width: 7%;
 	min-width: 7%;
-	margin-left: -3px;
+
 
 }
 .myvideoroom-content-tab {
@@ -195,10 +195,11 @@
 
   }
 
-  .mvr-notification-align {
+  .mvr-notification-align, .mvr-table-row p, .mvr-table-row button  {
 	align-self: center;
 	margin: 0;
 	margin-right: 5px;
+	margin-left: 3px;
   }
 
   .mvr-flex {
@@ -236,6 +237,10 @@
 	margin-top: 5px;
 }
 
+#mvr-confirmation-table > thead > tr {
+  background-color: #ffffff!important;
+}
+
 #mvr-notification-icons, .mvr-header-title {
 animation: fadeIn 2s;
 opacity: 1;
@@ -255,14 +260,14 @@ opacity: 1;
 	border-radius: 4px;
 	border-width: 2px;
 	cursor: pointer;
-	display: inline-block !important;
+	display: inline-block;
 	letter-spacing: -.021em;
 	line-height: 1.87947!important;
 	min-width: 30px !important;
-	padding: 2px 4px;
+	padding: 4px 4px;
 }
 
-.mvr-main-button-enabled a {
+.mvr-main-button-enabled a, .mvr-button-table p {
 	color: white;
 	font-size: 12px;
 	font-weight: 500;
@@ -378,7 +383,7 @@ opacity: 1;
 	letter-spacing: -.021em;
 	line-height: 1.52947;
 	min-width: 30px !important;
-	padding: 2px 4px;
+	padding: 4px 4px;
 }
 
 .mvr-main-button-stop {

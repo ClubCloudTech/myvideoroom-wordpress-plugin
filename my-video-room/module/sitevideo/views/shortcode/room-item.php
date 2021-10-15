@@ -85,7 +85,11 @@ return function (
 		</td>
 
 		<td class="plugin-title column-primary">
-			<?php echo apply_filters( 'myvideoroom_conference_room_type_column_field', $room->type, $room ); ?></td>
+		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Functions return escaped divs
+			echo apply_filters( 'myvideoroom_conference_room_type_column_field', $room->type, $room );
+		?>
+		</td>
 		<td>
 			<?php
 			foreach ( $edit_actions as $action ) {

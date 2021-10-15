@@ -13,17 +13,17 @@ window.addEventListener(
 				 * Initialise Functions on Load
 				 */
 				function init(){
-												
+
 					$( '.mvr-admin-ajax' ).click(
 						function(e){
 							e.stopPropagation();
 							e.preventDefault();
 							let action = $( this ).attr( 'data-action' ),
 							module     = $( this ).attr( 'data-module' );
-							moduleAction(action, module);
+							moduleAction( action, module );
 						}
 					);
-			
+
 				}
 
 				/**
@@ -34,7 +34,7 @@ window.addEventListener(
 						return false;
 					}
 					var	form_data = new FormData(),
-					frame = $( '#module'+module );
+					frame         = $( '#module' + module );
 					form_data.append( 'action','myvideoroom_admin_ajax' );
 					form_data.append( 'action_taken', 'update_module' );
 					form_data.append( 'state', action );
@@ -50,15 +50,14 @@ window.addEventListener(
 							data: form_data,
 							success: function (response) {
 								var state_response = JSON.parse( response );
-								if ( state_response.button ){
-									frame_parent = frame.parent().attr( 'id' );
-									parent_element   = $( '#' + frame_parent );
+								if ( state_response.button ) {
+									frame_parent   = frame.parent().attr( 'id' );
+									parent_element = $( '#' + frame_parent );
 									frame.remove();
 									frame.parent().empty();
 									parent_element.parent().html( state_response.button );
 									init();
 								}
-								
 
 							},
 							error: function ( response ){

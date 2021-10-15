@@ -50,7 +50,7 @@ class BuddyPressSecurity {
 		}
 			// Friends Setting from BP.
 
-		if ( ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID ) ) &&
+		if ( function_exists( 'bp_is_active' ) && bp_is_active( 'friends' ) && ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID ) ) &&
 		( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ) && ! $room_object && ! $is_group_page ) {
 			$output .= esc_attr( Factory::get_instance( BuddyPressConfig::class )->render_friends_menu_options( $user_id, $room_name, $id_index ) );
 		}

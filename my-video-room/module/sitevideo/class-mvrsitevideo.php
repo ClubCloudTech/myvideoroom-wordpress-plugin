@@ -121,7 +121,7 @@ class MVRSiteVideo {
 				'render_sitevideo_welcome_tabs',
 			),
 			5,
-			5
+			6
 		);
 		// Reception Center Tab.
 		if ( current_user_can( 'administrator' ) ) {
@@ -132,7 +132,7 @@ class MVRSiteVideo {
 					'render_reception_tab_welcome',
 				),
 				6,
-				5
+				6
 			);
 		}
 
@@ -147,7 +147,7 @@ class MVRSiteVideo {
 					'render_login_tab_welcome',
 				),
 				5,
-				5
+				6
 			);
 		}
 
@@ -189,7 +189,7 @@ class MVRSiteVideo {
 				'security' => wp_create_nonce( 'handle_picture_upload' ),
 
 			);
-		// Register Script Iframe Handling.
+			// Register Script Iframe Handling.
 			\wp_register_script(
 				'myvideoroom-iframe-handler',
 				\plugins_url( '/../../js/iframe-manage.js', \realpath( __FILE__ ) ),
@@ -385,8 +385,10 @@ class MVRSiteVideo {
 	 *
 	 * @return array - outbound menu.
 	 */
-	public function render_sitevideo_welcome_tabs( array $input, int $room_id, $host_status = null, $header ): array {
-
+	public function render_sitevideo_welcome_tabs( array $input, int $room_id, $host_status = null, $header = null, array $null = null, bool $in_ajax = null ): array {
+		if ( $in_ajax ) {
+			return $input;
+		}
 		$host_menu = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_INFO_WELCOME ),
 			'welcomepage',

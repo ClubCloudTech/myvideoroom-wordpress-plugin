@@ -98,8 +98,6 @@ return function (
 		<?php
 	}
 	?>
-
-
 	<div id="mvr-picture" class="myvideoroom-center" style="display:none;">
 		<?php
 		if ( $user_picture ) {
@@ -124,8 +122,8 @@ return function (
 				<?php
 			} else {
 				?>
-					<p id="mvr-text-description-current2" ><?php esc_html_e( 'No Picture yet', 'myvideoroom' ); ?></p>
-					<?php
+			<p id="mvr-text-description-current2"><?php esc_html_e( 'No Picture yet', 'myvideoroom' ); ?></p>
+				<?php
 			}
 			?>
 		</div>
@@ -133,7 +131,7 @@ return function (
 
 		<div id="mvr-picture-right" class="mvr-right">
 			<p id="mvr-text-description-new" class=""><?php esc_html_e( 'Use Your Own Photo', 'myvideoroom' ); ?></p>
-			<input type="file" accept=".gif,.jpg,.jpeg,.png" id="mvr-file-input"/>
+			<input type="file" accept=".gif,.jpg,.jpeg,.png" id="mvr-file-input" />
 			<p id="mvr-text-description-23" class="mvr-hide"><?php esc_html_e( 'New', 'myvideoroom' ); ?></p>
 			<video id="vid-live" autoplay class="mvr-header-section "></video>
 			<div id="vid-result" class="mvr-header-section"></div>
@@ -141,10 +139,12 @@ return function (
 
 		<div class="mvr-flex mvr-clear">
 			<input id="vid-retake" type="button" value="Retake" class="mvr-hide myvideoroom-welcome-buttons" />
-			<input id="vid-take" type="button" value="Snap" class="myvideoroom-welcome-positive mvr-hide mvr-main-button-enabled myvideoroom-welcome-button"/>
+			<input id="vid-take" type="button" value="Snap"
+				class="myvideoroom-welcome-positive mvr-hide myvideoroom-welcome-button" />
 			<input id="vid-up" type="button" value="Use This" class="myvideoroom-welcome-positive mvr-hide" />
 			<input id="vid-picture" type="button" value="Take Picture" class="myvideoroom-welcome-positive" />
-			<input id="upload-picture" type="button" value="Upload Picture" class="myvideoroom-welcome-positive mvr-hide" />
+			<input id="upload-picture" type="button" value="Upload Picture"
+				class="myvideoroom-welcome-positive mvr-hide" />
 
 		</div>
 	</div>
@@ -175,15 +175,11 @@ return function (
 	}
 	if ( ! $all_set ) {
 		?>
-<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-welcome-positive mvr-hide" disabled />
+	<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-welcome-positive mvr-hide" disabled />
 		<?php
 	}
 	?>
-
 </div>
-
-
 	<?php
-
 		return ob_get_clean();
 };

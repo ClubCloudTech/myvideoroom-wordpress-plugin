@@ -1,6 +1,6 @@
 <?php
 /**
- * Addon functionality for BuddyPress
+ * Integration Addin functionality for BuddyPress
  *
  * @package MyVideoRoomPlugin\Modules\BuddyPress
  */
@@ -18,7 +18,6 @@ use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
-use MyVideoRoomPlugin\Plugin;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
@@ -28,6 +27,7 @@ class BuddyPress {
 	const SHORTCODE_TAG = App::SHORTCODE_TAG . '_';
 	// Constants For Buddypress Video Modules.
 	const MODULE_BUDDYPRESS_NAME                   = 'buddypress-module';
+	const MODULE_BUDDYPRESS_SLUG                   = 'buddypress';
 	const MODULE_BUDDYPRESS_DISPLAY                = 'BuddyPress Settings';
 	const MODULE_BUDDYPRESS_ID                     = 434;
 	const MODULE_BUDDYPRESS_ADMIN_LOCATION         = '/modules/buddypress/views/view-settings-buddypress.php';
@@ -69,7 +69,7 @@ class BuddyPress {
 		return Factory::get_instance( Dependencies::class )->is_buddypress_active();
 	}
 	/**
-	 * Is Buddypress Active - checks if BuddyPress is enabled.
+	 * Can Module Be Activated- checks if BuddyPress is enabled, and checks Personal Video Module state.
 	 *
 	 * @return bool
 	 */
@@ -89,8 +89,8 @@ class BuddyPress {
 	 */
 	public function init() {
 		$is_module_enabled     = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_ID );
-		$is_buddypress_enabled = $this->is_buddypress_active();
-		if ( ! $is_module_enabled && ! $is_buddypress_enabled ) {
+		$is_buddypress_enabled = $this->can_module_be_activated();
+		if ( ! $is_module_enabled || ! $is_buddypress_enabled ) {
 			return null;
 		}
 
@@ -107,9 +107,6 @@ class BuddyPress {
 				$this->setup_group_nav_action();
 			}
 		}
-
-		// Register Menu for modules.
-		$this->buddypress_menu_setup();
 
 		// Render Other BuddyPress Shortcodes.
 		Factory::get_instance( BuddyPressVideo::class )->init();
@@ -135,17 +132,6 @@ class BuddyPress {
 				Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 			}
 		);
-
-		// Add Permissions Notification of Status to Main Permissions SecurityVideoPreference Form.
-		// \add_filter( 'myvideoroom_security_admin_preference_user_id_intercept', array( Factory::get_instance( BuddyPressHelpers::class ), 'modify_user_id_for_groups' ), 10, 1 );
-
-	}
-
-	/**
-	 * Setup of Module Menu
-	 */
-	public function buddypress_menu_setup() {
-		add_action( 'mvr_module_submenu_add', array( $this, 'buddypress_menu_button' ) );
 	}
 
 	/**
@@ -156,18 +142,6 @@ class BuddyPress {
 	public function render_buddypress_admin_page(): string {
 		return ( require __DIR__ . '/views/view-settings-buddypress.php' )();
 	}
-
-	/**
-	 * Render Module Menu.
-	 */
-	public function buddypress_menu_button() {
-		$name = self::MODULE_BUDDYPRESS_DISPLAY;
-		$slug = self::MODULE_BUDDYPRESS_NAME;
-		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
-		$display = esc_html__( $name, 'myvideoroom' );
-		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $display ) . '</a>';
-	}
-
 
 	/**
 	 * Naming Screen Functions Section - This section hosts the page construction templates for each named clickable function.
@@ -192,47 +166,8 @@ class BuddyPress {
 		switch ( $type ) {
 			case 'name':
 				return $bp->groups->current_group->name;
-			case 'url':
-				return $group_link;
 			case 'group_video':
 				return $group_link . self::MODULE_BUDDYPRESS_VIDEO_SLUG;
-			case 'ownerid':
-				return $bp->groups->current_group->creator_id;
-			case 'groupid':
-				return $bp->groups->current_group->id;
-			case 'status':
-				return $bp->groups->current_group->status;
-			case 'description':
-				return $bp->groups->current_group->description;
-			case 'permissions':
-				if (
-					\groups_is_user_admin( $bp->loggedin_user->id, $bp->groups->current_group->id ) ||
-					\groups_is_user_mod( $bp->loggedin_user->id, $bp->groups->current_group->id ) ||
-					\is_super_admin() ||
-					\is_network_admin()
-				) {
-					return true;
-				}
-				break;
-			case 'ownerbutton':
-				if ( ! \is_user_logged_in() ) {
-					// dont process signed out users.
-					return null;
-				}
-				// To check if user is group owner.
-				$user_id    = $bp->loggedin_user->id;
-				$creator_id = $bp->groups->current_group->creator_id;
-				if ( $creator_id === $user_id ) {
-					return \do_shortcode( '[elementor-template id="32982"]' );
-				} else {
-					return \do_shortcode( '[elementor-template id="33018"]' );
-				}
-
-			case 'ownername':
-				$owner_id     = $bp->groups->current_group->creator_id;
-				$owner_object = Factory::get_instance( WordPressUser::class )->get_wordpress_user_by_id( $owner_id );
-				$display_name = $owner_object->display_name;
-				return $display_name;
 		}
 	}
 
@@ -246,7 +181,6 @@ class BuddyPress {
 		if ( ! $this->is_buddypress_active() ) {
 			return null;
 		}
-		global $bp;
 
 		$hide_tab_from_user = Factory::get_instance( BuddyPressSecurity::class )->block_friends_display();
 		if ( ! $hide_tab_from_user ) {
@@ -270,7 +204,6 @@ class BuddyPress {
 	 * - each tab calls a 'screen function' which must be in the screen function section
 	 */
 	public function myvideo_render_main_screen_function() {
-		// add title and content here - last is to call the members plugin.php template.
 		add_action( 'bp_template_content', array( $this, 'bp_myvideo_tab_action' ) );
 		\bp_core_load_template( \apply_filters( 'bp_core_template_plugin', 'members/single/plugins' ) );
 	}
@@ -290,19 +223,16 @@ class BuddyPress {
 	 * @return false|string
 	 */
 	public function setup_group_nav_action() {
-		if ( ! $this->is_buddypress_active() ) {
+		if ( ! $this->is_buddypress_active() || ! function_exists( 'bp_is_groups_component' ) ) {
 			return null;
 		}
 		global $bp;
-		$is_buddypress_enabled = Factory::get_instance( self::class )->is_buddypress_active();
-		if ( ! $is_buddypress_enabled ) {
-			return null;
-		}
+
 		if ( \bp_is_active( 'groups' ) && $bp->groups && $bp->groups->current_group ) {
 			$group_link = $bp->root_domain . '/' . $bp->groups->root_slug . '/' . $bp->groups->current_group->slug . '/';
 			\bp_core_new_subnav_item(
 				array(
-					'name'            => 'Video Room',
+					'name'            => 'Video Ponga',
 					'slug'            => self::MODULE_BUDDYPRESS_VIDEO_SLUG,
 					'parent_url'      => $group_link,
 					'parent_slug'     => $bp->groups->current_group->slug,

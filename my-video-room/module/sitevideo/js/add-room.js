@@ -8,7 +8,7 @@
 
 (function ($) {
 	function init(){
-		console.log('init fire');
+		console.log( 'init fire' );
 		$( '#submit-button' ).hide();
 		$( '#room-display-name' ).on( 'keyup', checkShow );
 		$( '#room-url-link' ).on( 'keyup', checkShow );
@@ -17,28 +17,28 @@
 	/**
 	 * Check if Name and Email conditions are met in main form
 	 */
-	 function checkShow(){
+	function checkShow(){
 		var display_name = $( '#room-display-name' ).val().length,
 		url_link         = $( '#room-url-link' ).val().length;
 
 		if (display_name >= 5) {
 			$( '#room-name-icon' ).show();
 		} else {
-			$( '#submit' ).hide();  
+			$( '#submit' ).hide();
 			$( '#room-name-icon' ).hide();
 		}
 		if (url_link >= 5) {
 			$( '#room-link-icon' ).show();
 		} else {
-			$( '#submit' ).hide(); 
+			$( '#submit' ).hide();
 			$( '#room-link-icon' ).hide();
 		}
 
 		if ( display_name >= 5 && url_link >= 5 ) {
-			$( '#submit-button' ).show();  
-			$( '#submit-button' ).addClass('mvr-title-header');  
+			$( '#submit-button' ).show();
+			$( '#submit-button' ).addClass( 'mvr-title-header' );
 		} else {
-			$( '#submit-button' ).removeClass('mvr-title-header'); 
+			$( '#submit-button' ).removeClass( 'mvr-title-header' );
 			$( '#submit-button' ).hide();
 			return false;
 		}

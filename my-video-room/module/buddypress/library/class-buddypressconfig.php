@@ -8,7 +8,9 @@
 namespace MyVideoRoomPlugin\Module\BuddyPress\Library;
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
+use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -111,16 +113,19 @@ class BuddyPressConfig {
 		} elseif ( ! $current_selection && $site_override ) {
 			$current_selection_text = 'Current Setting->Override Active - Turned Off';
 		} elseif ( ! $current_selection && ! $site_override ) {
-				$current_selection_text = 'Current Setting->User Decides';
+			$current_selection_text = 'Current Setting->User Decides';
 		}
 		// Format Display Box if there WAS a setting returned.
 		if ( ! $current_selection_text ) {
 			$current_selection_text = 'Currently set to: ' . $current_selection;
 		}
 		?>
-	<option value="<?php echo esc_html( $current_selection ); ?>"><?php echo esc_html( $current_selection_text ); ?></option>
-	<option value="<?php echo esc_html( BuddyPress::SETTING_STEALTH ); ?>"><?php esc_html_e( 'Stealth- Remove Video Tab from My Profile to Non-Friends', 'myvideoroom' ); ?></option>
-	<option value="<?php echo esc_html( BuddyPress::SETTING_DO_NOT_DISTURB ); ?>"><?php esc_html_e( 'Do Not Disturb Page - Show Block Page to Non Friends', 'myvideoroom' ); ?></option>
+	<option value="<?php echo esc_html( $current_selection ); ?>"><?php echo esc_html( $current_selection_text ); ?>
+	</option>
+	<option value="<?php echo esc_html( BuddyPress::SETTING_STEALTH ); ?>">
+		<?php esc_html_e( 'Stealth- Remove Video Tab from My Profile to Non-Friends', 'myvideoroom' ); ?></option>
+	<option value="<?php echo esc_html( BuddyPress::SETTING_DO_NOT_DISTURB ); ?>">
+		<?php esc_html_e( 'Do Not Disturb Page - Show Block Page to Non Friends', 'myvideoroom' ); ?></option>
 	<option value="all"><?php esc_html_e( 'Allow All- Friends and Non-Friends allowed', 'myvideoroom' ); ?></option>
 </select><br>
 <p class="mvr-preferences-paragraph">
@@ -151,5 +156,51 @@ class BuddyPressConfig {
 </p>
 		<?php
 		return null;
+	}
+
+	/**
+	 * Dependencies
+	 *
+	 * @param string $type - the type of check.
+	 * @return   string
+	 */
+	public function render_dependencies( string $type = null ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+			return null;
+		}
+		?>
+	<h2><?php esc_html_e( 'Requires:', 'myvideoroom' ); ?></h2> 
+		<?php
+		switch ( $type ) {
+			case 'group':
+				if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'groups' ) ) {
+					$message = esc_html__( 'Installed', 'myvideoroom' );
+				} else {
+					$message = '<div class="myvideoroom-negative-dependency">' . esc_html__( 'BP Groups Component Missing', 'myvideoroom' ) . '</div>';
+				}
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --already escaped line above
+				echo esc_html__( 'BuddyPress Groups ', 'myvideoroom' ) . ' : ' . $message;
+				break;
+			case 'user':
+				$personal_video_state = Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
+				if ( $personal_video_state ) {
+					$message = esc_html__( 'Enabled', 'myvideoroom' );
+				} else {
+					$message = '<div class="myvideoroom-negative-dependency">' . esc_html__( 'Module Disabled', 'myvideoroom' ) . '</div>';
+				}
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --already escaped line above
+				echo esc_html__( 'Personal Video Module ', 'myvideoroom' ) . ' : ' . $message;
+				break;
+			case 'friends':
+				if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'friends' ) ) {
+					$message = esc_html__( 'Installed', 'myvideoroom' );
+				} else {
+					$message = '<div class="myvideoroom-negative-dependency">' . esc_html__( 'Friends Component Missing', 'myvideoroom' ) . '</div>';
+				}
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --already escaped line above
+				echo esc_html__( 'BuddyPress Friends ', 'myvideoroom' ) . ' : ' . $message;
+				break;
+		}
+
 	}
 }

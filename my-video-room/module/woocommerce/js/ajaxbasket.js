@@ -48,7 +48,7 @@
 						},
 						success: function (response) {
 							var response_length = response.length;
-							var state_response = JSON.parse( response );
+							var state_response  = JSON.parse( response );
 							if ( response_length > 40 ) {
 
 								if ( state_response.basketwindow ) {
@@ -97,7 +97,7 @@
 		console.log( 'Ajax Main on click finished' );
 		return false;
 	}
-	
+
 	/**
 	 * Heartbeat function that checks Ajax and redraws key Divs
 	 */
@@ -195,7 +195,7 @@
 								if (window.myvideoroom_tabbed_init) {
 									window.myvideoroom_tabbed_init( mainvideo );
 								}
-							} 
+							}
 						}
 						if (state_response.securitychange == 'change' ) {
 							if (  state_response.securitysetting ) {
@@ -341,7 +341,7 @@
 			document.getElementById( "mvr-basket-section" ).classList.add( 'mvr-clear' );
 		}
 	}
-	
+
 	/**
 	 * Reset activities post click/load/interaction.
 	 */
@@ -405,7 +405,7 @@
 
 		$( '.nav-tab' ).click(
 			function(event) {
-				
+
 				if ( this.id == 'mvr-shopping-basket' ) {
 
 					if ($( '#basket-video-host-wrap-item' ).length) {
@@ -449,12 +449,12 @@
 	}
 
 	/**
-	 * Script Load Decision 
+	 * Script Load Decision
 	 */
-	
+
 	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' ),
-	woocommActive = document.getElementById( 'mvr-basket-section' );
-	if ( mvrIsactive.length > 0 && woocommActive.innerHTML.length >0 ) {
+	woocommActive   = document.getElementById( 'mvr-basket-section' );
+	if ( mvrIsactive.length > 0 && woocommActive.innerHTML.length > 0 ) {
 		var original_room = $( '#roominfo' ).data( 'roomName' ),
 		host_status       = $( '#roomid' ).data( 'hostStatus' );
 		if ( host_status !== 1) {

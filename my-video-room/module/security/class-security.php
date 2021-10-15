@@ -94,7 +94,7 @@ class Security {
 				'render_shortcode_security_permissions_tab',
 			),
 			40,
-			5
+			6
 		);
 
 		// Add Permissions Icons Status to Main Shortcode Header.

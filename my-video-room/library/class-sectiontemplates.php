@@ -39,16 +39,17 @@ class SectionTemplates {
 	 * @param ?int         $user_id      User ID for passing to other Filters.
 	 * @param ?string      $room_name    Room Name for passing to other Filters.
 	 * @param bool         $host_status  Whether user is a host.
+	 * @param bool         $ajax_window_flag Marks the Page is being rendered from an Ajax window where you want to limit what plugins/tabs run.
 	 *
 	 * @return string The completed Formatted Template.
 	 */
-	public function shortcode_template_wrapper( $header, array $inbound_tabs, int $user_id = null, string $room_name = null, bool $host_status = null ): string {
+	public function shortcode_template_wrapper( $header, array $inbound_tabs, int $user_id = null, string $room_name = null, bool $host_status = null, bool $ajax_window_flag = null ): string {
 		Factory::get_instance( SessionState::class )->register_room_presence( $room_name, $host_status, $user_id );
 
 		ob_start();
 		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
 		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
-		$tabs         = apply_filters( 'myvideoroom_main_template_render', $inbound_tabs, $user_id, $room_name, $host_status, $header );
+		$tabs         = apply_filters( 'myvideoroom_main_template_render', $inbound_tabs, $user_id, $room_name, $host_status, $header, $ajax_window_flag );
 
 		?>
 

@@ -23,6 +23,7 @@ class MVRSiteVideoAjax {
 
 	/**
 	 * Site Video Support for Ajax Settings.
+	 * This function handles the tabs in conference centre pages that render rooms and config settings inside conference center backend, and reception center shortcode Ajax.
 	 *
 	 * @return void
 	 */
@@ -35,7 +36,7 @@ class MVRSiteVideoAjax {
 
 		if ( MVRSiteVideo::RECEPTION_ROOM_FLAG === $input_type ) {
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped.
-			echo Factory::get_instance( MVRSiteVideoControllers::class )->site_videoroom_host_function( $room_id );
+			echo Factory::get_instance( MVRSiteVideoControllers::class )->site_videoroom_host_function( $room_id, true );
 
 		} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $input_type ) {
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -202,7 +203,7 @@ class MVRSiteVideoAjax {
 			} else {
 				$room_owner_id         = $room_record->get_owner_id();
 				$room_object           = Factory::get_instance( UserVideoPreference::class )->get_by_id( $room_owner_id, $room_name );
-				$response['feedback'] = \esc_html__( 'Refreshing Video Room', 'myvideoroom' );
+				$response['feedback']  = \esc_html__( 'Refreshing Video Room', 'myvideoroom' );
 				$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->update_main_video_window( $room_object, $original_room );
 			}
 

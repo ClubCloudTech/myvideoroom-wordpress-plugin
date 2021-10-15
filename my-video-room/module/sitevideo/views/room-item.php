@@ -95,7 +95,7 @@ return function (
 		</td>
 		<td class="plugin-title column-primary">
 			<?php
-			if ( MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room->room_type ){
+			if ( MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $room->room_type ) {
 				// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - output already escaped upstream to render HTML.
 				echo apply_filters( 'myvideoroom_conference_room_type_column_field', $room->type, $room ); 
 			} else {
@@ -109,7 +109,7 @@ return function (
 			foreach ( $edit_actions as $action ) {
 				?>
 				<a href="<?php echo esc_url( $action[1] ); ?>"
-					class="mvr-icons <?php echo esc_attr( $action[2] ); ?>"
+					class="myvideoroom-dashicons mvr-icons <?php echo esc_attr( $action[2] ); ?>"
 					data-room-id="<?php echo esc_attr( $room->id ); ?>"
 					title="<?php echo esc_attr( $action[0] ); ?>"
 					<?php
