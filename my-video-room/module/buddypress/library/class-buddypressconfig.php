@@ -28,7 +28,7 @@ class BuddyPressConfig {
 	 * @return   null
 	 */
 	public function render_group_menu_options( int $user_id, string $room_name, int $id_index ) {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 		?>
@@ -93,7 +93,7 @@ class BuddyPressConfig {
 	 * @return   null
 	 */
 	public function render_friends_menu_options( int $user_id, string $room_name, int $id_index ) {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() || ! function_exists( 'bp_is_active' ) || ! bp_is_active( 'friends' ) ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() || ! function_exists( 'bp_is_active' ) || ! bp_is_active( 'friends' ) ) {
 			return null;
 		}
 		?>
@@ -158,47 +158,62 @@ class BuddyPressConfig {
 	}
 
 	/**
-	 * Dependencies
+	 * Dependencies Checking for Installed BuddyPress Pages.
+	 * Returns to Settings Page the status of Dependencies of modules.
 	 *
 	 * @param string $type - the type of check.
 	 * @return   string
 	 */
 	public function render_dependencies( string $type = null ) {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 		?>
-	<h2><?php esc_html_e( 'Requires:', 'myvideoroom' ); ?></h2> 
 		<?php
+		$message     = '<strong>' . esc_html__( 'Depends on:', 'myvideoroom' ) . '</strong><br>';
+		$pre_message = esc_html__( 'BuddyPress Plugin : ', 'myvideoroom' );
+		if ( function_exists( 'bp_is_active' ) && Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
+			$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
+			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'BuddyPress core plugin is installed', 'myvideoroom' ) . '"></i><br>';
+		} else {
+			$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'BP Groups Component Missing', 'myvideoroom' ) . '</div>';
+			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'BuddyPress is not Installed Correctly', 'myvideoroom' ) . '"></i><br>';
+		}
+
 		switch ( $type ) {
-			case 'group':
-				if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'groups' ) ) {
-					$message = esc_html__( 'Installed', 'myvideoroom' );
+			case 'friends':
+				$pre_message = esc_html__( 'BuddyPress Friends ', 'myvideoroom' );
+				if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'friends' ) ) {
+					$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i><br>';
 				} else {
-					$message = '<div class="myvideoroom-negative-dependency">' . esc_html__( 'BP Groups Component Missing', 'myvideoroom' ) . '</div>';
+					$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Friends Component Missing', 'myvideoroom' ) . '</div>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i><br>';
 				}
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --already escaped line above
-				echo esc_html__( 'BuddyPress Groups ', 'myvideoroom' ) . ' : ' . $message;
-				break;
+				// Fallthrough case switch is intentional - as friends need to be processed as friends and users.
 			case 'user':
 				$personal_video_state = Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
+				$pre_message          = esc_html__( 'MyVideoRoom Personal Video Module : ', 'myvideoroom' );
 				if ( $personal_video_state ) {
-					$message = esc_html__( 'Enabled', 'myvideoroom' );
+					$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Enabled', 'myvideoroom' ) . '</div>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i>';
 				} else {
-					$message = '<div class="myvideoroom-negative-dependency">' . esc_html__( 'Module Disabled', 'myvideoroom' ) . '</div>';
+					$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Module Disabled', 'myvideoroom' ) . '</div>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i>';
 				}
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --already escaped line above
-				echo esc_html__( 'Personal Video Module ', 'myvideoroom' ) . ' : ' . $message;
 				break;
-			case 'friends':
-				if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'friends' ) ) {
-					$message = esc_html__( 'Installed', 'myvideoroom' );
+			case 'group':
+				$pre_message = esc_html__( 'BuddyPress Groups : ', 'myvideoroom' );
+				if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'groups' ) ) {
+					$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i>';
 				} else {
-					$message = '<div class="myvideoroom-negative-dependency">' . esc_html__( 'Friends Component Missing', 'myvideoroom' ) . '</div>';
+					$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'BP Groups Component Missing', 'myvideoroom' ) . '</div>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i>';
 				}
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --already escaped line above
-				echo esc_html__( 'BuddyPress Friends ', 'myvideoroom' ) . ' : ' . $message;
 				break;
 		}
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --already escaped in functions above.
+		echo $message;
 	}
 }

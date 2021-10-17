@@ -73,8 +73,70 @@ class BuddyPress {
 	 *
 	 * @return bool
 	 */
-	public function is_buddypress_active() {
-		return Factory::get_instance( Dependencies::class )->is_buddypress_active();
+	public function is_buddypress_available() {
+		return Factory::get_instance( Dependencies::class )->is_buddypress_available();
+	}
+	/**
+	 * Is User Module Active - checks if Module of User Rooms is enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_user_module_available() {
+		$buddypress = Factory::get_instance( Dependencies::class )->is_buddypress_available();
+		if ( ! $buddypress ) {
+			return false;
+		}
+		$mvr_bp_module  = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_ID );
+		$user_module    = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_USER_ID );
+		$personal_video = Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
+		if ( $user_module && $personal_video && $mvr_bp_module ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	/**
+	 * Is Friends Module Active - checks if Module of Friends is enabled in BP as well as all other dependencies.
+	 *
+	 * @return bool
+	 */
+	public function is_friends_module_available() {
+		if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'friends' ) ) {
+			$bp_friends_enabled = true;
+		} else {
+			return false;
+		}
+		$user_module = $this->is_user_module_available();
+
+		if ( $user_module && $bp_friends_enabled ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Is User Module Active - checks if Module of User Rooms is enabled.
+	 *
+	 * @return bool
+	 */
+	public function is_group_module_available() {
+		$buddypress = Factory::get_instance( Dependencies::class )->is_buddypress_available();
+		if ( ! $buddypress ) {
+			return false;
+		}
+		if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'groups' ) ) {
+			$bp_group_enabled = true;
+		} else {
+			return false;
+		}
+		$group_module = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_GROUP_ID );
+
+		if ( $group_module && $bp_group_enabled ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	/**
 	 * Can Module Be Activated- checks if BuddyPress is enabled, and checks Personal Video Module state.
@@ -82,13 +144,7 @@ class BuddyPress {
 	 * @return bool
 	 */
 	public function can_module_be_activated():bool {
-		$buddypress_state     = $this->is_buddypress_active();
-		$personal_video_state = Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
-		if ( $buddypress_state && $personal_video_state ) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->is_buddypress_available();
 	}
 	/**
 	 * Install - initialisation function of class - used to call Shortcodes or main class functions.
@@ -96,24 +152,18 @@ class BuddyPress {
 	 * @return void|null.
 	 */
 	public function init() {
-		$is_module_enabled     = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_ID );
-		$is_buddypress_enabled = $this->can_module_be_activated();
-		if ( ! $is_module_enabled || ! $is_buddypress_enabled ) {
+		$is_module_enabled       = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_ID );
+		$is_buddypress_available = $this->is_buddypress_available();
+		if ( ! $is_module_enabled || ! $is_buddypress_available ) {
 			return null;
 		}
-
 		add_shortcode( self::SHORTCODE_TAG . 'bpgroupname', array( $this, 'bp_groupname_shortcode' ) );
 
-		$is_user_module_enabled  = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_USER_ID );
-		$is_group_module_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_BUDDYPRESS_GROUP_ID );
-
-		if ( $is_module_enabled && $is_buddypress_enabled ) {
-			if ( $is_user_module_enabled ) {
-				$this->setup_root_nav_action();
-			}
-			if ( $is_group_module_enabled && function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() ) {
-				$this->setup_group_nav_action();
-			}
+		if ( $this->is_user_module_available() ) {
+			$this->setup_root_nav_action();
+		}
+		if ( $this->is_group_module_available() && \function_exists( 'bp_is_groups_component' ) && \bp_is_groups_component() ) {
+			$this->setup_group_nav_action();
 		}
 
 		// Render Other BuddyPress Shortcodes.
@@ -154,7 +204,7 @@ class BuddyPress {
 	 * @return ?string
 	 */
 	public function bp_groupname_shortcode( $params = array() ): ?string {
-		if ( ! $this->is_buddypress_active() ) {
+		if ( ! $this->is_group_module_available() ) {
 			return null;
 		}
 		global $bp;
@@ -174,7 +224,7 @@ class BuddyPress {
 	 * @return null|void
 	 */
 	public function setup_root_nav_action() {
-		if ( ! $this->is_buddypress_active() ) {
+		if ( ! $this->is_user_module_available() ) {
 			return null;
 		}
 
@@ -214,12 +264,13 @@ class BuddyPress {
 	 * @return null|void
 	 */
 	public function setup_group_nav_action() {
-		if ( ! $this->is_buddypress_active() || ! function_exists( 'bp_is_groups_component' ) || ! bp_is_groups_component() ) {
+		// Checks for existence of Groups in BP, module enabled etc.
+		if ( ! $this->is_group_module_available() ) {
 			return null;
 		}
 		global $bp;
 
-		if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'groups' ) && $bp->groups && $bp->groups->current_group ) {
+		if ( $bp->groups && $bp->groups->current_group ) {
 			$tab_name = \get_option( 'myvideoroom-buddypress-group-tab' );
 			if ( ! $tab_name ) {
 				$tab_name = self::SETTING_DEFAULT_TAB_NAME;

@@ -71,11 +71,13 @@ class ModuleConfig {
 	 *
 	 * @TODO - Move this somewhere more appropriate, it should also return a string, not output directly
 	 *
-	 * @param int $module_id Module ID.
+	 * @param int    $module_id Module ID.
+	 * @param string $module_status current state of module (used from Ajax calls).
+	 * @param bool   $dependency_check - if the Module has something that prevents it from activating (requires caller to provide a bool screen function).
 	 *
 	 * @return string  Button with link
 	 */
-	public function module_activation_button( int $module_id, string $module_status = null ): ?string {
+	public function module_activation_button( int $module_id, string $module_status = null, bool $dependency_check = null ): ?string {
 
 		switch ( $module_status ) {
 			case self::ACTION_ENABLE:
@@ -93,12 +95,24 @@ class ModuleConfig {
 
 		// Check if is sub tab to mark as such to strip out extra data in URL when called back.
 
-		if ( $is_module_enabled ) {
+		if ( $is_module_enabled && false === $dependency_check ) {
+			$action      = null;
+			$type        = 'dashicons-dismiss';
+			$description = esc_html__( 'This module depends on a module is not active. This feature will not work', 'myvideoroom' );
+			$status      = 'mvr-icons-disabled mvr-admin-ajax';
+			$main_text   = __( 'Inactive', 'myvideoroom' );
+		} elseif ( $is_module_enabled ) {
 			$action      = self::ACTION_DISABLE;
 			$type        = 'dashicons-plugins-checked';
-			$description = esc_html__( 'This scenario is currently enabled and its rooms are accepting meetings.', 'myvideoroom' );
+			$description = esc_html__( 'This feature is enabled and working properly.', 'myvideoroom' );
 			$status      = 'mvr-icons-enabled mvr-admin-ajax';
 			$main_text   = __( 'Active', 'myvideoroom' );
+		} elseif ( false === $dependency_check ) {
+			$action      = null;
+			$type        = 'dashicons-dismiss';
+			$description = esc_html__( 'You cannot enable this as a dependent module is not active', 'myvideoroom' );
+			$status      = 'mvr-icons-disabled mvr-admin-ajax';
+			$main_text   = __( 'Supporting Module Not Found', 'myvideoroom' );
 		} else {
 			$action      = self::ACTION_ENABLE;
 			$type        = 'dashicons-admin-plugins';

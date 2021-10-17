@@ -1,6 +1,6 @@
 <?php
 /**
- * Renders the form for changing the user video preference.
+ * Renders the form for Setting Override Security preferences.
  *
  * @param string|null $current_user_setting
  * @param array       $available_layouts

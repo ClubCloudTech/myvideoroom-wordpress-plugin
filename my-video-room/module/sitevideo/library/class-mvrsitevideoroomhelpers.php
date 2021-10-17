@@ -17,7 +17,6 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\SectionTemplates;
-use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -182,7 +181,8 @@ class MVRSiteVideoRoomHelpers {
 	}
 
 	/**
-	 * Create the site conference page
+	 * Create the site conference page - through form posts.
+	 * (deprecated - site moving to Ajax construction due to pre-validation)
 	 *
 	 * @param bool $shortcode - inbound shortcode name to use if needed.
 	 * @return string
@@ -295,8 +295,9 @@ class MVRSiteVideoRoomHelpers {
 			function ( $room_id ) {
 				$room = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 
-				$room->url  = Factory::get_instance( RoomAdminLibrary::class )->get_room_url( $room->room_name );
-				$room->type = Factory::get_instance( RoomAdminLibrary::class )->get_room_type( $room->room_name );
+				$room->url        = Factory::get_instance( RoomAdminLibrary::class )->get_room_url( $room->room_name );
+				$room->post_title = Factory::get_instance( RoomAdminLibrary::class )->get_room_url( $room->room_name, true );
+				$room->type       = Factory::get_instance( RoomAdminLibrary::class )->get_room_type( $room->room_name );
 
 				return $room;
 			},

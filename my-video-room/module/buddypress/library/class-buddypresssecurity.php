@@ -35,7 +35,7 @@ class BuddyPressSecurity {
 	 */
 	public function mvrbp_security_menu_hook( int $user_id, string $room_name, int $id_index ) {
 
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 
@@ -69,7 +69,7 @@ class BuddyPressSecurity {
 	 */
 	public function mvrbp_change_user_id( int $user_id ): int {
 		if (
-			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
+			! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ||
 			! function_exists( 'bp_is_active' ) || ! bp_is_active( 'groups' ) ||
 			! ( function_exists( 'bp_is_groups_component' ) &&
 			bp_is_groups_component() )
@@ -87,7 +87,7 @@ class BuddyPressSecurity {
 	 *  @return string
 	 */
 	public function mvrbp_change_room_name( string $room_name ): string {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ||
 		! function_exists( 'bp_is_active' ) ||
 		! bp_is_active( 'groups' ) ||
 		! ( function_exists( 'bp_is_groups_component' ) && bp_is_groups_component() )
@@ -109,7 +109,7 @@ class BuddyPressSecurity {
 	 * @return null|string
 	 */
 	public function mvrbp_security_friends_group_filter_hook( string $input, int $user_id, string $room_name, string $host_status, string $room_type ) {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 		// Check BuddyPress Group Membership - and other related if module enabled.
@@ -140,7 +140,7 @@ class BuddyPressSecurity {
 	 */
 	public function block_friends_display( $user_id = null ): bool {
 		if (
-			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
+			! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ||
 			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ||
 			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID ) ||
 			! function_exists( 'bp_is_active' ) ||
@@ -191,7 +191,7 @@ class BuddyPressSecurity {
 	public function block_bp_non_group_member_video_render( string $room_name, string $room_type = null ) {
 		// Exit for Non Groups.
 		if (
-			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
+			! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ||
 			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ||
 			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_GROUP_ID ) ||
 			! function_exists( 'bp_is_active' ) ||
@@ -264,7 +264,7 @@ class BuddyPressSecurity {
 	public function mvrbp_disabled_module_block( int $module_id ) {
 		if (
 			Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) &&
-			Factory::get_instance( BuddyPress::class )->is_buddypress_active()
+			Factory::get_instance( BuddyPress::class )->is_buddypress_available()
 		) {
 			if ( BuddyPress::MODULE_BUDDYPRESS_ID === $module_id ) {
 				$is_module_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( $module_id );
@@ -288,7 +288,7 @@ class BuddyPressSecurity {
 	 */
 	public function block_bp_friend_video_render( int $user_id, string $room_name, string $room_type = null ): ?string {
 		if (
-			! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ||
+			! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ||
 			! bp_is_active( 'friends' ) ||
 			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_ID ) ||
 			! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID )

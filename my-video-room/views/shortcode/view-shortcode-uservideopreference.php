@@ -25,7 +25,7 @@ return function (
 	?>
 <div class="mvr-woocommerce-overlay mvr-nav-shortcode-outer-wrap">
 	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap ">
-		<h2 class="myvideoroom-shortcode-heading"><?php esc_html_e( 'Room Settings for ', 'my-video-room' ); ?>
+		<h2 class=""><?php esc_html_e( 'Room Settings for ', 'my-video-room' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );
 			echo esc_html( ucwords( $output ) );
@@ -34,12 +34,9 @@ return function (
 		<?php
 		// room permissions info.
 		$output              = null;
-		$reception_enabled   = true;
-		$floorplan_enabled   = true;
 		$reception_video_url = null;
 
 		$saved_preferences = Factory::get_instance( UserVideoPreferenceDAO::class )->get_by_id( $user_id, $room_name );
-
 		if ( $saved_preferences ) {
 			$reception_enabled   = $saved_preferences->is_reception_enabled();
 			$floorplan_enabled   = $saved_preferences->is_floorplan_enabled();

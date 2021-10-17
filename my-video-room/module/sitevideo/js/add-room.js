@@ -21,13 +21,16 @@
 		var display_name = $( '#room-display-name' ).val().length,
 		url_link         = $( '#room-url-link' ).val().length;
 
-		if (display_name >= 5) {
+		if (display_name >= 4) {
 			$( '#room-name-icon' ).show();
+			$( '#button_add_new' ).show();
+			
 		} else {
-			$( '#submit' ).hide();
 			$( '#room-name-icon' ).hide();
+			$( '#submit' ).hide();
+			$( '#button_add_new' ).hide();
 		}
-		if (url_link >= 5) {
+		if (url_link >= 3 ) {
 			$( '#room-link-icon' ).show();
 		} else {
 			$( '#submit' ).hide();
@@ -68,8 +71,9 @@
 				.on(
 					'click',
 					function () {
-						$( this ).hide();
-						$add_room.show();
+						$add_room.slideToggle();
+						$add_room.prop( 'value', 'Hide' );
+						
 						init();
 					}
 				);

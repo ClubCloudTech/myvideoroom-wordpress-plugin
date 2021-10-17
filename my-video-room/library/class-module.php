@@ -153,6 +153,7 @@ class Module {
 	/**
 	 * Is Module Active Simple
 	 *
+	 * @param string $module_name - The module slug to check for activation status.
 	 * @return bool
 	 */
 	public function is_module_active_simple( $module_name ): bool {

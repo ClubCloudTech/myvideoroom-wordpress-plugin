@@ -47,10 +47,9 @@ class RoomAdmin {
 			return get_site_url() . '/' . $post->post_name . '/';
 		}
 	}
+
 	/**
 	 * Get the Site Redirect Room Name
-	 *
-	 * @param string $room_name The name of the room.
 	 *
 	 * @return string
 	 */

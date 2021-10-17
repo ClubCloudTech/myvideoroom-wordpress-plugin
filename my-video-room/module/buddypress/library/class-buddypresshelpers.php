@@ -43,7 +43,7 @@ class BuddyPressHelpers {
 	 * @return bool
 	 */
 	public function bp_is_user_moderator( $group_id, $user_id = null ): bool {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 		if ( ! $user_id ) {
@@ -73,7 +73,7 @@ class BuddyPressHelpers {
 	 * @return bool
 	 */
 	public function bp_is_user_admin( $group_id, $user_id = null ): bool {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 		if ( ! $user_id ) {
@@ -103,7 +103,7 @@ class BuddyPressHelpers {
 	 * @return bool
 	 */
 	public function bp_is_user_member( $group_id, $user_id = null ): bool {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 		if ( ! $user_id ) {
@@ -127,7 +127,7 @@ class BuddyPressHelpers {
 	 * @return string
 	 */
 	public function bp_are_users_friends( int $user_id, int $visitor_id ): string {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 		if ( ! \bp_is_active( 'friends' ) || ! function_exists( 'friends_check_friendship' ) ) {
@@ -144,7 +144,7 @@ class BuddyPressHelpers {
 	 * @return bool
 	 */
 	public function bp_can_host_group( $group_id, $user_id = null ): bool {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 		if ( ! $user_id ) {
@@ -169,7 +169,7 @@ class BuddyPressHelpers {
 	 * @return bool
 	 */
 	public function bp_is_room_active( $room_name, $user_id = null ): bool {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			return null;
 		}
 		if ( ! $user_id ) {

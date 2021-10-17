@@ -136,7 +136,7 @@ class SecurityNotifications {
 			} else {
 				$output .= '<p class="mvr-main-button-disabled button" >' . esc_html__( 'Site Disabled', 'my-video-room' ) . '</p>';
 			}
-			if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
+			if ( Factory::get_instance( Dependencies::class )->is_buddypress_available() ) {
 				$restrict_group_to_members_enabled = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
 				$restrict_to_friends               = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
 				if ( $restrict_group_to_members_enabled ) {
@@ -197,7 +197,7 @@ class SecurityNotifications {
 			} else {
 				$output .= '<p class="mvr-main-button-disabled" >' . esc_html__( 'Room Disabled', 'my-video-room' ) . '</p>';
 			}
-			if ( Factory::get_instance( Dependencies::class )->is_buddypress_active() ) {
+			if ( Factory::get_instance( Dependencies::class )->is_buddypress_available() ) {
 				$restrict_group_to_members_enabled = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
 				$restrict_to_friends               = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
 				if ( $restrict_group_to_members_enabled ) {

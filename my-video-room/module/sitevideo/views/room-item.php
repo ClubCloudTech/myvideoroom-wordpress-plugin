@@ -17,7 +17,8 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
  */
 return function (
 	\stdClass $room,
-	$room_type = null
+	$room_type = null,
+	int $offset = null
 ): string {
 	ob_start();
 
@@ -76,11 +77,31 @@ return function (
 		<td class="column-description myvideoroom-mobile-table-row-adjust">
 			<?php
 			if ( $room->url ) {
-				echo '<a href="' . esc_url_raw( $room->url ) . '" target="_blank">' . esc_url_raw( $room->url ) . '</a>';
+				echo '<a id="urlchange_' . esc_attr( $room->id ) . '-' . esc_attr( $offset ) . '" href="' . esc_url_raw( $room->url ) . '" target="_blank">' . esc_url_raw( $room->url ) . '</a>
+				<i class="myvideoroom-dashicons-small mvr-icons dashicons-edit-large myvideoroom-edit-page-trigger" title="' . \esc_html__( 'Change Page URL', 'myvideoroom' ) . '" data-id="' . esc_attr( $room->id ) . '" data-offset="' . esc_attr( $offset ) . '"></i>';
 			} else {
-				echo '<a href="' . esc_url_raw( $regenerate_url ) . '">' . esc_html__( 'Regenerate room', 'myvideoroom' ) . '<i class="myvideoroom-dashicons dashicons-image-rotate"></i></a>';
+				echo '<a href="' . esc_url_raw( $regenerate_url ) . '">' . esc_html__( 'Regenerate room', 'myvideoroom' ) . '</a><i class="myvideoroom-dashicons dashicons-image-rotate"></i>';
 			}
 			?>
+			<input type="text"
+			id="urlinput_<?php echo esc_attr( $room->id ) . '-' . esc_attr( $offset ); ?>"
+			minlength="3"
+			maxlength="24"
+			data-id="<?php echo esc_attr( $room->id ); ?>"
+			data-offset="<?php echo esc_attr( $offset ); ?>"
+			value="<?php echo esc_attr( $room->post_title ); ?>"
+			class="myvideoroom-input-url-trigger myvideoroom-input-restrict-alphanumeric"
+			style="display: none;"
+		>
+		<input type="button"
+			id="button_<?php echo esc_attr( $room->id ) . '-' . esc_attr( $offset ); ?>"
+			data-id="<?php echo esc_attr( $room->id ); ?>"
+			data-offset="<?php echo esc_attr( $offset ); ?>"
+			class="myvideoroom-roomname-submit-form"
+			value="Current"
+			style="display: none;"
+			disabled
+		>
 		</td>
 		<td>
 			<code class="myvideoroom-shortcode-example-inline">

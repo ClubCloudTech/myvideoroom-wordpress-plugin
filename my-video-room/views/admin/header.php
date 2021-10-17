@@ -30,28 +30,41 @@ return function (
 	\ob_start();
 	?>
 	<header>
-		<h1 class="myvideoroom-header-config-title">
-			<?php \esc_html_e( 'MyVideoRoom Settings and Configuration', 'myvideoroom' ); ?>
-		</h1>
-
+	<div class="myvideoroom-menu-settings">
+		<div class="myvideoroom-header-table-left">
+			<h1 class = "myvideoroom-separation-header"><i
+					class="myvideoroom-header-dashicons dashicons-admin-settings"></i><?php esc_html_e( 'MyVideoRoom Plugin Settings', 'myvideoroom' ); ?>
+			</h1><br>
+		</div>
+		<div class="myvideoroom-header-table-right">
+			<img class="myvideoroom-logo-image" src="<?php echo esc_url( plugins_url( '../../img/mvr-imagelogo.png', __FILE__ ) ); ?>"
+				alt="MyVideoroom Logo"><br>
+		</div>
+	</div>
+	<div class="">
+		<div class="myvideoroom-header-table-left">
 		<div class="overview">
 			<strong>
-				<?php echo \esc_html__( 'Welcome to a world of interactive video', 'myvideoroom' ); ?>
+				<?php \esc_html_e( 'Welcome to a world of interactive video', 'myvideoroom' ); ?>
 			</strong>
 
 			<em>
-				<?php \esc_html_e( 'MyVideoRoom by ClubCloud, video with themed rooms, made simple.' ); ?>
+				<?php \esc_html_e( 'MyVideoRoom by ClubCloud, video with themed rooms, made simple.', 'myvideoroom' ); ?>
 			</em>
-
+<div>
 			<p class="notice notice-<?php echo \esc_attr( $activation_status->get_type() ); ?>">
 				<?php echo \esc_html( $activation_status->get_message() ); ?>
 			</p>
+</div>
 		</div>
-
-		<img src="<?php echo \esc_url( \plugins_url( '/img/screen-1.png', \realpath( __DIR__ . '/../' ) ) ); ?>"
+		</div>
+		<div class="myvideoroom-header-table-right">
+		<img class="" src="<?php echo \esc_url( \plugins_url( '/img/screen-1.png', \realpath( __DIR__ . '/../' ) ) ); ?>"
 			alt="" />
-	</header>
+		</div>
+	</div>
 
+	</header>
 	<nav class="nav-tab-wrapper">
 		<ul>
 			<?php

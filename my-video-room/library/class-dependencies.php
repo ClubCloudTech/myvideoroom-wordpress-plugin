@@ -27,7 +27,7 @@ class Dependencies {
 	 *
 	 * @return bool
 	 */
-	public function is_buddypress_active(): bool {
+	public function is_buddypress_available(): bool {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 		return is_plugin_active( 'buddypress/bp-loader.php' );

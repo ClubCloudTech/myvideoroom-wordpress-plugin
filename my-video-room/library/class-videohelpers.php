@@ -13,6 +13,7 @@ namespace MyVideoRoomPlugin\Library;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\UserVideoPreference as UserVideoPreferenceDao;
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\SiteDefaults;
 
 /**
@@ -24,13 +25,14 @@ class VideoHelpers {
 	 * For Video Room Template - Order of Preference Function.
 	 * This function will try to get the Video Room Template from locally defined up to module level and then site default
 	 *
-	 * @param int    $user_id     - userid.
-	 * @param string $room_name   = the room name to check.
-	 * @param bool   $multi_owner = Flag for Site Video Multi-tenanted case.
+	 * @param int    $user_id              - userid.
+	 * @param string $room_name            - the room name to check.
+	 * @param bool   $multi_owner          - Flag for Site Video Multi-tenanted case.
+	 * @param string $category_parent_name - Category to check Parent ID for in case of custom room types.
 	 *
 	 * @return ?string Video Room Template if any.
 	 */
-	public function get_videoroom_template( int $user_id, string $room_name, bool $multi_owner = false ): ?string {
+	public function get_videoroom_template( int $user_id, string $room_name, bool $multi_owner = false, string $category_parent_name = null ): ?string {
 		// First try the User's Value.
 		$video_preference_dao = factory::get_instance( UserVideoPreferenceDao::class );
 		$current_user_setting = $video_preference_dao->get_by_id(
@@ -42,21 +44,28 @@ class VideoHelpers {
 			return $current_user_setting->get_layout_id();
 		}
 		// Now Try the Category Preference.
-
-		$current_user_setting = $video_preference_dao->get_by_id(
-			SiteDefaults::USER_ID_SITE_DEFAULTS,
-			$room_name
-		);
+		if ( $category_parent_name ) {
+			$current_user_setting = $video_preference_dao->get_by_id(
+				SiteDefaults::USER_ID_SITE_DEFAULTS,
+				$category_parent_name
+			);
+		} else {
+			$current_user_setting = $video_preference_dao->get_by_id(
+				SiteDefaults::USER_ID_SITE_DEFAULTS,
+				$room_name
+			);
+		}
 
 		if ( $current_user_setting && $current_user_setting->get_layout_id() ) {
 			return $current_user_setting->get_layout_id();
 		}
+
 		// Multi-Owner Case in SiteVideo.
 		$sitevideo_enabled = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SITE_VIDEO_ID );
 		if ( $multi_owner && $sitevideo_enabled ) {
 			$current_user_setting = $video_preference_dao->get_by_id(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,
-				\MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo::ROOM_NAME_SITE_VIDEO
+				MVRSiteVideo::ROOM_NAME_SITE_VIDEO
 			);
 			if ( $current_user_setting && $current_user_setting->get_layout_id() ) {
 				return $current_user_setting->get_layout_id();

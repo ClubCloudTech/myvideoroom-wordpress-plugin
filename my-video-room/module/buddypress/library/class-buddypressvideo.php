@@ -43,7 +43,7 @@ class BuddyPressVideo {
 	 */
 	public function bp_boardroom_video_guest() {
 		// Escape dependencies.
-		if ( ! Factory::get_instance( BuddyPress::class )->can_module_be_activated() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_user_module_available() ) {
 			return null;
 		}
 
@@ -121,7 +121,7 @@ class BuddyPressVideo {
 	 */
 	public function bp_boardroom_video_host():string {
 		// Escape dependencies.
-		if ( ! Factory::get_instance( BuddyPress::class )->can_module_be_activated() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_user_module_available() ) {
 			return null;
 		}
 
@@ -193,10 +193,9 @@ class BuddyPressVideo {
 	 * Function to switch Group Meeting Templates to Room Hosts or Guests
 	 * Custom BP logic used for distinguishing hosts.
 	 *
-	 * @return string
+	 * @return ?string
 	 */
-	public function groupmeet_switch(): string {
-
+	public function groupmeet_switch(): ?string {
 		// Adding Listeners for Update.
 		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
 		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
@@ -218,8 +217,8 @@ class BuddyPressVideo {
 	public function bp_group_video_host() {
 		global $bp;
 		// Escape dependencies.
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
-			return 'BuddyPress not active';
+		if ( ! Factory::get_instance( BuddyPress::class )->is_group_module_available() ) {
+			return null;
 		}
 
 		// Shortcode Initialise Hooks/Filters.
@@ -242,7 +241,7 @@ class BuddyPressVideo {
 		}
 
 		// Get Room Layout and Reception Settings.
-		$video_template = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name );
+		$video_template = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name, false, BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT );
 		// Build the Room.
 		$myvideoroom_app = AppShortcodeConstructor::create_instance()
 			->set_name( Factory::get_instance( SiteDefaults::class )->room_map( 'group', $user_id ) )
@@ -290,7 +289,7 @@ class BuddyPressVideo {
 	 */
 	public function bp_group_video_guest() {
 		// Escape dependencies.
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+		if ( ! Factory::get_instance( BuddyPress::class )->is_group_module_available() ) {
 			return null;
 		}
 		global $bp;
@@ -317,7 +316,7 @@ class BuddyPressVideo {
 		$room_name             = $bp->groups->current_group->slug;
 		$reception_setting     = Factory::get_instance( VideoHelpers::class )->get_enable_reception_state( $user_id, $room_name );
 		$reception_template    = Factory::get_instance( VideoHelpers::class )->get_reception_template( $user_id, $room_name );
-		$video_template        = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name );
+		$video_template        = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name, false, BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT );
 		$video_reception_state = Factory::get_instance( VideoHelpers::class )->get_video_reception_state( $user_id, $room_name );
 		$video_reception_url   = Factory::get_instance( VideoHelpers::class )->get_video_reception_url( $user_id, $room_name );
 

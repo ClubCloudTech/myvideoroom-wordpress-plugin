@@ -7,7 +7,6 @@
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
-use MyVideoRoomPlugin\Library\HttpPost;
 
 /**
  * Render the admin page
@@ -16,17 +15,6 @@ use MyVideoRoomPlugin\Library\HttpPost;
  */
 return function (): string {
 	ob_start();
-
-	$post_url = \add_query_arg(
-		array(
-			'action'   => null,
-			'_wpnonce' => null,
-			'confirm'  => null,
-			'room_id'  => null,
-		),
-		\esc_url_raw( \wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) )
-	);
-
 	$html_library = Factory::get_instance( HTML::class, array( 'site-conference-center-new-room' ) );
 
 	?>
@@ -40,10 +28,9 @@ return function (): string {
 		?>
 	</p>
 
-	<form method="post" action="<?php echo \esc_url_raw( $post_url ); ?>">
 		<label for="<?php echo esc_attr( $html_library->get_id( 'title' ) ); ?>">
 			<?php esc_html_e( 'Room Display Name ', 'my-video-room' ); ?>
-			<i id="room-name-icon" class="card myvideoroom-dashicons mvr-icons dashicons-saved" title="Room Name is OK" style="display:none"></i>
+			<i id="room-name-icon" class="myvideoroom-dashicons mvr-icons dashicons-saved" title="Room Name is OK" style="display:none"></i>
 		</label>
 
 		<input type="text"
@@ -64,16 +51,22 @@ return function (): string {
 
 		<label for="<?php echo esc_attr( $html_library->get_id( 'slug' ) ); ?>">
 			<?php esc_html_e( 'Room URL Link ', 'my-video-room' ); ?>
-			<i id="room-link-icon" class="card myvideoroom-dashicons mvr-icons dashicons-saved" title="URL is OK" style="display:none"></i>
+			<i id="room-link-icon" class="myvideoroom-dashicons mvr-icons dashicons-saved" title="URL is OK" style="display:none"></i>
 		</label>
 
 		<input type="text"
 			id="room-url-link"
-			name="<?php echo esc_attr( $html_library->get_field_name( 'slug' ) ); ?>"
-			aria-describedby="<?php echo \esc_attr( $html_library->get_description_id( 'slug' ) ); ?>"
-			class="myvideoroom-input-restrict-alphanumeric"
-			maxlength="64"
+			minlength="3"
+			maxlength="24"
 			value=""
+			class="myvideoroom-input-new-trigger myvideoroom-input-restrict-alphanumeric"
+		>
+		<input type="button"
+			id="button_add_new"
+			class="myvideoroom-roomname-submit-form"
+			value="Enter Room Name"
+			style= "display:none;"
+			disabled
 		>
 
 		<p id="<?php echo \esc_attr( $html_library->get_description_id( 'slug' ) ); ?>">
@@ -84,32 +77,10 @@ return function (): string {
 					'Please select an address for your room. It will be created at %s',
 					'my-video-room'
 				),
-				esc_url( get_site_url() ) . '/ [ Your Room URL/Address ]'
+				'<div id="update_url_newroom" class=""> ' . esc_url( get_site_url() ) . '/ [ Your Room URL/Address ]</div>'
 			)
 			?>
 		</p>
-
-		<hr />
-
-		<p>
-			<?php
-			esc_html_e(
-				'Once your room is created, you can edit its look and feel in your page editor, just ensure the shortcode remains in the page',
-				'my-video-room'
-			);
-			?>
-		</p>
-		<div id="submit-button" >
-		<?php
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo Factory::get_instance( HttpPost::class )->create_form_submit(
-			'add_room',
-			esc_html__( 'Add Room', 'my-video-room' )
-		);
-		?>
-		</div>
-	</form>
-
 	<?php
 
 	return ob_get_clean();

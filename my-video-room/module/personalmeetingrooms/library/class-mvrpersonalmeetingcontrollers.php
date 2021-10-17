@@ -183,7 +183,7 @@ class MVRPersonalMeetingControllers {
 		$header        = Factory::get_instance( MVRPersonalMeetingViews::class )->meet_guest_header( $user_id );
 		$output_object = array();
 		$host_menu     = new MenuTabDisplay(
-			esc_html__( 'Video Room', 'my-video-room' ),
+			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
 			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() ),
 			'mvr-video'

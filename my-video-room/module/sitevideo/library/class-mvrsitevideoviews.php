@@ -106,8 +106,9 @@ class MVRSiteVideoViews {
 	 */
 	public function generate_room_table( string $room_type = null, bool $shortcode = false ): string {
 		// Returns all rooms with null roomtype, or a specific room with Room Type.
-		$rooms = Factory::get_instance( MVRSiteVideoRoomHelpers::class )->get_rooms( $room_type );
-		return ( require __DIR__ . '/../views/table-output.php' )( $rooms, $room_type, $shortcode );
+		$rooms  = Factory::get_instance( MVRSiteVideoRoomHelpers::class )->get_rooms( $room_type );
+		$offset = \wp_rand();
+		return ( require __DIR__ . '/../views/table-output.php' )( $rooms, $room_type, $shortcode, $offset );
 	}
 
 	/**

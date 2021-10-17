@@ -22,15 +22,25 @@ return function (): string {
 	ob_start();
 	$index = 1;
 	?>
-<div class="wrap">
-	<h1><?php esc_html_e( 'BuddyPress Integration and Video Rooms', 'myvideoroom' ); ?></h1>
-	<div class="myvideoroom-feature-outer-table">
+<div class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
+	<!-- Module Header -->
+	<div class="myvideoroom-menu-settings">
+		<div class="myvideoroom-header-table-left">
+			<h1><i
+					class="myvideoroom-header-dashicons dashicons-buddicons-buddypress-logo"></i><?php esc_html_e( 'BuddyPress Integration and Video Rooms', 'myvideoroom' ); ?>
+			</h1>
+		</div>
+		<div class="myvideoroom-header-table-right">
+		</div>
+	</div>
+	<!-- Module State and Description Marker -->
+	<div class="myvideoroom-feature-outer-table myvideoroom-clear">
 		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-			<h2><?php esc_html_e( 'Module State', 'myvideoroom' ); ?></h2>
+			<h2><?php esc_html_e( 'Module', 'myvideoroom' ); ?></h2>
 			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
 				<?php
-							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-							echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_ID );
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
+				echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_ID, null, Factory::get_instance( BuddyPress::class )->is_buddypress_available() );
 				?>
 			</div>
 		</div>
@@ -45,9 +55,9 @@ return function (): string {
 			</p>
 		</div>
 	</div>
-
+	<!-- Navigation Menu Section -->
 	<?php
-	if ( Factory::get_instance( BuddyPress::class )->is_buddypress_active() ) {
+	if ( Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 		?>
 	<div class="mvr-nav-shortcode-outer-wrap">
 		<nav class="nav-tab-wrapper myvideoroom-nav-tab-wrapper">
@@ -60,21 +70,34 @@ return function (): string {
 						style><?php esc_html_e( 'Friends Permissions Support', 'myvideoroom' ); ?> </a></li>
 			</ul>
 		</nav>
-		<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
+
+		<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
+<!-- 
+		User Wall Profile
+-->
 			<article id="page11" class="myvideoroom-content-tab">
+				<div class="myvideoroom-menu-settings">
+					<div class="myvideoroom-header-table-left">
+						<h1><i
+								class="myvideoroom-header-dashicons dashicons-buddicons-buddypress-logo"></i><?php esc_html_e( 'User Wall Profile Rooms', 'myvideoroom' ); ?>
+						</h1>
+					</div>
+					<div class="myvideoroom-header-table-right">
+					</div>
+				</div>
+	<!-- Module State and Description Marker -->
+
 				<div class="myvideoroom-feature-outer-table">
 					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 						<h2><?php esc_html_e( 'Feature is:', 'myvideoroom' ); ?></h2>
 						<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
 							<?php
 							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-							echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_USER_ID );
-							Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'user' );
+							echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_USER_ID, null, Factory::get_instance( BuddyPress::class )->is_user_module_available() );
 							?>
 						</div>
 					</div>
 					<div class="myvideoroom-feature-table-large">
-						<h2><?php esc_html_e( 'BuddyPress Profile Room Support', 'myvideoroom' ); ?></h2>
 						<p>
 							<?php
 							esc_html_e(
@@ -93,72 +116,137 @@ return function (): string {
 						</p>
 					</div>
 				</div>
-				<div class="myvideoroom-feature-outer-table">
-					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-						<h2><?php esc_html_e( 'Name of Tab:', 'myvideoroom' ); ?></h2>
-					</div>
-					<div class="myvideoroom-feature-table-large">
-					<div class="myvideoroom-inline">
-					<img class=""
-							src="<?php echo esc_url( plugins_url( '/../../../admin/img/tabdisplay.jpg', __FILE__ ) ); ?>"
-							alt="Settings">	
+	<!-- Dependencies and Requirements Marker -->
+				<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
+					<div class="myvideoroom-feature-outer-table">
+						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+							class="myvideoroom-feature-table-small">
+							<h2><?php esc_html_e( 'Requirements:', 'myvideoroom' ); ?></h2>
+						</div>
+						<div class="myvideoroom-feature-table-large">
+							<p>
+								<?php
+								esc_html_e(
+									'No Modules Depend on this Component.',
+									'myvideoroom'
+								);
+								?>
+							</p>
 
-							<?php
-							esc_html_e(
-								'What should we call your Room Tab in BuddyPress ?',
-								'myvideoroom'
-							);
-							?>
+							<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
+								<?php Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'user' ); ?>
 							</div>
+						</div>
+					</div>
+	<!-- Screenshot Marker -->
+					<div class="myvideoroom-feature-outer-table">
+						<div class="myvideoroom-feature-table">
+							<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../../../admin/img/videoroombp.jpg', __FILE__ ) ); ?>"
+								alt="BuddyPress Room">
+						</div>
+						<div class="myvideoroom-feature-table">
+							<br>
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpsettings.jpg', __FILE__ ) ); ?>"
+								alt="Settings">
+						</div>
+						<div class="myvideoroom-feature-table">
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../../../admin/img/screenshot-2.PNG', __FILE__ ) ); ?>"
+								alt="Video Call in Progress">
+						</div>
+					</div>
+	<!-- Settings Separation Marker -->				
+					<div class="myvideoroom-menu-settings">
+						<div class="myvideoroom-header-table-left">
+							<h1><i
+									class="myvideoroom-header-dashicons dashicons-admin-settings"></i><?php esc_html_e( 'Settings', 'myvideoroom' ); ?>
+							</h1>
+						</div>
+						<div class="myvideoroom-header-table-right">
+
+						</div>
+					</div>
+	<!-- User Room Tab Naming Marker -->					
+					<div class="myvideoroom-feature-outer-table">
+						<div id="feature-state_<?php echo esc_attr( $index++ ); ?>"
+							class="myvideoroom-feature-table-small">
+							<h2><?php esc_html_e( 'Name of Tab:', 'myvideoroom' ); ?></h2>
+						</div>
+						<div class="myvideoroom-feature-table-large">
 							<div class="myvideoroom-inline">
-							<input id="user-profile-input" type="text" min="5" max="20" name="user-tab" value="<?php echo esc_textarea( get_option( 'myvideoroom-buddypress-user-tab' ) ); ?>" placeholder=""  class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />	</div>
-							<input id="save-user-tab" type="button" value="Save" class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;"/>
-					</div>
-				</div>
+								<img class=""
+									src="<?php echo esc_url( plugins_url( '/../../../admin/img/tabdisplay.jpg', __FILE__ ) ); ?>"
+									alt="Settings">
+								<br>
+								<?php
+								esc_html_e(
+									'What should we call your Room Tab in BuddyPress ?',
+									'myvideoroom'
+								);
+								?>
 
-				<div class="myvideoroom-feature-outer-table">
-					<div class="myvideoroom-feature-table">
-						<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
-						<img class=""
-							src="<?php echo esc_url( plugins_url( '/../../../admin/img/videoroombp.jpg', __FILE__ ) ); ?>"
-							alt="BuddyPress Room">
-					</div>
-					<div class="myvideoroom-feature-table">
-						<br>
-						<img class=""
-							src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpsettings.jpg', __FILE__ ) ); ?>"
-							alt="Settings">
-					</div>
-					<div class="myvideoroom-feature-table">
-						<img class=""
-							src="<?php echo esc_url( plugins_url( '/../../../admin/img/screenshot-2.PNG', __FILE__ ) ); ?>"
-							alt="Video Call in Progress">
-					</div>
-				</div>
+							</div>
 
-
-				<h2><?php esc_html_e( 'Personal and BuddyPress Profile Room Default Settings', 'myvideoroom' ); ?>
-				</h2>
-				<p> <?php esc_html_e( ' Default Room Privacy (reception) and Layout settings. These settings will be used by all Rooms, until users set their own room preference', 'myvideoroom' ); ?>
-				</p>
-				<?php
-						$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
-							SiteDefaults::USER_ID_SITE_DEFAULTS,
-							MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING_SITE_DEFAULT
-						);
-						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
-						echo $layout_setting;
-				?>
+							<div class="myvideoroom-inline">
+								<input id="user-profile-input" type="text" min="5" max="20" name="user-tab"
+									value="<?php echo esc_textarea( get_option( 'myvideoroom-buddypress-user-tab' ) ); ?>"
+									placeholder=""
+									class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />
+							</div>
+							<input id="save-user-tab" type="button" value="Save"
+								class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;" />
+						</div>
+					</div>
+	<!-- Default Video Section  -->
+					<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
+						class="mvr-nav-settingstabs-outer-wrap">
+						<div class="myvideoroom-feature-outer-table">
+							<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+								class="myvideoroom-feature-table-small">
+								<h2><?php esc_html_e( 'Default Video Settings', 'myvideoroom' ); ?></h2>
+							</div>
+							<div class="myvideoroom-feature-table-large">
+								<h2><?php esc_html_e( 'Personal and BuddyPress Profile Room Default Settings', 'myvideoroom' ); ?>
+								</h2>
+								<p> <?php esc_html_e( ' Default Room Privacy (reception) and Layout settings. These settings will be used by all Rooms, until users set their own room preference', 'myvideoroom' ); ?>
+								</p>
+								<?php
+								$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
+									SiteDefaults::USER_ID_SITE_DEFAULTS,
+									MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING
+								);
+									// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
+									echo $layout_setting;
+								?>
+							</div>
+						</div>
 			</article>
+<!-- 
+		Group Video Rooms
+-->
+
 			<article id="page12" class="myvideoroom-content-tab">
-			<div class="myvideoroom-feature-outer-table">
+	<!-- Module Header -->				
+				<div class="myvideoroom-menu-settings">
+					<div class="myvideoroom-header-table-left">
+						<h1><i
+								class="myvideoroom-header-dashicons dashicons-buddicons-buddypress-logo"></i><?php esc_html_e( 'Group Video Rooms', 'myvideoroom' ); ?>
+						</h1>
+					</div>
+					<div class="myvideoroom-header-table-right">
+					</div>
+				</div>
+	<!-- Module State and Description Marker -->
+				<div class="myvideoroom-feature-outer-table">
 					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 						<h2><?php esc_html_e( 'Feature is:', 'myvideoroom' ); ?></h2>
 						<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
 							<?php
 								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_GROUP_ID );
-								Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'group' );
+								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_GROUP_ID, null, Factory::get_instance( BuddyPress::class )->is_group_module_available() );
 							?>
 						</div>
 					</div>
@@ -182,72 +270,132 @@ return function (): string {
 						</p>
 					</div>
 				</div>
-				<div class="myvideoroom-feature-outer-table">
-					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-						<h2><?php esc_html_e( 'Name of Tab:', 'myvideoroom' ); ?></h2>
+	<!-- Dependencies and Requirements Marker -->
+				<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
+					<div class="myvideoroom-feature-outer-table">
+						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+							class="myvideoroom-feature-table-small">
+							<h2><?php esc_html_e( 'Requirements:', 'myvideoroom' ); ?></h2>
+						</div>
+						<div class="myvideoroom-feature-table-large">
+							<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
+								<p><?php esc_html_e( 'No Modules Depend on this Component.', 'myvideoroom' ); ?>
+								</p>
+								<?php
+									Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'group' );
+								?>
+							</div>
+						</div>
 					</div>
-					<div class="myvideoroom-feature-table-large">
-					<div class="myvideoroom-inline">
-					<img class=""
-							src="<?php echo esc_url( plugins_url( '/../../../admin/img/tabdisplay.jpg', __FILE__ ) ); ?>"
-							alt="Settings">	
+	<!-- Screenshot Marker -->
+					<div class="myvideoroom-feature-outer-table">
+						<div class="myvideoroom-feature-table">
+							<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupscreenshot.JPG', __FILE__ ) ); ?>"
+								alt="Video Call in Progress">
+						</div>
+						<div class="myvideoroom-feature-table">
+							<br>
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpdenied.jpg', __FILE__ ) ); ?>"
+								alt="Settings">
+						</div>
+						<div class="myvideoroom-feature-table">
+							<br><br>
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupsecurity.jpg', __FILE__ ) ); ?>"
+								alt="Video Call in Progress">
+						</div>
+					</div>
+	<!-- Settings Marker -->							
+					<div class="myvideoroom-menu-settings">
+						<div class="myvideoroom-header-table-left">
+							<h1><i
+									class="myvideoroom-header-dashicons dashicons-admin-settings"></i><?php esc_html_e( 'Settings', 'myvideoroom' ); ?>
+							</h1>
+						</div>
+						<div class="myvideoroom-header-table-right">
 
-							<?php
-							esc_html_e(
-								'What should we call your Group Room Tabs in BuddyPress ?',
-								'myvideoroom'
-							);
-							?>
+						</div>
+					</div>
+	<!-- User Room Tab Naming Marker -->	
+					<div class="myvideoroom-feature-outer-table">
+						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+							class="myvideoroom-feature-table-small">
+							<h2><?php esc_html_e( 'Name of Tab:', 'myvideoroom' ); ?></h2>
+						</div>
+						<div class="myvideoroom-feature-table-large">
+							<div class="myvideoroom-inline">
+								<img class=""
+									src="<?php echo esc_url( plugins_url( '/../../../admin/img/tabdisplay.jpg', __FILE__ ) ); ?>"
+									alt="Settings">
+								<br>
+								<?php
+								esc_html_e(
+									'What should we call your Group Room Tabs in BuddyPress ?',
+									'myvideoroom'
+								);
+								?>
 							</div>
 							<div class="myvideoroom-inline">
-							<input id="group-profile-input" type="text" min="5" max="20" name="user-tab" value="<?php echo esc_textarea( get_option( 'myvideoroom-buddypress-group-tab' ) ); ?>" placeholder=""  class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />	</div>
-							<input id="save-group-tab" type="button" value="Save" class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;"/>
+								<input id="group-profile-input" type="text" min="5" max="20" name="user-tab"
+									value="<?php echo esc_textarea( get_option( 'myvideoroom-buddypress-group-tab' ) ); ?>"
+									placeholder=""
+									class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />
+							</div>
+							<input id="save-group-tab" type="button" value="Save"
+								class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;" />
+						</div>
 					</div>
-				</div>
-
-				<div class="myvideoroom-feature-outer-table">
-					<div class="myvideoroom-feature-table">
-						<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
-						<img class=""
-						src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupscreenshot.JPG', __FILE__ ) ); ?>"	
-						alt="Video Call in Progress">
-					</div>
-					<div class="myvideoroom-feature-table">
-						<br>
-						<img class=""
-						src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpdenied.jpg', __FILE__ ) ); ?>"													
-						alt="Settings">
-					</div>
-					<div class="myvideoroom-feature-table">
-						<br><br>
-						<img class=""
-							src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupsecurity.jpg', __FILE__ ) ); ?>"
-							alt="Video Call in Progress" >
-					</div>
-				</div>
-
-				<div class="mvr-outer-box-wrap">
-					<h2><?php esc_html_e( 'Groups Default Video Settings', 'myvideoroom' ); ?></h2>
-					<p><?php esc_html_e( 'These are the Default Room Privacy (reception) and Room Layout settings. These settings will be used by Groups, if the owner has not yet set up a room preference', 'myvideoroom' ); ?>
-					</p>
-					<?php
-							$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
-								SiteDefaults::USER_ID_SITE_DEFAULTS,
-								BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT
-							);
-					// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
-					echo $layout_setting;
-					?>
+	<!-- Default Video Section  -->
+					<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
+						class="mvr-nav-settingstabs-outer-wrap">
+						<div class="myvideoroom-feature-outer-table">
+							<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+								class="myvideoroom-feature-table-small">
+								<h2><?php esc_html_e( 'Default Video Settings', 'myvideoroom' ); ?></h2>
+							</div>
+							<div class="myvideoroom-feature-table-large">
+								<h2><?php esc_html_e( 'Groups Default Video Settings', 'myvideoroom' ); ?></h2>
+								</h2>
+								<p><?php esc_html_e( 'These are the Default Group Room Privacy (reception) and Room Layout settings. These settings will be used by Groups, if the owner has not yet set up a room preference', 'myvideoroom' ); ?>
+								</p>
+								<?php
+									$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
+										SiteDefaults::USER_ID_SITE_DEFAULTS,
+										BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT
+									);
+									// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
+									echo $layout_setting;
+								?>
+							</div>
+						</div>
 			</article>
+
+<!-- 
+		Friends Permissions Engine
+-->
+
 			<article id="page13" class="myvideoroom-content-tab">
-			<div class="myvideoroom-feature-outer-table">
+	<!-- Module Header -->										
+				<div class="myvideoroom-menu-settings">
+					<div class="myvideoroom-header-table-left">
+						<h1><i
+								class="myvideoroom-header-dashicons dashicons-buddicons-buddypress-logo"></i><?php esc_html_e( 'Room Security By Friendship', 'myvideoroom' ); ?>
+						</h1>
+					</div>
+					<div class="myvideoroom-header-table-right">
+					</div>
+				</div>
+	<!-- Module State and Description Marker -->			
+				<div class="myvideoroom-feature-outer-table">
 					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 						<h2><?php esc_html_e( 'Feature is:', 'myvideoroom' ); ?></h2>
 						<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
 							<?php
 								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID );
-								Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'friends' );
+								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_FRIENDS_ID, null, Factory::get_instance( BuddyPress::class )->is_friends_module_available() );
 							?>
 						</div>
 					</div>
@@ -270,27 +418,56 @@ return function (): string {
 							?>
 						</p>
 					</div>
-				</div>	
-				<div class="myvideoroom-feature-outer-table">
-					<div class="myvideoroom-feature-table">
-						<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
-						<img class=""
-						src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpfriendscontrol.jpg', __FILE__ ) ); ?>"	
-							alt="BuddyPress Friends Control" title="<?php esc_html_e( 'Friends Mode Room Security is set in the Security Tab as Normal', 'myvideoroom' ); ?>">
-					</div>
-					<div class="myvideoroom-feature-table">
-						<br>
-						<img class=""
-						src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpfriendsblock.jpg', __FILE__ ) ); ?>"							
-						alt="Settings" title="<?php esc_html_e( 'Do Not Disturb Mode shows the room, but blocks entrance to non friends', 'myvideoroom' ); ?>">
-					</div>
-					<div class="myvideoroom-feature-table">
-					<br>	
-					<img class=""
-							src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpfriendsstealthmode.jpg', __FILE__ ) ); ?>"
-							alt="Stealth Mode" title="<?php esc_html_e( ' Stealth Mode hides the Video Room from Non Friends', 'myvideoroom' ); ?>">
-					</div>
 				</div>
+	<!-- Dependencies and Requirements Marker -->
+				<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
+					<div class="myvideoroom-feature-outer-table">
+						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+							class="myvideoroom-feature-table-small">
+							<h2><?php esc_html_e( 'Requirements:', 'myvideoroom' ); ?></h2>
+						</div>
+						<div class="myvideoroom-feature-table-large">
+							<p>
+								<?php
+								esc_html_e(
+									'This Addin Pack provides support for the Personal Meeting Room engine, and any plugins/extensions that require the pack.',
+									'myvideoroom'
+								);
+								?>
+							</p>
+							<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
+								<p><?php esc_html_e( 'Dependency Check - There are No Dependencies for this Module', 'myvideoroom' ); ?>
+								</p>
+								<?php
+									Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'friends' );
+								?>
+							</div>
+						</div>
+					</div>
+	<!-- Screenshot Marker -->
+					<div class="myvideoroom-feature-outer-table">
+						<div class="myvideoroom-feature-table">
+							<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpfriendscontrol.jpg', __FILE__ ) ); ?>"
+								alt="BuddyPress Friends Control"
+								title="<?php esc_html_e( 'Friends Mode Room Security is set in the Security Tab as Normal', 'myvideoroom' ); ?>">
+						</div>
+						<div class="myvideoroom-feature-table">
+							<br>
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpfriendsblock.jpg', __FILE__ ) ); ?>"
+								alt="Settings"
+								title="<?php esc_html_e( 'Do Not Disturb Mode shows the room, but blocks entrance to non friends', 'myvideoroom' ); ?>">
+						</div>
+						<div class="myvideoroom-feature-table">
+							<br>
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpfriendsstealthmode.jpg', __FILE__ ) ); ?>"
+								alt="Stealth Mode"
+								title="<?php esc_html_e( ' Stealth Mode hides the Video Room from Non Friends', 'myvideoroom' ); ?>">
+						</div>
+					</div>
 			</article>
 		</div>
 	</div>

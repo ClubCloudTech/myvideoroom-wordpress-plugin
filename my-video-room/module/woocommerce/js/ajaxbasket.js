@@ -454,7 +454,7 @@
 
 	var mvrIsactive = document.getElementsByClassName( 'mvr-nav-shortcode-outer-wrap' );
 
-	if ( mvrIsactive.length > 0 && $('#mvr-basket-section').length ) {
+	if ( mvrIsactive.length > 0 && $( '#mvr-basket-section' ).length ) {
 		var original_room = $( '#roominfo' ).data( 'roomName' ),
 		host_status       = $( '#roomid' ).data( 'hostStatus' );
 		if ( host_status !== 1) {

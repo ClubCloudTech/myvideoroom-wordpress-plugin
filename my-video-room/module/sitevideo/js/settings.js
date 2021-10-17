@@ -13,9 +13,14 @@
 		function (e) {
 			var room_id    = $( this ).data( 'roomId' );
 			var input_type = $( this ).data( 'inputType' );
-
 			var $container   = $( '.mvr-security-room-host' );
 			var loading_text = $container.data( 'loadingText' );
+			$( '.myvideoroom-sitevideo-hide-button' ).show();
+			if ( input_type === 'close' ) {
+				$container.empty();
+				$( '#mvr-close_'+room_id ).hide();
+				return false;
+			}
 
 			$container.html( loading_text );
 

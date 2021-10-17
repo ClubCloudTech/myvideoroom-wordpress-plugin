@@ -13,9 +13,9 @@ use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as UserVideoPreference;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
-use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingHelpers;
@@ -38,7 +38,7 @@ class MVRSiteVideo {
 	// Constants For Site Video Module.
 	const MODULE_SITE_VIDEO_NAME        = 'site-video-module';
 	const ROOM_NAME_SITE_VIDEO          = 'site-conference-room';
-	const MODULE_SITE_VIDEO_ID          = \MyVideoRoomPlugin\Library\Dependencies::MODULE_SITE_VIDEO_ID;
+	const MODULE_SITE_VIDEO_ID          = Dependencies::MODULE_SITE_VIDEO_ID;
 	const MODULE_ROOM_MANAGEMENT_NAME   = 'site-video-multi-room-module';
 	const MODULE_ROOM_MANAGEMENT_ID     = 435;
 	const MODULE_SITE_VIDEO_DESCRIPTION = 'Meeting Center';
