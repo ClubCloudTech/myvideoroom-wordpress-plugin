@@ -35,7 +35,7 @@ return function (): string {
 					class="myvideoroom-header-dashicons dashicons-video-alt"></i><?php esc_html_e( 'Personal Meeting Rooms for Users', 'myvideoroom' ); ?>
 			</h1>
 		</div>
-		<div class="myvideoroom-header-table-right">
+		<div class="myvideoroom-header-table-right-wide">
 		</div>
 	</div>
 <!-- Module State and Description Marker -->
@@ -178,7 +178,9 @@ return function (): string {
 						}
 						$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
 							SiteDefaults::USER_ID_SITE_DEFAULTS,
-							MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING
+							MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING,
+							null,
+							true
 						);
 						//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped  - Layout Setting already Escaped in function.
 						echo $layout_setting;

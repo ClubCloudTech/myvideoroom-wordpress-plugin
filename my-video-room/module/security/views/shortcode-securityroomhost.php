@@ -1,15 +1,18 @@
 <?php
 /**
- * Renders the form for changing the user video preference.
+ * Renders the form for changing the host.
  *
  * @param string|null $current_user_setting
- * @param array       $available_layouts
+ * @param string      $room_name - the room name.
+ * @param int         $id_index - to version element ids.
+ * @param array       $roles_output - roles for checkbox selection.
+ * @param int         $user_id - the user_id.
+ * @param bool        $admin_view - Flag to denote admin view and not to render titles and Headers as the admin views do that.
  *
  * @package MyVideoRoomPlugin\Views\Public
  */
 
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Module\Security\Entity\SecurityVideoPreference;
 
@@ -18,27 +21,33 @@ return function (
 	string $room_name,
 	int $id_index = 0,
 	string $roles_output = null,
-	int $user_id = null
+	int $user_id = null,
+	bool $admin_view = null
 ): string {
 	ob_start();
-	$room_object       = Factory::get_instance( RoomMap::class )->get_room_info( $user_id );
-	$room_display_name = $room_object->room_name;
+
 	?>
 	<div id="security-video-host-wrap" class="mvr-nav-shortcode-outer-wrap mvr-nav-settingstabs-outer-wrap">
-		<h1><?php esc_html_e( 'Room Host Settings for ', 'my-video-room' ); ?>
+	<?php
+	if ( ! $admin_view ) {
+		?>
+		<h1>
+		<?php esc_html_e( 'Security Settings for ', 'my-video-room' ); ?>
 			<?php
-			$output_header = str_replace( '-', ' ', $room_display_name );
-			echo esc_attr( ucwords( $output_header ) );
+			$output = str_replace( '-', ' ', $room_name );
+			echo esc_attr( ucwords( $output ) );
 			?>
 		</h1>
+
 		<?php
+	}
 		$output = null;
 		$output = apply_filters( 'myvideoroom_security_roomhosts_preference_buttons', $output, $user_id, $room_name );
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
 
 		$user_id = apply_filters( 'myvideoroom_security_admin_preference_user_id_intercept', $user_id );
-		?>
+	?>
 		<form method="post" action="">
 			<input name="myvideoroom_security_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
 			<input name="myvideoroom_security_user_id" type="hidden" value="<?php echo esc_html( $user_id ); ?>" />

@@ -25,7 +25,7 @@ return function (
 
 	?>
 	<tr class="active mvr-table-mobile" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
-		<td class="plugin-title column-primary mvr-icons myvideoroom-mobile-img-adjust myvideoroom-mobile-table-row-adjust"><?php echo $item['image']; ?></td>
+		<td class="column-primary mvr-icons myvideoroom-mobile-img-adjust myvideoroom-mobile-table-row-adjust"><?php echo $item['image']; ?></td>
 
 		<td class="myvideoroom-mobile-table-row-adjust">
 			<a href="<?php echo $item['link']; ?>"

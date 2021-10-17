@@ -1,9 +1,13 @@
 <?php
 /**
- * Renders the form for changing the user video preference.
+ * Renders the form for changing the security settings for users.
  *
  * @param string|null $current_user_setting
- * @param array       $available_layouts
+ * @param string      $room_name - the room name.
+ * @param int         $id_index - to version element ids.
+ * @param array       $roles_output - roles for checkbox selection.
+ * @param int         $user_id - the user_id.
+ * @param bool        $admin_view - Flag to denote admin view and not to render titles and Headers as the admin views do that.
  *
  * @package MyVideoRoomPlugin\Views\Public
  */
@@ -19,7 +23,8 @@ return function (
 	string $room_name,
 	int $id_index,
 	string $roles_output,
-	int $user_id = null
+	int $user_id = null,
+	bool $admin_view = null
 ): string {
 	ob_start();
 
@@ -42,19 +47,26 @@ return function (
 	?>
 <div class="mvr-woocommerce-overlay mvr-nav-shortcode-outer-wrap">
 	<div id="security-video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
-		<h1><?php esc_html_e( 'Security Settings for ', 'my-video-room' ); ?>
+	<?php
+	if ( ! $admin_view ) {
+		?>
+		<h1>
+		<?php esc_html_e( 'Security Settings for ', 'my-video-room' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );
 			echo esc_attr( ucwords( $output ) );
 			?>
 		</h1>
+
 		<?php
+	}
+
 		$output = null;
 		$output = apply_filters( 'myvideoroom_security_settings_preference_buttons', $output, $user_id, $room_name );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- function escaped upstream.
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
-		?>
+	?>
 		<form method="post" action="" enctype="multipart/form-data" class="ajaxsecurity">
 			<h2 class="mvr-title-header"><i
 					class="myvideoroom-dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable Room', 'my-video-room' ); ?>
@@ -172,13 +184,16 @@ return function (
 			} else {
 				$site_override = false;
 			}
-			if ( false === $site_override ) {
+
+			if ( false === $site_override || $admin_view ) {
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo Factory::get_instance( HttpPost::class )->create_form_submit(
 					'update_security_video_preference',
 					\esc_html__( 'Save changes', 'myvideoroom' ),
 					'myvideoroom-securityformbutton'
 				);
+			} else {
+				echo '<button disabled title="' . esc_html__( 'Site Administrators have overriden user settings with mandatory settings. Saving is therefore disabled as settings will not take effect' ) . '" class="button button-primary">' . esc_html__( 'Saving Disabled by Site Admins' ) . '</button>';
 			}
 			?>
 		</form>

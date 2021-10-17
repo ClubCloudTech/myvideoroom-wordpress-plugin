@@ -73,7 +73,7 @@ return function (
 
 	?>
 	<tr class="active mvr-table-mobile" data-room-id="<?php echo esc_attr( $room->id ); ?>">
-		<td class="plugin-title column-primary myvideoroom-mobile-table-row-adjust"><?php echo esc_html( $room->display_name ); ?></td>
+		<td class=" column-primary myvideoroom-mobile-table-row-adjust"><?php echo esc_html( $room->display_name ); ?></td>
 		<td class="column-description myvideoroom-mobile-table-row-adjust">
 			<?php
 			if ( $room->url ) {

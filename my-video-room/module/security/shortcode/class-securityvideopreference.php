@@ -147,14 +147,14 @@ class SecurityVideoPreference {
 	/**
 	 * Show drop down for user to change their settings
 	 *
-	 * @param int         $user_id    The user id.
-	 * @param string      $room_name  The room name.
-	 * @param  ?string     $group_name Name of group.
-	 * @param string|null $type       To return.
+	 * @param int     $user_id    The user id.
+	 * @param string  $room_name  The room name.
+	 * @param ?string $type       To return.
+	 * @param bool    $admin_view - Flag to denote admin view and not to render titles and Headers as the admin views do that.
 	 *
 	 * @return string
 	 */
-	public function choose_settings( int $user_id, string $room_name, string $group_name = null, string $type = null ): string {
+	public function choose_settings( int $user_id, string $room_name, string $type = null, bool $admin_view = null ): string {
 		// User ID Transformation for plugins.
 		$user_id = apply_filters( 'myvideoroom_security_choosesettings_change_user_id', $user_id );
 
@@ -184,7 +184,7 @@ class SecurityVideoPreference {
 				$render = include __DIR__ . '/../views/shortcode-securityvideopreference.php';
 		}
 
-		return $render( $current_user_setting, $room_name, self::$id_index ++, $roles_output, $user_id, $group_name );
+		return $render( $current_user_setting, $room_name, self::$id_index ++, $roles_output, $user_id, $admin_view );
 
 	}
 

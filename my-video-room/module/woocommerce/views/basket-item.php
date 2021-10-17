@@ -22,7 +22,7 @@ return function (
 	ob_start();
 	?>
 	<tr class="active mvr-table-mobile" basket-id="<?php echo esc_attr( $item['product_id'] ); ?>">
-		<td class="plugin-title column-primary mvr-icons myvideoroom-mobile-img-adjust myvideoroom-mobile-table-row-adjust">
+		<td class=" column-primary mvr-icons myvideoroom-mobile-img-adjust myvideoroom-mobile-table-row-adjust">
 			<?php
 			//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - This is pre-formatted from WooCommerce no escape needed.
 			echo $item['image'];

@@ -3,7 +3,11 @@
  * Renders the form for Setting Override Security preferences.
  *
  * @param string|null $current_user_setting
- * @param array       $available_layouts
+ * @param string      $room_name - the room name.
+ * @param int         $id_index - to version element ids.
+ * @param array       $roles_output - roles for checkbox selection.
+ * @param int         $user_id - the user_id.
+ * @param bool        $admin_view - Flag to denote admin view and not to render titles and Headers as the admin views do that.
  *
  * @package MyVideoRoomPlugin\Views\Public
  */
@@ -19,7 +23,8 @@ return function (
 	string $room_name,
 	int $id_index = 0,
 	$roles_output = null,
-	int $user_id = null
+	int $user_id = null,
+	bool $admin_view = null
 ): string {
 
 	$html_library = Factory::get_instance( HTML::class, array( 'security' ) );
@@ -59,14 +64,14 @@ return function (
 				id="myvideoroom_override_all_preferences_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->is_site_override_enabled() ? 'checked' : ''; ?> />
 
-			<p><?php esc_html_e( 'Use this setting to ignore user and group individual room settings and enforce security settings across all of', 'my-video-room' ); ?>
+			<p><?php esc_html_e( 'Use this setting to ignore user and group individual room settings and enforce security settings across all of ', 'my-video-room' ); ?>
 				<?php
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - get-bloginfo is a core function already escaped.
-				echo get_bloginfo( 'name' ) . '.' . esc_html__( 'If you do not enable this setting, the below options have no effect.', 'my-video-room' );
+				echo get_bloginfo( 'name' ) . esc_html__( '. If you do not enable this setting, the below options have no effect.', 'my-video-room' );
 				?>
 			</p>
 			<hr>
-			<h1 class="mvr-title-header"><?php esc_html_e( 'Settings', 'my-video-room' ); ?></h1><br><br>
+
 			<h2 class="mvr-title-header"><i
 					class="myvideoroom-dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable All Rooms in Site', 'my-video-room' ); ?>
 			</h2>

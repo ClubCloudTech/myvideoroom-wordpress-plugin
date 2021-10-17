@@ -30,7 +30,7 @@ return function (
 	\ob_start();
 	?>
 	<header>
-	<div class="myvideoroom-menu-settings">
+	<div class="myvideoroom-menu-settings ">
 		<div class="myvideoroom-header-table-left">
 			<h1 class = "myvideoroom-separation-header"><i
 					class="myvideoroom-header-dashicons dashicons-admin-settings"></i><?php esc_html_e( 'MyVideoRoom Plugin Settings', 'myvideoroom' ); ?>

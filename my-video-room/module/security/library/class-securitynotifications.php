@@ -132,18 +132,18 @@ class SecurityNotifications {
 
 		if ( ! $site_override ) {
 			if ( ! $room_disabled ) {
-				$output .= '<p class="mvr-main-button-enabled" >' . esc_html__( 'Site Enabled', 'my-video-room' ) . '</p>';
+				$output .= '<button class="mvr-main-button-enabled" >' . esc_html__( 'Site Enabled', 'my-video-room' ) . '</button>';
 			} else {
-				$output .= '<p class="mvr-main-button-disabled button" >' . esc_html__( 'Site Disabled', 'my-video-room' ) . '</p>';
+				$output .= '<button class="mvr-main-button-disabled button" >' . esc_html__( 'Site Disabled', 'my-video-room' ) . '</button>';
 			}
 			if ( Factory::get_instance( Dependencies::class )->is_buddypress_available() ) {
 				$restrict_group_to_members_enabled = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
 				$restrict_to_friends               = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
 				if ( $restrict_group_to_members_enabled ) {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Restricted to Members', 'my-video-room' ) . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Restricted to Members', 'my-video-room' ) . '</button>';
 				}
 				if ( $restrict_to_friends ) {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Restricted to Friends', 'my-video-room' ) . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Restricted to Friends', 'my-video-room' ) . '</button>';
 				}
 			}
 			if ( $allow_role_control_enabled ) {
@@ -152,18 +152,18 @@ class SecurityNotifications {
 					$db_setting = 'No One';
 				}
 				if ( $block_role_control ) {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions are Excluding : ', 'my-video-room' ) . $db_setting . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions are Excluding : ', 'my-video-room' ) . $db_setting . '</button>';
 				} else {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions Only Allowing : ', 'my-video-room' ) . '' . $db_setting . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions Only Allowing : ', 'my-video-room' ) . '' . $db_setting . '</button>';
 				}
 			}
 
 			if ( $anonymous_enabled ) {
-				$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Anonymous Disabled', 'my-video-room' ) . '</p>';
+				$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Anonymous Disabled', 'my-video-room' ) . '</button>';
 			}
 		} else {
 			$output .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled( 'nourl' );
-			$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'You are overriding User and Room settings with ones applied centrally below.', 'my-video-room' ) . '</p>';
+			$output .= '<button class="mvr-preferences-paragraph">' . esc_html__( 'You are overriding User and Room settings with ones applied centrally below.', 'my-video-room' ) . '</button>';
 		}
 
 		return $output;
@@ -193,18 +193,18 @@ class SecurityNotifications {
 
 		if ( ! $site_override ) {
 			if ( ! $room_disabled ) {
-				$output .= '<p class="mvr-main-button-enabled" >' . esc_html__( 'Room Enabled', 'my-video-room' ) . '</p>';
+				$output .= '<button class="mvr-main-button-enabled" >' . esc_html__( 'Room Enabled', 'my-video-room' ) . '</button>';
 			} else {
-				$output .= '<p class="mvr-main-button-disabled" >' . esc_html__( 'Room Disabled', 'my-video-room' ) . '</p>';
+				$output .= '<button class="mvr-main-button-disabled" >' . esc_html__( 'Room Disabled', 'my-video-room' ) . '</button>';
 			}
 			if ( Factory::get_instance( Dependencies::class )->is_buddypress_available() ) {
 				$restrict_group_to_members_enabled = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'restrict_group_to_members_enabled' );
 				$restrict_to_friends               = Factory::get_instance( SecurityVideoPreferenceDAO::class )->read_security_settings( $user_id, $room_name, 'bp_friends_setting' );
 				if ( $restrict_group_to_members_enabled ) {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Restricted to Members', 'my-video-room' ) . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Restricted to Members', 'my-video-room' ) . '</button>';
 				}
 				if ( $restrict_to_friends ) {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Restricted to Friends', 'my-video-room' ) . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Restricted to Friends', 'my-video-room' ) . '</button>';
 				}
 			}
 			if ( $allow_role_control_enabled ) {
@@ -213,18 +213,18 @@ class SecurityNotifications {
 					$db_setting = 'No One';
 				}
 				if ( $block_role_control ) {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions are Excluding : ', 'my-video-room' ) . $db_setting . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions are Excluding : ', 'my-video-room' ) . $db_setting . '</button>';
 				} else {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions Only Allowing : ', 'my-video-room' ) . '' . $db_setting . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions Only Allowing : ', 'my-video-room' ) . '' . $db_setting . '</button>';
 				}
 			}
 
 			if ( $anonymous_enabled ) {
-				$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Anonymous Disabled', 'my-video-room' ) . '</p>';
+				$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Anonymous Disabled', 'my-video-room' ) . '</button>';
 			}
 		} else {
 			$output .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled( 'nourl' );
-			$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'An Administrator is overriding your settings with ones applied centrally. Certain settings stored here may not be applied', 'my-video-room' ) . '</p>';
+			$output .= '<button class="mvr-preferences-paragraph">' . esc_html__( 'An Administrator is overriding your settings with ones applied centrally. Certain settings stored here may not be applied', 'my-video-room' ) . '</button>';
 		}
 
 		return $output;
@@ -259,18 +259,18 @@ class SecurityNotifications {
 					$db_setting = 'No One';
 				}
 				if ( $block_role_control ) {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Hosts All Except : ', 'my-video-room' ) . str_replace( '|', ' - ', $db_setting ) . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Hosts All Except : ', 'my-video-room' ) . str_replace( '|', ' - ', $db_setting ) . '</button>';
 				} else {
-					$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Hosts Only Allowing : ', 'my-video-room' ) . str_replace( '|', ' - ', $db_setting ) . '</p>';
+					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Hosts Only Allowing : ', 'my-video-room' ) . str_replace( '|', ' - ', $db_setting ) . '</button>';
 				}
 			}
 
 			if ( $anonymous_enabled ) {
-				$output .= '<p class="mvr-main-button-notice">' . esc_html__( 'Anonymous Hosting Enabled', 'my-video-room' ) . '</p>';
+				$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Anonymous Hosting Enabled', 'my-video-room' ) . '</button>';
 			}
 		} else {
 			$output .= Factory::get_instance( SecurityButtons::class )->site_wide_enabled( 'nourl' );
-			$output .= '<p class="mvr-preferences-paragraph">' . esc_html__( 'An Administrator is overriding your settings with ones applied centrally. Certains Settings stored here may not be applied', 'my-video-room' ) . '</p>';
+			$output .= '<button class="mvr-preferences-paragraph">' . esc_html__( 'An Administrator is overriding your settings with ones applied centrally. Certains Settings stored here may not be applied', 'my-video-room' ) . '</button>';
 		}
 
 		return $output;

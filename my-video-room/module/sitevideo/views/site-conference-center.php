@@ -30,9 +30,18 @@ return function (
 	 * @var \MyVideoRoomPlugin\Entity\MenuTabDisplay[] $tabs
 	 */
 	$tabs = apply_filters( 'myvideoroom_room_manager_menu', $inbound_tabs );
-
 	?>
-	<h2><?php esc_html_e( 'Room Management and Control', 'my-video-room' ); ?></h2>
+<!-- Module Header -->	
+<div class="myvideoroom-menu-settings">
+		<div class="myvideoroom-header-table-left">
+			<h1><i
+					class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Room Management and Control', 'myvideoroom' ); ?>
+			</h1>
+		</div>
+		<div class="myvideoroom-header-table-right-wide">
+		</div>
+	</div>
+
 	<p>
 		<?php esc_html_e( 'This section allows you manage the configuration of permanent rooms that you or your modules have created.', 'myvideoroom' ); ?>
 	</p>
