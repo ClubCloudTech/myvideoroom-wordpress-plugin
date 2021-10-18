@@ -41,7 +41,7 @@ return function (): string {
 <!-- Module State and Description Marker -->
 	<div class="myvideoroom-feature-outer-table">
 		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-			<h2><?php esc_html_e( 'Module State', 'myvideoroom' ); ?></h2>
+			<h2><?php esc_html_e( 'Feature', 'myvideoroom' ); ?></h2>
 			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
 				<?php
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped

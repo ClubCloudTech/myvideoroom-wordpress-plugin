@@ -30,6 +30,7 @@ return function (
 	AppShortcodeConstructor $app_config = null
 ): string {
 	\ob_start();
+	$index = \wp_rand( 1, 9000 );
 
 	$html_lib = Factory::get_instance( HTML::class, array( 'room_builder' ) );
 	?>
@@ -44,7 +45,7 @@ return function (
 		</div>
 	</div>
 
-
+<!-- Navigation Header -->
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
 		<ul class="mvr-ul-style-top-menu">
 			<li>
@@ -61,7 +62,7 @@ return function (
 
 			<li>
 				<a class="nav-tab" href="#<?php echo \esc_attr( $html_lib->get_id( 'layouts' ) ); ?>">
-					<?php \esc_html_e( 'Video Room Templates', 'myvideoroom' ); ?>
+					<?php \esc_html_e( 'Participant Templates', 'myvideoroom' ); ?>
 				</a>
 			</li>
 
@@ -72,31 +73,54 @@ return function (
 			</li>
 		</ul>
 	</nav>
-
+<!-- 
+	Room Designer 
+-->
 	<article id="<?php echo \esc_attr( $html_lib->get_id( 'designer' ) ); ?>">
-
-	<h2><?php \esc_html_e( 'Visual Room Designer and shortcode generator', 'myvideoroom' ); ?></h2>
-
-<p class="myvideoroom-explainer-text">
-	<?php
-	echo \esc_html__(
-		' Use this tool to explore and create your preferred configuration of MyVideoRoom shortcode pairs, including layouts, receptions, permissions, and other settings. The preview is interactive and allows you to drag users in and out of the reception, and to see the output for both hosts and guests. The tool will output the shortcodes that you can then copy and paste into your page or post',
-		'myvideoroom'
-	)
-	?>
-</p>
-<p class="myvideoroom-explainer-text">
-	<?php
-	echo \esc_html__(
-		' Note that automatically generated rooms like Personal Video Rooms, and Site Conference Rooms have their own security, reception, and other settings which must be set on a per room basis, and not in this tool.',
-		'myvideoroom'
-	)
-	?>
-</p>
-
-<hr />
-
-<form class="myvideoroom-room-builder-settings" method="post" action="">
+	<div class="myvideoroom-menu-settings">
+		<div class="myvideoroom-header-table-left">
+			<h1><i
+					class="myvideoroom-header-dashicons dashicons-welcome-view-site"></i><?php esc_html_e( 'Visual Room Designer and Custom Room Generator', 'myvideoroom' ); ?>
+			</h1>
+		</div>
+		<div class="myvideoroom-header-table-right-wide">
+		</div>
+	</div>
+<!-- Module State and Description Marker -->
+	<div class="myvideoroom-feature-outer-table">
+			<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+				<h2><?php esc_html_e( 'Description', 'myvideoroom' ); ?></h2>
+			</div>
+			<div class="myvideoroom-feature-table-large">
+			<h2><?php esc_html_e( 'Create Custom Rooms and the Shortcodes to Use Them Anywhere', 'myvideoroom' ); ?></h2>	
+				<p class="myvideoroom-explainer-text">
+					<?php
+					esc_html_e(
+						'Use this tool to explore and create your preferred configuration of MyVideoRoom shortcode pairs, including layouts, receptions, permissions, and other settings. The preview is interactive and allows you to drag users in and out of the reception, and to see the output for both hosts and guests. The tool will output the shortcodes that you can then copy and paste into your page or post.',
+						'myvideoroom'
+					);
+					?>
+				</p>
+				<p class="myvideoroom-explainer-text">
+					<?php
+					echo \esc_html__(
+						'Note that automatically generated rooms like Personal Video Rooms, and Site Conference Rooms have their own security, reception, and other settings which must be set on a per room basis, and not in this tool.',
+						'myvideoroom'
+					)
+					?>
+				</p>
+			</div>
+		</div>
+<!-- Shortcode Builder Section  -->		
+		<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
+						class="mvr-nav-settingstabs-outer-wrap">
+						<div class="myvideoroom-feature-outer-table">
+							<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+								class="myvideoroom-feature-table-small">
+								<h2><?php esc_html_e( 'Explorer', 'myvideoroom' ); ?></h2>
+							</div>
+							<div class="myvideoroom-feature-table-large">
+							<form class="myvideoroom-room-builder-settings" method="post" action="">
 	<fieldset>
 		<legend><?php echo \esc_html__( 'Room Permissions', 'myvideoroom' ); ?></legend>
 
@@ -188,23 +212,13 @@ return function (
 			<br />
 			<em id="<?php echo \esc_attr( $html_lib->get_description_id( 'layout_id_preference' ) ); ?>">
 				<?php
-				$layouts_page   = \menu_page_url( PageList::PAGE_SLUG_ROOM_TEMPLATES, false );
-				$layouts_target = '';
-
-				if ( ! $layouts_page ) {
-					$layouts_page   = Factory::get_instance( Endpoints::class )->get_rooms_endpoint() . '/views/layouts';
-					$layouts_target = ' target="_blank"';
-				}
-
 				\printf(
 				/* translators: %s is a link to the templates admin page */
 					\esc_html__(
-						'The layout of the room, determines the background image, and the number of seats and seat groups. See the %s page for a list of available room layouts and more details.',
+						'The layout of the room, determines the background image, and the number of seats and seat groups. See the %s on this page for a visual list of available room layouts and more details.',
 						'myvideoroom'
 					),
-					'<a href="' . \esc_url( $layouts_page ) . '"' . \esc_attr( $layouts_target ) . '>' .
-					\esc_html__( 'templates', 'myvideoroom' ) .
-					'</a>'
+					\esc_html__( 'Template tabs', 'myvideoroom' )
 				);
 				?>
 			</em>
@@ -310,7 +324,7 @@ return function (
 					\printf(
 					/* translators: %s is a link to the templates admin page */
 						\esc_html__(
-							'The design of the reception. Some recetion additionally will show a background video. For a full list of available receptions see the %s page',
+							'The design of the reception. Some receptions additionally will show a background video. For a full list of available receptions see the %s page',
 							'myvideoroom'
 						),
 						'<a href="' . \esc_url( $receptions_page ) . '"' . \esc_attr( $receptions_target ) . '>' .
@@ -369,66 +383,169 @@ return function (
 		\esc_html__( 'Preview room and shortcode', 'myvideoroom' )
 	);
 	?>
-</form>
-
-
-
+	</form>
+							</div>
+						</div>
 	</article>
+<!-- 
+	Template Section  
+-->
 
 	<article id="<?php echo \esc_attr( $html_lib->get_id( 'usage' ) ); ?>">
-		<h2><?php esc_html_e( 'How to use MyVideoRoom templates', 'myvideoroom' ); ?></h2>
-		<p>
-			<?php
-			\esc_html_e(
-				'Templates are the visual representation of your room. They allow your guests to understand the type of meeting they are in. You can see a good representation of available templates for both reception, and video rooms, and reception templates tab. We are adding more templates all the time, and coming soon you will be able to make your own designs.',
-				'myvideoroom'
-			);
-			?>
-		</p>
 
-		<div class="view">
-			<h3><?php \esc_html_e( 'Host View', 'myvideoroom' ); ?></h3>
-			<img alt="MyVideoRoom Host View"
+<!-- Module Header -->				
+				<div class="myvideoroom-menu-settings">
+					<div class="myvideoroom-header-table-left">
+						<h1><i
+								class="myvideoroom-header-dashicons dashicons-admin-page"></i><?php esc_html_e( 'How to use Templates', 'myvideoroom' ); ?>
+						</h1>
+					</div>
+					<div class="myvideoroom-header-table-right">
+					</div>
+				</div>
+
+<!--  Description Marker -->
+				<div class="myvideoroom-feature-outer-table">
+					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+						<h2><?php esc_html_e( 'Working with Templates', 'myvideoroom' ); ?></h2>
+					</div>
+					<div class="myvideoroom-feature-table-large">
+						<p>
+							<?php
+							esc_html_e(
+								'Templates are the visual representation of your room. They allow your guests to understand the type of meeting they are in. You can see a good representation of available templates for both reception, and video rooms, and reception templates tab. We are adding more templates all the time, and coming soon you will be able to make your own designs.',
+								'myvideoroom'
+							);
+							?>
+						</p>
+					</div>
+				</div>	
+<!-- Participant Templates -->
+		<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
+					<div class="myvideoroom-feature-outer-table">
+						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+							class="myvideoroom-feature-table-small">
+							<h2><?php esc_html_e( 'Participant Templates', 'myvideoroom' ); ?></h2>
+						</div>
+						<div class="myvideoroom-feature-table-large">
+							<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
+						<p>
+							<?php
+							esc_html_e(
+								'Hosts enter a room by clicking on an available hotspot on the Room Template, until they click they are not joined the meeting, but they can see the icons of users that have already joined.',
+								'myvideoroom'
+							);
+							?>
+						</p>
+						<p>
+							<?php
+							esc_html_e(
+								'Users can be admitted into a room if at least one Host has joined the room. Waiting users appear as icons in the top of the screen, which must be dragged into an available seat.',
+								'myvideoroom'
+							);
+							?>
+						</p>
+							<img alt="MyVideoRoom Host View"
 				src="<?php echo \esc_url( \plugins_url( '../img/host-view.png', \realpath( __DIR__ . '/../' ) ) ); ?>" />
-		</div>
 
-		<div class="view">
-			<h3><?php \esc_html_e( 'Guest View', 'myvideoroom' ); ?></h3>
-			<img alt="MyVideoRoom Guest View"
-				src="<?php echo \esc_url( \plugins_url( '../img/guest-view.png', \realpath( __DIR__ . '/../' ) ) ); ?>" />
-		</div>
+							</div>
+						</div>
+					</div>
 
-		<p>
-			<?php
-			\esc_html_e(
-				'You can also disable the layout for your guests. This will mean MyVideoRoom will render a meeting much like other packages, with a reception being turned on for your guest to wait in, whilst you arrive. You can select your reception template,	and even put on a video stream for them whilst they wait. ',
-				'myvideoroom'
-			);
-			?>
-		</p>
+	<!-- Reception Templates -->
+			<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
+					<div class="myvideoroom-feature-outer-table">
+						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+							class="myvideoroom-feature-table-small">
+							<h2><?php esc_html_e( 'Reception Templates', 'myvideoroom' ); ?></h2>
+						</div>
+						<div class="myvideoroom-feature-table-large">
+							<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
+						<p>
+							<?php
+							esc_html_e(
+								'If Enabled - the reception area is a holding area for guests who can not see other guests or the meeting until admitted. Hosts must enable reception for the room (or admins enforce it at site level) for the template to be shown.',
+								'myvideoroom'
+							);
+							?>
+						</p>
+						<p>
+							<?php
+							esc_html_e(
+								'Some reception templates are video enabled, meaning you can put a custom video to play or streaming from any source to run inside your reception template whilst your guests wait. ',
+								'myvideoroom'
+							);
+							?>
+						</p>
+						<img alt="MyVideoRoom Guest View" src="<?php echo \esc_url( \plugins_url( '../img/guest-view.png', \realpath( __DIR__ . '/../' ) ) ); ?>" />
+
+							</div>
+						</div>
+					</div>
+
 	</article>
-
+<!-- 
+	Participant Template Section
+-->	
 	<article id="<?php echo \esc_attr( $html_lib->get_id( 'layouts' ) ); ?>">
-		<h2><?php \esc_html_e( 'Video room templates', 'myvideoroom' ); ?></h2>
-		<p>
-			<?php
-			\esc_html_e(
-				'MyVideoRooms are more than just meetings. There are physical representations of real rooms with breakout areas, layouts and scenarios. The basis of a video meeting is to select a room template for your meeting, and use it to drag in guests from receptions you can also remove anyone from the meeting at any time by clicking on their × symbol next to their picture.',
-				'myvideoroom'
-			);
-			?>
-		</p>
 
-		<p>
-			<?php
-			\esc_html_e(
-				'We\'re currently working on functionality to enable you to upload your own room layouts and reception designs. We\'ll let you know when this feature is ready',
-				'myvideoroom'
-			);
-			?>
-		</p>
+	<!-- Module Header -->				
+			<div class="myvideoroom-menu-settings">
+					<div class="myvideoroom-header-table-left">
+						<h1><i
+								class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Participant Video Templates', 'myvideoroom' ); ?>
+						</h1>
+					</div>
+					<div class="myvideoroom-header-table-right">
+					</div>
+				</div>
 
-		<ul>
+	<!--  Description Marker -->
+			<div class="myvideoroom-feature-outer-table">
+					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+						<h2><?php esc_html_e( 'Working with Templates', 'myvideoroom' ); ?></h2>
+					</div>
+					<div class="myvideoroom-feature-table-large">
+						<p>
+							<?php
+							esc_html_e(
+								'Templates are the visual representation of your room. They allow your guests to understand the type of meeting they are in. You can see a good representation of available templates for both reception, and video rooms, and reception templates tab. We are adding more templates all the time, and coming soon you will be able to make your own designs.',
+								'myvideoroom'
+							);
+							?>
+						</p>
+						<p>
+							<?php
+							\esc_html_e(
+								'MyVideoRooms are more than just meetings. There are physical representations of real rooms with breakout areas, layouts and scenarios. The basis of a video meeting is to select a room template for your meeting, and use it to drag in guests from receptions you can also remove anyone from the meeting at any time by clicking on their × symbol next to their picture.',
+								'myvideoroom'
+							);
+							?>
+						</p>
+						<p>
+							<?php
+							\esc_html_e(
+								'We\'re currently working on functionality to enable you to upload your own room layouts and reception designs. We\'ll let you know when this feature is ready',
+								'myvideoroom'
+							);
+							?>
+						</p>
+					</div>
+				</div>	
+	<!-- Participant Explorer -->
+
+					<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
+						class="mvr-nav-settingstabs-outer-wrap">
+						<div class="myvideoroom-feature-outer-table">
+							<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+								class="myvideoroom-feature-table-small">
+								<h2><?php esc_html_e( 'Participant Template Explorer', 'myvideoroom' ); ?></h2>
+							</div>
+							<div class="myvideoroom-feature-table-large">
+								</h2>
+								<p><?php esc_html_e( 'These are the currently available templates. They are automatically synchronised by MyVideoRoom to your site, and your drop down boxes for templates, and this window are always up to date with the latest templates.', 'myvideoroom' ); ?>
+								</p>
+			<ul>
 			<?php
 			foreach ( $available_layouts as $available_layout ) {
 				// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase, WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase - data from external source
@@ -444,11 +561,11 @@ return function (
 				?>
 				<li class="card layout-card">
 					<h3 class="title"><?php echo \esc_html( $available_layout->name ); ?></h3>
-					Slug: <em><?php echo \esc_html( $available_layout->slug ); ?></em>
+					<?php \esc_html_e( 'Slug: ', 'myvideoroom' ); ?> <em><?php echo \esc_html( $available_layout->slug ); ?></em>
 					<br />
 
-					Seat Groups: <?php echo \esc_html( $total_seat_groups ); ?>
-					Seats: <?php echo \esc_html( $total_seats ); ?>
+					<?php \esc_html_e( 'Seat Groups: ', 'myvideoroom' ); ?> <?php echo \esc_html( $total_seat_groups ); ?>
+					<?php \esc_html_e( 'Seats: ', 'myvideoroom' ); ?> <?php echo \esc_html( $total_seats ); ?>
 					<br />
 
 					<img
@@ -458,20 +575,62 @@ return function (
 				</li>
 			<?php } ?>
 		</ul>
+							</div>
+						</div>
 	</article>
-
+<!-- 
+	Reception Template Section
+-->	
 	<article id="<?php echo \esc_attr( $html_lib->get_id( 'receptions' ) ); ?>">
-		<h2><?php \esc_html_e( 'Using Receptions', 'myvideoroom' ); ?></h2>
-		<p>
-			<?php
-			\esc_html_e(
-				'Reception templates are used to show your guest a waiting area before they are allowed to join a room. MyVideoRoom allows you to customise the layout, and also the video option of what you would like your guest to see whilst you wait. Below are currently, available reception templates. Not all templates can display video. Whilst your guest is waiting, they will be in the reception area. To begin the meeting you can drag their icon into a seating position in your room layout and your meeting will begin.',
-				'myvideoroom'
-			);
-			?>
-		</p>
+		
+	<!-- Module Header -->				
+		<div class="myvideoroom-menu-settings">
+			<div class="myvideoroom-header-table-left">
+				<h1><i class="myvideoroom-header-dashicons dashicons-businessperson"></i><?php esc_html_e( 'Reception Video Templates', 'myvideoroom' ); ?>
+				</h1>
+			</div>
+			<div class="myvideoroom-header-table-right">
+			</div>
+		</div>
+	<!--  Description Marker -->
+		<div class="myvideoroom-feature-outer-table">
+				<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+					<h2><?php esc_html_e( 'Working with Templates', 'myvideoroom' ); ?></h2>
+				</div>
+				<div class="myvideoroom-feature-table-large">
+					<p>
+						<?php
+						esc_html_e(
+							'Templates are the visual representation of your receptions. They allow you to customise your experience for your guests, and coming soon you will be able to make your own reception designs.',
+							'myvideoroom'
+						);
+						?>
+					</p>
+					<p>
+						<?php
+						\esc_html_e(
+							'Reception templates are used to show your guest a waiting area before they are allowed to join a room. MyVideoRoom allows you to customise the layout, and also the video option of what you would like your guest to see whilst you wait. Below are currently, available reception templates. Not all templates can display video. Whilst your guest is waiting, they will be in the reception area. To begin the meeting you can drag their icon into a seating position in your room layout and your meeting will begin.',
+							'myvideoroom'
+						);
+						?>
+					</p>
 
-		<ul>
+				</div>
+			</div>	
+	<!-- Participant Explorer -->
+
+	<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
+						class="mvr-nav-settingstabs-outer-wrap">
+						<div class="myvideoroom-feature-outer-table">
+							<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+								class="myvideoroom-feature-table-small">
+								<h2><?php esc_html_e( 'Reception Template Explorer', 'myvideoroom' ); ?></h2>
+							</div>
+							<div class="myvideoroom-feature-table-large">
+								</h2>
+								<p><?php esc_html_e( 'These are the currently available reception templates. They are automatically synchronised by MyVideoRoom to your site, and your drop down boxes for templates, and this window are always up to date with the latest templates.', 'myvideoroom' ); ?>
+								</p>
+								<ul>
 			<?php
 			foreach ( $available_receptions as $available_reception ) {
 				$has_video = \esc_html__( 'yes', 'myvideoroom' );
@@ -483,10 +642,10 @@ return function (
 				?>
 				<li class="card reception-card">
 					<h3 class="title"><?php echo \esc_html( $available_reception->name ); ?></h3>
-					Slug: <em><?php echo \esc_html( $available_reception->slug ); ?></em>
+					<?php \esc_html_e( 'Slug: ', 'myvideoroom' ); ?> <em><?php echo \esc_html( $available_reception->slug ); ?></em>
 					<br />
 
-					Video: <?php echo \esc_html( $has_video ); ?>
+					<?php \esc_html_e( 'Video: ', 'myvideoroom' ); ?> <?php echo \esc_html( $has_video ); ?>
 					<br />
 
 					<img
@@ -496,6 +655,8 @@ return function (
 				</li>
 			<?php } ?>
 		</ul>
+							</div>
+						</div>
 
 	</article>
 	<?php

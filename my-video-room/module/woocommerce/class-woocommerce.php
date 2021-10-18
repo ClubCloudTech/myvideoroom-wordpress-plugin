@@ -180,8 +180,27 @@ class WooCommerce {
 		);
 
 		add_action( 'myvideoroom_post_room_create', array( Factory::get_instance( WooCategory::class ), 'create_product_category' ), 10, 2 );
+
+		// Room Manager.
+		add_filter( 'myvideoroom_room_manager_menu', array( $this, 'render_wc_room_manager_page' ), 81, 1 );
 	}
 
+	/**
+	 * Render Room Manager Admin Tab Page
+	 *
+	 * @param  array $input - the inbound menu.
+	 * @return array - outbound menu.
+	 */
+	public function render_wc_room_manager_page( $input = array() ): array {
+
+		$admin_tab = new MenuTabDisplay(
+			esc_html__( 'WooCommerce', 'myvideoroom' ),
+			'woocommerce',
+			fn() => $this->render_woocommerce_admin_page()
+		);
+		array_push( $input, $admin_tab );
+		return $input;
+	}
 	/**
 	 * Is WooCommerce Active - checks if WooCommerce is enabled.
 	 *

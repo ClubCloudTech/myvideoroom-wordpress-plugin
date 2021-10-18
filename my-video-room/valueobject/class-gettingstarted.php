@@ -39,7 +39,6 @@ class GettingStarted {
 					),
 					'<a href="https://clubcloud.tech/pricing/">' .
 					\esc_html__( 'ClubCloud.tech', 'myvideoroom' ) . '</a>'
-					
 				),
 			),
 

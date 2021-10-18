@@ -124,9 +124,9 @@ class MVRPersonalMeetingHelpers {
 	public function render_personalmeeting_admin_settings_page( $input = array() ): array {
 
 		$admin_tab = new MenuTabDisplay(
-			esc_html__( 'Personal Meetings', 'my-video-room' ),
+			esc_html__( 'Personal Meetings', 'myvideoroom' ),
 			'personalmeeting',
-			fn() => Factory::get_instance( self::class )->render_personalvideo_admin_page()
+			fn() => $this->render_personalvideo_admin_page()
 		);
 		array_push( $input, $admin_tab );
 		return $input;

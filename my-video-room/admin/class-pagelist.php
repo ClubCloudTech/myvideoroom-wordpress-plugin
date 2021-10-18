@@ -19,7 +19,7 @@ class PageList {
 	const PAGE_SLUG_DEFAULT = 'myvideoroom';
 
 	const PAGE_SLUG_GETTING_STARTED = self::PAGE_SLUG_DEFAULT;
-	const PAGE_SLUG_ROOM_TEMPLATES  = self::PAGE_SLUG_DEFAULT . '-templates';
+	const PAGE_SLUG_ROOM_TEMPLATES  = self::PAGE_SLUG_DEFAULT . '-room-builder';
 	const PAGE_SLUG_REFERENCE       = self::PAGE_SLUG_DEFAULT . '-shortcode-reference';
 	const PAGE_SLUG_PERMISSIONS     = self::PAGE_SLUG_DEFAULT . '-permissions';
 	const PAGE_SLUG_MODULES         = self::PAGE_SLUG_DEFAULT . '-modules';
