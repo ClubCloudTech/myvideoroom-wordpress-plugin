@@ -37,7 +37,7 @@ class GettingStarted {
 						'Visit %s to Get Your License Key. Then enter your key below to activate your subscription',
 						'myvideoroom'
 					),
-					'<a href="https://clubcloud.tech/pricing/">' .
+					'<a href="https://clubcloud.tech/pricing/" target="_blank" >' .
 					\esc_html__( 'ClubCloud.tech', 'myvideoroom' ) . '</a>'
 				),
 			),
@@ -47,7 +47,7 @@ class GettingStarted {
 				\sprintf(
 				/* translators: %s is the text "templates" and links to the Template Section */
 					\esc_html__( 'Activate the %s That you would like to use in MyVideoRoom', 'myvideoroom' ),
-					'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ) . '">' .
+					'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ) . '" target="_blank" >' .
 					\esc_html__( 'Modules', 'myvideoroom' ) .
 					'</a>'
 				),
@@ -58,7 +58,7 @@ class GettingStarted {
 				\sprintf(
 				/* translators: %s is the text "Room Permissions" and links to the Permissions Section */
 					\esc_html__( 'Goto %s To Access Your Video Rooms.', 'myvideoroom' ),
-					'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_ROOM_MANAGER, false ) ) . '">' .
+					'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_ROOM_MANAGER, false ) ) . '" target="_blank" >' .
 					\esc_html__( 'Room Manager', 'myvideoroom' ) . '</a>'
 				),
 			),
