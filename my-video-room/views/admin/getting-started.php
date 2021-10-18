@@ -51,9 +51,10 @@ return function (
 
 		?>
 	</ol>
-	<img src="<?php echo esc_url( plugins_url( '../../img/pricing.PNG', __FILE__ ) ); ?>" width=25%/>
-		<img src="<?php echo esc_url( plugins_url( '../../img/activate_modules.png', __FILE__ ) ); ?>" width=25%/>
-		<img src="<?php echo esc_url( plugins_url( '../../img/mvr-imagelogo.png', __FILE__ ) ); ?>" width=25%/>
+		<img src="<?php echo esc_url( plugins_url( '../../img/key3.png', __FILE__ ) ); ?>" id="intro-imgs" width=15% style="padding:0px 60px 0px 60px; max-width:145px;"/>
+		<img src="<?php echo esc_url( plugins_url( '../../img/modules3.png', __FILE__ ) ); ?>" id="intro-imgs" width=15% style="padding:0px 60px 0px 60px; max-width:145px; "/>
+		<img src="<?php echo esc_url( plugins_url( '../../img/start-video2.png', __FILE__ ) ); ?>" id="intro-imgs" width=15% style="padding:0px 60px 0px 60px; max-width:145px; "/>
+		<style>@media (max-width: 710px) {#intro-imgs {display: none;}}</style>
 	<p>
 		<?php
 		\printf(
