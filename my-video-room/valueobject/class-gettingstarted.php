@@ -43,7 +43,7 @@ class GettingStarted {
 			),
 
 			new Step(
-				\esc_html__( 'Design your room' ),
+				\esc_html__( 'Design Your Room' ),
 				\sprintf(
 				/* translators: %s is the text "templates" and links to the Template Section */
 					\esc_html__( 'Learn about using %s for video layouts and receptions to find something you like.', 'myvideoroom' ),

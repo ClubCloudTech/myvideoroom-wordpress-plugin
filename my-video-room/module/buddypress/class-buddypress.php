@@ -12,6 +12,7 @@ use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressHelpers;
 use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressSecurity;
 use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressVideo;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
@@ -181,7 +182,28 @@ class BuddyPress {
 
 		// Security Engine.
 		add_action( 'myvideoroom_security_block_disabled_module', array( Factory::get_instance( BuddyPressSecurity::class ), 'mvrbp_disabled_module_block' ), 10, 1 );
+
+		// Room Manager.
+			add_filter( 'myvideoroom_room_manager_menu', array( $this, 'render_bp_room_manager_page' ), 80, 1 );
 	}
+
+	/**
+	 * Render Room Manager Admin Tab Page
+	 *
+	 * @param  array $input - the inbound menu.
+	 * @return array - outbound menu.
+	 */
+	public function render_bp_room_manager_page( $input = array() ): array {
+
+		$admin_tab = new MenuTabDisplay(
+			esc_html__( 'BuddyPress', 'myvideoroom' ),
+			'buddypress',
+			fn() => $this->render_buddypress_admin_page()
+		);
+		array_push( $input, $admin_tab );
+		return $input;
+	}
+
 
 	/**
 	 * Render BuddyPress Admin Page for Myvideoroom Modules Management Page.

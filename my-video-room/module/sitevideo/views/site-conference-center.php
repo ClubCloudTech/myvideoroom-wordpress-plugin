@@ -5,6 +5,7 @@
  * @package MyVideoRoomPlugin\Views\Public\Admin
  */
 
+use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
@@ -43,7 +44,21 @@ return function (
 	</div>
 
 	<p>
-		<?php esc_html_e( 'This section allows you manage the configuration of permanent rooms that you or your modules have created.', 'myvideoroom' ); ?>
+		<?php esc_html_e( 'This section allows you manage the configuration of your rooms and plugins that manage room components.', 'myvideoroom' ); ?>
+	</p>
+	<p>
+		<?php
+		echo \sprintf(
+			/* translators: %s is the text "Modules" and links to the Module Section */
+			\esc_html__(
+				'You can visit the %s section to add extra room modules, features, and expand the power of you rooms by addin packs and plugin integration modules.',
+				'myvideoroom'
+			),
+			'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ) . '">' .
+			\esc_html__( 'Modules', 'myvideoroom' ) .
+			'</a>'
+		)
+		?>
 	</p>
 
 	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">

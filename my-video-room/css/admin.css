@@ -517,6 +517,13 @@ margin-top: 0px;
 .mvr-title-header {
 	display: inline;
 }
+
+.mvr-subtitle-section{
+	border-top: 1px rgb(165, 165, 165) solid;
+	border-bottom: 1px rgb(165, 165, 165) solid;
+	background: rgb(197, 193, 193);
+	padding: 5px;
+}
 main {
 	background: white;
 	border: 1px rgb(165, 165, 165) solid;
