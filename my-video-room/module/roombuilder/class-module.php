@@ -113,23 +113,23 @@ class Module {
 			}
 		);
 
-		\add_action(
-			'myvideoroom_admin_getting_started_steps',
-			function ( GettingStarted $steps ) {
-				$steps->get_step( 2 )->set_description(
-					\sprintf(
-					/* translators: %s is the text "room builder" and links to the Room Builder Section */
-						\esc_html__(
-							'Use the visual %s to plan your room interactively, and learn about receptions and layouts.',
-							'myvideoroom'
-						),
-						'<a href="' . \esc_url( \menu_page_url( self::PAGE_SLUG_BUILDER, false ) ) . '">' .
-						\esc_html__( 'room designer', 'myvideoroom' ) .
-						'</a>'
-					)
-				);
-			}
-		);
+		// \add_action(
+		// 	'myvideoroom_admin_getting_started_steps',
+		// 	function ( GettingStarted $steps ) {
+		// 		$steps->get_step( 2 )->set_description(
+		// 			\sprintf(
+		// 			/* translators: %s is the text "room builder" and links to the Room Builder Section */
+		// 				\esc_html__(
+		// 					'Use the visual %s to plan your room interactively, and learn about receptions and layouts.',
+		// 					'myvideoroom'
+		// 				),
+		// 				'<a href="' . \esc_url( \menu_page_url( self::PAGE_SLUG_BUILDER, false ) ) . '">' .
+		// 				\esc_html__( 'room designer', 'myvideoroom' ) .
+		// 				'</a>'
+		// 			)
+		// 		);
+		// 	}
+		// );
 
 		\add_action(
 			Admin::ACTION_SHORTCODE_REFERENCE,
