@@ -24,8 +24,17 @@ return function (
 
 	\ob_start();
 	?>
-
-	<h2><?php \esc_html_e( 'Additional Modules and MyVideoRoom Plugins', 'myvideoroom' ); ?></h2>
+	<!-- Module Header -->
+	<div class="myvideoroom-menu-settings">
+		<div class="myvideoroom-header-table-left">
+			<h1><i
+					class="myvideoroom-header-dashicons dashicons-admin-plugins"></i><?php esc_html_e( 'Modules and Addin Pack Manager', 'myvideoroom' ); ?>
+			</h1>
+		</div>
+		<div class="myvideoroom-header-table-right-wide">
+		</div>
+	</div>
+	<!-- Module State and Description Marker -->
 
 	<p>
 		<?php

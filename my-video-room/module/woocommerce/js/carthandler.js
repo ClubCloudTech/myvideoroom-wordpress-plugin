@@ -4,14 +4,14 @@
  * @package MyVideoRoomPlugin\Module\WooCommerce\JS\carthandler.js
  */
 
-  (function ($) {
+(function($) {
 
 
-	if ($( '.mvr-woocommerce-basket' ).length >0 || $( '.mvr-notification-master' ).length >0 || $( '.mvr-storefront-master' ).length >0){
-		$(document).ready(function(){
-			$('.woocommerce a').attr('target', '_blank');
-		  });	
-	}
-	
+    if ($('.mvr-woocommerce-basket').length > 0 || $('.mvr-notification-master').length > 0 || $('.mvr-storefront-master').length > 0) {
+        $(document).ready(function() {
+            $('.woocommerce a').attr('target', '_blank');
+        });
+    }
 
-})( jQuery );
+
+})(jQuery);

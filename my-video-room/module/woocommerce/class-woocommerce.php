@@ -297,17 +297,4 @@ class WooCommerce {
 		return $input;
 
 	}
-
-	/**
-	 * For Testing Purposes.
-	 * Starts PHP Session Cookie in case user is signed out.
-	 *
-	 * @return void
-	 */
-	public function proxy_test() {
-
-		// Factory::get_instance( Setup::class )->initialise_default_video_settings();
-	}
-
-
 }

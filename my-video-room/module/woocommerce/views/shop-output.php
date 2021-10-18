@@ -9,7 +9,6 @@
  * Render the WooCommerce Basket Render Page
  *
  * @param string   $output   - The Product Archive.
- * @param string $room_name -  Name of Room.
  * @param string $last_queue -  The display table with the last basket queue shared in the room.
  * @param int    $shop_count -  The count of last items in shop to place in Div for user change tracking.
  * @param bool   $host_status -  Whether user is host.
@@ -19,7 +18,6 @@
  */
 return function (
 	$output,
-	string $room_name = null,
 	string $last_queue = null,
 	int $shop_count = null,
 	bool $host_status = null,

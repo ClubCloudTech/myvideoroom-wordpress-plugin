@@ -84,6 +84,6 @@ class BuddyPressViews {
 		</div>
 		<?php
 
-		return ' ';
+		return \ob_get_clean();
 	}
 }

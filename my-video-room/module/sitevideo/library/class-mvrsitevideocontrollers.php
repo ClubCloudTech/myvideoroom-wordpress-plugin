@@ -21,6 +21,7 @@ use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\Dependencies;
+use MyVideoRoomPlugin\Module\Security\Library\SecurityEngine;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -95,7 +96,7 @@ class MVRSiteVideoControllers {
 
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
 		if ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SECURITY_ID ) ) {
-			$render_block = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Library\SecurityEngine::class )->render_block( $post_id, 'sitevideohost', MVRSiteVideo::MODULE_SITE_VIDEO_ID, $room_name );
+			$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $post_id, 'sitevideohost', MVRSiteVideo::MODULE_SITE_VIDEO_ID, $room_name );
 			if ( $render_block ) {
 				return $render_block;
 			}

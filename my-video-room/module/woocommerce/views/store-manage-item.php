@@ -2,7 +2,7 @@
 /**
  * Shows a single row with the current Basket Contents.
  *
- * @package MyVideoRoomPlugin\Modules\WooCommerce\Views\Queue-Item.php
+ * @package MyVideoRoomPlugin\Modules\WooCommerce\Views\store-manage-item.php
  */
 
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
@@ -10,17 +10,15 @@ use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 /**
  * Render the admin page
  *
- * @param \stdClass $room The room
- * @param ?string $room_type  Category of Room to Filter.
- * @param bool $room_basket_archive  Flag whether the table is a user table, or an archive table of the last shared basket.
+ * @param array $item The Item to Draw.
+ * @param ?string $room_name  Category of Room to Filter.
  *
  * @return string
  */
 return function (
 	array $item,
-	string $room_name,
-	bool $room_basket_archive = null
-): string {
+	string $room_name
+	): string {
 	ob_start();
 
 	?>

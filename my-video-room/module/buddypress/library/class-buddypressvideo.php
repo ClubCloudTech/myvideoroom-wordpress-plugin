@@ -119,7 +119,7 @@ class BuddyPressVideo {
 	 *
 	 * @return string|null
 	 */
-	public function bp_boardroom_video_host():string {
+	public function bp_boardroom_video_host(): ?string {
 		// Escape dependencies.
 		if ( ! Factory::get_instance( BuddyPress::class )->is_user_module_available() ) {
 			return null;
@@ -214,7 +214,7 @@ class BuddyPressVideo {
 	 *
 	 * @return string The shortcode output
 	 */
-	public function bp_group_video_host() {
+	public function bp_group_video_host(): string {
 		global $bp;
 		// Escape dependencies.
 		if ( ! Factory::get_instance( BuddyPress::class )->is_group_module_available() ) {
@@ -277,6 +277,7 @@ class BuddyPressVideo {
 					)
 				)
 			);
+
 		array_push( $output_object, $admin_menu );
 		return Factory::get_instance( SectionTemplates::class )->shortcode_template_wrapper( $header, $output_object, $user_id, $room_name, $host_status );
 

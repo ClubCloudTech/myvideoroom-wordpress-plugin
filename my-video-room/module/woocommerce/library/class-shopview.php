@@ -41,7 +41,8 @@ class ShopView {
 		$last_storecount = Factory::get_instance( WooCategory::class )->get_category_count( $room_name );
 		$room_admin_tab  = $this->render_room_management_table( $room_name );
 		$render          = require __DIR__ . '/../views/shop-output.php';
-		return $render( $output, $room_name, $last_basket, $last_storecount, $host_status, $room_admin_tab );
+
+		return $render( $output, $last_basket, $last_storecount, $host_status, $room_admin_tab );
 	}
 
 

@@ -10,8 +10,6 @@
  *
  * @param array   $basket_list   - Products in Basket.
  * @param string $room_name -  Name of Room.
- * @param array   $inbound_queue - Products to Decide Upon.
- * @param ?string $room_type  Category of Room to Filter.
  * @param bool $room_basket_archive  Flag whether the table is a user table, or an archive table of the last shared basket.
  *
  * @return string
@@ -70,7 +68,7 @@ return function (
 				$basket_item_render = require __DIR__ . '/store-manage-item.php';
 				foreach ( $basket_list as $basket ) {
 					//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo $basket_item_render( $basket, $room_name, $room_basket_archive );
+					echo $basket_item_render( $basket, $room_name );
 				}
 				?>
 			</tbody>

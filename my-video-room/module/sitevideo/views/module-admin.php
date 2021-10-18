@@ -20,8 +20,7 @@ return function (
 	$details_section = null
 ): string {
 	ob_start();
-	$settings_url = \add_query_arg( \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
-	$index        = 331;
+	$index = wp_rand( 331, 434 );
 	?>
 	<div class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
 <!-- Module Header -->

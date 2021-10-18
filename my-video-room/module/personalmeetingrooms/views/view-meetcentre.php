@@ -12,13 +12,13 @@ use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingCont
  * Render the Meet Center Reception page
  *
  * @param array   $tabs          Any Tabs to Display.
- * @param ?string $html_library  Randomizing Data for Tabs.
+ * @param object  $html_library  Randomizing Data for Tabs.
  *
  * @return string
  */
 return function (
 $tabs = null,
-$html_library
+object $html_library
 ): string {
 	ob_start();
 	if ( count( $tabs ) >= 1 ) {

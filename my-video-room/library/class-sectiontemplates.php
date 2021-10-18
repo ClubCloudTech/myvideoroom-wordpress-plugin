@@ -34,121 +34,27 @@ class SectionTemplates {
 	 * Render a Template to Automatically Wrap the Video Shortcode with additional tabs to add more functionality
 	 *  Used to add Admin Page for each Room for Hosts, Returns Header and Shortcode if no additional pages passed in
 	 *
-	 * @param Array|string $header       The Header of the Shortcode.
-	 * @param array        $inbound_tabs Inbound object with tabs.
-	 * @param ?int         $user_id      User ID for passing to other Filters.
-	 * @param ?string      $room_name    Room Name for passing to other Filters.
-	 * @param bool         $host_status  Whether user is a host.
-	 * @param bool         $ajax_window_flag Marks the Page is being rendered from an Ajax window where you want to limit what plugins/tabs run.
+	 * @param Array   $header       The Header of the Shortcode.
+	 * @param array   $inbound_tabs Inbound object with tabs.
+	 * @param ?int    $user_id      User ID for passing to other Filters.
+	 * @param ?string $room_name    Room Name for passing to other Filters.
+	 * @param bool    $host_status  Whether user is a host.
+	 * @param bool    $ajax_window_flag Marks the Page is being rendered from an Ajax window where you want to limit what plugins/tabs run.
 	 *
-	 * @return string The completed Formatted Template.
+	 * @return ?string The completed Template.
 	 */
-	public function shortcode_template_wrapper( $header, array $inbound_tabs, int $user_id = null, string $room_name = null, bool $host_status = null, bool $ajax_window_flag = null ): string {
-		Factory::get_instance( SessionState::class )->register_room_presence( $room_name, $host_status, $user_id );
+	public function shortcode_template_wrapper( array $header, array $inbound_tabs, int $user_id = null, string $room_name = null, bool $host_status = null, bool $ajax_window_flag = null ): ?string {
 
-		ob_start();
-		// Randomizing Pages by Header to avoid page name conflicts if multiple frames.
+		Factory::get_instance( SessionState::class )->register_room_presence( $room_name, $host_status, $user_id );
 		$html_library = Factory::get_instance( HTML::class, array( 'view-management' ) );
 		$tabs         = apply_filters( 'myvideoroom_main_template_render', $inbound_tabs, $user_id, $room_name, $host_status, $header, $ajax_window_flag );
 
-		?>
+		$render = include __DIR__ . '/../module/sitevideo/views/template/maintemplate.php';
 
-<div class="mvr-nav-shortcode-outer-wrap" style="max-width: 1250px;">
-	<div id="roominfo" 
-	data-room-name="<?php echo esc_attr( $room_name ); ?>"
-	data-logged-in="<?php echo esc_attr( is_user_logged_in() ); ?>"
-	>
-	</div>
-	<div class="mvr-header-section">
-		<div id="mvr-notification-icons" class="myvideoroom-header-table-left">
-			<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
-				echo $header['template_icons'];
-			?>
-		</div>
-		<div id="mvr-header-table-right" class="myvideoroom-header-table-right">
-			<p class="mvr-header-title mvr-header-align">
-				<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
-							echo $header['name_output']. ' ' . $header['module_name'];
-				?>
-			</p>
-		</div>
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template already escaped.
+		echo $render( $header, $tabs, $html_library, $room_name );
+		return '';
 
-	</div>
-	<div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master">
-		<?php
-							$output = \apply_filters( 'myvideoroom_notification_master', '', $room_name );
-							// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-							//echo $output;
-		?>
-		<div id="mvr-postbutton-notification" class="mvr-notification-align"></div>
-	</div>
-
-	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper myvideoroom-side-tab">
-		<ul class="mvr-ul-style-side-menu">
-			<?php
-					$active = ' nav-tab-active';
-
-			foreach ( $tabs as $menu_output ) {
-				$tab_display_name = $menu_output->get_tab_display_name();
-				$tab_slug         = $menu_output->get_tab_slug();
-				$object_id        = $menu_output->get_element_id();
-				?>
-			<li>
-				<a class="nav-tab<?php echo esc_attr( $active ); ?>" 
-											<?php
-											if ( $object_id ) {
-												echo 'id = "' . esc_attr( $object_id ) . '" ';
-											}
-											?>
-											href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-					<?php
-					//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Icon is created by escaped function.
-					echo $tab_display_name;
-					?>
-				</a>
-			</li>
-
-				<?php
-				$active = null;
-			}
-			?>
-	</ul>
-	</nav>
-	<div id="mvr-above-article-notification"></div>
-
-			<?php
-			foreach ( $tabs as $article_output ) {
-
-				$function_callback = $article_output->get_function_callback();
-				$tab_slug          = $article_output->get_tab_slug();
-				?>
-		<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>" class="myvideoroom-content-tab mvr-article-separation">
-					<?php
-
-					if ( WooCommerce::SETTING_SHOPPING_BASKET !== $tab_slug ) {
-					// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-						echo $function_callback;
-					}
-
-					?>
-		</article>
-					<?php
-					if ( WooCommerce::SETTING_SHOPPING_BASKET === $tab_slug ) {
-						?>
-		<article id="<?php echo \esc_textarea( WooCommerce::SETTING_SHOPPING_BASKET ); ?>" class="mvr-article-separation">
-						<?php
-						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
-						echo $function_callback; 
-						?>
-
-		</article>
-						<?php
-					}
-			}
-			?>
-</div>
-			<?php
-			return \ob_get_clean();
 	}
 
 	/**
@@ -221,7 +127,7 @@ class SectionTemplates {
 </div>
 		<?php
 
-		return ' ';
+		return \ob_get_clean();
 	}
 
 }

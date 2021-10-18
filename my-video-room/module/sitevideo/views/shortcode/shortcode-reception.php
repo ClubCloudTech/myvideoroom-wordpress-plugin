@@ -36,7 +36,7 @@ return function (
 		?>
 	</div>
 		<?php
-		return null;
+		return ob_get_clean();
 	}
 
 	$settings_url = \add_query_arg( \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );

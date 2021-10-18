@@ -8,7 +8,6 @@
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
-use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
 /**

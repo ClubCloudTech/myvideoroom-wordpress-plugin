@@ -157,7 +157,6 @@ class SiteDefaults {
 
 		\wp_enqueue_style( 'myvideoroom-template' );
 		\wp_enqueue_style( 'myvideoroom-menutab-header' );
-		\wp_enqueue_style( 'myvideoroom-admin-css' );
 		\wp_enqueue_script( 'myvideoroom-admin-tabs' );
 
 	}

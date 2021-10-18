@@ -582,7 +582,7 @@ return function (
 	Reception Template Section
 -->	
 	<article id="<?php echo \esc_attr( $html_lib->get_id( 'receptions' ) ); ?>">
-		
+
 	<!-- Module Header -->				
 		<div class="myvideoroom-menu-settings">
 			<div class="myvideoroom-header-table-left">

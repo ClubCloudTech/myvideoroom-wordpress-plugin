@@ -24,7 +24,7 @@ use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 
 return function () {
 	ob_start();
-	$index = 434;
+	$index = wp_rand( 331, 434 );
 	?>
 <div id="outer" class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
 	<!-- Module Header -->

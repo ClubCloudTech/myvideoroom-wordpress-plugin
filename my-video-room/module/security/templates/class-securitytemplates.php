@@ -41,7 +41,7 @@ class SecurityTemplates {
 		</div>
 		<?php
 
-		return ' ';
+		return \ob_get_clean();
 	}
 
 	/**
@@ -103,7 +103,7 @@ class SecurityTemplates {
 		</div>
 		<?php
 
-		return ' ';
+		return \ob_get_clean();
 	}
 
 	/**
@@ -162,7 +162,7 @@ class SecurityTemplates {
 		</div>
 		<?php
 
-		return ' ';
+		return \ob_get_clean();
 	}
 
 	/**
@@ -221,7 +221,7 @@ class SecurityTemplates {
 		</p>
 		<?php
 
-		return ' ';
+		return \ob_get_clean();
 	}
 
 }

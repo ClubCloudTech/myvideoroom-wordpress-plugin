@@ -20,8 +20,6 @@ return function (
 	string $invite_menu = null,
 	string $post_site_title = null
 ) {
-	ob_start();
-
 	if ( $visitor_status ) {
 
 		$invite_menu = Factory::get_instance( MeetingIdGenerator::class )->invite_menu_shortcode(

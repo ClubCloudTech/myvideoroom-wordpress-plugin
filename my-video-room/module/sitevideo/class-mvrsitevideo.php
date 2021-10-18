@@ -397,9 +397,11 @@ class MVRSiteVideo {
 	 * @return array - outbound menu.
 	 */
 	public function render_sitevideo_welcome_tabs( array $input, int $room_id, $host_status = null, $header = null, array $null = null, bool $in_ajax = null ): array {
+
 		if ( $in_ajax ) {
 			return $input;
 		}
+
 		$host_menu = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_INFO_WELCOME ),
 			'welcomepage',
@@ -420,9 +422,9 @@ class MVRSiteVideo {
 	/**
 	 * Controller Function to Render Welcome Page in Main Shortcode.
 	 *
-	 * @return string - outbound menu.
+	 * @return ?string - outbound menu.
 	 */
-	public function render_welcome_tab(): string {
+	public function render_welcome_tab(): ?string {
 		$render = require __DIR__ . '/views/header/view-welcometab.php';
 
 		return $render();

@@ -19,9 +19,5 @@ use MyVideoRoomPlugin\Library\SectionTemplates;
  * @return string
  */
 return function (): string {
-	ob_start();
-			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Sanitised.
-			echo Factory::get_instance( SectionTemplates::class )->welcome_template(); 
-
-	return ob_get_clean();
+	return Factory::get_instance( SectionTemplates::class )->welcome_template();
 };
