@@ -24,7 +24,7 @@
 		if (display_name >= 4) {
 			$( '#room-name-icon' ).show();
 			$( '#button_add_new' ).show();
-			
+
 		} else {
 			$( '#room-name-icon' ).hide();
 			$( '#submit' ).hide();
@@ -73,7 +73,7 @@
 					function () {
 						$add_room.slideToggle();
 						$add_room.prop( 'value', 'Hide' );
-						
+
 						init();
 					}
 				);

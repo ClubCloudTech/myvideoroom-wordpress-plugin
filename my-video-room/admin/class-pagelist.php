@@ -24,7 +24,7 @@ class PageList {
 	const PAGE_SLUG_PERMISSIONS     = self::PAGE_SLUG_DEFAULT . '-permissions';
 	const PAGE_SLUG_MODULES         = self::PAGE_SLUG_DEFAULT . '-modules';
 	const PAGE_SLUG_CUSTOM          = self::PAGE_SLUG_DEFAULT . '-custom';
-	const PAGE_SLUG_ROOM_MANAGER 	= self::PAGE_SLUG_DEFAULT . '-site-conference';
+	const PAGE_SLUG_ROOM_MANAGER    = self::PAGE_SLUG_DEFAULT . '-site-conference';
 
 	/**
 	 * Get the navigation items

@@ -136,10 +136,10 @@ class AdminAjax {
 
 			if ( $path_object ) {
 				$response['available'] = false;
-				$response['input'] = $slug;
+				$response['input']     = $slug;
 			} else {
 				$response['available'] = true;
-				$response['input'] = $slug;
+				$response['input']     = $slug;
 			}
 			return \wp_send_json( $response );
 		}

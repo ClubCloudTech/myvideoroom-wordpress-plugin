@@ -72,7 +72,7 @@ return function (): string {
 		</nav>
 
 		<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
-<!-- 
+			<!-- 
 		User Wall Profile
 -->
 			<article id="page11" class="myvideoroom-content-tab">
@@ -85,7 +85,7 @@ return function (): string {
 					<div class="myvideoroom-header-table-right">
 					</div>
 				</div>
-	<!-- Module State and Description Marker -->
+				<!-- Module State and Description Marker -->
 
 				<div class="myvideoroom-feature-outer-table">
 					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
@@ -116,7 +116,7 @@ return function (): string {
 						</p>
 					</div>
 				</div>
-	<!-- Dependencies and Requirements Marker -->
+				<!-- Dependencies and Requirements Marker -->
 				<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
 					<div class="myvideoroom-feature-outer-table">
 						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
@@ -138,7 +138,7 @@ return function (): string {
 							</div>
 						</div>
 					</div>
-	<!-- Screenshot Marker -->
+					<!-- Screenshot Marker -->
 					<div class="myvideoroom-feature-outer-table">
 						<div class="myvideoroom-feature-table">
 							<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
@@ -158,7 +158,7 @@ return function (): string {
 								alt="Video Call in Progress">
 						</div>
 					</div>
-	<!-- Settings Separation Marker -->				
+					<!-- Settings Separation Marker -->
 					<div class="myvideoroom-menu-settings">
 						<div class="myvideoroom-header-table-left">
 							<h1><i
@@ -169,7 +169,7 @@ return function (): string {
 
 						</div>
 					</div>
-	<!-- User Room Tab Naming Marker -->					
+					<!-- User Room Tab Naming Marker -->
 					<div class="myvideoroom-feature-outer-table">
 						<div id="feature-state_<?php echo esc_attr( $index++ ); ?>"
 							class="myvideoroom-feature-table-small">
@@ -200,7 +200,7 @@ return function (): string {
 								class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;" />
 						</div>
 					</div>
-	<!-- Default Video Section  -->
+					<!-- Default Video Section  -->
 					<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
 						class="mvr-nav-settingstabs-outer-wrap">
 						<div class="myvideoroom-feature-outer-table">
@@ -224,12 +224,12 @@ return function (): string {
 							</div>
 						</div>
 			</article>
-<!-- 
+			<!-- 
 		Group Video Rooms
 -->
 
 			<article id="page12" class="myvideoroom-content-tab">
-	<!-- Module Header -->				
+				<!-- Module Header -->
 				<div class="myvideoroom-menu-settings">
 					<div class="myvideoroom-header-table-left">
 						<h1><i
@@ -239,7 +239,7 @@ return function (): string {
 					<div class="myvideoroom-header-table-right">
 					</div>
 				</div>
-	<!-- Module State and Description Marker -->
+				<!-- Module State and Description Marker -->
 				<div class="myvideoroom-feature-outer-table">
 					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 						<h2><?php esc_html_e( 'Feature is:', 'myvideoroom' ); ?></h2>
@@ -270,7 +270,7 @@ return function (): string {
 						</p>
 					</div>
 				</div>
-	<!-- Dependencies and Requirements Marker -->
+				<!-- Dependencies and Requirements Marker -->
 				<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
 					<div class="myvideoroom-feature-outer-table">
 						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
@@ -287,7 +287,7 @@ return function (): string {
 							</div>
 						</div>
 					</div>
-	<!-- Screenshot Marker -->
+					<!-- Screenshot Marker -->
 					<div class="myvideoroom-feature-outer-table">
 						<div class="myvideoroom-feature-table">
 							<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
@@ -308,7 +308,7 @@ return function (): string {
 								alt="Video Call in Progress">
 						</div>
 					</div>
-	<!-- Settings Marker -->							
+					<!-- Settings Marker -->
 					<div class="myvideoroom-menu-settings">
 						<div class="myvideoroom-header-table-left">
 							<h1><i
@@ -319,7 +319,7 @@ return function (): string {
 
 						</div>
 					</div>
-	<!-- User Room Tab Naming Marker -->	
+					<!-- User Room Tab Naming Marker -->
 					<div class="myvideoroom-feature-outer-table">
 						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
 							class="myvideoroom-feature-table-small">
@@ -348,7 +348,7 @@ return function (): string {
 								class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;" />
 						</div>
 					</div>
-	<!-- Default Video Section  -->
+					<!-- Default Video Section  -->
 					<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
 						class="mvr-nav-settingstabs-outer-wrap">
 						<div class="myvideoroom-feature-outer-table">
@@ -378,7 +378,7 @@ return function (): string {
 -->
 
 			<article id="page13" class="myvideoroom-content-tab">
-	<!-- Module Header -->										
+				<!-- Module Header -->
 				<div class="myvideoroom-menu-settings">
 					<div class="myvideoroom-header-table-left">
 						<h1><i
@@ -388,7 +388,7 @@ return function (): string {
 					<div class="myvideoroom-header-table-right">
 					</div>
 				</div>
-	<!-- Module State and Description Marker -->			
+				<!-- Module State and Description Marker -->
 				<div class="myvideoroom-feature-outer-table">
 					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 						<h2><?php esc_html_e( 'Feature is:', 'myvideoroom' ); ?></h2>
@@ -419,7 +419,7 @@ return function (): string {
 						</p>
 					</div>
 				</div>
-	<!-- Dependencies and Requirements Marker -->
+				<!-- Dependencies and Requirements Marker -->
 				<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
 					<div class="myvideoroom-feature-outer-table">
 						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
@@ -444,7 +444,7 @@ return function (): string {
 							</div>
 						</div>
 					</div>
-	<!-- Screenshot Marker -->
+					<!-- Screenshot Marker -->
 					<div class="myvideoroom-feature-outer-table">
 						<div class="myvideoroom-feature-table">
 							<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>

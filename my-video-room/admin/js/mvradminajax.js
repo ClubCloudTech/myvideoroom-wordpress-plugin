@@ -9,9 +9,9 @@ window.addEventListener(
 		jQuery(
 			function($) {
 
-			/**
-			 * Initialise Functions on Load
-			 */
+				/**
+				 * Initialise Functions on Load
+				 */
 				function init(){
 
 					$( '.mvr-admin-ajax' ).click(
@@ -29,35 +29,39 @@ window.addEventListener(
 							e.preventDefault();
 							let id = $( this ).attr( 'data-id' ),
 							offset = $( this ).attr( 'data-offset' );
-							$( '#urlinput_'+id+'-'+ offset ).toggle();
-							$( '#button_'+id+'-'+ offset ).toggle();
+							$( '#urlinput_' + id + '-' + offset ).toggle();
+							$( '#button_' + id + '-' + offset ).toggle();
 						}
 					);
 					// For Room Entitity Room Edits
-					$( ".myvideoroom-input-url-trigger" ).keyup(function() {
-						let id = $( this ).attr( 'data-id' ),
-						offset = $( this ).attr( 'data-offset' ),
-						core_url = 'https://'+document.domain + '/';
-						$( '#urlchange_'+id+'-'+ offset ).html( core_url+this.value.toLowerCase() );
-						let targetid = '#button_'+id+'-'+ offset;
-						checkShow( targetid, this.value.toLowerCase() );
-					});
+					$( ".myvideoroom-input-url-trigger" ).keyup(
+						function() {
+							let id   = $( this ).attr( 'data-id' ),
+							offset   = $( this ).attr( 'data-offset' ),
+							core_url = 'https://' + document.domain + '/';
+							$( '#urlchange_' + id + '-' + offset ).html( core_url + this.value.toLowerCase() );
+							let targetid = '#button_' + id + '-' + offset;
+							checkShow( targetid, this.value.toLowerCase() );
+						}
+					);
 					// For New Room Adds.
-					$( ".myvideoroom-input-new-trigger" ).keyup(function() {
-						let core_url = 'https://'+document.domain + '/';
-						
-						$( '#update_url_newroom' ).html( core_url+this.value.toLowerCase() );
-						let target = '#button_add_new';
-						checkShow( target, this.value.toLowerCase() );
-					});
-					
+					$( ".myvideoroom-input-new-trigger" ).keyup(
+						function() {
+							let core_url = 'https://' + document.domain + '/';
+
+							$( '#update_url_newroom' ).html( core_url + this.value.toLowerCase() );
+							let target = '#button_add_new';
+							checkShow( target, this.value.toLowerCase() );
+						}
+					);
+
 					$( '.myvideoroom-roomname-submit-form' ).click(
 						function(e){
 							e.stopPropagation();
 							e.preventDefault();
 							let id = $( this ).attr( 'data-id' ),
 							offset = $( this ).attr( 'data-offset' );
-							updateSlug(id, offset);
+							updateSlug( id, offset );
 						}
 					);
 
@@ -68,20 +72,19 @@ window.addEventListener(
 							addRoom();
 						}
 					);
-				
+
 					$( '#user-profile-input' ).on( 'keyup', checkform );
 					$( '#group-profile-input' ).on( 'keyup', checkgroupform );
 
 					$( '#save-user-tab' ).on( 'click', updateUsertab );
 					$( '#save-group-tab' ).on( 'click', updateGrouptab );
-	
+
 				}
 
-		/**
-		 * Room Manager Ajax Functions
-		 * Used by Room Manager Ajax pages to update room URL(slugs)
-		 */
-
+				/**
+				 * Room Manager Ajax Functions
+				 * Used by Room Manager Ajax pages to update room URL(slugs)
+				 */
 
 				/**
 				 * Handles Module Activation and De-activation Button
@@ -130,7 +133,7 @@ window.addEventListener(
 				 */
 				function checkShow( targetid, input ){
 					var length = input.length;
-					console.log(targetid);
+					console.log( targetid );
 					if ( length < 3) {
 						$( targetid ).prop( 'value', 'Too Short' );
 						$( targetid ).prop( 'disabled', true );
@@ -160,7 +163,7 @@ window.addEventListener(
 							data: form_data,
 							success: function (response) {
 								var state_response = JSON.parse( response );
-								
+
 								if (state_response.available === true ) {
 									$( targetid ).prop( 'disabled', false );
 									$( targetid ).prop( 'value', 'Save' )
@@ -174,14 +177,14 @@ window.addEventListener(
 							}
 						}
 					);
-				}
+				 }
 				/**
 				 * Update Slug - used to update page slug from Room Manager Pages
 				 */
 				var updateSlug = function (id, offset) {
 					var form_data = new FormData();
-					var input = $( '#urlinput_'+id+'-'+ offset ).val(),
-					maintable = $( '#mvr-table-basket-frame_main' );
+					var input     = $( '#urlinput_' + id + '-' + offset ).val(),
+					maintable     = $( '#mvr-table-basket-frame_main' );
 					form_data.append( 'action','myvideoroom_admin_ajax' );
 					form_data.append( 'action_taken', 'update_slug' );
 					form_data.append( 'post_id', id );
@@ -197,10 +200,10 @@ window.addEventListener(
 							data: form_data,
 							success: function (response) {
 								var state_response = JSON.parse( response );
-								$( '#button_'+id+'-'+ offset ).prop( 'value', state_response.feedback );	
-								$( '#button_'+id+'-'+ offset ).prop( 'disabled', true );
+								$( '#button_' + id + '-' + offset ).prop( 'value', state_response.feedback );
+								$( '#button_' + id + '-' + offset ).prop( 'disabled', true );
 								maintable.empty();
-								if (maintable){
+								if (maintable) {
 									maintable.html( state_response.maintable );
 								}
 								if ( state_response.personalmeeting ) {
@@ -211,10 +214,10 @@ window.addEventListener(
 									let conf = $( '#mvr-table-basket-frame_site-conference-room' );
 									conf.html( state_response.conference );
 								}
-								
+
 								init();
-								reloadJs('myvideoroom-monitor-js');
-									
+								reloadJs( 'myvideoroom-monitor-js' );
+
 							},
 							error: function ( response ){
 								console.log( 'Error Uploading' );
@@ -230,15 +233,15 @@ window.addEventListener(
 					var form_data = new FormData();
 					var input     = $( '#room-url-link' ).val().toLowerCase(),
 					display_title = $( '#room-display-name' ).val(),
-					maintable = $( '#mvr-table-basket-frame_main' );
-					
+					maintable     = $( '#mvr-table-basket-frame_main' );
+
 					if ( display_title.length < 3 || input.length < 3 ) {
-						console.log('too short' );
+						console.log( 'too short' );
 						return false;
 					} else {
-						console.log('continue');
+						console.log( 'continue' );
 					}
-					
+
 					form_data.append( 'action','myvideoroom_admin_ajax' );
 					form_data.append( 'action_taken', 'add_new_room' );
 					form_data.append( 'display_title', display_title );
@@ -254,10 +257,10 @@ window.addEventListener(
 							data: form_data,
 							success: function (response) {
 								var state_response = JSON.parse( response );
-								$( '.myvideoroom-roomname-submit-form' ).prop( 'value', state_response.feedback );	
+								$( '.myvideoroom-roomname-submit-form' ).prop( 'value', state_response.feedback );
 								$( '.myvideoroom-roomname-submit-form' ).prop( 'disabled', true );
 								maintable.empty();
-								if (maintable){
+								if (maintable) {
 									maintable.html( state_response.maintable );
 								}
 								if ( state_response.personalmeeting ) {
@@ -268,24 +271,24 @@ window.addEventListener(
 									let conf = $( '#mvr-table-basket-frame_site-conference-room' );
 									conf.html( state_response.conference );
 								}
-								
+
 								init();
-								reloadJs('myvideoroom-monitor-js');
-									
+								reloadJs( 'myvideoroom-monitor-js' );
+
 							},
 							error: function ( response ){
 								console.log( 'Error Uploading' );
 							}
 						}
 					);
-				}
+				 }
 
 				/**
 				 * Refresh Tables - used to refresh room page tables (used post module activation)
 				 */
 				var refreshTables = function (id, offset) {
 					var form_data = new FormData(),
-					maintable = $( '#mvr-table-basket-frame_main' );
+					maintable     = $( '#mvr-table-basket-frame_main' );
 					form_data.append( 'action','myvideoroom_admin_ajax' );
 					form_data.append( 'action_taken', 'refresh_tables' );
 					form_data.append( 'security', myvideoroom_admin_ajax.security );
@@ -300,7 +303,7 @@ window.addEventListener(
 							success: function (response) {
 								var state_response = JSON.parse( response );
 								maintable.empty();
-								if (maintable){
+								if (maintable) {
 									maintable.html( state_response.maintable );
 								}
 								if ( state_response.personalmeeting ) {
@@ -311,10 +314,10 @@ window.addEventListener(
 									let conf = $( '#mvr-table-basket-frame_site-conference-room' );
 									conf.html( state_response.conference );
 								}
-								
+
 								init();
-								reloadJs('myvideoroom-monitor-js');
-									
+								reloadJs( 'myvideoroom-monitor-js' );
+
 							},
 							error: function ( response ){
 								console.log( 'Error Refreshing' );
@@ -326,16 +329,16 @@ window.addEventListener(
 				 * Reload a Script by ID and re-initialise.
 				 */
 				function reloadJs(id) {
-					src = $( '#'+id ).attr( 'src' );
-					src = $('script[src$="' + src + '"]').attr("src");
-					$('script[src$="' + src + '"]').remove();
-					$('<script/>').attr('src', src).appendTo('head');
+					src = $( '#' + id ).attr( 'src' );
+					src = $( 'script[src$="' + src + '"]' ).attr( "src" );
+					$( 'script[src$="' + src + '"]' ).remove();
+					$( '<script/>' ).attr( 'src', src ).appendTo( 'head' );
 				}
 
-		/**
-		 * BuddyPress User and Group Ajax Tab Functions
-		 * Used to update Group Tab Names, and User Video Tab Names from BuddyPress module.
-		 */
+				/**
+				 * BuddyPress User and Group Ajax Tab Functions
+				 * Used to update Group Tab Names, and User Video Tab Names from BuddyPress module.
+				 */
 
 				/**
 				 * Update User Display Name Tab in BuddyPress

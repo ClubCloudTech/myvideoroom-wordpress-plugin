@@ -33,22 +33,21 @@ return function (
 	 */
 	$tabs = apply_filters( 'myvideoroom_room_manager_menu', $inbound_tabs );
 	?>
-<!-- Module Header -->	
+<!-- Module Header -->
 <div class="myvideoroom-menu-settings">
-		<div class="myvideoroom-header-table-left">
-			<h1><i
-			title = "<?php esc_html_e( 'Visit Module Control Center to change or add modules.', 'myvideoroom' ); ?>"
-			class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Room Management and Control', 'myvideoroom' ); ?>
-			</h1>
-		</div>
-		<div class="myvideoroom-header-table-right">
-			<a href="<?php echo \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ); ?>">
+	<div class="myvideoroom-header-table-left">
+		<h1><i title="<?php esc_html_e( 'Visit Module Control Center to change or add modules.', 'myvideoroom' ); ?>"
+				class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Room Management and Control', 'myvideoroom' ); ?>
+		</h1>
+	</div>
+	<div class="myvideoroom-header-table-right">
+		<a href="<?php echo \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ); ?>">
 			<i class="myvideoroom-header-dashicons dashicons-admin-plugins"></i></a>
 
-		</div>
 	</div>
-	<p style>
-		<?php
+</div>
+<p style>
+	<?php
 		echo \sprintf(
 			/* translators: %s is the text "Modules" and links to the Module Section */
 			\esc_html__(
@@ -59,73 +58,73 @@ return function (
 			\esc_html__( 'Modules', 'myvideoroom' ) .
 			'</a>'
 		)
-		?>
-	</p>
+	?>
+</p>
 
-	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-		<ul class="mvr-ul-style-top-menu">
-			<li>
-				<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
-					<?php esc_html_e( 'Room Summary', 'myvideoroom' ); ?>
-				</a>
-			</li>
-			<?php
-			foreach ( $tabs as $menu_output ) {
-				$tab_display_name = $menu_output->get_tab_display_name();
-				$tab_slug         = $menu_output->get_tab_slug();
-				?>
-				<li>
-					<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-						<?php echo esc_html( $tab_display_name ); ?>
-					</a>
-				</li>
-				<?php
-			}
+<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
+	<ul class="mvr-ul-style-top-menu">
+		<li>
+			<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
+				<?php esc_html_e( 'Room Summary', 'myvideoroom' ); ?>
+			</a>
+		</li>
+		<?php
+		foreach ( $tabs as $menu_output ) {
+			$tab_display_name = $menu_output->get_tab_display_name();
+			$tab_slug         = $menu_output->get_tab_slug();
 			?>
-		</ul>
-	</nav>
-	<div class="myvideoroom-notification-security">
+		<li>
+			<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+				<?php echo esc_html( $tab_display_name ); ?>
+			</a>
+		</li>
+			<?php
+		}
+		?>
+	</ul>
+</nav>
+<div class="myvideoroom-notification-security">
 	<?php
 
 	$message = apply_filters( 'myvideoroom_roommanager_notifications', null );
 		/* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped*/ 
 		echo $message;
 	?>
-	</div>
+</div>
 	<?php
 	foreach ( $tabs as $article_output ) {
 		$function_callback = $article_output->get_function_callback();
 		$tab_slug          = $article_output->get_tab_slug();
 		?>
-		<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-			<?php
+<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+		<?php
 			//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 			echo $function_callback;
-			?>
-		</article>
+		?>
+</article>
 		<?php
 	}
 	?>
 
-	<article id="<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
-<!-- Module Header -->				
-			<div class="myvideoroom-menu-settings">
-				<div class="myvideoroom-header-table-left">
-					<h1><i
-							class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Active Rooms and Reception Switches', 'myvideoroom' ); ?>
-					</h1>
-				</div>
-				<div class="myvideoroom-header-table-right">
-				</div>
-			</div>
+<article id="<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
+	<!-- Module Header -->
+	<div class="myvideoroom-menu-settings">
+		<div class="myvideoroom-header-table-left">
+			<h1><i
+					class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Active Rooms and Reception Switches', 'myvideoroom' ); ?>
+			</h1>
+		</div>
+		<div class="myvideoroom-header-table-right">
+		</div>
+	</div>
 
-<!--  Description Marker -->
-		<?php
+	<!--  Description Marker -->
+	<?php
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
-		?>
+	?>
 
-	</article>
+</article>
 	<?php
 	return ob_get_clean();
 };

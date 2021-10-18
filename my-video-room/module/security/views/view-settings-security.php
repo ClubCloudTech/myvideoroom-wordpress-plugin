@@ -26,9 +26,9 @@ return function () {
 	ob_start();
 	$index = 434;
 	?>
-	<div id="outer" class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
-<!-- Module Header -->
-<div class="myvideoroom-menu-settings">
+<div id="outer" class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
+	<!-- Module Header -->
+	<div class="myvideoroom-menu-settings">
 		<div class="myvideoroom-header-table-left-reduced">
 			<h1><i
 					class="myvideoroom-header-dashicons dashicons-lock"></i><?php esc_html_e( 'Room Security and Hosts Control', 'myvideoroom' ); ?>
@@ -38,7 +38,7 @@ return function () {
 		</div>
 	</div>
 	<!-- Module State and Description Marker -->
-	<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped*/ echo Factory::get_instance( SecurityButtons::class )->site_wide_enabled(); ?>	
+	<?php /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped*/ echo Factory::get_instance( SecurityButtons::class )->site_wide_enabled(); ?>
 	<div class="myvideoroom-feature-outer-table myvideoroom-clear">
 
 		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
@@ -87,60 +87,58 @@ return function () {
 	</nav>
 
 	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
-<!-- 
+		<!-- 
 		Default Permissions.
--->		
+-->
 		<article id="defaultperms">
-	<!-- Module Header -->
-		<div class="myvideoroom-menu-settings">
-					<div class="myvideoroom-header-table-left">
-						<h1><i
-								class="myvideoroom-header-dashicons dashicons-unlock"></i><?php esc_html_e( 'Default Permissions', 'myvideoroom' ); ?>
-						</h1>
-					</div>
-					<div class="myvideoroom-header-table-right">
-					</div>
-				</div>	
-	<!-- Module State and Description Marker -->
+			<!-- Module Header -->
+			<div class="myvideoroom-menu-settings">
+				<div class="myvideoroom-header-table-left">
+					<h1><i
+							class="myvideoroom-header-dashicons dashicons-unlock"></i><?php esc_html_e( 'Default Permissions', 'myvideoroom' ); ?>
+					</h1>
+				</div>
+				<div class="myvideoroom-header-table-right">
+				</div>
+			</div>
+			<!-- Module State and Description Marker -->
 
-				<div class="myvideoroom-feature-outer-table">
-					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-						<h2><?php esc_html_e( 'What This Does', 'myvideoroom' ); ?></h2>
-						<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
-						</div>
+			<div class="myvideoroom-feature-outer-table">
+				<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+					<h2><?php esc_html_e( 'What This Does', 'myvideoroom' ); ?></h2>
+					<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
 					</div>
-					<div class="myvideoroom-feature-table-large">
-						<p>
-							<?php
+				</div>
+				<div class="myvideoroom-feature-table-large">
+					<p>
+						<?php
 							esc_html_e(
 								'These are the Default Room Permissions. These settings will be used by the Room, if the user has not yet set up a permissions preference. Users\' preferences override these defaults if they choose them. To enforce settings use the Override Permissions tab.',
 								'myvideoroom'
 							);
-							?>
-						</p>
-						<h4><?php esc_html_e( 'An Example', 'myvideoroom' ); ?></h4>
-						<p>
-							<?php
+						?>
+					</p>
+					<h4><?php esc_html_e( 'An Example', 'myvideoroom' ); ?></h4>
+					<p>
+						<?php
 							esc_html_e(
 								'If you would like to restrict anonymous (signed out) across all new rooms by default, you can apply a default permission here. Your users could still chose to allow anonymous users, but they would have to change the preference themselves.',
 								'myvideoroom'
 							);
-							?>
-						</p>
-					</div>
+						?>
+					</p>
 				</div>
-<!-- Default Video Section  -->
-					<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
-						class="mvr-nav-settingstabs-outer-wrap">
-						<div class="myvideoroom-feature-outer-table">
-							<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
-								class="myvideoroom-feature-table-small">
-								<h2><?php esc_html_e( 'Default Settings', 'myvideoroom' ); ?></h2>
-							</div>
-							<div class="myvideoroom-feature-table-large">
-								<p> <?php esc_html_e( ' Default Room Privacy (reception) and Layout settings. These settings will be used by all Rooms, until users set their own room preference', 'myvideoroom' ); ?>
-								</p>
-								<?php
+			</div>
+			<!-- Default Video Section  -->
+			<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
+				<div class="myvideoroom-feature-outer-table">
+					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+						<h2><?php esc_html_e( 'Default Settings', 'myvideoroom' ); ?></h2>
+					</div>
+					<div class="myvideoroom-feature-table-large">
+						<p> <?php esc_html_e( ' Default Room Privacy (reception) and Layout settings. These settings will be used by all Rooms, until users set their own room preference', 'myvideoroom' ); ?>
+						</p>
+						<?php
 									$default_setting = Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
 										SiteDefaults::USER_ID_SITE_DEFAULTS,
 										Security::PERMISSIONS_TABLE,
@@ -149,65 +147,63 @@ return function () {
 									);
 									// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
 									echo $default_setting;
-								?>
-							</div>
-						</div>
+						?>
+					</div>
+				</div>
 		</article>
 <!-- 
 		Mandatory Permissions.
--->	
+-->
 		<article id="overrideperms">
-		<!-- Module Header -->
+			<!-- Module Header -->
 			<div class="myvideoroom-menu-settings">
-					<div class="myvideoroom-header-table-left">
-						<h1><i
-								class="myvideoroom-header-dashicons dashicons-lock"></i><?php esc_html_e( 'Mandatory (Override) Permissions', 'myvideoroom' ); ?>
-						</h1>
-					</div>
-					<div class="myvideoroom-header-table-right">
-					</div>
-				</div>	
-	<!-- Module State and Description Marker -->
+				<div class="myvideoroom-header-table-left">
+					<h1><i
+							class="myvideoroom-header-dashicons dashicons-lock"></i><?php esc_html_e( 'Mandatory (Override) Permissions', 'myvideoroom' ); ?>
+					</h1>
+				</div>
+				<div class="myvideoroom-header-table-right">
+				</div>
+			</div>
+			<!-- Module State and Description Marker -->
 
-				<div class="myvideoroom-feature-outer-table">
-					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-						<h2><?php esc_html_e( 'What This Does', 'myvideoroom' ); ?></h2>
-						<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
-						</div>
+			<div class="myvideoroom-feature-outer-table">
+				<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+					<h2><?php esc_html_e( 'What This Does', 'myvideoroom' ); ?></h2>
+					<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
 					</div>
-					<div class="myvideoroom-feature-table-large">
-						<p>
-							<?php
+				</div>
+				<div class="myvideoroom-feature-table-large">
+					<p>
+						<?php
 							esc_html_e(
 								'These are the enforced/mandatory room permissions. These settings will be used by the Room regardless of the User\'s preference. To allow the settings to be overriden please use the Default Permissions tab.',
 								'myvideoroom'
 							);
-							?>
-						</p>
-						<h4><?php esc_html_e( 'An Example', 'myvideoroom' ); ?></h4>
-						<p>
-							<?php
+						?>
+					</p>
+					<h4><?php esc_html_e( 'An Example', 'myvideoroom' ); ?></h4>
+					<p>
+						<?php
 							esc_html_e(
 								'If you would like to restrict enforce that all users to the platform must be signed in. Select Override, and Restrict Anonymous, which will override every user setting and enable this feature for every room.',
 								'myvideoroom'
 							);
-							?>
-						</p>
-					</div>
-				</div>	
+						?>
+					</p>
+				</div>
+			</div>
 
-	<!-- Default Video Section  -->
-					<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
-						class="mvr-nav-settingstabs-outer-wrap">
-						<div class="myvideoroom-feature-outer-table">
-							<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
-								class="myvideoroom-feature-table-small">
-								<h2><?php esc_html_e( 'Default Settings', 'myvideoroom' ); ?></h2>
-							</div>
-							<div class="myvideoroom-feature-table-large">
-								<p> <?php esc_html_e( ' Mandatory Security settings. These settings will be used by all Rooms, irrespective of room preferences', 'myvideoroom' ); ?>
-								</p>
-								<?php
+			<!-- Default Video Section  -->
+			<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
+				<div class="myvideoroom-feature-outer-table">
+					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+						<h2><?php esc_html_e( 'Default Settings', 'myvideoroom' ); ?></h2>
+					</div>
+					<div class="myvideoroom-feature-table-large">
+						<p> <?php esc_html_e( ' Mandatory Security settings. These settings will be used by all Rooms, irrespective of room preferences', 'myvideoroom' ); ?>
+						</p>
+						<?php
 									$override_setting = Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
 										SiteDefaults::USER_ID_SITE_DEFAULTS,
 										SiteDefaults::ROOM_NAME_SITE_DEFAULT,
@@ -216,9 +212,9 @@ return function () {
 									);
 								// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
 								echo $override_setting;
-								?>
-							</div>
-						</div>
+						?>
+					</div>
+				</div>
 		</article>
 	</div>
 
