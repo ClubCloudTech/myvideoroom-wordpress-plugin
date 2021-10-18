@@ -271,14 +271,25 @@ class MVRSiteVideo {
 			1
 		);
 
-		// Add Config Page to Default Settings.
+		// Add Video Appearance Page to Default Settings.
 		add_filter(
 			'myvideoroom_permissions_manager_menu',
 			array(
 				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
-				'render_default_video_admin_settings_page',
+				'render_default_video_appearance_tab',
 			),
 			10,
+			1
+		);
+
+		// Add Video Advanced Page to Default Settings.
+		add_filter(
+			'myvideoroom_permissions_manager_menu',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'render_advanced_video_admin_tab',
+			),
+			11,
 			1
 		);
 

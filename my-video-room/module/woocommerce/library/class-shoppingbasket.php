@@ -35,10 +35,11 @@ class ShoppingBasket {
 	 * @return Void
 	 */
 	public function render_basket( string $room_name, $host_status = null, int $post_id = null ) {
-
 		if ( ! $room_name ) {
 			return null;
 		}
+		\wp_enqueue_script( 'myvideoroom-woocommerce-basket-js' );
+		\wp_enqueue_script( 'myvideoroom-woocommerce-carthandler' );
 		// Register this user in Room Presence Table.
 		$this->register_room_presence( $room_name, boolval( $host_status ) );
 

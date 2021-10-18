@@ -258,21 +258,6 @@ class Admin {
 	}
 
 	/**
-	 * Create Template Reference Page
-	 *
-	 * @return string
-	 */
-	public function create_templates_page(): string {
-		$available_layouts    = Factory::get_instance( AvailableScenes::class )->get_available_layouts();
-		$available_receptions = Factory::get_instance( AvailableScenes::class )->get_available_receptions();
-
-		return ( require __DIR__ . '/views/admin/template-browser.php' )(
-			$available_layouts,
-			$available_receptions
-		);
-	}
-
-	/**
 	 * Create the Shortcode Reference page contents.
 	 *
 	 * @return string

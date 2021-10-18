@@ -105,7 +105,7 @@ class Module {
 				$add_to_menu(
 					new Page(
 						self::PAGE_SLUG_BUILDER,
-						\esc_html__( 'Visual Room Designer', 'myvideoroom' ),
+						\esc_html__( 'Room Design', 'myvideoroom' ),
 						array( new RoomBuilderAdmin(), 'create_room_builder_page' ),
 					),
 					1

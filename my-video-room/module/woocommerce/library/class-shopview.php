@@ -27,6 +27,8 @@ class ShopView {
 
 		// Initialize and Autorepair categories.
 		Factory::get_instance( WooCategory::class )->activate_product_category();
+		\wp_enqueue_script( 'myvideoroom-woocommerce-basket-js' );
+		\wp_enqueue_script( 'myvideoroom-woocommerce-carthandler' );
 
 		$category_check = Factory::get_instance( WooCategory::class )->does_category_exist( $room_name );
 

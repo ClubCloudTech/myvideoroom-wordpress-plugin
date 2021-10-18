@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 
+use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
@@ -360,18 +361,18 @@ class MVRSiteVideoRoomHelpers {
 	}
 
 	/**
-	 * Render Default Video Settings Page
+	 * Render Default Video Appearance Tab
 	 *
 	 * @param array $input - the inbound menu.
 	 *
 	 * @return array - outbound menu.
 	 */
-	public function render_default_video_admin_settings_page( array $input ): array {
+	public function render_advanced_video_admin_tab( array $input ): array {
 
 		$admin_tab = new MenuTabDisplay(
-			esc_html__( 'Default Video Appearance', 'my-video-room' ),
-			'videoappearance',
-			fn() => $this->render_default_settings_admin_page()
+			esc_html__( 'Advanced', 'my-video-room' ),
+			'settingsadvanced',
+			fn() => $this->render_advanced_video_appearance_screen()
 		);
 		array_push( $input, $admin_tab );
 
@@ -379,9 +380,36 @@ class MVRSiteVideoRoomHelpers {
 	}
 
 	/**
-	 * Render Site Video Admin Page.
+	 * Default Advanced Video Screen Handler.
 	 */
-	public function render_default_settings_admin_page() {
+	public function render_advanced_video_appearance_screen() {
+		return Factory::get_instance( Admin::class )->create_advanced_settings_page();
+	}
+
+	/**
+	 * Render Advanced Video Settings Tab
+	 *
+	 * @param array $input - the inbound menu.
+	 *
+	 * @return array - outbound menu.
+	 */
+	public function render_default_video_appearance_tab( array $input ): array {
+
+		$admin_tab = new MenuTabDisplay(
+			esc_html__( 'Default Video Appearance', 'my-video-room' ),
+			'videoappearance',
+			fn() => $this->render_default_video_appearance_screen()
+		);
+		array_push( $input, $admin_tab );
+
+		return $input;
+	}
+
+	/**
+	 * Default Video Appearance Screen Handler.
+	 */
+	public function render_default_video_appearance_screen() {
 		return ( require __DIR__ . '/../views/view-settings-video-default.php' )();
 	}
+
 }
