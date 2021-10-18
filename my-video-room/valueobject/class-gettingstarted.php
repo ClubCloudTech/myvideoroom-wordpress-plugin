@@ -57,9 +57,9 @@ class GettingStarted {
 				\esc_html__( 'Access Your Video Rooms' ),
 				\sprintf(
 				/* translators: %s is the text "Room Permissions" and links to the Permissions Section */
-					\esc_html__( 'Start Accessing or adding your active %s.', 'myvideoroom' ),
+					\esc_html__( 'Goto %s To Access Your Video Rooms.', 'myvideoroom' ),
 					'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_ROOM_MANAGER, false ) ) . '">' .
-					\esc_html__( 'Video Rooms', 'myvideoroom' ) . '</a>'
+					\esc_html__( 'Room Manager', 'myvideoroom' ) . '</a>'
 				),
 			),
 		);
