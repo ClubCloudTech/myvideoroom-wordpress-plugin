@@ -51,13 +51,15 @@ return function (
 
 		?>
 	</ol>
-
+	<img src="<?php echo esc_url( plugins_url( '../../img/pricing.PNG', __FILE__ ) ); ?>" width=25%/>
+		<img src="<?php echo esc_url( plugins_url( '../../img/activate_modules.png', __FILE__ ) ); ?>" width=25%/>
+		<img src="<?php echo esc_url( plugins_url( '../../img/mvr-imagelogo.png', __FILE__ ) ); ?>" width=25%/>
 	<p>
 		<?php
 		\printf(
 		/* translators: %s is the text "MyVideoRoom Pricing" and links to the https://clubcloud.tech/pricing */
 			\esc_html__(
-				'Visit %s for more information on purchasing an activation key to use MyVideoRoom.',
+				'Visit %s for more information on purchasing an activation key to use MyVideoRoom, or your activation key will have been emailed to you after you ordered your subscription.',
 				'myvideoroom'
 			),
 			'<a href="https://clubcloud.tech/pricing">' .
