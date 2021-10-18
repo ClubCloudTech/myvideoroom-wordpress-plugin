@@ -8,6 +8,7 @@
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
 /**
@@ -36,17 +37,17 @@ return function (
 <div class="myvideoroom-menu-settings">
 		<div class="myvideoroom-header-table-left">
 			<h1><i
-					class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Room Management and Control', 'myvideoroom' ); ?>
+			title = "<?php esc_html_e( 'Visit Module Control Center to change or add modules.', 'myvideoroom' ); ?>"
+			class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Room Management and Control', 'myvideoroom' ); ?>
 			</h1>
 		</div>
-		<div class="myvideoroom-header-table-right-wide">
+		<div class="myvideoroom-header-table-right">
+			<a href="<?php echo \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ); ?>">
+			<i class="myvideoroom-header-dashicons dashicons-admin-plugins"></i></a>
+
 		</div>
 	</div>
-
-	<p>
-		<?php esc_html_e( 'This section allows you manage the configuration of your rooms and plugins that manage room components.', 'myvideoroom' ); ?>
-	</p>
-	<p>
+	<p style>
 		<?php
 		echo \sprintf(
 			/* translators: %s is the text "Modules" and links to the Module Section */
@@ -83,7 +84,14 @@ return function (
 			?>
 		</ul>
 	</nav>
+	<div class="myvideoroom-notification-security">
+	<?php
 
+	$message = apply_filters( 'myvideoroom_roommanager_notifications', null );
+		/* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped*/ 
+		echo $message;
+	?>
+	</div>
 	<?php
 	foreach ( $tabs as $article_output ) {
 		$function_callback = $article_output->get_function_callback();
@@ -100,7 +108,18 @@ return function (
 	?>
 
 	<article id="<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
+<!-- Module Header -->				
+			<div class="myvideoroom-menu-settings">
+				<div class="myvideoroom-header-table-left">
+					<h1><i
+							class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Active Rooms and Reception Switches', 'myvideoroom' ); ?>
+					</h1>
+				</div>
+				<div class="myvideoroom-header-table-right">
+				</div>
+			</div>
 
+<!--  Description Marker -->
 		<?php
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();

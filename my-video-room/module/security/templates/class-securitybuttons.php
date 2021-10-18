@@ -38,7 +38,7 @@ class SecurityButtons {
 		// Format Plugin Base Link to Security Center.
 		$plugin_foldername = plugin_basename( __DIR__ );
 		$plugin_path       = strstr( $plugin_foldername, '/', true );
-		$admin_page        = Security::MODULE_SECURITY_ADMIN_PAGE;
+		$admin_page        = Security::MODULE_SECURITY_NAME;
 
 		// get Site Override Status.
 
@@ -50,7 +50,7 @@ class SecurityButtons {
 		if ( 'nourl' === $input_type ) {
 			$path = null;
 		} else {
-			$path = ' href="' . get_admin_url() . 'admin.php?page=' . $plugin_path . '&tab=' . $admin_page . '#disabled" ';
+			$path = ' href="' . get_admin_url() . 'admin.php?page=' . $admin_page . '" ';
 		}
 
 		$output = '<a ' . $path . ' class="button button-primary" style="background-color:#daab33">' . esc_html__( 'Site Enforcement Active', 'my-video-room' ) . '</a>';

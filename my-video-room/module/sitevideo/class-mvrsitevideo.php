@@ -245,7 +245,7 @@ class MVRSiteVideo {
 				);
 			},
 		);
-
+		// Add Menu Page to Main Plugin.
 		\add_action(
 			'myvideoroom_admin_menu',
 			function ( callable $add_to_menu ) {

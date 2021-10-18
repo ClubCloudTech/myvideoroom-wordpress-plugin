@@ -47,18 +47,18 @@ class PageList {
 				array( $admin_manager, 'create_modules_page' )
 			),
 
-			self::PAGE_SLUG_PERMISSIONS     => new Page(
-				self::PAGE_SLUG_PERMISSIONS,
-				\esc_html__( 'Default Settings', 'myvideoroom' ),
-				array( $admin_manager, 'create_permissions_page' ),
-				'admin-generic',
-			),
-
 			self::PAGE_SLUG_REFERENCE       => new Page(
 				self::PAGE_SLUG_REFERENCE,
 				\esc_html__( 'Reference', 'myvideoroom' ),
 				array( $admin_manager, 'create_shortcode_reference_page' ),
 				'editor-help'
+			),
+
+			self::PAGE_SLUG_PERMISSIONS     => new Page(
+				self::PAGE_SLUG_PERMISSIONS,
+				\esc_html__( 'Settings', 'myvideoroom' ),
+				array( $admin_manager, 'create_permissions_page' ),
+				'admin-generic',
 			),
 		);
 

@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Module\Security;
 
+use MyVideoRoomPlugin\Admin\Page;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
@@ -19,6 +20,7 @@ use MyVideoRoomPlugin\Module\Security\Library\SecurityNotifications;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityRoomHelpers;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\CustomPermissions\Module as CustomPermissions;
+use MyVideoRoomPlugin\Module\Security\Templates\SecurityButtons;
 
 /**
  * Class Security- Provides the Render Block Host Function for Security.
@@ -145,6 +147,26 @@ class Security {
 			10,
 			1
 		);
+
+		// Add Menu Page to Main Plugin.
+		\add_action(
+			'myvideoroom_admin_menu',
+			function ( callable $add_to_menu ) {
+				$add_to_menu(
+					new Page(
+						self::MODULE_SECURITY_NAME,
+						\esc_html__( 'Security', 'myvideoroom' ),
+						array( Factory::get_instance( SecurityRoomHelpers::class ), 'get_security_admin_page' ),
+						'lock'
+					),
+					10
+				);
+			},
+			10
+		);
+
+		// Notification of SiteWide State.
+		add_filter( 'myvideoroom_roommanager_notifications', array( Factory::get_instance( SecurityButtons::class ), 'site_wide_enabled' ) );
 
 		// Add Config Page to Main Room Manager.
 		add_filter(

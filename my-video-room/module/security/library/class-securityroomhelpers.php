@@ -39,11 +39,11 @@ class SecurityRoomHelpers {
 	}
 
 	/**
-	 * Get Security - returns admin page
+	 * Get Security - returns Security Page as Callable
 	 *
 	 * @return string
 	 */
-	private function get_security_admin_page(): string {
+	public function get_security_admin_page(): string {
 		return ( require __DIR__ . '/../views/view-settings-security.php' )();
 	}
 
