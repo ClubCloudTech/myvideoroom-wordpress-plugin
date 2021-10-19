@@ -157,7 +157,6 @@ class MVRSiteVideoViews {
 	/**
 	 * Render Login Page
 	 *
-	 * @param string $room_name The Room name.
 	 * @return string - Login Page.
 	 */
 	public function render_login_page(): string {
@@ -205,6 +204,87 @@ class MVRSiteVideoViews {
 
 			return $render( $user_info );
 
+	}
+	/**
+	 * Render Confirmation Pages
+	 *
+	 * @param string $message - Message to Display.
+	 * @param string $confirmation_button_approved - Button to Display for Approved.
+	 * @return string
+	 */
+	public function shortcode_confirmation( string $message, string $confirmation_button_approved ):string {
+
+		$cancel_button = $this->cancel_nav_bar_button( 'cancel', esc_html__( 'Cancel', 'my-video-room' ), null, 'mvr-main-button-cancel' );
+
+		// Render Confirmation Page View.
+
+		$render = require __DIR__ . '/../views/shortcode/confirmation-page.php';
+		return $render( $message, $confirmation_button_approved, $cancel_button );
+
+	}
+
+	/**
+	 * Render the Basket Nav Bar Button
+	 *
+	 * @param  string $button_type - Feedback for Ajax Post.
+	 * @param  string $button_label - Label for Button.
+	 * @param  string $style - Add a class for the button (optional).
+	 * @param  string $target_id - Adds a class to the button to javascript take an action on.
+	 * @param  string $target_window - adds a target window element used to switch destination windows.
+	 *
+	 * @return string
+	 */
+	public function cancel_nav_bar_button( string $button_type, string $button_label, string $style = null, string $target_id = null, string $target_window = null ): string {
+
+		$id_text = null;
+
+		if ( $target_window ) {
+			$id_text = ' data-target="' . $target_window . '" ';
+		}
+
+		$style .= ' ' . $target_id;
+
+		return '
+		<button id="' . $target_id . '" class="mvr-confirmation-cancel ' . $style . '" data-target="' . $target_window . '">
+		<a data-input-type="' . $button_type . '" ' . $id_text . ' class="mvr-confirmation-cancel ' . $style . ' ">' . $button_label . '</a>
+		</button>
+		';
+	}
+	/**
+	 * Render the Basket Nav Bar Button
+	 *
+	 * @param  string $button_type - Feedback for Ajax Post.
+	 * @param  string $button_label - Label for Button.
+	 * @param string $room_name -  Name of Room.
+	 * @param  string $nonce - Nonce for operation (if confirmation used).
+	 * @param  string $product_or_id - Adds additional Data to Nonce for more security (optional).
+	 * @param  string $style - Add a class for the button (optional).
+	 * @param  string $target_id - Adds a class to the button to javascript take an action on.
+	 * @param  string $href_class - Adds a class to the button to javascript take an action on.
+	 * @param  string $target_window - adds a target window element used to switch destination windows.
+	 *
+	 * @return string
+	 */
+	public function basket_nav_bar_button( string $button_type, string $button_label, string $room_name = null, string $nonce = null, string $product_or_id = null, string $style = null, string $target_id = null, string $href_class = null, string $target_window = null ): string {
+
+		$id_text = null;
+		if ( $product_or_id ) {
+			$id_text .= ' data-record-id="' . $product_or_id . '" ';
+		}
+
+		if ( $target_window ) {
+			$id_text .= ' data-target="' . $target_window . '" ';
+		}
+
+		if ( ! $style ) {
+			$style = 'mvr-main-button-enabled';
+		}
+
+		return '
+		<button  class="mvr-confirmation-button ' . $style . '" data-nonce="' . $nonce . '" data-room-id="' . $target_id . '" data-input-type="' . $button_type . '">
+		<a  data-room-id="' . $target_id . '" data-input-type="' . $button_type . '" data-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="mvr-confirmation-button ' . $style . $href_class . '">' . $button_label . '</a>
+		</button>
+		';
 	}
 
 }

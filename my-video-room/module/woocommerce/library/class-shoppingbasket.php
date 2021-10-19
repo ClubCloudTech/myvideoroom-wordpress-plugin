@@ -40,6 +40,7 @@ class ShoppingBasket {
 		}
 		\wp_enqueue_script( 'myvideoroom-woocommerce-basket-js' );
 		\wp_enqueue_script( 'myvideoroom-woocommerce-carthandler' );
+		\wp_enqueue_script( 'myvideoroom-admin-tabs' );
 		// Register this user in Room Presence Table.
 		$this->register_room_presence( $room_name, boolval( $host_status ) );
 

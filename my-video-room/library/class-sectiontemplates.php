@@ -52,8 +52,7 @@ class SectionTemplates {
 		$render = include __DIR__ . '/../module/sitevideo/views/template/maintemplate.php';
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- template already escaped.
-		echo $render( $header, $tabs, $html_library, $room_name );
-		return '';
+		return $render( $header, $tabs, $html_library, $room_name );
 
 	}
 

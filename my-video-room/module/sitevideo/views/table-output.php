@@ -65,7 +65,7 @@ return function (
 		<?php
 	} elseif ( $room_list && true === $shortcode ) {
 		?>
-		<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
+		<table  id="mvr-table-basket-frame_site-conference-room" data-type="frontend" class="wp-list-table widefat plugins myvideoroom-table-adjust">
 			<thead>
 				<tr class="myvideoroom-hide-mobile">
 					<th scope="col" class="manage-column column-name column-primary">

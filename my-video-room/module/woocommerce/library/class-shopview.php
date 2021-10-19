@@ -29,12 +29,11 @@ class ShopView {
 		Factory::get_instance( WooCategory::class )->activate_product_category();
 		\wp_enqueue_script( 'myvideoroom-woocommerce-basket-js' );
 		\wp_enqueue_script( 'myvideoroom-woocommerce-carthandler' );
-
+		\wp_enqueue_script( 'myvideoroom-admin-tabs' );
+// TODO need to update FRED
 		$category_check = Factory::get_instance( WooCategory::class )->does_category_exist( $room_name );
 
-		if ( ! $category_check ) {
-			return null;
-		}
+	
 		$host_status     = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 		$output          = do_shortcode( '[products category=' . $room_name . ']' );
 		$last_basket     = Factory::get_instance( ShoppingBasket::class )->render_sync_queue_table( $room_name, null, true );

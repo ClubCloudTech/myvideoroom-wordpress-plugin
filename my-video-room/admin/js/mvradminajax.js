@@ -35,7 +35,8 @@ window.addEventListener(
                     );
                     // For Room Entitity Room Edits
                     $(".myvideoroom-input-url-trigger").keyup(
-                        function() {
+                        function(e) {
+                            e.stopPropagation();
                             let id = $(this).attr('data-id'),
                                 offset = $(this).attr('data-offset'),
                                 core_url = 'https://' + document.domain + '/';
@@ -68,6 +69,7 @@ window.addEventListener(
                     $('#button_add_new').click(
                         function(e) {
                             e.stopPropagation();
+                            e.stopImmediatePropagation();
                             e.preventDefault();
                             addRoom();
                         }
@@ -131,7 +133,6 @@ window.addEventListener(
                  */
                 function checkShow(targetid, input) {
                     var length = input.length;
-                    console.log(targetid);
                     if (length < 3) {
                         $(targetid).prop('value', 'Too Short');
                         $(targetid).prop('disabled', true);
@@ -211,7 +212,7 @@ window.addEventListener(
                             }
 
                             init();
-                            reloadJs('myvideoroom-monitor-js');
+                            reloadJsadmin('myvideoroom-monitor-js');
 
                         },
                         error: function(response) {
@@ -227,19 +228,25 @@ window.addEventListener(
                     var form_data = new FormData();
                     var input = $('#room-url-link').val().toLowerCase(),
                         display_title = $('#room-display-name').val(),
-                        maintable = $('#mvr-table-basket-frame_main');
+                        table = $('#mvr-table-basket-frame_site-conference-room'),
+                        shortcode = table.attr('data-type');
+
+                    if (shortcode === 'frontend') {
+                        form_data.append('action_taken', 'add_new_room_shortcode');
+                    } else {
+                        form_data.append('action_taken', 'add_new_room');
+                    }
 
                     if (display_title.length < 3 || input.length < 3) {
                         console.log('too short');
                         return false;
-                    } else {
-                        console.log('continue');
                     }
 
                     form_data.append('action', 'myvideoroom_admin_ajax');
-                    form_data.append('action_taken', 'add_new_room');
+
                     form_data.append('display_title', display_title);
                     form_data.append('slug', input);
+                    form_data.append('type', shortcode);
                     form_data.append('security', myvideoroom_admin_ajax.security);
                     $.ajax({
                         type: 'post',
@@ -249,25 +256,36 @@ window.addEventListener(
                         processData: false,
                         data: form_data,
                         success: function(response) {
-                            var state_response = JSON.parse(response);
-                            $('.myvideoroom-roomname-submit-form').prop('value', state_response.feedback);
-                            $('.myvideoroom-roomname-submit-form').prop('disabled', true);
-                            maintable.empty();
-                            if (maintable) {
-                                maintable.html(state_response.maintable);
-                            }
-                            if (state_response.personalmeeting) {
-                                let pmm = $('#mvr-table-basket-frame_personal-meeting-module');
-                                pmm.html(state_response.personalmeeting);
-                            }
-                            if (state_response.conference) {
-                                let conf = $('#mvr-table-basket-frame_site-conference-room');
-                                conf.html(state_response.conference);
-                            }
+                            var state_response = JSON.parse(response),
+                                main = $('#mvr-table-basket-frame_main'),
+                                sctable = $('#mvr-table-basket-frame_site-conference-room');
 
+                            if (state_response.shortcode == 'ok') {
+
+                                console.log(state_response.shortcode + ' ok fired');
+                                $('#button_add_new').prop('value', state_response.feedback);
+                                $('#button_add_new').prop('disabled', true);
+                                sctable.empty();
+                                sctable.html(state_response.maintable);
+
+                            } else {
+                                $('.myvideoroom-roomname-submit-form').prop('value', state_response.feedback);
+                                $('.myvideoroom-roomname-submit-form').prop('disabled', true);
+                                if (state_response.personalmeeting) {
+                                    let pmm = $('#mvr-table-basket-frame_personal-meeting-module');
+                                    pmm.html(state_response.personalmeeting);
+                                }
+                                if (state_response.conference) {
+                                    let conf = $('#mvr-table-basket-frame_site-conference-room');
+                                    conf.html(state_response.conference);
+                                }
+                                main.empty();
+                                if (main) {
+                                    main.html(state_response.maintable);
+                                }
+                            }
+                            reloadJsadmin('myvideoroom-monitor-js');
                             init();
-                            reloadJs('myvideoroom-monitor-js');
-
                         },
                         error: function(response) {
                             console.log('Error Uploading');
@@ -307,10 +325,10 @@ window.addEventListener(
                                 }
 
                                 init();
-                                reloadJs('myvideoroom-monitor-js');
+                                reloadJsadmin('myvideoroom-monitor-js');
 
                             },
-                            error: function(response) {
+                            error: function() {
                                 console.log('Error Refreshing');
                             }
                         });
@@ -318,7 +336,7 @@ window.addEventListener(
                     /**
                      * Reload a Script by ID and re-initialise.
                      */
-                function reloadJs(id) {
+                function reloadJsadmin(id) {
                     src = $('#' + id).attr('src');
                     src = $('script[src$="' + src + '"]').attr("src");
                     $('script[src$="' + src + '"]').remove();

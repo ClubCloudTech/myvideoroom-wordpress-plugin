@@ -43,20 +43,14 @@ return function (
 		);
 
 		$delete_nonce   = wp_create_nonce( 'delete_room_' . $room->id );
-		$delete_url     = \add_query_arg(
-			array(
-				'room_id'  => $room->id,
-				'confirm'  => null,
-				'action'   => 'delete',
-				'_wpnonce' => $delete_nonce,
-			),
-			\esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) )
-		);
+		$delete_url     = '#';
 		$edit_actions[] = array(
 			__( 'Delete room' ),
 			$delete_url,
-			'myvideoroom-dashicons dashicons-dismiss myvideoroom-sitevideo-delete',
-			array( 'data-nonce' => $delete_nonce ),
+			'myvideoroom-dashicons dashicons-dismiss myvideoroom-sitevideo-delete ',
+			array( 'data-nonce' => $delete_nonce,
+			'data-room-name'    => $room->display_name,
+			),
 		);
 	}
 	// ---

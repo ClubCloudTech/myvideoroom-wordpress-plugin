@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
@@ -49,6 +50,7 @@ class AdminAjax {
 			'myvideoroom_admin_ajax',
 			$script_data_array
 		);
+		wp_enqueue_script( 'myvideoroom-protect-input' );
 
 	}
 
@@ -223,6 +225,36 @@ class AdminAjax {
 			if ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
 				$response['conference'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO );
 			}
+			return \wp_send_json( $response );
+		}
+
+		/*
+		* Add a New Room From Frontend- Used To add Site Conference Rooms.
+		*
+		*/
+		if ( 'add_new_room_shortcode' === $action_taken ) {
+			if ( isset( $_POST['slug'] ) ) {
+				$slug_pre_san = sanitize_text_field( wp_unslash( $_POST['slug'] ) );
+				$room_slug    = strtolower( str_replace( ' ', '-', trim( $slug_pre_san ) ) );
+			}
+			if ( isset( $_POST['display_title'] ) ) {
+				$display_title = sanitize_text_field( wp_unslash( $_POST['display_title'] ) );
+			}
+			$response['feedback'] = esc_html__( 'Saved', 'myvideoroom' );
+			if ( \strlen( $room_slug ) < 3 || \strlen( $display_title ) < 3 ) {
+				$response['feedback'] = esc_html__( 'Input is too short ', 'myvideoroom' );
+				return \wp_send_json( $response );
+			}
+
+			Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
+				strtolower( str_replace( ' ', '-', trim( $display_title ) ) ),
+				$display_title,
+				$room_slug,
+				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+				MVRSiteVideo::SHORTCODE_SITE_VIDEO
+			);
+			$response['shortcode'] = 'ok';
+			$response['maintable'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO, true );
 			return \wp_send_json( $response );
 		}
 

@@ -6,6 +6,8 @@
  * @package MyVideoRoomPlugin\Module\SiteVideo\Views\Template\maintemplate.php
  */
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
@@ -60,7 +62,6 @@ return function (
 		<ul class="mvr-ul-style-side-menu">
 			<?php
 					$active = ' nav-tab-active';
-
 			foreach ( $tabs as $menu_output ) {
 				$tab_display_name = $menu_output->get_tab_display_name();
 				$tab_slug         = $menu_output->get_tab_slug();

@@ -163,14 +163,17 @@ class MVRSiteVideo {
 			'myvideoroom-sitevideo-settings-js',
 			\plugins_url( '/js/settings.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			Factory::get_instance( Version::class )->get_plugin_version(),
+			Factory::get_instance( Version::class )->get_plugin_version() . \wp_rand( 1, 2000 ),
 			true
 		);
 
 		\wp_localize_script(
 			'myvideoroom-sitevideo-settings-js',
 			'myvideoroom_sitevideo_settings',
-			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
+			array(
+				'ajax_url' => \admin_url( 'admin-ajax.php' ),
+				'security' => \wp_create_nonce( 'settings_ajax' ),
+			)
 		);
 
 		// Register Script Ajax Upload.

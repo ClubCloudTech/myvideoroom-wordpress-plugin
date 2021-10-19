@@ -21,31 +21,72 @@ use MyVideoRoomPlugin\SiteDefaults;
  */
 class MVRSiteVideoAjax {
 
+	const DELETE_APPROVED = 'delete-approved';
+
 	/**
 	 * Site Video Support for Ajax Settings.
 	 * This function handles the tabs in conference centre pages that render rooms and config settings inside conference center backend, and reception center shortcode Ajax.
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function get_ajax_page_settings() {
+		check_ajax_referer( 'handle_picture_upload', 'security', false );
+		$room_id      = (int) Factory::get_instance( Ajax::class )->get_integer_parameter( 'roomId' );
+		$input_type   = Factory::get_instance( Ajax::class )->get_string_parameter( 'inputType' );
+		$action_taken = Factory::get_instance( Ajax::class )->get_string_parameter( 'action_taken' );
+		$room_name    = Factory::get_instance( Ajax::class )->get_string_parameter( 'roomName' );
+		$nonce        = Factory::get_instance( Ajax::class )->get_string_parameter( 'nonce' );
+		$response     = array();
 
-		$room_id    = (int) Factory::get_instance( Ajax::class )->get_text_parameter( 'roomId' );
-		$input_type = Factory::get_instance( Ajax::class )->get_text_parameter( 'inputType' );
+		switch ( $action_taken ) {
+			case 'core':
+				// Case Room Render for Reception Shortcode.
+				if ( MVRSiteVideo::RECEPTION_ROOM_FLAG === $input_type ) {
+					$response['mainvideo'] = Factory::get_instance( MVRSiteVideoControllers::class )->site_videoroom_host_function( $room_id, true );
 
-		// Case Room Render for Reception Shortcode.
+				} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $input_type ) {
+					$response['mainvideo'] = ( require __DIR__ . '/../views/view-settings-conference-center-default.php' )();
 
-		if ( MVRSiteVideo::RECEPTION_ROOM_FLAG === $input_type ) {
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped.
-			echo Factory::get_instance( MVRSiteVideoControllers::class )->site_videoroom_host_function( $room_id, true );
+				} else {
+					$room_object           = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+					$response['mainvideo'] = ( require __DIR__ . '/../views/view-management-rooms.php' )( $room_object, $input_type );
+				}
+				return \wp_send_json( $response );
+			case 'delete_room':
+				if ( ! \wp_verify_nonce( $nonce, 'delete_room_' . $room_id ) || ! current_user_can( 'administrator' ) ) {
+					$response['mainvideo'] = \esc_html__( 'You do not have permission to complete this operation.', 'myvideoroom' );
+					return \wp_send_json( $response );
+				}
+				$message = sprintf(
+				/* translators: %s is the message variant translated above */
+					\esc_html__(
+						'delete %s ? This action can not be reversed.',
+						'myvideoroom'
+					),
+					esc_html( $room_name )
+				);
 
-		} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $input_type ) {
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo ( require __DIR__ . '/../views/view-settings-conference-center-default.php' )();
+				$approved_nonce        = wp_create_nonce( $room_id . self::DELETE_APPROVED );
+				$confirmation_approved = Factory::get_instance( MVRSiteVideoViews::class )->basket_nav_bar_button( self::DELETE_APPROVED, esc_html__( 'Delete ', 'my-video-room' ) . $room_name, null, $approved_nonce, $user_id, null, $room_id );
+				$response['mainvideo'] = Factory::get_instance( MVRSiteVideoViews::class )->shortcode_confirmation( $message, $confirmation_approved );
+				return \wp_send_json( $response );
 
-		} else {
-			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo ( require __DIR__ . '/../views/view-management-rooms.php' )( $room_object, $input_type );
+			case 'delete_approved':
+				$verify = \wp_verify_nonce( $nonce, $room_id . self::DELETE_APPROVED );
+				if ( ! $verify || ! current_user_can( 'administrator' ) ) {
+					$response['mainvideo'] = \esc_html__( 'You do not have permission to complete this operation.', 'myvideoroom' );
+					return \wp_send_json( $response );
+				}
+
+				$room_check = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+				if ( ! $room_check ) {
+					$response['mainvideo'] = \esc_html__( 'This Room does not Exist - please contact support', 'myvideoroom' );
+				} else {
+					Factory::get_instance( MVRSiteVideoRoomHelpers::class )->delete_room_and_post( $room_check );
+				}
+
+				$response['mainvideo'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO, true );
+				return \wp_send_json( $response );
 		}
 		die();
 	}

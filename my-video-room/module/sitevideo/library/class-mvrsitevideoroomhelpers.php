@@ -8,6 +8,7 @@
 namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 
 use MyVideoRoomPlugin\Admin;
+use MyVideoRoomPlugin\Admin\AdminAjax;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
@@ -217,7 +218,7 @@ class MVRSiteVideoRoomHelpers {
 			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 
 			if ( ! $room_object ) {
-				$details_section = \esc_html__( 'Room does not exist', 'myvideoroom' );
+				$details_section = null;
 			} else {
 				switch ( $action ) {
 					case 'delete':
@@ -245,7 +246,9 @@ class MVRSiteVideoRoomHelpers {
 				}
 			}
 		}
-		wp_enqueue_script( 'myvideoroom-protect-input' );
+		// Render Scripts to Manage Room Add.
+		Factory::get_instance( AdminAjax::class )->init();
+		\wp_enqueue_script( 'myvideoroom-monitor' );
 		if ( $shortcode ) {
 			return ( require __DIR__ . '/../views/shortcode/shortcode-reception.php' )( $details_section );
 		} else {
@@ -260,7 +263,7 @@ class MVRSiteVideoRoomHelpers {
 	 *
 	 * @return bool
 	 */
-	private function delete_room_and_post( \stdClass $room_object ): bool {
+	public function delete_room_and_post( \stdClass $room_object ): bool {
 		Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_object->room_name );
 		\wp_delete_post( $room_object->id, true );
 

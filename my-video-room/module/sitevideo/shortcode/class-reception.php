@@ -40,7 +40,6 @@ class Reception {
 	 * @throws \Exception When the update fails.
 	 */
 	public function sitevideo_reception_shortcode( $attributes = array() ): string {
-		$room_name = $attributes['room'] ?? 'default';
 		return Factory::get_instance( MVRSiteVideoRoomHelpers::class )->create_site_conference_page( true );
 	}
 

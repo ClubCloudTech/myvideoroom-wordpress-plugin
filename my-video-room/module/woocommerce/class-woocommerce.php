@@ -121,9 +121,6 @@ class WooCommerce {
 			return null;
 		}
 
-		// @TODO remove before production.
-		\add_shortcode( 'ccproxytest', array( $this, 'proxy_test' ) );
-
 		// Add Basket Menu to Main Frontend Templates.
 		add_filter(
 			'myvideoroom_main_template_render',
@@ -170,8 +167,6 @@ class WooCommerce {
 		// Ajax Handler for Basket Management.
 		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
 		\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
-
-		\wp_enqueue_script( 'myvideoroom-admin-tabs' );
 
 		\wp_localize_script(
 			'myvideoroom-woocommerce-basket-js',
