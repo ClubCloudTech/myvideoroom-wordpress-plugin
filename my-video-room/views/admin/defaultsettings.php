@@ -12,6 +12,7 @@ namespace MyVideoRoomPlugin;
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\HttpPost;
+use MyVideoRoomPlugin\Module\RoomBuilder\Module;
 
 /**
  * Render the Default Settings Admin page
@@ -98,7 +99,7 @@ return function (
 			</h1>
 		</div>
 		<div class="myvideoroom-header-table-right-wide">
-		<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Settings:', 'myvideoroom' ); ?><i data-target="<?php echo esc_attr( $target ); ?>" class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Go to Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>"></i>
+		<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Settings:', 'myvideoroom' ); ?><i data-target="<?php echo esc_attr( $target ); ?>" class="myvideoroom-header-dashicons dashicons-admin-settings " title="<?php esc_html_e( 'Go to Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>"></i>
 			</h3>
 		</div>
 	</div>
@@ -106,21 +107,27 @@ return function (
 <!-- Module State and Description Marker -->
 <div class="myvideoroom-feature-outer-table">
 		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-			<h2><?php esc_html_e( 'Description', 'myvideoroom' ); ?></h2>
+			<h2><?php esc_html_e( 'What This Does', 'myvideoroom' ); ?></h2>
 			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
 
 			</div>
 		</div>
 		<div class="myvideoroom-feature-table-large">
 			<h2><?php esc_html_e( 'Set Default Hosting Rights for Shortcodes', 'myvideoroom' ); ?></h2>
-			<p>
-				<?php
-				esc_html_e(
-					'This setting governs who is a host and who is not in shortcodes if you use your own shortcode pairings or generate them in the room designer. You can either generate two shortcodes where one is for the host, and one for guest. Alternatively you can generate a single shortcode, and use these setting to configure who the video engine will treat as a host. This section allows you to add and remove WordPress roles to your host permissions matrix.',
-					'myvideoroom'
-				);
-				?>
-			</p>
+						<p style>
+	<?php
+		echo \sprintf(
+			/* translators: %s is the text "Modules" and links to the Module Section */
+			\esc_html__(
+				'This setting governs who is a host and who is not in shortcodes if generated in %s, or manually. You can either generate two shortcodes where one is for the host, and one for guest. Alternatively you can generate a single shortcode, and use these setting to configure who the video engine will treat as a host.',
+				'myvideoroom'
+			),
+			'<a href="' . \esc_url( \menu_page_url( Module::PAGE_SLUG_BUILDER, false ) ) . '">' .
+			\esc_html__( 'Room Design', 'myvideoroom' ) .
+			'</a>'
+		)
+	?>
+</p>
 			<p>
 				<?php
 				esc_html_e(
@@ -132,54 +139,40 @@ return function (
 		</div>
 	</div>
 
-<!-- Module State and Description Marker -->
+<!-- Role Description Marker -->
 <div class="myvideoroom-feature-outer-table">
 		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 			<h2><?php esc_html_e( 'Default Permissions', 'myvideoroom' ); ?></h2>
 			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
-
+<p><?php esc_html_e( 'WordPress Roles Available', 'myvideoroom' ); ?></p>
+<p><?php esc_html_e( 'Checked Roles will be made Hosts', 'myvideoroom' ); ?></p>
 			</div>
 		</div>
-		<div class="myvideoroom-feature-table-large">
+		<div class="myvideoroom-feature-table-large table-item-output">
 		<form method="post" action="">
-			<fieldset>
-				<table class="myvideoroom-permissions widefat" role="presentation">
-					<thead>
-					<tr>
-						<th><?php \esc_html_e( 'WordPress role', 'myvideoroom' ); ?></th>
-						<th><?php \esc_html_e( 'Has default host permission', 'myvideoroom' ); ?></th>
-					</tr>
-					</thead>
-					<tbody>
+					<div class="">
 					<?php
 					$index = 0;
 					foreach ( $all_wp_roles as $role_name => $role_details ) {
 						++ $index;
-
 						$role         = \get_role( $role_name );
 						$has_host_cap = $role->has_cap( Plugin::CAP_GLOBAL_HOST );
-
 						?>
-						<tr<?php echo $index % 2 ? ' class="alternate"' : ''; ?>>
-							<th scope="row">
-								<label for="<?php echo \esc_attr( $html_library->get_id( 'role_' . $role_name ) ); ?>">
-									<?php echo \esc_html( $role_details['name'] ); ?>
-								</label>
-							</th>
+						<div class="table-output-permissions">
+						<label for="<?php echo \esc_attr( $html_library->get_id( 'role_' . $role_name ) ); ?>">
+								<?php echo \esc_html( $role_details['name'] ); ?>
+						</label>
 
-							<td>
-								<input class="myvideoroom-admin-table-format"
+						<input class="myvideoroom-admin-table-format"
 									id="<?php echo \esc_attr( $html_library->get_id( 'role_' . $role_name ) ); ?>"
 									name="<?php echo \esc_attr( $html_library->get_field_name( 'role_' . $role_name ) ); ?>"
 									type="checkbox" <?php echo $has_host_cap ? ' checked="checked" ' : ''; ?>" value="on" />
-							</td>
-						</tr>
+					</div>
 						<?php
 					}
+
 					?>
-					</tbody>
-				</table>
-			</fieldset>
+					</div>
 
 			<?php
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --internally created sanitised function

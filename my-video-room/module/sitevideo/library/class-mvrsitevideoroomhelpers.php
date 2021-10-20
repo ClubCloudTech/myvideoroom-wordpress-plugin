@@ -170,7 +170,7 @@ class MVRSiteVideoRoomHelpers {
 			fn() => $this->get_sitevideo_admin_page()
 		);
 		array_push( $input, $admin_tab );
-
+		\wp_enqueue_script( 'myvideoroom-sitevideo-add-room-js' );
 		return $input;
 	}
 
@@ -192,7 +192,7 @@ class MVRSiteVideoRoomHelpers {
 	 */
 	public function create_site_conference_page( bool $shortcode = null ): string {
 		$details_section = null;
-
+		\wp_enqueue_script( 'myvideoroom-sitevideo-add-room-js' );
 		$http_post_library = Factory::get_instance( HttpPost::class );
 		$http_get_library  = Factory::get_instance( HttpGet::class );
 
@@ -217,7 +217,9 @@ class MVRSiteVideoRoomHelpers {
 			$delete_confirmed = $http_get_library->get_string_parameter( 'confirm' );
 
 			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-
+			// Render Scripts to Manage Room Add.
+			Factory::get_instance( Module::class )->enqueue_monitor_scripts();
+			\wp_enqueue_script( 'myvideoroom-sitevideo-add-room-js' );
 			if ( ! $room_object ) {
 				$details_section = null;
 			} else {
@@ -247,9 +249,7 @@ class MVRSiteVideoRoomHelpers {
 				}
 			}
 		}
-		// Render Scripts to Manage Room Add.
-		Factory::get_instance( Module::class )->enqueue_monitor_scripts();
-		\wp_enqueue_script( 'myvideoroom-sitevideo-add-room-js' );
+
 		if ( $shortcode ) {
 			\wp_enqueue_script( 'myvideoroom-sitevideo-settings-js' );
 			return ( require __DIR__ . '/../views/shortcode/shortcode-reception.php' )( $details_section );

@@ -7,6 +7,7 @@
 
 namespace MyVideoRoomPlugin\Module\Security\Library;
 
+use MyVideoRoomPlugin\Admin;
 use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
@@ -15,7 +16,7 @@ use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Security;
 
 /**
- * PageFilters - Security Filter Defaults for Renderblock Function.
+ * SecurityRoomHelpers - Security Module Supporting Functions.
  */
 class SecurityRoomHelpers {
 
@@ -29,12 +30,12 @@ class SecurityRoomHelpers {
 	public function render_security_admin_settings_page( array $input ): array {
 
 		$admin_tab = new MenuTabDisplay(
-			esc_html__( 'Security and Permissions', 'my-video-room' ),
+			esc_html__( 'Security and Permissions', 'myvideoroom' ),
 			'securityperms',
 			fn() => $this->get_security_admin_page()
 		);
 		array_push( $input, $admin_tab );
-
+		Factory::get_instance( Admin::class )->init_admin();
 		return $input;
 	}
 
@@ -44,6 +45,7 @@ class SecurityRoomHelpers {
 	 * @return string
 	 */
 	public function get_security_admin_page(): string {
+		Factory::get_instance( Admin::class )->init_admin();
 		return ( require __DIR__ . '/../views/view-settings-security.php' )();
 	}
 

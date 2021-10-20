@@ -81,16 +81,7 @@ window.addEventListener(
 							checkShow( targetid, this.value.toLowerCase() );
 						}
 					);
-					// For New Room Adds.
-					$( ".myvideoroom-input-new-trigger" ).keyup(
-						function() {
-							let core_url = 'https://' + document.domain + '/';
 
-							$( '#update_url_newroom' ).html( core_url + this.value.toLowerCase() );
-							let target = '#button_add_new';
-							checkShow( target, this.value.toLowerCase() );
-						}
-					);
 					// For Update Slug.
 					$( '.myvideoroom-roomname-submit-form' ).click(
 						function(e) {

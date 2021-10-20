@@ -85,7 +85,6 @@ class Security {
 		// Turn on Page Filters.
 		Factory::get_instance( PageFilters::class )->runtime_filters();
 
-		$this->security_menu_setup();
 		add_filter( 'myvideoroom_sitevideo_admin_page_menu', array( $this, 'render_security_sitevideo_tabs' ), 20, 2 );
 
 		// Add Permissions Menu to Main Frontend Template.
@@ -203,33 +202,6 @@ class Security {
 
 		// Listener for Page Regeneration and Refresh.
 		\add_action( 'myvideoroom_page_delete_post_number_refresh', array( Factory::get_instance( SecurityRoomHelpers::class ), 'update_security_post_id' ), 10, 2 );
-	}
-
-	/**
-	 * Setup of Module Menu
-	 */
-	public function security_menu_setup() {
-		add_action( 'mvr_module_submenu_add', array( $this, 'security_menu_button' ) );
-	}
-
-	/**
-	 * Render Module Menu.
-	 */
-	public function security_menu_button() {
-		$name = self::MODULE_SECURITY_DISPLAY;
-		$slug = self::MODULE_SECURITY_NAME;
-		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
-		$display = esc_html__( $name, 'myvideoroom' );
-		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $display ) . '</a>';
-	}
-
-	/**
-	 * Render Security Admin Page.
-	 *
-	 * @return string
-	 */
-	public function render_security_admin_page(): string {
-		return ( require __DIR__ . '/views/view-settings-security.php' )();
 	}
 
 	/**

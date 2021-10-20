@@ -188,7 +188,7 @@ class BuddyPress {
 	}
 
 	/**
-	 * Render Room Manager Admin Tab Page
+	 * Render BuddyPress Admin Tab Page
 	 *
 	 * @param  array $input - the inbound menu.
 	 * @return array - outbound menu.

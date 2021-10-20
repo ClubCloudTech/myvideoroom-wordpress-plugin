@@ -21,7 +21,7 @@ class PageList {
 	const PAGE_SLUG_GETTING_STARTED = self::PAGE_SLUG_DEFAULT;
 	const PAGE_SLUG_ROOM_TEMPLATES  = self::PAGE_SLUG_DEFAULT . '-room-builder';
 	const PAGE_SLUG_REFERENCE       = self::PAGE_SLUG_DEFAULT . '-shortcode-reference';
-	const PAGE_SLUG_PERMISSIONS     = self::PAGE_SLUG_DEFAULT . '-permissions';
+	const PAGE_SLUG_SETTINGS        = self::PAGE_SLUG_DEFAULT . '-settings';
 	const PAGE_SLUG_MODULES         = self::PAGE_SLUG_DEFAULT . '-modules';
 	const PAGE_SLUG_CUSTOM          = self::PAGE_SLUG_DEFAULT . '-custom';
 	const PAGE_SLUG_ROOM_MANAGER    = self::PAGE_SLUG_DEFAULT . '-site-conference';
@@ -54,10 +54,10 @@ class PageList {
 				'editor-help'
 			),
 
-			self::PAGE_SLUG_PERMISSIONS     => new Page(
-				self::PAGE_SLUG_PERMISSIONS,
+			self::PAGE_SLUG_SETTINGS        => new Page(
+				self::PAGE_SLUG_SETTINGS,
 				\esc_html__( 'Settings', 'myvideoroom' ),
-				array( $admin_manager, 'create_permissions_page' ),
+				array( $admin_manager, 'create_settings_page' ),
 				'admin-generic',
 			),
 		);
@@ -70,6 +70,7 @@ class PageList {
 					array( $navigation_item->get_slug() => $navigation_item ),
 					\array_slice( $navigation_items, $offset, null, true )
 				);
+				\wp_enqueue_style( 'myvideoroom-admin-css' );
 			}
 		);
 

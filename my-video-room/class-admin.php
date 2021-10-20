@@ -98,7 +98,6 @@ class Admin {
 					$plugin_version,
 					true
 				);
-				\wp_enqueue_script( 'myvideoroom-sitevideo-add-room-js' );
 			}
 		);
 		// Init Admin Ajax module.
@@ -211,6 +210,7 @@ class Admin {
 	 */
 	private function render_admin_page( string $page_contents ) {
 		wp_enqueue_script( 'myvideoroom-protect-input' );
+
 		$activation_status = Factory::get_instance( Activation::class )->get_activation_status();
 		$navigation_items  = $this->get_navigation_items();
 
@@ -282,7 +282,7 @@ class Admin {
 	 *
 	 * @return string
 	 */
-	public function create_permissions_page(): string {
+	public function create_settings_page(): string {
 		global $wp_roles;
 		$all_roles = $wp_roles->roles;
 

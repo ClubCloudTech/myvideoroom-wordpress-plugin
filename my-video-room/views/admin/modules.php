@@ -23,6 +23,7 @@ return function (
 ): string {
 
 	\ob_start();
+	$index = 457;
 	?>
 	<!-- Module Header -->
 	<div class="myvideoroom-menu-settings">
@@ -34,16 +35,45 @@ return function (
 		<div class="myvideoroom-header-table-right-wide">
 		</div>
 	</div>
-	<!-- Module State and Description Marker -->
+		<!-- Module State and Description Marker -->
+<div class="myvideoroom-feature-outer-table">
+		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+			<h2><?php esc_html_e( 'Expand MyVideoRoom', 'myvideoroom' ); ?></h2>
+			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
 
-	<p>
+			</div>
+		</div>
+		<div class="myvideoroom-feature-table-large">
+		<p>
 		<?php
 		\esc_html_e(
-			'Connect MyVideoRoom into your WordPress plugins, allowing for more complex use cases, and additional features.',
+			'Modules and Addins are how you make Video simple and easy to use with your website. We are adding more modules monthly to popular plugins to make it easy to expand the power of any video connected experience.',
 			'myvideoroom'
 		);
 		?>
 	</p>
+	
+	<p style>
+	<?php
+		echo \sprintf(
+			/* translators: %s is the text "Modules" and links to the Module Section */
+			\esc_html__(
+				'We\'ve built MyVideoRoom to allow you to quickly and easily turn on or off features and scenarios you wish. Once activated you can control a module here, and most put extra tabs in %1$1s or %2$2s',
+				'myvideoroom'
+			),
+			'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ) . '">' .
+			\esc_html__( 'Room Manager', 'myvideoroom' ) .
+			'</a>',
+			'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_SETTINGS, false ) ) . '">' .
+			\esc_html__( 'Settings', 'myvideoroom' ) .
+			'</a>'
+		)
+	?>
+</p>
+	
+		</div>
+	</div>
+
 
 	<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
 		<thead>
