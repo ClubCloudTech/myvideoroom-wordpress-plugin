@@ -1,6 +1,6 @@
 <?php
 /**
- * Outputs the configuration settings for the video plugin
+ * Outputs the Login Form
  *
  * @package MyVideoRoomPlugin\Module\SiteVideo\Views\Login\View-Login.php
  */

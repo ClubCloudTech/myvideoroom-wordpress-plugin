@@ -429,7 +429,7 @@ class MVRSiteVideoRoomHelpers {
 		$admin_tab = new MenuTabDisplay(
 			esc_html__( 'Login Tab Settings', 'myvideoroom' ),
 			'logintab',
-			fn() => $this->render_default_video_appearance_screen()
+			fn() => $this->render_login_screen()
 		);
 		array_push( $input, $admin_tab );
 
@@ -440,7 +440,7 @@ class MVRSiteVideoRoomHelpers {
 	 * Default Video Appearance Screen Handler.
 	 */
 	public function render_login_screen() {
-		return ( require __DIR__ . '/../views/admin/view-settings-video-default.php' )();
+		return ( require __DIR__ . '/../views/login/view-login-settings.php' )();
 	}
 
 }

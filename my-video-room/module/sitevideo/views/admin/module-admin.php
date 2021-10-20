@@ -100,19 +100,19 @@ return function (
 			<div class="myvideoroom-feature-table">
 				<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
 				<img class=""
-					src="<?php echo esc_url( plugins_url( '/../../../admin/img/receptioncenter.jpg', __FILE__ ) ); ?>"
+					src="<?php echo esc_url( plugins_url( '/../../../../admin/img/receptioncenter.jpg', __FILE__ ) ); ?>"
 					alt="Reception Center">
 
 			</div>
 			<div class="myvideoroom-feature-table">
 				<br>
 				<img class=""
-					src="<?php echo esc_url( plugins_url( '/../../../admin/img/sitevideoroom.jpg', __FILE__ ) ); ?>"
+					src="<?php echo esc_url( plugins_url( '/../../../../admin/img/sitevideoroom.jpg', __FILE__ ) ); ?>"
 					alt="Site Video Room">
 			</div>
 			<div class="myvideoroom-feature-table">
 				<img class=""
-					src="<?php echo esc_url( plugins_url( '/../../../admin/img/sitevideocustomhosts.jpg', __FILE__ ) ); ?>"
+					src="<?php echo esc_url( plugins_url( '/../../../../admin/img/sitevideocustomhosts.jpg', __FILE__ ) ); ?>"
 					alt="Custom Hosts">
 			</div>
 		</div>
@@ -131,14 +131,14 @@ return function (
 
 					<button class="button button-primary myvideoroom-sitevideo-add-room-button">
 						<i class="dashicons dashicons-plus-alt"></i>
-						<?php esc_html_e( 'Add new room', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Add new room', 'myvideoroom' ); ?>
 					</button>
 
 					<button class="button button-primary myvideoroom-sitevideo-settings myvideoroom-button-link"
 						data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>"
 						data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>">
 						<i class="dashicons dashicons-admin-settings"></i>
-						<?php esc_html_e( 'Default Room Settings', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Default Room Settings', 'myvideoroom' ); ?>
 					</button>
 					<?php $index_num = $index++; ?>
 					<button id="mvr-close_<?php echo esc_attr( $index_num ); ?>"
@@ -146,7 +146,7 @@ return function (
 						data-room-id="<?php echo esc_attr( $index_num ); ?>" data-input-type="close"
 						style="display:none;">
 						<i class="dashicons dashicons-dismiss"></i>
-						<?php esc_html_e( 'Close', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Close', 'myvideoroom' ); ?>
 					</button>
 
 
@@ -173,19 +173,19 @@ return function (
 
 
 
-					<h4><?php esc_html_e( 'Customizing the Reception', 'my-video-room' ); ?></h4>
-					<?php esc_html_e( 'You can edit your room look and feel with any page editor of your choice. You can also add multiple reception centers by adding the shortcode: ', 'my-video-room' ); ?>
+					<h4><?php esc_html_e( 'Customizing the Reception', 'myvideoroom' ); ?></h4>
+					<?php esc_html_e( 'You can edit your room look and feel with any page editor of your choice. You can also add multiple reception centers by adding the shortcode: ', 'myvideoroom' ); ?>
 					<strong> [myvideoroom_meetswitch]</strong>
-					<?php esc_html_e( ' to the page. ', 'my-video-room' ); ?>
+					<?php esc_html_e( ' to the page. ', 'myvideoroom' ); ?>
 
 					<?php
 					esc_html_e(
 						"You can change the room name, its URL, and its parent page in the normal pages interface of WordPress. Please note whilst the system updates its internal links if you change the meeting page URL external emails, or other invites may not be updated by your users' guests. Its a good idea to link to reception page from the main area of your site.",
-						'my-video-room'
+						'myvideoroom'
 					);
 					?>
 
-					<h4><?php esc_html_e( 'Who is a Host ?', 'my-video-room' ); ?></h4>
+					<h4><?php esc_html_e( 'Who is a Host ?', 'myvideoroom' ); ?></h4>
 
 					<?php
 					esc_html_e(

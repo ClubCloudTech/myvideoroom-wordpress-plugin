@@ -12,7 +12,6 @@ namespace MyVideoRoomPlugin;
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\HttpPost;
-use MyVideoRoomPlugin\Library\LoginForm;
 
 /**
  * Render the Default Settings Admin page
@@ -27,6 +26,8 @@ return function (
 	$html_library            = Factory::get_instance( HTML::class, array( $string_randomizer_input ) );
 	$inbound_tabs            = array();
 	$tabs                    = apply_filters( 'myvideoroom_permissions_manager_menu', $inbound_tabs );
+	$target                  = null;
+	$index                   = 690;
 
 	?>
 <!-- Module Header -->
@@ -67,12 +68,6 @@ return function (
 			<ul class="mvr-ul-style-top-menu">
 				<li>
 					<a class="nav-tab nav-tab-active"
-						href="#logintab<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
-						<?php esc_html_e( 'Login Tab Settings', 'myvideoroom' ); ?>
-					</a>
-				</li>
-				<li>
-					<a class="nav-tab"
 						href="#defhosts<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
 						<?php esc_html_e( 'Site Default Hosts', 'myvideoroom' ); ?>
 					</a>
@@ -93,38 +88,59 @@ return function (
 				?>
 			</ul>
 		</nav>
-				<article class="mvr-admin-page-wrap"
-		id="logintab<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
-		<h2><?php \esc_html_e( 'Login Tab Settings', 'myvideoroom' ); ?></h2>
-
-		<p>
-			<?php
-			\esc_html_e(
-				'This setting defines the login tabs that will be shown to signed out users to allow them to login, you can use the default tab, or add a shortcode from your own Login solution',
-				'myvideoroom'
-			);
-			?>
-		</p>
-		<div class = "mvr-nav-shortcode-outer-wrap ">
-			<?php
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --internally created sanitised function
-				echo Factory::get_instance( LoginForm::class )->get_login_settings_page();
-			?>
-		</div>
-	</article>
 	<article class="mvr-admin-page-wrap"
 		id="defhosts<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
-		<h2><?php \esc_html_e( 'Site Level Default Hosts', 'myvideoroom' ); ?></h2>
+	<!-- Module Header -->
+	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>">
+		<div class="myvideoroom-header-table-left-reduced">
+			<h1><i
+					class="myvideoroom-header-dashicons dashicons-video-alt2"></i><?php esc_html_e( 'Default Hosts (For Custom Shortcodes)', 'myvideoroom' ); ?>
+			</h1>
+		</div>
+		<div class="myvideoroom-header-table-right-wide">
+		<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Settings:', 'myvideoroom' ); ?><i data-target="<?php echo esc_attr( $target ); ?>" class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Go to Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>"></i>
+			</h3>
+		</div>
+	</div>
 
-		<p>
-			<?php
-			\esc_html_e(
-				'This setting governs who is a host and who is not in shortcodes, where you do not supply that information, or your module is unsure how to treat a host. You can either generate two shortcodes where one is for the host, and one for guest. Alternatively you can generate a single shortcode, and use these setting to configure who the video engine will treat as a host. This section allows you to add and remove WordPress roles to your host permissions matrix.',
-				'myvideoroom'
-			);
-			?>
-		</p>
+<!-- Module State and Description Marker -->
+<div class="myvideoroom-feature-outer-table">
+		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+			<h2><?php esc_html_e( 'Description', 'myvideoroom' ); ?></h2>
+			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
 
+			</div>
+		</div>
+		<div class="myvideoroom-feature-table-large">
+			<h2><?php esc_html_e( 'Set Default Hosting Rights for Shortcodes', 'myvideoroom' ); ?></h2>
+			<p>
+				<?php
+				esc_html_e(
+					'This setting governs who is a host and who is not in shortcodes if you use your own shortcode pairings or generate them in the room designer. You can either generate two shortcodes where one is for the host, and one for guest. Alternatively you can generate a single shortcode, and use these setting to configure who the video engine will treat as a host. This section allows you to add and remove WordPress roles to your host permissions matrix.',
+					'myvideoroom'
+				);
+				?>
+			</p>
+			<p>
+				<?php
+				esc_html_e(
+					'If you use Conference Rooms, Personal Video Rooms, or Plugin rooms like WooCommerce stores then the hosts are set automatically. This default setting is only applied to standalone shortcodes not created by the room manager engine.',
+					'myvideoroom'
+				);
+				?>
+			</p>
+		</div>
+	</div>
+
+<!-- Module State and Description Marker -->
+<div class="myvideoroom-feature-outer-table">
+		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+			<h2><?php esc_html_e( 'Default Permissions', 'myvideoroom' ); ?></h2>
+			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
+
+			</div>
+		</div>
+		<div class="myvideoroom-feature-table-large">
 		<form method="post" action="">
 			<fieldset>
 				<table class="myvideoroom-permissions widefat" role="presentation">
@@ -170,6 +186,9 @@ return function (
 			echo Factory::get_instance( HttpPost::class )->create_admin_form_submit( 'update_permissions' );
 			?>
 		</form>
+		</div>
+	</div>
+
 	</article>
 	<?php
 	foreach ( $tabs as $article_output ) {

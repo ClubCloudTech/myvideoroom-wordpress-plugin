@@ -285,6 +285,17 @@ class MVRSiteVideo {
 			1
 		);
 
+		// Add Login Page Settings to Default Settings.
+		add_filter(
+			'myvideoroom_permissions_manager_menu',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'render_login_tab',
+			),
+			10,
+			1
+		);
+
 		// Add Video Advanced Page to Default Settings.
 		add_filter(
 			'myvideoroom_permissions_manager_menu',
