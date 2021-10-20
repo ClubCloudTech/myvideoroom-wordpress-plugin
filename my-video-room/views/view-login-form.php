@@ -64,7 +64,7 @@ return function (
 		<div class="myvideoroom-sitevideo-add-room">
 			<?php
 		//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo ( require __DIR__ . '/../add-new-room.php' )();
+		echo ( require __DIR__ . '/../shortcode/add-new-room.php' )();
 			?>
 			<hr />
 		</div>

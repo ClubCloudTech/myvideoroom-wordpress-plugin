@@ -20,7 +20,9 @@ use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 
 return function (): string {
 	ob_start();
-	$index = 1;
+	$index        = 447;
+	$target_user  = 'myvideoroom-bpuser';
+	$target_group = 'myvideoroom-bpgroup';
 	?>
 <div class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
 	<!-- Module Header -->
@@ -76,21 +78,44 @@ return function (): string {
 		User Wall Profile
 -->
 			<article id="page11" class="myvideoroom-content-tab">
-				<div class="myvideoroom-menu-settings">
-					<div class="myvideoroom-header-table-left">
+				<!-- Module Header -->
+				<div class="myvideoroom-menu-settings <?php echo esc_attr( $target_user ); ?>">
+					<div class="myvideoroom-header-table-left-reduced">
 						<h1><i
 								class="myvideoroom-header-dashicons dashicons-buddicons-buddypress-logo"></i><?php esc_html_e( 'User Wall Profile Rooms', 'myvideoroom' ); ?>
 						</h1>
 					</div>
-					<div class="myvideoroom-header-table-right">
+					<div class="myvideoroom-header-table-right-wide">
+						<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Settings:', 'myvideoroom' ); ?><i
+								data-target="<?php echo esc_attr( $target_user ); ?>"
+								class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector"
+								title="<?php esc_html_e( 'Go to Settings - User Wall Profile Rooms', 'myvideoroom' ); ?>"></i>
+						</h3>
 					</div>
 				</div>
+				<!-- Settings Marker -->
+				<div class="myvideoroom-menu-settings <?php echo esc_attr( $target_user ); ?>" style="display: none;">
+					<div class="myvideoroom-header-table-left-reduced">
+						<h1><i
+								class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - BuddyPress User Profile Rooms', 'myvideoroom' ); ?>
+						</h1>
+					</div>
+					<div class="myvideoroom-header-table-right-wide">
+						<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Main:', 'myvideoroom' ); ?><i
+								class="myvideoroom-header-dashicons dashicons-info-outline mvideoroom-information-menu-toggle-selector"
+								data-target="<?php echo esc_attr( $target_user ); ?>"
+								title="<?php esc_html_e( 'Go to- Module State and Information', 'myvideoroom' ); ?>"></i>
+						</h3>
+					</div>
+				</div>
+				<!-- Information Toggle -->
+				<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target_user ); ?>"	style="">
 				<!-- Module State and Description Marker -->
-
 				<div class="myvideoroom-feature-outer-table">
-					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-						<h2><?php esc_html_e( 'Feature is:', 'myvideoroom' ); ?></h2>
-						<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
+					<div id="module-state<?php echo esc_attr( $index++ ); ?>"
+						class="myvideoroom-feature-table-small">
+						<h2><?php esc_html_e( 'Feature', 'myvideoroom' ); ?></h2>
+						<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
 							<?php
 							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
 							echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_USER_ID, null, Factory::get_instance( BuddyPress::class )->is_user_module_available() );
@@ -98,6 +123,8 @@ return function (): string {
 						</div>
 					</div>
 					<div class="myvideoroom-feature-table-large">
+						<h2><?php esc_html_e( 'User Profile and Wall Enabled Rooms', 'myvideoroom' ); ?>
+						</h2>
 						<p>
 							<?php
 							esc_html_e(
@@ -117,128 +144,147 @@ return function (): string {
 					</div>
 				</div>
 				<!-- Dependencies and Requirements Marker -->
-				<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
+				<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
 					<div class="myvideoroom-feature-outer-table">
-						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
-							class="myvideoroom-feature-table-small">
+						<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 							<h2><?php esc_html_e( 'Requirements:', 'myvideoroom' ); ?></h2>
 						</div>
 						<div class="myvideoroom-feature-table-large">
 							<p>
 								<?php
-								esc_html_e(
-									'No Modules Depend on this Component.',
-									'myvideoroom'
-								);
+										esc_html_e(
+											'This module has no dependencies. If you disable it all rooms that are created still exist, but the shortcodes will not return rooms. WordPress pages created by rooms will remain in case you have customised the layout or design.',
+											'myvideoroom'
+										);
 								?>
 							</p>
-
 							<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
-								<?php Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'user' ); ?>
-							</div>
+										<?php Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'user' ); ?>
+									</div>
+						</div>
+				</div>
+				<!-- Screenshot Marker -->
+				<div class="myvideoroom-feature-outer-table">
+					<div class="myvideoroom-feature-table">
+						<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
+						<img class=""
+							src="<?php echo esc_url( plugins_url( '/../../../admin/img/videoroombp.jpg', __FILE__ ) ); ?>"
+							alt="BuddyPress Room">
+					</div>
+					<div class="myvideoroom-feature-table">
+						<br>
+						<img class=""
+							src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpsettings.jpg', __FILE__ ) ); ?>"
+							alt="Settings">
+					</div>
+					<div class="myvideoroom-feature-table">
+						<img class=""
+							src="<?php echo esc_url( plugins_url( '/../../../admin/img/screenshot-2.PNG', __FILE__ ) ); ?>"
+							alt="Video Call in Progress">
 						</div>
 					</div>
-					<!-- Screenshot Marker -->
-					<div class="myvideoroom-feature-outer-table">
-						<div class="myvideoroom-feature-table">
-							<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
-							<img class=""
-								src="<?php echo esc_url( plugins_url( '/../../../admin/img/videoroombp.jpg', __FILE__ ) ); ?>"
-								alt="BuddyPress Room">
-						</div>
-						<div class="myvideoroom-feature-table">
-							<br>
-							<img class=""
-								src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpsettings.jpg', __FILE__ ) ); ?>"
-								alt="Settings">
-						</div>
-						<div class="myvideoroom-feature-table">
-							<img class=""
-								src="<?php echo esc_url( plugins_url( '/../../../admin/img/screenshot-2.PNG', __FILE__ ) ); ?>"
-								alt="Video Call in Progress">
-						</div>
-					</div>
-					<!-- Settings Separation Marker -->
-					<div class="myvideoroom-menu-settings">
-						<div class="myvideoroom-header-table-left">
-							<h1><i
-									class="myvideoroom-header-dashicons dashicons-admin-settings"></i><?php esc_html_e( 'Settings', 'myvideoroom' ); ?>
-							</h1>
-						</div>
-						<div class="myvideoroom-header-table-right">
-
-						</div>
-					</div>
-					<!-- User Room Tab Naming Marker -->
-					<div class="myvideoroom-feature-outer-table">
-						<div id="feature-state_<?php echo esc_attr( $index++ ); ?>"
-							class="myvideoroom-feature-table-small">
-							<h2><?php esc_html_e( 'Name of Tab:', 'myvideoroom' ); ?></h2>
-						</div>
-						<div class="myvideoroom-feature-table-large">
-							<div class="myvideoroom-inline">
-								<img class=""
-									src="<?php echo esc_url( plugins_url( '/../../../admin/img/tabdisplay.jpg', __FILE__ ) ); ?>"
-									alt="Settings">
-								<br>
-								<?php
-								esc_html_e(
-									'What should we call your Room Tab in BuddyPress ?',
-									'myvideoroom'
-								);
-								?>
-
-							</div>
-
-							<div class="myvideoroom-inline">
-								<input id="user-profile-input" type="text" min="5" max="20" name="user-tab"
-									value="<?php echo esc_textarea( get_option( 'myvideoroom-buddypress-user-tab' ) ); ?>"
-									placeholder=""
-									class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />
-							</div>
-							<input id="save-user-tab" type="button" value="Save"
-								class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;" />
-						</div>
-					</div>
-					<!-- Default Video Section  -->
-					<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
-						class="mvr-nav-settingstabs-outer-wrap">
+						<!-- end Toggle Section -->
+				</div>
+				</div>
+		<!--Begin Settings Toggle Section -->
+			<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target_user ); ?>" style="display:none;">
+						<!-- User Room Tab Naming Marker -->
 						<div class="myvideoroom-feature-outer-table">
-							<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+							<div id="feature-state_<?php echo esc_attr( $index++ ); ?>"
 								class="myvideoroom-feature-table-small">
-								<h2><?php esc_html_e( 'Default Video Settings', 'myvideoroom' ); ?></h2>
+								<h2><?php esc_html_e( 'Name of Tab:', 'myvideoroom' ); ?></h2>
 							</div>
 							<div class="myvideoroom-feature-table-large">
-								<h2><?php esc_html_e( 'Personal and BuddyPress Profile Room Default Settings', 'myvideoroom' ); ?>
-								</h2>
-								<p> <?php esc_html_e( ' Default Room Privacy (reception) and Layout settings. These settings will be used by all Rooms, until users set their own room preference', 'myvideoroom' ); ?>
-								</p>
-								<?php
-								$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
-									SiteDefaults::USER_ID_SITE_DEFAULTS,
-									MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING
-								);
+								<div class="myvideoroom-inline">
+									<img class=""
+										src="<?php echo esc_url( plugins_url( '/../../../admin/img/tabdisplay.jpg', __FILE__ ) ); ?>"
+										alt="Settings">
+									<br>
+									<?php
+									esc_html_e(
+										'What should we call your Room Tab in BuddyPress ?',
+										'myvideoroom'
+									);
+									?>
+
+								</div>
+
+								<div class="myvideoroom-inline">
+									<input id="user-profile-input" type="text" min="5" max="20" name="user-tab"
+										value="<?php echo esc_textarea( get_option( 'myvideoroom-buddypress-user-tab' ) ); ?>"
+										placeholder=""
+										class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />
+								</div>
+								<input id="save-user-tab" type="button" value="Save"
+									class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;" />
+							</div>
+						</div>
+						<!-- Default Video Section  -->
+						<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
+							class="mvr-nav-settingstabs-outer-wrap">
+							<div class="myvideoroom-feature-outer-table">
+								<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
+									class="myvideoroom-feature-table-small">
+									<h2><?php esc_html_e( 'Default Video Settings', 'myvideoroom' ); ?></h2>
+								</div>
+								<div class="myvideoroom-feature-table-large">
+									<h2><?php esc_html_e( 'Personal and BuddyPress Profile Room Default Settings', 'myvideoroom' ); ?>
+									</h2>
+									<p> <?php esc_html_e( ' Default Room Privacy (reception) and Layout settings. These settings will be used by all Rooms, until users set their own room preference', 'myvideoroom' ); ?>
+									</p>
+									<?php
+									$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
+										SiteDefaults::USER_ID_SITE_DEFAULTS,
+										MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING
+									);
 									// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Text is escaped in each variable.
 									echo $layout_setting;
-								?>
+									?>
+								</div>
 							</div>
 						</div>
 			</article>
-			<!-- 
+<!-- 
 		Group Video Rooms
 -->
 
 			<article id="page12" class="myvideoroom-content-tab">
-				<!-- Module Header -->
-				<div class="myvideoroom-menu-settings">
-					<div class="myvideoroom-header-table-left">
+			<!-- Module Header -->
+			<div class="myvideoroom-menu-settings <?php echo esc_attr( $target_group ); ?>">
+					<div class="myvideoroom-header-table-left-reduced">
 						<h1><i
 								class="myvideoroom-header-dashicons dashicons-buddicons-buddypress-logo"></i><?php esc_html_e( 'Group Video Rooms', 'myvideoroom' ); ?>
 						</h1>
 					</div>
-					<div class="myvideoroom-header-table-right">
+					<div class="myvideoroom-header-table-right-wide">
+						<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Settings:', 'myvideoroom' ); ?><i
+								data-target="<?php echo esc_attr( $target_group ); ?>"
+								class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector"
+								title="<?php esc_html_e( 'Go to Settings - Group Video Rooms', 'myvideoroom' ); ?>"></i>
+						</h3>
 					</div>
 				</div>
+				<!-- Settings Marker -->
+				<div class="myvideoroom-menu-settings <?php echo esc_attr( $target_group ); ?>" style="display: none;">
+					<div class="myvideoroom-header-table-left-reduced">
+						<h1><i
+								class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - BuddyPressGroup Rooms', 'myvideoroom' ); ?>
+						</h1>
+					</div>
+					<div class="myvideoroom-header-table-right-wide">
+						<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Main:', 'myvideoroom' ); ?><i
+								class="myvideoroom-header-dashicons dashicons-info-outline mvideoroom-information-menu-toggle-selector"
+								data-target="<?php echo esc_attr( $target_group ); ?>"
+								title="<?php esc_html_e( 'Go to- Module State and Information', 'myvideoroom' ); ?>"></i>
+						</h3>
+					</div>
+				</div>
+
+				<!-- Information Toggle -->
+								<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target_group ); ?>"	style="">
+				<!-- Module State and Description Marker -->
+
+
 				<!-- Module State and Description Marker -->
 				<div class="myvideoroom-feature-outer-table">
 					<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
@@ -308,17 +354,12 @@ return function (): string {
 								alt="Video Call in Progress">
 						</div>
 					</div>
-					<!-- Settings Marker -->
-					<div class="myvideoroom-menu-settings">
-						<div class="myvideoroom-header-table-left">
-							<h1><i
-									class="myvideoroom-header-dashicons dashicons-admin-settings"></i><?php esc_html_e( 'Settings', 'myvideoroom' ); ?>
-							</h1>
-						</div>
-						<div class="myvideoroom-header-table-right">
-
-						</div>
-					</div>
+				<!-- end Toggle Section -->
+				</div>
+			</div>
+				<!--Begin Settings Toggle Section -->
+				<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target_group ); ?>" style="display:none;">
+						<!-- User Room Tab Naming Marker -->
 					<!-- User Room Tab Naming Marker -->
 					<div class="myvideoroom-feature-outer-table">
 						<div id="feature-state<?php echo esc_attr( $index++ ); ?>"
@@ -371,9 +412,10 @@ return function (): string {
 								?>
 							</div>
 						</div>
+					</div>
 			</article>
 
-<!-- 
+			<!-- 
 		Friends Permissions Engine
 -->
 

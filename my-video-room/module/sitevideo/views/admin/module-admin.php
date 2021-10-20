@@ -20,37 +20,36 @@ return function (
 	$details_section = null
 ): string {
 	ob_start();
-	$index = wp_rand( 331, 434 );
+	$index  = 331;
+	$target = 'myvideoroom-conference-header';
 	?>
 <div class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
 	<!-- Module Header -->
-	<div class="myvideoroom-menu-settings">
-		<div class="myvideoroom-header-table-left">
+	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>">
+		<div class="myvideoroom-header-table-left-reduced">
 			<h1><i
 						class="myvideoroom-header-dashicons dashicons-groups"></i><?php esc_html_e( 'Conference Center Permanent Rooms', 'myvideoroom' ); ?>
 				</h1>
 		</div>
-		<div class="myvideoroom-header-table-right">
-		<h1><i class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Module State and Information', 'myvideoroom' ); ?>"></i>
-			</h1>
+		<div class="myvideoroom-header-table-right-wide">
+		<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Settings:', 'myvideoroom' ); ?><i data-target="<?php echo esc_attr( $target ); ?>" class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Go to Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>"></i>
+			</h3>
 		</div>
 	</div>
 			<!-- Settings Marker -->
-			<div class="myvideoroom-menu-settings" style="display: none;">
-			<div class="myvideoroom-header-table-left">
-			<h1><i
-					class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Conference Center Permanent Rooms', 'myvideoroom' ); ?>
-			</h1>
+		<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="display: none;">
+			<div class="myvideoroom-header-table-left-reduced">
+				<h1><i
+						class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Conference Center Permanent Rooms', 'myvideoroom' ); ?>
+				</h1>
 			</div>
-			<div class="myvideoroom-header-table-right">
-			
-
-			<h1><i class="myvideoroom-header-dashicons dashicons-info-outline mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Module State and Information', 'myvideoroom' ); ?>"></i>
-			</h1>
+			<div class="myvideoroom-header-table-right-wide">
+				<h3 class="myvideoroom-settings-offset" ><?php esc_html_e( 'Main:', 'myvideoroom' ); ?><i class="myvideoroom-header-dashicons dashicons-info-outline mvideoroom-information-menu-toggle-selector" data-target="<?php echo esc_attr( $target ); ?>" title="<?php esc_html_e( 'Go to- Module State and Information', 'myvideoroom' ); ?>"></i>
+				</h3>
 			</div>
 		</div>
 	<!-- Information Toggle -->
-<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target" style="">
+<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="">
 
 	<!-- Module State and Description Marker -->
 	<div class="myvideoroom-feature-outer-table">
@@ -121,7 +120,7 @@ return function (
 	</div>
 </div>	
 
-<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target" style="display:none;">
+<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="display:none;">
 	<!-- Room Management -->
 		<div class="myvideoroom-feature-outer-table">
 			<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
@@ -154,7 +153,7 @@ return function (
 					<div class="myvideoroom-sitevideo-add-room mvr-nav-shortcode-outer-border myvideoroom-addroom">
 						<?php
 							//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-							echo ( require __DIR__ . '/add-new-room.php' )();
+							echo ( require __DIR__ . '/../shortcode/add-new-room.php' )();
 						?>
 						<hr />
 					</div>

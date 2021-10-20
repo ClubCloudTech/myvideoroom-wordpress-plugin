@@ -30,16 +30,17 @@ return function (
 	\ob_start();
 	?>
 <header>
-	<div class="myvideoroom-menu-settings ">
-		<div class="myvideoroom-header-table-left">
+	<div class="myvideoroom-menu-settings-header ">
+		<div class="myvideoroom-header-table-left-reduced">
 			<h1 class="myvideoroom-separation-header"><i
 					class="myvideoroom-header-dashicons dashicons-admin-settings"></i><?php esc_html_e( 'MyVideoRoom Plugin Settings', 'myvideoroom' ); ?>
 			</h1><br>
 		</div>
-		<div class="myvideoroom-header-table-right">
-			<img class="myvideoroom-logo-image"
-				src="<?php echo esc_url( plugins_url( '../../img/mvr-imagelogo.png', __FILE__ ) ); ?>"
-				alt="MyVideoroom Logo"><br>
+		<div class="myvideoroom-header-table-right-wide">
+		<h3 class="myvideoroom-settings-offset">
+			<img style=" margin-top: -10px;" class="myvideoroom-logo-image" src="<?php echo esc_url( plugins_url( '../../img/mvr-imagelogo.png', __FILE__ ) ); ?>" alt="MyVideoroom Logo">
+		</h3>
+		
 		</div>
 	</div>
 	<div class="">

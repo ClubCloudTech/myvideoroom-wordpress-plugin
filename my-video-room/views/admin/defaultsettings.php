@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
+use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\LoginForm;
@@ -26,12 +27,40 @@ return function (
 	$html_library            = Factory::get_instance( HTML::class, array( $string_randomizer_input ) );
 	$inbound_tabs            = array();
 	$tabs                    = apply_filters( 'myvideoroom_permissions_manager_menu', $inbound_tabs );
-	$tab_count               = count( $tabs );
 
-	if ( $tab_count >= 1 ) {
-		?>
-		<h2><?php esc_html_e( 'MyVideoRoom Default Settings', 'my-video-room' ); ?></h2>
-		<p>
+	?>
+<!-- Module Header -->
+<div class="myvideoroom-menu-settings">
+	<div class="myvideoroom-header-table-left-reduced">
+		<h1><i title="<?php esc_html_e( 'Visit Module Control Center to change or add modules.', 'myvideoroom' ); ?>"
+				class="myvideoroom-header-dashicons dashicons-admin-tools"></i><?php esc_html_e( 'Settings and Control Panel', 'myvideoroom' ); ?>
+		</h1>
+
+	</div>
+	<div class="myvideoroom-header-table-right-wide">
+			<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Modules:', 'myvideoroom' ); ?>
+			<a href="<?php echo \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ); ?>">
+			<i class="myvideoroom-header-dashicons dashicons-admin-plugins"></i></a>	
+		</h3>
+	</div>
+</div>
+<p style>
+	<?php
+		echo \sprintf(
+			/* translators: %s is the text "Modules" and links to the Module Section */
+			\esc_html__(
+				'You can visit the %s section to add extra room modules, features, and expand the power of you rooms by addin packs and plugin integration modules.',
+				'myvideoroom'
+			),
+			'<a href="' . \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ) . '">' .
+			\esc_html__( 'Modules', 'myvideoroom' ) .
+			'</a>'
+		)
+	?>
+</p>
+
+<!-- Module State and Description Marker -->
+
 			<?php esc_html_e( 'This section allows you manage the default room appearance as well as permissions, guest/host decisions, and room security settings across all of your rooms.', 'myvideoroom' ); ?>
 		</p>
 		<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
@@ -64,10 +93,7 @@ return function (
 				?>
 			</ul>
 		</nav>
-		<?php
-	}
-	?>
-		<article class="mvr-admin-page-wrap"
+				<article class="mvr-admin-page-wrap"
 		id="logintab<?php echo esc_attr( $html_library->get_id( $string_randomizer_input ) ); ?>">
 		<h2><?php \esc_html_e( 'Login Tab Settings', 'myvideoroom' ); ?></h2>
 

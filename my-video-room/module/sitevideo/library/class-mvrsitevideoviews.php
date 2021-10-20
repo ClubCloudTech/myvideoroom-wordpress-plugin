@@ -108,7 +108,7 @@ class MVRSiteVideoViews {
 		// Returns all rooms with null roomtype, or a specific room with Room Type.
 		$rooms  = Factory::get_instance( MVRSiteVideoRoomHelpers::class )->get_rooms( $room_type );
 		$offset = \wp_rand();
-		return ( require __DIR__ . '/../views/table-output.php' )( $rooms, $room_type, $shortcode, $offset );
+		return ( require __DIR__ . '/../views/shared/table-output.php' )( $rooms, $room_type, $shortcode, $offset );
 	}
 
 	/**

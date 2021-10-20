@@ -6,7 +6,7 @@
  */
 
 /**
- * Render the admin page
+ * Render the Config Admin page for Personal Video
  *
  * @param string $active_tab
  * @param array $tabs
@@ -24,39 +24,39 @@ use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
 return function (): string {
 	ob_start();
-	$index = 1;
+	$index  = 1;
+	$target = 'myvideoroom-pmm-header';
 	?>
 
 <div class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
 	<!-- Module Header -->
-	<div class="myvideoroom-menu-settings">
-		<div class="myvideoroom-header-table-left">
+	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>">
+		<div class="myvideoroom-header-table-left-reduced">
 			<h1><i
-					class="myvideoroom-header-dashicons dashicons-video-alt"></i><?php esc_html_e( 'Personal Meeting Rooms for Users', 'myvideoroom' ); ?>
+					class="myvideoroom-header-dashicons dashicons-video-alt2"></i><?php esc_html_e( 'Personal Meeting Rooms for Users', 'myvideoroom' ); ?>
 			</h1>
 		</div>
-		<div class="myvideoroom-header-table-right">
-		<h1><i class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Module State and Information', 'myvideoroom' ); ?>"></i>
-			</h1>
+		<div class="myvideoroom-header-table-right-wide">
+		<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Settings:', 'myvideoroom' ); ?><i data-target="<?php echo esc_attr( $target ); ?>" class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Go to Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>"></i>
+			</h3>
 		</div>
 	</div>
 
 	<!-- Settings Marker -->
-		<div class="myvideoroom-menu-settings" style="display: none;">
+		<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="display: none;">
 			<div class="myvideoroom-header-table-left">
-			<h1><i
-					class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>
+			<h1><i class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>
 			</h1>
 			</div>
 			<div class="myvideoroom-header-table-right">
 
 
-			<h1><i class="myvideoroom-header-dashicons dashicons-info-outline mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Module State and Information', 'myvideoroom' ); ?>"></i>
+			<h1><i class="myvideoroom-header-dashicons dashicons-info-outline mvideoroom-information-menu-toggle-selector" data-target="<?php echo esc_attr( $target ); ?>" title="<?php esc_html_e( 'Module State and Information', 'myvideoroom' ); ?>"></i>
 			</h1>
 			</div>
 		</div>
 	<!-- Information Toggle -->
-<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target" style="">
+<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="">
 	<!-- Module State and Description Marker -->
 	<div class="myvideoroom-feature-outer-table">
 		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
@@ -124,7 +124,7 @@ return function (): string {
 	</div>
 </div>
 	<!-- end Toggle Section -->
-<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target" style="display:none;">		
+<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="display:none;">		
 	<!-- Reception Area -->
 		<div class="myvideoroom-feature-outer-table">
 			<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">

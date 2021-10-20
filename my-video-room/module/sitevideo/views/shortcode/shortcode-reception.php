@@ -63,14 +63,14 @@ return function (
 			class="mvr-ul-style-menu myvideoroom-sitevideo-hide-button myvideoroom-sitevideo-settings"
 			data-room-id="<?php echo esc_attr( $index_num ); ?>" data-input-type="close" style="display:none;">
 			<i class="dashicons dashicons-dismiss"></i>
-			<?php esc_html_e( 'Close', 'my-video-room' ); ?>
+			<?php esc_html_e( 'Close', 'myvideoroom' ); ?>
 		</button>
 		<hr />
 
 		<div class="myvideoroom-sitevideo-add-room">
 			<?php
 		//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo ( require __DIR__ . '/../add-new-room.php' )();
+		echo ( require __DIR__ . '/../shortcode/add-new-room.php' )();
 			?>
 			<hr />
 		</div>

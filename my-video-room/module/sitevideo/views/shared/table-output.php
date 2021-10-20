@@ -54,7 +54,7 @@ return function (
 		</thead>
 		<tbody>
 			<?php
-			$room_item_render = require __DIR__ . '/room-item.php';
+			$room_item_render = require __DIR__ . '/../admin/room-item.php';
 			foreach ( $room_list as $room ) {
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $room_item_render( $room, $room_type, $offset );

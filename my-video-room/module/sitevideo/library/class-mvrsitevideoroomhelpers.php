@@ -165,7 +165,7 @@ class MVRSiteVideoRoomHelpers {
 	public function render_sitevideo_admin_settings_page( array $input ): array {
 
 		$admin_tab = new MenuTabDisplay(
-			esc_html__( 'Conference Center', 'my-video-room' ),
+			esc_html__( 'Conference Center', 'myvideoroom' ),
 			MVRSiteVideo::ROOM_SLUG_SITE_VIDEO,
 			fn() => $this->get_sitevideo_admin_page()
 		);
@@ -180,7 +180,7 @@ class MVRSiteVideoRoomHelpers {
 	 * @return string
 	 */
 	private function get_sitevideo_admin_page(): string {
-		return ( require __DIR__ . '/../views/module-admin.php' )();
+		return ( require __DIR__ . '/../views/admin/module-admin.php' )();
 	}
 
 	/**
@@ -226,11 +226,11 @@ class MVRSiteVideoRoomHelpers {
 						if ( $delete_confirmed ) {
 							\check_admin_referer( 'delete_room_confirmation_' . $room_id );
 							$this->delete_room_and_post( $room_object );
-							$details_section = ( require __DIR__ . '/../views/room-deleted.php' )( $room_object, 'normal' );
+							$details_section = ( require __DIR__ . '/../views/shortcode/room-deleted.php' )( $room_object, 'normal' );
 						} else {
 							\check_admin_referer( 'delete_room_' . $room_id );
 
-							return ( require __DIR__ . '/../views/room-delete-confirmation.php' )( $room_object );
+							return ( require __DIR__ . '/../views/shortcode/room-delete-confirmation.php' )( $room_object );
 						}
 						break;
 
@@ -239,11 +239,11 @@ class MVRSiteVideoRoomHelpers {
 						$room_object->id      = $this->regenerate_room( $room_id, $room_object );
 						$room_object->post_id = $room_object->id;
 
-						$details_section = ( require __DIR__ . '/../views/view-management-rooms.php' )( $room_object, 'normal' );
+						$details_section = ( require __DIR__ . '/../views/admin/view-management-rooms.php' )( $room_object, 'normal' );
 						break;
 
 					default:
-						$details_section = ( require __DIR__ . '/../views/view-management-rooms.php' )( $room_object, 'normal' );
+						$details_section = ( require __DIR__ . '/../views/admin/view-management-rooms.php' )( $room_object, 'normal' );
 				}
 			}
 		}
@@ -254,7 +254,7 @@ class MVRSiteVideoRoomHelpers {
 			\wp_enqueue_script( 'myvideoroom-sitevideo-settings-js' );
 			return ( require __DIR__ . '/../views/shortcode/shortcode-reception.php' )( $details_section );
 		} else {
-			return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );
+			return ( require __DIR__ . '/../views/admin/site-conference-center.php' )( $details_section );
 		}
 	}
 
@@ -362,7 +362,7 @@ class MVRSiteVideoRoomHelpers {
 	 * Render Default Settings Admin Page.
 	 */
 	public function render_sitevideo_admin_page() {
-		return ( require __DIR__ . '/../views/module-admin.php' )();
+		return ( require __DIR__ . '/../views/admin/module-admin.php' )();
 	}
 
 	/**
@@ -375,7 +375,7 @@ class MVRSiteVideoRoomHelpers {
 	public function render_advanced_video_admin_tab( array $input ): array {
 
 		$admin_tab = new MenuTabDisplay(
-			esc_html__( 'Advanced', 'my-video-room' ),
+			esc_html__( 'Advanced', 'myvideoroom' ),
 			'settingsadvanced',
 			fn() => $this->render_advanced_video_appearance_screen()
 		);
@@ -401,7 +401,7 @@ class MVRSiteVideoRoomHelpers {
 	public function render_default_video_appearance_tab( array $input ): array {
 
 		$admin_tab = new MenuTabDisplay(
-			esc_html__( 'Default Video Appearance', 'my-video-room' ),
+			esc_html__( 'Default Video Appearance', 'myvideoroom' ),
 			'videoappearance',
 			fn() => $this->render_default_video_appearance_screen()
 		);
@@ -414,7 +414,33 @@ class MVRSiteVideoRoomHelpers {
 	 * Default Video Appearance Screen Handler.
 	 */
 	public function render_default_video_appearance_screen() {
-		return ( require __DIR__ . '/../views/view-settings-video-default.php' )();
+		return ( require __DIR__ . '/../views/admin/view-settings-video-default.php' )();
+	}
+
+	/**
+	 * Render Advanced Video Settings Tab
+	 *
+	 * @param array $input - the inbound menu.
+	 *
+	 * @return array - outbound menu.
+	 */
+	public function render_login_tab( array $input ): array {
+
+		$admin_tab = new MenuTabDisplay(
+			esc_html__( 'Login Tab Settings', 'myvideoroom' ),
+			'logintab',
+			fn() => $this->render_default_video_appearance_screen()
+		);
+		array_push( $input, $admin_tab );
+
+		return $input;
+	}
+
+	/**
+	 * Default Video Appearance Screen Handler.
+	 */
+	public function render_login_screen() {
+		return ( require __DIR__ . '/../views/admin/view-settings-video-default.php' )();
 	}
 
 }

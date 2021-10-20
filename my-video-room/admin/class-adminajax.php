@@ -88,11 +88,11 @@ class AdminAjax {
 					$response['mainvideo'] = Factory::get_instance( MVRSiteVideoControllers::class )->site_videoroom_host_function( $room_id, true );
 
 				} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $input_type ) {
-					$response['mainvideo'] = ( require __DIR__ . '/../module/sitevideo/views/view-settings-conference-center-default.php' )();
+					$response['mainvideo'] = ( require __DIR__ . '/../module/sitevideo/views/admin/view-settings-conference-center-default.php' )();
 
 				} else {
 					$room_object           = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
-					$response['mainvideo'] = ( require __DIR__ . '/../module/sitevideo/views/view-management-rooms.php' )( $room_object, $input_type );
+					$response['mainvideo'] = ( require __DIR__ . '/../module/sitevideo/views/admin/view-management-rooms.php' )( $room_object, $input_type );
 				}
 				return \wp_send_json( $response );
 

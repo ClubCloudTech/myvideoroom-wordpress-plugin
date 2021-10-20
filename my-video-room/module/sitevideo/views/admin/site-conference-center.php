@@ -34,15 +34,16 @@ return function (
 	?>
 <!-- Module Header -->
 <div class="myvideoroom-menu-settings">
-	<div class="myvideoroom-header-table-left">
+	<div class="myvideoroom-header-table-left-reduced">
 		<h1><i title="<?php esc_html_e( 'Visit Module Control Center to change or add modules.', 'myvideoroom' ); ?>"
 				class="myvideoroom-header-dashicons dashicons-cover-image"></i><?php esc_html_e( 'Room Management and Control', 'myvideoroom' ); ?>
 		</h1>
 	</div>
-	<div class="myvideoroom-header-table-right">
-		<a href="<?php echo \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ); ?>">
-			<i class="myvideoroom-header-dashicons dashicons-admin-plugins"></i></a>
-
+	<div class="myvideoroom-header-table-right-wide">
+			<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Modules:', 'myvideoroom' ); ?>
+			<a href="<?php echo \esc_url( \menu_page_url( PageList::PAGE_SLUG_MODULES, false ) ); ?>">
+			<i class="myvideoroom-header-dashicons dashicons-admin-plugins"></i></a>	
+		</h3>
 	</div>
 </div>
 <p style>
