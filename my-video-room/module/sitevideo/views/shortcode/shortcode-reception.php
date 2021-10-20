@@ -26,7 +26,7 @@ return function (
 	if ( ! is_user_logged_in() ) {
 		?><div class="mvr-admin-page-wrap">
 	<h2><?php esc_html_e( 'Please Sign in to Access Reception', 'myvideoroom' ); ?></h2>
-	<?php
+		<?php
 		global $wp;
 		$args = array(
 			'redirect' => home_url( $wp->request ),
@@ -35,11 +35,10 @@ return function (
 
 		?>
 </div>
-<?php
+		<?php
 		return ob_get_clean();
 	}
 
-	$settings_url = \add_query_arg( \esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
 	?>
 <div id="mvr-shortcode-maintable" class="mvr-woocommerce-overlay">
 	<div class="mvr-admin-page-wrap">
@@ -72,7 +71,7 @@ return function (
 			<?php
 		//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo ( require __DIR__ . '/../add-new-room.php' )();
-		?>
+			?>
 			<hr />
 		</div>
 		<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host"
@@ -85,7 +84,7 @@ return function (
 		<?php
 		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO, true );
-	?>
+		?>
 	</div>
 
 	<?php

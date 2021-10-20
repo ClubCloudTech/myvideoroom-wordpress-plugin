@@ -54,7 +54,7 @@ class Module {
 		\add_action(
 			'wp_enqueue_scripts',
 			function () {
-				\wp_enqueue_script(
+				\wp_register_script(
 					'socket-io-3.1.0',
 					\plugins_url( '/third-party/socket.io.js', __FILE__ ),
 					array(),
@@ -62,7 +62,7 @@ class Module {
 					true
 				);
 
-				\wp_enqueue_script(
+				\wp_register_script(
 					'myvideoroom-monitor',
 					\plugins_url( '/js/monitor.js', __FILE__ ),
 					array( 'jquery', 'socket-io-3.1.0' ),
@@ -97,6 +97,17 @@ class Module {
 
 	}
 
+
+	/**
+	 * Enqueue Required Monitor Styles
+	 *
+	 * @return void
+	 */
+	public function enqueue_monitor_scripts() {
+		\wp_enqueue_script( 'socket-io-3.1.0' );
+		\wp_enqueue_script( 'myvideoroom-monitor' );
+	}
+
 	/**
 	 * Output the widget
 	 *
@@ -109,7 +120,7 @@ class Module {
 		if ( ! $params ) {
 			$params = array();
 		}
-
+		$this->enqueue_monitor_scripts();
 		$private_key = \get_option( Plugin::SETTING_PRIVATE_KEY, null );
 
 		if ( ! $private_key ) {

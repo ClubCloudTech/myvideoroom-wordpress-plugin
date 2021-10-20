@@ -6,8 +6,6 @@
  * @package MyVideoRoomPlugin\Module\SiteVideo\Views\Template\maintemplate.php
  */
 
-use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**

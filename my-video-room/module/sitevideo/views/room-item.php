@@ -43,20 +43,15 @@ return function (
 		);
 
 		$delete_nonce   = wp_create_nonce( 'delete_room_' . $room->id );
-		$delete_url     = \add_query_arg(
-			array(
-				'room_id'  => $room->id,
-				'confirm'  => null,
-				'action'   => 'delete',
-				'_wpnonce' => $delete_nonce,
-			),
-			\esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) )
-		);
+		$delete_url     = '#';
 		$edit_actions[] = array(
-			__( 'Delete room' ),
+			__( 'Delete Room' ),
 			$delete_url,
-			'myvideoroom-dashicons dashicons-dismiss myvideoroom-sitevideo-delete',
-			array( 'data-nonce' => $delete_nonce ),
+			'myvideoroom-dashicons dashicons-dismiss myvideoroom-sitevideo-delete ',
+			array(
+				'data-nonce'     => $delete_nonce,
+				'data-room-name' => $room->display_name,
+			),
 		);
 	}
 	// ---
@@ -126,22 +121,25 @@ return function (
 			?>
 		</td>
 		<td>
-			<?php
-			foreach ( $edit_actions as $action ) {
+		<?php
+		foreach ( $edit_actions as $action ) {
+			?>
+			<a href="<?php echo esc_url( $action[1] ); ?>"
+				class="myvideoroom-icons <?php echo esc_attr( $action[2] ); ?>"
+				data-room-id="<?php echo esc_attr( $room->id ); ?>"
+				title="<?php echo esc_attr( $action[0] ); ?>"
+				<?php
+				foreach ( $action[3] ?? array() as $key => $value ) {
+					echo esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
+				}
+				foreach ( $action[4] ?? array() as $key => $value ) {
+					echo esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
+				}
 				?>
-				<a href="<?php echo esc_url( $action[1] ); ?>"
-					class="myvideoroom-dashicons mvr-icons <?php echo esc_attr( $action[2] ); ?>"
-					data-room-id="<?php echo esc_attr( $room->id ); ?>"
-					title="<?php echo esc_attr( $action[0] ); ?>"
-					<?php
-					foreach ( $actions[3] ?? array() as $key => $value ) {
-						echo esc_attr( $key ) . '="' . esc_attr( $value ) . '" ';
-					}
-					?>
 				></a>
 				<?php
-			}
-			?>
+		}
+		?>
 		</td>
 	</tr>
 

@@ -10,20 +10,25 @@ declare( strict_types=1 );
 namespace MyVideoRoomPlugin\Admin;
 
 use MyVideoRoomPlugin\DAO\ModuleConfig;
+use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoControllers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
+use MyVideoRoomPlugin\SiteDefaults;
 
 /**
  * Class AdminAjax
  */
 class AdminAjax {
 
+	const DELETE_APPROVED = 'delete-approved';
 	/**
 	 * Runtime Shortcodes and Setup
 	 * Required for Normal Runtime.
@@ -66,104 +71,159 @@ class AdminAjax {
 		// Security Checks.
 		check_ajax_referer( 'mvr_admin_ajax', 'security', false );
 
-		if ( isset( $_POST['action_taken'] ) ) {
-			$action_taken = sanitize_text_field( wp_unslash( $_POST['action_taken'] ) );
-		}
-		if ( isset( $_POST['state'] ) ) {
-			$action_state = sanitize_text_field( wp_unslash( $_POST['state'] ) );
-		}
-		if ( isset( $_POST['module'] ) ) {
-			$module = sanitize_text_field( wp_unslash( $_POST['module'] ) );
-		}
+		$action_taken = Factory::get_instance( Ajax::class )->get_string_parameter( 'action_taken' );
+		$action_state = Factory::get_instance( Ajax::class )->get_string_parameter( 'state' );
+		$module       = Factory::get_instance( Ajax::class )->get_string_parameter( 'module' );
+		$input_type   = Factory::get_instance( Ajax::class )->get_string_parameter( 'inputType' );
 
-		/*
-		* Activate/Deactivate Module.
-		*
-		*/
-		if ( 'update_module' === $action_taken ) {
+		switch ( $action_taken ) {
+			/*
+			* Core View Display.
+			*
+			*/
+			case 'core':
+				$room_id = (int) Factory::get_instance( Ajax::class )->get_integer_parameter( 'roomId' );
+				// Case Room Render for Reception Shortcode.
+				if ( MVRSiteVideo::RECEPTION_ROOM_FLAG === $input_type ) {
+					$response['mainvideo'] = Factory::get_instance( MVRSiteVideoControllers::class )->site_videoroom_host_function( $room_id, true );
 
-			$button = Factory::get_instance( ModuleConfig::class )->module_activation_button( intval( $module ), $action_state );
+				} elseif ( SiteDefaults::USER_ID_SITE_DEFAULTS === \intval( $room_id ) && MVRSiteVideo::ROOM_NAME_SITE_VIDEO === $input_type ) {
+					$response['mainvideo'] = ( require __DIR__ . '/../module/sitevideo/views/view-settings-conference-center-default.php' )();
+
+				} else {
+					$room_object           = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+					$response['mainvideo'] = ( require __DIR__ . '/../module/sitevideo/views/view-management-rooms.php' )( $room_object, $input_type );
+				}
+				return \wp_send_json( $response );
+
+			/*
+			* Activate/Deactivate Module.
+			*
+			*/
+			case 'update_module':
+				$button = Factory::get_instance( ModuleConfig::class )->module_activation_button( intval( $module ), $action_state );
 
 				$response['button'] = $button;
 
-			return \wp_send_json( $response );
-		}
+				return \wp_send_json( $response );
 
-		/*
-		* Update User Tab Name.
-		*
-		*/
-		if ( 'update_user_tab_name' === $action_taken ) {
-			if ( isset( $_POST['user_tab_name'] ) ) {
-				$user_tab_name = sanitize_text_field( wp_unslash( $_POST['user_tab_name'] ) );
-			}
-			if ( strlen( $user_tab_name ) >= 5 ) {
-				\update_option( 'myvideoroom-buddypress-user-tab', $user_tab_name );
-				$response['feedback'] = \esc_html__( 'Setting Saved', 'myvideoroom' );
-			} else {
-				$response['feedback'] = \esc_html__( 'Tab Name Invalid', 'myvideoroom' );
-			}
+			/*
+			* Update User Tab Name.
+			*
+			*/
+			case 'update_user_tab_name':
+				if ( isset( $_POST['user_tab_name'] ) ) {
+					$user_tab_name = sanitize_text_field( wp_unslash( $_POST['user_tab_name'] ) );
+				}
+				if ( strlen( $user_tab_name ) >= 5 ) {
+					\update_option( 'myvideoroom-buddypress-user-tab', $user_tab_name );
+					$response['feedback'] = \esc_html__( 'Setting Saved', 'myvideoroom' );
+				} else {
+					$response['feedback'] = \esc_html__( 'Tab Name Invalid', 'myvideoroom' );
+				}
 
-			return \wp_send_json( $response );
-		}
+				return \wp_send_json( $response );
 
-		/*
-		* Update Group Tab Name.
-		*
-		*/
-		if ( 'update_group_tab_name' === $action_taken ) {
-			if ( isset( $_POST['group_tab_name'] ) ) {
-				$group_tab_name = sanitize_text_field( wp_unslash( $_POST['group_tab_name'] ) );
-			}
-			if ( strlen( $group_tab_name ) >= 5 ) {
-				\update_option( 'myvideoroom-buddypress-group-tab', $group_tab_name );
-				$response['feedback'] = \esc_html__( 'Setting Saved', 'myvideoroom' );
-			} else {
-				$response['feedback'] = \esc_html__( 'Tab Name Invalid', 'myvideoroom' );
-			}
+			/*
+			* Update Group Tab Name.
+			*
+			*/
+			case 'update_group_tab_name':
+				if ( isset( $_POST['group_tab_name'] ) ) {
+					$group_tab_name = sanitize_text_field( wp_unslash( $_POST['group_tab_name'] ) );
+				}
+				if ( strlen( $group_tab_name ) >= 5 ) {
+					\update_option( 'myvideoroom-buddypress-group-tab', $group_tab_name );
+					$response['feedback'] = \esc_html__( 'Setting Saved', 'myvideoroom' );
+				} else {
+					$response['feedback'] = \esc_html__( 'Tab Name Invalid', 'myvideoroom' );
+				}
 
-			return \wp_send_json( $response );
-		}
+				return \wp_send_json( $response );
 
-		/*
-		* Check Slug is Available. (Used by Room URL Change Functions)
-		*
-		*/
-		if ( 'check_slug' === $action_taken ) {
-			if ( isset( $_POST['slug'] ) ) {
-				$slug = sanitize_text_field( wp_unslash( $_POST['slug'] ) );
-			}
-
-			$path_object = \get_page_by_path( $slug );
-
-			if ( $path_object ) {
-				$response['available'] = false;
-				$response['input']     = $slug;
-			} else {
-				$response['available'] = true;
-				$response['input']     = $slug;
-			}
-			return \wp_send_json( $response );
-		}
-
-		/*
-		* Update Room Slug.
-		*
-		*/
-		if ( 'update_slug' === $action_taken ) {
-			if ( isset( $_POST['slug'] ) ) {
-				$slug_pre_san = sanitize_text_field( wp_unslash( $_POST['slug'] ) );
+			/*
+			* Check Slug is Available. (Used by Room URL Change Functions)
+			*
+			*/
+			case 'check_slug':
+				$slug_pre_san = Factory::get_instance( Ajax::class )->get_string_parameter( 'slug' );
 				$slug         = strtolower( str_replace( ' ', '-', trim( $slug_pre_san ) ) );
-			}
-			if ( isset( $_POST['post_id'] ) ) {
-				$post_id = sanitize_text_field( wp_unslash( $_POST['post_id'] ) );
-			}
-			if ( strlen( $slug ) >= 3 ) {
-				$update_array = array(
-					'ID'        => intval( $post_id ),
-					'post_name' => $slug,
+
+				$path_object = \get_page_by_path( $slug );
+
+				if ( $path_object ) {
+					$response['available'] = false;
+					$response['input']     = $slug;
+				} else {
+					$response['available'] = true;
+					$response['input']     = $slug;
+				}
+				return \wp_send_json( $response );
+
+			/*
+			* Update Room Slug.
+			*
+			*/
+			case 'update_slug':
+				$slug_pre_san = Factory::get_instance( Ajax::class )->get_string_parameter( 'slug' );
+				$slug         = strtolower( str_replace( ' ', '-', trim( $slug_pre_san ) ) );
+				$post_id      = Factory::get_instance( Ajax::class )->get_string_parameter( 'post_id' );
+
+				if ( strlen( $slug ) >= 3 ) {
+					$update_array = array(
+						'ID'        => intval( $post_id ),
+						'post_name' => $slug,
+					);
+					\wp_update_post( $update_array );
+					$response['maintable'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
+					if ( Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME ) ) {
+						$response['personalmeeting'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
+					}
+					if ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
+						$response['conference'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO );
+					}
+
+					$response['feedback'] = \esc_html__( 'Saved', 'myvideoroom' );
+				} else {
+					$response['feedback'] = \esc_html__( 'Slug Update Failed', 'myvideoroom' );
+				}
+
+				return \wp_send_json( $response );
+
+			/*
+			* Refresh Room Tables - Used after module activation button changes module states and availability.
+			*
+			*/
+			case 'refresh_tables':
+				$response['conference'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO );
+				$response['maintable']  = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
+				if ( Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME ) ) {
+					$response['personalmeeting'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
+				}
+				return \wp_send_json( $response );
+
+			/*
+			* Add a New Room - Used To add Site Conference Rooms.
+			*
+			*/
+			case 'add_new_room':
+				$slug_pre_san  = Factory::get_instance( Ajax::class )->get_string_parameter( 'slug' );
+				$room_slug     = strtolower( str_replace( ' ', '-', trim( $slug_pre_san ) ) );
+				$display_title = Factory::get_instance( Ajax::class )->get_string_parameter( 'display_title' );
+
+				if ( \strlen( $room_slug ) < 3 || \strlen( $display_title ) < 3 ) {
+					$response['feedback'] = esc_html__( 'Input is too short ', 'myvideoroom' );
+					return \wp_send_json( $response );
+				}
+
+				Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
+					strtolower( str_replace( ' ', '-', trim( $display_title ) ) ),
+					$display_title,
+					$room_slug,
+					MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+					MVRSiteVideo::SHORTCODE_SITE_VIDEO
 				);
-				\wp_update_post( $update_array );
+
 				$response['maintable'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
 				if ( Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME ) ) {
 					$response['personalmeeting'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
@@ -171,93 +231,63 @@ class AdminAjax {
 				if ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
 					$response['conference'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO );
 				}
-
-				$response['feedback'] = \esc_html__( 'Saved', 'myvideoroom' );
-			} else {
-				$response['feedback'] = \esc_html__( 'Slug Update Failed', 'myvideoroom' );
-			}
-
-			return \wp_send_json( $response );
-		}
-
-		/*
-		* Refresh Room Tables - Used after module activation button changes module states and availability.
-		*
-		*/
-		if ( 'refresh_tables' === $action_taken ) {
-			$response['conference'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO );
-			$response['maintable']  = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
-			if ( Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME ) ) {
-				$response['personalmeeting'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
-			}
-			return \wp_send_json( $response );
-		}
-
-		/*
-		* Add a New Room - Used To add Site Conference Rooms.
-		*
-		*/
-		if ( 'add_new_room' === $action_taken ) {
-			if ( isset( $_POST['slug'] ) ) {
-				$slug_pre_san = sanitize_text_field( wp_unslash( $_POST['slug'] ) );
-				$room_slug    = strtolower( str_replace( ' ', '-', trim( $slug_pre_san ) ) );
-			}
-			if ( isset( $_POST['display_title'] ) ) {
-				$display_title = sanitize_text_field( wp_unslash( $_POST['display_title'] ) );
-			}
-			if ( \strlen( $room_slug ) < 3 || \strlen( $display_title ) < 3 ) {
-				$response['feedback'] = esc_html__( 'Input is too short ', 'myvideoroom' );
 				return \wp_send_json( $response );
-			}
 
-			Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
-				strtolower( str_replace( ' ', '-', trim( $display_title ) ) ),
-				$display_title,
-				$room_slug,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-				MVRSiteVideo::SHORTCODE_SITE_VIDEO
-			);
+			/*
+			* Delete Pre Confirmation.
+			*
+			*/
+			case 'delete_room':
+				$room_id   = (int) Factory::get_instance( Ajax::class )->get_integer_parameter( 'roomId' );
+				$room_name = Factory::get_instance( Ajax::class )->get_string_parameter( 'roomName' );
+				$nonce     = Factory::get_instance( Ajax::class )->get_string_parameter( 'nonce' );
+				if ( ! \wp_verify_nonce( $nonce, 'delete_room_' . $room_id ) || ! current_user_can( 'administrator' ) ) {
+					$response['mainvideo'] = \esc_html__( 'You do not have permission to complete this operation.', 'myvideoroom' );
+					return \wp_send_json( $response );
+				}
+				$message = sprintf(
+				/* translators: %s is the message variant translated above */
+					\esc_html__(
+						'delete %s ? This action can not be reversed.',
+						'myvideoroom'
+					),
+					esc_html( $room_name )
+				);
 
-			$response['maintable'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
-			if ( Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME ) ) {
-				$response['personalmeeting'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
-			}
-			if ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
+				$approved_nonce        = wp_create_nonce( $room_id . self::DELETE_APPROVED );
+				$confirmation_approved = Factory::get_instance( MVRSiteVideoViews::class )->basket_nav_bar_button( self::DELETE_APPROVED, esc_html__( 'Delete ', 'my-video-room' ) . $room_name, null, $approved_nonce, null, null, strval( $room_id ) );
+				$response['mainvideo'] = Factory::get_instance( MVRSiteVideoViews::class )->shortcode_confirmation( $message, $confirmation_approved );
+				return \wp_send_json( $response );
+
+			/*
+			* Delete Post Confirmation.
+			*
+			*/
+			case 'delete_approved':
+				$nonce   = Factory::get_instance( Ajax::class )->get_string_parameter( 'nonce' );
+				$room_id = (int) Factory::get_instance( Ajax::class )->get_integer_parameter( 'roomId' );
+				$verify  = \wp_verify_nonce( $nonce, $room_id . self::DELETE_APPROVED );
+
+				if ( ! $verify || ! current_user_can( 'administrator' ) ) {
+					$response['mainvideo'] = \esc_html__( 'You do not have permission to complete this operation.', 'myvideoroom' );
+					return \wp_send_json( $response );
+				}
+
+				$room_check = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
+				if ( ! $room_check ) {
+					$response['mainvideo'] = \esc_html__( 'This Room does not Exist - please contact support', 'myvideoroom' );
+				} else {
+					Factory::get_instance( MVRSiteVideoRoomHelpers::class )->delete_room_and_post( $room_check );
+				}
+
 				$response['conference'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO );
-			}
-			return \wp_send_json( $response );
-		}
-
-		/*
-		* Add a New Room From Frontend- Used To add Site Conference Rooms.
-		*
-		*/
-		if ( 'add_new_room_shortcode' === $action_taken ) {
-			if ( isset( $_POST['slug'] ) ) {
-				$slug_pre_san = sanitize_text_field( wp_unslash( $_POST['slug'] ) );
-				$room_slug    = strtolower( str_replace( ' ', '-', trim( $slug_pre_san ) ) );
-			}
-			if ( isset( $_POST['display_title'] ) ) {
-				$display_title = sanitize_text_field( wp_unslash( $_POST['display_title'] ) );
-			}
-			$response['feedback'] = esc_html__( 'Saved', 'myvideoroom' );
-			if ( \strlen( $room_slug ) < 3 || \strlen( $display_title ) < 3 ) {
-				$response['feedback'] = esc_html__( 'Input is too short ', 'myvideoroom' );
+				$response['maintable']  = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
+				if ( Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME ) ) {
+					$response['personalmeeting'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
+				}
 				return \wp_send_json( $response );
-			}
 
-			Factory::get_instance( RoomAdmin::class )->create_and_check_sitevideo_page(
-				strtolower( str_replace( ' ', '-', trim( $display_title ) ) ),
-				$display_title,
-				$room_slug,
-				MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
-				MVRSiteVideo::SHORTCODE_SITE_VIDEO
-			);
-			$response['shortcode'] = 'ok';
-			$response['maintable'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO, true );
-			return \wp_send_json( $response );
 		}
-
 		die();
 	}
 }

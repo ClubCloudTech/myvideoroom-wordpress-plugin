@@ -26,8 +26,8 @@ class RoomBuilder {
 	 * RoomBuilder constructor.
 	 */
 	public function __construct() {
-		\add_action( 'wp_enqueue_scripts', fn() => $this->enqueue_scripts_and_styles() );
-		\add_action( 'admin_enqueue_scripts', fn() => $this->enqueue_scripts_and_styles() );
+		\add_action( 'wp_enqueue_scripts', fn() => $this->register_scripts_and_styles() );
+		\add_action( 'admin_enqueue_scripts', fn() => $this->register_scripts_and_styles() );
 
 		\add_filter(
 			'myvideoroom_roombuilder_create_shortcode',
@@ -51,25 +51,33 @@ class RoomBuilder {
 	}
 
 	/**
-	 * Enqueue required scripts and styles
+	 * Register required scripts and styles.
 	 */
-	private function enqueue_scripts_and_styles() {
+	private function register_scripts_and_styles() {
 		$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
 
-		\wp_enqueue_style(
+		\wp_register_style(
 			'myvideoroom-custompermissions-roombuilder-css',
 			\plugins_url( '/css/roombuilder.css', \realpath( __FILE__ ) ),
 			false,
 			$plugin_version,
 		);
 
-		\wp_enqueue_script(
+		\wp_register_script(
 			'myvideoroom-custompermissions-roombuilder-js',
 			\plugins_url( '/js/roombuilder.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
 			$plugin_version,
 			true
 		);
+	}
+
+	/**
+	 * Enqueue required scripts and styles.
+	 */
+	public function enqueue_permissions_scripts_and_styles() {
+		\wp_enqueue_style( 'myvideoroom-custompermissions-roombuilder-css' );
+		\wp_enqueue_script( 'myvideoroom-custompermissions-roombuilder-js' );
 	}
 
 	/**
@@ -135,11 +143,14 @@ class RoomBuilder {
 	 * @return AppShortcodeConstructor
 	 */
 	public function generate_shortcode_constructor( AppShortcodeConstructor $shortcode_constructor ): AppShortcodeConstructor {
+
 		$post_library = Factory::get_instance( HttpPost::class );
 		if ( $post_library->is_post_request( 'show_roombuilder_preview' ) ) {
 			$permissions_preference = $post_library->get_radio_parameter( 'room_builder_room_permissions_preference' );
 			$use_custom_permissions = ( self::PERMISSIONS_FIELD_NAME === $permissions_preference );
 
+			$this->register_scripts_and_styles();
+			$this->enqueue_permissions_scripts_and_styles();
 			if ( $use_custom_permissions ) {
 				$admin_strings = array();
 
@@ -168,6 +179,8 @@ class RoomBuilder {
 	 */
 	public function add_permission_section() {
 		$post_library = Factory::get_instance( HttpPost::class );
+
+		$this->enqueue_permissions_scripts_and_styles();
 
 		$user_permissions = $post_library->get_string_list_parameter( 'room_builder_custom_permissions_users' );
 		$role_permissions = $post_library->get_string_list_parameter( 'room_builder_custom_permissions_roles' );

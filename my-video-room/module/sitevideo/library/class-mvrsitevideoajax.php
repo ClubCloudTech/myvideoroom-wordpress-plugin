@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
 use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
+use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin as SetupRoomAdmin;
 use MyVideoRoomPlugin\SiteDefaults;
 
 /**
@@ -39,6 +40,10 @@ class MVRSiteVideoAjax {
 		$response     = array();
 
 		switch ( $action_taken ) {
+			/*
+			* Core View Display.
+			*
+			*/
 			case 'core':
 				// Case Room Render for Reception Shortcode.
 				if ( MVRSiteVideo::RECEPTION_ROOM_FLAG === $input_type ) {
@@ -52,6 +57,11 @@ class MVRSiteVideoAjax {
 					$response['mainvideo'] = ( require __DIR__ . '/../views/view-management-rooms.php' )( $room_object, $input_type );
 				}
 				return \wp_send_json( $response );
+
+			/*
+			* Delete Pre Confirmation.
+			*
+			*/
 			case 'delete_room':
 				if ( ! \wp_verify_nonce( $nonce, 'delete_room_' . $room_id ) || ! current_user_can( 'administrator' ) ) {
 					$response['mainvideo'] = \esc_html__( 'You do not have permission to complete this operation.', 'myvideoroom' );
@@ -67,10 +77,14 @@ class MVRSiteVideoAjax {
 				);
 
 				$approved_nonce        = wp_create_nonce( $room_id . self::DELETE_APPROVED );
-				$confirmation_approved = Factory::get_instance( MVRSiteVideoViews::class )->basket_nav_bar_button( self::DELETE_APPROVED, esc_html__( 'Delete ', 'my-video-room' ) . $room_name, null, $approved_nonce, $user_id, null, $room_id );
+				$confirmation_approved = Factory::get_instance( MVRSiteVideoViews::class )->basket_nav_bar_button( self::DELETE_APPROVED, esc_html__( 'Delete ', 'my-video-room' ) . $room_name, null, $approved_nonce, null, null, $room_id );
 				$response['mainvideo'] = Factory::get_instance( MVRSiteVideoViews::class )->shortcode_confirmation( $message, $confirmation_approved );
 				return \wp_send_json( $response );
 
+			/*
+			* Delete Post Confirmation.
+			*
+			*/
 			case 'delete_approved':
 				$verify = \wp_verify_nonce( $nonce, $room_id . self::DELETE_APPROVED );
 				if ( ! $verify || ! current_user_can( 'administrator' ) ) {
@@ -87,6 +101,51 @@ class MVRSiteVideoAjax {
 
 				$response['mainvideo'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO, true );
 				return \wp_send_json( $response );
+
+			/*
+			* Check Slug is Available. (Used by Room URL Change Functions)
+			*
+			*/
+			case 'check_slug':
+				$slug_pre_san   = Factory::get_instance( Ajax::class )->get_string_parameter( 'slug' );
+				$sanitized_slug = strtolower( str_replace( ' ', '-', trim( $slug_pre_san ) ) );
+				$path_object    = \get_page_by_path( $sanitized_slug );
+
+				if ( $path_object ) {
+					$response['available'] = false;
+					$response['input']     = $sanitized_slug;
+				} else {
+					$response['available'] = true;
+					$response['input']     = $sanitized_slug;
+				}
+				return \wp_send_json( $response );
+
+				/*
+				* Add a New Room From Frontend- Used To add Site Conference Rooms.
+				*
+				*/
+			case 'add_new_room_shortcode':
+				$slug_pre_san  = Factory::get_instance( Ajax::class )->get_string_parameter( 'slug' );
+				$room_slug     = strtolower( str_replace( ' ', '-', trim( $slug_pre_san ) ) );
+				$display_title = Factory::get_instance( Ajax::class )->get_string_parameter( 'display_title' );
+
+				$response['feedback'] = esc_html__( 'Saved', 'myvideoroom' );
+				if ( \strlen( $room_slug ) < 3 || \strlen( $display_title ) < 3 ) {
+					$response['feedback'] = esc_html__( 'Input is too short ', 'myvideoroom' );
+					return \wp_send_json( $response );
+				}
+
+				Factory::get_instance( SetupRoomAdmin::class )->create_and_check_sitevideo_page(
+					strtolower( str_replace( ' ', '-', trim( $display_title ) ) ),
+					$display_title,
+					$room_slug,
+					MVRSiteVideo::ROOM_NAME_SITE_VIDEO,
+					MVRSiteVideo::SHORTCODE_SITE_VIDEO
+				);
+				$response['maintable'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO, true );
+
+				return \wp_send_json( $response );
+
 		}
 		die();
 	}

@@ -19,6 +19,7 @@ use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\SectionTemplates;
+use MyVideoRoomPlugin\Module\Monitor\Module;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -247,9 +248,10 @@ class MVRSiteVideoRoomHelpers {
 			}
 		}
 		// Render Scripts to Manage Room Add.
-		Factory::get_instance( AdminAjax::class )->init();
-		\wp_enqueue_script( 'myvideoroom-monitor' );
+		Factory::get_instance( Module::class )->enqueue_monitor_scripts();
+		\wp_enqueue_script( 'myvideoroom-sitevideo-add-room-js' );
 		if ( $shortcode ) {
+			\wp_enqueue_script( 'myvideoroom-sitevideo-settings-js' );
 			return ( require __DIR__ . '/../views/shortcode/shortcode-reception.php' )( $details_section );
 		} else {
 			return ( require __DIR__ . '/../views/site-conference-center.php' )( $details_section );

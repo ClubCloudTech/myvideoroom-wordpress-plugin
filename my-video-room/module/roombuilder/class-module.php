@@ -19,7 +19,6 @@ use MyVideoRoomPlugin\Library\HttpPost;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\RoomBuilder\Admin as RoomBuilderAdmin;
 use MyVideoRoomPlugin\Shortcode\App;
-use MyVideoRoomPlugin\ValueObject\GettingStarted;
 
 /**
  * Class Module
@@ -37,35 +36,35 @@ class Module {
 
 		\add_action(
 			'wp_enqueue_scripts',
-			fn() => $this->enqueue_scripts_and_styles(),
+			fn() => $this->register_scripts_and_styles(),
 		);
 
 		$this->add_admin_actions_and_filters();
 	}
 
 	/**
-	 * Enqueue required scripts and styles
+	 * Register required scripts and styles
 	 *
 	 * @param bool $admin If this is an admin setting.
 	 */
-	private function enqueue_scripts_and_styles( bool $admin = false ) {
+	private function register_scripts_and_styles( bool $admin = false ) {
 		$plugin_version = Factory::get_instance( Version::class )->get_plugin_version();
 
-		\wp_enqueue_style(
+		\wp_register_style(
 			'myvideoroom-room-builder-shared-css',
 			\plugins_url( '/css/shared.css', \realpath( __FILE__ ) ),
 			false,
 			$plugin_version,
 		);
 
-		\wp_enqueue_style(
+		\wp_register_style(
 			'myvideoroom-shared-css',
 			\plugins_url( '/css/shared.css', \realpath( __DIR__ . '/../' ) ),
 			false,
 			$plugin_version,
 		);
 
-		\wp_enqueue_script(
+		\wp_register_script(
 			'myvideoroom-room-builder',
 			\plugins_url( '/js/roombuilder.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
@@ -73,20 +72,34 @@ class Module {
 			true
 		);
 
-		if ( $admin ) {
-			\wp_enqueue_style(
+			\wp_register_style(
 				'myvideoroom-room-builder-admin-css',
 				\plugins_url( '/css/admin.css', \realpath( __FILE__ ) ),
 				false,
 				$plugin_version,
 			);
-		} else {
-			wp_enqueue_style(
+
+			wp_register_style(
 				'myvideoroom-room-builder-frontend-css',
 				plugins_url( '/css/frontend.css', realpath( __FILE__ ) ),
 				false,
 				$plugin_version . \wp_rand( 10, 2000 ),
 			);
+	}
+	/**
+	 * Enqueue required scripts and styles (called from Admin Page only.)
+	 *
+	 * @param bool $admin If this is an admin setting.
+	 */
+	public function enqueue_roombuilder( bool $admin = false ) {
+		\wp_enqueue_style( 'myvideoroom-room-builder-shared-css' );
+		\wp_enqueue_style( 'myvideoroom-shared-css' );
+		\wp_enqueue_script( 'myvideoroom-room-builder' );
+		\wp_enqueue_style( 'myvideoroom-room-builder-frontend-css' );
+		if ( $admin ) {
+			\wp_enqueue_style( 'myvideoroom-room-builder-admin-css' );
+		} else {
+			\wp_enqueue_style( 'myvideoroom-room-builder-frontend-css' );
 		}
 	}
 
@@ -96,7 +109,7 @@ class Module {
 	private function add_admin_actions_and_filters() {
 		\add_action(
 			'admin_enqueue_scripts',
-			fn() => $this->enqueue_scripts_and_styles( true ),
+			fn() => $this->register_scripts_and_styles( true ),
 		);
 
 		\add_action(
@@ -112,24 +125,6 @@ class Module {
 				);
 			}
 		);
-
-		// \add_action(
-		// 'myvideoroom_admin_getting_started_steps',
-		// function ( GettingStarted $steps ) {
-		// $steps->get_step( 2 )->set_description(
-		// \sprintf(
-		// * translators: %s is the text "room builder" and links to the Room Builder Section */
-		// \esc_html__(
-		// 'Use the visual %s to plan your room interactively, and learn about receptions and layouts.',
-		// 'myvideoroom'
-		// ),
-		// '<a href="' . \esc_url( \menu_page_url( self::PAGE_SLUG_BUILDER, false ) ) . '">' .
-		// \esc_html__( 'room designer', 'myvideoroom' ) .
-		// '</a>'
-		// )
-		// );
-		// }
-		// );
 
 		\add_action(
 			Admin::ACTION_SHORTCODE_REFERENCE,
@@ -174,7 +169,7 @@ class Module {
 			$available_receptions,
 			$shortcode_constructor
 		);
-
+		$this->enqueue_roombuilder( true );
 		// --
 		// If we have a config, then use it to render out the preview.
 

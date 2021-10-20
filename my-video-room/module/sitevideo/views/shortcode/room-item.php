@@ -2,7 +2,7 @@
 /**
  * FRONTEND ROW in conference center rooms table - Used for Front ends as it doesn't display shortcode text.
  *
- * @package MyVideoRoomPlugin\Views\Public\Admin
+ * @package MyVideoRoomPlugin\Module\SiteVideo\Views\Shortcode\room-item.php
  */
 
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
@@ -48,8 +48,9 @@ return function (
 			__( 'Delete room' ),
 			$delete_url,
 			'myvideoroom-dashicons dashicons-dismiss myvideoroom-sitevideo-delete ',
-			array( 'data-nonce' => $delete_nonce,
-			'data-room-name'    => $room->display_name,
+			array(
+				'data-nonce'     => $delete_nonce,
+				'data-room-name' => $room->display_name,
 			),
 		);
 	}

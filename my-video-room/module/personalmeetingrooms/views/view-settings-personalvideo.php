@@ -35,9 +35,28 @@ return function (): string {
 					class="myvideoroom-header-dashicons dashicons-video-alt"></i><?php esc_html_e( 'Personal Meeting Rooms for Users', 'myvideoroom' ); ?>
 			</h1>
 		</div>
-		<div class="myvideoroom-header-table-right-wide">
+		<div class="myvideoroom-header-table-right">
+		<h1><i class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Module State and Information', 'myvideoroom' ); ?>"></i>
+			</h1>
 		</div>
 	</div>
+
+	<!-- Settings Marker -->
+		<div class="myvideoroom-menu-settings" style="display: none;">
+			<div class="myvideoroom-header-table-left">
+			<h1><i
+					class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>
+			</h1>
+			</div>
+			<div class="myvideoroom-header-table-right">
+
+
+			<h1><i class="myvideoroom-header-dashicons dashicons-info-outline mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Module State and Information', 'myvideoroom' ); ?>"></i>
+			</h1>
+			</div>
+		</div>
+	<!-- Information Toggle -->
+<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target" style="">
 	<!-- Module State and Description Marker -->
 	<div class="myvideoroom-feature-outer-table">
 		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
@@ -102,18 +121,11 @@ return function (): string {
 					alt="Video Call in Progress">
 			</div>
 		</div>
-		<!-- Settings Marker -->
-		<div class="myvideoroom-menu-settings">
-			<div class="myvideoroom-header-table-left">
-				<h1><i
-						class="myvideoroom-header-dashicons dashicons-admin-settings"></i><?php esc_html_e( 'Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>
-				</h1>
-			</div>
-			<div class="myvideoroom-header-table-right">
-
-			</div>
-		</div>
-		<!-- Reception Area -->
+	</div>
+</div>
+	<!-- end Toggle Section -->
+<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target" style="display:none;">		
+	<!-- Reception Area -->
 		<div class="myvideoroom-feature-outer-table">
 			<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 				<h2><?php esc_html_e( 'Reception Room', 'myvideoroom' ); ?></h2>
@@ -191,6 +203,7 @@ return function (): string {
 			</div>
 		</div>
 	</div>
+					</div>
 	<?php
 		return ob_get_clean();
 };

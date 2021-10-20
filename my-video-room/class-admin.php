@@ -13,7 +13,6 @@ use MyVideoRoomPlugin\Admin\AdminAjax;
 use MyVideoRoomPlugin\Admin\Modules;
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\Activation;
-use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Library\Endpoints;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\Module;
@@ -99,6 +98,7 @@ class Admin {
 					$plugin_version,
 					true
 				);
+				\wp_enqueue_script( 'myvideoroom-sitevideo-add-room-js' );
 			}
 		);
 		// Init Admin Ajax module.

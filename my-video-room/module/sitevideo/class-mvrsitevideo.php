@@ -159,7 +159,7 @@ class MVRSiteVideo {
 		// Initialise PHPSESSION to track logged out users.
 		$this->start_php_session();
 
-		\wp_enqueue_script(
+		\wp_register_script(
 			'myvideoroom-sitevideo-settings-js',
 			\plugins_url( '/js/settings.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
@@ -206,7 +206,7 @@ class MVRSiteVideo {
 				$script_data_array
 			);
 
-		\wp_enqueue_script(
+		\wp_register_script(
 			'myvideoroom-sitevideo-add-room-js',
 			\plugins_url( '/js/add-room.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
@@ -353,7 +353,7 @@ class MVRSiteVideo {
 			}
 		);
 		\wp_enqueue_script( 'jquery' );
-		\wp_enqueue_script(
+		\wp_register_script(
 			'socket-io-3.1.0',
 			\plugins_url( '/../monitor/third-party/socket.io.js', __FILE__ ),
 			array(),
@@ -361,7 +361,7 @@ class MVRSiteVideo {
 			true
 		);
 
-		\wp_enqueue_script(
+		\wp_register_script(
 			'myvideoroom-monitor',
 			\plugins_url( '/../monitor/js/monitor.js', __FILE__ ),
 			array( 'jquery', 'socket-io-3.1.0' ),

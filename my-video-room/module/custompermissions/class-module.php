@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin\Module\CustomPermissions;
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
+use MyVideoRoomPlugin\Library\Module as LibraryModule;
 
 /**
  * Class Module
@@ -23,7 +24,7 @@ class Module {
 	public function __construct() {
 		\add_filter( 'myvideoroom_shortcode_constructor', array( $this, 'modify_shortcode_constructor' ), 0, 2 );
 
-		$roombuilder_is_active = Factory::get_instance( \MyVideoRoomPlugin\Library\Module::class )
+		$roombuilder_is_active = Factory::get_instance( LibraryModule::class )
 										->is_module_active( 'roombuilder' );
 
 		if ( $roombuilder_is_active ) {
