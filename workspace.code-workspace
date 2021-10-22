@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../../../../../sync/elemental"
+		},
+		{
+			"path": "../../themes/oceanwp"
 		}
 	],
 	"settings": {}
