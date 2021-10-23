@@ -1,8 +1,8 @@
 <?php
 /**
- * Outputs the configuration settings for the video plugin
+ * Outputs the Meet Center View Template
  *
- * @package MyVideoRoomPlugin\Views\Public\Admin
+ * @package /module/personalmeetingrooms/views/view-reception-template.php
  */
 
 use MyVideoRoomPlugin\Factory;
@@ -23,49 +23,54 @@ object $html_library
 	ob_start();
 	if ( count( $tabs ) >= 1 ) {
 		?>
-<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
-	<ul class="mvr-ul-style-top-menu">
-		<li>
-			<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
-				<?php esc_html_e( 'Join Meeting', 'myvideoroom' ); ?>
-			</a>
-		</li>
-		<?php
-		foreach ( $tabs as $menu_output ) {
-			$tab_display_name = $menu_output->get_tab_display_name();
-			$tab_slug         = $menu_output->get_tab_slug();
-			?>
-		<li>
-			<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-				<?php echo esc_html( $tab_display_name ); ?>
-			</a>
-		</li>
+
+<div class="mvr-nav-shortcode-outer-wrap myvideoroom-outer-shortcode" style="max-width: 1250px;">
+	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper">
+		<ul class="mvr-ul-style-top-menu">
+			<li>
+				<a class="nav-tab nav-tab-active" href="#<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
+					<?php esc_html_e( 'Join Meeting', 'myvideoroom' ); ?>
+				</a>
+			</li>
 			<?php
-		}
-		?>
-	</ul>
-</nav>
+			foreach ( $tabs as $menu_output ) {
+				$tab_display_name = $menu_output->get_tab_display_name();
+				$tab_slug         = $menu_output->get_tab_slug();
+				?>
+			<li>
+				<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+					<?php echo esc_html( $tab_display_name ); ?>
+				</a>
+			</li>
+				<?php
+			}
+			?>
+		</ul>
+	</nav>
 		<?php
 		foreach ( $tabs as $article_output ) {
 			$function_callback = $article_output->get_function_callback();
 			$tab_slug          = $article_output->get_tab_slug();
 			?>
-<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
+	<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
 			<?php
 						// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
 						echo $function_callback;
 			?>
-</article>
+	</article>
 			<?php
 		}
 	}
 	?>
-<article id="<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
-	<?php
+	<article id="<?php echo esc_attr( $html_library->get_id( 'base' ) ); ?>">
+		<?php
 			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Function already Sanitised.
 			echo Factory::get_instance( MVRPersonalMeetingControllers::class )->personal_meeting_guest_shortcode(); 
-	?>
-</article>
+		?>
+	</article>
+	<div class="mvr-clear" ></div>
+</div>
+
 	<?php
 	return ob_get_clean();
 };

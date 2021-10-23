@@ -17,6 +17,7 @@ use MyVideoRoomPlugin\Library\VideoHelpers;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
+use MyVideoRoomPlugin\Library\RoomAdmin as LibraryRoomAdmin;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingViews;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
@@ -140,13 +141,12 @@ class MVRPersonalMeetingControllers {
 		if ( $render_block ) {
 			return $render_block;
 		}
-		// Filter out users trying log into own room as guest.
+		// Filter out recently signed in users.
 		$user_checksum = \get_current_user_id();
 		if ( \is_user_logged_in() ) {
 			if ( $user_checksum === $user_id ) {
-				$meet_page = Factory::get_instance( RoomAdmin::class )->get_videoroom_info( $room_name, 'url' );
-				wp_safe_redirect( $meet_page );
-				exit();
+			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
+				return Factory::get_instance( MVRPersonalMeetingViews::class )->meet_select_host_reception_template();
 			}
 		}
 

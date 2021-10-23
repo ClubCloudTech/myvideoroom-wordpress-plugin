@@ -18,7 +18,8 @@ return function (
 	string $room_name = null,
 	bool $visitor_status = false,
 	string $invite_menu = null,
-	string $post_site_title = null
+	string $post_site_title = null,
+	string $room_type = null
 ) {
 	if ( $visitor_status ) {
 
@@ -40,6 +41,7 @@ return function (
 			'invite_menu'     => $invite_menu,
 			'post_site_title' => $post_site_title,
 			'template_icons'  => $template_icons,
+			'room_type'       => $room_type,
 		);
 		return $return_array;
 };

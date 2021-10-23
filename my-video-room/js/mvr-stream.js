@@ -98,6 +98,17 @@ window.addEventListener("load", function() {
                 deleteMe();
             });
 
+            $('.myvideoroom-clipboard-copy').click(function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                textToClipboard = $(this).parent().attr('data-id');
+                navigator.clipboard.writeText(textToClipboard);
+                alert("Copied: " + textToClipboard + ' to clipboard.');
+            });
+
+
+
             var text = document.getElementById('vid-name');
             if (text && Object.keys(text).length === 0 && Object.getPrototypeOf(text)) {
                 document.getElementById("vid-down").disabled = false;
@@ -341,7 +352,8 @@ window.addEventListener("load", function() {
         form_data.append('action', 'myvideoroom_base_ajax');
 
         jQuery(function($) {
-            console.log('start update');
+            console.log('Start Name Update');
+            notification = $('#mvr-above-article-notification');
             var room_name = $('#roominfo').data('roomName'),
                 status_message = $('#mvr-postbutton-notification'),
                 display_name = $('#vid-name').val();
@@ -359,6 +371,7 @@ window.addEventListener("load", function() {
                 data: form_data,
                 success: function(response) {
                     var state_response = JSON.parse(response);
+                    notification.empty();
                     if (state_response.feedback) {
                         status_message.html(state_response.feedback);
                         setTimeout(function() {
@@ -459,7 +472,7 @@ window.addEventListener("load", function() {
                     init();
                 },
                 error: function(response) {
-                    console.log('Error Uploading');
+                    console.log('Error RefreshWelcome');
                 }
             });
         });
@@ -541,16 +554,21 @@ window.addEventListener("load", function() {
 
         jQuery(function($) {
             var room_name = $('#roominfo').data('roomName'),
+                checksum = $('#roominfo').data('checksum'),
+                room_type = $('#roominfo').data('roomType'),
                 display_name = $('#vid-name').val(),
                 original_room = $('.myvideoroom-app').data('roomName'),
                 status_message = $('#mvr-postbutton-notification'),
                 container = $('.myvideoroom-app');
-
+            console.log(checksum + room_type);
             form_data.append('room_name', room_name);
             form_data.append('security', myvideoroom_base_ajax.security);
             form_data.append('display_name', display_name);
-            form_data.append('action_taken', 'start_meeting');
             form_data.append('original_room', original_room);
+            form_data.append('action_taken', 'start_meeting');
+            form_data.append('checksum', checksum);
+            form_data.append('roomType', room_type);
+
             $.ajax({
                 type: 'post',
                 dataType: 'html',
@@ -563,7 +581,6 @@ window.addEventListener("load", function() {
 
                     if (state_response.mainvideo) {
                         refreshTarget(container, state_response.mainvideo);
-                        //container.html( state_response.mainvideo );
                     }
 
                     if (state_response.feedback) {
@@ -596,7 +613,7 @@ window.addEventListener("load", function() {
                     $('#vid-up').prop('value', 'Saved !');
                 },
                 error: function(response) {
-                    console.log('Error Uploading');
+                    console.log('Error Startmeeting Handler');
                 }
             });
         });
@@ -631,7 +648,6 @@ function refreshTarget(source_element, ajax_response, video_skip) {
     source_element.remove();
     source_element.parent().empty();
     let item = document.getElementById(mainvideo_parent);
-    console.log(Object.keys(item).length);
     if (item && Object.keys(item).length >= 1) {
         item.innerHTML = ajax_response;
     } else {

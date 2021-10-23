@@ -2,7 +2,7 @@
 /**
  * Outputs the View for Guests to enter meeting code or username.
  *
- * @package MyVideoRoomPlugin\Views\Public\Admin
+ * @package /my-video-room/module/personalmeetingrooms/views/view-reception-template.php
  */
 
 /**
@@ -15,7 +15,7 @@ return function (): string {
 	?>
 <div id="video-host-wrap" class="mvr-nav-shortcode-outer-wrap">
 
-	<div class="mvr-header-table-left">
+	<div class="mvr-header-table-left mvr-personal-video-welcome">
 		<h2 class="mvr-header-title">
 			<?php echo esc_html__( 'Welcome to ', 'my-video-room' ) . esc_html( get_bloginfo( 'name' ) ); ?></h2>
 		<img class="myvideoroom-user-image" src="
@@ -31,7 +31,7 @@ return function (): string {
 			?>
 			" alt="Site Logo">
 	</div>
-	<div class="myvideoroom-table-right-split">
+	<div class="mvr-header-table-right mvr-personal-video-welcome">
 		<h2 class="mvr-header-title"><?php esc_html_e( 'Please Select Your Meeting Host', 'my-video-room' ); ?></h2>
 		<form action="">
 			<label for="host"
@@ -49,6 +49,7 @@ return function (): string {
 			<input type="submit" value="Submit" class="mvr-form-button">
 		</form>
 	</div>
+	<div class="mvr-clear"></div>
 </div>
 
 	<?php

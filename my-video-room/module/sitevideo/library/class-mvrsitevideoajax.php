@@ -183,8 +183,8 @@ class MVRSiteVideoAjax {
 		*/
 		if ( 'check_sound' === $action_taken ) {
 			$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->render_guest_soundcheck();
-			$response['feedback']  = '<strong>' . \esc_html__( 'To begin Soundcheck click on any open seat', 'myvideoroom' ) . '</strong>';
-			$response['feedback'] .= '<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons " />';
+			$response['message']   = '<strong>' . \esc_html__( 'To begin Soundcheck click on any open seat', 'myvideoroom' ) . '</strong>';
+			$response['message']  .= '<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons " />';
 			return \wp_send_json( $response );
 		}
 
@@ -295,15 +295,25 @@ class MVRSiteVideoAjax {
 		*
 		*/
 		if ( 'start_meeting' === $action_taken ) {
+			$checksum  = Factory::get_instance( Ajax::class )->get_string_parameter( 'checksum' );
+			$room_type = Factory::get_instance( Ajax::class )->get_string_parameter( 'roomType' );
+
 			$session_id  = Factory::get_instance( RoomAdmin::class )->get_user_session();
 			$room_record = Factory::get_instance( RoomSyncDAO::class )->get_by_id_sync_table( $session_id, $room_name );
-
 			if ( ! $room_record ) {
-				$response['feedback'] = \esc_html__( 'Room Record Retrieval Failed', 'myvideoroom' );
+				$room_object = null;
 			} else {
-				$room_owner_id         = $room_record->get_owner_id();
-				$room_object           = Factory::get_instance( UserVideoPreference::class )->get_by_id( $room_owner_id, $room_name );
-				$response['feedback']  = \esc_html__( 'Refreshing Video Room', 'myvideoroom' );
+				$room_owner_id = $room_record->get_owner_id();
+				$room_object   = Factory::get_instance( UserVideoPreference::class )->get_by_id( $room_owner_id, $room_name );
+			}
+			$response['feedback'] = \esc_html__( 'Refreshing Video Room', 'myvideoroom' );
+
+			if ( ! $room_object ) {
+				// For Transient Rooms and SiteVideo Unset Rooms.
+				$room_rebuild          = Factory::get_instance( RoomAdmin::class )->rebuild_room_record( $room_owner_id, $room_name, $room_type, $checksum, $original_room );
+				$response['mainvideo'] = $room_rebuild;
+			} else {
+				// For SiteVideo and Rooms with set preferences in DB.
 				$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->update_main_video_window( $room_object, $original_room );
 			}
 
@@ -326,6 +336,5 @@ class MVRSiteVideoAjax {
 		} else {
 			return null;
 		}
-
 	}
 }

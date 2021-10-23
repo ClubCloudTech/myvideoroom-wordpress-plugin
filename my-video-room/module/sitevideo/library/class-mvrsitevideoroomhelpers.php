@@ -170,7 +170,7 @@ class MVRSiteVideoRoomHelpers {
 			fn() => $this->get_sitevideo_admin_page()
 		);
 		array_push( $input, $admin_tab );
-		\wp_enqueue_script( 'myvideoroom-sitevideo-add-room-js' );
+		\wp_enqueue_script( 'myvideoroom-sitevideo-settings-js' );
 		return $input;
 	}
 
@@ -219,7 +219,6 @@ class MVRSiteVideoRoomHelpers {
 			$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 			// Render Scripts to Manage Room Add.
 			Factory::get_instance( Module::class )->enqueue_monitor_scripts();
-			\wp_enqueue_script( 'myvideoroom-sitevideo-add-room-js' );
 			if ( ! $room_object ) {
 				$details_section = null;
 			} else {
@@ -249,9 +248,8 @@ class MVRSiteVideoRoomHelpers {
 				}
 			}
 		}
-
+		\wp_enqueue_script( 'myvideoroom-sitevideo-settings-js' );
 		if ( $shortcode ) {
-			\wp_enqueue_script( 'myvideoroom-sitevideo-settings-js' );
 			return ( require __DIR__ . '/../views/shortcode/shortcode-reception.php' )( $details_section );
 		} else {
 			return ( require __DIR__ . '/../views/admin/site-conference-center.php' )( $details_section );
@@ -442,5 +440,33 @@ class MVRSiteVideoRoomHelpers {
 	public function render_login_screen() {
 		return ( require __DIR__ . '/../views/login/view-login-settings.php' )();
 	}
+
+	/**
+	 * Create Host Checksum
+	 *
+	 * @param string $room_type  - Room Type to Encode.
+	 * @param string $status - Status to Encode.
+	 * @param string $room_name - Module Name to Encode.
+	 *
+	 * @return string
+	 */
+	public function create_host_checksum( string $room_type, string $status, string $room_name ): string {
+		return wp_create_nonce( $room_type . $status . $room_name );
+	}
+
+	/**
+	 * Verify Host Checksum
+	 *
+	 * @param string $checksum - Checksum to Verify.
+	 * @param string $room_type  - Room Type to verify.
+	 * @param string $room_name - Module Name to verify.
+	 *
+	 * @return bool
+	 */
+	public function verify_host_checksum( string $checksum, string $room_type, string $room_name ): bool {
+		$status = MVRSiteVideo::SETTING_HOST;
+		return wp_verify_nonce( $checksum, $room_type . $status . $room_name );
+	}
+
 
 }

@@ -27,8 +27,9 @@ class BuddyPressViews {
 		$name_output  = esc_html__( 'Hosting ', 'my-video-room' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );
 		$is_guest     = false;
 		$meeting_link = Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'group_video' ) );
+		$room_type    = BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT;
 
-		return $render( $module_id, $name_output, $host_id, BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS, $is_guest, $meeting_link );
+		return $render( $module_id, $name_output, $host_id, BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS, $is_guest, $meeting_link, null, $room_type );
 	}
 
 	/**
@@ -43,8 +44,9 @@ class BuddyPressViews {
 		$name_output  = esc_html__( 'Visiting ', 'my-video-room' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );
 		$is_guest     = true;
 		$meeting_link = Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'group_video' ) );
+		$room_type    = BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT;
 
-		return $render( $module_id, $name_output, $host_id, BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS, $is_guest, $meeting_link );
+		return $render( $module_id, $name_output, $host_id, BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS, $is_guest, $meeting_link, null, $room_type );
 	}
 
 	/**

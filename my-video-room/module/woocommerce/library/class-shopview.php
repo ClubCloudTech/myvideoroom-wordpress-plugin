@@ -154,6 +154,10 @@ class ShopView {
 		$available_queue = Factory::get_instance( WooCategory::class )->get_product_ids_by_category( $room_name );
 		$output_array    = array();
 
+		if ( ! $available_queue ) {
+			return null;
+		}
+
 		foreach ( $available_queue as $record_id ) {
 			$basket_array = Factory::get_instance( ShoppingBasket::class )->get_individual_cart_object( $record_id, $room_name, true );
 			array_push( $output_array, $basket_array );

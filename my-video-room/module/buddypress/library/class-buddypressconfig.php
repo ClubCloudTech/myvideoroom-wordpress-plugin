@@ -12,6 +12,7 @@ use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as SecurityVideoPreferenceDAO;
+use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\SiteDefaults;
 
 /**
@@ -182,12 +183,21 @@ class BuddyPressConfig {
 
 		switch ( $type ) {
 			case 'friends':
-				$pre_message = esc_html__( 'BuddyPress Friends ', 'myvideoroom' );
+				$pre_message = esc_html__( 'BuddyPress Friends : ', 'myvideoroom' );
 				if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'friends' ) ) {
 					$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
 					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i><br>';
 				} else {
 					$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Friends Component Missing', 'myvideoroom' ) . '</div>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i><br>';
+				}
+				$security_state = Factory::get_instance( Module::class )->is_module_active_simple( Security::MODULE_SECURITY_NAME );
+				$pre_message    = Security::MODULE_SECURITY_DISPLAY . ' : ';
+				if ( $security_state ) {
+					$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i><br>';
+				} else {
+					$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . Security::MODULE_SECURITY_DISPLAY . esc_html__( ' is not Installed', 'myvideoroom' ) . '</div>';
 					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i><br>';
 				}
 				// Fallthrough case switch is intentional - as friends need to be processed as friends and users.

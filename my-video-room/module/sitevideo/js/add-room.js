@@ -8,19 +8,33 @@
 
 (function($) {
 	function init() {
-		console.log( 'init fire' );
+		console.log( 'Add Room Init' );
 		$( '#submit-button' ).hide();
-		$( '#room-display-name' ).on( 'keyup', checkShow );
-		$( '#room-url-link' ).on( 'keyup', checkShow );
+
+		$( '#room-display-name' ).keyup(
+			function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				checkRooms();
+			}
+		);
+
+		$( '#room-url-link' ).keyup(
+			function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				checkRooms();
+			}
+		);
 	}
 
 	/**
 	 * Check if Name and Email conditions are met in main form
 	 */
-	function checkShow() {
+	function checkRooms() {
 		var display_name = $( '#room-display-name' ).val().length,
 			url_link     = $( '#room-url-link' ).val().length;
-
+		console.log( 'cs' );
 		if (display_name >= 4) {
 			$( '#room-name-icon' ).show();
 			$( '#button_add_new' ).show();

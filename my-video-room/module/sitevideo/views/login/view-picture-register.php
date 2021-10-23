@@ -10,7 +10,7 @@ use MyVideoRoomPlugin\Library\TemplateIcons;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
 /**
- * Render the admin page
+ * Render the Login page
  *
  * @param ?string $details_section Optional details section.
  * @param ?string $room_name Room Name.

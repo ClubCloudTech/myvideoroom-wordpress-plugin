@@ -49,8 +49,9 @@ class MVRSiteVideoViews {
 		$name_output   = esc_html__( 'Hosting ', 'my-video-room' );
 		$is_guest      = false;
 		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_room_url( $room_name );
+		$room_type     = MVRSiteVideo::ROOM_NAME_SITE_VIDEO;
 
-		return $render( $module_id, $name_output, $room_id, $room_name, $is_guest, $meeting_link, $module_suffix );
+		return $render( $module_id, $name_output, $room_id, $room_name, $is_guest, $meeting_link, $module_suffix, $room_type );
 
 	}
 
@@ -71,8 +72,9 @@ class MVRSiteVideoViews {
 		$name_output   = esc_html__( 'Visiting ', 'my-video-room' );
 		$is_guest      = true;
 		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_room_url( $room_name );
+		$room_type     = MVRSiteVideo::ROOM_NAME_SITE_VIDEO;
 
-		return $render( $module_id, $name_output, $host_id, $room_name, $is_guest, $meeting_link, $module_suffix );
+		return $render( $module_id, $name_output, $host_id, $room_name, $is_guest, $meeting_link, $module_suffix, $room_type );
 
 	}
 

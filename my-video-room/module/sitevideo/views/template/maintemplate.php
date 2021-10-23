@@ -6,6 +6,9 @@
  * @package MyVideoRoomPlugin\Module\SiteVideo\Views\Template\maintemplate.php
  */
 
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
@@ -27,23 +30,39 @@ return function (
 	string $room_name = null
 ): string {
 	ob_start();
+	$id = wp_rand( 1, 5000 );
+	if ( true === $header['visitor_status'] ) {
+		$status = MVRSiteVideo::SETTING_GUEST;
+	} else {
+		$status = MVRSiteVideo::SETTING_HOST;
+	}
 	?>
-<div class="mvr-nav-shortcode-outer-wrap" style="max-width: 1250px;">
+<div class="mvr-nav-shortcode-outer-wrap " style="max-width: 1250px;">
 	<div id="roominfo" data-room-name="<?php echo esc_attr( $room_name ); ?>"
-		data-logged-in="<?php echo esc_attr( is_user_logged_in() ); ?>">
+		data-logged-in="<?php echo esc_attr( is_user_logged_in() ); ?>"
+		data-room-type="<?php echo esc_attr( $header['room_type'] ); ?>"
+		data-checksum="<?php echo esc_attr( Factory::get_instance( MVRSiteVideoRoomHelpers::class )->create_host_checksum( $header['room_type'], $status, $header['room_name'] ) ); ?>"
+		>
 	</div>
 	<div class="mvr-header-section">
 		<div id="mvr-notification-icons" class="myvideoroom-header-table-left">
 			<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
-				echo $header['template_icons'];
+				echo $header['template_icons'] ;
 			?>
 		</div>
 		<div id="mvr-header-table-right" class="myvideoroom-header-table-right">
-			<p class="mvr-header-title mvr-header-align">
+			<span class="mvr-header-title mvr-header-align">
 				<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
 							echo $header['name_output']. ' ' . $header['module_name'];
 				?>
-			</p>
+			</span>
+				<p class="myvideoroom-header-adjust" data-id="<?php echo esc_url( $header['invite_menu'] ); ?>">
+				<?php
+
+			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
+							echo esc_url( $header['invite_menu'] ) . '<i class="dashicons dashicons-clipboard myvideoroom-clipboard-copy"></i>'			
+				?>
+				</p>
 		</div>
 
 	</div>
@@ -120,7 +139,9 @@ return function (
 		}
 	}
 	?>
+	<div class="mvr-clear"></div>
 </div>
+
 	<?php
 
 			return \ob_get_clean();

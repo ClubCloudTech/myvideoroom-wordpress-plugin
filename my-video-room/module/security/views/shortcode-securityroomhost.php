@@ -31,13 +31,13 @@ return function (
 	<?php
 	if ( ! $admin_view ) {
 		?>
-		<h1>
+		<h2 class="mvr-admin-hide">
 		<?php esc_html_e( 'Security Settings for ', 'my-video-room' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );
 			echo esc_attr( ucwords( $output ) );
 			?>
-		</h1>
+		</h2>
 
 		<?php
 	}

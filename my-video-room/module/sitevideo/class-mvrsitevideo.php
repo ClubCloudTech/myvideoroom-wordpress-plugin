@@ -51,6 +51,8 @@ class MVRSiteVideo {
 	const ROOM_SLUG_REDIRECT            = 'myvideoroomredirect';
 	const RECEPTION_ROOM_FLAG           = 'reception_room';
 	const USER_STATE_INFO               = 'user_state_info';
+	const SETTING_HOST                  = '434331';
+	const SETTING_GUEST                 = '331434';
 
 	/**
 	 * Initialise On Module Activation

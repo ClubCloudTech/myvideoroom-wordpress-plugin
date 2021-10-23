@@ -16,6 +16,7 @@ use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
+use MyVideoRoomPlugin\Module\Security\Security;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
@@ -107,6 +108,12 @@ class BuddyPress {
 		} else {
 			return false;
 		}
+
+		$security_state = Factory::get_instance( Module::class )->is_module_active_simple( Security::MODULE_SECURITY_NAME );
+		if ( ! $security_state ) {
+			return false;
+		}
+
 		$user_module = $this->is_user_module_available();
 
 		if ( $user_module && $bp_friends_enabled ) {

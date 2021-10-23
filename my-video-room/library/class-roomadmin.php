@@ -16,6 +16,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Entity\UserVideoPreference as UserVideoPreferenceEntity;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference as DAOSecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoRoomHelpers;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\HostManagement;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference as ShortcodeUserVideoPreference;
@@ -34,12 +35,12 @@ class RoomAdmin {
 	 *
 	 * @return string
 	 */
-	public function get_room_url( string $room_name, bool $slug_only = null ): ?string {
-		$post = $this->get_post( $room_name );
+	public function get_room_url( string $room_name, bool $slug_only = null ): string {
+		$post = $this->get_post_by_room_name( $room_name );
 
 		// rooms which are no longer published should no longer have urls.
 		if ( ! $post || ( 'publish' === $post->post_status && 'private' === $post->post_status ) ) {
-			return null;
+			return 'none';
 		}
 		if ( $slug_only ) {
 			return $post->post_name;
@@ -65,7 +66,7 @@ class RoomAdmin {
 	 *
 	 * @return ?\WP_Post
 	 */
-	public function get_post( string $room_name ): ?\WP_Post {
+	public function get_post_by_room_name( string $room_name ): ?\WP_Post {
 		$room_post_id = Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
 
 		return get_post( $room_post_id );
@@ -241,6 +242,54 @@ class RoomAdmin {
 	}
 
 	/**
+	 * Rebuild Room Record
+	 *
+	 * @param int    $user_id            - the user id record.
+	 * @param string $room_name          - the room name.
+	 * @param string $room_type          - room class.
+	 * @param string $checksum           - received host checksum.
+	 * @param string $original_room_name - the original room name.
+	 * @return string
+	 */
+	public function rebuild_room_record( int $user_id, string $room_name, string $room_type, string $checksum, string $original_room_name ): string {
+		$am_i_host = Factory::get_instance( MVRSiteVideoRoomHelpers::class )->verify_host_checksum( $checksum, $room_type, $room_name );
+
+		// Build the Room.
+		$video_template  = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name, false, $room_type );
+		$myvideoroom_app = AppShortcodeConstructor::create_instance()
+		->set_name( $original_room_name )
+		->set_original_room_name( $room_name )
+		->set_layout( $video_template );
+
+		if ( ! $am_i_host ) {
+			$reception_setting  = Factory::get_instance( VideoHelpers::class )->get_enable_reception_state( $user_id, $room_name );
+			$reception_template = Factory::get_instance( VideoHelpers::class )->get_reception_template( $user_id, $room_name );
+		} else {
+			$myvideoroom_app->set_as_host();
+		}
+
+		// Check Floorplan Status.
+		$show_floorplan = Factory::get_instance( VideoHelpers::class )->get_show_floorplan( $user_id, $room_name );
+		if ( $show_floorplan ) {
+			$myvideoroom_app->enable_floorplan();
+		}
+
+		// Reception Settings.
+		if ( $reception_setting && $reception_template ) {
+			$myvideoroom_app->enable_reception()->set_reception_id( $reception_template );
+			$reception_video_enabled = Factory::get_instance( VideoHelpers::class )->get_video_reception_state( $user_id, $room_name );
+
+			if ( $reception_video_enabled ) {
+				$video_reception_url = Factory::get_instance( VideoHelpers::class )->get_video_reception_url( $user_id, $room_name );
+				$myvideoroom_app->set_reception_video_url( $video_reception_url );
+			}
+		}
+
+		return do_shortcode( $myvideoroom_app->output_shortcode_text() );
+
+	}
+
+	/**
 	 * Renders a Pre-Entry Room for Users to perform a soundcheck.
 	 *
 	 * $original_room_name - the original room name rendered in the room.
@@ -396,5 +445,41 @@ class RoomAdmin {
 		return $output_array;
 	}
 
+	/**
+	 * Returns Video Page information of pages created in the database.
+	 *
+	 * @param string $room_name - name of room.
+	 * @param string $type      - type of room.
+	 *
+	 * @return bool|int|string|null
+	 */
+	public function get_videoroom_info( string $room_name, string $type = 'name' ) {
+		// Trap Blank Input.
+		if ( ! $room_name ) {
+			return null;
+		}
+		// Get Data from Database.
+		$room_post_id = Factory::get_instance( RoomMap::class )->read( $room_name );
+		// Retrieve Post Object from Post.
+
+		$post       = get_post( $room_post_id );
+		$post_slug  = $post->post_name;
+		$post_title = $post->post_title;
+		$post_guid  = $post->guid;
+		$post_id    = $post->ID;
+
+		if ( 'name' === $type ) {
+			return $post_slug;
+		} elseif ( 'slug' === $type ) {
+			return $post_slug;
+		} elseif ( 'post_id' === $type ) {
+			return $post_id;
+
+		} elseif ( 'title' === $type ) {
+			return $post_title;
+		} elseif ( 'url' === $type ) {
+			return $post_guid;
+		}
+	}
 
 }

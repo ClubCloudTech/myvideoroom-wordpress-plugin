@@ -12,6 +12,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
 /**
  * Class MVRPersonalMeeting - Renders the Video Plugin for SiteWide Video Room.
@@ -61,10 +62,18 @@ class MVRPersonalMeetingViews {
 	 * Render Meeting Center Guest Template
 	 */
 	public function meet_guest_template() {
-		$html_library = Factory::get_instance( HTML::class, array( 'meetcentre' ) );
 		$inbound_tabs = array();
-		$render       = require __DIR__ . '/../views/view-meetcentre.php';
 		$tabs         = apply_filters( 'myvideoroom_meet_centre_guest_menu', $inbound_tabs );
+		$login_page   = new MenuTabDisplay(
+			esc_html__( 'Sign In', 'myvideoroom' ),
+			'signin',
+			fn() => Factory::get_instance( MVRSiteVideoViews::class )->render_login_page()
+		);
+		array_push( $tabs, $login_page );
+
+		$html_library = Factory::get_instance( HTML::class, array( 'meetcentre' ) );
+		$render       = require __DIR__ . '/../views/view-meetcentre.php';
+
 		return $render( $tabs, $html_library );
 
 	}
@@ -82,8 +91,9 @@ class MVRPersonalMeetingViews {
 		$name_output  = esc_html__( 'Visiting ', 'my-video-room' ) . $user->user_nicename;
 		$is_guest     = true;
 		$meeting_link = Factory::get_instance( MeetingIdGenerator::class )->invite_menu_shortcode( array( 'user_id' => $user_id ) );
+		$room_type    = MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING;
 
-		return $render( $module_id, $name_output, $host_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, $is_guest, $meeting_link );
+		return $render( $module_id, $name_output, $host_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, $is_guest, $meeting_link, null, $room_type );
 	}
 
 	/**
@@ -100,7 +110,8 @@ class MVRPersonalMeetingViews {
 		$name_output  = esc_html__( 'Host ', 'my-video-room' ) . $user->user_nicename;
 		$is_guest     = false;
 		$meeting_link = Factory::get_instance( MeetingIdGenerator::class )->invite_menu_shortcode( array( 'user_id' => $user_id ) );
+		$room_type    = MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING;
 
-		return $render( $module_id, $name_output, $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, $is_guest, $meeting_link );
+		return $render( $module_id, $name_output, $user_id, MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING, $is_guest, $meeting_link, null, $room_type );
 	}
 }

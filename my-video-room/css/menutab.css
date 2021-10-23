@@ -1,7 +1,7 @@
 .mvr-nav-shortcode-outer-wrap {
 	background-color: white;
 	border: 2px solid #c3c4c7;
-	padding:1px;
+	padding: 1px;
 }
 
 .mvr-nav-shortcode-outer-wrap-clean {
@@ -36,6 +36,7 @@
 	width: 100%;
 	border-top: solid;
 }
+
 .mvr-header-section canvas {
 	width: 100%;
 }
@@ -76,9 +77,4 @@
 	margin-right: 6px;
 	margin-top: 4px;
 	margin-left: 6px;
-}
-.myvideoroom-header-table-right p {
-	margin-right: 6px!important;
-	margin-top: 4px!important;
-	margin-left: 6px!important;
 }

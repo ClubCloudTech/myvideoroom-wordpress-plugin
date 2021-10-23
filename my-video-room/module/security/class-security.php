@@ -35,7 +35,7 @@ class Security {
 	const MODULE_SECURITY_ID         = Dependencies::MODULE_SECURITY_ID; // Proxied to Main Core so Activation state can be queried by Core Modules.
 	const MODULE_SECURITY_ENTITY_ID  = Dependencies::MODULE_SECURITY_ENTITY_ID;
 	const MODULE_SECURITY_ADMIN_PAGE = 'view-admin-settings-security';
-	const MODULE_SECURITY_DISPLAY    = ' Advanced Room Permissions';
+	const MODULE_SECURITY_DISPLAY    = 'Security and Host Control Pack';
 	const PERMISSIONS_TABLE          = 'security-default-permissions';
 
 	/**
@@ -229,7 +229,6 @@ class Security {
 						->choose_settings(
 							$room_id,
 							$room_name . Dependencies::MULTI_ROOM_HOST_SUFFIX,
-							null,
 							'roomhost'
 						)
 		);
@@ -242,7 +241,7 @@ class Security {
 			fn() => Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
 				$room_id,
 				esc_textarea( $room_name ),
-				'roomhost'
+
 			)
 		);
 		array_push( $input, $base_menu );

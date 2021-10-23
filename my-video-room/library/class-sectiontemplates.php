@@ -10,7 +10,6 @@ namespace MyVideoRoomPlugin\Library;
 use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
-use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 
 /**
  * Class SectionTemplate
