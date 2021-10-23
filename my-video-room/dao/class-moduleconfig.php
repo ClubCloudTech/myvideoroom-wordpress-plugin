@@ -7,10 +7,7 @@
 
 namespace MyVideoRoomPlugin\DAO;
 
-use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\SiteDefaults;
-use MyVideoRoomPlugin\Library\HttpGet;
-
 
 /**
  * Class ModuleConfig

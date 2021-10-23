@@ -18,15 +18,19 @@ use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
-return function (): string {
+return function (
+	string $settings_style,
+	string $info_style
+): string {
 	ob_start();
 	$index  = 1;
 	$target = 'myvideoroom-pmm-header';
+
 	?>
 
 <div class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
 	<!-- Module Header -->
-	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>">
+	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="<?php echo esc_attr( $info_style ); ?>">
 		<div class="myvideoroom-header-table-left-reduced">
 			<h1><i
 					class="myvideoroom-header-dashicons dashicons-video-alt2"></i><?php esc_html_e( 'Personal Meeting Rooms for Users', 'myvideoroom' ); ?>
@@ -42,10 +46,10 @@ return function (): string {
 	</div>
 
 	<!-- Settings Marker -->
-	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="display: none;">
+	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="<?php echo esc_attr( $settings_style ); ?>">
 		<div class="myvideoroom-header-table-left">
 			<h1><i
-					class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>
+					class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>
 			</h1>
 		</div>
 		<div class="myvideoroom-header-table-right">
@@ -59,7 +63,7 @@ return function (): string {
 	</div>
 	<!-- Information Toggle -->
 	<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>"
-		class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="">
+		class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="<?php echo esc_attr( $info_style ); ?>">
 		<!-- Module State and Description Marker -->
 		<div class="myvideoroom-feature-outer-table">
 			<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
@@ -128,7 +132,7 @@ return function (): string {
 	</div>
 	<!-- end Toggle Section -->
 	<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>"
-		class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="display:none;">
+		class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="<?php echo esc_attr( $settings_style ); ?>">
 		<!-- Reception Area -->
 		<div class="myvideoroom-feature-outer-table">
 			<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">

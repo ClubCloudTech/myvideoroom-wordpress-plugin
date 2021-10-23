@@ -167,20 +167,11 @@ class MVRSiteVideoRoomHelpers {
 		$admin_tab = new MenuTabDisplay(
 			esc_html__( 'Conference Center', 'myvideoroom' ),
 			MVRSiteVideo::ROOM_SLUG_SITE_VIDEO,
-			fn() => $this->get_sitevideo_admin_page()
+			fn() => $this->render_sitevideo_admin_page()
 		);
 		array_push( $input, $admin_tab );
 		\wp_enqueue_script( 'myvideoroom-sitevideo-settings-js' );
 		return $input;
-	}
-
-	/**
-	 * Get sitevideo admin page - returns admin page
-	 *
-	 * @return string
-	 */
-	private function get_sitevideo_admin_page(): string {
-		return ( require __DIR__ . '/../views/admin/module-admin.php' )();
 	}
 
 	/**
@@ -360,7 +351,15 @@ class MVRSiteVideoRoomHelpers {
 	 * Render Default Settings Admin Page.
 	 */
 	public function render_sitevideo_admin_page() {
-		return ( require __DIR__ . '/../views/admin/module-admin.php' )();
+		$module_active = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID );
+		if ( $module_active ) {
+			$settings_style = '';
+			$info_style     = 'display: none;';
+		} else {
+			$settings_style = 'display: none;';
+			$info_style     = '';
+		}
+		return ( require __DIR__ . '/../views/admin/module-admin.php' )( $settings_style, $info_style );
 	}
 
 	/**

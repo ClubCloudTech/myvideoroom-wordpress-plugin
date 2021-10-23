@@ -1,8 +1,8 @@
 <?php
 /**
- * Outputs the configuration settings for the video plugin
+ * Outputs the Admin Settings for Site Conference Centre.
  *
- * @package MyVideoRoomPlugin\Views\Public\Admin
+ * @package my-video-room/module/sitevideo/views/admin/module-admin.php
  */
 
 use MyVideoRoomPlugin\Factory;
@@ -17,7 +17,8 @@ use MyVideoRoomPlugin\SiteDefaults;
  * @return string
  */
 return function (
-	$details_section = null
+	string $settings_style,
+	string $info_style
 ): string {
 	ob_start();
 	$index  = 331;
@@ -25,7 +26,7 @@ return function (
 	?>
 <div class="mvr-nav-shortcode-outer-wrap mvr-nav-shortcode-outer-border">
 	<!-- Module Header -->
-	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>">
+	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="<?php echo esc_attr( $info_style ); ?>">
 		<div class="myvideoroom-header-table-left-reduced">
 			<h1><i
 						class="myvideoroom-header-dashicons dashicons-groups"></i><?php esc_html_e( 'Conference Center Permanent Rooms', 'myvideoroom' ); ?>
@@ -37,7 +38,7 @@ return function (
 		</div>
 	</div>
 			<!-- Settings Marker -->
-		<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="display: none;">
+		<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="<?php echo esc_attr( $settings_style ); ?>">
 			<div class="myvideoroom-header-table-left-reduced">
 				<h1><i
 						class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Conference Center Permanent Rooms', 'myvideoroom' ); ?>
@@ -49,7 +50,7 @@ return function (
 			</div>
 		</div>
 	<!-- Information Toggle -->
-<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="">
+<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="<?php echo esc_attr( $info_style ); ?>">
 
 	<!-- Module State and Description Marker -->
 	<div class="myvideoroom-feature-outer-table">
@@ -120,7 +121,7 @@ return function (
 	</div>
 </div>	
 
-<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="display:none;">
+<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="<?php echo esc_attr( $settings_style ); ?>">
 	<!-- Room Management -->
 		<div class="myvideoroom-feature-outer-table">
 			<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
@@ -160,10 +161,6 @@ return function (
 			<!-- Frame Target Ajax -->
 					<div class="mvr-nav-shortcode-outer-wrap-clean mvr-security-room-host"
 						data-loading-text="<?php echo esc_attr__( 'Loading...', 'myvideoroom' ); ?>">
-						<?php
-							//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-							echo $details_section;
-						?>
 					</div>
 			<!-- Table Output  -->
 					<?php

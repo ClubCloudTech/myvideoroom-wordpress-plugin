@@ -136,7 +136,15 @@ class MVRPersonalMeetingHelpers {
 	 * Render Personal Rooms Admin Page.
 	 */
 	public function render_personalvideo_admin_page() {
-		return ( require __DIR__ . '/../views/view-settings-personalvideo.php' )();
+		$module_active = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_ID );
+		if ( $module_active ) {
+			$settings_style = '';
+			$info_style     = 'display: none;';
+		} else {
+			$settings_style = 'display: none;';
+			$info_style     = '';
+		}
+		return ( require __DIR__ . '/../views/view-settings-personalvideo.php' )( $settings_style, $info_style );
 	}
 
 }
