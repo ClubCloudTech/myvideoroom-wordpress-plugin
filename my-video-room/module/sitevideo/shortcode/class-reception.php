@@ -2,7 +2,7 @@
 /**
  * Allow user to change video preferences
  *
- * @package MyVideoRoomPlugin\Module\Security\Shortcode
+ * @package my-video-room/module/sitevideo/shortcode/class-reception.php
  */
 
 namespace MyVideoRoomPlugin\Module\SiteVideo\Shortcode;

@@ -2,7 +2,7 @@
 /**
  * User Video Preference Entity Object
  *
- * @package MyVideoRoomPlugin\Entity
+ * @package my-video-room/entity/class-uservideopreference.php
  */
 
 namespace MyVideoRoomPlugin\Entity;

@@ -3,7 +3,7 @@
  * Menu Tab Object Class
  * Shows Menu Objects that can be rendered by tabs in Elemental and MyVideoRoom.
  *
- * @package MyVideoRoomPlugin\Entity
+ * @package my-video-room/entity/class-menutabdisplay.php
  */
 
 namespace MyVideoRoomPlugin\Entity;

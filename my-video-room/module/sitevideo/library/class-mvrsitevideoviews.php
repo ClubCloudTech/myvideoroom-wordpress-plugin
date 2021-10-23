@@ -136,9 +136,13 @@ class MVRSiteVideoViews {
 	/**
 	 * Generate Reception Function.
 	 *
-	 * @param array $input       - the inbound menu.
-	 *
-	 * @return array - outbound menu.
+	 * @param array        $input - tab input.
+	 * @param integer|null $user_id - not used.
+	 * @param string|null  $room_name - not used.
+	 * @param boolean|null $host_status - not used.
+	 * @param array|null   $header - not used.
+	 * @param bool         $ajax_flag - to denote whether its from an Ajax call (and thus upstream doesnt render all tabs.).
+	 * @return array
 	 */
 	public function render_reception_tab_welcome( array $input, int $user_id = null, string $room_name = null, bool $host_status = null, array $header = null, bool $ajax_flag = null ): array {
 		if ( $ajax_flag ) {

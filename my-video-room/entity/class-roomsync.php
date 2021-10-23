@@ -2,7 +2,7 @@
 /**
  * WooCoomerce Video Sync Basket System -Data Object.
  *
- * @package MyVideoRoomPlugin\Entity\RoomSync.php
+ * @package my-video-room/entity/class-roomsync.php
  */
 
 namespace MyVideoRoomPlugin\Entity;
