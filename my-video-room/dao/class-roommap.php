@@ -2,7 +2,7 @@
 /**
  * Data Access Object for controlling Room Mapping Database Entries
  *
- * @package MyVideoRoomPlugin\DAO
+ * @package my-video-room/dao/class-roommap.php
  */
 
 namespace MyVideoRoomPlugin\DAO;

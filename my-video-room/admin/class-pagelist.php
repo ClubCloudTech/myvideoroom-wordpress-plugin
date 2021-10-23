@@ -2,7 +2,7 @@
 /**
  * Manages the list of pages in the MyVideoRoom admin section.
  *
- * @package MyVideoRoomPlugin\Admin
+ * @package my-video-room/admin/class-pagelist.php
  */
 
 declare( strict_types=1 );

@@ -2,7 +2,7 @@
 /**
  * Data Access Object for controlling Room Session State Database Entries
  *
- * @package MyVideoRoomPlugin\DAO
+ * @package my-video-room/dao/class-sessionstate.php
  */
 
 namespace MyVideoRoomPlugin\DAO;

@@ -2,7 +2,7 @@
 /**
  * A page in the MyVideoRoom admin section
  *
- * @package MyVideoRoomPlugin\Admin
+ * @package my-video-room/admin/class-page.php
  */
 
 declare( strict_types=1 );

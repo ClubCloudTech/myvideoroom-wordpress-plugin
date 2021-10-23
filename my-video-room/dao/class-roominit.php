@@ -2,7 +2,7 @@
 /**
  * Data Access Object for user video preferences default room setup
  *
- * @package MyVideoRoomPlugin\DAO
+ * @package my-video-room/dao/class-roominit.php
  */
 
 namespace MyVideoRoomPlugin\DAO;

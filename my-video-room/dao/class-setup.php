@@ -1,8 +1,8 @@
 <?php
 /**
- * Setup Functions
+ * Setup Functions - Database Objects for Setup
  *
- * @package MyVideoRoomPlugin\DAO
+ * @package my-video-room/dao/class-setup.php
  */
 
 namespace MyVideoRoomPlugin\DAO;

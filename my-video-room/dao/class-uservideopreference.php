@@ -1,8 +1,8 @@
 <?php
 /**
- * Data Access Object for user video preferences
+ * Data Access Object for User Video Preferences
  *
- * @package MyVideoRoomPlugin\DAO
+ * @package my-video-room/dao/class-uservideopreference.php
  */
 
 namespace MyVideoRoomPlugin\DAO;

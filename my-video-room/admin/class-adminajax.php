@@ -2,7 +2,7 @@
 /**
  * Manages Ajax in the admin pages
  *
- * @package MyVideoRoomPlugin\Admin
+ * @package my-video-room/admin/class-adminajax.php
  */
 
 declare( strict_types=1 );
@@ -213,7 +213,7 @@ class AdminAjax {
 						$response['conference'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO );
 					}
 
-					$response['feedback'] = \esc_html__( 'Saved', 'myvideoroom' ) . $room_name.'room id' . $post_id;
+					$response['feedback'] = \esc_html__( 'Saved', 'myvideoroom' );
 				} else {
 					$response['feedback'] = \esc_html__( 'Name Update Failed', 'myvideoroom' );
 				}

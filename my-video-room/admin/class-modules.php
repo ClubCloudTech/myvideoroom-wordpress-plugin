@@ -2,7 +2,7 @@
 /**
  * Manages modules in the admin page
  *
- * @package MyVideoRoomPlugin\Admin
+ * @package my-video-room/admin/class-modules.php
  */
 
 declare( strict_types=1 );

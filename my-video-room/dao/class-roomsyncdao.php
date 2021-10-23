@@ -2,7 +2,7 @@
 /**
  * Data Access Object for Room Attendee Sync
  *
- * @package MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideo.php
+ * @package my-video-room/dao/class-roomsyncdao.php
  */
 
 namespace MyVideoRoomPlugin\DAO;
