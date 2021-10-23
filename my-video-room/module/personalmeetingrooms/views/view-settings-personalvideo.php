@@ -1,16 +1,12 @@
 <?php
 /**
- * Outputs the configuration settings for the video plugin
+ * Main Module Admin Page Personal Meeting Rooms.
  *
- * @package MyVideoRoomPlugin\Views\Public\Admin
+ * @package my-video-room/module/personalmeetingrooms/views/view-settings-personalvideo.php
  */
 
 /**
- * Render the Config Admin page for Personal Video
- *
- * @param string $active_tab
- * @param array $tabs
- * @param array $messages
+ * Render the Config Admin page for Personal Meeting Rooms
  *
  * @return string
  */
@@ -37,95 +33,103 @@ return function (): string {
 			</h1>
 		</div>
 		<div class="myvideoroom-header-table-right-wide">
-		<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Settings:', 'myvideoroom' ); ?><i data-target="<?php echo esc_attr( $target ); ?>" class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector" title="<?php esc_html_e( 'Go to Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>"></i>
+			<h3 class="myvideoroom-settings-offset"><?php esc_html_e( 'Settings:', 'myvideoroom' ); ?><i
+					data-target="<?php echo esc_attr( $target ); ?>"
+					class="myvideoroom-header-dashicons dashicons-admin-settings mvideoroom-information-menu-toggle-selector"
+					title="<?php esc_html_e( 'Go to Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>"></i>
 			</h3>
 		</div>
 	</div>
 
 	<!-- Settings Marker -->
-		<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="display: none;">
-			<div class="myvideoroom-header-table-left">
-			<h1><i class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>
+	<div class="myvideoroom-menu-settings <?php echo esc_attr( $target ); ?>" style="display: none;">
+		<div class="myvideoroom-header-table-left">
+			<h1><i
+					class="myvideoroom-header-dashicons dashicons-admin-settings "></i><?php esc_html_e( 'Settings - Settings - Personal Meeting Rooms', 'myvideoroom' ); ?>
 			</h1>
-			</div>
-			<div class="myvideoroom-header-table-right">
+		</div>
+		<div class="myvideoroom-header-table-right">
 
 
-			<h1><i class="myvideoroom-header-dashicons dashicons-info-outline mvideoroom-information-menu-toggle-selector" data-target="<?php echo esc_attr( $target ); ?>" title="<?php esc_html_e( 'Module State and Information', 'myvideoroom' ); ?>"></i>
+			<h1><i class="myvideoroom-header-dashicons dashicons-info-outline mvideoroom-information-menu-toggle-selector"
+					data-target="<?php echo esc_attr( $target ); ?>"
+					title="<?php esc_html_e( 'Module State and Information', 'myvideoroom' ); ?>"></i>
 			</h1>
-			</div>
-		</div>
-	<!-- Information Toggle -->
-<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="">
-	<!-- Module State and Description Marker -->
-	<div class="myvideoroom-feature-outer-table">
-		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-			<h2><?php esc_html_e( 'Feature', 'myvideoroom' ); ?></h2>
-			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
-				<?php
-					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-					echo Factory::get_instance( ModuleConfig::class )->module_activation_button( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_ID );
-				?>
-			</div>
-		</div>
-		<div class="myvideoroom-feature-table-large">
-			<h2><?php esc_html_e( 'Personal Meeting Rooms for Each User in WordPress', 'myvideoroom' ); ?></h2>
-			<p>
-				<?php
-				esc_html_e(
-					'A Personal Meeting Room is an individually controlled meeting room with its own Reception Area, Room Layout Selection, Privacy, and Room Permissions. A Reception page is created automatically with the module to handle Guest Arrival. A user is the host of their own room, and everyone else is a guest. Users can send invites by email, or by special unique invite code.',
-					'myvideoroom'
-				);
-				?>
-			</p>
 		</div>
 	</div>
-	<!-- Dependencies and Requirements Marker -->
-	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
+	<!-- Information Toggle -->
+	<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>"
+		class="mvideoroom-information-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="">
+		<!-- Module State and Description Marker -->
 		<div class="myvideoroom-feature-outer-table">
-			<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-				<h2><?php esc_html_e( 'Requirements:', 'myvideoroom' ); ?></h2>
+			<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+				<h2><?php esc_html_e( 'Feature', 'myvideoroom' ); ?></h2>
+				<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
+					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
+					echo Factory::get_instance( ModuleConfig::class )->module_activation_button( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_ID );
+					?>
+				</div>
 			</div>
 			<div class="myvideoroom-feature-table-large">
+				<h2><?php esc_html_e( 'Personal Meeting Rooms for Each User in WordPress', 'myvideoroom' ); ?></h2>
 				<p>
 					<?php
+					esc_html_e(
+						'A Personal Meeting Room is an individually controlled meeting room with its own Reception Area, Room Layout Selection, Privacy, and Room Permissions. A Reception page is created automatically with the module to handle Guest Arrival. A user is the host of their own room, and everyone else is a guest. Users can send invites by email, or by special unique invite code.',
+						'myvideoroom'
+					);
+					?>
+				</p>
+			</div>
+		</div>
+		<!-- Dependencies and Requirements Marker -->
+		<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap">
+			<div class="myvideoroom-feature-outer-table">
+				<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+					<h2><?php esc_html_e( 'Requirements:', 'myvideoroom' ); ?></h2>
+				</div>
+				<div class="myvideoroom-feature-table-large">
+					<p>
+						<?php
 							esc_html_e(
 								'This Addin Pack provides support for the Personal Meeting Room engine, and any plugins/extensions that require the pack.',
 								'myvideoroom'
 							);
-					?>
-				</p>
-				<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
-					<p><?php esc_html_e( 'Dependency Check - There are No Dependencies for this Module', 'myvideoroom' ); ?>
+						?>
 					</p>
+					<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
+						<p><?php esc_html_e( 'Dependency Check - There are No Dependencies for this Module', 'myvideoroom' ); ?>
+						</p>
+					</div>
+				</div>
+			</div>
+			<!-- Screenshot Marker -->
+			<div class="myvideoroom-feature-outer-table">
+				<div class="myvideoroom-feature-table">
+					<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
+					<img class=""
+						src="<?php echo esc_url( plugins_url( '/../../../admin/img/videoroombp.jpg', __FILE__ ) ); ?>"
+						alt="BuddyPress Room">
+				</div>
+				<div class="myvideoroom-feature-table">
+					<br>
+					<img class=""
+						src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpsettings.jpg', __FILE__ ) ); ?>"
+						alt="Settings">
+				</div>
+				<div class="myvideoroom-feature-table">
+					<img class=""
+						src="<?php echo esc_url( plugins_url( '/../../../admin/img/screenshot-2.PNG', __FILE__ ) ); ?>"
+						alt="Video Call in Progress">
 				</div>
 			</div>
 		</div>
-		<!-- Screenshot Marker -->
-		<div class="myvideoroom-feature-outer-table">
-			<div class="myvideoroom-feature-table">
-				<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
-				<img class=""
-					src="<?php echo esc_url( plugins_url( '/../../../admin/img/videoroombp.jpg', __FILE__ ) ); ?>"
-					alt="BuddyPress Room">
-			</div>
-			<div class="myvideoroom-feature-table">
-				<br>
-				<img class=""
-					src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpsettings.jpg', __FILE__ ) ); ?>"
-					alt="Settings">
-			</div>
-			<div class="myvideoroom-feature-table">
-				<img class=""
-					src="<?php echo esc_url( plugins_url( '/../../../admin/img/screenshot-2.PNG', __FILE__ ) ); ?>"
-					alt="Video Call in Progress">
-			</div>
-		</div>
 	</div>
-</div>
 	<!-- end Toggle Section -->
-<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="display:none;">		
-	<!-- Reception Area -->
+	<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>"
+		class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target ); ?>" style="display:none;">
+		<!-- Reception Area -->
 		<div class="myvideoroom-feature-outer-table">
 			<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 				<h2><?php esc_html_e( 'Reception Room', 'myvideoroom' ); ?></h2>
@@ -203,7 +207,7 @@ return function (): string {
 			</div>
 		</div>
 	</div>
-					</div>
+</div>
 	<?php
 		return ob_get_clean();
 };

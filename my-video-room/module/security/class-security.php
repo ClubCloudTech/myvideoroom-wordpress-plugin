@@ -241,7 +241,6 @@ class Security {
 			fn() => Factory::get_instance( SecurityVideoPreference::class )->choose_settings(
 				$room_id,
 				esc_textarea( $room_name ),
-
 			)
 		);
 		array_push( $input, $base_menu );

@@ -1,12 +1,12 @@
 <?php
 /**
- * Outputs the View for Guests to enter meeting code or username.
+ * Outputs the Reception Tab for Guests to enter meeting code or Host username.
  *
  * @package /my-video-room/module/personalmeetingrooms/views/view-reception-template.php
  */
 
 /**
- * Render the Meet Center Meeting Host or Invite Code Prompt View
+ * Outputs the Reception Page for Guests to enter meeting code or Host username
  *
  * @return string
  */

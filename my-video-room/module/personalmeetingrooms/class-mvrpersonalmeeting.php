@@ -1,8 +1,8 @@
 <?php
 /**
- * Addon functionality for Personal Boardroom.
+ * Main Module Control Class Personal Meeting Rooms.
  *
- * @package MyVideoRoomPlugin\Modules\MVRPersonalBoardroom
+ * @package MyVideoRoomPlugin\Modules\MVRPersonalMeetingRoom
  */
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms;
@@ -17,7 +17,7 @@ use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
- * Class MVRPersonalBoardroom - Renders the Video Plugin for SiteWide Video Room.
+ * Class MVRPersonalMeetingRoom - Renders the Video Plugin for SiteWide Video Room.
  */
 class MVRPersonalMeeting {
 		const SHORTCODE_TAG = App::SHORTCODE_TAG . '_';
@@ -46,8 +46,7 @@ class MVRPersonalMeeting {
 		Factory::get_instance( MVRPersonalMeetingHelpers::class )->create_personal_meetingroom_page();
 	}
 	/**
-	 * Runtime Shortcodes and Setup
-	 * Required for Normal Runtime.
+	 * Required for Normal Module Operation.
 	 */
 	public function init() {
 		// Register Shortcodes.
@@ -56,10 +55,7 @@ class MVRPersonalMeeting {
 		add_shortcode( self::SHORTCODE_TAG . 'personalmeetingguest', array( Factory::get_instance( MVRPersonalMeetingControllers::class ), 'personal_meeting_guest_shortcode' ) );
 		add_shortcode( self::SHORTCODE_TAG . 'personalmeetinghostsettings', array( Factory::get_instance( MVRPersonalMeetingControllers::class ), 'personal_meeting_settings_shortcode' ) );
 
-		// Register Menu.
-		$this->personal_meetingroom_menu_setup();
-
-		// Update Listeners.
+		// Update Listeners for Room Preference Forms.
 		\add_action(
 			'myvideoroom_admin_init',
 			function () {
@@ -67,27 +63,11 @@ class MVRPersonalMeeting {
 				Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 			}
 		);
-		// Name Override Filter for Room Manager Table.
-		// Add Config Filter to Main Room Manager.
+
 		add_filter( 'myvideoroom_room_manager_menu', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'render_personalmeeting_admin_settings_page' ), 20, 1 );
 		add_filter( 'myvideoroom_room_type_display_override', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'conference_room_friendly_name' ), 10, 1 );
 		add_filter( 'myvideoroom_room_manager_shortcode_display', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'conference_change_shortcode' ), 10, 4 );
 		add_filter( 'myvideoroom_room_manager_regenerate', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'regenerate_personal_meeting_room' ), 10, 3 );
 
-	}
-	/**
-	 * Setup of Module Menu
-	 */
-	public function personal_meetingroom_menu_setup() {
-		add_action( 'mvr_module_submenu_add', array( $this, 'personal_meetingroom_menu_button' ) );
-	}
-	/**
-	 * Render Module Menu.
-	 */
-	public function personal_meetingroom_menu_button() {
-		$name = self::MODULE_PERSONAL_MEETING_DISPLAY;
-		$slug = self::MODULE_PERSONAL_MEETING_NAME;
-		//phpcs:ignore --WordPress.WP.I18n.NonSingularStringLiteralText - $name is a constant text literal already.
-		echo '<a class="mvr-menu-header-item" href="?page=my-video-room-extras&tab=' . esc_html( $slug ) . '">' . esc_html( $name ) . '</a>';
 	}
 }
