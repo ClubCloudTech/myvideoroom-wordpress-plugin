@@ -2,11 +2,11 @@
 /**
  * Render an invite email
  *
- * @package MyVideoRoomPlugin\Module\PersonalMeetingRooms
+ * @package my-video-room/module/personalmeetingrooms/views/emailmessage.php
  */
 
 /**
- * Output the invite link for a personal meeting room
+ * Output the invite link for a personal meeting room by Email.
  *
  * @param string $invite_link The invite link
  * @param string $site_name   The email link

@@ -1,8 +1,8 @@
 <?php
 /**
- * Addon functionality for Site Video Room
+ * Host Controllers and View Helpers for Personal Meeting Rooms.
  *
- * @package MyVideoRoomPlugin\Modules\SiteVideo
+ * @package my-video-room/module/personalmeetingrooms/library/class-mvrpersonalmeetingviews.php
  */
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
@@ -15,12 +15,9 @@ use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
 /**
- * Class MVRPersonalMeeting - Renders the Video Plugin for SiteWide Video Room.
+ * Host Controllers and View Helpers for Personal Meeting Rooms.
  */
 class MVRPersonalMeetingViews {
-
-	// ---
-	// Meet Center Template Section.
 
 	/**
 	 * Render Guest /Meet Page Template for no invite and no username -
@@ -36,6 +33,8 @@ class MVRPersonalMeetingViews {
 
 	/**
 	 * Render Meeting Center Host template
+	 *
+	 * @return array|string
 	 */
 	public function meet_host_template() {
 		$html_library = Factory::get_instance( HTML::class, array( 'meetcentre' ) );
@@ -60,6 +59,8 @@ class MVRPersonalMeetingViews {
 
 	/**
 	 * Render Meeting Center Guest Template
+	 *
+	 * @return array|string
 	 */
 	public function meet_guest_template() {
 		$inbound_tabs = array();

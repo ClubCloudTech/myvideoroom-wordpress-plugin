@@ -2,7 +2,7 @@
 /**
  * Shortcode reference for PersonalMeetingRooms
  *
- * @package MyVideoRoomPlugin/Module/Monitor
+ * @package my-video-room/module/personalmeetingrooms/library/class-reference.php
  */
 
 declare( strict_types=1 );
@@ -12,10 +12,9 @@ namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
 use MyVideoRoomPlugin\Reference\Option;
 use MyVideoRoomPlugin\Reference\Section;
 use MyVideoRoomPlugin\Reference\Shortcode;
-use MyVideoRoomPlugin\Library\ShortcodeDocuments;
 
 /**
- * Class Reference
+ * Class Reference Documentation for Shortcodes in Personal Meeting Rooms.
  */
 class Reference {
 
@@ -27,7 +26,7 @@ class Reference {
 	public function get_shortcode_reference(): Shortcode {
 		$shortcode_reference = new Shortcode(
 			Module::SHORTCODE_TAG,
-			\esc_html__( 'Personal meeting rooms invite ', 'myvideoroom' ),
+			\esc_html__( 'Personal Meeting Rooms', 'myvideoroom' ),
 			\esc_html__( 'Allows hosts to invite guests to their personal meeting room. This should be added to the same page as the personal meeting room.', 'myvideoroom' )
 		);
 
@@ -51,7 +50,6 @@ class Reference {
 		);
 
 		$shortcode_reference->add_section( $main_section );
-		// Factory::get_instance( ShortcodeDocuments::class )->render_personalmeeting_shortcode_docs();
 		return $shortcode_reference;
 	}
 

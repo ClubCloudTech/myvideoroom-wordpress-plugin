@@ -2,7 +2,7 @@
 /**
  * Extends the room builder with custom permissions
  *
- * @package MyVideoRoomPlugin/Module/Monitor
+ * @package my-video-room/module/personalmeetingrooms/library/class-roombuilder.php
  */
 
 declare( strict_types=1 );

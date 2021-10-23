@@ -1,15 +1,15 @@
 <?php
 /**
- * Outputs the Meet Center View Template
+ * Main Template for Personal Meeting Rooms Outer Reception (usually http(s)://siteurl/meet )
  *
- * @package /module/personalmeetingrooms/views/view-reception-template.php
+ * @package my-video-room/module/personalmeetingrooms/views/view-meetcentre.php
  */
 
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingControllers;
 
 /**
- * Render the Meet Center Reception page
+ * Render the Meet Center Main Reception Page
  *
  * @param array   $tabs          Any Tabs to Display.
  * @param object  $html_library  Randomizing Data for Tabs.
@@ -68,7 +68,7 @@ object $html_library
 			echo Factory::get_instance( MVRPersonalMeetingControllers::class )->personal_meeting_guest_shortcode(); 
 		?>
 	</article>
-	<div class="mvr-clear" ></div>
+	<div class="mvr-clear"></div>
 </div>
 
 	<?php

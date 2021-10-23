@@ -2,7 +2,7 @@
 /**
  * The entry point for the CustomPermissions module
  *
- * @package MyVideoRoomPlugin/Module/Monitor
+ * @package my-video-room/module/personalmeetingrooms/library/class-module.php
  */
 
 declare( strict_types=1 );
@@ -135,7 +135,7 @@ class Module {
 	}
 
 	/**
-	 * Check if this was a email send request
+	 * Check if this was an email send request
 	 *
 	 * @return ?array
 	 */

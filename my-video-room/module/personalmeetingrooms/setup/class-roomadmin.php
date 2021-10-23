@@ -2,7 +2,7 @@
 /**
  * Room Admin Functions for MVR Personal Meetings
  *
- * @package MyVideoRoomPlugin\Module\PersonalMeetingRooms\RoomAdmin
+ * @package my-video-room/module/personalmeetingrooms/setup/class-roomadmin.php
  */
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Setup;
@@ -24,12 +24,12 @@ class RoomAdmin {
 	/**
 	 * Create a page into the WordPress environment, register in page table, and ensure its enabled.
 	 *
-	 * @param string  $room_name     Name of room to build.
-	 * @param string  $display_title Title of Page.
-	 * @param string  $slug          WordPress Slug to assign page.
-	 * @param string  $room_type     Type of Room in DB.
-	 * @param  ?string $shortcode    Shortcode to store for room.
-	 * @param  ?string $old_post_id   Type Old Room in DB to update the value to the new post..
+	 * @param string  $room_name      Name of room to build.
+	 * @param string  $display_title  Title of Page.
+	 * @param string  $slug           WordPress Slug to assign page.
+	 * @param string  $room_type      Type of Room in DB.
+	 * @param ?string $shortcode      Shortcode to store for room.
+	 * @param ?string $old_post_id    Type Old Room in DB to update the value to the new post..
 	 *
 	 * @return integer
 	 */
@@ -69,7 +69,6 @@ class RoomAdmin {
 			// Update the DB if Orphan.
 			Factory::get_instance( RoomMap::class )->update_room_post_id( $post_id, $room_name );
 		}
-
 		return $post_id;
 	}
 

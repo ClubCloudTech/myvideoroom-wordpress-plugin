@@ -2,7 +2,7 @@
 /**
  * Addon functionality for Personal Meetings Functions to assist Personal Meetings Classes.
  *
- * @package MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingHelpers
+ * @package my-video-room/module/personalmeetingrooms/library/class-mvrpersonalmeetinghelpers.php
  */
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
@@ -73,10 +73,10 @@ class MVRPersonalMeetingHelpers {
 	 *
 	 * @param ?string $input .
 	 * @param int     $room_id - the room id.
-	 * @param ?string $room_object . Object with preferences.
+	 * @param object  $room_object . Object with preferences.
 	 * @return string CallBack.
 	 */
-	public function regenerate_personal_meeting_room( ?string $input = null, int $room_id, $room_object ): ?string {
+	public function regenerate_personal_meeting_room( ?string $input = null, int $room_id, object $room_object ): ?string {
 		if ( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME === $room_object->room_type ) {
 			Factory::get_instance( RoomMap::class )->delete_room_mapping( $room_object->room_name );
 			Factory::get_instance( self::class )->create_personal_meetingroom_page();
@@ -116,12 +116,12 @@ class MVRPersonalMeetingHelpers {
 		return $new_id;
 	}
 	/**
-	 * Render Site Video Admin Settings Page
+	 * Create and Insert Personal Meeting Rooms Admin Tab.
 	 *
 	 * @param  array $input - the inbound menu.
 	 * @return array - outbound menu.
 	 */
-	public function render_personalmeeting_admin_settings_page( $input = array() ): array {
+	public function create_personalmeeting_admin_settings_tab( $input = array() ): array {
 
 		$admin_tab = new MenuTabDisplay(
 			esc_html__( 'Personal Meetings', 'myvideoroom' ),

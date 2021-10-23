@@ -3,7 +3,7 @@
  * Render an invite link
  *
  * @return string
- * @package MyVideoRoomPlugin\Module\PersonalMeetingRooms
+ * @package my-video-room/module/personalmeetingrooms/views/invite.php
  */
 
 use MyVideoRoomPlugin\Factory;
@@ -44,54 +44,44 @@ return function (
 	ob_start();
 	?>
 
-	<div class="<?php echo esc_attr( $main_class ); ?>">
-		<p>
-			<?php
+<div class="<?php echo esc_attr( $main_class ); ?>">
+	<p>
+		<?php
 			esc_html_e(
 				'Invite someone to your personal meeting:',
 				'myvideoroom'
 			);
-			?>
-		</p>
+		?>
+	</p>
 
-		<span
-			class="link"
-			data-copy-text="<?php esc_attr_e( 'Copy to clipboard', 'myvideoroom' ); ?>"
-			data-copied-text="<?php esc_attr_e( 'Copied!', 'myvideoroom' ); ?>"
-		>
+	<span class="link" data-copy-text="<?php esc_attr_e( 'Copy to clipboard', 'myvideoroom' ); ?>"
+		data-copied-text="<?php esc_attr_e( 'Copied!', 'myvideoroom' ); ?>">
 		<?php echo esc_html( $url ); ?>
-		</span>
+	</span>
 
-		<form action="" method="post" data-sending-text="<?php esc_attr_e( 'Sending...', 'myvideoroom' ); ?>">
-			<label for="<?php echo esc_attr( $html_lib->get_id( 'address' ) ); ?>">Email address</label>
-			<input
-				type="email"
-				placeholder="<?php esc_html_e( 'Email address' ); ?>"
-				id="<?php echo esc_attr( $html_lib->get_id( 'address' ) ); ?>"
-				name="<?php echo esc_attr( $html_lib->get_field_name( 'address' ) ); ?>"
-				required
-			/>
+	<form action="" method="post" data-sending-text="<?php esc_attr_e( 'Sending...', 'myvideoroom' ); ?>">
+		<label for="<?php echo esc_attr( $html_lib->get_id( 'address' ) ); ?>">Email address</label>
+		<input type="email" placeholder="<?php esc_html_e( 'Email address' ); ?>"
+			id="<?php echo esc_attr( $html_lib->get_id( 'address' ) ); ?>"
+			name="<?php echo esc_attr( $html_lib->get_field_name( 'address' ) ); ?>" required />
 
-			<input
-				type="hidden"
-				value="<?php echo esc_html( $url ); ?>"
-				name="<?php echo esc_attr( $html_lib->get_field_name( 'link' ) ); ?>"
-			/>
-
-			<?php
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo Factory::get_instance( HttpPost::class )->create_form_submit( Module::INVITE_EMAIL_ACTION, esc_html__( 'Send link', 'myvideoroom' ) );
-			?>
-		</form>
+		<input type="hidden" value="<?php echo esc_html( $url ); ?>"
+			name="<?php echo esc_attr( $html_lib->get_field_name( 'link' ) ); ?>" />
 
 		<?php
-		if ( null !== $success ) {
-			$status_type = $success ? 'failure' : 'success';
-			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
-			echo '<span class="status ' . $status_type . '">' . $message . '</span>';
-		}
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo Factory::get_instance( HttpPost::class )->create_form_submit( Module::INVITE_EMAIL_ACTION, esc_html__( 'Send link', 'myvideoroom' ) );
 		?>
-	</div>
+	</form>
+
+	<?php
+	if ( null !== $success ) {
+		$status_type = $success ? 'failure' : 'success';
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Not required
+		echo '<span class="status ' . $status_type . '">' . $message . '</span>';
+	}
+	?>
+</div>
 	<?php
 
 	return ob_get_clean();

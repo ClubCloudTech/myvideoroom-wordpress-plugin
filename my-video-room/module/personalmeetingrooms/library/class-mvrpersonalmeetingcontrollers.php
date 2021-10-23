@@ -1,30 +1,27 @@
 <?php
-
 /**
- * Addon functionality for Personal Meetings.
+ * Main Video Controllers for Personal Video Rooms.
  *
- * @package MyVideoRoomPlugin\Modules\PersonalMeetingControllers
+ * @package my-video-room/module/personalmeetingrooms/library/class-mvrpersonalmeetingcontrollers.php
  */
 
 namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
 
 use MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\DAO\RoomAdmin;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Library\VideoHelpers;
 use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
-use MyVideoRoomPlugin\Library\RoomAdmin as LibraryRoomAdmin;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingViews;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityEngine;
 
 /**
- * Class MVRPersonalMeeting - Renders the Video Plugin for SiteWide Video Room.
+ * Class MVRPersonalMeeting - Renders the Video Plugin for Personal Video Rooms Module.
  */
 class MVRPersonalMeetingControllers {
 
@@ -102,7 +99,9 @@ class MVRPersonalMeetingControllers {
 	 * @return string
 	 */
 	public function personal_meeting_guest_shortcode( $params = array() ) {
+		// phpcs:ignore --WordPress.Security.NonceVerification.Recommended - These are for public from the outside emailed, or shared meeting links that can not be Nonced by definition.
 		$host   = $params['host'] ?? sanitize_text_field( wp_unslash( $_GET['host'] ?? '' ) );
+		// phpcs:ignore --WordPress.Security.NonceVerification.Recommended - These are for public from the outside emailed, or shared meeting links that can not be Nonced by definition.
 		$invite = $params['invite'] ?? sanitize_text_field( wp_unslash( $_GET['invite'] ?? '' ) );
 
 		return $this->boardroom_video_guest( $host, $invite );

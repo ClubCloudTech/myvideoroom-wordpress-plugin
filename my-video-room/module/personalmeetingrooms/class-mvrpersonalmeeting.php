@@ -64,7 +64,7 @@ class MVRPersonalMeeting {
 			}
 		);
 
-		add_filter( 'myvideoroom_room_manager_menu', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'render_personalmeeting_admin_settings_page' ), 20, 1 );
+		add_filter( 'myvideoroom_room_manager_menu', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'create_personalmeeting_admin_settings_tab' ), 20, 1 );
 		add_filter( 'myvideoroom_room_type_display_override', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'conference_room_friendly_name' ), 10, 1 );
 		add_filter( 'myvideoroom_room_manager_shortcode_display', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'conference_change_shortcode' ), 10, 4 );
 		add_filter( 'myvideoroom_room_manager_regenerate', array( Factory::get_instance( MVRPersonalMeetingHelpers::class ), 'regenerate_personal_meeting_room' ), 10, 3 );
