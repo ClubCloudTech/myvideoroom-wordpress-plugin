@@ -68,7 +68,29 @@ return function (
 
 	?>
 	<tr class="active mvr-table-mobile" data-room-id="<?php echo esc_attr( $room->id ); ?>">
-		<td class=" column-primary myvideoroom-mobile-table-row-adjust"><?php echo esc_html( $room->display_name ); ?></td>
+	<td>
+	<?php echo '<span id="namechange_' . esc_attr( $room->id ) . '-' . esc_attr( $offset ) . '"class=" column-primary myvideoroom-mobile-table-row-adjust">' . esc_html( $room->display_name ) . '</span>'; ?>
+		<?php echo '<i class="myvideoroom-dashicons-small mvr-icons dashicons-edit-large myvideoroom-edit-title-trigger" title="' . \esc_html__( 'Change Page Display Name', 'myvideoroom' ) . '" data-id="' . esc_attr( $room->id ) . '" data-offset="' . esc_attr( $offset ) . '"></i>'; ?>
+		<input type="text"
+			id="nameinput_<?php echo esc_attr( $room->id ) . '-' . esc_attr( $offset ); ?>"
+			minlength="3"
+			maxlength="48"
+			data-id="<?php echo esc_attr( $room->id ); ?>"
+			data-offset="<?php echo esc_attr( $offset ); ?>"
+			value="<?php echo esc_attr( $room->display_name ); ?>"
+			class="myvideoroom-input-name-trigger myvideoroom-input-restrict-alphanumeric"
+			style="display: none;"
+		>
+		<input type="button"
+			id="namebutton_<?php echo esc_attr( $room->id ) . '-' . esc_attr( $offset ); ?>"
+			data-id="<?php echo esc_attr( $room->id ); ?>"
+			data-offset="<?php echo esc_attr( $offset ); ?>"
+			class="myvideoroom-roomname-submit-form"
+			value="Current"
+			style="display: none;"
+			disabled
+		>
+	</td>
 		<td class="column-description myvideoroom-mobile-table-row-adjust">
 			<?php
 			if ( $room->url ) {
@@ -92,7 +114,7 @@ return function (
 			id="button_<?php echo esc_attr( $room->id ) . '-' . esc_attr( $offset ); ?>"
 			data-id="<?php echo esc_attr( $room->id ); ?>"
 			data-offset="<?php echo esc_attr( $offset ); ?>"
-			class="myvideoroom-roomname-submit-form"
+			class="myvideoroom-roomslug-submit-form"
 			value="Current"
 			style="display: none;"
 			disabled

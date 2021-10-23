@@ -35,12 +35,12 @@ class RoomAdmin {
 	 *
 	 * @return string
 	 */
-	public function get_room_url( string $room_name, bool $slug_only = null ): string {
+	public function get_room_url( string $room_name, bool $slug_only = null ): ?string {
 		$post = $this->get_post_by_room_name( $room_name );
 
 		// rooms which are no longer published should no longer have urls.
 		if ( ! $post || ( 'publish' === $post->post_status && 'private' === $post->post_status ) ) {
-			return 'none';
+			return null;
 		}
 		if ( $slug_only ) {
 			return $post->post_name;

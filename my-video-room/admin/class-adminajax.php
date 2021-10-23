@@ -191,6 +191,36 @@ class AdminAjax {
 				return \wp_send_json( $response );
 
 			/*
+			* Update Room Name.
+			*
+			*/
+			case 'update_name':
+				$room_name = Factory::get_instance( Ajax::class )->get_string_parameter( 'room_name' );
+				$post_id   = intval( Factory::get_instance( Ajax::class )->get_string_parameter( 'post_id' ) );
+
+				if ( strlen( $room_name ) >= 3 ) {
+					$update_array = array(
+						'ID'         => $post_id,
+						'post_title' => $room_name,
+					);
+					\wp_update_post( $update_array, true );
+					Factory::get_instance( RoomMap::class )->update_room_display_name( $room_name, $post_id );
+					$response['maintable'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table();
+					if ( Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME ) ) {
+						$response['personalmeeting'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
+					}
+					if ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( MVRSiteVideo::MODULE_SITE_VIDEO_ID ) ) {
+						$response['conference'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRSiteVideo::ROOM_NAME_SITE_VIDEO );
+					}
+
+					$response['feedback'] = \esc_html__( 'Saved', 'myvideoroom' ) . $room_name.'room id' . $post_id;
+				} else {
+					$response['feedback'] = \esc_html__( 'Name Update Failed', 'myvideoroom' );
+				}
+
+				return \wp_send_json( $response );
+
+			/*
 			* Refresh Room Tables - Used after module activation button changes module states and availability.
 			*
 			*/

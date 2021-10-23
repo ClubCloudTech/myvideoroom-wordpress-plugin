@@ -106,6 +106,36 @@ class RoomMap {
 	}
 
 	/**
+	 * Update Room Display Name in Database
+	 * This plugin will update the room name in the database with the parameter
+	 *
+	 * @param string $display_name  Display Name.
+	 * @param int    $post_id - The Post ID.
+	 *
+	 * @return bool|null
+	 */
+	public function update_room_display_name( string $display_name, int $post_id ): ?bool {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->query(
+			$wpdb->prepare(
+				'
+					UPDATE ' . /* phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared */ $this->get_table_name() . '
+					SET display_name = %s
+					WHERE post_id = %d
+				',
+				$display_name,
+				$post_id,
+			)
+		);
+
+		\wp_cache_delete( $display_name, __CLASS__ . '::get_room_info' );
+
+		return null;
+	}
+
+	/**
 	 * Delete a Room Record in Database.
 	 * This function will delete the room name in the database with the parameter.
 	 *

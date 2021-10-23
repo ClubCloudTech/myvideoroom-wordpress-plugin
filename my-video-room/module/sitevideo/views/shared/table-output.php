@@ -2,7 +2,7 @@
 /**
  * Outputs Formatted Table for Site Video and Other Applications
  *
- * @package MyVideoRoomPlugin\Views\Public\Admin
+ * @package my-video-room/module/sitevideo/views/shared/table-output.php
  */
 
 /**
