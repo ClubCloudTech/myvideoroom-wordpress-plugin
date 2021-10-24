@@ -410,6 +410,32 @@ class MVRSiteVideoRoomHelpers {
 	/**
 	 * Default Video Appearance Screen Handler.
 	 */
+	public function render_maintenance_appearance_screen() {
+		return ( require __DIR__ . '/../views/admin/view-settings-maintenance.php' )();
+	}
+
+	/**
+	 * Render Advanced Video Settings Tab
+	 *
+	 * @param array $input - the inbound menu.
+	 *
+	 * @return array - outbound menu.
+	 */
+	public function render_maintenance_tab( array $input ): array {
+
+		$admin_tab = new MenuTabDisplay(
+			esc_html__( 'Maintenance', 'myvideoroom' ),
+			'maintenancedb',
+			fn() => $this->render_maintenance_appearance_screen()
+		);
+		array_push( $input, $admin_tab );
+
+		return $input;
+	}
+
+	/**
+	 * Default Video Appearance Screen Handler.
+	 */
 	public function render_default_video_appearance_screen() {
 		return ( require __DIR__ . '/../views/admin/view-settings-video-default.php' )();
 	}

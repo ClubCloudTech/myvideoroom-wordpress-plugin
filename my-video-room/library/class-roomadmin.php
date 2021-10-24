@@ -1,6 +1,6 @@
 <?php
 /**
- * Gets details about a room
+ * Room Management API.
  *
  * @package MyVideoRoomPlugin\Shortcode
  */

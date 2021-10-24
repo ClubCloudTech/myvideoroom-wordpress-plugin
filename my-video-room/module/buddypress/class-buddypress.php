@@ -44,6 +44,8 @@ class BuddyPress {
 	const SETTING_DO_NOT_DISTURB                   = 'Do-Not-Disturb';
 	const SETTING_STEALTH                          = 'Stealth-Remove-Video';
 	const SETTING_DEFAULT_TAB_NAME                 = 'MyVideoRoom';
+	const OPTION_BUDDYPRESS_USER_TAB               = 'myvideoroom-buddypress-user-tab';
+	const OPTION_BUDDYPRESS_GROUP_TAB              = 'myvideoroom-buddypress-group-tab';
 
 	/**
 	 * Initialise On Module Activation
@@ -61,13 +63,13 @@ class BuddyPress {
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_BUDDYPRESS_USER_ID, true );
 
 		// Initialize default tab options for User and Group Tab names, and bypass if already created.
-		$user_check = \get_option( 'myvideoroom-buddypress-user-tab' );
+		$user_check = \get_option( self::OPTION_BUDDYPRESS_USER_TAB );
 		if ( ! $user_check ) {
-			\update_option( 'myvideoroom-buddypress-user-tab', self::SETTING_DEFAULT_TAB_NAME );
+			\update_option( self::OPTION_BUDDYPRESS_USER_TAB, self::SETTING_DEFAULT_TAB_NAME );
 		}
-		$group_check = \get_option( 'myvideoroom-buddypress-group-tab' );
+		$group_check = \get_option( self::OPTION_BUDDYPRESS_GROUP_TAB );
 		if ( ! $group_check ) {
-			\update_option( 'myvideoroom-buddypress-group-tab', self::SETTING_DEFAULT_TAB_NAME );
+			\update_option( self::OPTION_BUDDYPRESS_GROUP_TAB, self::SETTING_DEFAULT_TAB_NAME );
 		}
 	}
 	/**

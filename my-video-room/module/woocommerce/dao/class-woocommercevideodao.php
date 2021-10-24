@@ -399,7 +399,6 @@ class WooCommerceVideoDAO {
 	 * @param string $room_name - The Room Name to Clear Sync on.
 	 *
 	 * @return null
-	 * @throws \Exception When failing to delete.
 	 */
 	public function clear_broadcast_basket_queue( string $room_name ) {
 		global $wpdb;
@@ -432,7 +431,6 @@ class WooCommerceVideoDAO {
 	 * @param WooCommerceVideoCart $woocommercevideocartobject The Cart Object to delete.
 	 *
 	 * @return null
-	 * @throws \Exception When failing to delete.
 	 */
 	public function delete( WooCommerceVideoCart $woocommercevideocartobject ) {
 		global $wpdb;
@@ -462,6 +460,33 @@ class WooCommerceVideoDAO {
 				)
 			)
 		);
+
+		return null;
+	}
+
+	/**
+	 * Delete Records older than Timestamp
+	 *
+	 * @param int $timestamp - the starting timestamp.
+	 *
+	 * @return null
+	 */
+	public function delete_maintenance_timestamp( int $timestamp ) {
+
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery --conditional delete can't use delete method.
+		$wpdb->query( 
+			$wpdb->prepare(
+				'DELETE FROM %s
+				WHERE start_time < %d',
+				array(
+					$this->get_main_table_name(),
+					$timestamp,
+				)
+			)
+		);
+		$cache_key = '__ALL__';
+		\wp_cache_delete( $cache_key, array( __CLASS__, 'get_record_by_cart_id' ) );
 
 		return null;
 	}

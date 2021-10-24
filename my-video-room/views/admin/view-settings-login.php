@@ -23,8 +23,8 @@ return function (
 				class="mvr-preferences-paragraph">
 				<strong><?php esc_html_e( 'Override Default WordPress Login Form', 'myvideoroom' ); ?></strong>
 			</label>
-			<input type="checkbox" class="myvideoroom_login_override" name="myvideoroom_login_override"
-				class="myvideoroom-separation" id="myvideoroom_login_override_<?php echo esc_attr( $id_index ); ?>"
+			<input type="checkbox" class="myvideoroom_login_override myvideoroom-separation" name="myvideoroom_login_override"
+				id="myvideoroom_login_override_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $login_override ? 'checked' : ''; ?> />
 			<?php echo esc_html_e( '(Leave Blank for WordPress default login)', 'myvideoroom' ); ?>
 			<br><br>

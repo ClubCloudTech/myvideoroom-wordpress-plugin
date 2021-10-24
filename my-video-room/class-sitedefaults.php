@@ -42,7 +42,7 @@ class SiteDefaults {
 	const MODULE_SECURITY_ID = Dependencies::MODULE_SECURITY_ID;
 
 	// Time Limits- Database Cutoff and Cleanup time offset.
-	const DBCLEAN_DAYS           = 2;
+	const DBCLEAN_DAYS           = 14;
 	const DBCLEAN_TIMESTAMP      = self::DBCLEAN_DAYS * 24 * 60 * 60; /* Days X Minutes X Seconds */
 	const LAST_VISITED_TOLERANCE = 30 * 60; /* Minutes X seconds */
 	const QUEUE_VIEW_TOLERANCE   = 24 * 60 * 60; /* Hours X Minutes X seconds */

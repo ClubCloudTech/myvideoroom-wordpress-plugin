@@ -16,6 +16,7 @@ use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Dependencies;
+use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingHelpers;
@@ -82,6 +83,8 @@ class MVRSiteVideo {
 
 		// Configure Default Category Settings for Room.
 		Factory::get_instance( RoomAdmin::class )->initialise_default_sitevideo_settings();
+
+		Factory::get_instance( Maintenance::class )->activate_module();
 
 	}
 
@@ -284,6 +287,17 @@ class MVRSiteVideo {
 				'render_default_video_appearance_tab',
 			),
 			10,
+			1
+		);
+
+		// Add Maintenance Tab to Default Settings.
+		add_filter(
+			'myvideoroom_permissions_manager_menu',
+			array(
+				Factory::get_instance( MVRSiteVideoRoomHelpers::class ),
+				'render_maintenance_tab',
+			),
+			90,
 			1
 		);
 
