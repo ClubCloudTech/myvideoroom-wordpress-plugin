@@ -75,7 +75,9 @@ return function (
 			?>
 		<li>
 			<a class="nav-tab" href="#<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>">
-				<?php echo esc_html( $tab_display_name ); ?>
+				<?php
+					//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - tabs already formatted in function.
+					echo $tab_display_name ; ?>
 			</a>
 		</li>
 			<?php

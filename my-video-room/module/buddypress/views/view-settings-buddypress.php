@@ -2,11 +2,11 @@
 /**
  * Outputs the configuration settings for the video plugin
  *
- * @package MyVideoRoomPlugin\Views\Public\Admin
+ * @package my-video-room/module/buddypress/views/view-settings-buddypress.php
  */
 
 /**
- * Render the admin page
+ * Render the Admin page for BuddyPress Integration Module.
  *
  * @return string
  */
@@ -28,9 +28,10 @@ return function (): string {
 	<!-- Module Header -->
 	<div class="myvideoroom-menu-settings">
 		<div class="myvideoroom-header-table-left">
-			<h1><i
-					class="myvideoroom-header-dashicons dashicons-buddicons-buddypress-logo"></i><?php esc_html_e( 'BuddyPress Integration and Video Rooms', 'myvideoroom' ); ?>
-			</h1>
+		<div class = "myvideoroom-partner-logo myvideoroom-separation-header" ><img id = "myvideoroom-partner-logo"
+			src="<?php echo esc_url( plugins_url( '../img/buddypress-logo.png', __FILE__ ) ); ?>"
+			alt="MyVideoroom Logo"></div>	
+		<h1><?php esc_html_e( ' Integration and Video Rooms', 'myvideoroom' ); ?></h1>
 		</div>
 		<div class="myvideoroom-header-table-right">
 		</div>

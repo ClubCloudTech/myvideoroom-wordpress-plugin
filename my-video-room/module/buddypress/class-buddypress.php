@@ -205,7 +205,7 @@ class BuddyPress {
 	public function render_bp_room_manager_page( $input = array() ): array {
 
 		$admin_tab = new MenuTabDisplay(
-			esc_html__( 'BuddyPress', 'myvideoroom' ),
+			'<img class="myvideoroom-partner-logo-menu" src="' . plugins_url( '/img/buddypress-logo.png', __FILE__ ) . '" >',
 			'buddypress',
 			fn() => $this->render_buddypress_admin_page()
 		);

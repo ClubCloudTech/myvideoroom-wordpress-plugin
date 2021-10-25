@@ -194,9 +194,8 @@ class WooCommerce {
 	 * @return array - outbound menu.
 	 */
 	public function render_wc_room_manager_page( $input = array() ): array {
-
 		$admin_tab = new MenuTabDisplay(
-			esc_html__( 'WooCommerce', 'myvideoroom' ),
+			'<img class="myvideoroom-partner-logo-menu" src="' . plugins_url( '/img/woocommerce-logo.png', __FILE__ ) . '" >',
 			'woocommerce',
 			fn() => $this->render_woocommerce_admin_page()
 		);
