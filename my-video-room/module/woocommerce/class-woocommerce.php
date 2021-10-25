@@ -105,7 +105,6 @@ class WooCommerce {
 
 		// Maintenance Module.
 		Factory::get_instance( WCMaintenance::class )->activate();
-
 	}
 
 	/**

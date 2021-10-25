@@ -15,6 +15,7 @@ use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Module\RoomBuilder\Module;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\WCMaintenance;
 
 return function (): string {
 	ob_start();
@@ -102,7 +103,6 @@ return function (): string {
 		<?php
 			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - functions are escaped upstream.
 			echo apply_filters( 'myvideoroom_maintenance_page_option', '' );
-			//echo Factory::get_instance( Maintenance::class )->mvr_trim_room_presence_table(). 'fred';
 		?>
 	<tr class="active mvr-table-mobile">
 		<td>

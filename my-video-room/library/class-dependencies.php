@@ -43,4 +43,24 @@ class Dependencies {
 
 		return Factory::get_instance( Module::class )->is_module_active( $module_slug );
 	}
+
+	/**
+	 * Does Shortcode Exist ?
+	 * Is Removes extra shortcode characters and validates the shortcode is registered.
+	 *
+	 * @param string $login_shortcode - the shortcode to verify.
+	 * @return bool
+	 */
+	public function does_full_shortcode_exist( string $login_shortcode ): bool {
+		if ( ! $login_shortcode ) {
+			return false;
+		}
+
+		$sanitised_shortcode = strtok( $login_shortcode, ' ' );
+		$shortcode_state     = shortcode_exists( $sanitised_shortcode );
+
+		return $shortcode_state;
+	}
+
+
 }

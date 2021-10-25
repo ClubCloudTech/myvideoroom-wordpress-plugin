@@ -97,7 +97,7 @@ class Maintenance {
 			</label>
 		</td>
 		<td>
-		<input type="text" class="myvideoroom-maintenance-setting"
+		<input type="number" min="1" max="365" class="myvideoroom-maintenance-setting"
 			id="' . esc_attr( self::OPTION_DB_CLEAN_SYNC ) . '" name ="' . esc_attr( self::OPTION_DB_CLEAN_SYNC ) . '"
 			value="' . esc_attr( get_option( self::OPTION_DB_CLEAN_SYNC ) ) . '" />
 			<i class="myvideoroom-dashicons mvr-icons dashicons-editor-help" title="' . \esc_html__( 'How Many Days to keep Room Table for, outside of this there will be no record of the user\'s presence in the room. (Default 14)', 'myvideoroom' ) . '"></i>

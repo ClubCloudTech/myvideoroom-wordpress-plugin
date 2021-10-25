@@ -6,6 +6,7 @@
  */
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\LoginForm;
 use MyVideoRoomPlugin\Library\TemplateIcons;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
@@ -45,7 +46,7 @@ return function (
 		<?php
 		$output .= Factory::get_instance( TemplateIcons::class )->format_button_icon( 'name' );
 
-		if ( ! \is_user_logged_in() ) {
+		if ( ! \is_user_logged_in() && \get_option( LoginForm::SETTING_LOGIN_DISPLAY ) ) {
 			$output .= Factory::get_instance( TemplateIcons::class )->format_button_icon( 'login' );
 		}
 		if ( $all_set || $display_name ) {
@@ -169,9 +170,9 @@ return function (
 		<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons mvr-hide" />
 	</div>
 	<?php
-	if ( ! \is_user_logged_in() ) {
+	if ( ! \is_user_logged_in() && \get_option( LoginForm::SETTING_LOGIN_DISPLAY ) ) {
 				//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page();
+				echo Factory::get_instance( MVRSiteVideoViews::class )->render_login_page( true );
 	}
 	if ( ! $all_set ) {
 		?>

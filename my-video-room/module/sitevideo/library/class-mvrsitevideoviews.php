@@ -13,6 +13,7 @@ use MyVideoRoomPlugin\Library\RoomAdmin;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
+use MyVideoRoomPlugin\Library\LoginForm;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 
@@ -121,12 +122,15 @@ class MVRSiteVideoViews {
 	 * @return array - outbound menu.
 	 */
 	public function render_login_tab_welcome( array $input ): array {
-
-		$basket_menu = new MenuTabDisplay(
-			\esc_html__( 'Login', 'myvideoroom' ),
-			'templatelogin',
-			fn() => $this->render_login_page()
-		);
+		$login_enabled = \get_option( LoginForm::SETTING_LOGIN_DISPLAY );
+		$login_enabled = false;
+		if ( $login_enabled ) {
+			$basket_menu = new MenuTabDisplay(
+				\esc_html__( 'Login', 'myvideoroom' ),
+				'templatelogin',
+				fn() => $this->render_login_page()
+			);
+		}
 
 		array_push( $input, $basket_menu );
 		return $input;
@@ -163,15 +167,24 @@ class MVRSiteVideoViews {
 	/**
 	 * Render Login Page
 	 *
+	 * @param bool $hide_tab_initial - Whether to set style to display none to hide tab initially (needed for inside welcome center toggle).
 	 * @return string - Login Page.
 	 */
-	public function render_login_page(): string {
-		\wp_enqueue_script( 'myvideoroom-iframe-handler' );
-		$login_override  = get_option( 'myvideoroom-login-override' );
-		$login_shortcode = get_option( 'myvideoroom-login-shortcode' );
+	public function render_login_page( bool $hide_tab_initial = null ): string {
+		$login_iframe = \get_option( LoginForm::SETTING_LOGIN_IFRAME );
+		if ( $login_iframe ) {
+			\wp_enqueue_script( 'myvideoroom-iframe-handler' );
+		}
+		$login_override  = get_option( LoginForm::SETTING_LOGIN_OVERRIDE );
+		$login_shortcode = get_option( LoginForm::SETTING_LOGIN_SHORTCODE );
 		$redirect_url    = Factory::get_instance( RoomAdmin::class )->get_room_url( MVRSiteVideo::ROOM_NAME_REDIRECT, true ) . '/';
-		$render          = require __DIR__ . '/../views/login/view-login.php';
-		return $render( \boolval( $login_override ), $login_shortcode, $redirect_url );
+		if ( $hide_tab_initial ) {
+			$style = 'display: none;';
+		} else {
+			$style = '';
+		}
+		$render = require __DIR__ . '/../views/login/view-login.php';
+		return $render( \boolval( $login_override ), \boolval( $login_iframe ), $login_shortcode, $redirect_url, $style );
 
 	}
 

@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\DAO\Setup;
+use MyVideoRoomPlugin\Library\LoginForm;
 use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Library\TemplateIcons;
 use MyVideoRoomPlugin\Shortcode\App;
@@ -83,6 +84,9 @@ class SiteDefaults {
 		);
 
 		Factory::get_instance( Maintenance::class )->activate();
+
+		// Options.
+		$this->register_default_options();
 	}
 
 	/**
@@ -107,6 +111,15 @@ class SiteDefaults {
 		);
 		// Main Plugin Maintenance.
 		Factory::get_instance( Maintenance::class )->init();
+	}
+
+	/**
+	 * Register Default Options.
+	 */
+	private function register_default_options() {
+		\add_option( LoginForm::SETTING_LOGIN_DISPLAY, true );
+		\add_option( LoginForm::SETTING_LOGIN_IFRAME, false );
+		\add_option( LoginForm::SETTING_LOGIN_OVERRIDE, false );
 	}
 
 	/**

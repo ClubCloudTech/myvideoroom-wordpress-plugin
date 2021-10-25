@@ -10,6 +10,7 @@ namespace MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library;
 use MyVideoRoomPlugin\Entity\MenuTabDisplay;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\HTML;
+use MyVideoRoomPlugin\Library\LoginForm;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
@@ -63,14 +64,17 @@ class MVRPersonalMeetingViews {
 	 * @return array|string
 	 */
 	public function meet_guest_template() {
-		$inbound_tabs = array();
-		$tabs         = apply_filters( 'myvideoroom_meet_centre_guest_menu', $inbound_tabs );
-		$login_page   = new MenuTabDisplay(
-			esc_html__( 'Sign In', 'myvideoroom' ),
-			'signin',
-			fn() => Factory::get_instance( MVRSiteVideoViews::class )->render_login_page()
-		);
-		array_push( $tabs, $login_page );
+		$inbound_tabs  = array();
+		$tabs          = apply_filters( 'myvideoroom_meet_centre_guest_menu', $inbound_tabs );
+		$login_enabled = \get_option( LoginForm::SETTING_LOGIN_DISPLAY );
+		if ( $login_enabled ) {
+			$login_page = new MenuTabDisplay(
+				esc_html__( 'Sign In', 'myvideoroom' ),
+				'signin',
+				fn() => Factory::get_instance( MVRSiteVideoViews::class )->render_login_page()
+			);
+			array_push( $tabs, $login_page );
+		}
 
 		$html_library = Factory::get_instance( HTML::class, array( 'meetcentre' ) );
 		$render       = require __DIR__ . '/../views/view-meetcentre.php';
