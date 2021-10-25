@@ -1,7 +1,7 @@
 /**
  * Ajax control for Admin pages.
  *
- * @package ElementalPlugin\Admin\js\AdminAjax.js
+ * @package my-video-room/admin/js/mvradminajax.js
  */
 window.addEventListener(
     "load",
@@ -165,10 +165,43 @@ window.addEventListener(
                             let room = parseInt($(this).attr('data-room-id')),
                                 nonce = $(this).attr('data-nonce'),
                                 room_name = $(this).attr('data-room-name');
-                            console.log('delete');
                             deleteRoom(room, nonce, room_name);
                         }
                     );
+
+                    // For Maintenance Tab Sync All 
+                    $('.mvr-room-update-button-trigger').click(
+                        function(e) {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                            e.preventDefault();
+                            syncSettings(true);
+                        }
+                    );
+                    // Refresh Room Templates and Receptions.
+                    $('.myvideoroom-maintenance-setting').click(
+                        function(e) {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                            e.preventDefault();
+                            $('#myvideoroom_refresh_layout').fadeIn();
+
+                        }
+                    );
+                    // Save Maintenance All Settings.
+                    $('#myvideoroom_refresh_layout').click(
+                        function(e) {
+                            e.stopPropagation();
+                            e.stopImmediatePropagation();
+                            e.preventDefault();
+                            $('#myvideoroom_refresh_layout').fadeIn();
+                            syncSettings();
+                        }
+                    );
+
+
+
+
 
                     $('#user-profile-input').on('keyup', checkform);
                     $('#group-profile-input').on('keyup', checkgroupform);
@@ -177,11 +210,56 @@ window.addEventListener(
                     $('#save-group-tab').on('click', updateGrouptab);
 
                 }
-
                 /**
-                 * Room Manager Ajax Functions
-                 * Used by Room Manager Ajax pages to update room URL(slugs)
+                 * Update Group Display Tab in BuddyPress
                  */
+                var syncSettings = function(templateonly) {
+
+                        console.log('initsync settings');
+                        var form_data = new FormData();
+                        tab_user_profile = $('#group-profile-input').val();
+                        form_data.append('action', 'myvideoroom_admin_ajax');
+                        form_data.append('action_taken', 'save_maintenance_settings');
+                        form_data.append('security', myvideoroom_admin_ajax.security);
+                        if (templateonly) {
+                            form_data.append('template_update', true);
+                        } else {
+                            form_data.append('group_tab_name', tab_user_profile);
+                            $('.myvideoroom-maintenance-setting').each(function(index) {
+                                form_data.append($(this).attr('id'), $(this).val());
+                            });
+                        }
+
+                        $.ajax({
+                            type: 'post',
+                            dataType: 'html',
+                            url: myvideoroom_admin_ajax.ajax_url,
+                            contentType: false,
+                            processData: false,
+                            data: form_data,
+                            success: function(response) {
+                                var state_response = JSON.parse(response);
+                                if (state_response.updated) {
+                                    $('#mvr-last-sync-time').html(state_response.updated);
+                                    $('#myvideoroom_refresh_layout').fadeOut();
+                                }
+                                if (state_response.feedback) {
+                                    $('#myvideoroom_refresh_layout').prop('value', state_response.feedback);
+                                    setTimeout(function() {
+                                        $('#myvideoroom_refresh_layout').fadeOut();
+                                    }, 4000);
+                                }
+                                init();
+                            },
+                            error: function(response) {
+                                console.log('Error Uploading');
+                            }
+                        });
+                    }
+                    /**
+                     * Room Manager Ajax Functions
+                     * Used by Room Manager Ajax pages to update room URL(slugs)
+                     */
 
                 /**
                  * Handles Module Activation and De-activation Button

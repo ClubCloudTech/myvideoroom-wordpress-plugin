@@ -15,6 +15,7 @@ use MyVideoRoomPlugin\Module\WooCommerce\DAO\WooCommerceVideoDAO;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\WCMaintenance;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\WooCategory;
 
 /**
@@ -102,6 +103,9 @@ class WooCommerce {
 		// Create Product Categories for each room.
 		Factory::get_instance( WooCategory::class )->activate_product_category();
 
+		// Maintenance Module.
+		Factory::get_instance( WCMaintenance::class )->activate();
+
 	}
 
 	/**
@@ -109,7 +113,7 @@ class WooCommerce {
 	 * Once off functions for activating Module.
 	 */
 	public function de_activate_module() {
-
+		Factory::get_instance( WCMaintenance::class )->de_activate();
 	}
 
 	/**
@@ -160,6 +164,10 @@ class WooCommerce {
 		);
 
 		add_filter( 'myvideoroom_basket_buttons', array( Factory::get_instance( WooCategory::class ), 'render_save_category_button' ), 30, 3 );
+
+		// Maintenance Page.
+		\add_filter( 'myvideoroom_maintenance_page_option', array( Factory::get_instance( WCMaintenance::class ), 'render_maintenance_menu_option' ), 30, 1 );
+		\add_filter( 'myvideoroom_maintenance_result_listener', array( Factory::get_instance( WCMaintenance::class ), 'process_update_filter' ), 10, 2 );
 
 		// Add Notification Bar to Video Call.
 		\add_filter( 'myvideoroom_notification_master', array( Factory::get_instance( ShoppingBasket::class ), 'render_notification_tab' ), 100, 2 );

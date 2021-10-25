@@ -84,7 +84,8 @@ class MVRSiteVideo {
 		// Configure Default Category Settings for Room.
 		Factory::get_instance( RoomAdmin::class )->initialise_default_sitevideo_settings();
 
-		Factory::get_instance( Maintenance::class )->activate_module();
+		// Activate Default Settings for DB Maintenance.
+		Factory::get_instance( Maintenance::class )->activate();
 
 	}
 

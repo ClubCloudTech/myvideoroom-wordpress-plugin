@@ -115,6 +115,7 @@ class Activation {
 	 * Remove the plugin
 	 */
 	public static function deactivate() {
+		Factory::get_instance( SiteDefaults::class )->deactivate_module();
 		$active_modules = Factory::get_instance( Module::class )->get_all_modules();
 		foreach ( $active_modules as $active_module ) {
 			$active_module->deactivate();

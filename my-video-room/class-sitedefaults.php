@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Library\WordPressUser;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\DAO\Setup;
+use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Library\TemplateIcons;
 use MyVideoRoomPlugin\Shortcode\App;
 
@@ -80,6 +81,16 @@ class SiteDefaults {
 			self::MODULE_DEFAULT_VIDEO_ID,
 			true
 		);
+
+		Factory::get_instance( Maintenance::class )->activate();
+	}
+
+	/**
+	 * Initialise On Module Activation
+	 * Once off functions for activating Module
+	 */
+	public function deactivate_module() {
+		Factory::get_instance( Maintenance::class )->de_activate();
 	}
 
 	/**
@@ -94,6 +105,8 @@ class SiteDefaults {
 				'invite_menu_shortcode',
 			)
 		);
+		// Main Plugin Maintenance.
+		Factory::get_instance( Maintenance::class )->init();
 	}
 
 	/**

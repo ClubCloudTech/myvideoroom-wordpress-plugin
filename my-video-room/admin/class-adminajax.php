@@ -13,6 +13,8 @@ use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
+use MyVideoRoomPlugin\Library\AvailableScenes;
+use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Library\Version;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
@@ -315,6 +317,22 @@ class AdminAjax {
 				if ( Factory::get_instance( Module::class )->is_module_active_simple( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME ) ) {
 					$response['personalmeeting'] = Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
 				}
+				return \wp_send_json( $response );
+
+			/*
+			* Update Maintenance Settings.
+			*
+			*/
+			case 'save_maintenance_settings':
+				$template_update = Factory::get_instance( Ajax::class )->get_string_parameter( 'template_update' );
+
+				if ( $template_update ) {
+					Factory::get_instance( AvailableScenes::class )->update_templates();
+					$response['updated'] = \esc_html__( 'Last Updated: ', 'myvideoroom' ) . gmdate( 'Y-m-d H:i:s', intval( get_option( Maintenance::OPTION_LAST_TEMPLATE_SYNCC ) ) );
+					return \wp_send_json( $response );
+				}
+				// Listeners Hook into this filter to pick up Ajax post and process in own module.
+				$response = \apply_filters( 'myvideoroom_maintenance_result_listener', $response );
 				return \wp_send_json( $response );
 
 		}

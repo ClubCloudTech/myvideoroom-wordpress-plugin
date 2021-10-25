@@ -37,7 +37,6 @@ class RoomSyncDAO {
 	 * @param RoomSync $roomsyncobj The video preference to save.
 	 *
 	 * @return RoomSync|null
-	 * @throws \Exception When failing to insert, most likely a duplicate key.
 	 */
 	public function create( RoomSync $roomsyncobj ): ?RoomSync {
 		global $wpdb;
@@ -299,7 +298,7 @@ class RoomSyncDAO {
 	}
 
 	/**
-	 * Update Master Status in Database.
+	 * Flush Database Sync State.
 	 *
 	 * @param string $room_name The Room Name.
 	 *
@@ -365,7 +364,7 @@ class RoomSyncDAO {
 	}
 
 	/**
-	 * Update Timestamp
+	 * Reset Timestamp
 	 *
 	 * @param string $room_name The Room Name.
 	 * @param string $user_hash_id - User hash to check for.
@@ -785,5 +784,32 @@ class RoomSyncDAO {
 
 			return true;
 		}
+	}
+	/**
+	 * Delete Records older than Timestamp
+	 *
+	 * @param int $timestamp - the starting timestamp.
+	 *
+	 * @return null
+	 */
+	public function delete_records_by_timestamp( int $timestamp ): ?string {
+
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery --conditional delete can't use delete method.
+		$wpdb->query(
+			$wpdb->prepare(
+				// phpcs:ignore -- WordPress.DB.PreparedSQL.NotPrepared - using prepare
+				'DELETE FROM ' . $this->get_room_presence_table_name() . ' WHERE timestamp < ' . $timestamp . ' ;' 
+			)
+		);
+		$cache_key = '__ALL__';
+		\wp_cache_delete( $cache_key, array( __CLASS__, 'get_by_id_sync_table' ) );
+		\wp_cache_delete( $cache_key, array( __CLASS__, 'get_by_cart_id' ) );
+
+		if ( $wpdb->last_error ) {
+			return $wpdb->last_error;
+		}
+
+		return null;
 	}
 }

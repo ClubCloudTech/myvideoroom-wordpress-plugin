@@ -35,6 +35,7 @@ class AvailableScenes {
 	 * @return array
 	 */
 	private function get_available_scenes( string $uri ): array {
+		$timestamp = \current_time( 'timestamp' );
 		$scenes = \get_option( self::OPTION_MVR_SCENE_LAYOUTS );
 		if ( $scenes ) {
 			return $scenes;
@@ -61,7 +62,7 @@ class AvailableScenes {
 		if ( ! $scenes ) {
 			return array();
 		}
-
+		\update_option( Maintenance::OPTION_LAST_TEMPLATE_SYNCC, $timestamp );
 		\update_option( self::OPTION_MVR_SCENE_LAYOUTS, $scenes );
 
 		return $scenes;
@@ -75,7 +76,8 @@ class AvailableScenes {
 	 * @return array
 	 */
 	private function get_available_receptions_layouts( string $uri ): array {
-		$scenes = \get_option( self::OPTION_MVR_RECEPTION_LAYOUTS );
+		$timestamp = \current_time( 'timestamp' );
+		$scenes    = \get_option( self::OPTION_MVR_RECEPTION_LAYOUTS );
 		if ( $scenes ) {
 			return $scenes;
 		}
@@ -101,8 +103,8 @@ class AvailableScenes {
 		if ( ! $scenes ) {
 			return array();
 		}
-
 		\update_option( self::OPTION_MVR_RECEPTION_LAYOUTS, $scenes );
+		\update_option( Maintenance::OPTION_LAST_TEMPLATE_SYNCC, $timestamp );
 
 		return $scenes;
 	}
@@ -115,4 +117,18 @@ class AvailableScenes {
 	public function get_available_receptions(): array {
 		return \apply_filters( 'myvideoroom_available_receptions', $this->get_available_receptions_layouts( 'receptions' ) );
 	}
+
+	/**
+	 * Get a list of available receptions from MyVideoRoom
+	 *
+	 * @return array
+	 */
+	public function update_templates() {
+		$this->get_available_layouts();
+		$this->get_available_receptions();
+		$timestamp = \current_time( 'timestamp' );
+		\update_option( Maintenance::OPTION_LAST_TEMPLATE_SYNCC, $timestamp );
+	}
+
+
 }

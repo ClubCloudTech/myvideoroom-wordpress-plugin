@@ -613,5 +613,35 @@ class WooCommerceVideoDAO {
 
 			return $result;
 	}
+	/**
+	 * Delete Records older than Timestamp
+	 * Used by Maintenance Module to keep database small.
+	 *
+	 * @param int $timestamp - the starting timestamp.
+	 *
+	 * @return null
+	 */
+	public function delete_records_by_timestamp( int $timestamp ): ?string {
 
+		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery --conditional delete can't use delete method.
+		$wpdb->query(
+			$wpdb->prepare(
+				// phpcs:ignore -- WordPress.DB.PreparedSQL.NotPrepared - using prepare
+				'DELETE FROM ' . $this->get_main_table_name() . ' WHERE timestamp < ' . $timestamp . ' ;' 
+			)
+		);
+		$cache_key = '__ALL__';
+		\wp_cache_delete( $cache_key, array( __CLASS__, 'get_current_basket_sync_queue_records' ) );
+		\wp_cache_delete( $cache_key, array( __CLASS__, 'get_queue_records' ) );
+		\wp_cache_delete( $cache_key, array( __CLASS__, 'get_record_by_record_id' ) );
+		\wp_cache_delete( $cache_key, array( __CLASS__, 'get_record_by_cart_id' ) );
+		\wp_cache_delete( $cache_key, array( __CLASS__, 'get_by_cart_id' ) );
+
+		if ( $wpdb->last_error ) {
+			return $wpdb->last_error;
+		}
+
+		return null;
+	}
 }

@@ -8,14 +8,11 @@
 /**
  * Render Admin Page Settings Maintenance.
  *
- * @param string $active_tab
- * @param array  $tabs
- * @param array  $messages
- *
  * @return string
  */
 
 use MyVideoRoomPlugin\Admin\PageList;
+use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Module\RoomBuilder\Module;
 
@@ -83,11 +80,11 @@ return function (): string {
 			<h2><?php esc_html_e( 'Settings', 'myvideoroom' ); ?></h2>
 			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
 			<input type="button" class="mvr-main-button-enabled"
-			id="myvideoroom_refresh_layout" value="<?php esc_html_e( 'Save Settings', 'myvideoroom' ); ?>">
+			id="myvideoroom_refresh_layout" value="<?php esc_html_e( 'Save Settings', 'myvideoroom' ); ?>" style="display: none;">
 			</div>
 		</div>
 		<div class="myvideoroom-feature-table-large">
-		<table id="mvr-table-basket-frame_<?php echo esc_attr( $room_type ); ?>" class="wp-list-table widefat plugins myvideoroom-table-adjust">
+		<table id="mvr-table-basket-frame_<?php echo esc_attr( $index++ ); ?>" class="wp-list-table widefat plugins myvideoroom-table-adjust">
 		<thead>
 			<tr>
 				<th scope="col" class="manage-column column-name column-primary">
@@ -101,44 +98,21 @@ return function (): string {
 			</tr>
 		</thead>
 		<tbody>
-	<tr class="mvr-table-mobile active">
-	<td>
-	<label for="myvideoroom_maintenance_dbwindow"
-				class="mvr-preferences-paragraph myvideoroom-separation">
-				<?php esc_html_e( 'Room Sync Database Tolerance (Days) ', 'myvideoroom' ); ?>
-			</label>
-	</td>
-	<td>
-	<input type="text" class="myvideoroom-maintenance-setting"
-			id="myvideoroom_maintenance_dbwindow" name ="myvideoroom_maintenance_dbwindow"
-			value="<?php echo esc_attr( get_option( Maintenance::OPTION_DB_CLEAN_SYNC ) ); ?>" />
-			<i class="myvideoroom-dashicons mvr-icons dashicons-editor-help" title="<?php \esc_html_e( 'How Many Days to keep Room Table for, outside of this there will be no record of the user\'s presence in the room. (Default 14)', 'myvideoroom' ); ?>"></i>
-	</td>
 
-	</tr>
-	<tr class="mvr-table-mobile">
-		<td>
-		<label for="myvideoroom_maintenance_wcwindow"
-				class="mvr-preferences-paragraph myvideoroom-separation">
-				<?php esc_html_e( 'WooCommerce Basket Sharing Tolerance (Days) ', 'myvideoroom' ); ?>
-			</label>
-		</td>
-		<td>
-		<input type="text" class="myvideoroom-maintenance-setting"
-			id="myvideoroom_maintenance_wcwindow" name ="myvideoroom_maintenance_wcwindow"
-			value="<?php echo esc_attr( get_option( Maintenance::OPTION_WC_CLEAN_SYNC ) ); ?>" />
-			<i class="myvideoroom-dashicons mvr-icons dashicons-editor-help" title="<?php \esc_html_e( 'How Many Days to keep Room Table for, outside of this there will be no record of the user\'s presence in the room. (Default 14)', 'myvideoroom' ); ?>"></i>
-		</td>
-
-	</tr>
+		<?php
+			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - functions are escaped upstream.
+			echo apply_filters( 'myvideoroom_maintenance_page_option', '' );
+			//echo Factory::get_instance( Maintenance::class )->mvr_trim_room_presence_table(). 'fred';
+		?>
 	<tr class="active mvr-table-mobile">
 		<td>
 		<span><?php esc_html_e( 'Sync Receptions and Room Templates', 'myvideoroom' ); ?></span>
 		</td>
 		<td>
-		<input type="button" class="mvr-main-button-enabled"
+		<input type="button" class="mvr-main-button-enabled mvr-room-update-button-trigger"
 			id="myvideoroom_refresh_layout" value="<?php esc_html_e( 'Sync All', 'myvideoroom' ); ?>">
 			<i class="myvideoroom-dashicons mvr-icons dashicons-editor-help" title="<?php \esc_html_e( 'Synchronize all current templates from MyVideoRoom servers.', 'myvideoroom' ); ?>"></i>
+		<span id="mvr-last-sync-time"><?php echo esc_html__( 'Last Updated: ', 'myvideoroom' ) . esc_textarea( gmdate( 'Y-m-d H:i:s', get_option( Maintenance::OPTION_LAST_TEMPLATE_SYNCC ) ) ); ?></span>
 		</td>
 
 	</tr>
