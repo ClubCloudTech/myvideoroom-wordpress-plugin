@@ -10,5 +10,9 @@
 			"path": "../../themes/oceanwp"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"phpcbf.executablePath": "/root/.config/composer/vendor/bin",
+		"phpcbf.onsave": true,
+		"phpcbf.debug": true
+	}
 }

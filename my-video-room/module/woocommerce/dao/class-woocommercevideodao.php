@@ -475,7 +475,7 @@ class WooCommerceVideoDAO {
 
 		global $wpdb;
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery --conditional delete can't use delete method.
-		$wpdb->query( 
+		$wpdb->query(
 			$wpdb->prepare(
 				'DELETE FROM %s
 				WHERE start_time < %d',

@@ -36,7 +36,7 @@ class AvailableScenes {
 	 */
 	private function get_available_scenes( string $uri ): array {
 		$timestamp = \current_time( 'timestamp' );
-		$scenes = \get_option( self::OPTION_MVR_SCENE_LAYOUTS );
+		$scenes    = \get_option( self::OPTION_MVR_SCENE_LAYOUTS );
 		if ( $scenes ) {
 			return $scenes;
 		}

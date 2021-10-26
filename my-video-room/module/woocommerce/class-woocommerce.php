@@ -153,7 +153,6 @@ class WooCommerce {
 		$storefront_module_status = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_WOOCOMMERCE_STORE_ID );
 		$room_module_status       = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_WOOCOMMERCE_ROOM_ID );
 
-
 		if ( $storefront_module_status ) {
 			// Add Store Menu to Main Frontend Templates.
 			add_filter(

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Addon functionality for Site Video Room.
  *
@@ -27,6 +28,7 @@ use MyVideoRoomPlugin\Module\Security\Library\SecurityEngine;
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
  */
 class MVRSiteVideoControllers {
+
 
 	/**
 	 * Provides Shortcode support for SiteVideo Conference Center Rooms.
@@ -119,15 +121,15 @@ class MVRSiteVideoControllers {
 		$host_menu     = new MenuTabDisplay(
 			$display_name,
 			'videoroom',
-			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() ),
+			fn () => \do_shortcode( $myvideoroom_app->output_shortcode_text() ),
 			'mvr-video'
 		);
 		array_push( $output_object, $host_menu );
 		$admin_menu = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM_SETTINGS ),
 			'adminpage',
-			fn() => \do_shortcode(
-			//phpcs:ignore PEAR.Functions.FunctionCallSignature.Indent - indent is correct.
+			fn () => \do_shortcode(
+				//phpcs:ignore PEAR.Functions.FunctionCallSignature.Indent - indent is correct.
 				Factory::get_instance( UserVideoPreference::class )->choose_settings(
 					$post_id,
 					$room_name
@@ -191,7 +193,6 @@ class MVRSiteVideoControllers {
 		// Floorplan Disable setting.
 		if ( $disable_floorplan ) {
 			$myvideoroom_app->disable_floorplan();
-
 		}
 		// Construct Shortcode Template - and execute.
 		$header        = Factory::get_instance( MVRSiteVideoViews::class )->site_videoroom_guest_template( $room_id );
@@ -200,7 +201,7 @@ class MVRSiteVideoControllers {
 		$host_menu     = new MenuTabDisplay(
 			Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::TAB_VIDEO_ROOM ),
 			'videoroom',
-			fn() => \do_shortcode( $myvideoroom_app->output_shortcode_text() ),
+			fn () => \do_shortcode( $myvideoroom_app->output_shortcode_text() ),
 			'mvr-video'
 		);
 		array_push( $output_object, $host_menu );
