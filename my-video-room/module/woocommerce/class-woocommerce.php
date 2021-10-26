@@ -171,6 +171,14 @@ class WooCommerce {
 			\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
 			\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
 
+			\wp_register_script(
+				'myvideoroom-woocommerce-basket-js',
+				\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
+				array( 'jquery' ),
+				wp_rand( 10, 10000 ),
+				true
+			);
+
 			\wp_localize_script(
 				'myvideoroom-woocommerce-basket-js',
 				'myvideoroom_woocommerce_basket',
@@ -191,13 +199,7 @@ class WooCommerce {
 
 	
 
-		\wp_register_script(
-			'myvideoroom-woocommerce-basket-js',
-			\plugins_url( '/js/ajaxbasket.js', \realpath( __FILE__ ) ),
-			array( 'jquery' ),
-			wp_rand( 10, 10000 ),
-			true
-		);
+	
 
 		\wp_register_script(
 			'myvideoroom-woocommerce-carthandler',
