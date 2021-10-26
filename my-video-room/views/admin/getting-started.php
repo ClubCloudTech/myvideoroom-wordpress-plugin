@@ -32,7 +32,7 @@ return function (
 		<img class="myvideoroom-logo-image"
 			src="<?php echo esc_url( plugins_url( '../../img/mvr-imagelogo.png', __FILE__ ) ); ?>"
 			alt="MyVideoroom Logo">
-		<h1> <?php esc_html_e( 'Getting started with MyVideoRoom', 'myvideoroom' ); ?>
+		<h1> <?php esc_html_e( 'Getting started', 'myvideoroom' ); ?>
 		</h1>
 	</div>
 	<div class="myvideoroom-header-table-right-wide">
