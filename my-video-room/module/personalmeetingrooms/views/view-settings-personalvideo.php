@@ -152,7 +152,7 @@ return function (
 					<p>
 						<?php
 						esc_html_e(
-							"You can change the room name, its URL, and its parent page in the normal pages interface of WordPress. Please note whilst the system updates its internal links if you change the meeting page URL external emails, or other invites may not be updated by your users' guests. Its a good idea to link to reception page from the main area of your site.",
+							"You can change the room name, or display name above. You can also edit the room page in WordPress, Elementor, or your favourite page builder. Please note whilst the system updates its internal links if you change the meeting page URL external emails, or other invites may not be updated by your users' guests. Its a good idea to link to reception page from the main area of your site.",
 							'my-video-room'
 						);
 						?>

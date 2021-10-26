@@ -46,7 +46,7 @@ class RoomAdmin {
 		$post_id = wp_insert_post(
 			array(
 				'post_author'  => 1,
-				'post_title'   => get_bloginfo( 'name' ) . ' ' . $display_title,
+				'post_title'   => $display_title,
 				'post_name'    => strtolower( str_replace( ' ', '-', trim( $slug ) ) ),
 				'post_status'  => 'publish',
 				'post_content' => '[' . $shortcode . ']',

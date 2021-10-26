@@ -16,6 +16,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
+use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\NotificationHelpers;
 use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
@@ -45,10 +46,6 @@ return function (): string {
 		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
 			<h2><?php esc_html_e( 'Module', 'myvideoroom' ); ?></h2>
 			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
-				<?php
-				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-				echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_ID, null, Factory::get_instance( BuddyPress::class )->is_buddypress_available() );
-				?>
 			</div>
 		</div>
 		<div class="myvideoroom-feature-table-large">
@@ -193,37 +190,44 @@ return function (): string {
 				</div>
 		<!--Begin Settings Toggle Section -->
 			<div id="toggle-info_<?php echo esc_attr( $index++ ); ?>" class="mvideoroom-settings-menu-toggle-target-<?php echo esc_attr( $target_storefront ); ?>" style="display:none;">
-						<!-- User Room Tab Naming Marker -->
-						<div class="myvideoroom-feature-outer-table">
-							<div id="feature-state_<?php echo esc_attr( $index++ ); ?>"
-								class="myvideoroom-feature-table-small">
-								<h2><?php esc_html_e( 'Name of Tab:', 'myvideoroom' ); ?></h2>
-							</div>
-							<div class="myvideoroom-feature-table-large">
-								<div class="myvideoroom-inline">
-									<img class=""
-										src="<?php echo esc_url( plugins_url( '/../../../admin/img/tabdisplay.jpg', __FILE__ ) ); ?>"
-										alt="Settings">
-									<br>
-									<?php
-									esc_html_e(
-										'What should we call your Room Tab in WooCommerce ?',
-										'myvideoroom'
-									);
-									?>
-
-								</div>
-
-								<div class="myvideoroom-inline">
-									<input id="user-profile-input" type="text" min="5" max="20" name="user-tab"
-										value="<?php echo esc_textarea( get_option( 'myvideoroom-buddypress-user-tab' ) ); ?>"
-										placeholder=""
-										class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />
-								</div>
-								<input id="save-user-tab" type="button" value="Save"
-									class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;" />
-							</div>
-						</div>
+			<!-- Reception Area -->
+		<div class="myvideoroom-feature-outer-table">
+			<div id="feature-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
+				<h2><?php esc_html_e( 'Reception Room', 'myvideoroom' ); ?></h2>
+			</div>
+			<div class="myvideoroom-feature-table-large">
+				<div class="myvideoroom-inline">
+					<?php
+							//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function already escaped above.
+							echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( WooCommerce::MODULE_WOOCOMMERCE_ROOM );
+					?>
+					<p>
+						<?php
+						esc_html_e(
+							"You can change the room name, its URL, and its parent page in the normal pages interface of WordPress. Please note whilst the system updates its internal links if you change the meeting page URL external emails, or other invites may not be updated by your users' guests. Its a good idea to link to reception page from the main area of your site.",
+							'my-video-room'
+						);
+						?>
+					</p>
+					<h4><?php esc_html_e( 'Who is a Host ?', 'my-video-room' ); ?></h4>
+					<p>
+						<?php
+						esc_html_e(
+							'Any signed in user will be the host of their own room, and everyone else will be a guest. Users can change their privacy, as well as room and reception layout templates by accessing their own room, and clicking on the Settings tab, or the Permissions tab if you have the Security Module enabled. ',
+							'myvideoroom'
+						);
+						?>
+					</p>
+					<?php
+					esc_html_e(
+						'Site Administrators are also guests, and have no special permissions or access rights to user\'s private rooms. Rooms are encrypted for protection, admins, and even ClubCloud can not see inside meetings. ',
+						'myvideoroom'
+					);
+					?>
+					</p>
+				</div>
+			</div>
+		</div>
 						<!-- Default Video Section  -->
 						<div id="video-host-wrap_<?php echo esc_textarea( $index++ ); ?>"
 							class="mvr-nav-settingstabs-outer-wrap">

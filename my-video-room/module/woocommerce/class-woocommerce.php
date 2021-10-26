@@ -16,6 +16,7 @@ use MyVideoRoomPlugin\Module\WooCommerce\Library\AjaxHandler;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShoppingBasket;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\ShopView;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\WCMaintenance;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\WCRooms;
 use MyVideoRoomPlugin\Module\WooCommerce\Library\WooCategory;
 
 /**
@@ -96,6 +97,7 @@ class WooCommerce {
 
 		// Create Tables in Database.
 		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
+
 		// Basket Module Activation.
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
 			self::MODULE_WOOCOMMERCE_BASKET,
@@ -111,6 +113,7 @@ class WooCommerce {
 			true
 		);
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_WOOCOMMERCE_STORE_ID, true );
+		Factory::get_instance( WCRooms::class )->create_wcstore_page();
 
 		// Room Module Activation.
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
@@ -144,27 +147,49 @@ class WooCommerce {
 			return null;
 		}
 
-		// Add Basket Menu to Main Frontend Templates.
-		add_filter(
-			'myvideoroom_main_template_render',
-			array(
-				$this,
-				'render_shortcode_store_tab',
-			),
-			40,
-			6
-		);
+		// Check Activation Status of Basket Module.
 
-				// Add Basket Menu to Main Frontend Templates.
-		add_filter(
-			'myvideoroom_main_template_render',
-			array(
-				$this,
-				'render_shortcode_basket_tab',
-			),
-			50,
-			6
-		);
+		$basket_module_status     = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_WOOCOMMERCE_BASKET_ID );
+		$storefront_module_status = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_WOOCOMMERCE_STORE_ID );
+		$room_module_status       = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( self::MODULE_WOOCOMMERCE_ROOM_ID );
+
+
+		if ( $storefront_module_status ) {
+			// Add Store Menu to Main Frontend Templates.
+			add_filter(
+				'myvideoroom_main_template_render',
+				array(
+					$this,
+					'render_shortcode_store_tab',
+				),
+				40,
+				6
+			);
+		}
+		if ( $basket_module_status ) {
+			// Ajax Handler for Basket Management.
+			\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
+			\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
+
+			\wp_localize_script(
+				'myvideoroom-woocommerce-basket-js',
+				'myvideoroom_woocommerce_basket',
+				array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
+			);
+
+			// Add Basket Menu to Main Frontend Templates.
+			add_filter(
+				'myvideoroom_main_template_render',
+				array(
+					$this,
+					'render_shortcode_basket_tab',
+				),
+				50,
+				6
+			);
+		}
+
+	
 
 		\wp_register_script(
 			'myvideoroom-woocommerce-basket-js',
@@ -190,16 +215,6 @@ class WooCommerce {
 
 		// Add Notification Bar to Video Call.
 		\add_filter( 'myvideoroom_notification_master', array( Factory::get_instance( ShoppingBasket::class ), 'render_notification_tab' ), 100, 2 );
-
-		// Ajax Handler for Basket Management.
-		\add_action( 'wp_ajax_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
-		\add_action( 'wp_ajax_nopriv_myvideoroom_woocommerce_basket', array( Factory::get_instance( AjaxHandler::class ), 'get_ajax_page_basketwc' ), 10, 2 );
-
-		\wp_localize_script(
-			'myvideoroom-woocommerce-basket-js',
-			'myvideoroom_woocommerce_basket',
-			array( 'ajax_url' => \admin_url( 'admin-ajax.php' ) )
-		);
 
 		add_action( 'myvideoroom_post_room_create', array( Factory::get_instance( WooCategory::class ), 'create_product_category' ), 10, 2 );
 
