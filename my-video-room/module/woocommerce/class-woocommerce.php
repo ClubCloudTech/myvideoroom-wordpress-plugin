@@ -197,10 +197,6 @@ class WooCommerce {
 			);
 		}
 
-	
-
-	
-
 		\wp_register_script(
 			'myvideoroom-woocommerce-carthandler',
 			\plugins_url( '/js/carthandler.js', \realpath( __FILE__ ) ),
