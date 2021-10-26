@@ -38,7 +38,7 @@ class LoginForm {
 		$login_override  = get_option( self::SETTING_LOGIN_OVERRIDE );
 		$login_shortcode = get_option( self::SETTING_LOGIN_SHORTCODE );
 		$login_iframe    = get_option( self::SETTING_LOGIN_IFRAME );
-		return ( require __DIR__ . '/../views/admin/view-settings-login.php' )( self::$id_index ++, \boolval( $login_display ), \boolval( $login_override ), \boolval( $login_iframe ), $login_shortcode );
+		return ( require __DIR__ . '/../views/admin/view-settings-login.php' )( self::$id_index ++, \boolval( $login_display ), \boolval( $login_override ), \boolval( $login_iframe ), strval ( $login_shortcode ) );
 	}
 
 	/**
