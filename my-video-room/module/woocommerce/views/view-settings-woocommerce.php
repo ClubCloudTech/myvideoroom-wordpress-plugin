@@ -2,7 +2,7 @@
 /**
  * Outputs the configuration settings for the video plugin
  *
- * @package MyVideoRoomPlugin\Module\Security\Views\view-settings-woocommerce.php
+ * @package my-video-room/module/woocommerce/views/view-settings-woocommerce.php
  */
 
 /**
@@ -15,8 +15,9 @@ use \MyVideoRoomPlugin\SiteDefaults;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\Module\BuddyPress\BuddyPress;
-use MyVideoRoomPlugin\Module\BuddyPress\Library\BuddyPressConfig;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
+use MyVideoRoomPlugin\Module\WooCommerce\Library\NotificationHelpers;
+use MyVideoRoomPlugin\Module\WooCommerce\WooCommerce;
 use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 
 return function (): string {
@@ -79,7 +80,7 @@ return function (): string {
 
 		<div id="video-host-wrap_<?php echo esc_attr( $index++ ); ?>" class="mvr-nav-settingstabs-outer-wrap">
 <!-- 
-		Site Level Video Store
+		Site Level Video Storefront
 -->
 			<article id="<?php echo esc_attr( $target_storefront ); ?>" class="myvideoroom-content-tab">
 				<!-- Module Header -->
@@ -122,17 +123,17 @@ return function (): string {
 						<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
 							<?php
 							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-							echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_USER_ID, null, Factory::get_instance( BuddyPress::class )->is_user_module_available() );
+							echo Factory::get_instance( ModuleConfig::class )->module_activation_button( WooCommerce::MODULE_WOOCOMMERCE_STORE_ID, null, Factory::get_instance( WooCommerce::class )->is_woocommerce_active() );
 							?>
 						</div>
 					</div>
 					<div class="myvideoroom-feature-table-large">
-						<h2><?php esc_html_e( 'User Profile and Wall Enabled Rooms', 'myvideoroom' ); ?>
+						<h2><?php esc_html_e( 'Site Video Storefront', 'myvideoroom' ); ?>
 						</h2>
 						<p>
 							<?php
 							esc_html_e(
-								'This module adds a personal meeting room of the user straight into their WooCommerce profile. This Video Room is the same room as in the Personal Meeting Module, and is completely controlled by the WordPress user.',
+								'This module adds a dedicated video store to your WooCommerce site that can provide a central arrival point for your customers where you host and interact with them at any time. You can use the monitor module, or the reception module to keep an eye on any atendees waiting to enter a room, and admit them, or allow them straight into the store front. You can allow multiple staff members by WordPress group to host the room and separate kiosks to keep customer conversations separate in your main store.',
 								'myvideoroom'
 							);
 							?>
@@ -140,7 +141,7 @@ return function (): string {
 						<p>
 							<?php
 							esc_html_e(
-								'Guest entrances, invitations and reception settings work the same as the users classic personal room. Guests can enter from WooCommerce profile wall, or the user reception page, email links etc. The user also gains options in security (if enabled) about allowing friends and connections into the room, blocking users, or even hiding the room from non-friends.',
+								'This is a dedicated automatically created room. However this module also provides support to any other room type (Personal Video Room, BuddyPress Group, Conference Rooms, etc) to also host products, you can thus use multiple store fronts with different settings.',
 								'myvideoroom'
 							);
 							?>
@@ -157,13 +158,13 @@ return function (): string {
 							<p>
 								<?php
 										esc_html_e(
-											'This module has no dependencies. If you disable it all rooms that are created still exist, but the shortcodes will not return rooms. WordPress pages created by rooms will remain in case you have customised the layout or design.',
+											'This module depends on WooCommerce. If you disable it, the room will redirect to your main site page.',
 											'myvideoroom'
 										);
 								?>
 							</p>
 							<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
-										<?php Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'user' ); ?>
+										<?php Factory::get_instance( NotificationHelpers::class )->render_dependencies(); ?>
 									</div>
 						</div>
 				</div>
@@ -296,16 +297,16 @@ return function (): string {
 						<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
 							<?php
 								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_GROUP_ID, null, Factory::get_instance( BuddyPress::class )->is_group_module_available() );
+								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( WooCommerce::MODULE_WOOCOMMERCE_ROOM_ID, null, Factory::get_instance( WooCommerce::class )->is_woocommerce_active() );
 							?>
 						</div>
 					</div>
 					<div class="myvideoroom-feature-table-large">
-						<h2><?php esc_html_e( 'WooCommerce Group Room Support', 'myvideoroom' ); ?></h2>
+						<h2><?php esc_html_e( 'WooCommerce Room Level Stores', 'myvideoroom' ); ?></h2>
 						<p>
 							<?php
 							esc_html_e(
-								'This module will add a Video Room to each WooCommerce group. It will allow a room admin or moderator of a WooCommerce group to be a Host of a group room. Regular members will be guests, room hosts can decide to admit just members, admins, moderators, or even signed out users and non-members. ',
+								'This module will add a Store to each Video Room, and track the store as a WooCommerce Category. It will allow any host of the room to add products to the room store, and visitors to the room can revisit the room and see its products even after the call. ',
 								'myvideoroom'
 							);
 							?>
@@ -313,7 +314,7 @@ return function (): string {
 						<p>
 							<?php
 							esc_html_e(
-								'The moderators/admins can change Room privacy and security, as well as room and reception layout templates by accessing on the Video Tab of the Group and clicking on the Host tab.',
+								'This feature works great for multi-level marketing, and events driven sales, and special rooms can be created with bespoke and custom products to support a given event. If you have shared basket enabled the Room Store will also remember the last basket shared in the room. Making it super easy for guests to return after an event to finish a purchase. ',
 								'myvideoroom'
 							);
 							?>
@@ -332,7 +333,7 @@ return function (): string {
 								<p><?php esc_html_e( 'No Modules Depend on this Component.', 'myvideoroom' ); ?>
 								</p>
 								<?php
-									Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'group' );
+									Factory::get_instance( NotificationHelpers::class )->render_dependencies();
 								?>
 							</div>
 						</div>
@@ -342,19 +343,20 @@ return function (): string {
 						<div class="myvideoroom-feature-table">
 							<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
 							<img class=""
-								src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupscreenshot.JPG', __FILE__ ) ); ?>"
-								alt="Video Call in Progress">
-						</div>
-						<div class="myvideoroom-feature-table">
-							<br>
-							<img class=""
-								src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpdenied.jpg', __FILE__ ) ); ?>"
+								src="<?php echo esc_url( plugins_url( '/../img/previousbasket.JPG', __FILE__ ) ); ?>"
 								alt="Settings">
+
 						</div>
 						<div class="myvideoroom-feature-table">
 							<br><br>
 							<img class=""
-								src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupsecurity.jpg', __FILE__ ) ); ?>"
+								src="<?php echo esc_url( plugins_url( '/../img/managestore.JPG', __FILE__ ) ); ?>"
+								alt="Video Call in Progress">
+						</div>
+						<div class="myvideoroom-feature-table">
+							<br><br>
+							<img class=""
+								src="<?php echo esc_url( plugins_url( '/../img/roomstore.JPG', __FILE__ ) ); ?>"
 								alt="Video Call in Progress">
 						</div>
 					</div>
@@ -467,16 +469,16 @@ return function (): string {
 						<div id="childmodule<?php echo esc_attr( $index++ ); ?>">
 							<?php
 								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- internal function already escaped
-								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( BuddyPress::MODULE_BUDDYPRESS_GROUP_ID, null, Factory::get_instance( BuddyPress::class )->is_group_module_available() );
+								echo Factory::get_instance( ModuleConfig::class )->module_activation_button( WooCommerce::MODULE_WOOCOMMERCE_BASKET_ID, null, Factory::get_instance( WooCommerce::class )->is_woocommerce_active() );
 							?>
 						</div>
 					</div>
 					<div class="myvideoroom-feature-table-large">
-						<h2><?php esc_html_e( 'WooCommerce Group Room Support', 'myvideoroom' ); ?></h2>
+						<h2><?php esc_html_e( 'Shared Shopping Baskets, and in call Product Sharing', 'myvideoroom' ); ?></h2>
 						<p>
 							<?php
 							esc_html_e(
-								'This module will add a Video Room to each WooCommerce group. It will allow a room admin or moderator of a WooCommerce group to be a Host of a group room. Regular members will be guests, room hosts can decide to admit just members, admins, moderators, or even signed out users and non-members. ',
+								'This module adds support for viewing your shopping basket inside your video call, and for room hosts to be able to auto-share their baskets with the room. It also allows any participant to share a single product with the room from their own shopping basket. Participants see their own shared queue and can accept or reject shared products ',
 								'myvideoroom'
 							);
 							?>
@@ -484,7 +486,7 @@ return function (): string {
 						<p>
 							<?php
 							esc_html_e(
-								'The moderators/admins can change Room privacy and security, as well as room and reception layout templates by accessing on the Video Tab of the Group and clicking on the Host tab.',
+								'This module takes 1:1 and 1:many shopping to a new level. With it you can take your client through a guided shopping experience and add products into their basket for them to finish the purchase on their side. It works with any standard or variable product/subscription added to a WooCommerce basket. ',
 								'myvideoroom'
 							);
 							?>
@@ -503,7 +505,7 @@ return function (): string {
 								<p><?php esc_html_e( 'No Modules Depend on this Component.', 'myvideoroom' ); ?>
 								</p>
 								<?php
-									Factory::get_instance( BuddyPressConfig::class )->render_dependencies( 'group' );
+									Factory::get_instance( NotificationHelpers::class )->render_dependencies();
 								?>
 							</div>
 						</div>
@@ -513,19 +515,19 @@ return function (): string {
 						<div class="myvideoroom-feature-table">
 							<h2><?php esc_html_e( 'Screenshots', 'myvideoroom' ); ?></h2>
 							<img class=""
-								src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupscreenshot.JPG', __FILE__ ) ); ?>"
+								src="<?php echo esc_url( plugins_url( '/../img/basketauto.JPG', __FILE__ ) ); ?>"
 								alt="Video Call in Progress">
 						</div>
 						<div class="myvideoroom-feature-table">
 							<br>
 							<img class=""
-								src="<?php echo esc_url( plugins_url( '/../../../admin/img/bpdenied.jpg', __FILE__ ) ); ?>"
+								src="<?php echo esc_url( plugins_url( '/../img/previousbasket.JPG', __FILE__ ) ); ?>"
 								alt="Settings">
 						</div>
 						<div class="myvideoroom-feature-table">
 							<br><br>
 							<img class=""
-								src="<?php echo esc_url( plugins_url( '/../../../admin/img/groupsecurity.jpg', __FILE__ ) ); ?>"
+								src="<?php echo esc_url( plugins_url( '/../img/sharedbasket.jpg', __FILE__ ) ); ?>"
 								alt="Video Call in Progress">
 						</div>
 					</div>

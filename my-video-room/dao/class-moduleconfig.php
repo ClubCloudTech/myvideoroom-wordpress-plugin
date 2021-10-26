@@ -167,7 +167,7 @@ class ModuleConfig {
 	// ---
 
 	/**
-	 * This function renders the activate/deactivate button for a give module
+	 * This function renders the activation state of a given module.
 	 * Used only in admin pages of plugin
 	 *
 	 * @param int $module_id - The module ID.

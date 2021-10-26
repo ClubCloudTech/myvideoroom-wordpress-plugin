@@ -163,14 +163,10 @@ class BuddyPressConfig {
 	 * Returns to Settings Page the status of Dependencies of modules.
 	 *
 	 * @param string $type - the type of check.
-	 * @return   string
+	 * @return   void
 	 */
 	public function render_dependencies( string $type = null ) {
-		if ( ! Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
-			return null;
-		}
-		?>
-		<?php
+
 		$message     = '<strong>' . esc_html__( 'Depends on:', 'myvideoroom' ) . '</strong><br>';
 		$pre_message = esc_html__( 'BuddyPress Plugin : ', 'myvideoroom' );
 		if ( function_exists( 'bp_is_active' ) && Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {

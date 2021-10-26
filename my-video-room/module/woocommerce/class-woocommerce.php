@@ -24,10 +24,14 @@ use MyVideoRoomPlugin\Module\WooCommerce\Library\WooCategory;
 class WooCommerce {
 
 	const MODULE_WOOCOMMERCE_BASKET_ID           = 10561;
+	const MODULE_WOOCOMMERCE_STORE_ID            = 10661;
+	const MODULE_WOOCOMMERCE_ROOM_ID             = 10761;
 	const SETTING_HEARTBEAT_THRESHOLD            = 12;
 	const SETTING_TOLERANCE_FOR_LAST_ACTIVE      = 10 * 60; /* minutes x seconds */
 	const MODULE_WOOCOMMERCE_NAME                = 'woocommerce-module';
 	const MODULE_WOOCOMMERCE_BASKET              = 'woocommerce-basket';
+	const MODULE_WOOCOMMERCE_STORE               = 'woocommerce-store';
+	const MODULE_WOOCOMMERCE_ROOM                = 'woocommerce-room';
 	const SETTING_REFRESH_BASKET                 = 'woocommerce-refresh-basket';
 	const SETTING_DELETE_PRODUCT                 = 'woocommerce-delete-product';
 	const SETTING_ADD_PRODUCT                    = 'woocommerce-add-product';
@@ -92,13 +96,29 @@ class WooCommerce {
 
 		// Create Tables in Database.
 		Factory::get_instance( WooCommerceVideoDAO::class )->install_woocommerce_sync_config_table();
-
+		// Basket Module Activation.
 		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
 			self::MODULE_WOOCOMMERCE_BASKET,
 			self::MODULE_WOOCOMMERCE_BASKET_ID,
 			true
 		);
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_WOOCOMMERCE_BASKET_ID, true );
+
+		// Store Module Activation.
+		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
+			self::MODULE_WOOCOMMERCE_STORE,
+			self::MODULE_WOOCOMMERCE_STORE_ID,
+			true
+		);
+		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_WOOCOMMERCE_STORE_ID, true );
+
+		// Room Module Activation.
+		Factory::get_instance( ModuleConfig::class )->register_module_in_db(
+			self::MODULE_WOOCOMMERCE_ROOM,
+			self::MODULE_WOOCOMMERCE_ROOM_ID,
+			true
+		);
+		Factory::get_instance( ModuleConfig::class )->update_enabled_status( self::MODULE_WOOCOMMERCE_ROOM_ID, true );
 
 		// Create Product Categories for each room.
 		Factory::get_instance( WooCategory::class )->activate_product_category();
@@ -279,7 +299,7 @@ class WooCommerce {
 			return $input;
 		}
 		// Check Activation Status of Basket Module.
-		$module_id     = self::MODULE_WOOCOMMERCE_BASKET_ID;
+		$module_id     = self::MODULE_WOOCOMMERCE_STORE_ID;
 		$module_status = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( $module_id );
 
 		if ( ! $module_status ) {

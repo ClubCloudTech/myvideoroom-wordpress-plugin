@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Ajax;
@@ -529,12 +530,18 @@ class AjaxHandler {
 
 			case 'refresh':
 				// Change States.
-				$client_change_state             = Factory::get_instance( ShoppingBasket::class )->check_for_user_cart_changes( $last_carthash, $room_name );
-				$store_change_state              = Factory::get_instance( ShopView::class )->has_room_store_changed( $room_name, $last_storecount );
-				$notification_queue_change_state = Factory::get_instance( ShoppingBasket::class )->check_for_product_queue_changes( $last_queuenum, $room_name );
-				$my_session                      = Factory::get_instance( RoomAdmin::class )->get_user_session();
-				$change_heartbeat                = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, $my_session );
-				$host_status                     = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
+				$store_status  = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( WooCommerce::MODULE_WOOCOMMERCE_STORE_ID );
+				$basket_status = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( WooCommerce::MODULE_WOOCOMMERCE_BASKET_ID );
+				if ( $basket_status ) {
+					$client_change_state             = Factory::get_instance( ShoppingBasket::class )->check_for_user_cart_changes( $last_carthash, $room_name );
+					$notification_queue_change_state = Factory::get_instance( ShoppingBasket::class )->check_for_product_queue_changes( $last_queuenum, $room_name );
+				}
+				if ( $store_status ) {
+					$store_change_state = Factory::get_instance( ShopView::class )->has_room_store_changed( $room_name, $last_storecount );
+				}
+				$my_session       = Factory::get_instance( RoomAdmin::class )->get_user_session();
+				$change_heartbeat = Factory::get_instance( ShoppingBasket::class )->user_notification_heartbeat( $room_name, $my_session );
+				$host_status      = Factory::get_instance( HostManagement::class )->am_i_host( $room_name );
 				// Only Check for Room Change if Global Update Flag has Fired.
 				if ( $change_heartbeat ) {
 					$room_change_heartbeat     = Factory::get_instance( RoomAdmin::class )->room_change_heartbeat( $room_name );

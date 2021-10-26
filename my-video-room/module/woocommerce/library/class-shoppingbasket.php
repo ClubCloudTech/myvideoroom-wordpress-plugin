@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
+use MyVideoRoomPlugin\DAO\ModuleConfig;
 use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\DAO\SessionState;
 use MyVideoRoomPlugin\Factory;
@@ -101,16 +102,25 @@ class ShoppingBasket {
 	 * @return string
 	 */
 	public function render_notification_tab( string $room_name, bool $client_change_state = null, bool $store_change_state = null, bool $notification_queue_change_state = null, ?UserVideoPreference $security_change_state = null ): ?string {
-
-		if ( $client_change_state ) {
-			$title               = esc_html__( 'A new Product has been automatically synced into your basket from another source', 'myvideoroom' );
-			$target_focus_id     = 'mvr-shopping-basket';
-			$message             = \esc_html__( ' New Basket Update ', 'myvideoroom' );
-			$iconclass           = 'dashicons-cart';
-			$client_notification = Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
-
+		$basket_active = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( WooCommerce::MODULE_WOOCOMMERCE_BASKET_ID );
+		if ( $basket_active ) {
+			if ( $client_change_state ) {
+				$title               = esc_html__( 'A new Product has been automatically synced into your basket from another source', 'myvideoroom' );
+				$target_focus_id     = 'mvr-shopping-basket';
+				$message             = \esc_html__( ' New Basket Update ', 'myvideoroom' );
+				$iconclass           = 'dashicons-cart';
+				$client_notification = Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
+			}
+			if ( $notification_queue_change_state ) {
+				$title                = esc_html__( 'A Product has been shared with you in the room', 'myvideoroom' );
+				$target_focus_id      = 'mvr-shopping-basket';
+				$message              = \esc_html__( ' Product Shared With You ', 'myvideoroom' );
+				$iconclass            = '';
+				$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
+			}
 		}
-		if ( $store_change_state ) {
+		$store_active = Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( WooCommerce::MODULE_WOOCOMMERCE_STORE_ID );
+		if ( $store_change_state && $store_active ) {
 			$title                = esc_html__( 'The Room store has been updated, check it out', 'myvideoroom' );
 			$target_focus_id      = 'mvr-shop';
 			$message              = \esc_html__( ' Store Update ', 'myvideoroom' );
@@ -118,14 +128,7 @@ class ShoppingBasket {
 			$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
 		}
-		if ( $notification_queue_change_state ) {
-			$title                = esc_html__( 'A Product has been shared with you in the room', 'myvideoroom' );
-			$target_focus_id      = 'mvr-shopping-basket';
-			$message              = \esc_html__( ' Product Shared With You ', 'myvideoroom' );
-			$iconclass            = '';
-			$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
-		}
 		if ( $security_change_state ) {
 			$client_notification .= Factory::get_instance( NotificationHelpers::class )->render_security_update_notification();
 		}

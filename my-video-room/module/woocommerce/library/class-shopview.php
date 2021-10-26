@@ -127,6 +127,7 @@ class ShopView {
 	 * @return bool
 	 */
 	public function has_room_store_changed( string $room_name, string $last_storecount ): bool {
+		
 		$last_storecount    = intval( $last_storecount );
 		$current_storecount = Factory::get_instance( WooCategory::class )->get_category_count( $room_name );
 		if ( $last_storecount === $current_storecount ) {

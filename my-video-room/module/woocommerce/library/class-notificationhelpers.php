@@ -72,4 +72,25 @@ class NotificationHelpers {
 		return $this->render_client_change_notification( $title, $target_focus_id, $message, $iconclass );
 
 	}
+
+	/**
+	 * Dependencies Checking for WooCommerce.
+	 * Returns to Settings Page the status of Dependencies of modules.
+	 *
+	 * @return   void
+	 */
+	public function render_dependencies() {
+
+		$message     = '<strong>' . esc_html__( 'Depends on:', 'myvideoroom' ) . '</strong><br>';
+		$pre_message = esc_html__( 'WooCommerce Plugin : ', 'myvideoroom' );
+		if ( Factory::get_instance( WooCommerce::class )->is_woocommerce_active() ) {
+			$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
+			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'WooCommerce core plugin is installed', 'myvideoroom' ) . '"></i><br>';
+		} else {
+			$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'BP Groups Component Missing', 'myvideoroom' ) . '</div>';
+			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'WooCommerce is not Installed Correctly', 'myvideoroom' ) . '"></i><br>';
+		}
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --already escaped in functions above.
+		echo $message;
+	}
 }
