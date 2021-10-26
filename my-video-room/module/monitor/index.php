@@ -17,7 +17,7 @@ use MyVideoRoomPlugin\Plugin;
 	Plugin::ACTION_INIT,
 	function () {
 		Module::register(
-			'monitor',
+			Reference::MODULE_MONITOR_NAME,
 			\esc_html__( 'Room Reception Monitor', 'myvideoroom' ),
 			array(
 				\esc_html__(

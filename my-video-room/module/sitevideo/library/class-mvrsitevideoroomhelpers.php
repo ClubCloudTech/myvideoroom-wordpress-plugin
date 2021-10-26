@@ -8,7 +8,6 @@
 namespace MyVideoRoomPlugin\Module\SiteVideo\Library;
 
 use MyVideoRoomPlugin\Admin;
-use MyVideoRoomPlugin\Admin\AdminAjax;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\DAO\ModuleConfig;
@@ -18,8 +17,10 @@ use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\HttpGet;
 use MyVideoRoomPlugin\Library\HttpPost;
+use MyVideoRoomPlugin\Library\Module as LibraryModule;
 use MyVideoRoomPlugin\Library\SectionTemplates;
 use MyVideoRoomPlugin\Module\Monitor\Module;
+use MyVideoRoomPlugin\Module\Monitor\Reference;
 use MyVideoRoomPlugin\Module\SiteVideo\Setup\RoomAdmin;
 use MyVideoRoomPlugin\SiteDefaults;
 
@@ -309,6 +310,9 @@ class MVRSiteVideoRoomHelpers {
 	 * @return ?string
 	 */
 	public function conference_check_reception_status( string $room_type = null, \stdClass $room ): ?string {
+		if ( ! Factory::get_instance( LibraryModule::class )->is_module_active_simple( Reference::MODULE_MONITOR_NAME ) ) {
+			return esc_html__( 'Monitor Disabled', 'myvideoroom' );
+		}
 		$room_name   = Factory::get_instance( SiteDefaults::class )->room_map( 'sitevideo', $room->display_name );
 		$text_single = esc_html__( 'One Guest Waiting', 'myvideoroom' );
 		$text_plural = esc_html__( 'Guests Waiting', 'myvideoroom' );

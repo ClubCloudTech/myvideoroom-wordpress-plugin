@@ -18,6 +18,7 @@ use MyVideoRoomPlugin\Reference\Shortcode;
  */
 class Reference {
 
+	const MODULE_MONITOR_NAME = 'module-mvrmonitor';
 	/**
 	 * Get the shortcode reference
 	 *
