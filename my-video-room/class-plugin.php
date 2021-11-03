@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin;
 
+use MyVideoRoomPlugin\Admin\AdminAjax;
 use MyVideoRoomPlugin\Admin\PageList;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
@@ -38,7 +39,7 @@ class Plugin {
 	public function __construct() {
 		$private_key = \get_option( self::SETTING_PRIVATE_KEY );
 		\do_action( self::ACTION_INIT );
-
+		add_action( 'admin_enqueue_scripts', array( Factory::get_instance( AdminAjax::class ), 'init' ) );
 		$this->register_settings();
 
 		\add_action(

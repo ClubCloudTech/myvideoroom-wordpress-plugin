@@ -31,6 +31,7 @@ use MyVideoRoomPlugin\SiteDefaults;
 class AdminAjax {
 
 	const DELETE_APPROVED = 'delete-approved';
+
 	/**
 	 * Runtime Shortcodes and Setup
 	 * Required for Normal Runtime.
@@ -38,13 +39,14 @@ class AdminAjax {
 	public function init() {
 
 		// Enqueue Script Ajax Handling.
-		\wp_enqueue_script(
+		\wp_register_script(
 			'mvr-admin-ajax-js',
 			\plugins_url( '/js/mvradminajax.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
 			Factory::get_instance( Version::class )->get_plugin_version() . \wp_rand( 40, 30000 ),
 			true
 		);
+		\wp_enqueue_script( 'mvr-admin-ajax-js' );
 		// Localize script Ajax Upload.
 		$script_data_array = array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),

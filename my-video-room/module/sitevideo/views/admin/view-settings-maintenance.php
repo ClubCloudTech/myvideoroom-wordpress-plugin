@@ -12,10 +12,8 @@
  */
 
 use MyVideoRoomPlugin\Admin\PageList;
-use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Module\RoomBuilder\Module;
-use MyVideoRoomPlugin\Module\WooCommerce\Library\WCMaintenance;
 
 return function (): string {
 	ob_start();
