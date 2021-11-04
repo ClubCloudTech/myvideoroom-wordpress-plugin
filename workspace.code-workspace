@@ -7,7 +7,10 @@
 			"path": "../../../../../sync/elemental"
 		},
 		{
-			"path": "../../themes/oceanwp"
+			"path": "../wc-multivendor-membership"
+		},
+		{
+			"path": "../wc-frontend-manager"
 		}
 	],
 	"settings": {
