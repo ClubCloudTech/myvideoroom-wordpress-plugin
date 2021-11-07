@@ -11,6 +11,18 @@
 		},
 		{
 			"path": "../wc-frontend-manager"
+		},
+		{
+			"path": "../../themes/oceanwp"
+		},
+		{
+			"path": "../wc-multivendor-marketplace"
+		},
+		{
+			"path": "../youzer"
+		},
+		{
+			"path": "../indeed-membership-pro"
 		}
 	],
 	"settings": {
