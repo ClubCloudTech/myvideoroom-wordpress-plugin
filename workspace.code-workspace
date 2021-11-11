@@ -7,22 +7,13 @@
 			"path": "../../../../../sync/elemental"
 		},
 		{
-			"path": "../wc-multivendor-membership"
-		},
-		{
 			"path": "../wc-frontend-manager"
 		},
 		{
 			"path": "../../themes/oceanwp"
 		},
 		{
-			"path": "../wc-multivendor-marketplace"
-		},
-		{
 			"path": "../youzer"
-		},
-		{
-			"path": "../indeed-membership-pro"
 		}
 	],
 	"settings": {
