@@ -4,9 +4,6 @@
 			"path": "."
 		},
 		{
-			"path": "../../../../../sync/elemental"
-		},
-		{
 			"path": "../wc-frontend-manager"
 		},
 		{
@@ -14,6 +11,12 @@
 		},
 		{
 			"path": "../youzer"
+		},
+		{
+			"path": "../buddypress"
+		},
+		{
+			"path": "../../../../../sync/elemental-clube"
 		}
 	],
 	"settings": {
