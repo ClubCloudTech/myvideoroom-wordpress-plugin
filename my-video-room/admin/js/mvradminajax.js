@@ -242,13 +242,20 @@ window.addEventListener(
                                     $('#myvideoroom_refresh_layout').fadeOut();
                                 }
                                 if (state_response.feedback) {
-                                    $('#myvideoroom_refresh_layout').prop('value', state_response.feedback);
+									$('#notification-update-result').html( state_response.feedback );
                                     setTimeout(
                                         function() {
                                             $('#myvideoroom_refresh_layout').fadeOut();
                                         },
                                         4000
                                     );
+									setTimeout(
+                                        function() {
+                                            $('#notification-update-result').fadeOut();
+                                        },
+                                        10000
+                                    );
+									
                                 }
                                 init();
                             },
