@@ -17,8 +17,9 @@ use MyVideoRoomPlugin\Library\MeetingIdGenerator;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\MVRPersonalMeeting;
 use MyVideoRoomPlugin\Module\PersonalMeetingRooms\Library\MVRPersonalMeetingViews;
-use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityEngine;
+use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
+use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 
 /**
  * Class MVRPersonalMeeting - Renders the Video Plugin for Personal Video Rooms Module.
@@ -53,6 +54,9 @@ class MVRPersonalMeetingControllers {
 		if ( $render_block ) {
 			return $render_block;
 		}
+		// Adding Listeners for Update.
+		Factory::get_instance( UserVideoPreference::class )->check_for_update_request();
+		Factory::get_instance( SecurityVideoPreference::class )->check_for_update_request();
 
 		// Get Room Parameters.
 		$video_template = Factory::get_instance( VideoHelpers::class )->get_videoroom_template( $user_id, $room_name );
