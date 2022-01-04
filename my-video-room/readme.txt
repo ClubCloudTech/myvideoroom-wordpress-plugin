@@ -4,7 +4,7 @@ Requires PHP: 7.4
 Requires at least: 5.6
 Tested up to: 5.7
 Contributors: clubcloud
-Tags: video for woocommerce, video for buddypress, buddypress video, virtual office, woocommerce video, video conference, video call, web conferencing, video meeting, video conferencing
+Tags: video for woocommerce, video for buddypress, buddypress video, virtual office, woocommerce video, video conference, video call, web conferencing, video meeting, video conferencing, jitsi meet for wordpress
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -168,7 +168,10 @@ Please visit [https://myvideoroom.net/support-control-center/help-support/](http
 == Changelog ==
 = 4.0.0 =
 * Adds Integration to Woocommerce and BuddyPress
-* launches a new interface for MyVideoRoom video chats.
+* launches a new interface for MyVideoRoom video chats
+* Much improved backend admin pages for plugin
+* Integrates personal video room into the main plugin
+* Simplified user interface for backend
 
 = 3.0.0 =
 * Adds site video, and customisable rooms.
