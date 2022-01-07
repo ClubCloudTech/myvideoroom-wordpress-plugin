@@ -9,7 +9,9 @@
  */
 
 use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Library\MeetingIdGenerator;
+use MyVideoRoomPlugin\SiteDefaults;
 
 return function (
 	?string $module_name,
@@ -21,7 +23,7 @@ return function (
 	string $post_site_title = null,
 	string $room_type = null
 ) {
-	if ( $visitor_status ) {
+	if ( $visitor_status && Dependencies::ROOM_NAME_PERSONAL_MEETING === $room_type ) {
 
 		$invite_menu = Factory::get_instance( MeetingIdGenerator::class )->invite_menu_shortcode(
 			array(

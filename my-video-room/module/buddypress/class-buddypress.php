@@ -258,7 +258,7 @@ class BuddyPress {
 		if ( ! $this->is_user_module_available() ) {
 			return null;
 		}
-
+		
 		$hide_tab_from_user = Factory::get_instance( BuddyPressSecurity::class )->block_friends_display();
 		if ( ! $hide_tab_from_user ) {
 			$tab_name = \get_option( 'myvideoroom-buddypress-user-tab' );
@@ -300,7 +300,6 @@ class BuddyPress {
 			return null;
 		}
 		global $bp;
-
 		if ( $bp->groups && $bp->groups->current_group ) {
 			$tab_name = \get_option( 'myvideoroom-buddypress-group-tab' );
 			if ( ! $tab_name ) {
