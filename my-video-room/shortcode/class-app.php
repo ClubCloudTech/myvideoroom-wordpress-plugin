@@ -9,7 +9,6 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Shortcode;
 
-use MyVideoRoomPlugin\DAO\RoomSyncDAO;
 use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\AppShortcodeConstructor;
 use MyVideoRoomPlugin\Library\Endpoints;

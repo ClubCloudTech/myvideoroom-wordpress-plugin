@@ -17,6 +17,7 @@ use MyVideoRoomPlugin\DAO\Setup;
 use MyVideoRoomPlugin\Library\LoginForm;
 use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Library\TemplateIcons;
+use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Shortcode\App;
 
 /**
@@ -77,6 +78,8 @@ class SiteDefaults {
 			self::MODULE_DEFAULT_VIDEO_ID,
 			true
 		);
+
+		Factory::get_instance( MVRSiteVideo::class )->activate_module();
 
 		Factory::get_instance( ModuleConfig::class )->update_enabled_status(
 			self::MODULE_DEFAULT_VIDEO_ID,

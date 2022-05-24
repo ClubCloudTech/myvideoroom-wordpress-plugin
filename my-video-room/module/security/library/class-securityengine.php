@@ -26,11 +26,11 @@ class SecurityEngine {
 	 * @param  ?int    $host_id   Host ID to Check.user_id of host to send to upstream filters.
 	 * @param  ?string $room_type String of type of room to filter on.
 	 * @param  ?int    $module_id ID of Module in case any active blocking by module.
-	 * @param  ?string $room_name Name of room to filter.
+	 * @param string  $room_name Name of room to filter.
 	 *
 	 * @return ?string  - null if nothing blocks, or template page if it does.
 	 */
-	public function render_block( ?int $host_id, string $room_type, int $module_id = null, string $room_name = null ): ?string {
+	public function render_block( ?int $host_id, string $room_type, int $module_id = null, string $room_name ): ?string {
 		// Activation/module.
 		if ( ! Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Security::MODULE_SECURITY_ID ) ) {
 			return null;

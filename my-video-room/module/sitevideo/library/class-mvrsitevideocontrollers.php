@@ -23,6 +23,7 @@ use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Library\Dependencies;
 use MyVideoRoomPlugin\Module\Security\Library\SecurityEngine;
+use MyVideoRoomPlugin\Views\Errors\ErrorTemplates;
 
 /**
  * Class MVRSiteVideo - Renders the Video Plugin for SiteWide Video Room.
@@ -87,13 +88,15 @@ class MVRSiteVideoControllers {
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
 
 		// Get Room Entity Information.
-		$room_name    = '';
+		$room_name    = null;
 		$display_name = '';
 
 		$room_object = Factory::get_instance( RoomMap::class )->get_room_info( $post_id );
 		if ( $room_object ) {
 			$room_name    = $room_object->room_name;
 			$display_name = $room_object->display_name;
+		} else {
+			return Factory::get_instance( ErrorTemplates::class )->invalid_room_name();
 		}
 
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
@@ -144,14 +147,14 @@ class MVRSiteVideoControllers {
 	/**
 	 * Site Viderooms Guest Entrance.
 	 *
-	 * A Shortcode for the Site Video Rooms - for guests
+	 * Shortcode Handler for the Site Video Rooms - for guests
 	 * This is used for the Guest entry pages to access the Management Meeting Room - it is paired with the sitevideoroomhost shortcode
 	 *
 	 * @param int $room_id - the ID of the Room to process.
 	 *
 	 * @since Version 1
 	 */
-	public function site_videoroom_guest_shortcode( int $room_id ) {
+	public function site_videoroom_guest_shortcode( int $room_id ):string {
 		// Shortcode Initialise Hooks.
 		factory::get_instance( SiteDefaults::class )->shortcode_initialise_filters();
 
@@ -160,9 +163,13 @@ class MVRSiteVideoControllers {
 		$room_name    = $room_object->room_name;
 		$display_name = $room_object->display_name;
 
+		if ( ! $room_name ) {
+			return Factory::get_instance( ErrorTemplates::class )->invalid_room_name();
+		}
+
 		// Security Engine - blocks room rendering if another setting has blocked it (eg upgrades, site lockdown, or other feature).
 		if ( Factory::get_instance( ModuleConfig::class )->is_module_activation_enabled( Dependencies::MODULE_SECURITY_ID ) ) {
-			$render_block = Factory::get_instance( \MyVideoRoomPlugin\Module\Security\Library\SecurityEngine::class )->render_block( $room_id, 'sitevideoguest', MVRSiteVideo::MODULE_SITE_VIDEO_ID, $room_name );
+			$render_block = Factory::get_instance( SecurityEngine::class )->render_block( $room_id, 'sitevideoguest', MVRSiteVideo::MODULE_SITE_VIDEO_ID, $room_name );
 			if ( $render_block ) {
 				return $render_block;
 			}
