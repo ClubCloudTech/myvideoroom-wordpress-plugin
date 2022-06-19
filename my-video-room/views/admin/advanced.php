@@ -351,7 +351,6 @@ return function (
 </div>
 
 
-	
 </article>
 	<?php
 	return \ob_get_clean();

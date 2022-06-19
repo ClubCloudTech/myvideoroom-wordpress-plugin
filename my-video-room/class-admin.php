@@ -118,17 +118,20 @@ class Admin {
 
 	/**
 	 * Update permissions
+	 * Updates default hosts permissions in the capabilities table.
 	 */
 	private function update_permissions() {
 		$post_library = Factory::get_instance( HttpPost::class );
 		if ( $post_library->is_admin_post_request( 'update_permissions' ) ) {
+
 			global $wp_roles;
 			$all_roles = $wp_roles->roles;
 
 			foreach ( \array_keys( $all_roles ) as $role_name ) {
 				$role = \get_role( $role_name );
-
-				if ( $post_library->get_checkbox_parameter( 'permissions_role_' . $role_name ) ) {
+				echo 'permissions_role_' . $role_name;
+				if ( $post_library->get_checkbox_parameter( 'defaulthosts_role_' . $role_name ) ) {
+					echo $role_name;
 					$role->add_cap( Plugin::CAP_GLOBAL_HOST );
 				} else {
 					$role->remove_cap( Plugin::CAP_GLOBAL_HOST );
@@ -285,7 +288,6 @@ class Admin {
 	public function create_settings_page(): string {
 		global $wp_roles;
 		$all_roles = $wp_roles->roles;
-
 		return ( require __DIR__ . '/views/admin/defaultsettings.php' )( $all_roles );
 	}
 

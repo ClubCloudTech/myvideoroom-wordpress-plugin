@@ -2,7 +2,7 @@
 /**
  * Outputs the Permissions Settings for the video plugin
  *
- * @package MyVideoRoomPlugin\Admin
+ * @package MyVideoRoomPlugin/views/admin/defaultsettings.php
  */
 
 declare( strict_types=1 );
