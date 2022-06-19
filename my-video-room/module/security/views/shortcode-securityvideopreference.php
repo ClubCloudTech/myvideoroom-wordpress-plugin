@@ -9,7 +9,7 @@
  * @param int         $user_id - the user_id.
  * @param bool        $admin_view - Flag to denote admin view and not to render titles and Headers as the admin views do that.
  *
- * @package MyVideoRoomPlugin\Views\Public
+ * @package MyVideoRoomPlugin/module/security/views/shortcode-securityvideopreference.php
  */
 
 use MyVideoRoomPlugin\Factory;

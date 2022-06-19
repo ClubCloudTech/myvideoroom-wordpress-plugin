@@ -145,7 +145,7 @@ class SecurityVideoPreference {
 	}
 
 	/**
-	 * Show drop down for user to change their settings
+	 * Show Security settings for a Room Object.
 	 *
 	 * @param int     $user_id    The user id.
 	 * @param string  $room_name  The room name.

@@ -41,7 +41,6 @@ class UserVideoPreference {
 	 * @param string|array $params List of shortcode params.
 	 *
 	 * @return string
-	 * @throws \Exception When the update fails.
 	 */
 	public function choose_settings_shortcode( $params = array() ): string {
 		$room_name = $params['room'] ?? 'default';

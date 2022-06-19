@@ -14,6 +14,7 @@ use MyVideoRoomPlugin\Factory;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\Security\DAO\SecurityVideoPreference;
 use MyVideoRoomPlugin\Module\Security\Security;
+use MyVideoRoomPlugin\Module\Security\Shortcode\SecurityVideoPreference as ShortcodeSecurityVideoPreference;
 
 /**
  * SecurityRoomHelpers - Security Module Supporting Functions.
@@ -46,6 +47,7 @@ class SecurityRoomHelpers {
 	 */
 	public function get_security_admin_page(): string {
 		Factory::get_instance( Admin::class )->init_admin();
+		Factory::get_instance( ShortcodeSecurityVideoPreference::class )->check_for_update_request();
 		return ( require __DIR__ . '/../views/view-settings-security.php' )();
 	}
 
