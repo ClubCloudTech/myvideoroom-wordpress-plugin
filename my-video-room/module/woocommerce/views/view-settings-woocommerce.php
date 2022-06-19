@@ -205,11 +205,11 @@ return function (): string {
 						<?php
 						esc_html_e(
 							"You can change the room name, its URL, and its parent page in the normal pages interface of WordPress. Please note whilst the system updates its internal links if you change the meeting page URL external emails, or other invites may not be updated by your users' guests. Its a good idea to link to reception page from the main area of your site.",
-							'my-video-room'
+							'myvideoroom'
 						);
 						?>
 					</p>
-					<h4><?php esc_html_e( 'Who is a Host ?', 'my-video-room' ); ?></h4>
+					<h4><?php esc_html_e( 'Who is a Host ?', 'myvideoroom' ); ?></h4>
 					<p>
 						<?php
 						esc_html_e(

@@ -27,12 +27,12 @@ return function (
 	<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title><?php esc_html_e( 'Video Meeting Invite', 'my-video-room' ); ?></title>
+		<title><?php esc_html_e( 'Video Meeting Invite', 'myvideoroom' ); ?></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	</head>
 	<body>
 
-	<p><?php esc_html_e( 'Hello there! ', 'my-video-room' ); ?></p>
+	<p><?php esc_html_e( 'Hello there! ', 'myvideoroom' ); ?></p>
 
 	<p>
 		<?php
@@ -65,12 +65,12 @@ return function (
 		<?php
 		esc_html_e(
 			'You will need to either click/tap on the flashing circle to join, or you will arrive in a waiting room, the host will be alerted and they will join you to the meeting.',
-			'my-video-room'
+			'myvideoroom'
 		);
 		?>
 	</p>
 
-	<p><?php esc_html_e( 'Thanks,', 'my-video-room' ); ?></p>
+	<p><?php esc_html_e( 'Thanks,', 'myvideoroom' ); ?></p>
 
 	<p>
 		<?php

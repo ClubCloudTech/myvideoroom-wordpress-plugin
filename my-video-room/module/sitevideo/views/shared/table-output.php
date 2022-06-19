@@ -32,23 +32,23 @@ return function (
 		<thead>
 			<tr>
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Page Name', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Page Name', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Page URL', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Page URL', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Shortcode', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Shortcode', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Reception', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Reception', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Actions', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Actions', 'myvideoroom' ); ?>
 				</th>
 			</tr>
 		</thead>
@@ -69,17 +69,17 @@ return function (
 			<thead>
 				<tr class="myvideoroom-hide-mobile">
 					<th scope="col" class="manage-column column-name column-primary">
-						<?php esc_html_e( 'Room Name', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Room Name', 'myvideoroom' ); ?>
 					</th>
 					<th scope="col" class="manage-column column-name column-primary">
-						<?php esc_html_e( 'Customer URL', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Customer URL', 'myvideoroom' ); ?>
 					</th>
 					<th scope="col" class="manage-column column-name column-primary">
-						<?php esc_html_e( 'Status', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Status', 'myvideoroom' ); ?>
 					</th>
 
 					<th scope="col" class="manage-column column-name column-primary">
-						<?php esc_html_e( 'Actions', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Actions', 'myvideoroom' ); ?>
 					</th>
 				</tr>
 			</thead>
@@ -105,7 +105,7 @@ return function (
 					'You don\'t current have any rooms. Please click on "%s" above to get started',
 					'myvideoroom'
 				),
-				esc_html__( 'Add new room', 'my-video-room' ),
+				esc_html__( 'Add new room', 'myvideoroom' ),
 			)
 		?>
 	</p>

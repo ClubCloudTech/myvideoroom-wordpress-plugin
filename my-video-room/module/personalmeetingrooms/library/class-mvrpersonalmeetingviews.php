@@ -93,7 +93,7 @@ class MVRPersonalMeetingViews {
 		$module_id    = MVRPersonalMeeting::MODULE_PERSONAL_MEETING_DISPLAY;
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
 		$user         = get_user_by( 'id', $host_id );
-		$name_output  = esc_html__( 'Visiting ', 'my-video-room' ) . $user->user_nicename;
+		$name_output  = esc_html__( 'Visiting ', 'myvideoroom' ) . $user->user_nicename;
 		$is_guest     = true;
 		$meeting_link = Factory::get_instance( MeetingIdGenerator::class )->invite_menu_shortcode( array( 'user_id' => $user_id ) );
 		$room_type    = MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING;
@@ -112,7 +112,7 @@ class MVRPersonalMeetingViews {
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
 		$user         = wp_get_current_user();
 		$user_id      = \get_current_user_id();
-		$name_output  = esc_html__( 'Host ', 'my-video-room' ) . $user->user_nicename;
+		$name_output  = esc_html__( 'Host ', 'myvideoroom' ) . $user->user_nicename;
 		$is_guest     = false;
 		$meeting_link = Factory::get_instance( MeetingIdGenerator::class )->invite_menu_shortcode( array( 'user_id' => $user_id ) );
 		$room_type    = MVRPersonalMeeting::ROOM_NAME_PERSONAL_MEETING;

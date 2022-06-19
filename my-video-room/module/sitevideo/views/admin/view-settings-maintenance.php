@@ -87,11 +87,11 @@ return function (): string {
 		<thead>
 			<tr>
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Setting', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Setting', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Value', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Value', 'myvideoroom' ); ?>
 				</th>
 
 			</tr>
@@ -118,11 +118,11 @@ return function (): string {
 		<tfoot>
 			<tr>
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Setting', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Setting', 'myvideoroom' ); ?>
 				</th>
 
 				<th scope="col" class="manage-column column-name column-primary">
-					<?php esc_html_e( 'Value', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Value', 'myvideoroom' ); ?>
 				</th>
 
 			</tr>

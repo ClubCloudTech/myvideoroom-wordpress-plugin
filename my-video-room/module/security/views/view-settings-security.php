@@ -75,12 +75,12 @@ return function () {
 		<ul class="mvr-ul-style-top-menu">
 			<li>
 				<a class="nav-tab nav-tab-active" href="#defaultperms">
-					<?php esc_html_e( 'Default Permissions', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Default Permissions', 'myvideoroom' ); ?>
 				</a>
 			</li>
 			<li>
 				<a class="nav-tab" href="#overrideperms">
-					<?php esc_html_e( 'Override Permissions', 'my-video-room' ); ?>
+					<?php esc_html_e( 'Override Permissions', 'myvideoroom' ); ?>
 				</a>
 			</li>
 		</ul>

@@ -58,7 +58,7 @@ return function (
 	<div id="mvr-main-basket-window" class="mvr-nav-settingstabs-outer-wrap mvr-separation">
 		<h1 class="mvr-basket-header-title">
 			<?php
-			$prefix = esc_html__( 'Your ', 'my-video-room' );
+			$prefix = esc_html__( 'Your ', 'myvideoroom' );
 
 			if ( $master_status ) {
 				$main        = esc_html__( ' Shareable ', 'myvideoroom' );
@@ -72,7 +72,7 @@ return function (
 				$main        = esc_html__( ' Auto Updated ', 'myvideoroom' );
 				$description = esc_html__( 'Your basket is currently downloading automatically from the room basket', 'myvideoroom' );
 			}
-			$suffix = esc_html__( 'Basket', 'my-video-room' );
+			$suffix = esc_html__( 'Basket', 'myvideoroom' );
 
 			echo esc_html( $prefix . $main . $suffix );
 
@@ -99,7 +99,7 @@ return function (
 				$delete_basket_nonce = wp_create_nonce( WooCommerce::SETTING_DELETE_BASKET );
 				$nav_button_filter   = Factory::get_instance( HostManagement::class )->master_button( $room_name, true );
 				$nav_button_filter  .= Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name, true );
-				$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'my-video-room' ), $room_name, $delete_basket_nonce, null, 'mvr-main-button-cancel', $target, null, $target );
+				$nav_button_filter  .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_DELETE_BASKET, esc_html__( 'Clear Basket', 'myvideoroom' ), $room_name, $delete_basket_nonce, null, 'mvr-main-button-cancel', $target, null, $target );
 			} elseif ( $download_active ) {
 				$nav_button_filter = Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name, true );
 			}
@@ -113,23 +113,23 @@ return function (
 			<thead>
 				<tr class="myvideoroom-hide-mobile">
 					<th scope="col" class="manage-column column-name column-primary">
-						<?php esc_html_e( 'Product', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Product', 'myvideoroom' ); ?>
 					</th>
 
 					<th scope="col" class="manage-column column-name column-primary">
-						<?php esc_html_e( 'Name', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Name', 'myvideoroom' ); ?>
 					</th>
 
 					<th scope="col" class="manage-column column-name column-primary">
-						<?php esc_html_e( 'Price', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Price', 'myvideoroom' ); ?>
 					</th>
 
 					<th scope="col" class="manage-column column-name column-primary">
-						<?php esc_html_e( 'Subtotal', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Subtotal', 'myvideoroom' ); ?>
 					</th>
 
 					<th scope="col" class="manage-column column-name column-primary">
-						<?php esc_html_e( 'Actions', 'my-video-room' ); ?>
+						<?php esc_html_e( 'Actions', 'myvideoroom' ); ?>
 					</th>
 				</tr>
 			</thead>
@@ -154,7 +154,7 @@ return function (
 						'myvideoroom'
 					);
 					//phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped
-					echo Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'my-video-room' ), $room_name );
+					echo Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Update Basket', 'myvideoroom' ), $room_name );
 
 			?>
 		</p>

@@ -17,7 +17,7 @@ return function (): string {
 
 	<div class="mvr-header-table-left mvr-personal-video-welcome">
 		<h2 class="mvr-header-title">
-			<?php echo esc_html__( 'Welcome to ', 'my-video-room' ) . esc_html( get_bloginfo( 'name' ) ); ?></h2>
+			<?php echo esc_html__( 'Welcome to ', 'myvideoroom' ) . esc_html( get_bloginfo( 'name' ) ); ?></h2>
 		<img class="myvideoroom-user-image" src="
 			<?php
 			$custom_logo_id = get_theme_mod( 'custom_logo' );
@@ -32,20 +32,20 @@ return function (): string {
 			" alt="Site Logo">
 	</div>
 	<div class="mvr-header-table-right mvr-personal-video-welcome">
-		<h2 class="mvr-header-title"><?php esc_html_e( 'Please Select Your Meeting Host', 'my-video-room' ); ?></h2>
+		<h2 class="mvr-header-title"><?php esc_html_e( 'Please Select Your Meeting Host', 'myvideoroom' ); ?></h2>
 		<form action="">
 			<label for="host"
-				class="mvr-header-label"><?php esc_html_e( 'Host\'s Username:', 'my-video-room' ); ?></label>
+				class="mvr-header-label"><?php esc_html_e( 'Host\'s Username:', 'myvideoroom' ); ?></label>
 			<input type="text" id="host" name="host" class="mvr-select-box">
 			<p class="mvr-title-label">
-				<?php esc_html_e( 'This is the Site Username for the user you would like to join', 'my-video-room' ); ?>
+				<?php esc_html_e( 'This is the Site Username for the user you would like to join', 'myvideoroom' ); ?>
 			</p>
-			<h2 class="mvr-header-title"><?php esc_html_e( 'OR', 'my-video-room' ); ?></h2>
-			<label for="host" class="mvr-header-label"><?php esc_html_e( 'Host\'s Invite Code:', 'my-video-room' ); ?>
+			<h2 class="mvr-header-title"><?php esc_html_e( 'OR', 'myvideoroom' ); ?></h2>
+			<label for="host" class="mvr-header-label"><?php esc_html_e( 'Host\'s Invite Code:', 'myvideoroom' ); ?>
 			</label>
 			<input type="text" id="invite" name="invite" class="mvr-select-box">
 			<p class="mvr-title-label">
-				<?php esc_html_e( 'This is the Invite Code XXX-YYY-ZZZ for the meeting', 'my-video-room' ); ?></p>
+				<?php esc_html_e( 'This is the Invite Code XXX-YYY-ZZZ for the meeting', 'myvideoroom' ); ?></p>
 			<input type="submit" value="Submit" class="mvr-form-button">
 		</form>
 	</div>

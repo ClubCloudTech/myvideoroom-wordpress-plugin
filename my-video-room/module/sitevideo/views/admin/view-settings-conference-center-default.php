@@ -27,12 +27,12 @@ return function (): string {
 
 	?>
 	<div class="mvr-admin-page-wrap">
-		<h1><?php esc_html_e( 'Conference Center Configuration', 'my-video-room' ); ?></h1>
+		<h1><?php esc_html_e( 'Conference Center Configuration', 'myvideoroom' ); ?></h1>
 		<p>
 			<?php
 			esc_html_e(
 				'The following settings define Site Conference Center default parameters. These defaults will be used if a room owner has not selected a setting for the room configuration. You can use the Template Browser tab to view room selection templates.',
-				'my-video-room'
+				'myvideoroom'
 			);
 			?>
 		</p>

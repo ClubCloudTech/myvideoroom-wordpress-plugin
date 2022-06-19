@@ -69,7 +69,7 @@ class SecurityTemplates {
 			<p class="mvr-template-text">
 				<?php
 				$new_user           = get_userdata( $user_id );
-				$first_display_name = '<strong>' . esc_html__( 'Site Policy', 'my-video-room' ) . '</strong>';
+				$first_display_name = '<strong>' . esc_html__( 'Site Policy', 'myvideoroom' ) . '</strong>';
 				if ( $new_user ) {
 					$first_name = $new_user->user_firstname;
 					$nicename   = $new_user->user_nicename;
@@ -79,7 +79,7 @@ class SecurityTemplates {
 						$first_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
 					}
 				}
-				$second_display_name = esc_html__( 'the site administrators', 'my-video-room' );
+				$second_display_name = esc_html__( 'the site administrators', 'myvideoroom' );
 				if ( $new_user ) {
 					$first_name = $new_user->user_firstname;
 					$nicename   = $new_user->user_nicename;
@@ -129,7 +129,7 @@ class SecurityTemplates {
 				<p class="mvr-template-text">
 					<?php
 					$new_user           = get_userdata( $user_id );
-					$first_display_name = '<strong>' . esc_html__( 'Site Policy', 'my-video-room' ) . '</strong>';
+					$first_display_name = '<strong>' . esc_html__( 'Site Policy', 'myvideoroom' ) . '</strong>';
 					if ( $new_user ) {
 						$first_name = $new_user->user_firstname;
 						$nicename   = $new_user->user_nicename;
@@ -139,7 +139,7 @@ class SecurityTemplates {
 							$first_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
 						}
 					}
-					$second_display_name = esc_html__( 'the site administrators', 'my-video-room' );
+					$second_display_name = esc_html__( 'the site administrators', 'myvideoroom' );
 					if ( $new_user ) {
 						$first_name = $new_user->user_firstname;
 						$nicename   = $new_user->user_nicename;
@@ -189,7 +189,7 @@ class SecurityTemplates {
 		<p class="mvr-template-text">
 			<?php
 			$new_user           = get_userdata( $user_id );
-			$first_display_name = '<strong>' . esc_html__( 'The Administrator', 'my-video-room' ) . '</strong>';
+			$first_display_name = '<strong>' . esc_html__( 'The Administrator', 'myvideoroom' ) . '</strong>';
 			if ( $new_user ) {
 				$first_name = $new_user->user_firstname;
 				$nicename   = $new_user->user_nicename;
@@ -199,7 +199,7 @@ class SecurityTemplates {
 					$first_display_name = '<strong>' . esc_html( ucfirst( $nicename ) ) . '</strong>';
 				}
 			}
-			$second_display_name = esc_html__( 'the site administrators', 'my-video-room' );
+			$second_display_name = esc_html__( 'the site administrators', 'myvideoroom' );
 			if ( $new_user ) {
 				$first_name = $new_user->user_firstname;
 				$nicename   = $new_user->user_nicename;

@@ -190,7 +190,7 @@ class Module {
 		/* translators: %s is the name of the person sending the email */
 			\esc_html__(
 				'%s would like you to join a video meeting.',
-				'my-video-room'
+				'myvideo-room'
 			),
 			\esc_html( $email_from )
 		);

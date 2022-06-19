@@ -62,7 +62,7 @@ return function (
 	if ( $all_set ) {
 		?>
 	<div id="myvideoroom-all-set" class="myvideoroom-center mvr-mobile-top-margin">
-		<h2><?php esc_html_e( 'You\'re good to go', 'my-video-room' ); ?></h2>
+		<h2><?php esc_html_e( 'You\'re good to go', 'myvideoroom' ); ?></h2>
 		<p id="myvideoroom-allset-description" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'You\'re all set to start your meeting. You can start your meeting, or check your sound first', 'myvideoroom' ); ?>
 		</p>
@@ -74,7 +74,7 @@ return function (
 	} elseif ( $display_name ) {
 		?>
 	<div id="myvideoroom-welcome-pictureadd" class="myvideoroom-center">
-		<h2><?php esc_html_e( 'Add a meeting picture?', 'my-video-room' ); ?></h2>
+		<h2><?php esc_html_e( 'Add a meeting picture?', 'myvideoroom' ); ?></h2>
 		<p id="myvideoroom-welcome-setup-description" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'Meetings are better when you can see who you are talking to. Would you like to add a picture, or check your sound settings?', 'myvideoroom' ); ?>
 		</p>
@@ -90,7 +90,7 @@ return function (
 	} else {
 		?>
 	<div id="myvideoroom-welcome-setup" class="myvideoroom-center">
-		<h2><?php esc_html_e( 'Nice to Meet You', 'my-video-room' ); ?></h2>
+		<h2><?php esc_html_e( 'Nice to Meet You', 'myvideoroom' ); ?></h2>
 		<p id="myvideoroom-welcome-setup-description" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'To start your meeting, you need to decide your meeting name that others can see in the floorplan, and optionally set a picture for yourself.', 'myvideoroom' ); ?>
 		</p>
@@ -102,10 +102,10 @@ return function (
 	<div id="mvr-picture" class="myvideoroom-center" style="display:none;">
 		<?php
 		if ( $user_picture ) {
-			echo '<h2>' . esc_html__( ' Update Your Meeting Picture?', 'my-video-room' ) . '</h2>';
+			echo '<h2>' . esc_html__( ' Update Your Meeting Picture?', 'myvideoroom' ) . '</h2>';
 
 		} else {
-			echo '<h2>' . esc_html__( ' Set a Meeting Picture?', 'my-video-room' ) . '</h2>';
+			echo '<h2>' . esc_html__( ' Set a Meeting Picture?', 'myvideoroom' ) . '</h2>';
 		}
 		?>
 		<div class="mvr-clear">
@@ -151,7 +151,7 @@ return function (
 	</div>
 
 	<div id="myvideoroom-meeting-name" style="display:none;">
-		<h2><?php esc_html_e( 'Your Display Name', 'my-video-room' ); ?></h2>
+		<h2><?php esc_html_e( 'Your Display Name', 'myvideoroom' ); ?></h2>
 		<p id="myvideoroom-namedescription" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'Your Display Name is what others will see you called in the Floorplan', 'myvideoroom' ); ?>
 		</p>
@@ -162,7 +162,7 @@ return function (
 
 	</div>
 	<div id="myvideoroom-checksound" class="myvideoroom-center" style="display:none;">
-		<h2><?php esc_html_e( 'Check Your Sound and Camera?', 'my-video-room' ); ?></h2>
+		<h2><?php esc_html_e( 'Check Your Sound and Camera?', 'myvideoroom' ); ?></h2>
 		<p id="myvideoroom-sounddescription" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'You can use this handy entry room to get your sound and camera checked out before you enter the main room', 'myvideoroom' ); ?>
 		</p>

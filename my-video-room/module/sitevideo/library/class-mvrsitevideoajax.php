@@ -77,7 +77,7 @@ class MVRSiteVideoAjax {
 				);
 
 				$approved_nonce        = wp_create_nonce( $room_id . self::DELETE_APPROVED );
-				$confirmation_approved = Factory::get_instance( MVRSiteVideoViews::class )->basket_nav_bar_button( self::DELETE_APPROVED, esc_html__( 'Delete ', 'my-video-room' ) . $room_name, null, $approved_nonce, null, null, $room_id );
+				$confirmation_approved = Factory::get_instance( MVRSiteVideoViews::class )->basket_nav_bar_button( self::DELETE_APPROVED, esc_html__( 'Delete ', 'myvideoroom' ) . $room_name, null, $approved_nonce, null, null, $room_id );
 				$response['mainvideo'] = Factory::get_instance( MVRSiteVideoViews::class )->shortcode_confirmation( $message, $confirmation_approved );
 				return \wp_send_json( $response );
 

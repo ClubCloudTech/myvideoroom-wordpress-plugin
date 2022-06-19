@@ -47,7 +47,7 @@ class MVRSiteVideoViews {
 		$module_suffix = ' ' . MVRSiteVideo::MODULE_SITE_VIDEO_DESCRIPTION;
 		$module_id     = $display_name;
 		$render        = require __DIR__ . '/../../../views/header/view-roomheader.php';
-		$name_output   = esc_html__( 'Hosting ', 'my-video-room' );
+		$name_output   = esc_html__( 'Hosting ', 'myvideoroom' );
 		$is_guest      = false;
 		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_room_url( $room_name );
 		$room_type     = MVRSiteVideo::ROOM_NAME_SITE_VIDEO;
@@ -70,7 +70,7 @@ class MVRSiteVideoViews {
 		$module_suffix = ' ' . MVRSiteVideo::MODULE_SITE_VIDEO_DESCRIPTION;
 		$module_id     = $display_name;
 		$render        = require __DIR__ . '/../../../views/header/view-roomheader.php';
-		$name_output   = esc_html__( 'Visiting ', 'my-video-room' );
+		$name_output   = esc_html__( 'Visiting ', 'myvideoroom' );
 		$is_guest      = true;
 		$meeting_link  = Factory::get_instance( RoomAdmin::class )->get_room_url( $room_name );
 		$room_type     = MVRSiteVideo::ROOM_NAME_SITE_VIDEO;
@@ -233,7 +233,7 @@ class MVRSiteVideoViews {
 	 */
 	public function shortcode_confirmation( string $message, string $confirmation_button_approved ):string {
 
-		$cancel_button = $this->cancel_nav_bar_button( 'cancel', esc_html__( 'Cancel', 'my-video-room' ), null, 'mvr-main-button-cancel' );
+		$cancel_button = $this->cancel_nav_bar_button( 'cancel', esc_html__( 'Cancel', 'myvideoroom' ), null, 'mvr-main-button-cancel' );
 
 		// Render Confirmation Page View.
 

@@ -144,20 +144,20 @@ return function (
 							//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function already escaped above.
 							echo Factory::get_instance( MVRSiteVideoViews::class )->generate_room_table( MVRPersonalMeeting::MODULE_PERSONAL_MEETING_NAME );
 					?>
-					<h4><?php esc_html_e( 'Customizing the Reception', 'my-video-room' ); ?></h4>
-					<p><?php esc_html_e( 'You can edit your room look and feel with any page editor of your choice. You can also add multiple reception centers by adding the shortcode: ', 'my-video-room' ); ?>
+					<h4><?php esc_html_e( 'Customizing the Reception', 'myvideoroom' ); ?></h4>
+					<p><?php esc_html_e( 'You can edit your room look and feel with any page editor of your choice. You can also add multiple reception centers by adding the shortcode: ', 'myvideoroom' ); ?>
 						<strong> [myvideoroom_meetswitch]</strong>
-						<?php esc_html_e( ' to the page. ', 'my-video-room' ); ?>
+						<?php esc_html_e( ' to the page. ', 'myvideoroom' ); ?>
 					</p>
 					<p>
 						<?php
 						esc_html_e(
 							"You can change the room name, or display name above. You can also edit the room page in WordPress, Elementor, or your favourite page builder. Please note whilst the system updates its internal links if you change the meeting page URL external emails, or other invites may not be updated by your users' guests. Its a good idea to link to reception page from the main area of your site.",
-							'my-video-room'
+							'myvideoroom'
 						);
 						?>
 					</p>
-					<h4><?php esc_html_e( 'Who is a Host ?', 'my-video-room' ); ?></h4>
+					<h4><?php esc_html_e( 'Who is a Host ?', 'myvideoroom' ); ?></h4>
 					<p>
 						<?php
 						esc_html_e(

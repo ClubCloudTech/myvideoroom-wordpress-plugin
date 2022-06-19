@@ -32,7 +32,7 @@ return function (
 	if ( ! $admin_view ) {
 		?>
 		<h2 class="mvr-admin-hide">
-		<?php esc_html_e( 'Security Settings for ', 'my-video-room' ); ?>
+		<?php esc_html_e( 'Security Settings for ', 'myvideoroom' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );
 			echo esc_attr( ucwords( $output ) );
@@ -54,7 +54,7 @@ return function (
 			<h2 class="mvr-title-header">
 				<label
 					for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="myvideoroom-dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable custom hosts for this room', 'my-video-room' ); ?>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable custom hosts for this room', 'myvideoroom' ); ?>
 				</label>
 			</h2>
 			<input
@@ -66,12 +66,12 @@ return function (
 			/>
 			<br>
 			<p class="mvr-preferences-paragraph">
-				<?php esc_html_e( 'Please select the User Role Groups you would like to be able to host your room. Anyone not setup here will be a guest of your room.', 'my-video-room' ); ?>
+				<?php esc_html_e( 'Please select the User Role Groups you would like to be able to host your room. Anyone not setup here will be a guest of your room.', 'myvideoroom' ); ?>
 			</p><br>
 
 			<label for="myvideoroom_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>"
 				class="mvr-preferences-paragraph">
-				<?php esc_html_e( 'Allowed Host Groups', 'my-video-room' ); ?>
+				<?php esc_html_e( 'Allowed Host Groups', 'myvideoroom' ); ?>
 			</label>
 			<select multiple="multiple"
 				class="mvr-roles-multiselect mvr-select-box"
@@ -85,7 +85,7 @@ return function (
 			<br>
 			<label for="myvideoroom_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 				class="mvr-preferences-paragraph">
-				<br><?php esc_html_e( 'Block These Roles from Hosting Instead (allow anyone EXCEPT the above).', 'my-video-room' ); ?>
+				<br><?php esc_html_e( 'Block These Roles from Hosting Instead (allow anyone EXCEPT the above).', 'myvideoroom' ); ?>
 			</label>
 			<input
 				type="checkbox"
@@ -99,12 +99,12 @@ return function (
 			<br>
 			<br>
 			<p class="mvr-preferences-paragraph">
-				<?php esc_html_e( 'Use this setting to determine what group roles you want to explicitly allow to host your room or - the reverse (block all users but a specific role from hosting). Please Note: If you choose to Block a Role, you must still decide if you would like Anonymous Users to host the room separately below.', 'my-video-room' ); ?>
+				<?php esc_html_e( 'Use this setting to determine what group roles you want to explicitly allow to host your room or - the reverse (block all users but a specific role from hosting). Please Note: If you choose to Block a Role, you must still decide if you would like Anonymous Users to host the room separately below.', 'myvideoroom' ); ?>
 			</p>
 			<hr>
 			<h2 class="mvr-title-header">
 				<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="myvideoroom-dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Allow Anonymous Users to Host Rooms (not recommended)', 'my-video-room' ); ?>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Allow Anonymous Users to Host Rooms (not recommended)', 'myvideoroom' ); ?>
 				</label>
 			</h2>
 			<input
@@ -115,7 +115,7 @@ return function (
 				<?php echo $current_user_setting && $current_user_setting->is_anonymous_enabled() ? 'checked' : ''; ?>
 			/>
 			<p class="mvr-preferences-paragraph">
-				<?php esc_html_e( 'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please consider the security ramifications of this setting. ', 'my-video-room' ); ?>
+				<?php esc_html_e( 'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please consider the security ramifications of this setting. ', 'myvideoroom' ); ?>
 			</p>
 			<hr />
 			<input type="hidden" name="myvideoroom_room_name" value="<?php echo esc_attr( $room_name ); ?>" />

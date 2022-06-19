@@ -51,7 +51,7 @@ return function (
 	if ( ! $admin_view ) {
 		?>
 		<h2 class="mvr-admin-hide">
-		<?php esc_html_e( 'Security Settings for ', 'my-video-room' ); ?>
+		<?php esc_html_e( 'Security Settings for ', 'myvideoroom' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );
 			echo esc_attr( ucwords( $output ) );
@@ -69,7 +69,7 @@ return function (
 	?>
 		<form method="post" action="" enctype="multipart/form-data" class="ajaxsecurity">
 			<h2 class="mvr-title-header"><i
-					class="myvideoroom-dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable Room', 'my-video-room' ); ?>
+					class="myvideoroom-dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable Room', 'myvideoroom' ); ?>
 			</h2>
 			<input
 				type="checkbox"
@@ -79,12 +79,12 @@ return function (
 				<?php echo $current_user_setting && $current_user_setting->is_room_disabled() ? 'checked' : ''; ?>
 			/>
 			<p class="mvr-preferences-paragraph">
-				<?php esc_html_e( 'Enable this setting to switch off your room. No one will be able to join it. ', 'my-video-room' ); ?>
+				<?php esc_html_e( 'Enable this setting to switch off your room. No one will be able to join it. ', 'myvideoroom' ); ?>
 			</p>
 			<hr />
 			<h2 class="mvr-title-header">
 				<label for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="myvideoroom-dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Restrict Anonymous Access ( Force Users to Sign In )', 'my-video-room' ); ?>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Restrict Anonymous Access ( Force Users to Sign In )', 'myvideoroom' ); ?>
 				</label>
 			</h2>
 			<input
@@ -98,7 +98,7 @@ return function (
 				<?php
 				esc_html_e(
 					'If you enable this setting, anonymous users from the Internet WILL NOT be able to enter your room. The only way someone can enter your room is if they have an account on your website. This means that external users, will have to go through whatever registration process exists for your website. Default is disabled, which means anonymous access is allowed.',
-					'my-video-room'
+					'myvideoroom'
 				);
 				?>
 			</p>
@@ -107,7 +107,7 @@ return function (
 			<h2 class="mvr-title-header">
 				<label
 					for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="myvideoroom-dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable Role Control - For Allowed Roles', 'my-video-room' ); ?>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable Role Control - For Allowed Roles', 'myvideoroom' ); ?>
 				</label>
 			</h2>
 			<input
@@ -122,14 +122,14 @@ return function (
 				<?php
 				esc_html_e(
 					'If you enable this setting only the following roles will be allowed to access your rooms. If you want to reverse the setting, then click "block these roles instead" which will allow all roles - except for the ones you select. ',
-					'my-video-room'
+					'myvideoroom'
 				);
 				?>
 			</p><br>
 
 			<label for="myvideoroom_security_allowed_roles_preference_<?php echo esc_attr( $id_index ); ?>"
 				class="mvr-preferences-paragraph">
-				<?php esc_html_e( 'Allowed Roles setting:', 'my-video-room' ); ?>
+				<?php esc_html_e( 'Allowed Roles setting:', 'myvideoroom' ); ?>
 			</label>
 			<select multiple="multiple"
 				class="mvr-roles-multiselect mvr-select-box"
@@ -143,7 +143,7 @@ return function (
 			<br>
 			<label for="myvideoroom_security_block_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 				class="mvr-preferences-paragraph">
-				<br><?php esc_html_e( 'Block These Roles Instead', 'my-video-room' ); ?>
+				<br><?php esc_html_e( 'Block These Roles Instead', 'myvideoroom' ); ?>
 			</label>
 			<input
 				type="checkbox"
@@ -160,7 +160,7 @@ return function (
 				<?php
 				esc_html_e(
 					'Use this setting to determine what user roles you want to explicitly allow or - the reverse (block all users but a specific role) if you tick the Block Role option. Please Note: If you choose to Block a Role, you must still decide if you would like Anonymous Users to access the room separately in the Restrict Anonymous option above.',
-					'my-video-room'
+					'myvideoroom'
 				);
 				?>
 			</p>
@@ -193,7 +193,7 @@ return function (
 					'myvideoroom-securityformbutton'
 				);
 			} else {
-				echo '<button disabled title="' . esc_html__( 'Site Administrators have overriden user settings with mandatory settings. Saving is therefore disabled as settings will not take effect' ) . '" class="button button-primary">' . esc_html__( 'Saving Disabled by Site Admins' ) . '</button>';
+				echo '<button disabled title="' . esc_html__( 'Site Administrators have overriden user settings with mandatory settings. Saving is therefore disabled as settings will not take effect', 'myvideoroom' ) . '" class="button button-primary">' . esc_html__( 'Saving Disabled by Site Admins', 'myvideoroom' ) . '</button>';
 			}
 			?>
 		</form>

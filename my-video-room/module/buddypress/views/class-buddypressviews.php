@@ -24,7 +24,7 @@ class BuddyPressViews {
 	public function bp_group_host_template( int $host_id ): array {
 		$module_id    = BuddyPress::DISPLAY_NAME_BUDDYPRESS_GROUPS;
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
-		$name_output  = esc_html__( 'Hosting ', 'my-video-room' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );
+		$name_output  = esc_html__( 'Hosting ', 'myvideoroom' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );
 		$is_guest     = false;
 		$meeting_link = Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'group_video' ) );
 		$room_type    = BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT;
@@ -41,7 +41,7 @@ class BuddyPressViews {
 	public function bp_group_guest_template( int $host_id ):array {
 		$module_id    = BuddyPress::DISPLAY_NAME_BUDDYPRESS_GROUPS;
 		$render       = require WP_PLUGIN_DIR . '/my-video-room/views/header/view-roomheader.php';
-		$name_output  = esc_html__( 'Visiting ', 'my-video-room' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );
+		$name_output  = esc_html__( 'Visiting ', 'myvideoroom' ) . Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'name' ) );
 		$is_guest     = true;
 		$meeting_link = Factory::get_instance( BuddyPress::class )->bp_groupname_shortcode( array( 'type' => 'group_video' ) );
 		$room_type    = BuddyPress::ROOM_NAME_BUDDYPRESS_GROUPS_SITE_DEFAULT;

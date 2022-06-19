@@ -18,18 +18,18 @@ return function (): string {
 	$html_library = Factory::get_instance( HTML::class, array( 'site-conference-center-new-room' ) );
 
 	?>
-<h3><?php esc_html_e( 'Add a Conference Room ', 'my-video-room' ); ?></h3>
+<h3><?php esc_html_e( 'Add a Conference Room ', 'myvideoroom' ); ?></h3>
 <p>
 	<?php
 		esc_html_e(
 			'Use this section to add a Conference Room to your site. It will remain available permanently, and can be configured as you wish',
-			'my-video-room'
+			'myvideoroom'
 		);
 	?>
 </p>
 
 <label for="<?php echo esc_attr( $html_library->get_id( 'title' ) ); ?>">
-	<?php esc_html_e( 'Room Display Name ', 'my-video-room' ); ?>
+	<?php esc_html_e( 'Room Display Name ', 'myvideoroom' ); ?>
 	<i id="room-name-icon" class="myvideoroom-dashicons mvr-icons dashicons-saved" title="Room Name is OK"
 		style="display:none"></i>
 </label>
@@ -40,7 +40,7 @@ return function (): string {
 	<?php
 			esc_html_e(
 				'Please select a name for your room. This name will be on the Page itself, headers, and menus.',
-				'my-video-room'
+				'myvideoroom'
 			);
 	?>
 </p>
@@ -48,7 +48,7 @@ return function (): string {
 <hr />
 
 <label for="<?php echo esc_attr( $html_library->get_id( 'slug' ) ); ?>">
-	<?php esc_html_e( 'Room URL Link ', 'my-video-room' ); ?>
+	<?php esc_html_e( 'Room URL Link ', 'myvideoroom' ); ?>
 	<i id="room-link-icon" class="myvideoroom-dashicons mvr-icons dashicons-saved" title="URL is OK"
 		style="display:none"></i>
 </label>
@@ -64,7 +64,7 @@ return function (): string {
 			/* translators: %s is the url for the room */
 				esc_html__(
 					'Please select an address for your room. It will be created at %s',
-					'my-video-room'
+					'myvideoroom'
 				),
 				'<div id="update_url_newroom" class=""> ' . esc_url( get_site_url() ) . '/ [ Your Room URL/Address ]</div>'
 			)

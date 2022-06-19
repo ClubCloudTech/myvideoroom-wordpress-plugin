@@ -224,8 +224,8 @@ class MVRPersonalMeetingControllers {
 		?>
 	<table style="width:70%; border: 1px solid black;"  >
 	</table>
-		<h1><?php esc_html_e( 'Personal Meeting Video Room Settings', 'my-video-room' ); ?></h1>
-		<p><?php esc_html_e( 'The Personal Video Room is private to each user. Use these settings to update your room configuration, privacy, and video layouts', 'my-video-room' ); ?><br>	</p>
+		<h1><?php esc_html_e( 'Personal Meeting Video Room Settings', 'myvideoroom' ); ?></h1>
+		<p><?php esc_html_e( 'The Personal Video Room is private to each user. Use these settings to update your room configuration, privacy, and video layouts', 'myvideoroom' ); ?><br>	</p>
 		<?php
 		$layout_setting = Factory::get_instance( \MyVideoRoomPlugin\Shortcode\UserVideoPreference::class )->choose_settings(
 			$user_id,

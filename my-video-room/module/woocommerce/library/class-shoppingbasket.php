@@ -82,7 +82,7 @@ class ShoppingBasket {
 	 */
 	public function cart_confirmation( string $action_type, string $room_name, string $auth_nonce, string $message, string $confirmation_button_approved, string $data_for_confirmation = null, string $target_window = null ):string {
 
-			$cancel_button = $this->cancel_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Cancel', 'my-video-room' ), null, 'mvr-main-button-cancel', $target_window );
+			$cancel_button = $this->cancel_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Cancel', 'myvideoroom' ), null, 'mvr-main-button-cancel', $target_window );
 
 		// Render Confirmation Page View.
 		$render = require __DIR__ . '/../views/basket-confirmation.php';

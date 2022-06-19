@@ -31,24 +31,24 @@ return function (
 	<div class="mvr-storefront-master">
 		<div id="storeid" data-last-storecount="<?php echo esc_attr( $shop_count ); ?>"></div>
 		<div id="myvideoroom-roomstore-outer" class="mvr-admin-page-wrap">
-			<h2><?php esc_html_e( 'Room Store and Basket', 'my-video-room' ); ?></h2>
+			<h2><?php esc_html_e( 'Room Store and Basket', 'myvideoroom' ); ?></h2>
 			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper mvr-mobile-size">
 				<ul class="mvr-ul-style-top-menu">
 					<li>
 						<a class="nav-tab nav-tab-active mvr-full-hide" href="#roomstore">
-							<?php esc_html_e( 'Store', 'my-video-room' ); ?>
+							<?php esc_html_e( 'Store', 'myvideoroom' ); ?>
 						</a>
 						<a class="nav-tab nav-tab-active mvr-mobile-hide" href="#roomstore">
-							<?php esc_html_e( 'Room Store', 'my-video-room' ); ?>
+							<?php esc_html_e( 'Room Store', 'myvideoroom' ); ?>
 						</a>
 					</li>
 
 					<li>
 						<a class="nav-tab mvr-full-hide" href="#basketprevious">
-							<?php esc_html_e( 'Basket', 'my-video-room' ); ?>
+							<?php esc_html_e( 'Basket', 'myvideoroom' ); ?>
 						</a>
 						<a class="nav-tab mvr-mobile-hide" href="#basketprevious">
-							<?php esc_html_e( 'Previous Basket', 'my-video-room' ); ?>
+							<?php esc_html_e( 'Previous Basket', 'myvideoroom' ); ?>
 						</a>
 					</li>
 
@@ -57,10 +57,10 @@ return function (
 						?>
 					<li>
 						<a class="nav-tab mvr-full-hide" href="#roomcontrol">
-							<?php esc_html_e( 'Manage', 'my-video-room' ); ?>
+							<?php esc_html_e( 'Manage', 'myvideoroom' ); ?>
 						</a>
 						<a class="nav-tab mvr-mobile-hide" href="#roomcontrol">
-							<?php esc_html_e( 'Manage Room Store', 'my-video-room' ); ?>
+							<?php esc_html_e( 'Manage Room Store', 'myvideoroom' ); ?>
 						</a>
 					</li>
 						<?php
@@ -139,7 +139,7 @@ return function (
 						<?php
 					} else {
 						?>
-					<p><?php esc_html_e( 'This room hasn\'t yet shared a basket', 'my-video-room' ); ?></p>
+					<p><?php esc_html_e( 'This room hasn\'t yet shared a basket', 'myvideoroom' ); ?></p>
 						<?php
 					}
 					?>
