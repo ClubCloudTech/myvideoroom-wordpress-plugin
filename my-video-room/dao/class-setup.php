@@ -21,7 +21,7 @@ class Setup {
 	/**
 	 * Install_user_video_preference_table - this is the main table for all User Room Config
 	 *
-	 * @return bool
+	 * @return ?string
 	 */
 	public static function install_user_video_preference_table(): ?string {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
