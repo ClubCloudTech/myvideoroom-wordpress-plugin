@@ -167,7 +167,7 @@ class PageFilters {
 			$room_name
 		);
 
-		if ( ! $room_custom_permissions ) {
+		if ( ! $room_custom_permissions || ! $room_custom_permissions->is_allow_role_control_enabled() ) {
 			return $default_value;
 		}
 
@@ -175,10 +175,10 @@ class PageFilters {
 			return $room_custom_permissions->is_anonymous_enabled();
 		}
 
-		$target_roles          = $room_custom_permissions->get_roles();
-		$target_roles_are_host = $room_custom_permissions->is_block_role_control_enabled();
+		$target_roles               = $room_custom_permissions->get_roles();
+		$block_role_control_reverse = $room_custom_permissions->is_block_role_control_enabled();
 
-		if ( ! $target_roles && $target_roles_are_host ) {
+		if ( ! $target_roles && $block_role_control_reverse ) {
 			return true;
 		}
 
@@ -187,10 +187,10 @@ class PageFilters {
 			$target_roles
 		);
 
-		if ( $target_roles_are_host ) {
-			return $roles_intersect;
-		} else {
+		if ( $block_role_control_reverse ) {
 			return ! $roles_intersect;
+		} else {
+			return $roles_intersect;
 		}
 	}
 
