@@ -12,8 +12,6 @@
  */
 
 use MyVideoRoomPlugin\Admin\PageList;
-use MyVideoRoomPlugin\Factory;
-use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Module\RoomBuilder\Module;
 
