@@ -186,7 +186,7 @@ class Security {
 				'security_disable_feature_module',
 			)
 		);
-
+		// Filter for Custom Host Status to modify default.
 		\add_filter(
 			'myvideoroom_site_video_user_host_status',
 			array(

@@ -12,6 +12,8 @@
  */
 
 use MyVideoRoomPlugin\Admin\PageList;
+use MyVideoRoomPlugin\Factory;
+use MyVideoRoomPlugin\Library\AvailableScenes;
 use MyVideoRoomPlugin\Library\Maintenance;
 use MyVideoRoomPlugin\Module\RoomBuilder\Module;
 
@@ -99,6 +101,7 @@ return function (): string {
 		<tbody>
 
 		<?php
+
 			// phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped - functions are escaped upstream.
 			echo apply_filters( 'myvideoroom_maintenance_page_option', '' );
 		?>
