@@ -715,17 +715,21 @@ class ShoppingBasket {
 				$basket_array['price']      = $product->get_price();
 				$basket_array['link']       = $product->get_permalink( $cart_item );
 			} else {
-				$product_id                   = $cart_item->get_product_id();
-				$basket_array['record_id']    = $record_id;
-				$basket_array['product_id']   = $product_id;
-				$product                      = wc_get_product( $product_id );
+				$product_id                 = $cart_item->get_product_id();
+				$basket_array['record_id']  = $record_id;
+				$basket_array['product_id'] = $product_id;
+				$product                    = wc_get_product( $product_id );
+				if ( $product ) {
+					$basket_array['name']  = $product->get_name();
+					$basket_array['image'] = $product->get_image();
+					if ( WC()->cart ) {
+						$basket_array['price']    = WC()->cart->get_product_price( $product );
+						$basket_array['subtotal'] = WC()->cart->get_product_subtotal( $product, $cart_item->get_quantity() );
+					}
+					$basket_array['link'] = $product->get_permalink( $cart_item );
+				}
 				$basket_array['quantity']     = $cart_item->get_quantity();
 				$basket_array['variation_id'] = $cart_item->get_variation_id();
-				$basket_array['name']         = $product->get_name();
-				$basket_array['image']        = $product->get_image();
-				$basket_array['price']        = WC()->cart->get_product_price( $product );
-				$basket_array['subtotal']     = WC()->cart->get_product_subtotal( $product, $cart_item->get_quantity() );
-				$basket_array['link']         = $product->get_permalink( $cart_item );
 			}
 		}
 		if ( $room_name ) {

@@ -98,7 +98,6 @@ class AvailableScenes {
 		}
 
 		return false;
-
 	}
 
 	/**

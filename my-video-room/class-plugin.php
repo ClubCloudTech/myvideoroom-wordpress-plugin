@@ -11,6 +11,7 @@ namespace MyVideoRoomPlugin;
 
 use MyVideoRoomPlugin\Admin\AdminAjax;
 use MyVideoRoomPlugin\Admin\PageList;
+use MyVideoRoomPlugin\Library\Compatibility;
 use MyVideoRoomPlugin\Library\Module;
 use MyVideoRoomPlugin\Module\SiteVideo\MVRSiteVideo;
 use MyVideoRoomPlugin\Shortcode\App;
@@ -71,6 +72,8 @@ class Plugin {
 
 		Factory::get_instance( App::class, array( $private_key ) )->init();
 		Factory::get_instance( SiteDefaults::class )->init();
+		Factory::get_instance( Compatibility::class )->init();
+
 	}
 
 	/**
