@@ -2,7 +2,7 @@
 /**
  * Renders the form for changing the security settings for users.
  *
- * @param string|null $current_user_setting
+ * @param ?object      $current_user_setting
  * @param string      $room_name - the room name.
  * @param int         $id_index - to version element ids.
  * @param array       $roles_output - roles for checkbox selection.
