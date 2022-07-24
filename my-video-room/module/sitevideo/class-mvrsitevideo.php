@@ -237,7 +237,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-css',
 					\plugins_url( '/css/frontend.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . 1 . wp_rand( 1, 10000 ),
+					Factory::get_instance( Version::class )->get_plugin_version(),
 					'(min-width: 640px)'
 				);
 			},
@@ -249,7 +249,7 @@ class MVRSiteVideo {
 					'myvideoroom-frontend-mobile-css',
 					\plugins_url( '/css/frontend-mobile.css', \realpath( __DIR__ . '/../' ) ),
 					false,
-					Factory::get_instance( Version::class )->get_plugin_version() . wp_rand( 1, 10000 ),
+					Factory::get_instance( Version::class )->get_plugin_version(),
 					'(max-width: 640px)'
 				);
 			},
