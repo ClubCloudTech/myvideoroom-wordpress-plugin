@@ -43,7 +43,7 @@ class AdminAjax {
 			'mvr-admin-ajax-js',
 			\plugins_url( '/js/mvradminajax.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			Factory::get_instance( Version::class )->get_plugin_version() . \wp_rand( 40, 30000 ),
+			Factory::get_instance( Version::class )->get_plugin_version(),
 			true
 		);
 		\wp_enqueue_script( 'mvr-admin-ajax-js' );
