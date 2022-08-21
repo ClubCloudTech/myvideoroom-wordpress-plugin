@@ -10,7 +10,7 @@
  * Plugin URI:          https://clubcloud.tech
  * Text Domain:         myvideoroom
  * Description:         Integrates the MyVideoRoom Service into WordPress and provides plugin integration to popular applications like WooCommerce, and BuddyPress.
- * Version:             4.0alpha1
+ * Version:             4.0alpha
  * Requires PHP:        7.4
  * Requires at least:   5.4
  * Author:              ClubCloud, Fred Mocellin, Alex Dale, Amanda Mocellin, Alec Sammon
