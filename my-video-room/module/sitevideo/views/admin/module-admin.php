@@ -130,12 +130,12 @@ return function (
 			<div class="myvideoroom-feature-table-large">
 				<div class="myvideoroom-inline">
 
-					<button class="button button-primary myvideoroom-sitevideo-add-room-button">
+					<button class="button button-primary myvideoroom-sitevideo-add-room-button myvideoroom-button-override">
 						<i class="dashicons dashicons-plus-alt"></i>
 						<?php esc_html_e( 'Add new room', 'myvideoroom' ); ?>
 					</button>
 
-					<button class="button button-primary myvideoroom-sitevideo-settings myvideoroom-button-link"
+					<button class="button button-primary myvideoroom-sitevideo-settings myvideoroom-button-link myvideoroom-button-override"
 						data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>"
 						data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>">
 						<i class="dashicons dashicons-admin-settings"></i>
@@ -143,7 +143,7 @@ return function (
 					</button>
 					<?php $index_num = $index++; ?>
 					<button id="mvr-close_<?php echo esc_attr( $index_num ); ?>"
-						class="button button-primary myvideoroom-sitevideo-hide-button myvideoroom-sitevideo-settings"
+						class="button button-primary myvideoroom-sitevideo-hide-button myvideoroom-sitevideo-settings myvideoroom-button-override"
 						data-room-id="<?php echo esc_attr( $index_num ); ?>" data-input-type="close"
 						style="display:none;">
 						<i class="dashicons dashicons-dismiss"></i>

@@ -42,14 +42,14 @@ return function (
 	?>
 <div id="mvr-shortcode-maintable" class="mvr-woocommerce-overlay">
 	<div class="mvr-admin-page-wrap">
-		<h2><?php esc_html_e( 'Room Reception Center', 'myvideoroom' ); ?></h2>
+		<h2 class="mvr-override-h2"><?php esc_html_e( 'Room Reception Center', 'myvideoroom' ); ?></h2>
 
-		<button class="mvr-ul-style-menu  myvideoroom-sitevideo-add-room-button">
+		<button class="mvr-ul-style-menu  myvideoroom-sitevideo-add-room-button myvideoroom-button-override">
 			<i class="myvideoroom-dashicons dashicons-plus-alt"></i>
 			<?php esc_html_e( 'Add new room', 'myvideoroom' ); ?>
 		</button>
 
-		<button class="mvr-ul-style-menu myvideoroom-sitevideo-settings"
+		<button class="mvr-ul-style-menu myvideoroom-sitevideo-settings myvideoroom-button-override"
 			data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>"
 			data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>">
 			<a href="#"
@@ -60,7 +60,7 @@ return function (
 				<?php esc_html_e( 'Default Room Appearance', 'myvideoroom' ); ?></a>
 		</button>
 		<button id="mvr-close_<?php echo esc_attr( $index_num ); ?>"
-			class="mvr-ul-style-menu myvideoroom-sitevideo-hide-button myvideoroom-sitevideo-settings"
+			class="mvr-ul-style-menu myvideoroom-sitevideo-hide-button myvideoroom-sitevideo-settings myvideoroom-button-override"
 			data-room-id="<?php echo esc_attr( $index_num ); ?>" data-input-type="close" style="display:none;">
 			<i class="dashicons dashicons-dismiss"></i>
 			<?php esc_html_e( 'Close', 'myvideoroom' ); ?>

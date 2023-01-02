@@ -61,6 +61,7 @@ class MVRSiteVideoControllers {
 			return Factory::get_instance( SecurityTemplates::class )->room_blocked_by_site();
 		}
 
+		wp_enqueue_style( 'dashicons' );
 		$current_user_is_host = apply_filters(
 			'myvideoroom_site_video_user_host_status',
 			current_user_can( Plugin::CAP_GLOBAL_HOST ),

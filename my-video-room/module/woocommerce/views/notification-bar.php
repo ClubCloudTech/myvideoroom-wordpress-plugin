@@ -37,7 +37,7 @@ return function (
 			$suffix  = '<div id="mvr-postbutton-notification" class="mvr-notification-align"></div>';
 			$output  = Factory::get_instance( HostManagement::class )->master_button( $room_name );
 			$output .= Factory::get_instance( HostManagement::class )->sync_notification_button( $room_name );
-			$output .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::BUTTON_REFRESH ), $room_name, null, null, null, 'mvr-shopping-basket', 'myvideoroom-button-link' );
+			$output .= Factory::get_instance( ShoppingBasket::class )->basket_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::BUTTON_REFRESH ), $room_name, null, null, null, 'mvr-shopping-basket', 'myvideoroom-button-link myvideoroom-button-override' );
 			$output .= $client_change_state;
 			$output .= $popup;
 

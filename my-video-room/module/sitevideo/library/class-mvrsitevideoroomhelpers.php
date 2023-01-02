@@ -441,7 +441,8 @@ class MVRSiteVideoRoomHelpers {
 	 * Default Video Appearance Screen Handler.
 	 */
 	public function render_default_video_appearance_screen() {
-		return ( require __DIR__ . '/../views/admin/view-settings-video-default.php' )();
+		$template_override = get_option( MVRSiteVideo::SETTING_TEMPLATE_OVERRIDE );
+		return ( require __DIR__ . '/../views/admin/view-settings-video-default.php' )( $template_override );
 	}
 
 	/**

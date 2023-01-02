@@ -35,7 +35,7 @@ class BuddyPressConfig {
 		?>
 
 <label for="myvideoroom_security_restrict_group_to_members_<?php echo esc_attr( $id_index ); ?>">
-	<h2><i class="myvideoroom-dashicons mvr-icons dashicons-format-chat"></i>
+	<h2 class="mvr-override-h2"><i class="myvideoroom-dashicons mvr-icons dashicons-format-chat"></i>
 		<?php esc_html_e( 'BuddyPress Group Member Restrictions', 'myvideoroom' ); ?></h2>
 </label>
 <select style="width:50%" class="mvr-roles-multiselect mvr-select-box"
@@ -99,7 +99,7 @@ class BuddyPressConfig {
 		}
 		?>
 <label for="myvideoroom_security_restrict_bp_friends_<?php echo esc_attr( $id_index ); ?>">
-	<h2><i class="myvideoroom-dashicons mvr-icons dashicons-share"></i><?php esc_html_e( 'BuddyPress Friends Only Room Access Control', 'myvideoroom' ); ?></h2>
+	<h2 class="mvr-override-h2"><i class="myvideoroom-dashicons mvr-icons dashicons-share"></i><?php esc_html_e( 'BuddyPress Friends Only Room Access Control', 'myvideoroom' ); ?></h2>
 </label>
 <select style="width:60%" class="mvr-roles-multiselect mvr-select-box" name="myvideoroom_security_restrict_bp_friends"
 	id="myvideoroom_security_restrict_bp_friends_<?php echo esc_attr( $id_index ); ?>">

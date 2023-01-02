@@ -589,13 +589,13 @@ class HostManagement {
 			$target       = 'mvr-shopping-basket';
 			$title_box    = 'title ="' . esc_html__( ' You are currently sharing your basket with the room', 'myvideoroom' ) . '"';
 			return $pre_text . ' 
-			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
-			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a> </button>';
+			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax myvideoroom-button-override" data-target="' . $target . '">
+			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-override myvideoroom-button-link">' . $button_label . '</a> </button>';
 		}
 
 		if ( $master_status ) {
 			if ( ! $button_only ) {
-				$pre_text = '<p class ="mvr-notification-align"><strong>' . \esc_html__( 'Room Basket Owner ', 'myvideoroom' ) . '</strong></p>';
+				$pre_text = '<p class ="mvr-notification-align myvideoroom-text-heading-override"><strong>' . \esc_html__( 'Room Basket Owner ', 'myvideoroom' ) . '</strong></p>';
 			}
 			$nonce        = wp_create_nonce( WooCommerce::SETTING_ENABLE_SYNC );
 			$button_label = Factory::get_instance( SectionTemplates::class )->template_icon_switch( SectionTemplates::BUTTON_SHARE_BASKET );
@@ -603,8 +603,8 @@ class HostManagement {
 			$target       = 'mvr-shopping-basket';
 			$title_box    = 'title ="' . esc_html__( 'Your Basket can be shared with others in the room', 'myvideoroom' ) . '"';
 			return $pre_text . '
-			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
-			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
+			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax myvideoroom-button-override" data-target="' . $target . '">
+			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-override myvideoroom-button-link">' . $button_label . '</a>
 			</button>';
 		} elseif ( $host_status ) {
 			$nonce        = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER );
@@ -613,8 +613,8 @@ class HostManagement {
 			$target       = 'mvr-shopping-basket';
 			$title_box    = 'title ="' . esc_html__( 'As a host, you can request control of the room basket from the current owner', 'myvideoroom' ) . '"';
 			return '
-			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax" data-target="' . $target . '">
-			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
+			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax myvideoroom-button-override" data-target="' . $target . '">
+			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-override myvideoroom-button-link">' . $button_label . '</a>
 			</button>
 			';
 		} else {
@@ -645,8 +645,8 @@ class HostManagement {
 				$withdraw_button_type  = WooCommerce::SETTING_REQUEST_MASTER_WITHDRAW_PENDING;
 				$title_box             = 'title ="' . \esc_html__( 'You have Requested to Take Control of the Shared Basket', 'myvideoroom' ) . '"';
 				return '
-				<strong>' . \esc_html__( 'Basket Ownership Pending ', 'myvideoroom' ) . '</strong><button  ' . $title_box . '  class="mvr-form-button mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax">
-					<a  data-target="' . $target . '" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
+				<strong>' . \esc_html__( 'Basket Ownership Pending ', 'myvideoroom' ) . '</strong><button  ' . $title_box . '  class="mvr-form-button mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax myvideoroom-button-override">
+					<a  data-target="' . $target . '" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link myvideoroom-button-override">' . $withdraw_button_label . '</a>
 					</button>';
 
 			case WooCommerce::SETTING_REQUEST_MASTER:
@@ -658,11 +658,11 @@ class HostManagement {
 				$decline_button_label = Factory::get_instance( SectionTemplates::class )->template_icon_switch( 'reject' ) . \esc_html__( 'Decline', 'myvideoroom' );
 				$decline_button_type  = WooCommerce::SETTING_REQUEST_MASTER_DECLINED_PENDING;
 				$title_box            = 'title ="' . \esc_html__( 'A request to take control of the shared basket has been received', 'myvideoroom' ) . '"';
-				return '<strong>' . \esc_html__( 'Basket Owner Change Request', 'myvideoroom' ) . '</strong>- <button ' . $title_box . '  class="mvr-form-button mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax" data-target = "mvr-shopping-basket">
-					<a  data-target="' . $target . '" data-input-type="' . $accept_button_type . '" data-auth-nonce="' . $accept_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $accept_button_label . '</a>
+				return '<strong>' . \esc_html__( 'Basket Owner Change Request', 'myvideoroom' ) . '</strong>- <button ' . $title_box . '  class="mvr-form-button mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax myvideoroom-button-override" data-target = "mvr-shopping-basket">
+					<a  data-target="' . $target . '" data-input-type="' . $accept_button_type . '" data-auth-nonce="' . $accept_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link myvideoroom-button-override">' . $accept_button_label . '</a>
 					</button>
-					<button  ' . $title_box . '  class="mvr-form-button mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax" data-target = "mvr-shopping-basket">
-					<a  data-target="' . $target . '" data-input-type="' . $decline_button_type . '" data-auth-nonce="' . $decline_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $decline_button_label . '</a>
+					<button  ' . $title_box . '  class="mvr-form-button mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax myvideoroom-button-override" data-target = "mvr-shopping-basket">
+					<a  data-target="' . $target . '" data-input-type="' . $decline_button_type . '" data-auth-nonce="' . $decline_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link myvideoroom-button-override">' . $decline_button_label . '</a>
 					</button>';
 		}
 		// Client Section.
@@ -676,8 +676,8 @@ class HostManagement {
 			$withdraw_button_type  = WooCommerce::SETTING_DISABLE_BASKET_DOWNLOAD;
 			$title_box             = 'title ="' . \esc_html__( 'You are currently syncing your basket from the room automatically', 'myvideoroom' ) . '"';
 			return '
-			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-stop mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax" 
-				<a  data-target="' . $target . '" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
+			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-stop mvr-main-button-cancel myvideoroom-woocommerce-basket-ajax myvideoroom-button-override" 
+				<a  data-target="' . $target . '" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link myvideoroom-button-override">' . $withdraw_button_label . '</a>
 				</button>';
 		}
 
@@ -691,8 +691,8 @@ class HostManagement {
 			$withdraw_button_type  = WooCommerce::SETTING_ENABLE_BASKET_DOWNLOAD;
 			$title_box             = 'title ="' . \esc_html__( 'A group shared basket is available - would you like to synchronise your basket to the room ?', 'myvideoroom' ) . '"';
 			return $pre_text . '
-			<button ' . $title_box . '  class="mvr-main-button-enabled myvideoroom-button-separation myvideoroom-woocommerce-basket-ajax">
-				<a  data-target="' . $target . '" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $withdraw_button_label . '</a>
+			<button ' . $title_box . '  class="mvr-main-button-enabled myvideoroom-button-separation myvideoroom-woocommerce-basket-ajax myvideoroom-button-override">
+				<a  data-target="' . $target . '" data-input-type="' . $withdraw_button_type . '" data-auth-nonce="' . $withdraw_nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link myvideoroom-button-override">' . $withdraw_button_label . '</a>
 				</button>';
 		}
 		return '';

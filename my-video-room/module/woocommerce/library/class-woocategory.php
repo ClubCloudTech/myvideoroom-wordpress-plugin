@@ -97,7 +97,7 @@ class WooCategory {
 
 
 	/**
-	 * Check a WooCommerce Category Exists by from Room Name.
+	 * Check a WooCommerce Category Exists by Room Name.
 	 *
 	 * @param string $slug            -  Name of Room.
 	 * @param string $category_name   -  Category Name.
@@ -196,7 +196,7 @@ class WooCategory {
 
 			return $button .= '
 			<a
-			class="mvr-icons myvideoroom-woocommerce-basket-ajax"
+			class="mvr-icons myvideoroom-woocommerce-basket-ajax myvideoroom-button-override"
 			data-target="mvr-shopping-basket" 
 			data-product-id="' . esc_attr( $item['product_id'] ) . '"
 			data-quantity="' . esc_attr( $item['quantity'] ) . '"

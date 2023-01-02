@@ -1,0 +1,42 @@
+/**
+ * The frontend css for MyVideoRoom Overriding Plugin Design
+ *
+ * @package MyVideoRoomPlugin
+ */
+
+h1{
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-size: large;
+	color: black;
+}
+.mvr-override-h2 {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;
+	font-size: large!important;
+	color: black!important;
+	text-transform: none!important;
+	
+}
+
+.myvideoroom_checkbox_override {
+	background-color: white!important;
+	border: 2px;
+}
+
+.myvideoroom-text-heading-override {
+	color: #8c8c8c;
+	font-size: medium;
+}
+
+.myvideoroom-button-override {
+	background-image:none!important;
+	color: gray!important;
+	background-color: white!important;
+}
+
+.mvr-shopping-basket-frame-override {
+	padding: 0!important;
+}
+
+.myvideoroom-button-override {
+	color:#8c8c8c!important;
+}

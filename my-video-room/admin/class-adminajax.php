@@ -104,11 +104,18 @@ class AdminAjax {
 			* Activate/Deactivate Module.
 			*
 			*/
+			case 'enforceplugin':
+				$checkbox                 = Factory::get_instance( Ajax::class )->get_string_parameter( 'enforce_plugin' );
+				$response['valuechanged'] = $this->update_enforce_plugin_style_setting( $checkbox );
+				return \wp_send_json( $response );
+
+			/*
+			* Activate/Deactivate Module.
+			*
+			*/
 			case 'update_module':
-				$button = Factory::get_instance( ModuleConfig::class )->module_activation_button( intval( $module ), $action_state );
-
+				$button             = Factory::get_instance( ModuleConfig::class )->module_activation_button( intval( $module ), $action_state );
 				$response['button'] = $button;
-
 				return \wp_send_json( $response );
 
 			/*
@@ -339,5 +346,21 @@ class AdminAjax {
 
 		}
 		die();
+	}
+
+	/** MyVideoRoom Admin Change Setting Function.
+	 * Updates option to enforce central stylesheet.
+	 *
+	 * @param string $setting - the setting value.
+	 * @return bool
+	 */
+	public function update_enforce_plugin_style_setting( string $setting = null ):bool {
+		if ( 'true' === $setting ) {
+			\update_option( MVRSiteVideo::SETTING_TEMPLATE_OVERRIDE, true );
+			return true;
+		} else {
+			\update_option( MVRSiteVideo::SETTING_TEMPLATE_OVERRIDE, false );
+			return false;
+		}
 	}
 }

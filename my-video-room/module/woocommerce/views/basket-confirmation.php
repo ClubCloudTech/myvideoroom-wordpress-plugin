@@ -54,14 +54,14 @@ return function (
 	<table id="mvr-confirmation-table" class="wp-list-table widefat plugins mvr-shopping-basket-frame">
 		<thead>
 			<tr class="mvr-shopping-basket-frame">
-				<th scope="col" class="manage-column column-name column-primary">
+				<th scope="col" class="manage-column column-name column-primary mvr-shopping-basket-frame-override">
 					<?php
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 					echo $confirmation_button_approved;
 					?>
 				</th>
 
-				<th scope="col" class="manage-column column-name column-primary">
+				<th scope="col" class="manage-column column-name column-primary mvr-shopping-basket-frame-override">
 					<?php
 				//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Function is Icon only, and already escaped within it.
 					echo $confirmation_button_cancel;

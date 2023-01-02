@@ -299,7 +299,7 @@
             letter-spacing: -.021em;
             line-height: 1.87947!important;
             min-width: 30px !important;
-            padding: 4px 4px;
+            padding: 3px!important;
         }
         
         .mvr-main-button-enabled a,
@@ -308,6 +308,7 @@
             font-size: 12px;
             font-weight: 500;
             text-transform: uppercase;
+			padding: 3px!important;
         }
         
         .mvr-ul-style-side-menu {
@@ -406,7 +407,6 @@
         .myvideoroom-welcome-positive {
             background: linear-gradient(#032979, #1c1c96);
             border-radius: 3px!important;
-            color: rgb(255 255 255) !important;
             font-size: 12px!important;
             padding: 10px!important;
             font-weight: 400!important;

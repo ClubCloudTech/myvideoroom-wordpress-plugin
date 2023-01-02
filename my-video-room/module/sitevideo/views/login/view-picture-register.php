@@ -62,11 +62,11 @@ return function (
 	if ( $all_set ) {
 		?>
 	<div id="myvideoroom-all-set" class="myvideoroom-center mvr-mobile-top-margin">
-		<h2><?php esc_html_e( 'You\'re good to go', 'myvideoroom' ); ?></h2>
+		<h2 class="mvr-override-h2"><?php esc_html_e( 'You\'re good to go', 'myvideoroom' ); ?></h2>
 		<p id="myvideoroom-allset-description" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'You\'re all set to start your meeting. You can start your meeting, or check your sound first', 'myvideoroom' ); ?>
 		</p>
-		<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-welcome-positive" enabled />
+		<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-button-override" enabled />
 		<?php /*phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped*/echo Factory::get_instance( TemplateIcons::class )->format_button_icon( 'checksound' ); ?>
 		<hr>
 	</div>
@@ -81,7 +81,7 @@ return function (
 		<?php
 		$output_2  = Factory::get_instance( TemplateIcons::class )->format_button_icon( 'photo' );
 		$output_2 .= Factory::get_instance( TemplateIcons::class )->format_button_icon( 'checksound' );
-		$output_2 .= '<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-welcome-positive" />';
+		$output_2 .= '<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-button-override" />';
 		echo /*phpcs:ignore -- WordPress.Security.EscapeOutput.OutputNotEscaped*/$output_2;
 		?>
 		<hr>
@@ -143,7 +143,7 @@ return function (
 			<input id="vid-take" type="button" value="Snap"
 				class="myvideoroom-welcome-positive mvr-hide myvideoroom-welcome-button" />
 			<input id="vid-up" type="button" value="Use This" class="myvideoroom-welcome-positive mvr-hide" />
-			<input id="vid-picture" type="button" value="Take Picture" class="myvideoroom-welcome-positive" />
+			<input id="vid-picture" type="button" value="Take Picture" class="myvideoroom-button-override" />
 			<input id="upload-picture" type="button" value="Upload Picture"
 				class="myvideoroom-welcome-positive mvr-hide" />
 
@@ -158,7 +158,7 @@ return function (
 		<input id="vid-name" type="text" placeholder="Meeting Display Name"
 			value="<?php echo esc_textarea( $display_name ); ?>"
 			class="myvideoroom-input-restrict-alphanumeric mvr-input-box" />
-		<input id="room-name-update" type="button" value="Save" class="myvideoroom-welcome-positive" />
+		<input id="room-name-update" type="button" value="Save" class="myvideoroom-button-override" />
 
 	</div>
 	<div id="myvideoroom-checksound" class="myvideoroom-center" style="display:none;">
@@ -166,7 +166,7 @@ return function (
 		<p id="myvideoroom-sounddescription" class="myvideoroom-table-adjust">
 			<?php esc_html_e( 'You can use this handy entry room to get your sound and camera checked out before you enter the main room', 'myvideoroom' ); ?>
 		</p>
-		<input id="chk-sound" type="button" value="Check Camera and Sound" class="myvideoroom-welcome-positive" />
+		<input id="chk-sound" type="button" value="Check Camera and Sound" class="myvideoroom-button-override" />
 		<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons mvr-hide" />
 	</div>
 	<?php
@@ -176,7 +176,7 @@ return function (
 	}
 	if ( ! $all_set ) {
 		?>
-	<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-welcome-positive mvr-hide" disabled />
+	<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-button-override mvr-hide" disabled />
 		<?php
 	}
 	?>

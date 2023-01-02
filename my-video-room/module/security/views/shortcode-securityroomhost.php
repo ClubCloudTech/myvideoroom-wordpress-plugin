@@ -31,7 +31,7 @@ return function (
 	<?php
 	if ( ! $admin_view ) {
 		?>
-		<h2 class="mvr-admin-hide">
+		<h2 class="mvr-admin-hide mvr-override-h2">
 		<?php esc_html_e( 'Security Settings for ', 'myvideoroom' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );

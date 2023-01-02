@@ -198,6 +198,8 @@ window.addEventListener(
                             syncSettings();
                         }
                     );
+					$('#myvideoroom_enforce_plugin_style').on('click', updatePluginStyle);
+					
 
                     $('#user-profile-input').on('keyup', checkform);
                     $('#group-profile-input').on('keyup', checkgroupform);
@@ -206,6 +208,39 @@ window.addEventListener(
                     $('#save-group-tab').on('click', updateGrouptab);
 
                 }
+
+                /**
+                 * Handles Module Activation and De-activation Button
+                 */
+				 var updatePluginStyle = function() {
+				var check = document.querySelector('#myvideoroom_enforce_plugin_style').checked;
+					console.log(check);
+
+					var form_data = new FormData();
+					form_data.append('enforce_plugin', check );
+					form_data.append('action', 'myvideoroom_admin_ajax');
+					form_data.append('action_taken', 'enforceplugin');
+					form_data.append('security', myvideoroom_admin_ajax.security);
+					$.ajax({
+						type: 'post',
+						dataType: 'html',
+						url: myvideoroom_admin_ajax.ajax_url,
+						contentType: false,
+						processData: false,
+						data: form_data,
+						success: function(response) {
+							var state_response = JSON.parse(response);
+							console.log('checkbox->'+ state_response.valuechanged);
+
+						},
+						error: function(response) {
+							console.log('Error Uploading');
+						}
+					});
+				}
+
+
+
                 /**
                  * Update Group Display Tab in BuddyPress
                  */

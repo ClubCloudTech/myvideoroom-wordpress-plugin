@@ -54,6 +54,7 @@ class MVRSiteVideo {
 	const USER_STATE_INFO               = 'user_state_info';
 	const SETTING_HOST                  = '434331';
 	const SETTING_GUEST                 = '331434';
+	const SETTING_TEMPLATE_OVERRIDE     = 'myvideoroom-setting-template-override';
 
 	/**
 	 * Initialise On Module Activation
@@ -216,7 +217,7 @@ class MVRSiteVideo {
 			'myvideoroom-sitevideo-add-room-js',
 			\plugins_url( '/js/add-room.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			Factory::get_instance( Version::class )->get_plugin_version() . wp_rand( 2, 3000 ),
+			Factory::get_instance( Version::class )->get_plugin_version(),
 			true
 		);
 
@@ -417,6 +418,17 @@ class MVRSiteVideo {
 				),
 			)
 		);
+
+		$style_override = get_option( self::SETTING_TEMPLATE_OVERRIDE );
+
+		if ( $style_override ) {
+			\wp_enqueue_style(
+				'myvideoroom-frontend-override',
+				\plugins_url( '/css/frontend-override.css', \realpath( __DIR__ . '/../' ) ),
+				false,
+				Factory::get_instance( Version::class )->get_plugin_version(),
+			);
+		}
 	}
 
 	/**

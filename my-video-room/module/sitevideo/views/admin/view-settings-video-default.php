@@ -22,7 +22,9 @@ use MyVideoRoomPlugin\Shortcode\UserVideoPreference;
 use MyVideoRoomPlugin\SiteDefaults;
 
 
-return function (): string {
+return function (
+	string $template_override
+): string {
 	ob_start();
 	$index = 788;
 
@@ -83,12 +85,32 @@ return function (): string {
 	<!-- Module State and Description Marker -->
 <div class="myvideoroom-feature-outer-table">
 		<div id="module-state<?php echo esc_attr( $index++ ); ?>" class="myvideoroom-feature-table-small">
-			<h2><?php esc_html_e( 'Description', 'myvideoroom' ); ?></h2>
+			<h2><?php esc_html_e( 'Settings', 'myvideoroom' ); ?></h2>
 			<div id="parentmodule<?php echo esc_attr( $index++ ); ?>">
 
 			</div>
 		</div>
 		<div class="myvideoroom-feature-table-large">
+		<label for="myvideoroom_user_show_floorplan_preference"
+				class="mvr-preferences-paragraph">
+				<strong><?php esc_html_e( 'Enforce Plugin Style:', 'myvideoroom' ); ?></strong>
+			</label>
+			<input type="checkbox" class="myvideoroom_enforce_plugin_style"
+				name="myvideoroom_enforce_plugin_style"
+				id="myvideoroom_enforce_plugin_style"
+				<?php echo $template_override ? 'checked' : ''; ?> />
+			<p class="mvr-preferences-paragraph">
+				<?php
+				esc_html_e(
+					'Enforce the Default Plugin style for Video Rooms and avoid using the stylesheet built into your theme. With this checked the plugin will use its own styling and not the one in your theme. This is the case for buttons, icons, fonts, and text and background colours.',
+					'myvideoroom'
+				);
+				?>
+			</p>
+			<hr />
+
+
+
 			<?php
 			$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(
 				SiteDefaults::USER_ID_SITE_DEFAULTS,

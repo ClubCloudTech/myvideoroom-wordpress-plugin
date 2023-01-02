@@ -186,7 +186,7 @@ class HttpPost {
 		<input type="submit"
 			name="submit"
 			id="submit"
-			class=" mvr-ul-style-menu myvideoroom-welcome-positive <?php echo esc_attr( $class ); ?>"
+			class=" mvr-ul-style-menu myvideoroom-button-override <?php echo esc_attr( $class ); ?>"
 			value="<?php echo \esc_html( $submit_text ); ?>"/>
 		<?php
 

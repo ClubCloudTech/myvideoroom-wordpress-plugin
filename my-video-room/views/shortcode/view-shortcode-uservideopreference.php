@@ -25,7 +25,7 @@ return function (
 	?>
 <div class="mvr-woocommerce-overlay mvr-nav-shortcode-outer-wrap">
 	<div id="video-host-wrap" class="mvr-nav-settingstabs-outer-wrap ">
-		<h2 class="mvr-admin-hide"><?php esc_html_e( 'Room Settings for ', 'myvideoroom' ); ?>
+		<h2 class="mvr-admin-hide mvr-override-h2"><?php esc_html_e( 'Room Settings for ', 'myvideoroom' ); ?>
 			<?php
 			$output = str_replace( '-', ' ', $room_name );
 			echo esc_html( ucwords( $output ) );
@@ -60,7 +60,7 @@ return function (
 			<input name="myvideoroom_user_room_name" type="hidden" value="<?php echo esc_attr( $room_name ); ?>" />
 
 			<h3 class="mvr-title-header">
-				<label for="myvideoroom_user_layout_id_preference_<?php echo esc_attr( $id_index ); ?>">
+				<label class="mvr-override-h2" for="myvideoroom_user_layout_id_preference_<?php echo esc_attr( $id_index ); ?>">
 					<?php esc_html_e( 'Video layout setting:', 'myvideoroom' ); ?>
 				</label>
 			</h3>
@@ -107,10 +107,10 @@ return function (
 				<?php esc_html_e( 'Use this setting to control the layout of the room you and your guests will see. There are lots of templates to chose from, and more are being added monthly.', 'myvideoroom' ); ?>
 			</p>
 			<label for="myvideoroom_user_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
-				class="mvr-preferences-paragraph">
-				<strong><?php esc_html_e( 'Disable Interactive Floorplan:', 'myvideoroom' ); ?></strong>
+				class="mvr-preferences-paragraph mvr-override-h2">
+				<?php esc_html_e( 'Disable Interactive Floorplan:', 'myvideoroom' ); ?>
 			</label>
-			<input type="checkbox" class="myvideoroom_user_show_floorplan_preference"
+			<input type="checkbox" class="myvideoroom_user_show_floorplan_preference myvideoroom_checkbox_override"
 				name="myvideoroom_user_show_floorplan_preference"
 				id="myvideoroom_user_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->is_floorplan_enabled() ? 'checked' : ''; ?> />
@@ -126,12 +126,12 @@ return function (
 			<hr />
 			<h3 class="mvr-title-header">
 				<label for="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-					class="mvr-preferences-paragraph">
+					class="mvr-preferences-paragraph mvr-override-h2">
 					<i
 						class="myvideoroom-dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'myvideoroom' ); ?>
 				</label>
 			</h3>
-			<input type="checkbox" class="myvideoroom_user_reception_enabled_preference"
+			<input type="checkbox" class="myvideoroom_user_reception_enabled_preference myvideoroom_checkbox_override"
 				name="myvideoroom_user_reception_enabled_preference"
 				id="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->is_reception_enabled() ? 'checked' : ''; ?> />
@@ -150,7 +150,7 @@ return function (
 			<br>
 
 			<label for="myvideoroom_user_reception_id_preference_<?php echo esc_attr( $id_index ); ?>"
-				class="mvr-preferences-paragraph">
+				class="mvr-preferences-paragraph mvr-override-h2">
 				<?php esc_html_e( 'Reception Appearance', 'myvideoroom' ); ?>
 			</label>
 			<div class="mvr-template-table mvr-reception-image mvr-title-header"><i
@@ -207,7 +207,7 @@ return function (
 				?>
 			</p><br>
 			<label for="myvideoroom_user_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
-				class="mvr-preferences-paragraph">
+				class="mvr-preferences-paragraph mvr-override-h2">
 				<strong><?php esc_html_e( 'Enable Custom Video for Reception :', 'myvideoroom' ); ?></strong>
 			</label>
 			<div class="mvr-template-table mvr-custom-video mvr-title-header"><i
@@ -225,13 +225,13 @@ return function (
 				</div>
 			</div>
 
-			<input type="checkbox" class="myvideoroom_user_reception_video_enabled_preference"
+			<input type="checkbox" class="myvideoroom_user_reception_video_enabled_preference myvideoroom_checkbox_override"
 				name="myvideoroom_user_reception_video_enabled_preference"
 				id="myvideoroom_user_reception_video_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->is_reception_video_enabled() ? 'checked' : ''; ?> />
 			<br>
 			<label for="myvideoroom_user_reception_waiting_video_url_<?php echo esc_attr( $id_index ); ?>"
-				class="mvr-preferences-paragraph">
+				class="mvr-preferences-paragraph mvr-override-h2">
 				<?php esc_html_e( 'Your Video URL:', 'myvideoroom' ); ?>
 			</label>
 			<input type="text" id="myvideoroom_user_reception_waiting_video_url"

@@ -9,6 +9,7 @@ declare( strict_types=1 );
 
 namespace MyVideoRoomPlugin\Module\WooCommerce\Library;
 
+use MyVideoRoomPlugin\DAO\RoomMap;
 use MyVideoRoomPlugin\Factory;
 
 /**
@@ -55,8 +56,8 @@ class ShopView {
 
 		$term_to_add = Factory::get_instance( WooCategory::class )->get_category_id_by_room_name( $room_name );
 		if ( ! $term_to_add ) {
-			$room_id = Factory::get_instance( RoomApp::class )->get_post_id_by_room_name( $room_name );
-			$room    = Factory::get_instance( RoomApp::class )->get_room_info( $room_id );
+			$room_id = Factory::get_instance( RoomMap::class )->get_post_id_by_room_name( $room_name );
+			$room    = Factory::get_instance( RoomMap::class )->get_room_info( $room_id );
 			Factory::get_instance( WooCategory::class )->create_product_category( $room_name, $room->display_name );
 			$term_to_add = Factory::get_instance( WooCategory::class )->get_category_id_by_room_name( $room_name );
 		}

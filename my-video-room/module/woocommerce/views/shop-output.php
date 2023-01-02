@@ -31,7 +31,7 @@ return function (
 	<div class="mvr-storefront-master">
 		<div id="storeid" data-last-storecount="<?php echo esc_attr( $shop_count ); ?>"></div>
 		<div id="myvideoroom-roomstore-outer" class="mvr-admin-page-wrap">
-			<h2><?php esc_html_e( 'Room Store and Basket', 'myvideoroom' ); ?></h2>
+			<h2 class="mvr-override-h2"><?php esc_html_e( 'Room Store and Basket', 'myvideoroom' ); ?></h2>
 			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper mvr-mobile-size">
 				<ul class="mvr-ul-style-top-menu">
 					<li>
@@ -78,7 +78,7 @@ return function (
 					<table class="wp-list-table widefat plugins myvideoroom-table-adjust">
 						<thead>
 							<tr>
-								<h2>
+								<h2 class="mvr-override-h2">
 									<?php
 									esc_html_e( 'Room Store', 'myvideoroom' );
 									?>

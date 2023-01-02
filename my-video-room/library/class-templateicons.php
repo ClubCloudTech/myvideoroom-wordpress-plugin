@@ -126,32 +126,32 @@ class TemplateIcons {
 		switch ( $type ) {
 			case 'login':
 				$button_label = '<span title ="' . esc_html__( 'Login to access your room settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-network"></span>';
-				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation myvideoroom-button-override';
 				$a_class      = '';
 				$id           = 'mvr-button-login';
 				break;
 			case 'photo':
 				$button_label = '<span title ="' . esc_html__( 'Take your picture for room floorplans and easy recognition', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-camera"></span>';
-				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation myvideoroom-button-override';
 				$a_class      = '';
 				$id           = 'mvr-photo-image';
 				break;
 			case 'name':
 				$button_label = '<span title ="' . esc_html__( 'You need to identify yourself for the meeting. Please enter a short name', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-format-chat"></span>';
-				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation myvideoroom-button-override';
 				$a_class      = '';
 				$id           = 'mvr-name-user';
 				break;
 			case 'checksound':
 				$button_label  = '<span title ="' . esc_html__( 'Lets get your sound, and camera checked out and ready', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-generic"></span>';
 				$button_label .= '<span title ="' . esc_html__( 'Lets get your sound, and camera checked out and ready', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-controls-volumeon"></span>';
-				$button_class  = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$button_class  = 'mvr-ul-style-menu myvideoroom-button-separation myvideoroom-button-override';
 				$a_class       = '';
 				$id            = 'mvr-check-sound';
 				break;
 			case 'forgetme':
 				$button_label = '<span title ="' . esc_html__( 'Delete your name, picture, and clear temporary information', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-hidden"></span>';
-				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation';
+				$button_class = 'mvr-ul-style-menu myvideoroom-button-separation myvideoroom-button-override';
 				$a_class      = '';
 				$id           = 'mvr-forget-me';
 				break;

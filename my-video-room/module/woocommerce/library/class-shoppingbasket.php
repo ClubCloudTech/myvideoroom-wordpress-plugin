@@ -82,7 +82,7 @@ class ShoppingBasket {
 	 */
 	public function cart_confirmation( string $action_type, string $room_name, string $auth_nonce, string $message, string $confirmation_button_approved, string $data_for_confirmation = null, string $target_window = null ):string {
 
-			$cancel_button = $this->cancel_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Cancel', 'myvideoroom' ), null, 'mvr-main-button-cancel', $target_window );
+			$cancel_button = $this->cancel_nav_bar_button( WooCommerce::SETTING_REFRESH_BASKET, esc_html__( 'Cancel', 'myvideoroom' ), null, 'mvr-main-button-cancel myvideoroom-button-override', $target_window );
 
 		// Render Confirmation Page View.
 		$render = require __DIR__ . '/../views/basket-confirmation.php';
@@ -441,8 +441,8 @@ class ShoppingBasket {
 		}
 
 		return '
-		<button  class="' . $style . ' myvideoroom-woocommerce-basket-ajax" data-target="' . $target_id . '">
-		<a  data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="' . $style . ' myvideoroom-woocommerce-basket-ajax ' . $href_class . '">' . $button_label . '</a>
+		<button  class="' . $style . ' myvideoroom-woocommerce-basket-ajax myvideoroom-button-override" data-target="' . $target_id . '">
+		<a  data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"' . $id_text . ' class="' . $style . ' myvideoroom-woocommerce-basket-ajax myvideoroom-button-override ' . $href_class . '">' . $button_label . '</a>
 		</button>
 		';
 	}
@@ -494,7 +494,7 @@ class ShoppingBasket {
 		}
 
 		return '
-		<button class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax">
+		<button class="mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax myvideoroom-button-override">
 		<a data-input-type="' . $button_type . '" 
 		 data-auth-nonce="' . $nonce . '"
 		 data-room-name="' . $room_name . '"
@@ -502,7 +502,7 @@ class ShoppingBasket {
 		 data-variation-id="' . $variation_id . '"
 		 data-product-id="' . $product_id . '" 
 		 ' . $item . ' 
-		 class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
+		 class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link myvideoroom-button-override">' . $button_label . '</a>
 		</button>
 		';
 
