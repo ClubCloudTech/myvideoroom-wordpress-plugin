@@ -60,7 +60,7 @@ return function (
 				<?php
 
 			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
-							echo esc_url( $header['invite_menu'] ) . '<i class="dashicons dashicons-clipboard myvideoroom-clipboard-copy"></i>'			
+							echo esc_url( $header['invite_menu'] ) . '<i class="dashicons dashicons-clipboard myvideoroom-clipboard-copy" title="Copy"></i>'			
 				?>
 				</p>
 		</div>
