@@ -55,7 +55,7 @@
         
         #basket-video-host-wrap-table,
         #mvr-main-basket-window {
-            margin-left: 72px;
+            /* margin-left: 72px; */
         }
         
         .myvideoroom-side-tab {
@@ -291,6 +291,7 @@
         }
         
         .mvr-main-button-enabled {
+            color: white;
             background: linear-gradient(#232923, #679e6e);
             border-radius: 4px;
             border-width: 2px;
@@ -309,6 +310,10 @@
             font-weight: 500;
             text-transform: uppercase;
 			padding: 3px!important;
+        }
+
+        #myvideoroom-all-set .mvr-check-sound {
+            position: absolute;
         }
         
         .mvr-ul-style-side-menu {
@@ -361,6 +366,10 @@
             padding: 10px 10px 10px 10px;
         }
         
+        .mvr-woocommerce-basket {
+            margin-left: 58px;
+        }
+
         .myvideoroom-dashicons,
         .myvideoroom-dashicons-before:before {
             font-family: dashicons!important;
