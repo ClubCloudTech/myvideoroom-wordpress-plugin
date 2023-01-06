@@ -30,7 +30,8 @@ h1{
 .myvideoroom-button-override {
 	background-image:none!important;
 	color: gray!important;
-	background-color: white!important;
+	/* background-color: white!important; */
+	background-color: red!important
 }
 
 .mvr-shopping-basket-frame-override {
