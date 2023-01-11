@@ -184,7 +184,7 @@ class MVRSiteVideoAjax {
 		if ( 'check_sound' === $action_taken ) {
 			$response['mainvideo'] = Factory::get_instance( RoomAdmin::class )->render_guest_soundcheck();
 			$response['message']   = '<strong>' . \esc_html__( 'To begin Soundcheck click on any open seat', 'myvideoroom' ) . '</strong>';
-			$response['message']  .= '<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons " />';
+			$response['message']  .= '<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons myvideoroom-button-override" />';
 			return \wp_send_json( $response );
 		}
 

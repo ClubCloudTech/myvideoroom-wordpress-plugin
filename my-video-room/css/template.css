@@ -80,7 +80,8 @@
 
 
 .mvr-main-button-disabled {
-	background-color: rgb(190, 21, 21);
+	/* background-color: rgb(190, 21, 21); */
+	background-color: #dc3545;
 	border-radius: 3px;
 	color: rgb(255 255 255) !important;
 	display: inline;
@@ -90,6 +91,7 @@
 	padding: 4px;
 	text-align: -webkit-center;
 	vertical-align: middle;
+	border: none!important;
 }
 
 .mvr-main-button-notice {
@@ -100,7 +102,7 @@
 	font-size: 14px;
 	font-weight: 400;
 	margin-left: 2px !important;
-	padding: 7px;
+	padding: 3px;
 	text-align: -webkit-center;
 	vertical-align: middle;
 }

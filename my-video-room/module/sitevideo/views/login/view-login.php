@@ -30,7 +30,7 @@ return function (
 
 <div id="mvr-login-form" data-logged-in="<?php echo esc_attr( is_user_logged_in() ); ?>" class="myvideoroom-center myvideoroom-welcome-page" style="<?php echo esc_attr( $style ); ?>">
 	<h2><?php esc_html_e( 'Have an Account?', 'myvideoroom' ); ?></h2>
-	<p id="myvideoroom-picturedescription-login" class="myvideoroom-table-adjust">
+	<p id="myvideoroom-picturedescription-login" class="myvideoroom-table-adjust mvr-paragraph-override">
 		<?php esc_html_e( 'You can login to access your previously stored room settings, baskets, lists, and pictures', 'myvideoroom' ); ?>
 	</p>
 	<?php

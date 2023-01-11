@@ -95,11 +95,18 @@ return function (
 				class="mvr-preferences-paragraph">
 				<strong><?php esc_html_e( 'Enforce Plugin Style:', 'myvideoroom' ); ?></strong>
 			</label>
-			<input type="checkbox" class="myvideoroom_enforce_plugin_style"
+			<!-- <input type="checkbox" class="myvideoroom_enforce_plugin_style myvideoroom_checkbox_override"
 				name="myvideoroom_enforce_plugin_style"
 				id="myvideoroom_enforce_plugin_style"
-				<?php echo $template_override ? 'checked' : ''; ?> />
-			<p class="mvr-preferences-paragraph">
+				<?php //echo $template_override ? 'checked' : ''; ?> /> -->
+				<select name="myvideoroom_enforce_plugin_style" id="myvideoroom_enforce_plugin_style">
+					<option>Choose Plugin Style</option>
+					<option value="lite">Lite Mood</option>
+					<option value="dark">Dark Mood</option>
+					<option value="standard">Standard Mood</option>
+					<option value="theme_color">Theme Mood</option>
+				</select>
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php
 				esc_html_e(
 					'Enforce the Default Plugin style for Video Rooms and avoid using the stylesheet built into your theme. With this checked the plugin will use its own styling and not the one in your theme. This is the case for buttons, icons, fonts, and text and background colours.',

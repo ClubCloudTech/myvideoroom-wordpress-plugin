@@ -89,7 +89,7 @@ td {
 }
 
 .myvideoroom-nav-tab-wrapper li a:not(.nav-tab-active) {
-	background: #dcdcde;
+	background: #E84D0E!important;
 }
 
 .myvideoroom-nav-tab-wrapper li a.nav-tab-active,
@@ -448,7 +448,8 @@ td {
 }
 
 .mvr-nav-settingstabs-outer-wrap {
-	background-color: #f7f7f7;
+	/* background-color: #f7f7f7; */
+	background-color: #dcdcde;
 	border: 1px solid #c3c4c7;
 	padding: 3px;
 	display: contents;

@@ -37,14 +37,14 @@ return function (
 		$status = MVRSiteVideo::SETTING_HOST;
 	}
 	?>
-<div class="mvr-nav-shortcode-outer-wrap " style="max-width: 1250px;">
+<div class="mvr-nav-shortcode-outer-wrap mvr-output-inner-wrapper" style="max-width: 1250px;">
 	<div id="roominfo" data-room-name="<?php echo esc_attr( $room_name ); ?>"
 		data-logged-in="<?php echo esc_attr( is_user_logged_in() ); ?>"
 		data-room-type="<?php echo esc_attr( $header['room_type'] ); ?>"
 		data-checksum="<?php echo esc_attr( Factory::get_instance( MVRSiteVideoRoomHelpers::class )->create_host_checksum( $header['room_type'], $status, $header['room_name'] ) ); ?>"
 		>
 	</div>
-	<div class="mvr-header-section">
+	<div class="mvr-header-section mvr-header-section-override">
 		<div id="mvr-notification-icons" class="myvideoroom-header-table-left">
 			<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
 				echo $header['template_icons'] ;
@@ -60,7 +60,7 @@ return function (
 				<?php
 
 			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
-							echo esc_url( $header['invite_menu'] ) . '<i class="dashicons dashicons-clipboard myvideoroom-clipboard-copy" title="Copy"></i>'			
+							echo esc_url( $header['invite_menu'] ) . '&nbsp;&nbsp;<i class="dashicons dashicons-clipboard myvideoroom-clipboard-copy" title="Copy"></i>'			
 				?>
 				</p>
 		</div>
@@ -85,7 +85,7 @@ return function (
 				$object_id        = $menu_output->get_element_id();
 				?>
 			<li>
-				<a class="nav-tab<?php echo esc_attr( $active ); ?>" 
+				<a class="nav-tab<?php echo esc_attr( $active ); ?> mvr-tab-buttons-override" 
 											<?php
 											if ( $object_id ) {
 												echo 'id = "' . esc_attr( $object_id ) . '" ';

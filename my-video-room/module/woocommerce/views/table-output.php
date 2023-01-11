@@ -84,7 +84,7 @@ return function (
 
 		</h1>
 
-		<p class="mvr-header-basket-description">
+		<p class="mvr-header-basket-description mvr-paragraph-override">
 			<?php echo esc_html( $description ); ?>
 		</p>
 
@@ -146,7 +146,7 @@ return function (
 			<?php
 		} else {
 			?>
-		<p>
+		<p class="mvr-paragraph-override">
 			<?php
 
 					esc_html_e(

@@ -71,7 +71,7 @@ class BuddyPressConfig {
 	<option value="Members"><?php esc_html_e( 'Members and above', 'myvideoroom' ); ?></option>
 	<option value="off"><?php esc_html_e( 'Turned Off- all roles allowed', 'myvideoroom' ); ?></option>
 </select><br>
-<p class="mvr-preferences-paragraph">
+<p class="mvr-preferences-paragraph mvr-paragraph-override">
 		<?php
 			esc_html_e(
 				'You can select if you want to make the group available to all Administrators, Moderators, Members, or Normal ( no access control ),
@@ -128,7 +128,7 @@ class BuddyPressConfig {
 		<?php esc_html_e( 'Do Not Disturb Page - Show Block Page to Non Friends', 'myvideoroom' ); ?></option>
 	<option value="all"><?php esc_html_e( 'Allow All- Friends and Non-Friends allowed', 'myvideoroom' ); ?></option>
 </select><br>
-<p class="mvr-preferences-paragraph">
+<p class="mvr-preferences-paragraph mvr-paragraph-override">
 		<?php
 			esc_html_e(
 				'You can choose if you want to restrict access to your Video Room to your friends. This setting has an option to allow all users to access your room(default), or to enable access control. If you enable access control, there are two options: ',
@@ -136,7 +136,7 @@ class BuddyPressConfig {
 			);
 		?>
 </p>
-<p class="mvr-preferences-paragraph">
+<p class="mvr-preferences-paragraph mvr-paragraph-override">
 		<?php
 			esc_html_e(
 				'Stealth Mode - will just remove your video room from your profile from your non-friends (and Blocked users). Show Do 
@@ -146,7 +146,7 @@ class BuddyPressConfig {
 		?>
 </p>
 </p>
-<p class="mvr-preferences-paragraph">
+<p class="mvr-preferences-paragraph mvr-paragraph-override">
 		<?php
 			esc_html_e(
 				'Show Do Not Disturb- will show your room entrance on your profile but will block any user that tries to access your reception with a message. In any case you will not be notified.',

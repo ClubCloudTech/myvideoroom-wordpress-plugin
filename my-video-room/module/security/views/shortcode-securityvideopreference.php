@@ -79,7 +79,7 @@ return function (
 				id="myvideoroom_security_room_disabled_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->is_room_disabled() ? 'checked' : ''; ?>
 			/>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php esc_html_e( 'Enable this setting to switch off your room. No one will be able to join it. ', 'myvideoroom' ); ?>
 			</p>
 			<hr />
@@ -95,7 +95,7 @@ return function (
 				id="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->is_anonymous_enabled() ? 'checked' : ''; ?>
 			/>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php
 				esc_html_e(
 					'If you enable this setting, anonymous users from the Internet WILL NOT be able to enter your room. The only way someone can enter your room is if they have an account on your website. This means that external users, will have to go through whatever registration process exists for your website. Default is disabled, which means anonymous access is allowed.',
@@ -119,7 +119,7 @@ return function (
 				<?php echo $current_user_setting && $current_user_setting->is_allow_role_control_enabled() ? 'checked' : ''; ?>
 			/>
 			<br>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php
 				esc_html_e(
 					'If you enable this setting only the following roles will be allowed to access your rooms. If you want to reverse the setting, then click "block these roles instead" which will allow all roles - except for the ones you select. ',
@@ -157,7 +157,7 @@ return function (
 			/>
 			<br>
 			<br>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php
 				esc_html_e(
 					'Use this setting to determine what user roles you want to explicitly allow or - the reverse (block all users but a specific role) if you tick the Block Role option. Please Note: If you choose to Block a Role, you must still decide if you would like Anonymous Users to access the room separately in the Restrict Anonymous option above.',

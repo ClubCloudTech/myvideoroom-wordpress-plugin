@@ -124,7 +124,7 @@ return function (
 			<code class="myvideoroom-shortcode-example-inline">
 				<?php
 
-					$shortcode        = '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $room->id . ']';
+					$shortcode        = '[' . MVRSiteVideo::SHORTCODE_SITE_VIDEO . ' id="' . $room->id . '"]';
 					$shortcode_filter = apply_filters( 'myvideoroom_room_manager_shortcode_display', $shortcode, $room->room_type, $room->id, $room );
 					echo esc_html( $shortcode_filter );
 

@@ -35,19 +35,19 @@ return function (
 			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper mvr-mobile-size">
 				<ul class="mvr-ul-style-top-menu">
 					<li>
-						<a class="nav-tab nav-tab-active mvr-full-hide" href="#roomstore">
+						<a class="nav-tab nav-tab-active mvr-full-hide mvr-tab-buttons-override" href="#roomstore">
 							<?php esc_html_e( 'Store', 'myvideoroom' ); ?>
 						</a>
-						<a class="nav-tab nav-tab-active mvr-mobile-hide" href="#roomstore">
+						<a class="nav-tab nav-tab-active mvr-mobile-hide mvr-tab-buttons-override" href="#roomstore">
 							<?php esc_html_e( 'Room Store', 'myvideoroom' ); ?>
 						</a>
 					</li>
 
 					<li>
-						<a class="nav-tab mvr-full-hide" href="#basketprevious">
+						<a class="nav-tab mvr-full-hide mvr-tab-buttons-override" href="#basketprevious">
 							<?php esc_html_e( 'Basket', 'myvideoroom' ); ?>
 						</a>
-						<a class="nav-tab mvr-mobile-hide" href="#basketprevious">
+						<a class="nav-tab mvr-mobile-hide mvr-tab-buttons-override" href="#basketprevious">
 							<?php esc_html_e( 'Previous Basket', 'myvideoroom' ); ?>
 						</a>
 					</li>
@@ -56,10 +56,10 @@ return function (
 					if ( $host_status ) {
 						?>
 					<li>
-						<a class="nav-tab mvr-full-hide" href="#roomcontrol">
+						<a class="nav-tab mvr-full-hide mvr-tab-buttons-override" href="#roomcontrol">
 							<?php esc_html_e( 'Manage', 'myvideoroom' ); ?>
 						</a>
-						<a class="nav-tab mvr-mobile-hide" href="#roomcontrol">
+						<a class="nav-tab mvr-mobile-hide mvr-tab-buttons-override" href="#roomcontrol">
 							<?php esc_html_e( 'Manage Room Store', 'myvideoroom' ); ?>
 						</a>
 					</li>

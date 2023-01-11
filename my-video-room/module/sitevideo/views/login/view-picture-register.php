@@ -63,7 +63,7 @@ return function (
 		?>
 	<div id="myvideoroom-all-set" class="myvideoroom-center mvr-mobile-top-margin">
 		<h2 class="mvr-override-h2"><?php esc_html_e( 'You\'re good to go', 'myvideoroom' ); ?></h2>
-		<p id="myvideoroom-allset-description" class="myvideoroom-table-adjust">
+		<p id="myvideoroom-allset-description" class="myvideoroom-table-adjust mvr-paragraph-override">
 			<?php esc_html_e( 'You\'re all set to start your meeting. You can start your meeting, or check your sound first', 'myvideoroom' ); ?>
 		</p>
 		<input id="vid-down" type="button" value="Join Meeting" class="myvideoroom-button-override" enabled />
@@ -75,7 +75,7 @@ return function (
 		?>
 	<div id="myvideoroom-welcome-pictureadd" class="myvideoroom-center">
 		<h2><?php esc_html_e( 'Add a meeting picture?', 'myvideoroom' ); ?></h2>
-		<p id="myvideoroom-welcome-setup-description" class="myvideoroom-table-adjust">
+		<p id="myvideoroom-welcome-setup-description" class="myvideoroom-table-adjust mvr-paragraph-override">
 			<?php esc_html_e( 'Meetings are better when you can see who you are talking to. Would you like to add a picture, or check your sound settings?', 'myvideoroom' ); ?>
 		</p>
 		<?php
@@ -91,7 +91,7 @@ return function (
 		?>
 	<div id="myvideoroom-welcome-setup" class="myvideoroom-center">
 		<h2><?php esc_html_e( 'Nice to Meet You', 'myvideoroom' ); ?></h2>
-		<p id="myvideoroom-welcome-setup-description" class="myvideoroom-table-adjust">
+		<p id="myvideoroom-welcome-setup-description" class="myvideoroom-table-adjust mvr-paragraph-override">
 			<?php esc_html_e( 'To start your meeting, you need to decide your meeting name that others can see in the floorplan, and optionally set a picture for yourself.', 'myvideoroom' ); ?>
 		</p>
 		<hr>
@@ -109,7 +109,7 @@ return function (
 		}
 		?>
 		<div class="mvr-clear">
-			<p id="myvideoroom-picturedescription" class="myvideoroom-table-adjust">
+			<p id="myvideoroom-picturedescription" class="myvideoroom-table-adjust mvr-paragraph-override">
 				<?php esc_html_e( 'You can select a picture for the room participants to see you in seating plans', 'myvideoroom' ); ?>
 			</p>
 		</div>
@@ -145,14 +145,14 @@ return function (
 			<input id="vid-up" type="button" value="Use This" class="myvideoroom-welcome-positive mvr-hide" />
 			<input id="vid-picture" type="button" value="Take Picture" class="myvideoroom-button-override" />
 			<input id="upload-picture" type="button" value="Upload Picture"
-				class="myvideoroom-welcome-positive mvr-hide" />
+				class="myvideoroom-welcome-positive mvr-hide myvideoroom-welcome-button" />
 
 		</div>
 	</div>
 
 	<div id="myvideoroom-meeting-name" style="display:none;">
 		<h2><?php esc_html_e( 'Your Display Name', 'myvideoroom' ); ?></h2>
-		<p id="myvideoroom-namedescription" class="myvideoroom-table-adjust">
+		<p id="myvideoroom-namedescription" class="myvideoroom-table-adjust mvr-paragraph-override">
 			<?php esc_html_e( 'Your Display Name is what others will see you called in the Floorplan', 'myvideoroom' ); ?>
 		</p>
 		<input id="vid-name" type="text" placeholder="Meeting Display Name"
@@ -167,7 +167,7 @@ return function (
 			<?php esc_html_e( 'You can use this handy entry room to get your sound and camera checked out before you enter the main room', 'myvideoroom' ); ?>
 		</p>
 		<input id="chk-sound" type="button" value="Check Camera and Sound" class="myvideoroom-button-override" />
-		<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons mvr-hide" />
+		<input id="stop-chk-sound" type="button" value="Stop Check" class="myvideoroom-welcome-buttons myvideoroom-button-override mvr-hide" />
 	</div>
 	<?php
 	if ( ! \is_user_logged_in() && \get_option( LoginForm::SETTING_LOGIN_DISPLAY ) ) {

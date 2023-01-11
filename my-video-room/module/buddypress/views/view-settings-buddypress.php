@@ -217,7 +217,7 @@ return function (): string {
 										class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />
 								</div>
 								<input id="save-user-tab" type="button" value="Save"
-									class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;" />
+									class="myvideoroom-welcome-buttons mvr-main-button-notice myvideoroom-button-override" style=" display:none;" />
 							</div>
 						</div>
 						<!-- Default Video Section  -->
@@ -387,7 +387,7 @@ return function (): string {
 									class="myvideoroom-inline myvideoroom-input-restrict-alphanumeric-space" />
 							</div>
 							<input id="save-group-tab" type="button" value="Save"
-								class="myvideoroom-welcome-buttons mvr-main-button-notice" style=" display:none;" />
+								class="myvideoroom-welcome-buttons mvr-main-button-notice myvideoroom-button-override" style=" display:none;" />
 						</div>
 					</div>
 					<!-- Default Video Section  -->

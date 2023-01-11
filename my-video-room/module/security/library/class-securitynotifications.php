@@ -186,7 +186,7 @@ class SecurityNotifications {
 
 		if ( ! $site_override ) {
 			if ( ! $room_disabled ) {
-				$output .= '<button class="mvr-main-button-enabled" >' . esc_html__( 'Room Enabled', 'myvideoroom' ) . '</button>';
+				$output .= '<button class="mvr-main-button-enabled myvideoroom-button-override" >' . esc_html__( 'Room Enabled', 'myvideoroom' ) . '</button>';
 			} else {
 				$output .= '<button class="mvr-main-button-disabled" >' . esc_html__( 'Room Disabled', 'myvideoroom' ) . '</button>';
 			}
@@ -206,9 +206,9 @@ class SecurityNotifications {
 					$db_setting = 'No One';
 				}
 				if ( $block_role_control ) {
-					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions are Excluding : ', 'myvideoroom' ) . $db_setting . '</button>';
+					$output .= '<button class="mvr-main-button-notice myvideoroom-button-override">' . esc_html__( 'Member Restrictions are Excluding : ', 'myvideoroom' ) . $db_setting . '</button>';
 				} else {
-					$output .= '<button class="mvr-main-button-notice">' . esc_html__( 'Member Restrictions Only Allowing : ', 'myvideoroom' ) . '' . $db_setting . '</button>';
+					$output .= '<button id="mvr-restriction-notification-01" class="mvr-main-button-notice myvideoroom-button-override">' . esc_html__( 'Member Restrictions Only Allowing : ', 'myvideoroom' ) . '' . $db_setting . '</button>';
 				}
 			}
 

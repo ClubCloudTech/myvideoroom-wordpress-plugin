@@ -435,7 +435,7 @@ window.addEventListener("load", function() {
         document.getElementById("mvr-top-notification").innerHTML += '<br><div><strong>Your Records have been deleted</strong></div>';
 
     }
-
+       
 
     function refreshWelcome() {
         // Prepare Form.
@@ -482,7 +482,7 @@ window.addEventListener("load", function() {
     function resetPanel() {
         jQuery(function($) {
             $('.myvideoroom-app').show();
-            startmeeting(true);
+            // startmeeting(true);
         });
     }
 

@@ -44,13 +44,13 @@ return function (
 		}
 
 		if ( $reception_enabled || $floorplan_enabled ) {
-			$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Guests will see the Reception Template of your choice and will not be admitted into the room until you drag their icon in.', 'myvideoroom' ) . '">' . esc_html__( 'Reception Enabled', 'myvideoroom' ) . '</p>';
+			$output .= '<p class="mvr-main-button-notice mvr-restriction-status-override" title="' . esc_html__( 'Guests will see the Reception Template of your choice and will not be admitted into the room until you drag their icon in.', 'myvideoroom' ) . '">' . esc_html__( 'Reception Enabled', 'myvideoroom' ) . '</p>';
 		}
 		if ( $floorplan_enabled ) {
-			$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Guests will not see the Image of the Room Floorplan and only have a classic Video Experience', 'myvideoroom' ) . '">' . esc_html__( 'Guest Template Disabled', 'myvideoroom' ) . '</p>';
+			$output .= '<p class="mvr-main-button-notice mvr-restriction-status-override" title="' . esc_html__( 'Guests will not see the Image of the Room Floorplan and only have a classic Video Experience', 'myvideoroom' ) . '">' . esc_html__( 'Guest Template Disabled', 'myvideoroom' ) . '</p>';
 		}
 		if ( ! $reception_enabled && ! $floorplan_enabled ) {
-			$output .= '<p class="mvr-main-button-notice" title="' . esc_html__( 'Guests can view the room and see the presence of other participants. Guests still require admission into room.', 'myvideoroom' ) . '">' . esc_html__( 'Unrestricted Entry', 'myvideoroom' ) . '</p>';
+			$output .= '<p class="mvr-main-button-notice mvr-restriction-status-override" title="' . esc_html__( 'Guests can view the room and see the presence of other participants. Guests still require admission into room.', 'myvideoroom' ) . '">' . esc_html__( 'Unrestricted Entry', 'myvideoroom' ) . '</p>';
 		}
 		// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Elements above are already safe.
 		echo '<div class="mvr-button-table"> ' . $output . ' </div>';
@@ -64,7 +64,7 @@ return function (
 					<?php esc_html_e( 'Video layout setting:', 'myvideoroom' ); ?>
 				</label>
 			</h3>
-			<div class="mvr-video-template mvr-title-header"><i class="myvideoroom-dashicons mvr-icons dashicons-editor-help"></i>
+			<div class="mvr-video-template mvr-title-header mvr-template-table"><i class="myvideoroom-dashicons mvr-icons dashicons-editor-help"></i>
 			</div>
 
 			<div class="mvr-hide mvr-template-table">
@@ -103,7 +103,7 @@ return function (
 				}
 				?>
 			</select>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php esc_html_e( 'Use this setting to control the layout of the room you and your guests will see. There are lots of templates to chose from, and more are being added monthly.', 'myvideoroom' ); ?>
 			</p>
 			<label for="myvideoroom_user_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
@@ -114,7 +114,7 @@ return function (
 				name="myvideoroom_user_show_floorplan_preference"
 				id="myvideoroom_user_show_floorplan_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->is_floorplan_enabled() ? 'checked' : ''; ?> />
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php
 				esc_html_e(
 					'Disable Floorplan and use classic video without templates. Please note if you select this,
@@ -128,14 +128,14 @@ return function (
 				<label for="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					class="mvr-preferences-paragraph mvr-override-h2">
 					<i
-						class="myvideoroom-dashicons mvr-icons dashicons-lock"></i><?php esc_html_e( 'Enable Reception', 'myvideoroom' ); ?>
+						class="myvideoroom-dashicons mvr-icons dashicons-lock "></i><?php esc_html_e( 'Enable Reception', 'myvideoroom' ); ?>
 				</label>
 			</h3>
 			<input type="checkbox" class="myvideoroom_user_reception_enabled_preference myvideoroom_checkbox_override"
 				name="myvideoroom_user_reception_enabled_preference"
 				id="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->is_reception_enabled() ? 'checked' : ''; ?> />
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php
 				esc_html_e(
 					'Enable this if you want to have guests wait in a secure location that you must allow into your space,
@@ -197,7 +197,7 @@ return function (
 				?>
 			</select>
 			<br><br>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php
 				esc_html_e(
 					'Use this setting to decide what you want your Video Space reception to look like. This will be shown for all guests while they wait for
@@ -239,7 +239,7 @@ return function (
 				value="<?php echo esc_url( $reception_video_url ); ?>">
 
 			<br><br>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php
 				esc_html_e(
 					'This setting controls whether you want your guests to see a video or movie channel if Reception is enabled. Enter a url in the form of https://youvideoservice.com/yourvideofolder/video.mp4 - and this video will be displayed to your guests in your Dynamic reception areas if you have enabled a guest reception template option that can show video.',

@@ -65,7 +65,7 @@ return function (
 				<?php echo $current_user_setting && $current_user_setting->is_allow_role_control_enabled() ? 'checked' : ''; ?>
 			/>
 			<br>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php esc_html_e( 'Please select the User Role Groups you would like to be able to host your room. Anyone not setup here will be a guest of your room.', 'myvideoroom' ); ?>
 			</p><br>
 
@@ -98,7 +98,7 @@ return function (
 			/>
 			<br>
 			<br>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php esc_html_e( 'Use this setting to determine what group roles you want to explicitly allow to host your room or - the reverse (block all users but a specific role from hosting). Please Note: If you choose to Block a Role, you must still decide if you would like Anonymous Users to host the room separately below.', 'myvideoroom' ); ?>
 			</p>
 			<hr>
@@ -114,7 +114,7 @@ return function (
 				id="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 				<?php echo $current_user_setting && $current_user_setting->is_anonymous_enabled() ? 'checked' : ''; ?>
 			/>
-			<p class="mvr-preferences-paragraph">
+			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php esc_html_e( 'If you enable this setting, anonymous users from the Internet will be able to enter your room and have full control of it as a host. Please consider the security ramifications of this setting. ', 'myvideoroom' ); ?>
 			</p>
 			<hr />

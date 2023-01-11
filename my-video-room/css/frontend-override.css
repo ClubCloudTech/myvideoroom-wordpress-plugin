@@ -17,27 +17,218 @@ h1{
 	
 }
 
-.myvideoroom_checkbox_override {
-	background-color: white!important;
-	border: 2px;
-}
-
 .myvideoroom-text-heading-override {
-	color: #8c8c8c;
+	/* color: #8c8c8c; */
+	color: black!important;
 	font-size: medium;
 }
 
 .myvideoroom-button-override {
 	background-image:none!important;
-	color: gray!important;
-	/* background-color: white!important; */
-	background-color: red!important
+	color: white!important;
+	background-color: #00529c!important;
+	font-weight: 600!important;
+	transition: all 0.3s ease;
+	border: none!important;
+	border-radius: 4px;
 }
 
 .mvr-shopping-basket-frame-override {
 	padding: 0!important;
 }
 
-.myvideoroom-button-override {
-	color:#8c8c8c!important;
+.myvideoroom-button-override:hover {
+	background-color: #e84d0e!important;
+	color: white!important;
+	border-color: transparent!important;
+}
+
+.myvideoroom-button-override a:hover {
+	color: white!important;
+	background-color: #e84d0e!important;
+}
+
+.nav-tab:hover {
+	border-color: #e84d0e!important;
+}
+
+.myvideoroom-dashicons {
+	/* color: #e84d0e!important; */
+}
+
+.mvr-header-section {
+	background-color: #a4a4a6!important;
+}
+
+.mvr-header-title {
+	color: black!important;
+}
+
+.mvr-header-section .mvr-icons, .myvideoroom-clipboard-copy {
+	color: #e84d0e!important;
+}
+
+.mvr-header-section-override {
+	display: flex!important;
+    align-items: center!important;
+	padding: 0 10px!important;
+}
+
+.myvideoroom_checkbox_override {
+	background-color: white!important;
+	border-radius: 50%!important;
+	border: 1px solid #e84d0e!important;
+}
+
+input[type=checkbox]:checked:before {
+	font-size: 10px;
+	color: white!important;
+	background-color: #e84d0e!important;
+	border-radius: 50%!important;
+	border: none!important;
+    /* padding: 1px!important; */
+	margin-left: -1px;
+	margin-top: 0px;
+	width: 16px;
+	height: 16px;
+}
+
+.mvr-notifications-icons-container {
+    display: flex;
+    align-items: center;
+}
+
+.mvr-restriction-status-override {
+	padding: 10px!important;
+	/* background-color: rgb(12, 0, 173)!important; */
+	background-color: #00529c!important;
+}
+
+.mvr-template-table .myvideoroom-dashicons {
+	color: #e84d0e!important;
+}
+
+.mvr-output-inner-wrapper {
+	background-color: #dcdcde!important;
+}
+
+#mvr-basket-section {
+    background-color: #dcdcde!important;
+}
+
+.mvr-select-box:focus {
+    border: 1px solid #e84d0e!important;
+	color: #e84d0e!important;
+}
+
+.mvr-paragraph-override {
+	font-size: 13px!important;
+	font-weight: 600!important;
+}
+
+.mvr-dashicon-override {
+	color: white!important;
+}
+
+.mvr-tab-buttons-override {
+	color: white!important;
+	background-color: #00529c;
+	text-decoration: none!important;
+}
+
+.mvr-tab-buttons-override:hover {
+	background-color: #e84d0e;
+	text-decoration: none!important;
+}
+
+.mvr-override-h2 .mvr-icons:before {
+	color: #e84d0e!important;
+}
+
+.mvr-anchor-override {
+	color: white!important;
+	text-decoration: none!important;
+}
+
+.column-name {
+    font-size: 13px;
+    font-weight: 600;
+	color: black;
+}
+
+#mvr-table-basket-frame_site-conference-room .mvr-icons {
+	color: #00529c!important;
+}
+
+#mvr-table-basket-frame_site-conference-room .mvr-icons:hover {
+	color: #e84d0e!important;
+}
+
+.myvideoroom-woocommerce-basket-ajax a {
+    background: transparent !important;
+	text-decoration: none!important;
+}
+
+.mvr-woocommerce-overlay p {
+	color: rgb(32, 32, 32);
+	font-size: 13px!important;
+    font-weight: 600!important;
+}
+
+.woocommerce-info {
+	border-color: #00529C!important;
+}
+
+.woocommerce-info:before {
+	color: #e84d0e!important;
+}
+
+#vid-down {
+	padding: 12px;
+	border-radius: 4px;
+	margin-left: 4px;
+}
+
+.myvideoroom-welcome-page {
+	background-color: #dcdcde!important;
+}
+
+#mvr-restriction-notification-01 {
+	position: absolute;
+}
+
+#video-host-wrap p {
+    color: black;
+}
+
+.myvideoroom-sitevideo-add-room label {
+    color: black;
+	font-weight: 600;
+}
+
+input[type="text"] {
+	border-color: black!important;
+}
+
+input[type="text"]:focus {
+	outline: none !important;
+    border:1px solid #e84d0e!important;
+    box-shadow: 0 0 10px #719ECE;
+}
+
+#room-name-update {
+	border-radius: 4px!important;
+	padding: 10px!important;
+}
+
+#myvideoroom-welcome-pictureadd #vid-down {
+	position: absolute!important;
+}
+
+input[type="password"] {
+	border-color: black;
+}
+
+ .mvr-select-box {
+	max-width: 25rem;
 }

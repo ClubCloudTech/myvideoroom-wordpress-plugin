@@ -603,8 +603,9 @@ class HostManagement {
 			$target       = 'mvr-shopping-basket';
 			$title_box    = 'title ="' . esc_html__( 'Your Basket can be shared with others in the room', 'myvideoroom' ) . '"';
 			return $pre_text . '
+			<div class="mvr-notifications-icons-container">
 			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax myvideoroom-button-override" data-target="' . $target . '">
-			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-override myvideoroom-button-link">' . $button_label . '</a>
+			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
 			</button>';
 		} elseif ( $host_status ) {
 			$nonce        = wp_create_nonce( WooCommerce::SETTING_REQUEST_MASTER );
@@ -614,8 +615,9 @@ class HostManagement {
 			$title_box    = 'title ="' . esc_html__( 'As a host, you can request control of the room basket from the current owner', 'myvideoroom' ) . '"';
 			return '
 			<button ' . $title_box . '  class="mvr-form-button mvr-main-button-enabled myvideoroom-woocommerce-basket-ajax myvideoroom-button-override" data-target="' . $target . '">
-			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-override myvideoroom-button-link">' . $button_label . '</a>
+			<a  data-target="' . $target . '" data-input-type="' . $button_type . '" data-auth-nonce="' . $nonce . '" data-room-name="' . $room_name . '"data-record-id="' . $id_text . '" class="myvideoroom-woocommerce-basket-ajax myvideoroom-button-link">' . $button_label . '</a>
 			</button>
+			</div>
 			';
 		} else {
 			return '';

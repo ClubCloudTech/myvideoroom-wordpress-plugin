@@ -55,7 +55,7 @@ return function (
 			<a href="#"
 				data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>"
 				data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>"
-				class="myvideoroom-sitevideo-settings mvr-button-fix ">
+				class="mvr-anchor-override myvideoroom-sitevideo-settings mvr-button-fix">
 				<i class="myvideoroom-dashicons dashicons-admin-settings"></i>
 				<?php esc_html_e( 'Default Room Appearance', 'myvideoroom' ); ?></a>
 		</button>

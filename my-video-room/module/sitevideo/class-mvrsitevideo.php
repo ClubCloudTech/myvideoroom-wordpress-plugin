@@ -420,6 +420,7 @@ class MVRSiteVideo {
 		);
 
 		$style_override = get_option( self::SETTING_TEMPLATE_OVERRIDE );
+		
 
 		if ( $style_override ) {
 			\wp_enqueue_style(
