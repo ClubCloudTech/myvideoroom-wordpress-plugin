@@ -25,7 +25,7 @@ return function (
 		array(
 			__( 'Enter Room / Greet Guest' ),
 			get_site_url() . '/wp-admin/post.php?post=' . esc_textarea( $room->id ) . '&action=edit',
-			'myvideoroom-dashicons dashicons-megaphone myvideoroom-sitevideo-settings',
+			'myvideoroom-dashicons dashicons-megaphone myvideoroom-sitevideo-settings myvideoroom-dashicons-override',
 			array( 'data-input-type' => MVRSiteVideo::RECEPTION_ROOM_FLAG ),
 			array( 'target' => '_blank' ),
 		),
@@ -39,7 +39,7 @@ return function (
 		$edit_actions[] = array(
 			__( 'View settings' ),
 			$settings_url,
-			'myvideoroom-dashicons dashicons-admin-generic myvideoroom-sitevideo-settings',
+			'myvideoroom-dashicons dashicons-admin-generic myvideoroom-sitevideo-settings myvideoroom-dashicons-override',
 		);
 
 		$delete_nonce   = wp_create_nonce( 'delete_room_' . $room->id );
@@ -47,7 +47,7 @@ return function (
 		$edit_actions[] = array(
 			__( 'Delete room' ),
 			$delete_url,
-			'myvideoroom-dashicons dashicons-dismiss myvideoroom-sitevideo-delete ',
+			'myvideoroom-dashicons dashicons-dismiss myvideoroom-sitevideo-delete myvideoroom-dashicons-override',
 			array(
 				'data-nonce'     => $delete_nonce,
 				'data-room-name' => $room->display_name,
@@ -74,7 +74,7 @@ return function (
 			if ( $room->url ) {
 				echo '<a href="' . esc_url_raw( $room->url ) . '" target="_blank">' . esc_url_raw( $room->url ) . '</a>';
 			} else {
-				echo '<a href="' . esc_url_raw( $regenerate_url ) . '">' . esc_html__( 'Regenerate room', 'myvideoroom' ) . '<i class="myvideoroom-dashicons dashicons-image-rotate"></i></a>';
+				echo '<a href="' . esc_url_raw( $regenerate_url ) . '">' . esc_html__( 'Regenerate room', 'myvideoroom' ) . '<i class="myvideoroom-dashicons dashicons-image-rotate myvideoroom-dashicons-override"></i></a>';
 			}
 			?>
 		</td>

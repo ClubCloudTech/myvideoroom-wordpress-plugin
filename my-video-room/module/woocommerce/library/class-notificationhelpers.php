@@ -36,9 +36,9 @@ class NotificationHelpers {
 			title="' . $title . '"
 			data-target=' . $target_focus_class . '
 			>
-			<i class="myvideoroom-dashicons ' . $iconclass . ' myvideoroom-button-link">
+			<i class="myvideoroom-dashicons ' . $iconclass . ' myvideoroom-button-link myvideoroom-dashicons-override">
 				</i> ' . $message . '
-				<i id="myvideoroom-button-dismiss-alert" class="myvideoroom-dashicons dashicons-dismiss myvideoroom-button-dismiss"
+				<i id="myvideoroom-button-dismiss-alert" class="myvideoroom-dashicons dashicons-dismiss myvideoroom-button-dismiss myvideoroom-dashicons-override"
 				title="' . esc_html__( 'Hide this notification', 'myvideoroom' ) . '"></i></button>';
 	}
 	/**
@@ -85,10 +85,10 @@ class NotificationHelpers {
 		$pre_message = esc_html__( 'WooCommerce Plugin : ', 'myvideoroom' );
 		if ( Factory::get_instance( WooCommerce::class )->is_woocommerce_active() ) {
 			$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
-			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'WooCommerce core plugin is installed', 'myvideoroom' ) . '"></i><br>';
+			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes myvideoroom-dashicons-override" title="' . \esc_html__( 'WooCommerce core plugin is installed', 'myvideoroom' ) . '"></i><br>';
 		} else {
 			$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'BP Groups Component Missing', 'myvideoroom' ) . '</div>';
-			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'WooCommerce is not Installed Correctly', 'myvideoroom' ) . '"></i><br>';
+			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no myvideoroom-dashicons-override" title="' . \esc_html__( 'WooCommerce is not Installed Correctly', 'myvideoroom' ) . '"></i><br>';
 		}
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped --already escaped in functions above.
 		echo $message;

@@ -37,7 +37,7 @@ return function (
 		$status = MVRSiteVideo::SETTING_HOST;
 	}
 	?>
-<div class="mvr-nav-shortcode-outer-wrap mvr-output-inner-wrapper" style="max-width: 1250px;">
+<div class="mvr-nav-shortcode-outer-wrap mvr-output-inner-wrapper mvr-wrapper-override" style="max-width: 1250px;">
 	<div id="roominfo" data-room-name="<?php echo esc_attr( $room_name ); ?>"
 		data-logged-in="<?php echo esc_attr( is_user_logged_in() ); ?>"
 		data-room-type="<?php echo esc_attr( $header['room_type'] ); ?>"
@@ -51,7 +51,7 @@ return function (
 			?>
 		</div>
 		<div id="mvr-header-table-right" class="myvideoroom-header-table-right">
-			<span class="mvr-header-title mvr-header-align">
+			<span class="mvr-header-title mvr-header-align mvr-override-h2">
 				<?php //phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
 							echo $header['name_output']. ' ' . $header['module_name'];
 				?>
@@ -60,13 +60,13 @@ return function (
 				<?php
 
 			//phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - Header Already Escaped.
-							echo esc_url( $header['invite_menu'] ) . '&nbsp;&nbsp;<i class="dashicons dashicons-clipboard myvideoroom-clipboard-copy" title="Copy"></i>'			
+							echo esc_url( $header['invite_menu'] ) . '&nbsp;&nbsp;<i class="dashicons dashicons-clipboard myvideoroom-clipboard-copy myvideoroom-dashicons-override" title="Copy"></i>'			
 				?>
 				</p>
 		</div>
 
 	</div>
-	<div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master">
+	<div id="mvr-notification-master" class="mvr-nav-shortcode-outer-wrap-clean mvr-notification-master mvr-nav-notification-override">
 		<?php
 			$output = \apply_filters( 'myvideoroom_notification_master', '', $room_name );
 			// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
@@ -75,7 +75,7 @@ return function (
 		<div id="mvr-postbutton-notification" class="mvr-notification-align"></div>
 	</div>
 
-	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper myvideoroom-side-tab">
+	<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper myvideoroom-side-tab mvr-sidebar-nav-wrapper-override">
 		<ul class="mvr-ul-style-side-menu">
 			<?php
 					$active = ' nav-tab-active';
@@ -85,7 +85,7 @@ return function (
 				$object_id        = $menu_output->get_element_id();
 				?>
 			<li>
-				<a class="nav-tab<?php echo esc_attr( $active ); ?> mvr-tab-buttons-override" 
+				<a class="nav-tab<?php echo esc_attr( $active ); ?> mvr-tab-buttons-override myvideoroom-button-override" 
 											<?php
 											if ( $object_id ) {
 												echo 'id = "' . esc_attr( $object_id ) . '" ';
@@ -115,7 +115,7 @@ return function (
 		$tab_slug          = $article_output->get_tab_slug();
 		?>
 	<article id="<?php echo esc_attr( $html_library->get_id( $tab_slug ) ); ?>"
-		class="myvideoroom-content-tab mvr-article-separation">
+		class="myvideoroom-content-tab mvr-article-separation mvr-article-seperation-override">
 		<?php
 
 		if ( WooCommerce::SETTING_SHOPPING_BASKET !== $tab_slug ) {
@@ -128,7 +128,7 @@ return function (
 		<?php
 		if ( WooCommerce::SETTING_SHOPPING_BASKET === $tab_slug ) {
 			?>
-	<article id="<?php echo \esc_textarea( WooCommerce::SETTING_SHOPPING_BASKET ); ?>" class="mvr-article-separation">
+	<article id="<?php echo \esc_textarea( WooCommerce::SETTING_SHOPPING_BASKET ); ?>" class="mvr-article-separation mvr-article-seperation-override">
 			<?php
 				// phpcs:ignore --WordPress.Security.EscapeOutput.OutputNotEscaped - callback escaped within itself.
 				echo $function_callback; 

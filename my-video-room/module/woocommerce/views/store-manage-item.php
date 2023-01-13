@@ -51,7 +51,7 @@ return function (
 			data-room-name="<?php echo esc_attr( $room_name ); ?>"
 			data-auth-nonce="<?php echo esc_attr( wp_create_nonce( WooCommerce::SETTING_DELETE_PRODUCT_CATEGORY . $item['product_id'] ) ); ?>"
 			title="<?php esc_html_e( 'Remove this item from the room', 'myvideoroom' ); ?>" target="_blank"><span
-				class="myvideoroom-dashicons dashicons-dismiss"></span></a>
+				class="myvideoroom-dashicons dashicons-dismiss myvideoroom-dashicons-override"></span></a>
 		<a  class="mvr-icons myvideoroom-woocommerce-basket-ajax myvideoroom-button-override"
 			data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
 			data-quantity="1"
@@ -61,7 +61,7 @@ return function (
 			data-room-name="<?php echo esc_attr( $room_name ); ?>"
 			data-auth-nonce="<?php echo esc_attr( wp_create_nonce( WooCommerce::SETTING_BROADCAST_PRODUCT ) ); ?>"
 			title="<?php esc_html_e( 'Share a single instance of this product with the room', 'myvideoroom' ); ?>" target="_blank"><span
-				class="myvideoroom-dashicons dashicons-upload"></span></a>
+				class="myvideoroom-dashicons dashicons-upload myvideoroom-dashicons-override"></span></a>
 
 	</td>
 </tr>

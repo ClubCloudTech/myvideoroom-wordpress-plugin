@@ -65,31 +65,31 @@ class SectionTemplates {
 
 		switch ( $input_type ) {
 			case self::TAB_VIDEO_ROOM:
-				return '<span title ="' . esc_html__( 'Video Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-video-alt3"></span>';
+				return '<span title ="' . esc_html__( 'Video Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-video-alt3 myvideoroom-dashicons-override"></span>';
 			case self::TAB_VIDEO_ROOM_SETTINGS:
-				return '<span title ="' . esc_html__( 'Room Reception, and Layout Settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-generic"></span>';
+				return '<span title ="' . esc_html__( 'Room Reception, and Layout Settings', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-admin-generic myvideoroom-dashicons-override"></span>';
 			case self::TAB_ROOM_PERMISSIONS:
-				return '<span title ="' . esc_html__( 'Room Security and Permissions', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-lock"></span>';
+				return '<span title ="' . esc_html__( 'Room Security and Permissions', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-lock myvideoroom-dashicons-override"></span>';
 			case self::TAB_STOREFRONT:
-				return '<span title ="' . esc_html__( 'Room Builtin Storefront', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-store"></span>';
+				return '<span title ="' . esc_html__( 'Room Builtin Storefront', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-store myvideoroom-dashicons-override"></span>';
 			case self::TAB_SHOPPING_BASKET:
-				return '<span title ="' . esc_html__( 'Your Shopping Basket with AutoSync to Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
+				return '<span title ="' . esc_html__( 'Your Shopping Basket with AutoSync to Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart myvideoroom-dashicons-override"></span>';
 			case self::TAB_INFO_WELCOME:
-				return '<span title ="' . esc_html__( 'Welcome and Information', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-nametag"></span>';
+				return '<span title ="' . esc_html__( 'Welcome and Information', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-nametag myvideoroom-dashicons-override"></span>';
 			case self::TAB_INFO_RECEPTION:
-				return '<span title ="' . esc_html__( 'Main Room Reception Centre', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-clipboard"></span>';
+				return '<span title ="' . esc_html__( 'Main Room Reception Centre', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-clipboard myvideoroom-dashicons-override"></span>';
 			case self::TAB_HOST_ROOM_SETTINGS:
-				return '<span title ="' . esc_html__( 'Control Room Hosts', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-businessman"></span>';
+				return '<span title ="' . esc_html__( 'Control Room Hosts', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-businessman myvideoroom-dashicons-override"></span>';
 			case self::BUTTON_REFRESH:
-				return '<span title ="' . esc_html__( 'Reconnect to Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-update-alt" ></span>';
+				return '<span title ="' . esc_html__( 'Reconnect to Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-update-alt myvideoroom-dashicons-override" ></span>';
 			case self::BUTTON_SHARE_BASKET:
-				return '<span title ="' . esc_html__( 'Share Your Basket with the Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-share-alt2"></span><span title ="' . esc_html__( 'Share Your Basket with the Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
+				return '<span title ="' . esc_html__( 'Share Your Basket with the Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-share-alt2 myvideoroom-dashicons-override"></span><span title ="' . esc_html__( 'Share Your Basket with the Room', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
 			case self::BUTTON_REQUEST_BASKET:
-				return '<span title ="' . esc_html__( 'Request Control of the Room Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-format-status"></span><span title ="' . esc_html__( 'Request Control of the Room Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
+				return '<span title ="' . esc_html__( 'Request Control of the Room Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-format-status myvideoroom-dashicons-override"></span><span title ="' . esc_html__( 'Request Control of the Room Basket', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-cart"></span>';
 			case 'accept':
-				return '<span title ="' . esc_html__( 'Accept', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-thumbs-up"></span>';
+				return '<span title ="' . esc_html__( 'Accept', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-thumbs-up myvideoroom-dashicons-override"></span>';
 			case 'reject':
-				return '<span title ="' . esc_html__( 'Reject', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-thumbs-down"></span>';
+				return '<span title ="' . esc_html__( 'Reject', 'myvideoroom' ) . '" class="myvideoroom-dashicons dashicons-thumbs-down myvideoroom-dashicons-override"></span>';
 		}
 	}
 	/**

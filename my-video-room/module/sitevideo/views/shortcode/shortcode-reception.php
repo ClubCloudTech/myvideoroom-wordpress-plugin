@@ -45,7 +45,7 @@ return function (
 		<h2 class="mvr-override-h2"><?php esc_html_e( 'Room Reception Center', 'myvideoroom' ); ?></h2>
 
 		<button class="mvr-ul-style-menu  myvideoroom-sitevideo-add-room-button myvideoroom-button-override">
-			<i class="myvideoroom-dashicons dashicons-plus-alt"></i>
+			<i class="myvideoroom-dashicons dashicons-plus-alt myvideoroom-dashicons-override"></i>
 			<?php esc_html_e( 'Add new room', 'myvideoroom' ); ?>
 		</button>
 
@@ -56,7 +56,7 @@ return function (
 				data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>"
 				data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>"
 				class="mvr-anchor-override myvideoroom-sitevideo-settings mvr-button-fix">
-				<i class="myvideoroom-dashicons dashicons-admin-settings"></i>
+				<i class="myvideoroom-dashicons dashicons-admin-settings myvideoroom-dashicons-override"></i>
 				<?php esc_html_e( 'Default Room Appearance', 'myvideoroom' ); ?></a>
 		</button>
 		<button id="mvr-close_<?php echo esc_attr( $index_num ); ?>"

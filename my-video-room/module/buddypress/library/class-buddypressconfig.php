@@ -35,7 +35,7 @@ class BuddyPressConfig {
 		?>
 
 <label for="myvideoroom_security_restrict_group_to_members_<?php echo esc_attr( $id_index ); ?>">
-	<h2 class="mvr-override-h2"><i class="myvideoroom-dashicons mvr-icons dashicons-format-chat"></i>
+	<h2 class="mvr-override-h2"><i class="myvideoroom-dashicons mvr-icons dashicons-format-chat myvideoroom-dashicons-override"></i>
 		<?php esc_html_e( 'BuddyPress Group Member Restrictions', 'myvideoroom' ); ?></h2>
 </label>
 <select style="width:50%" class="mvr-roles-multiselect mvr-select-box"
@@ -99,7 +99,7 @@ class BuddyPressConfig {
 		}
 		?>
 <label for="myvideoroom_security_restrict_bp_friends_<?php echo esc_attr( $id_index ); ?>">
-	<h2 class="mvr-override-h2"><i class="myvideoroom-dashicons mvr-icons dashicons-share"></i><?php esc_html_e( 'BuddyPress Friends Only Room Access Control', 'myvideoroom' ); ?></h2>
+	<h2 class="mvr-override-h2"><i class="myvideoroom-dashicons mvr-icons dashicons-share myvideoroom-dashicons-override"></i><?php esc_html_e( 'BuddyPress Friends Only Room Access Control', 'myvideoroom' ); ?></h2>
 </label>
 <select style="width:60%" class="mvr-roles-multiselect mvr-select-box" name="myvideoroom_security_restrict_bp_friends"
 	id="myvideoroom_security_restrict_bp_friends_<?php echo esc_attr( $id_index ); ?>">
@@ -171,10 +171,10 @@ class BuddyPressConfig {
 		$pre_message = esc_html__( 'BuddyPress Plugin : ', 'myvideoroom' );
 		if ( function_exists( 'bp_is_active' ) && Factory::get_instance( BuddyPress::class )->is_buddypress_available() ) {
 			$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
-			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'BuddyPress core plugin is installed', 'myvideoroom' ) . '"></i><br>';
+			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes myvideoroom-dashicons-override" title="' . \esc_html__( 'BuddyPress core plugin is installed', 'myvideoroom' ) . '"></i><br>';
 		} else {
 			$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'BP Groups Component Missing', 'myvideoroom' ) . '</div>';
-			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'BuddyPress is not Installed Correctly', 'myvideoroom' ) . '"></i><br>';
+			$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no myvideoroom-dashicons-override" title="' . \esc_html__( 'BuddyPress is not Installed Correctly', 'myvideoroom' ) . '"></i><br>';
 		}
 
 		switch ( $type ) {
@@ -182,19 +182,19 @@ class BuddyPressConfig {
 				$pre_message = esc_html__( 'BuddyPress Friends : ', 'myvideoroom' );
 				if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'friends' ) ) {
 					$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
-					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i><br>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes myvideoroom-dashicons-override" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i><br>';
 				} else {
 					$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Friends Component Missing', 'myvideoroom' ) . '</div>';
-					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i><br>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no myvideoroom-dashicons-override" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i><br>';
 				}
 				$security_state = Factory::get_instance( Module::class )->is_module_active_simple( Security::MODULE_SECURITY_NAME );
 				$pre_message    = Security::MODULE_SECURITY_DISPLAY . ' : ';
 				if ( $security_state ) {
 					$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
-					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i><br>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes myvideoroom-dashicons-override" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i><br>';
 				} else {
 					$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . Security::MODULE_SECURITY_DISPLAY . esc_html__( ' is not Installed', 'myvideoroom' ) . '</div>';
-					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i><br>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no myvideoroom-dashicons-override" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i><br>';
 				}
 				// Fallthrough case switch is intentional - as friends need to be processed as friends and users.
 			case 'user':
@@ -202,20 +202,20 @@ class BuddyPressConfig {
 				$pre_message          = esc_html__( 'MyVideoRoom Personal Video Module : ', 'myvideoroom' );
 				if ( $personal_video_state ) {
 					$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Enabled', 'myvideoroom' ) . '</div>';
-					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes myvideoroom-dashicons-override" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i>';
 				} else {
 					$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Module Disabled', 'myvideoroom' ) . '</div>';
-					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no myvideoroom-dashicons-override" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i>';
 				}
 				break;
 			case 'group':
 				$pre_message = esc_html__( 'BuddyPress Groups : ', 'myvideoroom' );
 				if ( function_exists( 'bp_is_active' ) && \bp_is_active( 'groups' ) ) {
 					$message .= '<div class="myvideoroom-positive-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'Installed', 'myvideoroom' ) . '</div>';
-					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-yes myvideoroom-dashicons-override" title="' . \esc_html__( 'The Module this feature depends on is installed and working', 'myvideoroom' ) . '"></i>';
 				} else {
 					$message .= '<div class="myvideoroom-negative-dependency">' . \esc_textarea( $pre_message ) . esc_html__( 'BP Groups Component Missing', 'myvideoroom' ) . '</div>';
-					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i>';
+					$message .= '<i class="myvideoroom-dashicons mvr-icons dashicons-no myvideoroom-dashicons-override" title="' . \esc_html__( 'This dependency is not installed and the Feature will not work', 'myvideoroom' ) . '"></i>';
 				}
 				break;
 		}

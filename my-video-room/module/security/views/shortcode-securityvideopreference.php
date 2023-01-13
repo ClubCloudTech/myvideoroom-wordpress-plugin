@@ -69,7 +69,7 @@ return function (
 	?>
 		<form method="post" action="" enctype="multipart/form-data" class="ajaxsecurity">
 			<label class="mvr-override-h2 mvr-title-header"><i
-					class="myvideoroom-dashicons mvr-icons dashicons-dismiss"></i><?php esc_html_e( 'Disable Room', 'myvideoroom' ); ?>
+					class="myvideoroom-dashicons mvr-icons dashicons-dismiss myvideoroom-dashicons-override"></i><?php esc_html_e( 'Disable Room', 'myvideoroom' ); ?>
 			</label>
 
 			<input
@@ -85,7 +85,7 @@ return function (
 			<hr />
 			<h2 class="mvr-title-header mvr-override-h2">
 				<label class="mvr-override-h2" for="myvideoroom_security_anonymous_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="myvideoroom-dashicons mvr-icons dashicons-admin-users"></i><?php esc_html_e( 'Restrict Anonymous Access ( Force Users to Sign In )', 'myvideoroom' ); ?>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-admin-users myvideoroom-dashicons-override"></i><?php esc_html_e( 'Restrict Anonymous Access ( Force Users to Sign In )', 'myvideoroom' ); ?>
 				</label>
 			</h2>
 			<input
@@ -108,7 +108,7 @@ return function (
 			<h2 class="mvr-title-header mvr-override-h2">
 				<label class="mvr-override-h2"
 					for="myvideoroom_security_allow_role_control_enabled_preference_<?php echo esc_attr( $id_index ); ?>">
-					<i class="myvideoroom-dashicons mvr-icons dashicons-id"></i><?php esc_html_e( 'Enable Role Control - For Allowed Roles', 'myvideoroom' ); ?>
+					<i class="myvideoroom-dashicons mvr-icons dashicons-id myvideoroom-dashicons-override"></i><?php esc_html_e( 'Enable Role Control - For Allowed Roles', 'myvideoroom' ); ?>
 				</label>
 			</h2>
 			<input

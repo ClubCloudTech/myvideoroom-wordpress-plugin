@@ -95,16 +95,13 @@ return function (
 				class="mvr-preferences-paragraph">
 				<strong><?php esc_html_e( 'Enforce Plugin Style:', 'myvideoroom' ); ?></strong>
 			</label>
-			<!-- <input type="checkbox" class="myvideoroom_enforce_plugin_style myvideoroom_checkbox_override"
-				name="myvideoroom_enforce_plugin_style"
-				id="myvideoroom_enforce_plugin_style"
-				<?php //echo $template_override ? 'checked' : ''; ?> /> -->
 				<select name="myvideoroom_enforce_plugin_style" id="myvideoroom_enforce_plugin_style">
-					<option>Choose Plugin Style</option>
-					<option value="lite">Lite Mood</option>
-					<option value="dark">Dark Mood</option>
-					<option value="standard">Standard Mood</option>
-					<option value="theme_color">Theme Mood</option>
+
+					<option value="lite" <?php echo ( $template_override === 'lite' ) ? "selected" : '' ?>>Lite Mood</option>
+					<option value="dark" <?php echo ( $template_override === 'dark' ) ? "selected" : '' ?>>Dark Mood</option>
+					<option value="standard" <?php echo ( $template_override === 'standard' ) ? "selected" : '' ?>>Standard Mood</option>
+					<option value="theme_color" <?php echo ( $template_override === 'theme_color' ) ? "selected" : '' ?>>Theme Mood</option>
+					
 				</select>
 			<p class="mvr-preferences-paragraph mvr-paragraph-override">
 				<?php
@@ -115,8 +112,6 @@ return function (
 				?>
 			</p>
 			<hr />
-
-
 
 			<?php
 			$layout_setting = Factory::get_instance( UserVideoPreference::class )->choose_settings(

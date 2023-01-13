@@ -1,0 +1,120 @@
+.mvr-header-section-override {
+    background-color: #E8F3D6!important;
+}
+
+.mvr-nav-notification-override {
+    background-color: #E8F3D6!important;
+} 
+
+.mvr-sidebar-nav-wrapper-override {
+    background-color: #E8F3D6!important;
+}
+
+.mvr-article-seperation-override {
+    background-color: #E8F3D6!important;
+}
+ 
+.mvr-welcomepage-override {
+    background-color: #E8F3D6!important;   
+}
+
+
+.myvideoroom-dashicons-override {
+    color: white!important;
+}
+
+.myvideoroom-button-override {
+    background-color: #FAAB78!important;
+    color: white!important;
+    border-radius: 4px!important;
+}
+
+.mvr-sidebar-nav-wrapper-override .myvideoroom-button-override {
+    background-color: #FAAB78!important;
+}
+
+.mvr-sidebar-nav-wrapper-override .myvideoroom-button-override:hover {
+    background-color: #FFDCA9!important;
+    color: white!important;
+}
+
+.myvideoroom-nav-tab-wrapper li a.nav-tab-active {
+    background-color: #FFDCA9!important;
+    color: black!important;
+}
+
+.mvr-header-section-override {
+    display: flex;
+    align-items: center;
+}
+
+.mvr-header-section-override .myvideoroom-dashicons-override {
+    color: #FAAB78!important;
+}
+
+.mvr-restriction-status-override {
+    background-color: #FAAB78!important;
+    color: white!important;
+    padding: 10px!important;
+}
+
+.mvr-article-seperation-override .myvideoroom-dashicons-override {
+    color: #FAAB78!important;
+}
+
+
+.mvr-select-box:focus {
+    border: 1px solid #FAAB78!important;
+}
+
+.myvideoroom-button-override:hover {
+    background-color: #FFDCA9!important;
+}
+
+.mvr-override-h2 {
+    color: black!important;
+}
+
+.myvideoroom-button-override .mvr-dashicon-override {
+	color: white!important;
+}
+
+.mvr-anchor-override {
+    text-decoration: none!important;
+}
+
+.myvideoroom-hide-mobile .column-name {
+    color: black!important;
+    font-weight: 600!important;
+}
+
+.myvideoroom-button-override .myvideoroom-dashicons-override {
+    color: white!important;
+}
+
+.mvr-paragraph-override {
+	font-size: 13px!important;
+	font-weight: 600!important;
+}
+
+.mvr-wrapper-override {
+    background-color: #E8F3D6!important;
+}
+
+.mvr-basket-nav-wapper .mvr-tab-buttons-override {
+    background-color: #FAAB78!important;
+    color: white!important;
+    text-decoration: none!important;
+}
+
+.mvr-basket-nav-wapper .mvr-tab-buttons-override:hover {
+    background-color: #FFDCA9!important;
+    color: white!important;
+}
+
+.mvr-override-h2 {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;
+	font-size: large!important;
+	color: black!important;
+	text-transform: none!important;
+}

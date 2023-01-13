@@ -110,7 +110,7 @@ return function (): string {
 		<td>
 		<input type="button" class="mvr-main-button-enabled mvr-room-update-button-trigger"
 			id="myvideoroom_refresh_layout" value="<?php esc_html_e( 'Sync All', 'myvideoroom' ); ?>">
-			<i class="myvideoroom-dashicons mvr-icons dashicons-editor-help" title="<?php \esc_html_e( 'Synchronize all current templates from MyVideoRoom servers.', 'myvideoroom' ); ?>"></i>
+			<i class="myvideoroom-dashicons mvr-icons dashicons-editor-help myvideoroom-dashicons-override" title="<?php \esc_html_e( 'Synchronize all current templates from MyVideoRoom servers.', 'myvideoroom' ); ?>"></i>
 		<span id="mvr-last-sync-time"><?php echo esc_html__( 'Last Updated: ', 'myvideoroom' ) . esc_textarea( gmdate( 'Y-m-d H:i:s', get_option( Maintenance::OPTION_LAST_TEMPLATE_SYNCC ) ) ); ?></span>
 		</td>
 

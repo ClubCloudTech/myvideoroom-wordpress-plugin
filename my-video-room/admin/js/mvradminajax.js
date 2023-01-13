@@ -213,7 +213,7 @@ window.addEventListener(
                  * Handles Module Activation and De-activation Button
                  */
 				 var updatePluginStyle = function() {
-				var check = document.querySelector('#myvideoroom_enforce_plugin_style').checked;
+				var check = document.querySelector('#myvideoroom_enforce_plugin_style').value;
 					console.log(check);
 
 					var form_data = new FormData();

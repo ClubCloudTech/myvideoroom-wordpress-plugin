@@ -56,7 +56,7 @@ return function (
 					title="<?php esc_html_e( 'Reject Item - Do not add to your basket', 'myvideoroom' ); ?>"
 					target="_blank"
 
-				><span class="myvideoroom-dashicons dashicons-dismiss"></span></a>
+				><span class="myvideoroom-dashicons dashicons-dismiss myvideoroom-dashicons-override"></span></a>
 						<?php
 					}
 					?>
@@ -73,7 +73,7 @@ return function (
 					data-auth-nonce="<?php echo esc_attr( wp_create_nonce( WooCommerce::SETTING_ADD_PRODUCT . $item['product_id'] ) ); ?>"
 					title="<?php esc_html_e( 'Accept Item- add it to your basket', 'myvideoroom' ); ?>"
 					target="_blank"
-				><span class="myvideoroom-dashicons dashicons-yes-alt"></span></a>
+				><span class="myvideoroom-dashicons dashicons-yes-alt myvideoroom-dashicons-override"></span></a>
 
 					<?php
 				} else {

@@ -352,15 +352,10 @@ class AdminAjax {
 	 * Updates option to enforce central stylesheet.
 	 *
 	 * @param string $setting - the setting value.
-	 * @return bool
+	 * @return void
 	 */
-	public function update_enforce_plugin_style_setting( string $setting = null ):bool {
-		if ( 'true' === $setting ) {
-			\update_option( MVRSiteVideo::SETTING_TEMPLATE_OVERRIDE, true );
-			return true;
-		} else {
-			\update_option( MVRSiteVideo::SETTING_TEMPLATE_OVERRIDE, false );
-			return false;
-		}
+	public function update_enforce_plugin_style_setting( string $setting = null ):void {
+			\update_option( MVRSiteVideo::SETTING_TEMPLATE_OVERRIDE, $setting );
+		
 	}
 }

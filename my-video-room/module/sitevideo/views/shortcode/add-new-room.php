@@ -30,7 +30,7 @@ return function (): string {
 
 <label for="<?php echo esc_attr( $html_library->get_id( 'title' ) ); ?>">
 	<?php esc_html_e( 'Room Display Name ', 'myvideoroom' ); ?>
-	<i id="room-name-icon" class="myvideoroom-dashicons mvr-icons dashicons-saved" title="Room Name is OK"
+	<i id="room-name-icon" class="myvideoroom-dashicons mvr-icons dashicons-saved myvideoroom-dashicons-override" title="Room Name is OK"
 		style="display:none"></i>
 </label>
 
@@ -49,7 +49,7 @@ return function (): string {
 
 <label for="<?php echo esc_attr( $html_library->get_id( 'slug' ) ); ?>">
 	<?php esc_html_e( 'Room URL Link ', 'myvideoroom' ); ?>
-	<i id="room-link-icon" class="myvideoroom-dashicons mvr-icons dashicons-saved" title="URL is OK"
+	<i id="room-link-icon" class="myvideoroom-dashicons mvr-icons dashicons-saved myvideoroom-dashicons-override" title="URL is OK"
 		style="display:none"></i>
 </label>
 

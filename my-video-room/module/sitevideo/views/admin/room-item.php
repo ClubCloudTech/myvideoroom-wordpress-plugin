@@ -70,7 +70,7 @@ return function (
 	<tr class="active mvr-table-mobile" data-room-id="<?php echo esc_attr( $room->id ); ?>">
 	<td>
 	<?php echo '<span id="namechange_' . esc_attr( $room->id ) . '-' . esc_attr( $offset ) . '"class=" column-primary myvideoroom-mobile-table-row-adjust">' . esc_html( $room->display_name ) . '</span>'; ?>
-		<?php echo '<i class="myvideoroom-dashicons-small mvr-icons dashicons-edit-large myvideoroom-edit-title-trigger" title="' . \esc_html__( 'Change Page Display Name', 'myvideoroom' ) . '" data-id="' . esc_attr( $room->id ) . '" data-offset="' . esc_attr( $offset ) . '"></i>'; ?>
+		<?php echo '<i class="myvideoroom-dashicons-override myvideoroom-dashicons-small mvr-icons dashicons-edit-large myvideoroom-edit-title-trigger" title="' . \esc_html__( 'Change Page Display Name', 'myvideoroom' ) . '" data-id="' . esc_attr( $room->id ) . '" data-offset="' . esc_attr( $offset ) . '"></i>'; ?>
 		<input type="text"
 			id="nameinput_<?php echo esc_attr( $room->id ) . '-' . esc_attr( $offset ); ?>"
 			minlength="3"
@@ -95,7 +95,7 @@ return function (
 			<?php
 			if ( $room->url ) {
 				echo '<a id="urlchange_' . esc_attr( $room->id ) . '-' . esc_attr( $offset ) . '" href="' . esc_url_raw( $room->url ) . '" target="_blank">' . esc_url_raw( $room->url ) . '</a>
-				<i class="myvideoroom-dashicons-small mvr-icons dashicons-edit-large myvideoroom-edit-page-trigger" title="' . \esc_html__( 'Change Page URL', 'myvideoroom' ) . '" data-id="' . esc_attr( $room->id ) . '" data-offset="' . esc_attr( $offset ) . '"></i>';
+				<i class="myvideoroom-dashicons-small mvr-icons dashicons-edit-large myvideoroom-edit-page-trigger myvideoroom-dashicons-override" title="' . \esc_html__( 'Change Page URL', 'myvideoroom' ) . '" data-id="' . esc_attr( $room->id ) . '" data-offset="' . esc_attr( $offset ) . '"></i>';
 			} else {
 				echo '<a href="' . esc_url_raw( $regenerate_url ) . '">' . esc_html__( 'Regenerate room', 'myvideoroom' ) . '</a><i class="myvideoroom-dashicons dashicons-image-rotate"></i>';
 			}

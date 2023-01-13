@@ -53,7 +53,7 @@ class SecurityButtons {
 			$path = ' href="' . get_admin_url() . 'admin.php?page=' . $admin_page . '" ';
 		}
 
-		$output = '<i class="myvideoroom-dashicons dashicons-lock" title="' . \esc_html__( 'Site Security Settings Apply', 'myvideoroom' ) . '"></i><a ' . $path . ' class="button button-primary" style="background-color:#daab33">' . esc_html__( 'Site Enforcement Active', 'myvideoroom' ) . '</a>';
+		$output = '<i class="myvideoroom-dashicons dashicons-lock myvideoroom-dashicons-override" title="' . \esc_html__( 'Site Security Settings Apply', 'myvideoroom' ) . '"></i><a ' . $path . ' class="button button-primary" style="background-color:#daab33">' . esc_html__( 'Site Enforcement Active', 'myvideoroom' ) . '</a>';
 
 		if ( $room_disabled && null === $input_type ) {
 			$output .= '<a ' . $path . ' class="button button-primary" style="background-color:Red">' . esc_html__( 'Site Video Disabled', 'myvideoroom' ) . '</a>';

@@ -421,15 +421,60 @@ class MVRSiteVideo {
 
 		$style_override = get_option( self::SETTING_TEMPLATE_OVERRIDE );
 		
+		switch( $style_override ) {
 
-		if ( $style_override ) {
-			\wp_enqueue_style(
-				'myvideoroom-frontend-override',
-				\plugins_url( '/css/frontend-override.css', \realpath( __DIR__ . '/../' ) ),
-				false,
-				Factory::get_instance( Version::class )->get_plugin_version(),
-			);
-		}
+			case "standard" :
+
+				\wp_enqueue_style(
+					'myvideoroom-frontend-override',
+					\plugins_url( '/css/frontend-override.css', \realpath( __DIR__ . '/../' ) ),
+					false,
+					Factory::get_instance( Version::class )->get_plugin_version(),
+				);
+
+				wp_dequeue_style('myvideoroom-frontend-lite');
+				wp_dequeue_style('myvideoroom-frontend-dark');
+					
+				break;
+
+			case "lite" :
+
+				\wp_enqueue_style(
+					'myvideoroom-frontend-lite',
+					\plugins_url( '/css/frontend-lite.css', \realpath( __DIR__ . '/../' ) ),
+					false,
+					Factory::get_instance( Version::class )->get_plugin_version(),
+				);
+
+				wp_dequeue_style('myvideoroom-frontend-override');
+				wp_dequeue_style('myvideoroom-frontend-dark');
+
+				break;
+
+			case "dark" :
+
+				\wp_enqueue_style(
+					'myvideoroom-frontend-dark',
+					\plugins_url( '/css/frontend-dark.css', \realpath( __DIR__ . '/../' ) ),
+					false,
+					Factory::get_instance( Version::class )->get_plugin_version(),
+				);
+
+				wp_dequeue_style('myvideoroom-frontend-override');
+				wp_dequeue_style('myvideoroom-frontend-lite');
+
+				break;
+
+			case "theme_color" :
+
+				wp_dequeue_style('myvideoroom-frontend-override');
+				wp_dequeue_style('myvideoroom-frontend-dark');
+				wp_dequeue_style('myvideoroom-frontend-lite');
+
+				break;
+
+			}
+
 	}
 
 	/**

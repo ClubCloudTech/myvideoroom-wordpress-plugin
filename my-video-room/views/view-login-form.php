@@ -46,7 +46,7 @@ return function (
 		<h2><?php esc_html_e( 'Site Conference Reception Center', 'myvideoroom' ); ?></h2>
 
 		<button class="button button-primary myvideoroom-sitevideo-add-room-button myvideoroom-button-override">
-			<i class="myvideoroom-dashicons dashicons-plus-alt"></i>
+			<i class="myvideoroom-dashicons dashicons-plus-alt myvideoroom-dashicons-override"></i>
 			<?php esc_html_e( 'Add new room', 'myvideoroom' ); ?>
 		</button>
 
@@ -55,7 +55,7 @@ return function (
 				data-room-id="<?php echo esc_attr( SiteDefaults::USER_ID_SITE_DEFAULTS ); ?>"
 				data-input-type="<?php echo esc_attr( MVRSiteVideo::ROOM_NAME_SITE_VIDEO ); ?>"
 				class="myvideoroom-sitevideo-settings myvideoroom-button-link">
-				<i class="myvideoroom-dashicons dashicons-admin-settings"></i>
+				<i class="myvideoroom-dashicons dashicons-admin-settings myvideoroom-dashicons-override"></i>
 				<?php esc_html_e( 'Default Room Appearance', 'myvideoroom' ); ?></a>
 		</button>
 

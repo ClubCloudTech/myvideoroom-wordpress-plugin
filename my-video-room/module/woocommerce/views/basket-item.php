@@ -66,7 +66,7 @@ return function (
 					title="<?php esc_html_e( 'Delete this item from Basket', 'myvideoroom' ); ?>"
 					target="_blank"
 
-				><span class="myvideoroom-dashicons dashicons-dismiss"></span></a>
+				><span class="myvideoroom-dashicons dashicons-dismiss myvideoroom-dashicons-override"></span></a>
 				<a 	class="mvr-icons myvideoroom-woocommerce-basket-ajax myvideoroom-button-override"
 					data-target="mvr-shopping-basket" 
 					data-product-id="<?php echo esc_attr( $item['product_id'] ); ?>"
@@ -78,7 +78,7 @@ return function (
 					title="<?php esc_html_e( 'Share This Product With the Room', 'myvideoroom' ); ?>"
 					target="_blank"
 
-				><span class="myvideoroom-dashicons dashicons-upload"></span></a>
+				><span class="myvideoroom-dashicons dashicons-upload myvideoroom-dashicons-override"></span></a>
 				<?php
 			} else {
 				echo esc_html_e( 'Basket is Auto Syncing' );

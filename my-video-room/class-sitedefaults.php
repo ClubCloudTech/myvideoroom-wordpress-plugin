@@ -184,25 +184,9 @@ class SiteDefaults {
 			$plugin_version
 		);
 
-		wp_register_style(
-			'myvideoroom-lite-css',
-			plugins_url( '/css/frontend-lite.css', __FILE__ ),
-			false,
-			$plugin_version
-		);
-
-		wp_register_style(
-			'myvideoroom-dark-css',
-			plugins_url( '/css/frontend-dark.css', __FILE__ ),
-			false,
-			$plugin_version
-		);
-
 		\wp_enqueue_style( 'myvideoroom-template' );
 		\wp_enqueue_style( 'myvideoroom-menutab-header' );
 		\wp_enqueue_script( 'myvideoroom-admin-tabs' );
-		\wp_enqueue_script( 'myvideoroom-lite-css' );
-		\wp_enqueue_script( 'myvideoroom-dark-css' );
 
 	}
 

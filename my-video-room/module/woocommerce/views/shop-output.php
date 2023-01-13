@@ -32,7 +32,7 @@ return function (
 		<div id="storeid" data-last-storecount="<?php echo esc_attr( $shop_count ); ?>"></div>
 		<div id="myvideoroom-roomstore-outer" class="mvr-admin-page-wrap">
 			<h2 class="mvr-override-h2"><?php esc_html_e( 'Room Store and Basket', 'myvideoroom' ); ?></h2>
-			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper mvr-mobile-size">
+			<nav class="myvideoroom-nav-tab-wrapper nav-tab-wrapper mvr-mobile-size mvr-basket-nav-wapper">
 				<ul class="mvr-ul-style-top-menu">
 					<li>
 						<a class="nav-tab nav-tab-active mvr-full-hide mvr-tab-buttons-override" href="#roomstore">

@@ -64,7 +64,7 @@ return function (
 					<?php esc_html_e( 'Video layout setting:', 'myvideoroom' ); ?>
 				</label>
 			</h3>
-			<div class="mvr-video-template mvr-title-header mvr-template-table"><i class="myvideoroom-dashicons mvr-icons dashicons-editor-help"></i>
+			<div class="mvr-video-template mvr-title-header mvr-template-table"><i class="myvideoroom-dashicons mvr-icons dashicons-editor-help myvideoroom-dashicons-override"></i>
 			</div>
 
 			<div class="mvr-hide mvr-template-table">
@@ -128,7 +128,7 @@ return function (
 				<label for="myvideoroom_user_reception_enabled_preference_<?php echo esc_attr( $id_index ); ?>"
 					class="mvr-preferences-paragraph mvr-override-h2">
 					<i
-						class="myvideoroom-dashicons mvr-icons dashicons-lock "></i><?php esc_html_e( 'Enable Reception', 'myvideoroom' ); ?>
+						class="myvideoroom-dashicons mvr-icons dashicons-lock myvideoroom-dashicons-override"></i><?php esc_html_e( 'Enable Reception', 'myvideoroom' ); ?>
 				</label>
 			</h3>
 			<input type="checkbox" class="myvideoroom_user_reception_enabled_preference myvideoroom_checkbox_override"
@@ -154,7 +154,7 @@ return function (
 				<?php esc_html_e( 'Reception Appearance', 'myvideoroom' ); ?>
 			</label>
 			<div class="mvr-template-table mvr-reception-image mvr-title-header"><i
-					class="myvideoroom-dashicons mvr-icons dashicons-editor-help"></i></div>
+					class="myvideoroom-dashicons mvr-icons dashicons-editor-help myvideoroom-dashicons-override"></i></div>
 
 			<div class="mvr-hide">
 				<div class="mvr-template-table" style="float:left">
@@ -211,7 +211,7 @@ return function (
 				<strong><?php esc_html_e( 'Enable Custom Video for Reception :', 'myvideoroom' ); ?></strong>
 			</label>
 			<div class="mvr-template-table mvr-custom-video mvr-title-header"><i
-					class="myvideoroom-dashicons mvr-icons dashicons-editor-help"></i></div>
+					class="myvideoroom-dashicons mvr-icons dashicons-editor-help myvideoroom-dashicons-override"></i></div>
 
 			<div class="mvr-hide">
 				<div class="mvr-template-table" style="float:left">

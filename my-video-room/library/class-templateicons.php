@@ -93,7 +93,7 @@ class TemplateIcons {
 	 * @return string
 	 */
 	private function create_icon( string $icon, string $title ): string {
-		return '<i class="card myvideoroom-dashicons mvr-icons dashicons-' . esc_attr( $icon ) . '" title="' . esc_html( $title ) . '"></i>';
+		return '<i class="card myvideoroom-dashicons mvr-icons dashicons-' . esc_attr( $icon ) . ' myvideoroom-dashicons-override" title="' . esc_html( $title ) . '"></i>';
 	}
 
 	/**
