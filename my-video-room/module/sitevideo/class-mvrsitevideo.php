@@ -188,10 +188,9 @@ class MVRSiteVideo {
 			'myvideoroom-webcam-stream-js',
 			\plugins_url( '/../../js/mvr-stream.js', \realpath( __FILE__ ) ),
 			array( 'jquery' ),
-			Factory::get_instance( Version::class )->get_plugin_version() . \wp_rand( 40, 30000 ),
+			Factory::get_instance( Version::class )->get_plugin_version(),
 			true
 		);
-		\wp_enqueue_script( 'myvideoroom-webcam-stream-js' );
 
 		// Localize script Ajax Upload.
 			$script_data_array = array(
@@ -199,6 +198,12 @@ class MVRSiteVideo {
 				'security' => wp_create_nonce( 'handle_picture_upload' ),
 
 			);
+			wp_localize_script(
+				'myvideoroom-webcam-stream-js',
+				'myvideoroom_base_ajax',
+				$script_data_array
+			);
+			\wp_enqueue_script( 'myvideoroom-webcam-stream-js' );
 			// Register Script Iframe Handling.
 			\wp_register_script(
 				'myvideoroom-iframe-handler',
@@ -207,11 +212,7 @@ class MVRSiteVideo {
 				Factory::get_instance( Version::class )->get_plugin_version() . \wp_rand( 40, 30000 ),
 				true
 			);
-			wp_localize_script(
-				'myvideoroom-webcam-stream-js',
-				'myvideoroom_base_ajax',
-				$script_data_array
-			);
+
 
 		\wp_register_script(
 			'myvideoroom-sitevideo-add-room-js',

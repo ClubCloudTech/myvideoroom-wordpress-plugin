@@ -2,7 +2,7 @@
 /**
  * Outputs the configuration settings for the video plugin
  *
- * @package MyVideoRoomPlugin\Module\SiteVideo\Views\Login\View-Picture-Register.php
+ * @package MyVideoRoomPlugin\Module\SiteVideo\Views\Login\
  */
 
 use MyVideoRoomPlugin\Factory;
@@ -11,7 +11,7 @@ use MyVideoRoomPlugin\Library\TemplateIcons;
 use MyVideoRoomPlugin\Module\SiteVideo\Library\MVRSiteVideoViews;
 
 /**
- * Render the Login page
+ * Render the Picture page
  *
  * @param ?string $details_section Optional details section.
  * @param ?string $room_name Room Name.
